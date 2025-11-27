@@ -29,7 +29,7 @@ theme:
 
   # Typography
   font:
-    text: Roboto
+    text: Oswald
     code: Roboto Mono
 
   # Features

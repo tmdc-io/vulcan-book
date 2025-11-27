@@ -17,13 +17,15 @@ install: venv ## Install dependencies from pyproject.toml
 	@$(PIP) install -e .
 
 serve: venv ## Start development server
-	@$(MKDOCS) serve
+	@$(MKDOCS) serve --dev-addr 127.0.0.1:7000
 
 build: venv ## Build static site
 	@$(MKDOCS) build
 
 deploy: venv ## Deploy to GitHub Pages
+	@echo "Deploying to GitHub Pages..."
 	@$(MKDOCS) gh-deploy --force --ignore-version
+	@echo "Deployed to GitHub Pages!$(NC)"
 
 clean: ## Clean generated files
 	@rm -rf site/ .cache
