@@ -8,7 +8,7 @@
 
 Before reading this chapter, you should be familiar with:
 
-- [Chapter 2: Models](02-models.md) - Foundation concepts
+- [Chapter 2: Models](index.md) - Foundation concepts
 - Basic SQL and Python
 - Understanding of model kinds and properties
 
@@ -29,7 +29,7 @@ Before reading this chapter, you should be familiar with:
 
 ## 1. Introduction
 
-This chapter covers advanced patterns and operations for building sophisticated models in Vulcan. While [Chapter 2: Models](02-models.md) covers the fundamentals, this chapter dives deep into:
+This chapter covers advanced patterns and operations for building sophisticated models in Vulcan. While [Chapter 2: Models](index.md) covers the fundamentals, this chapter dives deep into:
 
 - **Advanced SQL Patterns**: Blueprinting, Python-based SQL models, dynamic SQL generation
 - **Advanced Python Patterns**: Blueprinting, serialization, DataFrame APIs
@@ -46,7 +46,7 @@ This chapter covers advanced patterns and operations for building sophisticated 
 - You're building complex reusable logic (macros)
 - You need fine-grained control over model dependencies
 
-**For basics, see [Chapter 2: Models](02-models.md)**
+**For basics, see [Chapter 2: Models](index.md)**
 
 [↑ Back to Top](#chapter-2c-model-operations)
 
@@ -56,7 +56,7 @@ This chapter covers advanced patterns and operations for building sophisticated 
 
 ### 2.1 Python-Based SQL Models
 
-Python-based SQL models allow you to generate SQL dynamically using Python code, while still benefiting from SQLMesh's semantic understanding and column-level lineage.
+Python-based SQL models allow you to generate SQL dynamically using Python code, while still benefiting from Vulcan's semantic understanding and column-level lineage.
 
 **Key Characteristics:**
 
@@ -669,7 +669,7 @@ Vulcan uses a custom serialization framework to execute Python models. Key point
 
 ## 4. Signals (Detailed)
 
-Signals provide advanced scheduling logic beyond simple `cron` expressions. For basics, see [Chapter 2: Models](02-models.md#10-signals).
+Signals provide advanced scheduling logic beyond simple `cron` expressions. For basics, see [Chapter 2: Models](index.md#10-signals).
 
 ### 4.1 Multiple Signals
 
@@ -908,7 +908,7 @@ def test_s3_file_exists():
 
 ## 5. Macros (Detailed)
 
-Macros enable reusable SQL logic and parameterized queries. For basics, see [Chapter 2: Models](02-models.md#11-macros).
+Macros enable reusable SQL logic and parameterized queries. For basics, see [Chapter 2: Models](index.md#11-macros).
 
 ### 5.1 Advanced Macro Operators
 
@@ -1445,18 +1445,18 @@ This chapter covered advanced patterns and operations for building sophisticated
 
 ### Next Steps
 
-- **[Chapter 2D: Model Optimization](02d-model-optimization.md)** - Performance optimization and warehouse-specific tuning
-- **[Chapter 2A: Model Properties](02a-model-properties.md)** - Complete reference for all model properties
-- **[Chapter 2B: Model Testing](02b-model-testing.md)** - Comprehensive testing guide
+- **[Chapter 2D: Model Optimization](model-optimization.md)** - Performance optimization and warehouse-specific tuning
+- **[Chapter 2A: Model Properties](model-properties.md)** - Complete reference for all model properties
+- **[Chapter 2B: Model Testing](model-testing.md)** - Comprehensive testing guide
 
 ### Related Chapters
 
-- **[Chapter 2: Models](02-models.md)** - Foundation concepts
-- **[Chapter 4: Audits](04-audits.md)** - Data quality checks
-- **[Chapter 5: Quality Checks](05-quality-checks.md)** - Comprehensive validation
+- **[Chapter 2: Models](index.md)** - Foundation concepts
+- **[Chapter 4: Audits](../audits/index.md)** - Data quality checks
+- **[Chapter 5: Quality Checks](../data-quality/index.md)** - Comprehensive validation
 
 ---
 
-**Ready to optimize your models?** Continue to [Chapter 2D: Model Optimization](02d-model-optimization.md)
+**Ready to optimize your models?** Continue to [Chapter 2D: Model Optimization](model-optimization.md)
 
 [↑ Back to Top](#chapter-2c-model-operations)

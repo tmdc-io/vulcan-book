@@ -47,7 +47,7 @@ Before diving into this chapter, you should have:
 
 1. [Introduction](#1-introduction)
 2. [Quick Start](#2-quick-start)
-3. [Semantic Models & Aliases](#3-semantic-models--aliases)
+3. [Semantic Models & Aliases](#3-semantic-models-aliases)
 4. [Dimensions](#4-dimensions)
 5. [Measures](#5-measures)
 6. [Segments](#6-segments)
@@ -176,7 +176,7 @@ project/
 
 **File naming:** Use any name ending in `.yml` or `.yaml`. Organize by domain or model for clarity.
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -329,7 +329,7 @@ vulcan plan
 
 Vulcan automatically validates your semantic layer definitions.
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -486,7 +486,7 @@ models:
         expression: "subscriptions.customer_id = customers.customer_id"
 ```
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -707,7 +707,7 @@ FROM customers;  -- Only select needed columns
     logic: "active = has subscription, churned = cancelled > 30 days"
 ```
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -1002,7 +1002,7 @@ models:
     calculation_rules: "Excludes cancelled orders, includes partial refunds"
 ```
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -1230,7 +1230,7 @@ segments:
   expression: "..."
 ```
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -1453,7 +1453,7 @@ expression: "orders.customer_id = customers.customer_id"
 expression: "customer_id = customer_id"
 ```
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -1668,7 +1668,7 @@ metrics:
       benchmark: ">110% is good for SaaS"
 ```
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -1795,9 +1795,9 @@ When you get a validation error:
 - [ ] **Check joins** - Cross-model refs need join definitions
 - [ ] **Check dimension proxies** - Segments using cross-model measures need dimension proxies
 
-**For complete validation reference:** See [Chapter 3D: Semantic Validation](03d-semantic-validation.md)
+**For complete validation reference:** See [Chapter 3D: Semantic Validation](validation.md)
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -1971,7 +1971,7 @@ segments:
       action: "Trigger outreach campaign"
 ```
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -2154,7 +2154,7 @@ metrics:
 - ✅ `customers.customer_tier` (requires join)
 - ❌ `customer_tier` (ambiguous)
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 
 ---
 
@@ -2181,15 +2181,15 @@ metrics:
 
 **Continue Learning:**
 
-- **[Chapter 3A: YAML Reference](03a-semantic-yaml-reference.md)** - Complete syntax reference, all options
-- **[Chapter 3B: Advanced Measures](03b-semantic-measures.md)** - Complex expressions, patterns, performance
-- **[Chapter 3C: Advanced Joins](03c-semantic-joins.md)** - Cross-model analysis, complex relationships
-- **[Chapter 3D: Semantic Validation](03d-semantic-validation.md)** - Complete validation rules, troubleshooting
+- **[Chapter 3A: YAML Reference](yaml-reference.md)** - Complete syntax reference, all options
+- **[Chapter 3B: Advanced Measures](measures.md)** - Complex expressions, patterns, performance
+- **[Chapter 3C: Advanced Joins](joins.md)** - Cross-model analysis, complex relationships
+- **[Chapter 3D: Semantic Validation](validation.md)** - Complete validation rules, troubleshooting
 
 **Related Chapters:**
 
-- **[Chapter 2: Models](../02-models/02-models.md)** - Understanding model structure
-- **[Chapter 6: APIs](../06-apis.md)** - Querying semantic layer via APIs
+- **[Chapter 2: Models](../models/index.md)** - Understanding model structure
+- **[Chapter 6: APIs](../apis/index.md)** - Querying semantic layer via APIs
 
 ### 12.3 Additional Resources
 
@@ -2208,5 +2208,5 @@ metrics:
 
 **Happy modeling!**
 
-[↑ Back to Top](#chapter-03-semantic-layer)
+[↑ Back to Top](#)
 

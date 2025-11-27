@@ -8,8 +8,8 @@
 
 Before reading this chapter, you should be familiar with:
 
-- [Chapter 2: Models](02-models.md) - Foundation concepts
-- [Chapter 2A: Model Properties](02a-model-properties.md) - Property reference
+- [Chapter 2: Models](index.md) - Foundation concepts
+- [Chapter 2A: Model Properties](model-properties.md) - Property reference
 - Basic understanding of your data warehouse (Snowflake, BigQuery, Databricks, etc.)
 - SQL query optimization concepts
 
@@ -45,7 +45,7 @@ Model optimization is critical for:
 - Cost optimization techniques
 - Performance troubleshooting
 
-**For basics, see [Chapter 2: Models](02-models.md)**
+**For basics, see [Chapter 2: Models](index.md)**
 
 [↑ Back to Top](#chapter-2d-model-optimization)
 
@@ -2089,9 +2089,9 @@ This chapter covered comprehensive model optimization strategies:
 
 ### Related Chapters
 
-- **[Chapter 2: Models](02-models.md)** - Foundation concepts
-- **[Chapter 2A: Model Properties](02a-model-properties.md)** - Complete property reference
-- **[Chapter 2C: Model Operations](02c-model-operations.md)** - Advanced patterns
+- **[Chapter 2: Models](index.md)** - Foundation concepts
+- **[Chapter 2A: Model Properties](model-properties.md)** - Complete property reference
+- **[Chapter 2C: Model Operations](model-operations.md)** - Advanced patterns
 
 ---
 

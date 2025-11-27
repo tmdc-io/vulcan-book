@@ -16,7 +16,7 @@ Before diving into this chapter, you should have:
 - Aggregations and `GROUP BY`
 - Joins (`INNER`, `LEFT`, `FULL`)
 - Basic date/time functions
-- **ANSI SQL syntax** - Vulcan uses SQLGlot for SQL parsing
+- **ANSI SQL syntax** - Vulcan supports ANSI SQL and can transpile between dialects
 - **Type casting**: `column::TYPE` syntax (e.g., `customer_id::INT`)
 - Your target warehouse SQL dialect (BigQuery, Snowflake, DuckDB, etc.)
 
@@ -188,7 +188,7 @@ FROM raw.users;
 
 **Design Principle:** Write models with business users in mind, not just technical requirements.
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -225,7 +225,7 @@ WHERE order_date BETWEEN @start_date AND @end_date;
 
 ### SQL Dialect and Type Casting
 
-**Vulcan uses SQLGlot for SQL parsing**, which supports ANSI SQL and can transpile between dialects.
+Vulcan supports ANSI SQL and can transpile between dialects automatically.
 
 #### Type Casting Syntax
 
@@ -261,7 +261,7 @@ FROM staging.customers;
 
 - Write models in your **target warehouse dialect** (BigQuery, Snowflake, DuckDB, etc.)
 - Vulcan can transpile SQL between dialects when needed
-- SQLGlot understands warehouse-specific functions and syntax
+- Warehouse-specific functions and syntax are supported
 
 #### Why Explicit Type Casting?
 
@@ -326,9 +326,9 @@ WHERE order_date BETWEEN @start_date AND @end_date
 GROUP BY customer_id, order_date;
 ```
 
-**For comprehensive property reference, see [Chapter 2A: Model Properties](02a-model-properties.md)**
+**For comprehensive property reference, see [Chapter 2A: Model Properties](model-properties.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -534,9 +534,9 @@ def execute(context, start, end, execution_time, **kwargs):
 - ✅ `INCREMENTAL_BY_UNIQUE_KEY` - Upsert by key
 - ✅ `SCD_TYPE_2` - Historical tracking
 
-**For advanced Python patterns, see [Chapter 2C: Model Operations](02c-model-operations.md)**
+**For advanced Python patterns, see [Chapter 2C: Model Operations](model-operations.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -654,7 +654,7 @@ WHERE event_date BETWEEN @start_date AND @end_date;  -- Magic variables!
 - `lookback` - Reprocess last N intervals (handles late-arriving data)
 - `@start_date` / `@end_date` - Automatic variables for time range
 
-**For advanced incremental properties, see [Chapter 2A: Model Properties](02a-model-properties.md)**
+**For advanced incremental properties, see [Chapter 2A: Model Properties](model-properties.md)**
 
 ### INCREMENTAL_BY_UNIQUE_KEY - Upsert by Key
 
@@ -859,9 +859,9 @@ FROM raw.events;
 - Limited visibility into refresh state
 - Typically built off External Models, not other Vulcan models
 
-**For comprehensive model kind details, see [Chapter 2A: Model Properties](02a-model-properties.md)**
+**For comprehensive model kind details, see [Chapter 2A: Model Properties](model-properties.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -974,7 +974,7 @@ assertions (
 )
 ```
 
-**For comprehensive audit documentation, see [Chapter 4: Audits](../04-audits.md)**
+**For comprehensive audit documentation, see [Chapter 4: Audits](../audits/index.md)**
 
 ### Metadata Properties
 
@@ -1041,9 +1041,9 @@ kind INCREMENTAL_BY_TIME_RANGE (
 )
 ```
 
-**For comprehensive property reference, see [Chapter 2A: Model Properties](02a-model-properties.md)**
+**For comprehensive property reference, see [Chapter 2A: Model Properties](model-properties.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -1112,15 +1112,15 @@ MODEL (
 # Example: customers (grain: customer_id) ←→ orders (grain: order_id, references: customer_id)
 ```
 
-**For detailed grain documentation, see [Chapter 2A: Model Properties](02a-model-properties.md)**
+**For detailed grain documentation, see [Chapter 2A: Model Properties](model-properties.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
 ## 7. Audits
 
-> **For comprehensive audit documentation, see [Chapter 4: Audits](../04-audits.md)** - This section provides a brief overview of how to attach audits to models.
+> **For comprehensive audit documentation, see [Chapter 4: Audits](../audits/index.md)** - This section provides a brief overview of how to attach audits to models.
 
 ### What Are Audits?
 
@@ -1171,15 +1171,15 @@ Vulcan provides 29 built-in audits. Here are the most commonly used:
 - ✅ Financial data (non-negative, within ranges)
 - ✅ Critical business rules
 
-**For comprehensive audit documentation, see [Chapter 4: Audits](../04-audits.md)** - Complete guide with all 29 built-in audits, advanced patterns, troubleshooting, and best practices.
+**For comprehensive audit documentation, see [Chapter 4: Audits](../audits/index.md)** - Complete guide with all 29 built-in audits, advanced patterns, troubleshooting, and best practices.
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
 ## 8. Data Quality Checks
 
-> **For comprehensive quality checks documentation, see [Chapter 5: Quality Checks](../05-quality-checks.md)** - This section provides a brief overview.
+> **For comprehensive quality checks documentation, see [Chapter 5: Quality Checks](../data-quality/index.md)** - This section provides a brief overview.
 
 ### What Are Quality Checks?
 
@@ -1226,9 +1226,9 @@ checks:
           samples limit: 10
 ```
 
-**For comprehensive quality checks documentation, see [Chapter 5: Quality Checks](../05-quality-checks.md)** - Complete guide with check types, configuration, and best practices.
+**For comprehensive quality checks documentation, see [Chapter 5: Quality Checks](../data-quality/index.md)** - Complete guide with check types, configuration, and best practices.
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -1295,9 +1295,9 @@ vulcan test --select test_revenue_aggregation
 vulcan test --select analytics.revenue_metrics
 ```
 
-**For comprehensive testing documentation, see [Chapter 2B: Model Testing](02b-model-testing.md)** - Complete guide with advanced patterns, CI/CD integration, and troubleshooting.
+**For comprehensive testing documentation, see [Chapter 2B: Model Testing](model-testing.md)** - Complete guide with advanced patterns, CI/CD integration, and troubleshooting.
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -1353,9 +1353,9 @@ SELECT * FROM raw.partner_data
 WHERE data_date BETWEEN @start_date AND @end_date;
 ```
 
-**For advanced signal patterns, see [Chapter 2C: Model Operations](02c-model-operations.md)**
+**For advanced signal patterns, see [Chapter 2C: Model Operations](model-operations.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -1436,9 +1436,9 @@ SELECT
 FROM customers;
 ```
 
-**For advanced macro patterns, see [Chapter 2C: Model Operations](02c-model-operations.md)**
+**For advanced macro patterns, see [Chapter 2C: Model Operations](model-operations.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -1543,9 +1543,9 @@ MODEL (
 );
 ```
 
-**For performance optimization, see [Chapter 2D: Model Optimization](02d-model-optimization.md)**
+**For performance optimization, see [Chapter 2D: Model Optimization](model-optimization.md)**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -1634,14 +1634,14 @@ GROUP BY customer_id;
 
 **For comprehensive documentation:**
 
-- **[Chapter 2A: Model Properties](02a-model-properties.md)** - Complete property reference
-- **[Chapter 2B: Model Testing](02b-model-testing.md)** - Advanced testing patterns
-- **[Chapter 2C: Model Operations](02c-model-operations.md)** - Advanced SQL/Python patterns, signals, macros
-- **[Chapter 2D: Model Optimization](02d-model-optimization.md)** - Performance tuning, warehouse-specific
-- **[Chapter 4: Audits](../04-audits.md)** - Comprehensive audit guide
-- **[Chapter 5: Quality Checks](../05-quality-checks.md)** - Comprehensive checks guide
+- **[Chapter 2A: Model Properties](model-properties.md)** - Complete property reference
+- **[Chapter 2B: Model Testing](model-testing.md)** - Advanced testing patterns
+- **[Chapter 2C: Model Operations](model-operations.md)** - Advanced SQL/Python patterns, signals, macros
+- **[Chapter 2D: Model Optimization](model-optimization.md)** - Performance tuning, warehouse-specific
+- **[Chapter 4: Audits](../audits/index.md)** - Comprehensive audit guide
+- **[Chapter 5: Quality Checks](../data-quality/index.md)** - Comprehensive checks guide
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 
 ---
 
@@ -1705,5 +1705,5 @@ Learn how to expose your models as business metrics:
 
 **Happy modeling!**
 
-[↑ Back to Top](#chapter-02-models)
+[↑ Back to Top](#)
 

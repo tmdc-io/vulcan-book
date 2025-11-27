@@ -89,7 +89,7 @@ ERROR: Measure 'total_revenue': Circular dependency detected
 - Follow naming conventions
 - Validate frequently during development
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -242,7 +242,7 @@ metrics:
 ERROR: Duplicate metric name 'monthly_revenue' (defined in both file1.yml and file2.yml)
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -344,7 +344,7 @@ joins:
 ERROR: Join target 'non_existent_model' not found (referenced in model 'customers')
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -485,7 +485,7 @@ models:
 ERROR: Dimension proxy 'customer_count_dim': Cannot reference current model 'customers' (only joined models allowed)
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -646,7 +646,7 @@ measures:
 ERROR: Circular dependency detected in measures: measure_a → measure_b → measure_a
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -737,7 +737,7 @@ segments:
     expression: "{order_count_dim} > 0"  # Correct syntax
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -851,7 +851,7 @@ models:
 ERROR: Circular dependency detected in join graph: customers → orders → products → customers
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -1011,7 +1011,7 @@ metrics:
 ERROR: Metric 'revenue_by_product': No join path found from 'orders' to 'products'
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -1093,7 +1093,7 @@ metrics:
       - products.category  # No join path
 ```
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -1171,7 +1171,7 @@ metrics:
 
 **Solution:** Add join between models
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -1285,7 +1285,7 @@ models:
 - [ ] SQL expressions are valid
 - [ ] YAML syntax is correct
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 
 ---
 
@@ -1324,10 +1324,10 @@ models:
 
 ### Next Steps
 
-- [Chapter 3: Semantic Layer](03-semantic-layer.md) - Foundation concepts
-- [Chapter 3A: YAML Reference](03a-semantic-yaml-reference.md) - Complete syntax reference
-- [Chapter 3B: Advanced Measures](03b-semantic-measures.md) - Complex measure patterns
-- [Chapter 3C: Advanced Joins](03c-semantic-joins.md) - Cross-model analysis patterns
+- [Chapter 3: Semantic Layer](index.md) - Foundation concepts
+- [Chapter 3A: YAML Reference](yaml-reference.md) - Complete syntax reference
+- [Chapter 3B: Advanced Measures](measures.md) - Complex measure patterns
+- [Chapter 3C: Advanced Joins](joins.md) - Cross-model analysis patterns
 
-[↑ Back to Top](#chapter-3d-semantic-validation)
+[↑ Back to Top](#)
 

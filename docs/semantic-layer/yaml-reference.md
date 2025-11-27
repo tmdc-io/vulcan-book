@@ -91,7 +91,7 @@ project/
 - Name doesn't matter (Vulcan reads all files)
 - Organize by domain or model for clarity
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -163,7 +163,7 @@ metrics:
 - Metric names must be unique across all files
 - Metrics reference models defined in `models:`
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -325,7 +325,7 @@ analytics.customers:
   joins: {...}
 ```
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -539,7 +539,7 @@ segments:
     expression: "{order_count_dim} > 0"  # Use proxy in segment
 ```
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -879,7 +879,7 @@ measures:
 - `last_updated` - Update timestamp
 - Custom fields as needed
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -1070,7 +1070,7 @@ segments:
       last_reviewed: "2024-01-15"
 ```
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -1116,7 +1116,7 @@ joins:
 **Validation:**
 - Target model alias must exist
 - Cannot reference non-existent models
-- Cannot create circular dependencies (see [Join Graph](#7-5-join-graph-consistency))
+- Cannot create circular dependencies (see [Join Graph](#75-join-graph-consistency))
 
 **Error examples:**
 ```yaml
@@ -1297,7 +1297,7 @@ joins:
       performance_note: "Indexed on customer_id"
 ```
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -1550,7 +1550,7 @@ metrics:
       update_frequency: "daily"
 ```
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -1669,7 +1669,7 @@ time: analytics.orders.order_date        # Using physical name
 - Errors indicate which column is missing
 - Case-sensitive matching
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -1792,7 +1792,7 @@ models:
         expression: "SUM(amount)"
 ```
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -1839,7 +1839,7 @@ models:
 | `duration_ms` | Time duration | 1,500 ms |
 | `bytes` | Byte sizes | 1.5 MB |
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -1995,7 +1995,7 @@ metrics:
     description: "US electronics revenue by tier and brand"
 ```
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 
 ---
 
@@ -2017,9 +2017,9 @@ This reference covers every field, option, and pattern in semantic layer YAML fi
 - Metrics combine measures, time, and dimensions across models
 
 **Next steps:**
-- [Chapter 3B: Advanced Measures](03b-semantic-measures.md) - Complex measure patterns
-- [Chapter 3C: Advanced Joins](03c-semantic-joins.md) - Cross-model analysis patterns
-- [Chapter 3D: Validation](03d-semantic-validation.md) - Complete validation rules
+- [Chapter 3B: Advanced Measures](measures.md) - Complex measure patterns
+- [Chapter 3C: Advanced Joins](joins.md) - Cross-model analysis patterns
+- [Chapter 3D: Validation](validation.md) - Complete validation rules
 
-[↑ Back to Top](#chapter-3a-semantic-yaml-reference)
+[↑ Back to Top](#)
 

@@ -3508,7 +3508,7 @@ ALTER TABLE statements → No audits run
 #### During `vulcan plan` (Development/Staging Workflow)
 
 **Virtual Environments:**
-- SQLMesh creates **isolated schemas/databases** (virtual environments)
+- Vulcan creates **isolated schemas/databases** (virtual environments)
 - Models execute and write to **isolated tables**, NOT production
 - Audits run against the isolated tables
 - Only models that **pass audits** get promoted to production when you apply the plan

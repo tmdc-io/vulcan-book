@@ -88,7 +88,7 @@ subscriptions ←→ plans
 - Optimizing query performance
 - Organizing large semantic layers
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -193,7 +193,7 @@ models:
 - Aggregate across bridge table
 - Example: "Total revenue by product category"
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -343,7 +343,7 @@ models:
 
 **Best practice:** Define bidirectional joins for commonly traversed relationships
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -451,7 +451,7 @@ models:
 - Historical data joins
 - Versioned dimension tables
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -540,7 +540,7 @@ joins:
 
 **Best practice:** Always specify correct relationship type
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -689,7 +689,7 @@ models:
         description: "Metrics aggregated by active campaign"
 ```
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -799,7 +799,7 @@ joins:
 - Business rule documentation
 - Query optimization hints
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -865,7 +865,7 @@ joins:
 - Create circular measure dependencies
 - Omit cross-model documentation
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -943,7 +943,7 @@ joins:
 - Check model.column format
 - Review dialect compatibility
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 
 ---
 
@@ -974,9 +974,9 @@ joins:
 
 ### Next Steps
 
-- [Chapter 3D: Validation](03d-semantic-validation.md) - Complete validation rules
-- [Chapter 3: Semantic Layer](03-semantic-layer.md) - Foundation concepts
-- [Chapter 3A: YAML Reference](03a-semantic-yaml-reference.md) - Complete syntax reference
+- [Chapter 3D: Validation](validation.md) - Complete validation rules
+- [Chapter 3: Semantic Layer](index.md) - Foundation concepts
+- [Chapter 3A: YAML Reference](yaml-reference.md) - Complete syntax reference
 
-[↑ Back to Top](#chapter-3c-semantic-joins)
+[↑ Back to Top](#)
 

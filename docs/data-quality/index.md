@@ -1,6 +1,6 @@
-# Chapter 05: Quality Checks
+# Chapter 05: Data Quality
 
-> **Monitor and validate data quality with SodaCL-powered checks** - Comprehensive validation rules that run separately from models, track trends over time, and integrate with the Activity API for monitoring and alerting.
+> **Monitor and validate data quality with comprehensive checks** - Validation rules that run separately from models, track trends over time, and integrate with the Activity API for monitoring and alerting.
 
 ---
 
@@ -64,7 +64,7 @@ Before diving into this chapter, you should have:
 
 **Key characteristics:**
 - Configured in `checks/` directory
-- Use SodaCL (Soda Check Language) syntax
+- Use declarative YAML syntax
 - Organized by data quality dimensions
 - Results stored for historical analysis
 - Integrated with Activity API
@@ -162,9 +162,9 @@ MODEL (
 );
 ```
 
-### 1.4 SodaCL Overview
+### 1.4 Check Language Overview
 
-Quality checks use **SodaCL (Soda Check Language)**, a declarative YAML-based language for data quality validation.
+Quality checks use a declarative YAML-based language for data quality validation.
 
 **Key concepts:**
 - **Check** - A validation rule (e.g., "row_count > 1000")
@@ -173,7 +173,7 @@ Quality checks use **SodaCL (Soda Check Language)**, a declarative YAML-based la
 - **Attributes** - Metadata (name, description, severity)
 - **Samples** - Example rows that failed validation
 
-**SodaCL example:**
+**Example:**
 
 ```yaml
 checks:
@@ -1621,7 +1621,7 @@ Learn how to:
 
 **Additional Resources**
 
-- **SodaCL Documentation** - Full language reference
+- **Check Language Documentation** - Full language reference
 - **Activity API Reference** (Chapter 6) - REST endpoints
 - **Examples** - `examples/b2b_saas/checks/` in your Vulcan installation
 

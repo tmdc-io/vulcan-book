@@ -25,11 +25,11 @@ Before diving into this chapter, you should have:
 
 1. [Introduction](#1-introduction)
 2. [Required Properties](#2-required-properties)
-3. [Scheduling & Temporal Properties](#3-scheduling--temporal-properties)
+3. [Scheduling & Temporal Properties](#3-scheduling-temporal-properties)
 4. [Incremental Model Properties](#4-incremental-model-properties)
 5. [Data Quality Properties](#5-data-quality-properties)
 6. [Metadata Properties](#6-metadata-properties)
-7. [Schema & Type Properties](#7-schema--type-properties)
+7. [Schema & Type Properties](#7-schema-type-properties)
 8. [Warehouse-Specific Properties](#8-warehouse-specific-properties)
 9. [Execution Control Properties](#9-execution-control-properties)
 10. [Pre/Post Statements](#10-prepost-statements)
@@ -237,7 +237,7 @@ MODEL (
 | `EMBEDDED` | Inline subquery | - |
 | `MANAGED` | Engine-managed table | - |
 
-**For detailed model kind documentation, see [Chapter 2: Models](02-models.md#4-model-kinds)**
+**For detailed model kind documentation, see [Chapter 2: Models](index.md#4-model-kinds)**
 
 **Python Models:**
 
@@ -1941,7 +1941,7 @@ Vulcan provides 29 built-in audits. Common ones:
 
 **Complete Audit Reference:**
 
-For comprehensive audit documentation, see [Chapter 4: Audits](../04-audits.md).
+For comprehensive audit documentation, see [Chapter 4: Audits](../audits/index.md).
 
 **Example:**
 
@@ -1988,7 +1988,7 @@ MODEL (
 );
 ```
 
-**For comprehensive audit documentation, see [Chapter 4: Audits](../04-audits.md)**
+**For comprehensive audit documentation, see [Chapter 4: Audits](../audits/index.md)**
 
 ### 5.5 `depends_on`
 
@@ -2330,7 +2330,7 @@ MODEL (
 
 **Use Cases:**
 
-- Multi-repo SQLMesh deployments
+- Multi-repo deployments
 - Shared models across projects
 - Project isolation
 
@@ -2470,7 +2470,7 @@ MODEL (
 
 **⚠️ Warning:**
 
-SQLMesh may exhibit unexpected behavior if:
+Vulcan may exhibit unexpected behavior if:
 - `columns` includes columns not returned by query
 - `columns` omits columns returned by query
 - Data types don't match query output
@@ -3935,7 +3935,7 @@ model_defaults:
 
 **Supported Properties:**
 - Defined in YAML, not MODEL DDL
-- See [Chapter 2: Models](02-models.md#external---unmanaged-tables)
+- See [Chapter 2: Models](index.md#external-existing-tables)
 
 #### EMBEDDED Models
 
@@ -4383,9 +4383,9 @@ You've learned about all MODEL DDL properties in Vulcan:
 
 ### Related Topics
 
-- **[Chapter 2: Models](02-models.md)** - Model basics and kinds
-- **[Chapter 4: Audits](../04-audits.md)** - Comprehensive audit reference
-- **[Chapter 2C: Model Operations](../02c-model-operations.md)** - Advanced patterns using properties
+- **[Chapter 2: Models](index.md)** - Model basics and kinds
+- **[Chapter 4: Audits](../audits/index.md)** - Comprehensive audit reference
+- **[Chapter 2C: Model Operations](model-operations.md)** - Advanced patterns using properties
 
 ### Next Steps
 

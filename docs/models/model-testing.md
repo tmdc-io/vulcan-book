@@ -79,8 +79,8 @@ Understanding the three validation mechanisms:
 | **Best for** | Logic validation | Data quality gates | Trend monitoring |
 
 **Use tests for:** Logic validation before deployment  
-**Use audits for:** Blocking invalid data (see [Chapter 4](../04-audits.md))  
-**Use checks for:** Monitoring over time (see [Chapter 5](../05-quality-checks.md))
+**Use audits for:** Blocking invalid data (see [Chapter 4](../audits/index.md))  
+**Use checks for:** Monitoring over time (see [Chapter 5](../data-quality/index.md))
 
 ### 1.3 Why Write Tests?
 
@@ -2284,12 +2284,12 @@ vulcan test --preserve-fixtures
 
 ```sql
 -- After running test with --preserve-fixtures
-SELECT * FROM sqlmesh_test_<random_id>.staging_orders;
+SELECT * FROM vulcan_test_<random_id>.staging_orders;
 ```
 
 **Schema name:**
 
-Fixtures are in schema: `sqlmesh_test_<random_id>`
+Fixtures are in schema: `vulcan_test_<random_id>`
 
 **Custom schema:**
 
@@ -2845,9 +2845,9 @@ You've learned comprehensive unit testing for Vulcan models:
 
 ### Related Topics
 
-- **[Chapter 2: Models](02-models.md)** - Model basics
-- **[Chapter 4: Audits](../04-audits.md)** - Data quality validation
-- **[Chapter 5: Quality Checks](../05-quality-checks.md)** - Monitoring and trends
+- **[Chapter 2: Models](index.md)** - Model basics
+- **[Chapter 4: Audits](../audits/index.md)** - Data quality validation
+- **[Chapter 5: Quality Checks](../data-quality/index.md)** - Monitoring and trends
 
 ### Next Steps
 

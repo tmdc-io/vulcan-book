@@ -106,7 +106,7 @@ Advanced measures go beyond simple `SUM()` and `COUNT()` aggregations. They incl
 - Must be valid SQL for your warehouse dialect
 - Performance considerations for complex expressions
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -356,7 +356,7 @@ measures:
     description: "Average revenue with standard deviation"
 ```
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -489,7 +489,7 @@ models:
         description: "Revenue adjusted by customer tier"
 ```
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -646,7 +646,7 @@ measures:
     description: "Revenue with conditional discount application"
 ```
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -806,7 +806,7 @@ measures:
     description: "Revenue for next month"
 ```
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -926,7 +926,7 @@ measures:
       )
 ```
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -1057,7 +1057,7 @@ revenue_yoy_growth:
   tags: [growth, yoy]
 ```
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -1123,7 +1123,7 @@ revenue_yoy_growth:
 - Omit business context
 - Forget to update documentation when logic changes
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -1230,7 +1230,7 @@ measures:
 - Verify function names and syntax
 - Review window function syntax
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 
 ---
 
@@ -1264,9 +1264,9 @@ measures:
 
 ### Next Steps
 
-- [Chapter 3C: Advanced Joins](03c-semantic-joins.md) - Cross-model analysis patterns
-- [Chapter 3D: Validation](03d-semantic-validation.md) - Complete validation rules
-- [Chapter 3: Semantic Layer](03-semantic-layer.md) - Foundation concepts
+- [Chapter 3C: Advanced Joins](joins.md) - Cross-model analysis patterns
+- [Chapter 3D: Validation](validation.md) - Complete validation rules
+- [Chapter 3: Semantic Layer](index.md) - Foundation concepts
 
-[↑ Back to Top](#chapter-3b-semantic-measures)
+[↑ Back to Top](#)
 

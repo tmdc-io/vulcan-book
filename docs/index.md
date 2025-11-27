@@ -93,9 +93,8 @@ No tool sprawl. No manual stitching. No PhD required.
 2. **[Models](models/index.md)** - Write SQL and Python transformations
 3. **[Semantic Layer](semantic-layer/index.md)** - Define metrics and dimensions
 4. **[Audits](audits/index.md)** - Block bad data with assertions
-5. **[Quality Checks](quality-checks/index.md)** - Monitor data quality over time
+5. **[Data Quality](data-quality/index.md)** - Monitor data quality over time
 6. **[APIs](apis/index.md)** - Access your data via REST, Python, and Graph APIs
-7. **[Deployment](deployment/index.md)** - Deploy with CI/CD and manage environments
 
 ---
 
@@ -125,8 +124,6 @@ Start with the basics, then build complexity:
 Foundation (Chapters 1-2)
     ↓
 Core Features (Chapters 3-6)
-    ↓
-Operations (Chapter 7)
 ```
 
 Each chapter stands alone. Read what you need, when you need it.
@@ -137,9 +134,7 @@ Each chapter stands alone. Read what you need, when you need it.
 
 **Defining metrics?** Check out [Semantic Layer](semantic-layer/index.md). Define business logic, get APIs automatically.
 
-**Need quality?** Read [Audits](audits/index.md) and [Quality Checks](quality-checks/index.md). Block bad data, monitor quality.
-
-**Deploying to production?** See [Deployment](deployment/index.md). CI/CD workflows, environment management, best practices.
+**Need quality?** Read [Audits](audits/index.md) and [Data Quality](data-quality/index.md). Block bad data, monitor quality.
 
 ---
 
