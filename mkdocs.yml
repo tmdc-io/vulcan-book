@@ -1,0 +1,145 @@
+site_name: Vulcan Book
+site_description: Complete documentation for Vulcan - SQLMesh wrapper with semantic layer and data validation
+site_url: https://tmdc-io.github.io/vulcan-book
+
+# Repository
+repo_name: tmdc-io/vulcan-book
+repo_url: https://github.com/tmdc-io/vulcan-book
+edit_uri: edit/main/docs/
+
+# Theme configuration
+theme:
+  name: material
+  palette:
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    
+    # Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  # Typography
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  # Features
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - toc.integrate
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+
+# Navigation structure
+nav:
+  - Home: index.md
+  - Getting Started: getting-started/index.md
+  - Models:
+    - Overview: models/index.md
+    - Model Properties: models/model-properties.md
+    - Model Testing: models/model-testing.md
+    - Model Operations: models/model-operations.md
+    - Model Optimization: models/model-optimization.md
+  - Semantic Layer:
+    - Overview: semantic-layer/index.md
+    - YAML Reference: semantic-layer/yaml-reference.md
+    - Measures: semantic-layer/measures.md
+    - Joins: semantic-layer/joins.md
+    - Validation: semantic-layer/validation.md
+  - Audits: audits/index.md
+  - Quality Checks: quality-checks/index.md
+  - APIs: apis/index.md
+  - Deployment:
+    - Overview: deployment/index.md
+    - Isolated Environments Analysis: deployment/07-isolated-environments-ANALYSIS.md
+    - Isolated Environments Summary: deployment/07-isolated-environments-SUMMARY.md
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  
+  - mermaid2:
+      arguments:
+        theme: base
+        themeVariables:
+          primaryColor: '#6366f1'
+          primaryTextColor: '#ffffff'
+
+# Markdown extensions
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      title: On this page
+      toc_depth: 3
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: tmdc-io
+      repo: vulcan-book
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.blocks.admonition
+  - pymdownx.blocks.details
+  - pymdownx.blocks.tab
+
+# Extra configuration
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/tmdc-io/vulcan-book
+
+# Watch files for live reload during development
+watch:
+  - docs/
+  - mkdocs.yml
+
