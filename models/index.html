@@ -6,8 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Complete documentation for Vulcan - SQLMesh wrapper with semantic layer and data validation">
+        <meta name="description" content="Complete documentation for Vulcan - complete stack for building data products">
       
+      
+        <meta name="author" content="DataOS Vulcan Team">
       
       
         <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/models/">
@@ -27,7 +29,7 @@
     
     
       
-        <title>Overview - Vulcan Book</title>
+        <title>Overview - DataOS Vulcan</title>
       
     
     
@@ -48,10 +50,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible:300,300i,400,400i,700,700i%7CSource+Code+Pro:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible";--md-code-font:"Source Code Pro"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -69,7 +73,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -92,12 +96,11 @@
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Vulcan Book" class="md-header__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href=".." title="DataOS Vulcan" class="md-header__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -108,7 +111,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Vulcan Book
+            DataOS Vulcan
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -127,7 +130,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -137,7 +140,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -170,6 +173,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
@@ -209,13 +217,159 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Models
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../semantic-layer/" class="md-tabs__link">
+          
+  
+  
+  Semantic Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../audits/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Audits
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../data-quality/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Quality
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../apis/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  APIs
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -229,18 +383,19 @@
                     
 
 
+  
+
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Vulcan Book" class="md-nav__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href=".." title="DataOS Vulcan" class="md-nav__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../assets/images/logo.png" alt="logo">
 
     </a>
-    Vulcan Book
+    DataOS Vulcan
   </label>
   
     <div class="md-nav__source">
@@ -325,6 +480,9 @@
     
       
         
+        
+      
+      
         
       
     
@@ -442,34 +600,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-knowledge" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Knowledge
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-but-helpful" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional but Helpful
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -492,78 +622,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Model Basics">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-are-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What Are Models?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#model-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Model Types
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#model-kinds-materialization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Model Kinds (Materialization)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#decision-tree-which-model-kind" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Decision Tree: Which Model Kind?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#model-structure-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Model Structure Overview
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vulcan-specific-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vulcan-Specific Considerations
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -574,45 +632,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. SQL Models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sql-dialect-and-type-casting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SQL Dialect and Type Casting
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#complete-example-analytics-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Complete Example: Analytics Model
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -625,67 +644,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Python Models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#when-to-use-python-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When to Use Python Models
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#basic-structure_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#model-decorator-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        @model Decorator Parameters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#executioncontext-api" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ExecutionContext API
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python-model-limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Python Model Limitations
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -696,133 +654,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Model Kinds">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#quick-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#choosing-the-right-kind" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Choosing the Right Kind
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#view-no-materialization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        VIEW - No Materialization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#full-complete-refresh" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        FULL - Complete Refresh
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#incremental_by_time_range-time-partitions-most-common" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        INCREMENTAL_BY_TIME_RANGE - Time Partitions (Most Common)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#incremental_by_unique_key-upsert-by-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        INCREMENTAL_BY_UNIQUE_KEY - Upsert by Key
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scd_type_2-historical-tracking" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SCD_TYPE_2 - Historical Tracking
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#seed-static-reference-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SEED - Static Reference Data
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#external-existing-tables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        EXTERNAL - Existing Tables
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#embedded-inline-subqueries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        EMBEDDED - Inline Subqueries
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#managed-engine-managed-tables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MANAGED - Engine-Managed Tables
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -835,67 +666,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Essential Model Properties">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Properties
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scheduling-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Scheduling Properties
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-quality-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Quality Properties
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#metadata-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Metadata Properties
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#incremental-model-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Incremental Model Properties
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -906,56 +676,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="6. Grain and Keys">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-is-grain" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is Grain?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#single-vs-composite-grain" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Single vs Composite Grain
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#foreign-key-references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Foreign Key References
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#grain-as-prerequisite-for-joins" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Grain as Prerequisite for Joins
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -968,56 +688,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7. Audits">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-are-audits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What Are Audits?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#attaching-audits-to-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Attaching Audits to Models
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#common-built-in-audits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Built-in Audits
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#when-to-use-audits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When to Use Audits
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1028,45 +698,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="8. Data Quality Checks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-are-quality-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What Are Quality Checks?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#checks-vs-audits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Checks vs Audits
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#basic-check-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Check Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1079,45 +710,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="9. Unit Tests">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-are-unit-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What Are Unit Tests?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Test Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#running-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Running Tests
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1128,34 +720,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="10. Signals">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-are-signals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What Are Signals?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#signal-basics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Signal Basics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1168,34 +732,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="11. Macros">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#built-in-macros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Built-in Macros
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user-defined-macros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        User-Defined Macros
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1206,56 +742,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="12. Best Practices">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#model-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Model Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#column-naming" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Column Naming
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#always-use-column-descriptions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Always Use Column Descriptions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Production Checklist
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1268,56 +754,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="13. Quick Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#model-kinds-quick-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Model Kinds Quick Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#essential-properties-quick-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Essential Properties Quick Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#common-patterns-cheat-sheet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Patterns Cheat Sheet
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cross-references-to-detailed-chapters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cross-References to Detailed Chapters
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1328,34 +764,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Summary">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#core-concepts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Core Concepts
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Next Steps
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1498,12 +906,12 @@
     
     
       
-        
+      
         
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -1512,7 +920,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -1722,14 +1130,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../quality-checks/" class="md-nav__link">
+      <a href="../data-quality/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Quality Checks
+    Data Quality
   
 
     
@@ -1765,151 +1173,6 @@
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deployment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Deployment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../deployment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../deployment/07-isolated-environments-ANALYSIS/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Analysis
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../deployment/07-isolated-environments-SUMMARY/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Summary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1996,7 +1259,7 @@
 - Aggregations and <code>GROUP BY</code>
 - Joins (<code>INNER</code>, <code>LEFT</code>, <code>FULL</code>)
 - Basic date/time functions
-- <strong>ANSI SQL syntax</strong> - Vulcan uses SQLGlot for SQL parsing
+- <strong>ANSI SQL syntax</strong> - Vulcan supports ANSI SQL and can transpile between dialects
 - <strong>Type casting</strong>: <code>column::TYPE</code> syntax (e.g., <code>customer_id::INT</code>)
 - Your target warehouse SQL dialect (BigQuery, Snowflake, DuckDB, etc.)</p>
 <p><strong>Data Modeling Concepts</strong>
@@ -2182,7 +1445,7 @@
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1">-- ✓ signup_date    (time dimension)</span>
 </span></code></pre></div>
 <p><strong>Design Principle:</strong> Write models with business users in mind, not just technical requirements.</p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="2-sql-models">2. SQL Models<a class="headerlink" href="#2-sql-models" title="Permanent link">&para;</a></h2>
 <p>SQL models are the most common model type. They define transformations using SQL with metadata in the <code>MODEL</code> DDL.</p>
@@ -2211,7 +1474,7 @@
 </span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_date</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_date</span><span class="p">;</span>
 </span></code></pre></div>
 <h3 id="sql-dialect-and-type-casting">SQL Dialect and Type Casting<a class="headerlink" href="#sql-dialect-and-type-casting" title="Permanent link">&para;</a></h3>
-<p><strong>Vulcan uses SQLGlot for SQL parsing</strong>, which supports ANSI SQL and can transpile between dialects.</p>
+<p>Vulcan supports ANSI SQL and can transpile between dialects automatically.</p>
 <h4 id="type-casting-syntax">Type Casting Syntax<a class="headerlink" href="#type-casting-syntax" title="Permanent link">&para;</a></h4>
 <p>Always use PostgreSQL-style casting with <code>::TYPE</code>:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">SELECT</span>
@@ -2289,7 +1552,7 @@
 <ul>
 <li>Write models in your <strong>target warehouse dialect</strong> (BigQuery, Snowflake, DuckDB, etc.)</li>
 <li>Vulcan can transpile SQL between dialects when needed</li>
-<li>SQLGlot understands warehouse-specific functions and syntax</li>
+<li>Warehouse-specific functions and syntax are supported</li>
 </ul>
 <h4 id="why-explicit-type-casting">Why Explicit Type Casting?<a class="headerlink" href="#why-explicit-type-casting" title="Permanent link">&para;</a></h4>
 <p>Always cast column types for:
@@ -2347,8 +1610,8 @@
 </span><span id="__span-9-33"><a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span>
 </span><span id="__span-9-34"><a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="n">order_date</span><span class="p">;</span>
 </span></code></pre></div>
-<p><strong>For comprehensive property reference, see <a href="02a-model-properties.md">Chapter 2A: Model Properties</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For comprehensive property reference, see <a href="model-properties/">Chapter 2A: Model Properties</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="3-python-models">3. Python Models<a class="headerlink" href="#3-python-models" title="Permanent link">&para;</a></h2>
 <p>Use Python models when SQL isn't enough - complex business logic, machine learning, API calls, or data science workflows.</p>
@@ -2498,8 +1761,8 @@
 - ✅ <code>INCREMENTAL_BY_TIME_RANGE</code> - Time-partitioned incremental
 - ✅ <code>INCREMENTAL_BY_UNIQUE_KEY</code> - Upsert by key
 - ✅ <code>SCD_TYPE_2</code> - Historical tracking</p>
-<p><strong>For advanced Python patterns, see <a href="02c-model-operations.md">Chapter 2C: Model Operations</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For advanced Python patterns, see <a href="model-operations/">Chapter 2C: Model Operations</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="4-model-kinds">4. Model Kinds<a class="headerlink" href="#4-model-kinds" title="Permanent link">&para;</a></h2>
 <p>How your model refreshes data - the most important performance decision.</p>
@@ -2646,7 +1909,7 @@
 - <code>time_column</code> - Column that defines time intervals
 - <code>lookback</code> - Reprocess last N intervals (handles late-arriving data)
 - <code>@start_date</code> / <code>@end_date</code> - Automatic variables for time range</p>
-<p><strong>For advanced incremental properties, see <a href="02a-model-properties.md">Chapter 2A: Model Properties</a></strong></p>
+<p><strong>For advanced incremental properties, see <a href="model-properties/">Chapter 2A: Model Properties</a></strong></p>
 <h3 id="incremental_by_unique_key-upsert-by-key">INCREMENTAL_BY_UNIQUE_KEY - Upsert by Key<a class="headerlink" href="#incremental_by_unique_key-upsert-by-key" title="Permanent link">&para;</a></h3>
 <p><strong>How it works:</strong> Upserts (insert or update) rows based on unique key</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
@@ -2809,8 +2072,8 @@
 - Additional costs (e.g., Snowflake Dynamic Tables)
 - Limited visibility into refresh state
 - Typically built off External Models, not other Vulcan models</p>
-<p><strong>For comprehensive model kind details, see <a href="02a-model-properties.md">Chapter 2A: Model Properties</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For comprehensive model kind details, see <a href="model-properties/">Chapter 2A: Model Properties</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="5-essential-model-properties">5. Essential Model Properties<a class="headerlink" href="#5-essential-model-properties" title="Permanent link">&para;</a></h2>
 <p>Model properties control how models behave, when they run, and how they're configured. This section covers the essential properties you'll use most often.</p>
@@ -2879,7 +2142,7 @@
 </span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">  </span><span class="n">accepted_range</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="n">min_v</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">max_v</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">1000000</span><span class="p">)</span>
 </span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>For comprehensive audit documentation, see <a href="../04-audits.md">Chapter 4: Audits</a></strong></p>
+<p><strong>For comprehensive audit documentation, see <a href="../audits/">Chapter 4: Audits</a></strong></p>
 <h3 id="metadata-properties">Metadata Properties<a class="headerlink" href="#metadata-properties" title="Permanent link">&para;</a></h3>
 <h4 id="description-model-description"><code>description</code> - Model Description<a class="headerlink" href="#description-model-description" title="Permanent link">&para;</a></h4>
 <p>Human-readable description:</p>
@@ -2917,8 +2180,8 @@
 </span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">  </span><span class="n">lookback</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="c1">-- Reprocess last 3 days</span>
 </span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>For comprehensive property reference, see <a href="02a-model-properties.md">Chapter 2A: Model Properties</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For comprehensive property reference, see <a href="model-properties/">Chapter 2A: Model Properties</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="6-grain-and-keys">6. Grain and Keys<a class="headerlink" href="#6-grain-and-keys" title="Permanent link">&para;</a></h2>
 <p>Grain defines your model's primary key - the column(s) that uniquely identify each row. This is critical for data quality and semantic layer integration.</p>
@@ -2962,12 +2225,12 @@
 </span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="c1"># 2. Join relationships are declared in semantic YAML</span>
 </span><span id="__span-51-4"><a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="c1"># Example: customers (grain: customer_id) ←→ orders (grain: order_id, references: customer_id)</span>
 </span></code></pre></div>
-<p><strong>For detailed grain documentation, see <a href="02a-model-properties.md">Chapter 2A: Model Properties</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For detailed grain documentation, see <a href="model-properties/">Chapter 2A: Model Properties</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="7-audits">7. Audits<a class="headerlink" href="#7-audits" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p><strong>For comprehensive audit documentation, see <a href="../04-audits.md">Chapter 4: Audits</a></strong> - This section provides a brief overview of how to attach audits to models.</p>
+<p><strong>For comprehensive audit documentation, see <a href="../audits/">Chapter 4: Audits</a></strong> - This section provides a brief overview of how to attach audits to models.</p>
 </blockquote>
 <h3 id="what-are-audits">What Are Audits?<a class="headerlink" href="#what-are-audits" title="Permanent link">&para;</a></h3>
 <p><strong>Audits are SQL queries that validate your model's data after execution.</strong> They search for invalid data, and if any is found, they halt the flow of data to prevent bad data from propagating downstream.</p>
@@ -3035,12 +2298,12 @@
 - ✅ Foreign keys (referential integrity)
 - ✅ Financial data (non-negative, within ranges)
 - ✅ Critical business rules</p>
-<p><strong>For comprehensive audit documentation, see <a href="../04-audits.md">Chapter 4: Audits</a></strong> - Complete guide with all 29 built-in audits, advanced patterns, troubleshooting, and best practices.</p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For comprehensive audit documentation, see <a href="../audits/">Chapter 4: Audits</a></strong> - Complete guide with all 29 built-in audits, advanced patterns, troubleshooting, and best practices.</p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="8-data-quality-checks">8. Data Quality Checks<a class="headerlink" href="#8-data-quality-checks" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p><strong>For comprehensive quality checks documentation, see <a href="../05-quality-checks.md">Chapter 5: Quality Checks</a></strong> - This section provides a brief overview.</p>
+<p><strong>For comprehensive quality checks documentation, see <a href="../data-quality/">Chapter 5: Quality Checks</a></strong> - This section provides a brief overview.</p>
 </blockquote>
 <h3 id="what-are-quality-checks">What Are Quality Checks?<a class="headerlink" href="#what-are-quality-checks" title="Permanent link">&para;</a></h3>
 <p><strong>Quality checks are comprehensive validation rules configured in YAML files.</strong> Unlike audits (which block pipeline execution), checks:</p>
@@ -3113,8 +2376,8 @@
 </span><span id="__span-53-16"><a id="__codelineno-53-16" name="__codelineno-53-16" href="#__codelineno-53-16"></a><span class="w">            </span><span class="no">WHERE amount &lt; 0 OR amount &gt; 1000000</span>
 </span><span id="__span-53-17"><a id="__codelineno-53-17" name="__codelineno-53-17" href="#__codelineno-53-17"></a><span class="w">          </span><span class="nt">samples limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </span></code></pre></div>
-<p><strong>For comprehensive quality checks documentation, see <a href="../05-quality-checks.md">Chapter 5: Quality Checks</a></strong> - Complete guide with check types, configuration, and best practices.</p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For comprehensive quality checks documentation, see <a href="../data-quality/">Chapter 5: Quality Checks</a></strong> - Complete guide with check types, configuration, and best practices.</p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="9-unit-tests">9. Unit Tests<a class="headerlink" href="#9-unit-tests" title="Permanent link">&para;</a></h2>
 <p>Unit tests validate model logic with predefined inputs and expected outputs. They prevent regressions and ensure models behave as expected after changes.</p>
@@ -3167,8 +2430,8 @@
 </span><span id="__span-55-7"><a id="__codelineno-55-7" name="__codelineno-55-7" href="#__codelineno-55-7"></a><span class="c1"># Run tests for specific model</span>
 </span><span id="__span-55-8"><a id="__codelineno-55-8" name="__codelineno-55-8" href="#__codelineno-55-8"></a>vulcan<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--select<span class="w"> </span>analytics.revenue_metrics
 </span></code></pre></div>
-<p><strong>For comprehensive testing documentation, see <a href="02b-model-testing.md">Chapter 2B: Model Testing</a></strong> - Complete guide with advanced patterns, CI/CD integration, and troubleshooting.</p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For comprehensive testing documentation, see <a href="model-testing/">Chapter 2B: Model Testing</a></strong> - Complete guide with advanced patterns, CI/CD integration, and troubleshooting.</p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="10-signals">10. Signals<a class="headerlink" href="#10-signals" title="Permanent link">&para;</a></h2>
 <p>Signals define custom criteria for when models should run. They enable advanced scheduling beyond simple <code>cron</code> expressions.</p>
@@ -3210,8 +2473,8 @@
 </span><span id="__span-57-9"><a id="__codelineno-57-9" name="__codelineno-57-9" href="#__codelineno-57-9"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">partner_data</span>
 </span><span id="__span-57-10"><a id="__codelineno-57-10" name="__codelineno-57-10" href="#__codelineno-57-10"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">data_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_date</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_date</span><span class="p">;</span>
 </span></code></pre></div>
-<p><strong>For advanced signal patterns, see <a href="02c-model-operations.md">Chapter 2C: Model Operations</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For advanced signal patterns, see <a href="model-operations/">Chapter 2C: Model Operations</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="11-macros">11. Macros<a class="headerlink" href="#11-macros" title="Permanent link">&para;</a></h2>
 <p>Macros are reusable logic in SQL models. They enable parameterized queries and reduce repetition.</p>
@@ -3266,8 +2529,8 @@
 </span><span id="__span-62-3"><a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a><span class="w">  </span><span class="o">@</span><span class="n">standardize_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">email_clean</span>
 </span><span id="__span-62-4"><a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
 </span></code></pre></div>
-<p><strong>For advanced macro patterns, see <a href="02c-model-operations.md">Chapter 2C: Model Operations</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For advanced macro patterns, see <a href="model-operations/">Chapter 2C: Model Operations</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="12-best-practices">12. Best Practices<a class="headerlink" href="#12-best-practices" title="Permanent link">&para;</a></h2>
 <p>Production-ready patterns for maintainable, performant, and business-friendly models.</p>
@@ -3349,8 +2612,8 @@
 </span><span id="__span-67-26"><a id="__codelineno-67-26" name="__codelineno-67-26" href="#__codelineno-67-26"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-67-27"><a id="__codelineno-67-27" name="__codelineno-67-27" href="#__codelineno-67-27"></a><span class="p">);</span>
 </span></code></pre></div>
-<p><strong>For performance optimization, see <a href="02d-model-optimization.md">Chapter 2D: Model Optimization</a></strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><strong>For performance optimization, see <a href="model-optimization/">Chapter 2D: Model Optimization</a></strong></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="13-quick-reference">13. Quick Reference<a class="headerlink" href="#13-quick-reference" title="Permanent link">&para;</a></h2>
 <h3 id="model-kinds-quick-reference">Model Kinds Quick Reference<a class="headerlink" href="#model-kinds-quick-reference" title="Permanent link">&para;</a></h3>
@@ -3516,14 +2779,14 @@
 <h3 id="cross-references-to-detailed-chapters">Cross-References to Detailed Chapters<a class="headerlink" href="#cross-references-to-detailed-chapters" title="Permanent link">&para;</a></h3>
 <p><strong>For comprehensive documentation:</strong></p>
 <ul>
-<li><strong><a href="02a-model-properties.md">Chapter 2A: Model Properties</a></strong> - Complete property reference</li>
-<li><strong><a href="02b-model-testing.md">Chapter 2B: Model Testing</a></strong> - Advanced testing patterns</li>
-<li><strong><a href="02c-model-operations.md">Chapter 2C: Model Operations</a></strong> - Advanced SQL/Python patterns, signals, macros</li>
-<li><strong><a href="02d-model-optimization.md">Chapter 2D: Model Optimization</a></strong> - Performance tuning, warehouse-specific</li>
-<li><strong><a href="../04-audits.md">Chapter 4: Audits</a></strong> - Comprehensive audit guide</li>
-<li><strong><a href="../05-quality-checks.md">Chapter 5: Quality Checks</a></strong> - Comprehensive checks guide</li>
+<li><strong><a href="model-properties/">Chapter 2A: Model Properties</a></strong> - Complete property reference</li>
+<li><strong><a href="model-testing/">Chapter 2B: Model Testing</a></strong> - Advanced testing patterns</li>
+<li><strong><a href="model-operations/">Chapter 2C: Model Operations</a></strong> - Advanced SQL/Python patterns, signals, macros</li>
+<li><strong><a href="model-optimization/">Chapter 2D: Model Optimization</a></strong> - Performance tuning, warehouse-specific</li>
+<li><strong><a href="../audits/">Chapter 4: Audits</a></strong> - Comprehensive audit guide</li>
+<li><strong><a href="../data-quality/">Chapter 5: Quality Checks</a></strong> - Comprehensive checks guide</li>
 </ul>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
 <p>You've learned the fundamentals of Vulcan models:</p>
@@ -3572,7 +2835,7 @@
 - ✅ Test model logic
 - ✅ Handle basic scheduling scenarios</p>
 <p><strong>Happy modeling!</strong></p>
-<p><a href="#chapter-02-models">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 
 
 
@@ -3590,6 +2853,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -3647,6 +2912,12 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 DataOS Vulcan Team<br>
+<small>Complete stack for building data products</small>
+
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -3684,7 +2955,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>

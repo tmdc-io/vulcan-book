@@ -6,8 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Complete documentation for Vulcan - SQLMesh wrapper with semantic layer and data validation">
+        <meta name="description" content="Complete documentation for Vulcan - complete stack for building data products">
       
+      
+        <meta name="author" content="DataOS Vulcan Team">
       
       
         <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/">
@@ -25,7 +27,7 @@
     
     
       
-        <title>Vulcan Book</title>
+        <title>DataOS Vulcan</title>
       
     
     
@@ -46,10 +48,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible:300,300i,400,400i,700,700i%7CSource+Code+Pro:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible";--md-code-font:"Source Code Pro"}</style>
       
     
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
     
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -67,7 +71,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -90,12 +94,11 @@
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Vulcan Book" class="md-header__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="." title="DataOS Vulcan" class="md-header__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -106,7 +109,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Vulcan Book
+            DataOS Vulcan
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -125,7 +128,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -135,7 +138,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -168,6 +171,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
@@ -207,13 +215,159 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="models/" class="md-tabs__link">
+          
+  
+  
+  Models
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="semantic-layer/" class="md-tabs__link">
+          
+  
+  
+  Semantic Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="audits/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Audits
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="data-quality/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Quality
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="apis/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  APIs
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -227,18 +381,19 @@
                     
 
 
+  
+
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Vulcan Book" class="md-nav__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="." title="DataOS Vulcan" class="md-nav__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="assets/images/logo.png" alt="logo">
 
     </a>
-    Vulcan Book
+    DataOS Vulcan
   </label>
   
     <div class="md-nav__source">
@@ -324,10 +479,32 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-vulcan" class="md-nav__link">
+  <a href="#what-it-does" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is Vulcan?
+        What It Does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-complete-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Complete Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-vulcan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Vulcan?
       
     </span>
   </a>
@@ -346,10 +523,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#learning-path" class="md-nav__link">
+  <a href="#how-its-different" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Learning Path
+        How It's Different
       
     </span>
   </a>
@@ -357,10 +534,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#design-philosophy" class="md-nav__link">
+  <a href="#learning-path" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Design Philosophy
+        Learning Path
       
     </span>
   </a>
@@ -413,12 +590,12 @@
     
     
       
-        
+      
         
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -427,7 +604,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -614,12 +791,12 @@
     
     
       
-        
+      
         
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -628,7 +805,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -838,14 +1015,14 @@
   
   
     <li class="md-nav__item">
-      <a href="quality-checks/" class="md-nav__link">
+      <a href="data-quality/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Quality Checks
+    Data Quality
   
 
     
@@ -885,151 +1062,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deployment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Deployment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="deployment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="deployment/07-isolated-environments-ANALYSIS/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Analysis
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="deployment/07-isolated-environments-SUMMARY/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Summary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1059,39 +1091,99 @@
 
 
 <h1 id="vulcan-book">Vulcan Book<a class="headerlink" href="#vulcan-book" title="Permanent link">&para;</a></h1>
-<p>Welcome to the <strong>Vulcan Book</strong> - comprehensive documentation for Vulcan, a SQLMesh wrapper with semantic layer and data validation capabilities.</p>
-<h2 id="what-is-vulcan">What is Vulcan?<a class="headerlink" href="#what-is-vulcan" title="Permanent link">&para;</a></h2>
-<p>Vulcan is a wrapper around SQLMesh that provides:</p>
+<p>Vulcan is a complete stack for building data products.</p>
+<p>Tired of stitching together tools for testing, quality, semantics, and APIs? Ready to ship data products like software?</p>
+<hr />
+<h2 id="what-it-does">What It Does<a class="headerlink" href="#what-it-does" title="Permanent link">&para;</a></h2>
+<p>Vulcan gives you:</p>
 <ul>
-<li><strong>Semantic Layer</strong>: Define business metrics and dimensions on top of physical models</li>
-<li><strong>Data Validation</strong>: Built-in audits and quality checks for data reliability</li>
-<li><strong>Graph Database</strong>: Query lineage and relationships using Cypher</li>
-<li><strong>API Layer</strong>: REST and Python APIs for programmatic access</li>
+<li><strong>CI/CD for data</strong> - Plan changes, test in virtual environments, deploy safely. See what breaks before you break it. Review impact, approve changes, roll back if needed. Just like software engineering, but for data.</li>
+<li><strong>Unit testing</strong> - Test transformations locally without touching your warehouse. Fast feedback, no costs. Write tests that run in seconds, not hours. Catch bugs before they hit production.</li>
+<li><strong>Data quality</strong> - Assertions that block bad data, checks that monitor quality. Quality as code, not an afterthought. Write validation rules alongside your models. Bad data gets stopped at the door.</li>
+<li><strong>Semantic layer</strong> - Define metrics and dimensions. Vulcan generates schemas and APIs automatically. Business users get self-service analytics. Developers get automatic API generation. Everyone wins.</li>
+<li><strong>Automatic APIs</strong> - REST, Python, and Graph APIs generated from your models. No manual API code needed. Query lineage with Cypher. Discover metrics programmatically. Access data however you need it.</li>
+<li><strong>Lifecycle management</strong> - Dev, staging, prod environments with proper isolation. Ship with confidence. Test changes safely. Deploy when ready. No surprises.</li>
 </ul>
+<hr />
+<h2 id="the-complete-stack">The Complete Stack<a class="headerlink" href="#the-complete-stack" title="Permanent link">&para;</a></h2>
+<p>Everything you need to go from code to production-ready data products:</p>
+<p><strong>Write</strong> SQL or Python transformations. Use what you know. No new languages to learn.<br />
+<strong>Test</strong> locally with unit tests and assertions. Fast feedback. No warehouse costs.<br />
+<strong>Validate</strong> with built-in quality checks. Block bad data. Monitor quality over time.<br />
+<strong>Deploy</strong> with CI/CD workflows and virtual environments. Review changes. Test safely. Ship with confidence.<br />
+<strong>Expose</strong> via semantic layer and automatic APIs. Define metrics once. Generate APIs automatically.<br />
+<strong>Monitor</strong> and iterate. Track changes. Understand impact. Fix issues quickly.</p>
+<p>No tool sprawl. No manual stitching. Just write your transformations and let Vulcan handle the rest.</p>
+<h3 id="how-it-works-together">How It Works Together<a class="headerlink" href="#how-it-works-together" title="Permanent link">&para;</a></h3>
+<p>Vulcan isn't a collection of tools. It's a unified stack where everything works together:</p>
+<ol>
+<li><strong>You write a transformation</strong> - SQL or Python, your choice</li>
+<li><strong>Vulcan validates it</strong> - Syntax checks, type validation, dependency analysis</li>
+<li><strong>You test it locally</strong> - Unit tests run in seconds, no warehouse needed</li>
+<li><strong>You add assertions</strong> - Define what "good data" means, right in your model</li>
+<li><strong>You plan the change</strong> - See what will break, review impact, approve when ready</li>
+<li><strong>Vulcan deploys it</strong> - Virtual environments for testing, proper isolation for production</li>
+<li><strong>Vulcan generates APIs</strong> - REST, Python, and Graph APIs from your semantic layer</li>
+<li><strong>You monitor and iterate</strong> - Track changes, understand impact, fix issues quickly</li>
+</ol>
+<p>Each step builds on the last. No manual handoffs. No context switching. Just a smooth workflow from code to production.</p>
+<hr />
+<h2 id="why-vulcan">Why Vulcan?<a class="headerlink" href="#why-vulcan" title="Permanent link">&para;</a></h2>
+<p>Most data teams spend more time on tooling than on building. You write SQL, then you write tests, then you write quality checks, then you write APIs, then you write documentation. It's exhausting.</p>
+<p>Vulcan does all of that automatically. You write transformations. Vulcan handles testing, quality, semantics, and APIs. It's that simple.</p>
+<h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h3>
+<p>Building data products shouldn't require a PhD in DevOps. But that's what it feels like:</p>
+<ul>
+<li><strong>No CI/CD</strong> - Deploy changes blindly, hope nothing breaks, fix it in production</li>
+<li><strong>No testing</strong> - Run transformations in production, wait hours for results, debug when things go wrong</li>
+<li><strong>No quality gates</strong> - Bad data slips through, downstream systems break, trust erodes</li>
+<li><strong>No semantic layer</strong> - Business users write SQL, metrics get redefined, nothing is consistent</li>
+<li><strong>No APIs</strong> - Every consumer writes custom queries, performance suffers, maintenance nightmare</li>
+</ul>
+<p>Sound familiar? You're not alone.</p>
+<h3 id="the-solution">The Solution<a class="headerlink" href="#the-solution" title="Permanent link">&para;</a></h3>
+<p>Vulcan fixes all of that. It's a complete stack that handles the entire data product lifecycle:</p>
+<p><strong>Write</strong> your transformations in SQL or Python. That's it. Vulcan takes care of the rest.</p>
+<p><strong>Test</strong> locally with unit tests. Get feedback in seconds. No warehouse costs. No waiting.</p>
+<p><strong>Validate</strong> with assertions and checks. Bad data gets blocked. Quality issues get caught early.</p>
+<p><strong>Deploy</strong> with CI/CD workflows. Review changes before deploying. Test in virtual environments. Roll back if needed.</p>
+<p><strong>Expose</strong> via semantic layer and APIs. Define metrics once. Vulcan generates everything else automatically.</p>
+<p><strong>Monitor</strong> and iterate. Track what changed. Understand impact. Fix issues quickly.</p>
+<p>No tool sprawl. No manual stitching. No PhD required.</p>
+<hr />
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong><a href="getting-started/">Getting Started</a></strong> - Installation and your first project</li>
-<li><strong><a href="models/">Models</a></strong> - SQL and Python model development</li>
-<li><strong><a href="semantic-layer/">Semantic Layer</a></strong> - Define business semantics</li>
-<li><strong><a href="audits/">Audits</a></strong> - Data validation strategies</li>
-<li><strong><a href="quality-checks/">Quality Checks</a></strong> - Monitoring and profiling</li>
+<li><strong><a href="getting-started/">Getting Started</a></strong> - Install and create your first project</li>
+<li><strong><a href="models/">Models</a></strong> - Write SQL and Python transformations</li>
+<li><strong><a href="semantic-layer/">Semantic Layer</a></strong> - Define metrics and dimensions</li>
+<li><strong><a href="audits/">Audits</a></strong> - Block bad data with assertions</li>
+<li><strong><a href="data-quality/">Data Quality</a></strong> - Monitor data quality over time</li>
+<li><strong><a href="apis/">APIs</a></strong> - Access your data via REST, Python, and Graph APIs</li>
 </ol>
+<hr />
+<h2 id="how-its-different">How It's Different<a class="headerlink" href="#how-its-different" title="Permanent link">&para;</a></h2>
+<p>Vulcan isn't just another data tool. It's a complete rethink of how data products should be built:</p>
+<p><strong>CI/CD First</strong> - Not an afterthought. Built into the workflow from day one. Plan, test, deploy, roll back. Just like software.</p>
+<p><strong>Developer Experience First</strong> - Fast feedback. Local testing. Great tooling. You shouldn't have to fight your tools.</p>
+<p><strong>Quality Built-In</strong> - Not a separate process. Write assertions alongside your models. Quality as code, not a checklist.</p>
+<p><strong>Semantic Layer Native</strong> - Not bolted on. Define metrics and dimensions. Get APIs automatically. No manual schema management.</p>
+<p><strong>Automatic Everything</strong> - APIs, schemas, documentation. You define the logic. Vulcan generates the rest.</p>
+<p><strong>Complete Stack</strong> - Not a collection of tools. Everything works together. No integration hell. No tool sprawl.</p>
+<hr />
 <h2 id="learning-path">Learning Path<a class="headerlink" href="#learning-path" title="Permanent link">&para;</a></h2>
+<p>Start with the basics, then build complexity:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Foundation (Chapters 1-2)
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    ↓
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Core Features (Chapters 3-6)
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    ↓
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Operations (Chapter 7)
 </span></code></pre></div>
-<h2 id="design-philosophy">Design Philosophy<a class="headerlink" href="#design-philosophy" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Progressive Disclosure</strong>: Begin with fundamentals and build toward complexity</li>
-<li><strong>Hands-On Learning</strong>: Every concept includes executable code</li>
-<li><strong>Clear Distinctions</strong>: Separate similar concepts explicitly</li>
-<li><strong>Vulcan-Specific Focus</strong>: Emphasize what makes Vulcan unique</li>
-</ul>
+<p>Each chapter stands alone. Read what you need, when you need it.</p>
+<p><strong>New to Vulcan?</strong> Start with <a href="getting-started/">Getting Started</a>. You'll be productive in 30 minutes.</p>
+<p><strong>Building models?</strong> Jump to <a href="models/">Models</a>. Everything you need to write transformations.</p>
+<p><strong>Defining metrics?</strong> Check out <a href="semantic-layer/">Semantic Layer</a>. Define business logic, get APIs automatically.</p>
+<p><strong>Need quality?</strong> Read <a href="audits/">Audits</a> and <a href="data-quality/">Data Quality</a>. Block bad data, monitor quality.</p>
 <hr />
-<p><em>Built with <a href="https://squidfunk.github.io/mkdocs-material/">MkDocs Material</a></em></p>
+<p>Ready to build data products the right way?</p>
+<p><a href="getting-started/">Get Started →</a></p>
 
 
 
@@ -1109,6 +1201,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -1150,6 +1244,12 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 DataOS Vulcan Team<br>
+<small>Complete stack for building data products</small>
+
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -1187,7 +1287,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>

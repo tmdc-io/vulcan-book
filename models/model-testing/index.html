@@ -6,8 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Complete documentation for Vulcan - SQLMesh wrapper with semantic layer and data validation">
+        <meta name="description" content="Complete documentation for Vulcan - complete stack for building data products">
       
+      
+        <meta name="author" content="DataOS Vulcan Team">
       
       
         <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/models/model-testing/">
@@ -27,7 +29,7 @@
     
     
       
-        <title>Model Testing - Vulcan Book</title>
+        <title>Model Testing - DataOS Vulcan</title>
       
     
     
@@ -48,10 +50,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible:300,300i,400,400i,700,700i%7CSource+Code+Pro:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible";--md-code-font:"Source Code Pro"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -69,7 +73,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -92,12 +96,11 @@
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Vulcan Book" class="md-header__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="../.." title="DataOS Vulcan" class="md-header__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -108,7 +111,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Vulcan Book
+            DataOS Vulcan
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -127,7 +130,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -137,7 +140,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -170,6 +173,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
@@ -209,13 +217,159 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Models
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../semantic-layer/" class="md-tabs__link">
+          
+  
+  
+  Semantic Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../audits/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Audits
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../data-quality/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Quality
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../apis/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  APIs
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -229,18 +383,19 @@
                     
 
 
+  
+
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Vulcan Book" class="md-nav__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="../.." title="DataOS Vulcan" class="md-nav__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
-    Vulcan Book
+    DataOS Vulcan
   </label>
   
     <div class="md-nav__source">
@@ -325,6 +480,9 @@
     
       
         
+        
+      
+      
         
       
     
@@ -498,34 +656,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-knowledge" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Knowledge
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-but-helpful" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional but Helpful
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -548,56 +678,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Introduction">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-what-are-unit-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 What Are Unit Tests?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-tests-vs-audits-vs-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 Tests vs Audits vs Checks
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13-why-write-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 Why Write Tests?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#14-when-to-write-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.4 When to Write Tests
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -608,56 +688,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Test Structure">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-test-file-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 Test File Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-basic-test-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 Basic Test Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-test-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Test Components
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-multiple-tests-in-one-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.4 Multiple Tests in One File
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -670,67 +700,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Input Data Formats">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-yaml-dictionaries-default" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 YAML Dictionaries (Default)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-csv-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 CSV Format
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-sql-query-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 SQL Query Format
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-external-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 External Files
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-multiple-input-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 Multiple Input Models
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -741,67 +710,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Output Validation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-query-output-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 Query Output Validation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-cte-output-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 CTE Output Validation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#43-partial-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.3 Partial Validation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-omitting-columns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 Omitting Columns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-type-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.5 Type Validation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -814,78 +722,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Testing Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51-basic-aggregation-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.1 Basic Aggregation Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52-join-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.2 Join Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53-null-handling-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.3 NULL Handling Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-edge-case-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.4 Edge Case Tests
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#55-complex-calculation-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.5 Complex Calculation Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#56-window-function-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.6 Window Function Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -896,45 +732,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="6. Testing Incremental Models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-testing-with-time-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.1 Testing with Time Variables
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-testing-lookback" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.2 Testing Lookback
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-testing-incremental_by_unique_key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.3 Testing INCREMENTAL_BY_UNIQUE_KEY
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -947,45 +744,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7. Testing Python Models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#71-basic-python-model-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.1 Basic Python Model Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#72-python-model-with-complex-logic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.2 Python Model with Complex Logic
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#73-python-model-with-multiple-dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.3 Python Model with Multiple Dependencies
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -996,45 +754,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="8. Automatic Test Generation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#81-using-vulcan-create_test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.1 Using vulcan create_test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#82-best-practices-for-test-generation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.2 Best Practices for Test Generation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#83-limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.3 Limitations
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1047,56 +766,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="9. Running Tests">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#91-cli-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.1 CLI Commands
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#92-test-execution-in-plans" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.2 Test Execution in Plans
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#93-notebook-magics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.3 Notebook Magics
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#94-cicd-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.4 CI/CD Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1107,78 +776,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="10. Advanced Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#101-testing-with-macros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.1 Testing with Macros
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#102-testing-with-execution-time" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.2 Testing with Execution Time
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#103-testing-parameterized-model-names" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.3 Testing Parameterized Model Names
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#104-testing-with-different-gateways" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.4 Testing with Different Gateways
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#105-testing-external-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.5 Testing External Models
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#106-testing-with-custom-schema" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.6 Testing with Custom Schema
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1191,67 +788,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="11. Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#111-test-failures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.1 Test Failures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#112-type-mismatches" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.2 Type Mismatches
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#113-preserving-fixtures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.3 Preserving Fixtures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#114-common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.4 Common Issues
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#115-debugging-tips" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.5 Debugging Tips
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1262,89 +798,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="12. Best Practices">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#121-test-coverage-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.1 Test Coverage Strategy
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#122-test-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.2 Test Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#123-test-naming" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.3 Test Naming
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#124-test-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.4 Test Data
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#125-test-maintenance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.5 Test Maintenance
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#126-what-to-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.6 What to Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#127-test-independence" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.7 Test Independence
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1357,67 +810,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="13. Quick Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#131-test-structure-cheat-sheet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13.1 Test Structure Cheat Sheet
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#132-common-test-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13.2 Common Test Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#133-cli-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13.3 CLI Commands
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#134-decision-tree" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13.4 Decision Tree
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#135-test-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13.5 Test Checklist
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1428,45 +820,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Summary">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#key-takeaways" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Takeaways
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#related-topics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Related Topics
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Next Steps
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1553,12 +906,12 @@
     
     
       
-        
+      
         
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -1567,7 +920,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -1777,14 +1130,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../quality-checks/" class="md-nav__link">
+      <a href="../../data-quality/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Quality Checks
+    Data Quality
   
 
     
@@ -1820,151 +1173,6 @@
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deployment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Deployment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/07-isolated-environments-ANALYSIS/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Analysis
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/07-isolated-environments-SUMMARY/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Summary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -2140,8 +1348,8 @@
 </tbody>
 </table>
 <p><strong>Use tests for:</strong> Logic validation before deployment<br />
-<strong>Use audits for:</strong> Blocking invalid data (see <a href="../04-audits.md">Chapter 4</a>)<br />
-<strong>Use checks for:</strong> Monitoring over time (see <a href="../05-quality-checks.md">Chapter 5</a>)</p>
+<strong>Use audits for:</strong> Blocking invalid data (see <a href="../../audits/">Chapter 4</a>)<br />
+<strong>Use checks for:</strong> Monitoring over time (see <a href="../../data-quality/">Chapter 5</a>)</p>
 <h3 id="13-why-write-tests">1.3 Why Write Tests?<a class="headerlink" href="#13-why-write-tests" title="Permanent link">&para;</a></h3>
 <p><strong>Benefits:</strong></p>
 <ol>
@@ -3962,10 +3170,10 @@
 - Helps debug input data issues</p>
 <p><strong>Query fixtures:</strong></p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-103-1"><a id="__codelineno-103-1" name="__codelineno-103-1" href="#__codelineno-103-1"></a><span class="c1">-- After running test with --preserve-fixtures</span>
-</span><span id="__span-103-2"><a id="__codelineno-103-2" name="__codelineno-103-2" href="#__codelineno-103-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">sqlmesh_test_</span><span class="o">&lt;</span><span class="n">random_id</span><span class="o">&gt;</span><span class="p">.</span><span class="n">staging_orders</span><span class="p">;</span>
+</span><span id="__span-103-2"><a id="__codelineno-103-2" name="__codelineno-103-2" href="#__codelineno-103-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan_test_</span><span class="o">&lt;</span><span class="n">random_id</span><span class="o">&gt;</span><span class="p">.</span><span class="n">staging_orders</span><span class="p">;</span>
 </span></code></pre></div>
 <p><strong>Schema name:</strong></p>
-<p>Fixtures are in schema: <code>sqlmesh_test_&lt;random_id&gt;</code></p>
+<p>Fixtures are in schema: <code>vulcan_test_&lt;random_id&gt;</code></p>
 <p><strong>Custom schema:</strong></p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-104-1"><a id="__codelineno-104-1" name="__codelineno-104-1" href="#__codelineno-104-1"></a><span class="nt">test_customers</span><span class="p">:</span>
 </span><span id="__span-104-2"><a id="__codelineno-104-2" name="__codelineno-104-2" href="#__codelineno-104-2"></a><span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics.customers</span>
@@ -4436,9 +3644,9 @@
 </ol>
 <h3 id="related-topics">Related Topics<a class="headerlink" href="#related-topics" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong><a href="02-models.md">Chapter 2: Models</a></strong> - Model basics</li>
-<li><strong><a href="../04-audits.md">Chapter 4: Audits</a></strong> - Data quality validation</li>
-<li><strong><a href="../05-quality-checks.md">Chapter 5: Quality Checks</a></strong> - Monitoring and trends</li>
+<li><strong><a href="../">Chapter 2: Models</a></strong> - Model basics</li>
+<li><strong><a href="../../audits/">Chapter 4: Audits</a></strong> - Data quality validation</li>
+<li><strong><a href="../../data-quality/">Chapter 5: Quality Checks</a></strong> - Monitoring and trends</li>
 </ul>
 <h3 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h3>
 <ol>
@@ -4467,6 +3675,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -4524,6 +3734,12 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 DataOS Vulcan Team<br>
+<small>Complete stack for building data products</small>
+
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -4561,7 +3777,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>

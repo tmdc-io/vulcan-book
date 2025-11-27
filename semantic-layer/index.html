@@ -6,8 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Complete documentation for Vulcan - SQLMesh wrapper with semantic layer and data validation">
+        <meta name="description" content="Complete documentation for Vulcan - complete stack for building data products">
       
+      
+        <meta name="author" content="DataOS Vulcan Team">
       
       
         <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/semantic-layer/">
@@ -27,7 +29,7 @@
     
     
       
-        <title>Overview - Vulcan Book</title>
+        <title>Overview - DataOS Vulcan</title>
       
     
     
@@ -48,10 +50,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible:300,300i,400,400i,700,700i%7CSource+Code+Pro:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible";--md-code-font:"Source Code Pro"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -69,7 +73,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -92,12 +96,11 @@
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Vulcan Book" class="md-header__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href=".." title="DataOS Vulcan" class="md-header__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -108,7 +111,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Vulcan Book
+            DataOS Vulcan
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -127,7 +130,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -137,7 +140,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -170,6 +173,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
@@ -209,13 +217,159 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../models/" class="md-tabs__link">
+          
+  
+  
+  Models
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Semantic Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../audits/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Audits
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../data-quality/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Quality
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../apis/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  APIs
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -229,18 +383,19 @@
                     
 
 
+  
+
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Vulcan Book" class="md-nav__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href=".." title="DataOS Vulcan" class="md-nav__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../assets/images/logo.png" alt="logo">
 
     </a>
-    Vulcan Book
+    DataOS Vulcan
   </label>
   
     <div class="md-nav__source">
@@ -322,12 +477,12 @@
     
     
       
-        
+      
         
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -336,7 +491,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -528,6 +683,9 @@
         
         
       
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
@@ -643,34 +801,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-knowledge" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Knowledge
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-but-helpful" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional but Helpful
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -693,56 +823,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Introduction">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-what-is-the-semantic-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 What is the Semantic Layer?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-core-concepts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 Core Concepts
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13-why-use-the-semantic-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 Why Use the Semantic Layer?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#14-file-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.4 File Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -753,78 +833,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Quick Start">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-your-first-semantic-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 Your First Semantic Model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-your-first-measure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 Your First Measure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-your-first-segment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Your First Segment
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-your-first-join" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.4 Your First Join
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-your-first-business-metric" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 Your First Business Metric
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#26-complete-quick-start-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.6 Complete Quick Start Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -837,78 +845,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Semantic Models &amp; Aliases">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-basic-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 Basic Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-model-name-physical-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Model Name: Physical Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-alias-business-name" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 Alias: Business Name
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-using-aliases-in-references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 Using Aliases in References
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-multiple-models-in-one-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 Multiple Models in One File
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#36-complete-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.6 Complete Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -919,78 +855,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Dimensions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-default-behavior" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 Default Behavior
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-column-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 Column Selection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#43-column-overrides" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.3 Column Overrides
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-dimension-proxies-cross-model-dimensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 Dimension Proxies (Cross-Model Dimensions)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-complete-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.5 Complete Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#46-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.6 Best Practices
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1003,111 +867,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Measures">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51-basic-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.1 Basic Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52-simple-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.2 Simple Measures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53-measures-with-filters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.3 Measures with Filters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-referencing-other-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.4 Referencing Other Measures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#55-cross-model-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.5 Cross-Model Measures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#56-measure-formats" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.6 Measure Formats
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#57-common-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.7 Common Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#58-complete-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.8 Complete Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#59-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.9 Best Practices
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1118,100 +877,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="6. Segments">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-basic-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.1 Basic Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-simple-segments" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.2 Simple Segments
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-complex-segments" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.3 Complex Segments
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-segments-are-model-scoped" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.4 Segments are Model-Scoped
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#65-using-dimension-proxies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.5 Using Dimension Proxies
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#66-common-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.6 Common Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#67-complete-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.7 Complete Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#68-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.8 Best Practices
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1224,111 +889,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7. Joins">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#71-basic-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.1 Basic Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#72-relationship-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.2 Relationship Types
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#73-simple-join" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.3 Simple Join
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#74-join-expression-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.4 Join Expression Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#75-multiple-joins" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.5 Multiple Joins
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#76-using-joins-in-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.6 Using Joins in Measures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#77-bidirectional-joins" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.7 Bidirectional Joins
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#78-complete-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.8 Complete Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#79-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.9 Best Practices
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1339,100 +899,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="8. Business Metrics">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#81-basic-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.1 Basic Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#82-simple-metric" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.2 Simple Metric
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#83-metric-with-dimensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.3 Metric with Dimensions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#84-cross-model-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.4 Cross-Model Metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#85-reference-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.5 Reference Format
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#86-time-granularity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.6 Time Granularity
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#87-complete-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.7 Complete Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#88-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.8 Best Practices
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1445,67 +911,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="9. Validation Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#91-what-gets-validated" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.1 What Gets Validated
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#92-when-validation-fails" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.2 When Validation Fails
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#93-common-validation-errors" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.3 Common Validation Errors
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#94-validation-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.4 Validation Workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#95-quick-troubleshooting-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.5 Quick Troubleshooting Checklist
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1516,78 +921,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="10. Best Practices">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#101-naming-conventions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.1 Naming Conventions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#102-file-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.2 File Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#103-when-to-use-what" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.3 When to Use What
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#104-integration-with-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.4 Integration with Models
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#105-incremental-development" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.5 Incremental Development
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#106-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.6 Documentation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1600,56 +933,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="11. Quick Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#111-syntax-cheat-sheet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.1 Syntax Cheat Sheet
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#112-decision-trees" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.2 Decision Trees
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#113-common-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.3 Common Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#114-reference-format-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.4 Reference Format Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1660,45 +943,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="12. Summary and Next Steps">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#121-what-youve-learned" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.1 What You've Learned
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#122-next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.2 Next Steps
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#123-additional-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.3 Additional Resources
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1864,14 +1108,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../quality-checks/" class="md-nav__link">
+      <a href="../data-quality/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Quality Checks
+    Data Quality
   
 
     
@@ -1907,151 +1151,6 @@
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deployment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Deployment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../deployment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../deployment/07-isolated-environments-ANALYSIS/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Analysis
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../deployment/07-isolated-environments-SUMMARY/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Summary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -2161,7 +1260,7 @@
 <ol>
 <li><a href="#1-introduction">Introduction</a></li>
 <li><a href="#2-quick-start">Quick Start</a></li>
-<li><a href="#3-semantic-models--aliases">Semantic Models &amp; Aliases</a></li>
+<li><a href="#3-semantic-models-aliases">Semantic Models &amp; Aliases</a></li>
 <li><a href="#4-dimensions">Dimensions</a></li>
 <li><a href="#5-measures">Measures</a></li>
 <li><a href="#6-segments">Segments</a></li>
@@ -2263,7 +1362,7 @@
 </span></code></pre></div>
 <p><strong>Loading:</strong> Vulcan automatically merges all YAML files in <code>semantics/</code> directory.</p>
 <p><strong>File naming:</strong> Use any name ending in <code>.yml</code> or <code>.yaml</code>. Organize by domain or model for clarity.</p>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
 <h3 id="21-your-first-semantic-model">2.1 Your First Semantic Model<a class="headerlink" href="#21-your-first-semantic-model" title="Permanent link">&para;</a></h3>
@@ -2380,7 +1479,7 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>vulcan<span class="w"> </span>plan
 </span></code></pre></div></p>
 <p>Vulcan automatically validates your semantic layer definitions.</p>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="3-semantic-models-aliases">3. Semantic Models &amp; Aliases<a class="headerlink" href="#3-semantic-models-aliases" title="Permanent link">&para;</a></h2>
 <h3 id="31-basic-structure">3.1 Basic Structure<a class="headerlink" href="#31-basic-structure" title="Permanent link">&para;</a></h3>
@@ -2503,7 +1602,7 @@
 </span><span id="__span-20-34"><a id="__codelineno-20-34" name="__codelineno-20-34" href="#__codelineno-20-34"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">many_to_one</span>
 </span><span id="__span-20-35"><a id="__codelineno-20-35" name="__codelineno-20-35" href="#__codelineno-20-35"></a><span class="w">        </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;subscriptions.customer_id</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">customers.customer_id&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="4-dimensions">4. Dimensions<a class="headerlink" href="#4-dimensions" title="Permanent link">&para;</a></h2>
 <p>Dimensions are columns you can filter and group by. By default, <strong>all columns</strong> from your Vulcan model become dimensions automatically.</p>
@@ -2677,7 +1776,7 @@
 </span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="nt">business_owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Operations&quot;</span>
 </span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">    </span><span class="nt">logic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;active</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">subscription,</span><span class="nv"> </span><span class="s">churned</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">cancelled</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">30</span><span class="nv"> </span><span class="s">days&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="5-measures">5. Measures<a class="headerlink" href="#5-measures" title="Permanent link">&para;</a></h2>
 <p>Measures are aggregations that calculate metrics from your data. They answer "how much?" or "how many?" questions.</p>
@@ -2913,7 +2012,7 @@
 </span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">    </span><span class="nt">business_owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Finance</span><span class="nv"> </span><span class="s">Team&quot;</span>
 </span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">    </span><span class="nt">calculation_rules</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Excludes</span><span class="nv"> </span><span class="s">cancelled</span><span class="nv"> </span><span class="s">orders,</span><span class="nv"> </span><span class="s">includes</span><span class="nv"> </span><span class="s">partial</span><span class="nv"> </span><span class="s">refunds&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="6-segments">6. Segments<a class="headerlink" href="#6-segments" title="Permanent link">&para;</a></h2>
 <p>Segments are reusable filter conditions that define meaningful subsets of your data. They answer "which ones?" questions.</p>
@@ -3094,7 +2193,7 @@
 </span><span id="__span-57-6"><a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high_value_at_risk</span>
 </span><span id="__span-57-7"><a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="w">  </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;...&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="7-joins">7. Joins<a class="headerlink" href="#7-joins" title="Permanent link">&para;</a></h2>
 <p>Joins define relationships between semantic models, enabling cross-model measures and dimensions.</p>
@@ -3292,7 +2391,7 @@
 </span><span id="__span-69-4"><a id="__codelineno-69-4" name="__codelineno-69-4" href="#__codelineno-69-4"></a><span class="c1"># ❌ Bad: Ambiguous</span>
 </span><span id="__span-69-5"><a id="__codelineno-69-5" name="__codelineno-69-5" href="#__codelineno-69-5"></a><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;customer_id</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">customer_id&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="8-business-metrics">8. Business Metrics<a class="headerlink" href="#8-business-metrics" title="Permanent link">&para;</a></h2>
 <p>Business metrics combine measures with dimensions to create complete analytical definitions ready for time-series analysis.</p>
@@ -3461,7 +2560,7 @@
 </span><span id="__span-82-8"><a id="__codelineno-82-8" name="__codelineno-82-8" href="#__codelineno-82-8"></a><span class="w">      </span><span class="nt">calculation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;(Starting</span><span class="nv"> </span><span class="s">MRR</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">Expansion</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">Churn)</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">Starting</span><span class="nv"> </span><span class="s">MRR&quot;</span>
 </span><span id="__span-82-9"><a id="__codelineno-82-9" name="__codelineno-82-9" href="#__codelineno-82-9"></a><span class="w">      </span><span class="nt">benchmark</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&gt;110%</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">good</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">SaaS&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="9-validation-overview">9. Validation Overview<a class="headerlink" href="#9-validation-overview" title="Permanent link">&para;</a></h2>
 <p>When you run <code>vulcan plan</code> or start your Vulcan project, <strong>all semantic models are automatically validated</strong>. This catches configuration errors before any queries run.</p>
@@ -3556,8 +2655,8 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Check joins</strong> - Cross-model refs need join definitions</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Check dimension proxies</strong> - Segments using cross-model measures need dimension proxies</li>
 </ul>
-<p><strong>For complete validation reference:</strong> See <a href="03d-semantic-validation.md">Chapter 3D: Semantic Validation</a></p>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><strong>For complete validation reference:</strong> See <a href="validation/">Chapter 3D: Semantic Validation</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="10-best-practices">10. Best Practices<a class="headerlink" href="#10-best-practices" title="Permanent link">&para;</a></h2>
 <h3 id="101-naming-conventions">10.1 Naming Conventions<a class="headerlink" href="#101-naming-conventions" title="Permanent link">&para;</a></h3>
@@ -3692,7 +2791,7 @@
 </span><span id="__span-100-7"><a id="__codelineno-100-7" name="__codelineno-100-7" href="#__codelineno-100-7"></a><span class="w">      </span><span class="nt">criteria</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Active</span><span class="nv"> </span><span class="s">plan,</span><span class="nv"> </span><span class="s">no</span><span class="nv"> </span><span class="s">activity</span><span class="nv"> </span><span class="s">14+</span><span class="nv"> </span><span class="s">days,</span><span class="nv"> </span><span class="s">engagement</span><span class="nv"> </span><span class="s">score</span><span class="nv"> </span><span class="s">&lt;</span><span class="nv"> </span><span class="s">0.3&quot;</span>
 </span><span id="__span-100-8"><a id="__codelineno-100-8" name="__codelineno-100-8" href="#__codelineno-100-8"></a><span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Trigger</span><span class="nv"> </span><span class="s">outreach</span><span class="nv"> </span><span class="s">campaign&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="11-quick-reference">11. Quick Reference<a class="headerlink" href="#11-quick-reference" title="Permanent link">&para;</a></h2>
 <h3 id="111-syntax-cheat-sheet">11.1 Syntax Cheat Sheet<a class="headerlink" href="#111-syntax-cheat-sheet" title="Permanent link">&para;</a></h3>
@@ -3834,7 +2933,7 @@
 <p><strong>Cross-Model References:</strong>
 - ✅ <code>customers.customer_tier</code> (requires join)
 - ❌ <code>customer_tier</code> (ambiguous)</p>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="12-summary-and-next-steps">12. Summary and Next Steps<a class="headerlink" href="#12-summary-and-next-steps" title="Permanent link">&para;</a></h2>
 <h3 id="121-what-youve-learned">12.1 What You've Learned<a class="headerlink" href="#121-what-youve-learned" title="Permanent link">&para;</a></h3>
@@ -3854,15 +2953,15 @@
 <h3 id="122-next-steps">12.2 Next Steps<a class="headerlink" href="#122-next-steps" title="Permanent link">&para;</a></h3>
 <p><strong>Continue Learning:</strong></p>
 <ul>
-<li><strong><a href="03a-semantic-yaml-reference.md">Chapter 3A: YAML Reference</a></strong> - Complete syntax reference, all options</li>
-<li><strong><a href="03b-semantic-measures.md">Chapter 3B: Advanced Measures</a></strong> - Complex expressions, patterns, performance</li>
-<li><strong><a href="03c-semantic-joins.md">Chapter 3C: Advanced Joins</a></strong> - Cross-model analysis, complex relationships</li>
-<li><strong><a href="03d-semantic-validation.md">Chapter 3D: Semantic Validation</a></strong> - Complete validation rules, troubleshooting</li>
+<li><strong><a href="yaml-reference/">Chapter 3A: YAML Reference</a></strong> - Complete syntax reference, all options</li>
+<li><strong><a href="measures/">Chapter 3B: Advanced Measures</a></strong> - Complex expressions, patterns, performance</li>
+<li><strong><a href="joins/">Chapter 3C: Advanced Joins</a></strong> - Cross-model analysis, complex relationships</li>
+<li><strong><a href="validation/">Chapter 3D: Semantic Validation</a></strong> - Complete validation rules, troubleshooting</li>
 </ul>
 <p><strong>Related Chapters:</strong></p>
 <ul>
-<li><strong><a href="../02-models/02-models.md">Chapter 2: Models</a></strong> - Understanding model structure</li>
-<li><strong><a href="../06-apis.md">Chapter 6: APIs</a></strong> - Querying semantic layer via APIs</li>
+<li><strong><a href="../models/">Chapter 2: Models</a></strong> - Understanding model structure</li>
+<li><strong><a href="../apis/">Chapter 6: APIs</a></strong> - Querying semantic layer via APIs</li>
 </ul>
 <h3 id="123-additional-resources">12.3 Additional Resources<a class="headerlink" href="#123-additional-resources" title="Permanent link">&para;</a></h3>
 <ul>
@@ -3878,7 +2977,7 @@
 - ✅ Define business metrics for time-series analysis
 - ✅ Understand validation and troubleshooting basics</p>
 <p><strong>Happy modeling!</strong></p>
-<p><a href="#chapter-03-semantic-layer">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 
 
 
@@ -3896,6 +2995,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -3953,6 +3054,12 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 DataOS Vulcan Team<br>
+<small>Complete stack for building data products</small>
+
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -3990,7 +3097,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>

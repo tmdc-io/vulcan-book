@@ -6,8 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Complete documentation for Vulcan - SQLMesh wrapper with semantic layer and data validation">
+        <meta name="description" content="Complete documentation for Vulcan - complete stack for building data products">
       
+      
+        <meta name="author" content="DataOS Vulcan Team">
       
       
         <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/semantic-layer/yaml-reference/">
@@ -27,7 +29,7 @@
     
     
       
-        <title>YAML Reference - Vulcan Book</title>
+        <title>YAML Reference - DataOS Vulcan</title>
       
     
     
@@ -48,10 +50,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible:300,300i,400,400i,700,700i%7CSource+Code+Pro:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible";--md-code-font:"Source Code Pro"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -69,7 +73,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -92,12 +96,11 @@
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Vulcan Book" class="md-header__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="../.." title="DataOS Vulcan" class="md-header__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -108,7 +111,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Vulcan Book
+            DataOS Vulcan
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -127,7 +130,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -137,7 +140,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -170,6 +173,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
@@ -209,13 +217,159 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../models/" class="md-tabs__link">
+          
+  
+  
+  Models
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Semantic Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../audits/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Audits
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../data-quality/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Quality
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../apis/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  APIs
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -229,18 +383,19 @@
                     
 
 
+  
+
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Vulcan Book" class="md-nav__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="../.." title="DataOS Vulcan" class="md-nav__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
-    Vulcan Book
+    DataOS Vulcan
   </label>
   
     <div class="md-nav__source">
@@ -322,12 +477,12 @@
     
     
       
-        
+      
         
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -336,7 +491,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -528,6 +683,9 @@
         
         
       
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
@@ -671,23 +829,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-knowledge" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Knowledge
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -710,45 +851,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Introduction">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-what-is-this-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 What is This Reference?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-how-to-use-this-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 How to Use This Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13-file-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 File Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -759,45 +861,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Top-Level Structure">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-root-keys" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 Root Keys
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-models-dictionary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 Models Dictionary
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-metrics-dictionary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Metrics Dictionary
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -810,67 +873,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Semantic Models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-model-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 Model Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-name-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 name (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-alias-required-for-fqn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 alias (Required for FQN)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-description-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 description (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-model-sections" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 Model Sections
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -881,67 +883,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Dimensions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-dimension-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 Dimension Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-includes-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 includes (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#43-excludes-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.3 excludes (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-overrides-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 overrides (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-proxies-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.5 proxies (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -954,100 +895,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Measures">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51-measure-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.1 Measure Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52-name-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.2 name (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53-expression-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.3 expression (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-filters-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.4 filters (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#55-format-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.5 format (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#56-description-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.6 description (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#57-tags-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.7 tags (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#58-meta-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.8 meta (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1058,78 +905,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="6. Segments">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-segment-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.1 Segment Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-name-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.2 name (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-expression-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.3 expression (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-description-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.4 description (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#65-tags-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.5 tags (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#66-meta-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.6 meta (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1142,89 +917,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7. Joins">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#71-join-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.1 Join Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#72-name-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.2 name (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#73-relationship-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.3 relationship (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#74-expression-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.4 expression (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#75-join-graph-consistency" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.5 Join Graph Consistency
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#76-description-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.6 description (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#77-meta-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.7 meta (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1235,100 +927,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="8. Business Metrics">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#81-metric-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.1 Metric Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#82-metric-name-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.2 Metric Name (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#83-measure-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.3 measure (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#84-time-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.4 time (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#85-dimensions-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.5 dimensions (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#86-description-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.6 description (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#87-tags-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.7 tags (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#88-meta-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.8 meta (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1341,56 +939,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="9. Naming and Validation Rules">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#91-identifier-format-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.1 Identifier Format Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#92-uniqueness-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.2 Uniqueness Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#93-reference-format-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.3 Reference Format Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#94-column-existence-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.4 Column Existence Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1401,67 +949,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="10. YAML Formatting Best Practices">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#101-multi-line-expressions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.1 Multi-line Expressions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#102-arrays" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.2 Arrays
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#103-indentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.3 Indentation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#104-string-quoting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.4 String Quoting
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#105-comments" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.5 Comments
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1474,56 +961,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="11. Quick Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#111-component-quick-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.1 Component Quick Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#112-reference-format-quick-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.2 Reference Format Quick Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#113-relationship-types-quick-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.3 Relationship Types Quick Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#114-format-types-quick-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11.4 Format Types Quick Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1534,45 +971,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="12. Complete Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#121-minimal-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.1 Minimal Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#122-complete-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.2 Complete Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#123-cross-model-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12.3 Cross-Model Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1721,14 +1119,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../quality-checks/" class="md-nav__link">
+      <a href="../../data-quality/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Quality Checks
+    Data Quality
   
 
     
@@ -1764,151 +1162,6 @@
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deployment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Deployment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/07-isolated-environments-ANALYSIS/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Analysis
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/07-isolated-environments-SUMMARY/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Summary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -2054,7 +1307,7 @@
 - Must end with <code>.yml</code> or <code>.yaml</code>
 - Name doesn't matter (Vulcan reads all files)
 - Organize by domain or model for clarity</p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="2-top-level-structure">2. Top-Level Structure<a class="headerlink" href="#2-top-level-structure" title="Permanent link">&para;</a></h2>
 <h3 id="21-root-keys">2.1 Root Keys<a class="headerlink" href="#21-root-keys" title="Permanent link">&para;</a></h3>
@@ -2108,7 +1361,7 @@
 - Each metric is a dictionary key
 - Metric names must be unique across all files
 - Metrics reference models defined in <code>models:</code></p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="3-semantic-models">3. Semantic Models<a class="headerlink" href="#3-semantic-models" title="Permanent link">&para;</a></h2>
 <h3 id="31-model-structure">3.1 Model Structure<a class="headerlink" href="#31-model-structure" title="Permanent link">&para;</a></h3>
@@ -2260,7 +1513,7 @@
 </span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">  </span><span class="nt">segments</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">...</span><span class="p p-Indicator">}</span>
 </span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">  </span><span class="nt">joins</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">...</span><span class="p p-Indicator">}</span>
 </span></code></pre></div></p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="4-dimensions">4. Dimensions<a class="headerlink" href="#4-dimensions" title="Permanent link">&para;</a></h2>
 <h3 id="41-dimension-structure">4.1 Dimension Structure<a class="headerlink" href="#41-dimension-structure" title="Permanent link">&para;</a></h3>
@@ -2427,7 +1680,7 @@
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">has_orders</span><span class="p">:</span>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{order_count_dim}</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">0&quot;</span><span class="w">  </span><span class="c1"># Use proxy in segment</span>
 </span></code></pre></div></p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="5-measures">5. Measures<a class="headerlink" href="#5-measures" title="Permanent link">&para;</a></h2>
 <h3 id="51-measure-structure">5.1 Measure Structure<a class="headerlink" href="#51-measure-structure" title="Permanent link">&para;</a></h3>
@@ -2706,7 +1959,7 @@
 - <code>data_source</code> - Source table/model
 - <code>last_updated</code> - Update timestamp
 - Custom fields as needed</p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="6-segments">6. Segments<a class="headerlink" href="#6-segments" title="Permanent link">&para;</a></h2>
 <h3 id="61-segment-structure">6.1 Segment Structure<a class="headerlink" href="#61-segment-structure" title="Permanent link">&para;</a></h3>
@@ -2856,7 +2109,7 @@
 </span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">      </span><span class="nt">use_cases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;dashboard&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;reporting&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;alerts&quot;</span><span class="p p-Indicator">]</span>
 </span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">      </span><span class="nt">last_reviewed</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-01-15&quot;</span>
 </span></code></pre></div></p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="7-joins">7. Joins<a class="headerlink" href="#7-joins" title="Permanent link">&para;</a></h2>
 <h3 id="71-join-structure">7.1 Join Structure<a class="headerlink" href="#71-join-structure" title="Permanent link">&para;</a></h3>
@@ -2890,7 +2143,7 @@
 <p><strong>Validation:</strong>
 - Target model alias must exist
 - Cannot reference non-existent models
-- Cannot create circular dependencies (see <a href="#7-5-join-graph-consistency">Join Graph</a>)</p>
+- Cannot create circular dependencies (see <a href="#75-join-graph-consistency">Join Graph</a>)</p>
 <p><strong>Error examples:</strong>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="c1"># ❌ Target model doesn&#39;t exist</span>
 </span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="nt">joins</span><span class="p">:</span>
@@ -3032,7 +2285,7 @@
 </span><span id="__span-51-6"><a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="w">      </span><span class="nt">join_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;INNER&quot;</span>
 </span><span id="__span-51-7"><a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a><span class="w">      </span><span class="nt">performance_note</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Indexed</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">customer_id&quot;</span>
 </span></code></pre></div></p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="8-business-metrics">8. Business Metrics<a class="headerlink" href="#8-business-metrics" title="Permanent link">&para;</a></h2>
 <h3 id="81-metric-structure">8.1 Metric Structure<a class="headerlink" href="#81-metric-structure" title="Permanent link">&para;</a></h3>
@@ -3231,7 +2484,7 @@
 </span><span id="__span-63-8"><a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a><span class="w">      </span><span class="nt">kpi_target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000000</span>
 </span><span id="__span-63-9"><a id="__codelineno-63-9" name="__codelineno-63-9" href="#__codelineno-63-9"></a><span class="w">      </span><span class="nt">update_frequency</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;daily&quot;</span>
 </span></code></pre></div></p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="9-naming-and-validation-rules">9. Naming and Validation Rules<a class="headerlink" href="#9-naming-and-validation-rules" title="Permanent link">&para;</a></h2>
 <h3 id="91-identifier-format-rules">9.1 Identifier Format Rules<a class="headerlink" href="#91-identifier-format-rules" title="Permanent link">&para;</a></h3>
@@ -3331,7 +2584,7 @@
 - All column references are validated against physical models
 - Errors indicate which column is missing
 - Case-sensitive matching</p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="10-yaml-formatting-best-practices">10. YAML Formatting Best Practices<a class="headerlink" href="#10-yaml-formatting-best-practices" title="Permanent link">&para;</a></h2>
 <h3 id="101-multi-line-expressions">10.1 Multi-line Expressions<a class="headerlink" href="#101-multi-line-expressions" title="Permanent link">&para;</a></h3>
@@ -3428,7 +2681,7 @@
 </span><span id="__span-72-14"><a id="__codelineno-72-14" name="__codelineno-72-14" href="#__codelineno-72-14"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sum</span>
 </span><span id="__span-72-15"><a id="__codelineno-72-15" name="__codelineno-72-15" href="#__codelineno-72-15"></a><span class="w">        </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SUM(amount)&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="11-quick-reference">11. Quick Reference<a class="headerlink" href="#11-quick-reference" title="Permanent link">&para;</a></h2>
 <h3 id="111-component-quick-reference">11.1 Component Quick Reference<a class="headerlink" href="#111-component-quick-reference" title="Permanent link">&para;</a></h3>
@@ -3584,7 +2837,7 @@
 </tr>
 </tbody>
 </table>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="12-complete-examples">12. Complete Examples<a class="headerlink" href="#12-complete-examples" title="Permanent link">&para;</a></h2>
 <h3 id="121-minimal-example">12.1 Minimal Example<a class="headerlink" href="#121-minimal-example" title="Permanent link">&para;</a></h3>
@@ -3727,7 +2980,7 @@
 </span><span id="__span-75-28"><a id="__codelineno-75-28" name="__codelineno-75-28" href="#__codelineno-75-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.brand</span>
 </span><span id="__span-75-29"><a id="__codelineno-75-29" name="__codelineno-75-29" href="#__codelineno-75-29"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;US</span><span class="nv"> </span><span class="s">electronics</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">tier</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">brand&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
 <p>This reference covers every field, option, and pattern in semantic layer YAML files. Use it as your definitive guide when:</p>
@@ -3745,10 +2998,10 @@
 - Measures can reference joined models via <code>model.field</code> syntax
 - Metrics combine measures, time, and dimensions across models</p>
 <p><strong>Next steps:</strong>
-- <a href="03b-semantic-measures.md">Chapter 3B: Advanced Measures</a> - Complex measure patterns
-- <a href="03c-semantic-joins.md">Chapter 3C: Advanced Joins</a> - Cross-model analysis patterns
-- <a href="03d-semantic-validation.md">Chapter 3D: Validation</a> - Complete validation rules</p>
-<p><a href="#chapter-3a-semantic-yaml-reference">↑ Back to Top</a></p>
+- <a href="../measures/">Chapter 3B: Advanced Measures</a> - Complex measure patterns
+- <a href="../joins/">Chapter 3C: Advanced Joins</a> - Cross-model analysis patterns
+- <a href="../validation/">Chapter 3D: Validation</a> - Complete validation rules</p>
+<p><a href="#">↑ Back to Top</a></p>
 
 
 
@@ -3766,6 +3019,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -3823,6 +3078,12 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 DataOS Vulcan Team<br>
+<small>Complete stack for building data products</small>
+
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -3860,7 +3121,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>

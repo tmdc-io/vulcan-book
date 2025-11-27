@@ -6,8 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Complete documentation for Vulcan - SQLMesh wrapper with semantic layer and data validation">
+        <meta name="description" content="Complete documentation for Vulcan - complete stack for building data products">
       
+      
+        <meta name="author" content="DataOS Vulcan Team">
       
       
         <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/semantic-layer/measures/">
@@ -27,7 +29,7 @@
     
     
       
-        <title>Measures - Vulcan Book</title>
+        <title>Measures - DataOS Vulcan</title>
       
     
     
@@ -48,10 +50,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible:300,300i,400,400i,700,700i%7CSource+Code+Pro:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Atkinson Hyperlegible";--md-code-font:"Source Code Pro"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -69,7 +73,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -92,12 +96,11 @@
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Vulcan Book" class="md-header__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="../.." title="DataOS Vulcan" class="md-header__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -108,7 +111,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Vulcan Book
+            DataOS Vulcan
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -127,7 +130,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -137,7 +140,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -170,6 +173,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
@@ -209,13 +217,159 @@
     
   </nav>
   
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../models/" class="md-tabs__link">
+          
+  
+  
+  Models
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Semantic Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../audits/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Audits
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../data-quality/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Quality
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../apis/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  APIs
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -229,18 +383,19 @@
                     
 
 
+  
+
 
   
 
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Vulcan Book" class="md-nav__button md-logo" aria-label="Vulcan Book" data-md-component="logo">
+    <a href="../.." title="DataOS Vulcan" class="md-nav__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
-    Vulcan Book
+    DataOS Vulcan
   </label>
   
     <div class="md-nav__source">
@@ -322,12 +477,12 @@
     
     
       
-        
+      
         
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -336,7 +491,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -528,6 +683,9 @@
         
         
       
+      
+        
+      
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
@@ -699,23 +857,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-knowledge" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Knowledge
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -738,45 +879,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Introduction">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-what-are-advanced-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.1 What Are Advanced Measures?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-when-to-use-advanced-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.2 When to Use Advanced Measures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#13-measure-expression-capabilities" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1.3 Measure Expression Capabilities
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -787,78 +889,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Measure Expression Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-conditional-aggregations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.1 Conditional Aggregations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-ratio-and-percentage-calculations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.2 Ratio and Percentage Calculations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-distinct-count-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Distinct Count Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-weighted-averages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.4 Weighted Averages
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#25-time-based-calculations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 Time-Based Calculations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#26-percentile-and-statistical-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.6 Percentile and Statistical Measures
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -871,56 +901,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Cross-Model Measures">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-basic-cross-model-references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 Basic Cross-Model References
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-multi-model-aggregations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Multi-Model Aggregations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-cross-model-ratios" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 Cross-Model Ratios
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-conditional-cross-model-logic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 Conditional Cross-Model Logic
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -931,56 +911,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Measure Dependencies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-building-measures-on-other-measures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 Building Measures on Other Measures
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-complex-dependency-chains" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 Complex Dependency Chains
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#43-circular-dependency-prevention" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.3 Circular Dependency Prevention
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-conditional-dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 Conditional Dependencies
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -993,67 +923,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Window Functions and Advanced SQL">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51-running-totals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.1 Running Totals
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52-rankings-and-percentiles" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.2 Rankings and Percentiles
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53-period-over-period-comparisons" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.3 Period-over-Period Comparisons
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-first-and-last-values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.4 First and Last Values
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#55-advanced-window-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.5 Advanced Window Functions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1064,56 +933,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="6. Performance Optimization">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-expression-simplification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.1 Expression Simplification
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-avoid-redundant-calculations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.2 Avoid Redundant Calculations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-limit-cross-model-aggregations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.3 Limit Cross-Model Aggregations
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-optimize-window-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6.4 Optimize Window Functions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1126,67 +945,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7. Measure Pattern Library">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#71-revenue-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.1 Revenue Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#72-count-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.2 Count Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#73-average-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.3 Average Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#74-rate-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.4 Rate Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#75-growth-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7.5 Growth Patterns
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1197,56 +955,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="8. Best Practices">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#81-expression-clarity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.1 Expression Clarity
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#82-performance-guidelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.2 Performance Guidelines
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#83-dependency-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.3 Dependency Management
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#84-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8.4 Documentation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1259,45 +967,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="9. Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#91-common-errors" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.1 Common Errors
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#92-performance-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.2 Performance Issues
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#93-validation-errors" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9.3 Validation Errors
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1308,34 +977,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="10. Summary">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#key-takeaways" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Takeaways
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Next Steps
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1445,14 +1086,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../quality-checks/" class="md-nav__link">
+      <a href="../../data-quality/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Quality Checks
+    Data Quality
   
 
     
@@ -1488,151 +1129,6 @@
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deployment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Deployment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/07-isolated-environments-ANALYSIS/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Analysis
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../deployment/07-isolated-environments-SUMMARY/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Isolated Environments Summary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1794,7 +1290,7 @@
 - Cannot reference the measure itself (no self-reference)
 - Must be valid SQL for your warehouse dialect
 - Performance considerations for complex expressions</p>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="2-measure-expression-patterns">2. Measure Expression Patterns<a class="headerlink" href="#2-measure-expression-patterns" title="Permanent link">&para;</a></h2>
 <h3 id="21-conditional-aggregations">2.1 Conditional Aggregations<a class="headerlink" href="#21-conditional-aggregations" title="Permanent link">&para;</a></h3>
@@ -1999,7 +1495,7 @@
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">      </span><span class="no">AVG(amount) || &#39; ± &#39; || ROUND(STDDEV(amount), 2)</span>
 </span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Average</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">standard</span><span class="nv"> </span><span class="s">deviation&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="3-cross-model-measures">3. Cross-Model Measures<a class="headerlink" href="#3-cross-model-measures" title="Permanent link">&para;</a></h2>
 <h3 id="31-basic-cross-model-references">3.1 Basic Cross-Model References<a class="headerlink" href="#31-basic-cross-model-references" title="Permanent link">&para;</a></h3>
@@ -2110,7 +1606,7 @@
 </span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">        </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">currency</span>
 </span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">adjusted</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">tier&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="4-measure-dependencies">4. Measure Dependencies<a class="headerlink" href="#4-measure-dependencies" title="Permanent link">&para;</a></h2>
 <h3 id="41-building-measures-on-other-measures">4.1 Building Measures on Other Measures<a class="headerlink" href="#41-building-measures-on-other-measures" title="Permanent link">&para;</a></h3>
@@ -2242,7 +1738,7 @@
 </span><span id="__span-21-17"><a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="w">      </span><span class="no">END</span>
 </span><span id="__span-21-18"><a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">conditional</span><span class="nv"> </span><span class="s">discount</span><span class="nv"> </span><span class="s">application&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="5-window-functions-and-advanced-sql">5. Window Functions and Advanced SQL<a class="headerlink" href="#5-window-functions-and-advanced-sql" title="Permanent link">&para;</a></h2>
 <h3 id="51-running-totals">5.1 Running Totals<a class="headerlink" href="#51-running-totals" title="Permanent link">&para;</a></h3>
@@ -2367,7 +1863,7 @@
 </span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">currency</span>
 </span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">next</span><span class="nv"> </span><span class="s">month&quot;</span>
 </span></code></pre></div>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="6-performance-optimization">6. Performance Optimization<a class="headerlink" href="#6-performance-optimization" title="Permanent link">&para;</a></h2>
 <h3 id="61-expression-simplification">6.1 Expression Simplification<a class="headerlink" href="#61-expression-simplification" title="Permanent link">&para;</a></h3>
@@ -2467,7 +1963,7 @@
 </span><span id="__span-34-18"><a id="__codelineno-34-18" name="__codelineno-34-18" href="#__codelineno-34-18"></a><span class="w">        </span><span class="no">ROWS BETWEEN 89 PRECEDING AND CURRENT ROW</span>
 </span><span id="__span-34-19"><a id="__codelineno-34-19" name="__codelineno-34-19" href="#__codelineno-34-19"></a><span class="w">      </span><span class="no">)</span>
 </span></code></pre></div>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="7-measure-pattern-library">7. Measure Pattern Library<a class="headerlink" href="#7-measure-pattern-library" title="Permanent link">&para;</a></h2>
 <h3 id="71-revenue-patterns">7.1 Revenue Patterns<a class="headerlink" href="#71-revenue-patterns" title="Permanent link">&para;</a></h3>
@@ -2566,7 +2062,7 @@
 </span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">  </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percentage</span>
 </span><span id="__span-46-8"><a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">growth</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">yoy</span><span class="p p-Indicator">]</span>
 </span></code></pre></div></p>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="8-best-practices">8. Best Practices<a class="headerlink" href="#8-best-practices" title="Permanent link">&para;</a></h2>
 <h3 id="81-expression-clarity">8.1 Expression Clarity<a class="headerlink" href="#81-expression-clarity" title="Permanent link">&para;</a></h3>
@@ -2617,7 +2113,7 @@
 - Use unclear or technical descriptions
 - Omit business context
 - Forget to update documentation when logic changes</p>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="9-troubleshooting">9. Troubleshooting<a class="headerlink" href="#9-troubleshooting" title="Permanent link">&para;</a></h2>
 <h3 id="91-common-errors">9.1 Common Errors<a class="headerlink" href="#91-common-errors" title="Permanent link">&para;</a></h3>
@@ -2700,7 +2196,7 @@
 - Check dialect compatibility
 - Verify function names and syntax
 - Review window function syntax</p>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 <hr />
 <h2 id="10-summary">10. Summary<a class="headerlink" href="#10-summary" title="Permanent link">&para;</a></h2>
 <h3 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h3>
@@ -2740,11 +2236,11 @@
 </ol>
 <h3 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="03c-semantic-joins.md">Chapter 3C: Advanced Joins</a> - Cross-model analysis patterns</li>
-<li><a href="03d-semantic-validation.md">Chapter 3D: Validation</a> - Complete validation rules</li>
-<li><a href="03-semantic-layer.md">Chapter 3: Semantic Layer</a> - Foundation concepts</li>
+<li><a href="../joins/">Chapter 3C: Advanced Joins</a> - Cross-model analysis patterns</li>
+<li><a href="../validation/">Chapter 3D: Validation</a> - Complete validation rules</li>
+<li><a href="../">Chapter 3: Semantic Layer</a> - Foundation concepts</li>
 </ul>
-<p><a href="#chapter-3b-semantic-measures">↑ Back to Top</a></p>
+<p><a href="#">↑ Back to Top</a></p>
 
 
 
@@ -2762,6 +2258,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -2819,6 +2317,12 @@
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 DataOS Vulcan Team<br>
+<small>Complete stack for building data products</small>
+
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -2856,7 +2360,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
