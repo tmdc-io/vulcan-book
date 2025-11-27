@@ -1,6 +1,7 @@
 [project]
 name = "vulcan-book"
-requires-python = ">= 3.9, < 3.11"  # Consistent with main project
+version = "0.1.0"
+requires-python = ">= 3.9"  # Documentation project - more flexible than main project
 dependencies = [
     "mkdocs>=1.5.3",
     "mkdocs-material>=9.4.8",
