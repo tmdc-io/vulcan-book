@@ -3,45 +3,141 @@ site_description: Complete documentation for Vulcan - complete stack for buildin
 site_author: DataOS Vulcan Team
 site_url: https://tmdc-io.github.io/vulcan-book
 
-# Repository
 repo_name: tmdc-io/vulcan-book
 repo_url: https://github.com/tmdc-io/vulcan-book
 edit_uri: edit/main/docs/
 
-# Theme configuration
+nav:
+  - "Overview": index.md
+  - Get started:
+    - quick_start.md
+    - prerequisites.md
+    - installation.md
+    - quickstart/cli.md
+    # - quickstart/notebook.md
+    # - quickstart/ui.md
+  - Guides:
+    - Project structure:
+      - guides/projects.md
+      # - guides/multi_repo.md
+      # - guides/isolated_systems.md
+      - guides/multi_engine.md
+    - Project setup:
+      - guides/configuration.md
+      - guides/connections.md
+      - guides/scheduling.md
+      - guides/notifications.md
+      - guides/migrations.md
+      - guides/table_migration.md
+      - guides/custom_materializations.md
+    - Project content:
+      - guides/models.md
+      - guides/incremental_time.md
+      - guides/testing.md
+      - guides/model_selection.md
+    - Vulcan tools:
+      - guides/vscode.md
+      - guides/tablediff.md
+      - guides/linter.md
+      # - guides/ui.md
+    - Advanced usage:
+      # - guides/customizing_vulcan.md
+      - guides/signals.md
+  - Concepts:
+    - concepts/overview.md
+    - Development:
+      - concepts/plans.md
+      - concepts/environments.md
+      - concepts/tests.md
+      - concepts/audits.md
+      - concepts/checks.md
+      - concepts/state.md
+    - Models:
+      - concepts/models/overview.md
+      - concepts/models/model_kinds.md
+      - concepts/models/sql_models.md
+      - concepts/models/python_models.md
+      - concepts/models/seed_models.md
+      - concepts/models/external_models.md
+      - concepts/models/managed_models.md
+    - Macros:
+      - concepts/macros/overview.md
+      - concepts/macros/macro_variables.md
+      - concepts/macros/vulcan_macros.md
+      - concepts/macros/jinja_macros.md
+    # - Metrics:
+    #   - concepts/metrics/overview.md
+    #   - concepts/metrics/definition.md
+    - Architecture:
+      - concepts/architecture/snapshots.md
+      - concepts/architecture/serialization.md
+    - concepts/glossary.md
+  - Examples:
+    - examples/overview.md
+    # - Walkthroughs:
+    #   - examples/vulcan_cli_crash_course.md
+    #   - examples/incremental_time_full_walkthrough.md
+  - Integrations:
+    # - "Overview": integrations/overview.md
+    # - Tools:
+    #   - integrations/dbt.md
+    #   - integrations/dlt.md
+    #   - integrations/github.md
+    # - Execution engines:
+      # - integrations/engines/athena.md
+      # - integrations/engines/azuresql.md
+      # - integrations/engines/bigquery.md
+      # - integrations/engines/clickhouse.md
+      # - integrations/engines/databricks.md
+      # - integrations/engines/duckdb.md
+      # - integrations/engines/fabric.md
+      # - integrations/engines/motherduck.md
+      # - integrations/engines/mssql.md
+      # - integrations/engines/mysql.md
+      - integrations/engines/postgres.md
+      # - integrations/engines/gcp-postgres.md
+      # - integrations/engines/redshift.md
+      # - integrations/engines/risingwave.md
+      # - integrations/engines/snowflake.md
+      # - integrations/engines/spark.md
+      # - integrations/engines/trino.md
+  # - Resources:
+  #   - comparisons.md
+  #   - development.md
+  # - "FAQ": faq/faq.md
+  - Reference:
+    - API:
+      # - reference/overview.md
+      - reference/cli.md
+      # - reference/notebook.md
+      # - reference/python.md
+    - Configuration:
+      - reference/configuration.md
+      - reference/model_configuration.md
+
 theme:
   name: material
   custom_dir: overrides
-  
-  # Logo and favicon
-  logo: assets/images/logo.png
-  favicon: assets/images/favicon.png
-  
+  logo: assets/images/vulcan-white.svg
+  favicon: assets/images/vulcan.svg
   palette:
-    # Light mode - White & Grey
-    - scheme: default
-      primary: white
-      accent: grey
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: #3C64E2
+      accent: #3C64E2
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-sunny
         name: Switch to dark mode
-    
-    # Dark mode - White & Grey
-    - scheme: slate
-      primary: white
-      accent: grey
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: #3C64E2
+      accent: #3C64E2
       toggle:
-        icon: material/brightness-4
+        icon: material/weather-night
         name: Switch to light mode
 
-  # Typography
-  font:
-    text: Atkinson Hyperlegible
-    code: Source Code Pro
-
-  # Features
   features:
-    # Navigation
     - navigation.instant        # Single-page app experience
     - navigation.instant.prefetch  # Prefetch pages for faster loading
     - navigation.tracking       # Update URL with current section
@@ -51,48 +147,26 @@ theme:
     - navigation.expand         # Expand all sections by default
     - navigation.path           # Show navigation path
     - navigation.top            # Back to top button
-    - navigation.footer         # Previous/next navigation in footer
-    
+
     # Table of Contents
     - toc.follow               # Sidebar follows scroll
-    - toc.integrate            # Integrate TOC with navigation
-    
+    # - toc.integrate            # Integrate TOC with navigation
+
     # Search
     - search.highlight         # Highlight search terms
     - search.suggest           # Search suggestions
-    - search.share             # Share search results
-    
+    # - search.share             # Share search results
+
     # Content
+    - content.tabs.link        # Link content tabs
     - content.code.copy        # Copy code blocks
     - content.code.annotate    # Code annotations
-    - content.tabs.link        # Link content tabs
 
-# Navigation structure
-nav:
-  - Home: index.md
-  - Getting Started: getting-started/index.md
-  - Models:
-    - Overview: models/index.md
-    - Model Properties: models/model-properties.md
-    - Model Testing: models/model-testing.md
-    - Model Operations: models/model-operations.md
-    - Model Optimization: models/model-optimization.md
-  - Semantic Layer:
-    - Overview: semantic-layer/index.md
-    - YAML Reference: semantic-layer/yaml-reference.md
-    - Measures: semantic-layer/measures.md
-    - Joins: semantic-layer/joins.md
-    - Validation: semantic-layer/validation.md
-  - Audits: audits/index.md
-  - Data Quality: data-quality/index.md
-  - APIs: apis/index.md
-
-# Plugins
 plugins:
+  - include-markdown
   - search:
-      lang: en
-      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
-  
+      separator: '[\s\-,:!=\[\]()"/_]+'
+  - glightbox
   - mermaid2:
       arguments:
         theme: base
@@ -100,20 +174,19 @@ plugins:
           primaryColor: '#9e9e9e'
           primaryTextColor: '#ffffff'
 
-# Markdown extensions
 markdown_extensions:
   # Python Markdown
   - abbr
+  - def_list
+  - tables
   - admonition
   - attr_list
-  - def_list
   - footnotes
   - md_in_html
   - toc:
       permalink: true
       title: On this page
       toc_depth: 2
-
   # Python Markdown Extensions
   - pymdownx.arithmatex:
       generic: true
@@ -136,6 +209,7 @@ markdown_extensions:
       repo: vulcan-book
   - pymdownx.mark
   - pymdownx.smartsymbols
+  - pymdownx.snippets
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -151,20 +225,19 @@ markdown_extensions:
   - pymdownx.blocks.details
   - pymdownx.blocks.html
   - pymdownx.blocks.tab
+  - sane_lists
 
-# Extra CSS and JavaScript
 extra_css:
-  - stylesheets/extra.css
+  - assets/stylesheets/extra.css
 
-# Extra configuration
-extra:
-  # Social links
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/tmdc-io/vulcan-book
-  
-# Copyright
 copyright: |
   Copyright &copy; 2024 DataOS Vulcan Team<br>
   <small>Complete stack for building data products</small>
 
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/tmdc-io/vulcan-book
+  # analytics:
+  #   provider: google
+  #   property: G-JXQ1R227VS

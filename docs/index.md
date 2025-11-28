@@ -1,143 +1,154 @@
-# Vulcan Book
+#
 
 Vulcan is a complete stack for building data products.
 
-Tired of stitching together tools for testing, quality, semantics, and APIs? Ready to ship data products like software?
+Vulcan is a next-generation data transformation framework designed to ship data quickly, efficiently, and without error. Data teams can efficiently run and deploy data transformations written in SQL or Python with visibility and control at any size.
 
----
+> Architecture Diagram
 
-## What It Does
+> Get instant SQL impact analysis of your changes, whether in the CLI or in Vulcan Plan Mode
 
-Vulcan gives you:
+??? tip "Virtual Data Environments"
 
-- **CI/CD for data** - Plan changes, test in virtual environments, deploy safely. See what breaks before you break it. Review impact, approve changes, roll back if needed. Just like software engineering, but for data.
-- **Unit testing** - Test transformations locally without touching your warehouse. Fast feedback, no costs. Write tests that run in seconds, not hours. Catch bugs before they hit production.
-- **Data quality** - Assertions that block bad data, checks that monitor quality. Quality as code, not an afterthought. Write validation rules alongside your models. Bad data gets stopped at the door.
-- **Semantic layer** - Define metrics and dimensions. Vulcan generates schemas and APIs automatically. Business users get self-service analytics. Developers get automatic API generation. Everyone wins.
-- **Automatic APIs** - REST, Python, and Graph APIs generated from your models. No manual API code needed. Query lineage with Cypher. Discover metrics programmatically. Access data however you need it.
-- **Lifecycle management** - Dev, staging, prod environments with proper isolation. Ship with confidence. Test changes safely. Deploy when ready. No surprises.
+    - See a full diagram of how [Virtual Data Environments](https://whimsical.com/virtual-data-environments-MCT8ngSxFHict4wiL48ymz) work
+    - [Watch this video to learn more](https://www.youtube.com/watch?v=weJH3eM0rzc)
 
----
+* Create isolated development environments without data warehouse costs
+* Plan / Apply workflow like [Terraform](https://www.terraform.io/) to understand potential impact of changes
+* Easy to use CI/CD workflows for true blue-green deployments
 
-## The Complete Stack
+??? tip "Efficiency and Testing"
 
-Everything you need to go from code to production-ready data products:
+    Running this command will generate a unit test file in the `tests/` folder: `test_stg_payments.yaml`
 
-**Write** SQL or Python transformations. Use what you know. No new languages to learn.  
-**Test** locally with unit tests and assertions. Fast feedback. No warehouse costs.  
-**Validate** with built-in quality checks. Block bad data. Monitor quality over time.  
-**Deploy** with CI/CD workflows and virtual environments. Review changes. Test safely. Ship with confidence.  
-**Expose** via semantic layer and automatic APIs. Define metrics once. Generate APIs automatically.  
-**Monitor** and iterate. Track changes. Understand impact. Fix issues quickly.
+    Runs a live query to generate the expected output of the model
 
-No tool sprawl. No manual stitching. Just write your transformations and let Vulcan handle the rest.
+    ```bash
+    vulcan create_test tcloud_demo.stg_payments --query tcloud_demo.seed_raw_payments "select * from tcloud_demo.seed_raw_payments limit 5"
 
-### How It Works Together
+    # run the unit test
+    vulcan test
+    ```
 
-Vulcan isn't a collection of tools. It's a unified stack where everything works together:
+    ```sql
+    MODEL (
+      name tcloud_demo.stg_payments,
+      cron '@daily',
+      grain payment_id,
+      audits (UNIQUE_VALUES(columns = (
+          payment_id
+      )), NOT_NULL(columns = (
+          payment_id
+      )))
+    );
 
-1. **You write a transformation** - SQL or Python, your choice
-2. **Vulcan validates it** - Syntax checks, type validation, dependency analysis
-3. **You test it locally** - Unit tests run in seconds, no warehouse needed
-4. **You add assertions** - Define what "good data" means, right in your model
-5. **You plan the change** - See what will break, review impact, approve when ready
-6. **Vulcan deploys it** - Virtual environments for testing, proper isolation for production
-7. **Vulcan generates APIs** - REST, Python, and Graph APIs from your semantic layer
-8. **You monitor and iterate** - Track changes, understand impact, fix issues quickly
+    SELECT
+        id AS payment_id,
+        order_id,
+        payment_method,
+        amount / 100 AS amount, /* `amount` is currently stored in cents, so we convert it to dollars */
+        'new_column' AS new_column, /* non-breaking change example  */
+    FROM tcloud_demo.seed_raw_payments
+    ```
 
-Each step builds on the last. No manual handoffs. No context switching. Just a smooth workflow from code to production.
+    ```yaml
+    test_stg_payments:
+    model: tcloud_demo.stg_payments
+    inputs:
+        tcloud_demo.seed_raw_payments:
+          - id: 66
+            order_id: 58
+            payment_method: coupon
+            amount: 1800
+          - id: 27
+            order_id: 24
+            payment_method: coupon
+            amount: 2600
+          - id: 30
+            order_id: 25
+            payment_method: coupon
+            amount: 1600
+          - id: 109
+            order_id: 95
+            payment_method: coupon
+            amount: 2400
+          - id: 3
+            order_id: 3
+            payment_method: coupon
+            amount: 100
+    outputs:
+        query:
+          - payment_id: 66
+            order_id: 58
+            payment_method: coupon
+            amount: 18.0
+            new_column: new_column
+          - payment_id: 27
+            order_id: 24
+            payment_method: coupon
+            amount: 26.0
+            new_column: new_column
+          - payment_id: 30
+            order_id: 25
+            payment_method: coupon
+            amount: 16.0
+            new_column: new_column
+          - payment_id: 109
+            order_id: 95
+            payment_method: coupon
+            amount: 24.0
+            new_column: new_column
+          - payment_id: 3
+            order_id: 3
+            payment_method: coupon
+            amount: 1.0
+            new_column: new_column
+    ```
 
----
+* Never build a table [more than once](https://tobikodata.com/simplicity-or-efficiency-how-dbt-makes-you-choose.html)
+* Track what data's been modified and run only the necessary transformations for [incremental models](https://tobikodata.com/correctly-loading-incremental-data-at-scale.html)
+* Run [unit tests](https://tobikodata.com/we-need-even-greater-expectations.html) for free and configure automated audits
 
-## Why Vulcan?
+??? tip "Level Up Your SQL"
 
-Most data teams spend more time on tooling than on building. You write SQL, then you write tests, then you write quality checks, then you write APIs, then you write documentation. It's exhausting.
+    Write SQL in any dialect and Vulcan will transpile it to your target SQL dialect on the fly before sending it to the warehouse.
+    <img src="assets/images/transpile_example.png" alt="Transpile Example">
 
-Vulcan does all of that automatically. You write transformations. Vulcan handles testing, quality, semantics, and APIs. It's that simple.
+* Debug transformation errors *before* you run them in your warehouse in [10+ different SQL dialects](integrations/overview.md#execution-engines)
+* Definitions using [simply SQL](concepts/models/sql_models.md#sql-based-definition) (no need for redundant and confusing `Jinja` + `YAML`)
+* See impact of changes before you run them in your warehouse with column-level lineage
 
-### The Problem
+For more information, check out the [documentation](https://tmdc-io.github.io/vulcan-book).
 
-Building data products shouldn't require a PhD in DevOps. But that's what it feels like:
+## Getting Started
+Install Vulcan through [pypi](https://pypi.org/project/vulcan/) by running:
 
-- **No CI/CD** - Deploy changes blindly, hope nothing breaks, fix it in production
-- **No testing** - Run transformations in production, wait hours for results, debug when things go wrong
-- **No quality gates** - Bad data slips through, downstream systems break, trust erodes
-- **No semantic layer** - Business users write SQL, metrics get redefined, nothing is consistent
-- **No APIs** - Every consumer writes custom queries, performance suffers, maintenance nightmare
-
-Sound familiar? You're not alone.
-
-### The Solution
-
-Vulcan fixes all of that. It's a complete stack that handles the entire data product lifecycle:
-
-**Write** your transformations in SQL or Python. That's it. Vulcan takes care of the rest.
-
-**Test** locally with unit tests. Get feedback in seconds. No warehouse costs. No waiting.
-
-**Validate** with assertions and checks. Bad data gets blocked. Quality issues get caught early.
-
-**Deploy** with CI/CD workflows. Review changes before deploying. Test in virtual environments. Roll back if needed.
-
-**Expose** via semantic layer and APIs. Define metrics once. Vulcan generates everything else automatically.
-
-**Monitor** and iterate. Track what changed. Understand impact. Fix issues quickly.
-
-No tool sprawl. No manual stitching. No PhD required.
-
----
-
-## Quick Start
-
-1. **[Getting Started](getting-started/index.md)** - Install and create your first project
-2. **[Models](models/index.md)** - Write SQL and Python transformations
-3. **[Semantic Layer](semantic-layer/index.md)** - Define metrics and dimensions
-4. **[Audits](audits/index.md)** - Block bad data with assertions
-5. **[Data Quality](data-quality/index.md)** - Monitor data quality over time
-6. **[APIs](apis/index.md)** - Access your data via REST, Python, and Graph APIs
-
----
-
-## How It's Different
-
-Vulcan isn't just another data tool. It's a complete rethink of how data products should be built:
-
-**CI/CD First** - Not an afterthought. Built into the workflow from day one. Plan, test, deploy, roll back. Just like software.
-
-**Developer Experience First** - Fast feedback. Local testing. Great tooling. You shouldn't have to fight your tools.
-
-**Quality Built-In** - Not a separate process. Write assertions alongside your models. Quality as code, not a checklist.
-
-**Semantic Layer Native** - Not bolted on. Define metrics and dimensions. Get APIs automatically. No manual schema management.
-
-**Automatic Everything** - APIs, schemas, documentation. You define the logic. Vulcan generates the rest.
-
-**Complete Stack** - Not a collection of tools. Everything works together. No integration hell. No tool sprawl.
-
----
-
-## Learning Path
-
-Start with the basics, then build complexity:
-
+```bash
+mkdir vulcan-example
+cd vulcan-example
+python -m venv .venv
+source .venv/bin/activate
+pip install vulcan
+source .venv/bin/activate # reactivate the venv to ensure you're using the right installation
+vulcan init duckdb # get started right away with a local duckdb instance
+vulcan plan # see the plan for the changes you're making
 ```
-Foundation (Chapters 1-2)
-    ↓
-Core Features (Chapters 3-6)
-```
 
-Each chapter stands alone. Read what you need, when you need it.
+> Note: You may need to run `python3` or `pip3` instead of `python` or `pip`, depending on your python installation.
 
-**New to Vulcan?** Start with [Getting Started](getting-started/index.md). You'll be productive in 30 minutes.
+Follow the [quickstart guide](quickstart/cli.md#1-create-the-vulcan-project) to learn how to use Vulcan. You already have a head start!
 
-**Building models?** Jump to [Models](models/index.md). Everything you need to write transformations.
+Follow this [example](examples/incremental_time_full_walkthrough.md) to learn how to use Vulcan in a full walkthrough.
 
-**Defining metrics?** Check out [Semantic Layer](semantic-layer/index.md). Define business logic, get APIs automatically.
+## Join Our Community
+Together, we want to build data transformation without the waste. Connect with us in the following ways:
 
-**Need quality?** Read [Audits](audits/index.md) and [Data Quality](data-quality/index.md). Block bad data, monitor quality.
+* Join our community to ask questions, or just to say hi!
+* File an issue on our [GitHub](https://github.com/tmdc-io/vulcan-book/issues/new)
+* Send us an email with your questions or feedback
+* Read our [blog](https://tobikodata.com/blog)
 
----
+## Contribution
+Contributions in the form of issues or pull requests are greatly appreciated. 
 
-Ready to build data products the right way?
-
-[Get Started →](getting-started/index.md)
+[Read more](development.md) on how to contribute to Vulcan open source.
