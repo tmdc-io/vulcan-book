@@ -9,13 +9,13 @@
         <meta name="author" content="DataOS Vulcan Team">
       
       
-        <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/guides/models/">
+        <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/concepts/semantics/">
       
       
-        <link rel="prev" href="../custom_materializations/">
+        <link rel="prev" href="../models/managed_models/">
       
       
-        <link rel="next" href="../incremental_time/">
+        <link rel="next" href="models/">
       
       
         
@@ -26,7 +26,7 @@
     
     
       
-        <title>Models guide - DataOS Vulcan</title>
+        <title>Semantics Overview - DataOS Vulcan</title>
       
     
     
@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#models-guide" class="md-skip">
+        <a href="#semantics-overview" class="md-skip">
           Skip to content
         </a>
       
@@ -124,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Models guide
+              Semantics Overview
             
           </span>
         </div>
@@ -268,8 +268,6 @@
   
   
   
-    
-  
   
     
     
@@ -277,13 +275,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../projects/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../guides/projects/" class="md-tabs__link">
           
   
   
@@ -302,11 +298,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../concepts/overview/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
           
   
   
@@ -632,31 +630,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -674,7 +669,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -698,13 +693,10 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -713,7 +705,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1">
         
           
-          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
             
   
   
@@ -749,7 +741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projects/" class="md-nav__link">
+      <a href="../../guides/projects/" class="md-nav__link">
         
   
   
@@ -791,13 +783,10 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -806,7 +795,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2">
         
           
-          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
             
   
   
@@ -842,7 +831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../configuration/" class="md-nav__link">
+      <a href="../../guides/configuration/" class="md-nav__link">
         
   
   
@@ -870,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../connections/" class="md-nav__link">
+      <a href="../../guides/connections/" class="md-nav__link">
         
   
   
@@ -898,7 +887,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scheduling/" class="md-nav__link">
+      <a href="../../guides/scheduling/" class="md-nav__link">
         
   
   
@@ -926,7 +915,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../notifications/" class="md-nav__link">
+      <a href="../../guides/notifications/" class="md-nav__link">
         
   
   
@@ -954,7 +943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../migrations/" class="md-nav__link">
+      <a href="../../guides/migrations/" class="md-nav__link">
         
   
   
@@ -982,7 +971,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../table_migration/" class="md-nav__link">
+      <a href="../../guides/table_migration/" class="md-nav__link">
         
   
   
@@ -1010,7 +999,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../custom_materializations/" class="md-nav__link">
+      <a href="../../guides/custom_materializations/" class="md-nav__link">
         
   
   
@@ -1018,6 +1007,946 @@
     
   
     Custom materializations guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project content
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project content
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/incremental_time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incremental by time guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/model_selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Selection Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vulcan tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Vulcan tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/linter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linter guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5">
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced usage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Advanced usage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/signals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Signals guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2">
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plans/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plans
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auditing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    State
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3">
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/model_kinds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model kinds
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/sql_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/python_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/seed_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seed models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/external_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/managed_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Managed models
   
 
     
@@ -1064,17 +1993,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    Project content
+    Semantics
   
 
     
@@ -1085,12 +2014,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Project content
+    Semantics
   
 
           </label>
@@ -1119,7 +2048,7 @@
   <span class="md-ellipsis">
     
   
-    Models guide
+    Semantics Overview
   
 
     
@@ -1137,7 +2066,7 @@
   <span class="md-ellipsis">
     
   
-    Models guide
+    Semantics Overview
   
 
     
@@ -1165,10 +2094,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#what-is-the-semantic-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        What is the Semantic Layer?
       
     </span>
   </a>
@@ -1176,10 +2105,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-a-model" class="md-nav__link">
+  <a href="#core-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Adding a model
+        Core Components
       
     </span>
   </a>
@@ -1187,10 +2116,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#editing-an-existing-model" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Editing an existing model
+        How It Works
       
     </span>
   </a>
@@ -1198,10 +2127,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reverting-a-change-to-a-model" class="md-nav__link">
+  <a href="#file-organization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reverting a change to a model
+        File Organization
       
     </span>
   </a>
@@ -1209,10 +2138,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#validating-changes-to-a-model" class="md-nav__link">
+  <a href="#integration-with-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validating changes to a model
+        Integration with Models
       
     </span>
   </a>
@@ -1220,21 +2149,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deleting-a-model" class="md-nav__link">
+  <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deleting a model
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#viewing-the-dag-of-a-projects-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Viewing the DAG of a project's models
+        Next Steps
       
     </span>
   </a>
@@ -1257,944 +2175,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../incremental_time/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Incremental by time guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../testing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Testing guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../model_selection/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Model Selection Guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4">
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Vulcan tools
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Vulcan tools
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../linter/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Linter guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5">
-        
-          
-          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Advanced usage
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Advanced usage
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../signals/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Signals guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4">
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Concepts
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Concepts
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/overview/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2">
-        
-          
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Development
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Development
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/plans/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plans
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/environments/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Environments
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/tests/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Testing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/audits/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Auditing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/checks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Checks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/state/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3">
-        
-          
-          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Models
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Models
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/overview/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/model_kinds/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Model kinds
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/sql_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SQL models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/python_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Python models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/seed_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Seed models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/external_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    External models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/managed_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Managed models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4">
-        
-          
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Semantics
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Semantics
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/semantics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Semantics Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/semantics/models/" class="md-nav__link">
+      <a href="models/" class="md-nav__link">
         
   
   
@@ -2222,7 +2203,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/semantics/metrics/" class="md-nav__link">
+      <a href="metrics/" class="md-nav__link">
         
   
   
@@ -2264,10 +2245,13 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -2276,7 +2260,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5">
         
           
-          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
             
   
   
@@ -2312,7 +2296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/macros/overview/" class="md-nav__link">
+      <a href="../macros/overview/" class="md-nav__link">
         
   
   
@@ -2340,7 +2324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/macros/macro_variables/" class="md-nav__link">
+      <a href="../macros/macro_variables/" class="md-nav__link">
         
   
   
@@ -2368,7 +2352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/macros/vulcan_macros/" class="md-nav__link">
+      <a href="../macros/vulcan_macros/" class="md-nav__link">
         
   
   
@@ -2396,7 +2380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/macros/jinja_macros/" class="md-nav__link">
+      <a href="../macros/jinja_macros/" class="md-nav__link">
         
   
   
@@ -2438,10 +2422,13 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -2450,7 +2437,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6">
         
           
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
             
   
   
@@ -2486,7 +2473,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/architecture/snapshots/" class="md-nav__link">
+      <a href="../architecture/snapshots/" class="md-nav__link">
         
   
   
@@ -2514,7 +2501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/architecture/serialization/" class="md-nav__link">
+      <a href="../architecture/serialization/" class="md-nav__link">
         
   
   
@@ -2550,7 +2537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/glossary/" class="md-nav__link">
+      <a href="../glossary/" class="md-nav__link">
         
   
   
@@ -2930,10 +2917,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#what-is-the-semantic-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        What is the Semantic Layer?
       
     </span>
   </a>
@@ -2941,10 +2928,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-a-model" class="md-nav__link">
+  <a href="#core-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Adding a model
+        Core Components
       
     </span>
   </a>
@@ -2952,10 +2939,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#editing-an-existing-model" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Editing an existing model
+        How It Works
       
     </span>
   </a>
@@ -2963,10 +2950,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reverting-a-change-to-a-model" class="md-nav__link">
+  <a href="#file-organization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reverting a change to a model
+        File Organization
       
     </span>
   </a>
@@ -2974,10 +2961,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#validating-changes-to-a-model" class="md-nav__link">
+  <a href="#integration-with-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validating changes to a model
+        Integration with Models
       
     </span>
   </a>
@@ -2985,21 +2972,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deleting-a-model" class="md-nav__link">
+  <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deleting a model
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#viewing-the-dag-of-a-projects-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Viewing the DAG of a project's models
+        Next Steps
       
     </span>
   </a>
@@ -3048,23 +3024,15 @@
   
     
     
-      
-  
-  
-    
-    
       <li class="md-path__item">
-        <a href="../projects/" class="md-path__link">
+        <a href="../overview/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Guides
+    Concepts
   </span>
 
         </a>
       </li>
-    
-  
-
     
   
 
@@ -3078,7 +3046,7 @@
         <a href="./" class="md-path__link">
           
   <span class="md-ellipsis">
-    Project content
+    Semantics
   </span>
 
         </a>
@@ -3100,297 +3068,109 @@
   
 
 
-<h1 id="models-guide">Models guide<a class="headerlink" href="#models-guide" title="Permanent link">¶</a></h1>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
-<hr>
-<p>Before adding a model, ensure that you have <a href="../projects/">already created your project</a> and that you are working in a <a href="../../concepts/environments/">dev environment</a>.</p>
-<hr>
-<h2 id="adding-a-model">Adding a model<a class="headerlink" href="#adding-a-model" title="Permanent link">¶</a></h2>
-<p>To add a model:</p>
-<ol>
-<li>Within your <code>models</code> folder, create a new file. For example, we might add <code>new_model.sql</code> to the <a href="../../getting_started/docker/">quickstart</a> project.</li>
-<li>
-<p>Within the file, define a model. For example:</p>
-<div class="language-text highlight"><pre><span></span><code>MODEL (
-  name vulcan_example.new_model,
-  kind INCREMENTAL_BY_TIME_RANGE (
-    time_column (model_time_column, '%Y-%m-%d'),
-  ),
-);
-
-SELECT *
-FROM vulcan_example.incremental_model
-WHERE model_time_column BETWEEN @start_ds and @end_ds
-</code></pre></div>
-<p><strong>Note:</strong> The last line in this file is required if your model is incremental. Refer to <a href="../../concepts/models/model_kinds/">model kinds</a> for more information about the kinds of models you can create.</p>
-</li>
-</ol>
-<h2 id="editing-an-existing-model">Editing an existing model<a class="headerlink" href="#editing-an-existing-model" title="Permanent link">¶</a></h2>
-<p>To edit an existing model:</p>
-<ol>
-<li>Open the model file you wish to edit in your preferred editor and make a change.</li>
-<li>To preview an example of what your change looks like without actually creating a table, use the <code>vulcan evaluate</code> command. Refer to <a href="#evaluating-a-model">evaluating a model</a> below.</li>
-<li>To materialize this change, use the <code>vulcan plan</code> command. Refer to <a href="#previewing-changes-using-the-plan-command">previewing changes using the <code>plan</code> command</a> below.</li>
-</ol>
-<h3 id="evaluating-a-model">Evaluating a model<a class="headerlink" href="#evaluating-a-model" title="Permanent link">¶</a></h3>
-<p>The <code>evaluate</code> command will run a query against your database or engine and return a dataframe. It is used to test or iterate on models without database side effects and at minimal cost because Vulcan isn't materializing any data.</p>
-<p>To evaluate a model:</p>
-<ol>
-<li>
-<p>Run the <code>evaluate</code> command using the <a href="../../reference/cli/">CLI</a>. For example, running the <code>evaluate</code> command on <code>incremental_model</code> from the <a href="../../getting_started/cli/">quickstart</a> project:</p>
-<div class="language-text highlight"><pre><span></span><code>$ vulcan evaluate vulcan_example.incremental_model --start=2020-01-07 --end=2020-01-07
-
-id  item_id          model_time_column
-0   7        1  2020-01-07
-</code></pre></div>
-</li>
-<li>
-<p>When you run the <code>evaluate</code> command, Vulcan detects the changes made to the model, executes the model as a query using the options passed to <code>evaluate</code>, and shows the output returned by the model query.</p>
-</li>
-</ol>
-<h3 id="previewing-changes-using-the-plan-command">Previewing changes using the <code>plan</code> command<a class="headerlink" href="#previewing-changes-using-the-plan-command" title="Permanent link">¶</a></h3>
-<p>When Vulcan runs the <code>plan</code> command on your environment, it will show you whether any downstream models are impacted by your changes. If so, Vulcan will prompt you to classify the changes as <a href="../../concepts/plans/#breaking-change">Breaking</a> or <a href="../../concepts/plans/#non-breaking-change">Non-Breaking</a> before applying the changes.</p>
-<p>To preview changes using <code>plan</code>:</p>
-<ol>
-<li>Enter the <code>vulcan plan &lt;environment name&gt;</code> command.</li>
-<li>Enter <code>1</code> to classify the changes as <code>Breaking</code>, or enter <code>2</code> to classify the changes as <code>Non-Breaking</code>. In this example, the changes are classified as <code>Non-Breaking</code>:</li>
-</ol>
-<div class="language-bash highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-0-10">10</a></span>
-<span class="normal"><a href="#__codelineno-0-11">11</a></span>
-<span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span>
-<span class="normal"><a href="#__codelineno-0-17">17</a></span>
-<span class="normal"><a href="#__codelineno-0-18">18</a></span>
-<span class="normal"><a href="#__codelineno-0-19">19</a></span>
-<span class="normal"><a href="#__codelineno-0-20">20</a></span>
-<span class="normal"><a href="#__codelineno-0-21">21</a></span>
-<span class="normal"><a href="#__codelineno-0-22">22</a></span>
-<span class="normal"><a href="#__codelineno-0-23">23</a></span>
-<span class="normal"><a href="#__codelineno-0-24">24</a></span>
-<span class="normal"><a href="#__codelineno-0-25">25</a></span>
-<span class="normal"><a href="#__codelineno-0-26">26</a></span>
-<span class="normal"><a href="#__codelineno-0-27">27</a></span>
-<span class="normal"><a href="#__codelineno-0-28">28</a></span>
-<span class="normal"><a href="#__codelineno-0-29">29</a></span>
-<span class="normal"><a href="#__codelineno-0-30">30</a></span>
-<span class="normal"><a href="#__codelineno-0-31">31</a></span>
-<span class="normal"><a href="#__codelineno-0-32">32</a></span>
-<span class="normal"><a href="#__codelineno-0-33">33</a></span>
-<span class="normal"><a href="#__codelineno-0-34">34</a></span>
-<span class="normal"><a href="#__codelineno-0-35">35</a></span>
-<span class="normal"><a href="#__codelineno-0-36">36</a></span>
-<span class="normal"><a href="#__codelineno-0-37">37</a></span>
-<span class="normal"><a href="#__codelineno-0-38">38</a></span>
-<span class="normal"><a href="#__codelineno-0-39">39</a></span>
-<span class="normal"><a href="#__codelineno-0-40">40</a></span>
-<span class="normal"><a href="#__codelineno-0-41">41</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>$<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span><span class="nv">dev</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="o">======================================================================</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>Successfully<span class="w"> </span>Ran<span class="w"> </span><span class="m">1</span><span class="w"> </span>tests<span class="w"> </span>against<span class="w"> </span>duckdb
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>----------------------------------------------------------------------
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>Models
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a>│<span class="w">   </span>└──<span class="w"> </span>vulcan_example.incremental_model
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span>└──<span class="w"> </span>vulcan_example.full_model
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>---
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>+++
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>@@<span class="w"> </span>-1,6<span class="w"> </span>+1,7<span class="w"> </span>@@
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>SELECT
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>id,
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>item_id,
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a>+<span class="w">  </span><span class="m">1</span><span class="w"> </span>AS<span class="w"> </span>new_column,
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>model_time_column
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>FROM<span class="w"> </span><span class="o">(</span>VALUES
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="o">(</span><span class="m">1</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s1">'2020-01-01'</span><span class="o">)</span>,
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>Directly<span class="w"> </span>Modified:<span class="w"> </span>vulcan_example.incremental_model
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified<span class="w"> </span>Children:
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="w">    </span>└──<span class="w"> </span>vulcan_example.full_model
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="hll"><span class="o">[</span><span class="m">1</span><span class="o">]</span><span class="w"> </span><span class="o">[</span>Breaking<span class="o">]</span><span class="w"> </span>Backfill<span class="w"> </span>vulcan_example.incremental_model<span class="w"> </span>and<span class="w"> </span>indirectly<span class="w"> </span>modified<span class="w"> </span>children
-</span></span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="hll"><span class="o">[</span><span class="m">2</span><span class="o">]</span><span class="w"> </span><span class="o">[</span>Non-breaking<span class="o">]</span><span class="w"> </span>Backfill<span class="w"> </span>vulcan_example.incremental_model<span class="w"> </span>but<span class="w"> </span>not<span class="w"> </span>indirectly<span class="w"> </span>modified<span class="w"> </span>children:<span class="w"> </span><span class="m">2</span>
-</span></span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a>Models<span class="w"> </span>needing<span class="w"> </span>backfill<span class="w"> </span><span class="o">(</span>missing<span class="w"> </span>dates<span class="o">)</span>:
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a>└──<span class="w"> </span>vulcan_example.incremental_model:<span class="w"> </span><span class="o">(</span><span class="m">2020</span>-01-01,<span class="w"> </span><span class="m">2023</span>-02-17<span class="o">)</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a>Enter<span class="w"> </span>the<span class="w"> </span>backfill<span class="w"> </span>start<span class="w"> </span>date<span class="w"> </span><span class="o">(</span>eg.<span class="w"> </span><span class="s1">'1 year'</span>,<span class="w"> </span><span class="s1">'2020-01-01'</span><span class="o">)</span><span class="w"> </span>or<span class="w"> </span>blank<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>beginning<span class="w"> </span>of<span class="w"> </span>history:
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a>Enter<span class="w"> </span>the<span class="w"> </span>backfill<span class="w"> </span>end<span class="w"> </span>date<span class="w"> </span><span class="o">(</span>eg.<span class="w"> </span><span class="s1">'1 month ago'</span>,<span class="w"> </span><span class="s1">'2020-01-01'</span><span class="o">)</span><span class="w"> </span>or<span class="w"> </span>blank<span class="w"> </span>to<span class="w"> </span>backfill<span class="w"> </span>up<span class="w"> </span><span class="k">until</span><span class="w"> </span>now:
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>Apply<span class="w"> </span>-<span class="w"> </span>Backfill<span class="w"> </span>Tables<span class="w"> </span><span class="o">[</span>y/n<span class="o">]</span>:<span class="w"> </span>y
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>vulcan_example__dev.incremental_model<span class="w"> </span>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class="w"> </span><span class="m">100</span>.0%<span class="w"> </span>•<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>•<span class="w"> </span><span class="m">0</span>:00:00
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>All<span class="w"> </span>model<span class="w"> </span>batches<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>executed<span class="w"> </span>successfully
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>Virtually<span class="w"> </span>Updating<span class="w"> </span><span class="s1">'dev'</span><span class="w"> </span>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<span class="w"> </span><span class="m">100</span>.0%<span class="w"> </span>•<span class="w"> </span><span class="m">0</span>:00:00
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a>The<span class="w"> </span>target<span class="w"> </span>environment<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>updated<span class="w"> </span>successfully
-</span></code></pre></div></td></tr></tbody></table></div>
-<p>For more information, refer to <a href="../../concepts/plans/">plans</a>.</p>
-<h2 id="reverting-a-change-to-a-model">Reverting a change to a model<a class="headerlink" href="#reverting-a-change-to-a-model" title="Permanent link">¶</a></h2>
-<hr>
-<p>Before trying to revert a change, ensure that you have already made a change and that you have run the <code>vulcan plan</code> command.</p>
-<hr>
-<p>To revert your change:</p>
-<ol>
-<li>Open the model file you wish to edit in your preferred editor, and undo a change you made earlier. For this example, we'll remove the column we added in the <a href="../../getting_started/docker/">quickstart</a> example.</li>
-<li>Run <code>vulcan plan</code> and apply your changes. Enter <code>y</code> to run a Virtual Update.</li>
-</ol>
-<div class="language-bash highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-1-10">10</a></span>
-<span class="normal"><a href="#__codelineno-1-11">11</a></span>
-<span class="normal"><a href="#__codelineno-1-12">12</a></span>
-<span class="normal"><a href="#__codelineno-1-13">13</a></span>
-<span class="normal"><a href="#__codelineno-1-14">14</a></span>
-<span class="normal"><a href="#__codelineno-1-15">15</a></span>
-<span class="normal"><a href="#__codelineno-1-16">16</a></span>
-<span class="normal"><a href="#__codelineno-1-17">17</a></span>
-<span class="normal"><a href="#__codelineno-1-18">18</a></span>
-<span class="normal"><a href="#__codelineno-1-19">19</a></span>
-<span class="normal"><a href="#__codelineno-1-20">20</a></span>
-<span class="normal"><a href="#__codelineno-1-21">21</a></span>
-<span class="normal"><a href="#__codelineno-1-22">22</a></span>
-<span class="normal"><a href="#__codelineno-1-23">23</a></span>
-<span class="normal"><a href="#__codelineno-1-24">24</a></span>
-<span class="normal"><a href="#__codelineno-1-25">25</a></span>
-<span class="normal"><a href="#__codelineno-1-26">26</a></span>
-<span class="normal"><a href="#__codelineno-1-27">27</a></span>
-<span class="normal"><a href="#__codelineno-1-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>$<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span><span class="nv">dev</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="o">======================================================================</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>Successfully<span class="w"> </span>Ran<span class="w"> </span><span class="m">1</span><span class="w"> </span>tests<span class="w"> </span>against<span class="w"> </span>duckdb
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>----------------------------------------------------------------------
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>Models
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a>│<span class="w">   </span>└──<span class="w"> </span>vulcan_example.incremental_model
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">    </span>└──<span class="w"> </span>vulcan_example.full_model
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>---
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a>+++
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a>@@<span class="w"> </span>-1,7<span class="w"> </span>+1,6<span class="w"> </span>@@
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>SELECT
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a>id,
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a>item_id,
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a>-<span class="w">  </span><span class="m">1</span><span class="w"> </span>AS<span class="w"> </span>new_column,
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a>model_time_column
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a>FROM<span class="w"> </span><span class="o">(</span>VALUES
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="w">    </span><span class="o">(</span><span class="m">1</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s1">'2020-01-01'</span><span class="o">)</span>,
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a>Directly<span class="w"> </span>Modified:<span class="w"> </span>vulcan_example.incremental_model<span class="w"> </span><span class="o">(</span>Non-breaking<span class="o">)</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified<span class="w"> </span>Children:
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">    </span>└──<span class="w"> </span>vulcan_example.full_model
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="hll">Apply<span class="w"> </span>-<span class="w"> </span>Virtual<span class="w"> </span>Update<span class="w"> </span><span class="o">[</span>y/n<span class="o">]</span>:<span class="w"> </span>y
-</span></span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a>Virtual<span class="w"> </span>Update<span class="w"> </span>executed<span class="w"> </span>successfully
-</span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="virtual-update">Virtual Update<a class="headerlink" href="#virtual-update" title="Permanent link">¶</a></h3>
-<p>Reverting to a previous model version is a quick operation since no additional work is being done. For more information, refer to <a href="../../concepts/plans/#plan-application">plan application</a> and <a href="../../concepts/plans/#virtual-update">Virtual Update</a>.</p>
-<p><strong>Note:</strong> The Vulcan janitor runs periodically and automatically to clean up Vulcan artifacts no longer being used, and determines the time-to-live (TTL) for tables (how much time can pass before reverting is no longer possible).</p>
-<h2 id="validating-changes-to-a-model">Validating changes to a model<a class="headerlink" href="#validating-changes-to-a-model" title="Permanent link">¶</a></h2>
-<h3 id="automatic-model-validation">Automatic model validation<a class="headerlink" href="#automatic-model-validation" title="Permanent link">¶</a></h3>
-<p>Vulcan automatically validates your models in order to ensure the quality and accuracy of your data. This is done via the following:</p>
+<h1 id="semantics-overview">Semantics Overview<a class="headerlink" href="#semantics-overview" title="Permanent link">¶</a></h1>
+<p>The semantic layer adds <strong>business context</strong> to your Vulcan data models, transforming technical table structures into business-friendly definitions that can be queried without SQL knowledge.</p>
+<h2 id="what-is-the-semantic-layer">What is the Semantic Layer?<a class="headerlink" href="#what-is-the-semantic-layer" title="Permanent link">¶</a></h2>
+<p>The semantic layer bridges the gap between physical tables and business understanding. It provides a consistent, business-friendly interface to your data that enables self-service analytics while maintaining a single source of truth for business logic.</p>
+<h3 id="key-benefits">Key Benefits<a class="headerlink" href="#key-benefits" title="Permanent link">¶</a></h3>
+<p><strong>For Developers:</strong></p>
 <ul>
-<li>Running unit tests by default when you execute the <code>plan</code> command. This ensures all changes to applied to any environment are logically validated. Refer to <a href="../../concepts/tests/">testing</a> for more information.</li>
-<li>Running audits whenever data is loaded to a table (either for backfill or loading on a cadence). This way you know all data present in any table has passed all defined audits. Refer to <a href="../../concepts/audits/">auditing</a> for more information.</li>
+<li>✅ Define metrics once, use everywhere</li>
+<li>✅ Automatic validation catches errors early</li>
+<li>✅ Version-controlled business logic</li>
+<li>✅ Consistent calculations across tools</li>
 </ul>
-<p>Vulcan also provides automatic validation via CI/CD by automatically creating a preview environment.</p>
-<h3 id="manual-model-validation">Manual model validation<a class="headerlink" href="#manual-model-validation" title="Permanent link">¶</a></h3>
-<p>To manually validate your models, you can perform one or more of the following tasks:</p>
+<p><strong>For Business Users:</strong></p>
 <ul>
-<li><a href="#evaluating-a-model">Evaluating a model</a></li>
-<li><a href="../testing/#auditing-changes-to-models">Testing a model using unit tests</a></li>
-<li><a href="../testing/#auditing-changes-to-models">Auditing a model</a></li>
-<li><a href="#previewing-changes-using-the-plan-command">Previewing changes using the <code>plan</code> command</a></li>
+<li>✅ Self-service analytics without SQL</li>
+<li>✅ Consistent metric definitions</li>
+<li>✅ Trusted, validated data</li>
+<li>✅ Works across BI tools and APIs</li>
 </ul>
-<h2 id="deleting-a-model">Deleting a model<a class="headerlink" href="#deleting-a-model" title="Permanent link">¶</a></h2>
-<hr>
-<p>Before deleting a model, ensure that you have already run <code>vulcan plan</code>.</p>
-<hr>
-<p>To delete a model:</p>
+<p><strong>For Organizations:</strong></p>
+<ul>
+<li>✅ Single source of truth for metrics</li>
+<li>✅ Faster time to insights</li>
+<li>✅ Reduced data team bottleneck</li>
+<li>✅ Better data governance</li>
+</ul>
+<h2 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Permanent link">¶</a></h2>
+<p>The semantic layer consists of two main components:</p>
+<h3 id="semantic-models"><a href="models/">Semantic Models</a><a class="headerlink" href="#semantic-models" title="Permanent link">¶</a></h3>
+<p>Semantic models map physical Vulcan models to business concepts:</p>
+<ul>
+<li><strong>Map physical models</strong>: Reference your Vulcan models defined in <code>models/</code> directory</li>
+<li><strong>Expose dimensions</strong>: All model columns automatically become dimensions for filtering and grouping</li>
+<li><strong>Define measures</strong>: Aggregated calculations like <code>SUM(amount)</code>, <code>COUNT(*)</code></li>
+<li><strong>Create segments</strong>: Reusable filter conditions for meaningful data subsets</li>
+<li><strong>Establish joins</strong>: Relationships between models for cross-model analysis</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">models</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">analytics.customers</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">measures</span><span class="p">:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">total_customers</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">count</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">"COUNT(*)"</span>
+</span></code></pre></div>
+<h3 id="business-metrics"><a href="metrics/">Business Metrics</a><a class="headerlink" href="#business-metrics" title="Permanent link">¶</a></h3>
+<p>Business metrics combine measures with dimensions and time to create complete analytical definitions:</p>
+<ul>
+<li><strong>Time-series analysis</strong>: Metrics include time dimensions for trend analysis</li>
+<li><strong>Flexible granularity</strong>: Query the same metric at different time intervals (day, week, month, etc.)</li>
+<li><strong>Multi-dimensional</strong>: Slice and dice by business attributes</li>
+<li><strong>Ready for dashboards</strong>: Pre-configured for visualization tools</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">metrics</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">monthly_revenue</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span>
+</span></code></pre></div>
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">¶</a></h2>
 <ol>
-<li>Within your <code>models</code> directory, delete the file containing the model and any associated tests in the <code>tests</code> directory. For this example, we'll delete the <code>models/full_model.sql</code> and <code>tests/test_full_model.yaml</code> files from our <a href="../../getting_started/docker/">quickstart</a> project.</li>
-<li>
-<p>Run the <code>vulcan plan &lt;environment&gt;</code> command, specifying the environment to which you want to apply the change. In this example, we apply the change to our development environment <code>dev</code>:</p>
-<div class="language-text highlight"><pre><span></span><code>```bash linenums="1"
-$ vulcan plan dev
-======================================================================
-Successfully Ran 0 tests against duckdb
-----------------------------------------------------------------------
-Differences from the `dev` environment:
-
-Models
-└── Removed Models:
-    └── vulcan_example.full_model
-Apply - Virtual Update [y/n]: y
-Virtually Updating 'dev' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 0:00:00
-
-The target environment has been updated successfully
-
-
-Virtual Update executed successfully
-```
-</code></pre></div>
-<p><strong>Note:</strong> If you have other files that reference the model you wish to delete (such as tests), an error message will note the file(s) containing the reference. You must also delete these files to apply the change.</p>
-</li>
-<li>
-<p>Plan and apply your changes to production, and enter <code>y</code> for the Virtual Update. By default, the <code>vulcan plan</code> command targets your production environment:</p>
-<div class="language-text highlight"><pre><span></span><code>```bash linenums="1"
-$ vulcan plan
-======================================================================
-Successfully Ran 0 tests against duckdb
-----------------------------------------------------------------------
-Differences from the `prod` environment:
-
-Models
-└── Removed Models:
-    └── vulcan_example.full_model
-Apply - Virtual Update [y/n]: y
-Virtually Updating 'prod' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 0:00:00
-
-The target environment has been updated successfully
-
-
-Virtual Update executed successfully
-```
-</code></pre></div>
-</li>
-<li>
-<p>Verify that the <code>full_model.sql</code> model was removed from the output.</p>
-</li>
+<li><strong>Define semantic models</strong>: Create YAML files that reference your Vulcan models</li>
+<li><strong>Add measures and dimensions</strong>: Define what can be calculated and filtered</li>
+<li><strong>Create joins</strong>: Connect models for cross-model analysis</li>
+<li><strong>Define metrics</strong>: Combine measures with time and dimensions for analysis</li>
+<li><strong>Validate</strong>: Vulcan automatically validates semantic definitions during <code>plan</code> creation</li>
+<li><strong>Query</strong>: Use the semantic layer via APIs or export to BI tools</li>
 </ol>
-<h2 id="viewing-the-dag-of-a-projects-models">Viewing the DAG of a project's models<a class="headerlink" href="#viewing-the-dag-of-a-projects-models" title="Permanent link">¶</a></h2>
-<hr>
-<p>Before generating a DAG, ensure that you have already installed the graphviz package.</p>
-<p>To install the package with <code>pip</code>, enter the following command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>pip<span class="w"> </span>install<span class="w"> </span>graphviz
+<h2 id="file-organization">File Organization<a class="headerlink" href="#file-organization" title="Permanent link">¶</a></h2>
+<p>Semantic layer definitions are YAML files in the <code>semantics/</code> directory:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>project/
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── models/           # Vulcan data models (.sql files)
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│   ├── customers.sql
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│   ├── orders.sql
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│   └── events.sql
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>├── semantics/        # Semantic layer definitions (YAML)
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│   ├── customers.yml
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│   ├── orders.yml
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│   └── metrics.yml
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>└── config.yaml
 </span></code></pre></div>
-<p>Alternatively, enter the following command to install graphviz with <code>apt-get</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>graphviz
+<p>Vulcan automatically merges all YAML files in the <code>semantics/</code> directory. File naming doesn't matter - organize by domain or model for clarity.</p>
+<h2 id="integration-with-models">Integration with Models<a class="headerlink" href="#integration-with-models" title="Permanent link">¶</a></h2>
+<p><strong>Key Insight:</strong> Model columns automatically become dimensions. The semantic layer adds measures, segments, joins, and metrics on top.</p>
+<p>When designing Vulcan models, keep the semantic layer in mind:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- ✅ Good: Clean column names, business-friendly</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">customers</span><span class="p">);</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">SELECT</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="n">customer_tier</span><span class="p">,</span><span class="w">      </span><span class="c1">-- Good dimension name</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="n">signup_date</span><span class="p">,</span><span class="w">        </span><span class="c1">-- Good time dimension</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="n">total_spent</span><span class="w">         </span><span class="c1">-- Good for segments</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">customers</span><span class="p">;</span>
 </span></code></pre></div>
-<hr>
-<p>To view the DAG, enter the following command:</p>
-<p><code>vulcan dag FILE</code></p>
-<p>An html file containing your project's DAG will be placed at the root of your project folder. The DAG can then be viewed by opening this file in your browser.</p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<ul>
+<li>Learn about <a href="models/">Semantic Models</a> - mapping physical models to business concepts</li>
+<li>Explore <a href="metrics/">Business Metrics</a> - time-series analytical definitions</li>
+<li>See examples in your Vulcan project's <code>semantics/</code> directory</li>
+</ul>
 
 
 
