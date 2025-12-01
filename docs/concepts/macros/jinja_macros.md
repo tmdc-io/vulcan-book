@@ -4,7 +4,7 @@ Vulcan supports macros from the [Jinja](https://jinja.palletsprojects.com/en/3.1
 
 Jinja's macro approach is pure string substitution. Unlike Vulcan macros, they assemble SQL query text without building a semantic representation.
 
-**NOTE:** Vulcan projects support the standard Jinja function library only - they do **not** support dbt-specific jinja functions like `{{ ref() }}`. dbt-specific functions are allowed in dbt projects being run with the [Vulcan adapter](../../integrations/dbt.md).
+**NOTE:** Vulcan projects support the standard Jinja function library only - they do **not** support dbt-specific jinja functions like `{{ ref() }}`. dbt-specific functions are allowed in dbt projects being run with the Vulcan adapter.
 
 ## Basics
 

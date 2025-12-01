@@ -15,7 +15,7 @@ MotherDuck provides a single way to authorize a connection. This quickstart demo
 !!! tip
     This quick start assumes you are familiar with basic Vulcan commands and functionality.
 
-    If you’re not familiar, work through the [Vulcan Quickstart](../../quick_start.md) before continuing.
+    If you're not familiar, work through the [Vulcan Quickstart](../../getting_started/docker.md) before continuing.
 
 ### Prerequisites
 
@@ -72,7 +72,7 @@ We have now specified the `motherduck` gateway connection information, so we can
 
 First, open a command line terminal. Now enter the command `vulcan info`:
 
-![](./motherduck/vulcan_info.png)
+![](./motherduck/sqlmesh_info.png)
 
 The output shows that our data warehouse connection succeeded:
 
@@ -82,7 +82,7 @@ The output shows that our data warehouse connection succeeded:
 
 Now we're ready to run a `vulcan plan` in MotherDuck:
 
-![](./motherduck/vulcan_plan.png)
+![](./motherduck/sqlmesh_plan.png)
 
 And confirm that our schemas and objects exist in the MotherDuck catalog:
 

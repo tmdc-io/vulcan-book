@@ -15,10 +15,14 @@ Options:
   --debug              Enable debug mode.
   --log-to-stdout      Display logs in stdout.
   --log-file-dir TEXT  The directory to write log files to.
+  --dotenv PATH        Path to a custom .env file to load environment
+                       variables.
   --help               Show this message and exit.
 
 Commands:
+  api                     Start the Vulcan API server (models, metrics,...
   audit                   Run audits for the target model(s).
+  check_intervals         Show missing intervals in an environment,...
   clean                   Clears the Vulcan cache and any build artifacts.
   create_external_models  Create a schema file containing external model...
   create_test             Generate a unit test fixture for a given model.
@@ -26,27 +30,27 @@ Commands:
   destroy                 The destroy command removes all project resources.
   diff                    Show the diff between the local state and the...
   dlt_refresh             Attaches to a DLT pipeline with the option to...
-  environments            Prints the list of Vulcan environments with...
+  environments            Prints the list of Vulcan environments with its...
   evaluate                Evaluate a model and return a dataframe with a...
   fetchdf                 Run a SQL query and display the results.
   format                  Format all SQL models and audits.
+  graphql                 Manage the GraphQL service (subcommands: up,...
   info                    Print information about a Vulcan project.
-  init                    Create a new Vulcan repository.
   invalidate              Invalidate the target environment, forcing its...
   janitor                 Run the janitor process on-demand.
+  lint                    Run the linter for the target model(s).
   migrate                 Migrate Vulcan to the current running version.
   plan                    Apply local changes to the target environment.
-  prompt                  Uses LLM to generate a SQL query from a prompt.
   render                  Render a model's query, optionally expanding...
-  rewrite                 Rewrite a SQL expression with semantic...
   rollback                Rollback Vulcan to the previous migration.
   run                     Evaluate missing intervals for the target...
+  semantic                Semantic layer operations.
   state                   Commands for interacting with state
-  table_diff              Show the diff between two tables.
+  table_diff              Show the diff between two tables or a selection...
   table_name              Prints the name of the physical table for the...
   test                    Run model unit tests.
-  ui                      Start a browser-based Vulcan UI.
-  lint                    Run the linter for the target model(s).
+  transpile               Transpile a semantic SQL or REST-style semantic...
+  transpiler              Manage the Transpiler service (subcommands: up,...
 ```
 
 ## audit
@@ -393,26 +397,30 @@ Options:
                                   versions of the models and standalone
                                   audits.
   --explain                       Explain the plan instead of applying it.
+  --ignore-cron                   Run all missing intervals, ignoring
+                                  individual cron schedules. Only applies if
+                                  --run is set.
+  --min-intervals INTEGER         For every model, ensure at least this many
+                                  intervals are covered by a missing intervals
+                                  check regardless of the plan start date
   -v, --verbose                   Verbose output. Use -vv for very verbose
                                   output.
   --help                          Show this message and exit.
 ```
 
-## prompt
+## api
 
 ```
-Usage: vulcan prompt [OPTIONS] PROMPT
+Usage: vulcan api [OPTIONS]
 
-  Uses LLM to generate a SQL query from a prompt.
+  Start the Vulcan API server (models, metrics, lineage, telemetry).
 
 Options:
-  -e, --evaluate           Evaluate the generated SQL query and display the
-                           results.
-  -t, --temperature FLOAT  Sampling temperature. 0.0 - precise and
-                           predictable, 0.5 - balanced, 1.0 - creative.
-                           Default: 0.7
-  -v, --verbose            Verbose output.
-  --help                   Show this message and exit.
+  --host TEXT        Bind socket to this host. Default: 0.0.0.0
+  --port INTEGER     Bind socket to this port. Default: 8000
+  --reload           Enable auto-reload on file changes. Default: False
+  --workers INTEGER  Number of worker processes. Default: 1
+  --help             Show this message and exit.
 ```
 
 ## render
@@ -448,21 +456,6 @@ Options:
   --normalize                 Whether or not to normalize identifiers to
                               lowercase.
   --help                      Show this message and exit.
-```
-
-## rewrite
-
-```
-Usage: vulcan rewrite [OPTIONS] SQL
-
-  Rewrite a SQL expression with semantic references into an executable query.
-
-  https://vulcan.readthedocs.io/en/latest/concepts/metrics/overview/
-
-Options:
-  --read TEXT   The input dialect of the sql string.
-  --write TEXT  The output dialect of the sql string.
-  --help        Show this message and exit.
 ```
 
 ## rollback
@@ -562,7 +555,8 @@ Options:
 ```
 Usage: vulcan table_diff [OPTIONS] SOURCE:TARGET [MODEL]
 
-  Show the diff between two tables or multiple models across two environments.
+  Show the diff between two tables or a selection of models when they are
+  specified.
 
 Options:
   -o, --on TEXT            The column to join on. Can be specified multiple
@@ -583,7 +577,12 @@ Options:
   --temp-schema TEXT       Schema used for temporary tables. It can be
                            `CATALOG.SCHEMA` or `SCHEMA`. Default:
                            `vulcan_temp`
-  -m, --select-model TEXT  Select specific models to table diff.
+  -m, --select-model TEXT  Specify one or more models to data diff. Use
+                           wildcards to diff multiple models. Ex: '*' (all
+                           models with applied plan diffs), 'demo.model+'
+                           (this and downstream models),
+                           'git:feature_branch' (models with direct
+                           modifications in this branch only)
   --help                   Show this message and exit.
 ```
 
@@ -617,18 +616,70 @@ Options:
   --help               Show this message and exit.
 ```
 
-## ui
+## semantic
 
 ```
-Usage: vulcan ui [OPTIONS]
+Usage: vulcan semantic [OPTIONS] {export} [ENVIRONMENT]
 
-  Start a browser-based Vulcan UI.
+  Semantic layer operations.
+
+  This command provides semantic layer export functionality, allowing users to
+  convert semantic models and metrics into CubeJS-compatible YAML schemas.
 
 Options:
-  --host TEXT                     Bind socket to this host. Default: 127.0.0.1
-  --port INTEGER                  Bind socket to this port. Default: 8000
-  --mode [ide|catalog|docs|plan]  Mode to start the UI in. Default: ide
-  --help                          Show this message and exit.
+  -o, --output PATH   Output file path for the CubeJS schema.  [required]
+  --strict            Strict mode: export only explicitly defined semantic
+                      models.
+  --no-auto-measures  Disable automatic generation of measures (e.g., _count)
+                      for models with grains.
+  --no-confirm        Do not prompt for confirmation before overwriting
+                      existing output file.
+  --help              Show this message and exit.
+```
+
+## transpile
+
+```
+Usage: vulcan transpile [OPTIONS] [QUERY]
+
+  Transpile a semantic SQL or REST-style semantic query to executable SQL.
+
+Options:
+  --format [sql|rest]        Input type: semantic SQL ('sql') or REST-style
+                             semantic payload ('rest').  [required]
+  --file TEXT                Read query or REST payload from file. Use '-' to
+                             read from stdin.
+  --user TEXT                User id to propagate in the X-User header
+                             (defaults to 'cli').
+  --disable-post-processing  Disable post-processing in the Transpiler.
+  --style [pretty|compact]   SQL output style: 'pretty' (formatted with
+                             indentation), 'compact' (unformatted but
+                             processed),
+  --help                     Show this message and exit.
+```
+
+## transpiler
+
+```
+Usage: vulcan transpiler [OPTIONS] {up|down}
+
+  Manage the Transpiler service (subcommands: up, down).
+
+Options:
+  --no-detach  Run docker compose in the foreground (omit -d).
+  --help       Show this message and exit.
+```
+
+## graphql
+
+```
+Usage: vulcan graphql [OPTIONS] {up|down}
+
+  Manage the GraphQL service (subcommands: up, down).
+
+Options:
+  --no-detach  Run docker compose in the foreground (omit -d).
+  --help       Show this message and exit.
 ```
 
 ## lint

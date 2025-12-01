@@ -476,7 +476,7 @@ In [1]: import vulcan
         OK
 ```
 
-The `%run_test` magic supports the same options as the corresponding [CLI command](#testing-using-the-CLI).
+The `%run_test` magic supports the same options as the corresponding [CLI command](#testing-using-the-cli).
 
 ## Troubleshooting issues
 
@@ -497,7 +497,7 @@ To avoid this ambiguity, Vulcan needs to know the columns' types. By default, it
 
 - in the [`external_models.yaml`](models/external_models.md#generating-an-external-models-schema-file) file (for external models)
 - using the [`columns`](models/overview.md#columns) model property
-- using the [`columns`](#creating_tests) attribute of the unit test
+- using the [`columns`](#creating-tests) attribute of the unit test
 
 If none of these options work, consider using a SQL [query](#test_nameinputsupstream_modelquery) to generate the data.
 
@@ -668,7 +668,7 @@ The expected output of the CTE with name `<cte_name>`.
 
 ### `<test_name>.outputs.ctes.<cte_name>.partial`
 
-Same as [`<test_name>.outputs.partial`](#test_nameoutputs_partial), but applies only to the output of the CTE with name `<cte_name>`.
+Same as [`<test_name>.outputs.partial`](#test_nameoutputspartial), but applies only to the output of the CTE with name `<cte_name>`.
 
 ### `<test_name>.outputs.ctes.<cte_name>.rows`
 

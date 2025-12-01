@@ -281,7 +281,7 @@ A Vulcan project configuration is hierarchical and consists of root level parame
 Conceptually, we can group the root level parameters into the following types. Each type links to its table of parameters in the [Vulcan configuration reference page](../reference/configuration.md):
 
 1. [Project](../reference/configuration.md#projects) - configuration options for Vulcan project directories.
-2. [Environment](../reference/configuration.md#environments) - configuration options for Vulcan environment creation/promotion, physical table schemas, and view schemas.
+2. [Environment](../reference/configuration.md#environments-virtual-layer) - configuration options for Vulcan environment creation/promotion, physical table schemas, and view schemas.
 3. [Gateways](../reference/configuration.md#gateways) - configuration options for how Vulcan should connect to the data warehouse, state backend, and scheduler.
 4. [Gateway/connection defaults](../reference/configuration.md#gatewayconnection-defaults) - configuration options for what should happen when gateways or connections are not all explicitly specified.
 5. [Model defaults](../reference/model_configuration.md) - configuration options for what should happen when model-specific configurations are not explicitly specified in a model's file.
@@ -321,13 +321,11 @@ The cache directory is automatically created if it doesn't exist. You can clear 
 
 ### Table/view storage locations
 
-Vulcan creates schemas, physical tables, and views in the data warehouse/engine. Learn more about why and how Vulcan creates schema in the ["Why does Vulcan create schemas?" FAQ](../faq/faq.md#schema-question).
-
-The default Vulcan behavior described in the FAQ is appropriate for most deployments, but you can override *where* Vulcan creates physical tables and views with the `physical_schema_mapping`, `environment_suffix_target`, and `environment_catalog_mapping` configuration options.
+Vulcan creates schemas, physical tables, and views in the data warehouse/engine. You can override *where* Vulcan creates physical tables and views with the `physical_schema_mapping`, `environment_suffix_target`, and `environment_catalog_mapping` configuration options.
 
 You can also override *what* the physical tables are called by using the `physical_table_naming_convention` option.
 
-These options are in the [environments](../reference/configuration.md#environments) section of the configuration reference page.
+These options are in the [environments](../reference/configuration.md#environments-virtual-layer) section of the configuration reference page.
 
 #### Physical table schemas
 By default, Vulcan creates physical schemas for a model with a naming convention of `vulcan__[model schema]`.
@@ -411,7 +409,7 @@ If neither the schema (default) nor the table level are sufficient for your use 
 
 This can be useful if you have downstream BI reporting tools and you would like to point them at a development environment to test something out without renaming all the table / schema references within the report query.
 
-In order to achieve this, you can configure [environment_suffix_target](../reference/configuration.md#environments) like so:
+In order to achieve this, you can configure [environment_suffix_target](../reference/configuration.md#environments-virtual-layer) like so:
 
 === "YAML"
 
@@ -585,7 +583,7 @@ By default, Vulcan creates an environment view in the same [catalog](../concepts
 
 It can be desirable to create `prod` and non-prod virtual layer objects in separate catalogs instead. For example, there might be a "prod" catalog that contains all `prod` environment views and a separate "dev" catalog that contains all `dev` environment views.
 
-Separate prod and non-prod catalogs can also be useful if you have a CI/CD pipeline that creates environments, like the [Vulcan Github Actions CI/CD Bot](../integrations/github.md). You might want to store the CI/CD environment objects in a dedicated catalog since there can be many of them.
+Separate prod and non-prod catalogs can also be useful if you have a CI/CD pipeline that creates environments, like the Vulcan Github Actions CI/CD Bot. You might want to store the CI/CD environment objects in a dedicated catalog since there can be many of them.
 
 !!! info "Virtual layer only"
     Note that the following setting only affects the [virtual layer](../concepts/glossary.md#virtual-layer). If you need full segregation by catalog between environments in the [physical layer](../concepts/glossary.md#physical-layer) as well, see the [Isolated Systems Guide](../guides/isolated_systems.md).
@@ -861,7 +859,7 @@ The `connection` configuration controls the data warehouse connection. These opt
 
 The allowed keys include:
 
-- The optional [`concurrent_tasks`](#concurrent-tasks) key specifies the maximum number of concurrent tasks Vulcan will run. Default value is 4 for engines that support concurrent tasks.
+- The optional `concurrent_tasks` key specifies the maximum number of concurrent tasks Vulcan will run. Default value is 4 for engines that support concurrent tasks.
 - Most keys are specific to the connection engine `type` - see [below](#engine-connection-configuration). The default data warehouse connection type is an in-memory DuckDB database.
 
 Example snowflake connection configuration:

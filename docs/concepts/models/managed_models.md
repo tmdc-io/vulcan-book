@@ -14,7 +14,7 @@ Due to this, managed models would typically be built off an [External Model](./e
 ## Difference from materialized views
 The difference between an Managed model and a materialized view is down to semantics and in some engines there is no difference.
 
-Vulcan has support for [materialized views](../model_kinds#materialized-views) already. However, depending on the engine, these are subject to some limitations, such as:
+Vulcan has support for [materialized views](./model_kinds.md#materialized-views) already. However, depending on the engine, these are subject to some limitations, such as:
 
 - A Materialized View query can only be derived from a single base table
 - The Materialized View is not automatically maintained by the engine. To refresh the data, a `REFRESH MATERIALIZED VIEW` or equivalent command must be issued
@@ -98,7 +98,7 @@ Dynamic Tables have some properties that affect things like how often the data i
 
 In Vulcan, these properties are set on the model definition.
 
-The following Dynamic Table properties are set on the model [`physical_properties`](../models/overview.md#physical_properties-previously-table_properties):
+The following Dynamic Table properties are set on the model [`physical_properties`](../models/overview.md#physical_properties):
 
 | Snowflake Property              | Required | Notes
 | ------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |

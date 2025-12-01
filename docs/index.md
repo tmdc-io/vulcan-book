@@ -114,7 +114,7 @@ Vulcan is a next-generation data transformation framework designed to ship data 
     Write SQL in any dialect and Vulcan will transpile it to your target SQL dialect on the fly before sending it to the warehouse.
     <img src="assets/images/transpile_example.png" alt="Transpile Example">
 
-* Debug transformation errors *before* you run them in your warehouse in [10+ different SQL dialects](integrations/overview.md#execution-engines)
+* Debug transformation errors *before* you run them in your warehouse in 10+ different SQL dialects
 * Definitions using [simply SQL](concepts/models/sql_models.md#sql-based-definition) (no need for redundant and confusing `Jinja` + `YAML`)
 * See impact of changes before you run them in your warehouse with column-level lineage
 
@@ -136,19 +136,4 @@ vulcan plan # see the plan for the changes you're making
 
 > Note: You may need to run `python3` or `pip3` instead of `python` or `pip`, depending on your python installation.
 
-Follow the [quickstart guide](quickstart/cli.md#1-create-the-vulcan-project) to learn how to use Vulcan. You already have a head start!
-
-Follow this [example](examples/incremental_time_full_walkthrough.md) to learn how to use Vulcan in a full walkthrough.
-
-## Join Our Community
-Together, we want to build data transformation without the waste. Connect with us in the following ways:
-
-* Join our community to ask questions, or just to say hi!
-* File an issue on our [GitHub](https://github.com/tmdc-io/vulcan-book/issues/new)
-* Send us an email with your questions or feedback
-* Read our [blog](https://tobikodata.com/blog)
-
-## Contribution
-Contributions in the form of issues or pull requests are greatly appreciated. 
-
-[Read more](development.md) on how to contribute to Vulcan open source.
+Follow the [quickstart guide](getting_started/docker.md) to learn how to use Vulcan. You already have a head start!

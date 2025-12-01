@@ -24,7 +24,7 @@ vulcan plan my_dev
 A new environment is created automatically the first time a plan is applied to it.
 
 ## How environments work
-Whenever a model definition changes, a new model snapshot is created with a unique [fingerprint](architecture/snapshots.md#fingerprints). This fingerprint allows Vulcan to detect if a given model variant exists in other environments or if it's a brand new variant. Because models may depend on other models, the fingerprint of a target model variant also includes fingerprints of its upstream dependencies. If a fingerprint already exists in Vulcan, it is safe to reuse the existing physical table associated with that model variant, since we're confident that the logic that populates that table is exactly the same. This makes an environment a collection of references to model [snapshots](architecture/snapshots.md).
+Whenever a model definition changes, a new model snapshot is created with a unique [fingerprint](architecture/snapshots.md#fingerprinting). This fingerprint allows Vulcan to detect if a given model variant exists in other environments or if it's a brand new variant. Because models may depend on other models, the fingerprint of a target model variant also includes fingerprints of its upstream dependencies. If a fingerprint already exists in Vulcan, it is safe to reuse the existing physical table associated with that model variant, since we're confident that the logic that populates that table is exactly the same. This makes an environment a collection of references to model [snapshots](architecture/snapshots.md).
 
 Refer to [plans](plans.md#plan-application) for additional details.
 

@@ -87,7 +87,7 @@ When `batch_size` is specified, the total number of intervals to process is divi
 
 Incremental by time models require specification of a time column in their configuration. In addition, their model SQL queries should specify a `WHERE` clause that filters the data on a time range.
 
-This example shows an incremental by time model that could be added to the Vulcan [quickstart project](../quick_start.md):
+This example shows an incremental by time model that could be added to the Vulcan [quickstart project](../getting_started/docker.md):
 
 ``` sql linenums="1"
 MODEL (

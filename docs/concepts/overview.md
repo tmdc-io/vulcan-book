@@ -3,11 +3,11 @@
 This page provides a conceptual overview of what Vulcan does and how its components fit together.
 
 ## What Vulcan is
-Vulcan is a Python framework that automates everything needed to run a scalable data transformation platform. Vulcan works with a variety of [engines and orchestrators](../integrations/overview.md).
+Vulcan is a Python framework that automates everything needed to run a scalable data transformation platform. Vulcan works with a variety of execution engines.
 
 It was created with a focus on both data and organizational scale and works regardless of your data warehouse or SQL engine's capabilities.
 
-You can use Vulcan with the [CLI](../reference/cli.md), [Notebook](../reference/notebook.md), or [Python](../reference/python.md) APIs.
+You can use Vulcan with the [CLI](../reference/cli.md).
 
 ## How Vulcan works
 ### Create models

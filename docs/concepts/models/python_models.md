@@ -178,7 +178,7 @@ def execute(
 
 ## Optional on-virtual-update statements
 
-The optional on-virtual-update statements allow you to execute SQL commands after the completion of the [Virtual Update](#virtual-update).
+The optional on-virtual-update statements allow you to execute SQL commands after the completion of the [Virtual Update](../plans.md#virtual-update).
 
 These can be used, for example, to grant privileges on views of the virtual layer.
 
@@ -245,7 +245,7 @@ def execute(
     context.resolve_table("docs_example.another_dependency")
 ```
 
-User-defined [global variables](global-variables) or [blueprint variables](#python-model-blueprinting) can also be used in `resolve_table` calls, as shown in the following example (similarly for `blueprint_var()`):
+User-defined [global variables](../../reference/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) can also be used in `resolve_table` calls, as shown in the following example (similarly for `blueprint_var()`):
 
 ```python linenums="1"
 @model(
@@ -431,7 +431,7 @@ This is necessary because cron expressions often use `@` for aliases (like `@dai
 ### Basic
 The following is an example of a Python model returning a static Pandas DataFrame.
 
-**Note:** All of the [metadata](./overview.md#properties) field names are the same as those in the SQL `MODEL` DDL.
+**Note:** All of the [metadata](./overview.md#model-properties) field names are the same as those in the SQL `MODEL` DDL.
 
 ```python linenums="1"
 import typing as t

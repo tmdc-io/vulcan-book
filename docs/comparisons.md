@@ -35,19 +35,19 @@ Vulcan aims to be dbt format-compatible. Importing existing dbt projects with mi
 | `Data contracts`                  | ❌ | [✅](concepts/plans.md)
 | Deployment
 | `Virtual Data Environments`       | ❌ | [✅](concepts/environments.md)
-| `Open-source CI/CD bot`           | ❌ | [✅](integrations/github.md)
+| `Open-source CI/CD bot`           | ❌ | ✅
 | `Data consistency enforcement`    | ❌ | ✅
 | Interfaces
 | `CLI`                             | ✅ | [✅](reference/cli.md)
 | `Paid UI`                         | ✅ | ❌
 | `Open-source UI`                  | ❌ | ✅
-| `Native Notebook Support`         | ❌ | ✅ <!-- [✅](reference/notebook.md) -->
+| `Native Notebook Support`         | ❌ | ✅
 | Visualization
 | `Documentation generation`        | ✅ | ✅
 | `Column-level lineage`            | ❌ | ✅
 | Miscellaneous
 | `Package manager`                 | ✅ | ❌
-| `Multi-repository support`        | ❌ | ✅ <!-- [✅](guides/multi_repo.md) -->
+| `Multi-repository support`        | ❌ | ✅
 | `SQL transpilation`               | ❌ | [✅](concepts/models/sql_models.md#transpilation)
 
 ### Environments

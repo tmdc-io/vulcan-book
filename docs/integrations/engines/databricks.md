@@ -16,7 +16,7 @@ The SQL Connector is bundled with Vulcan and automatically installed when you in
 
 The SQL Connector has all the functionality needed for Vulcan to execute SQL models on Databricks and Python models that do not return PySpark DataFrames.
 
-If you have Python models returning PySpark DataFrames, check out the [Databricks Connect](#databricks-connect-1) section.
+If you have Python models returning PySpark DataFrames, check out the [Databricks Connect](#databricks-connect) section.
 
 ### Databricks Connect
 
@@ -24,13 +24,13 @@ If you want Databricks to process PySpark DataFrames in Vulcan Python models, th
 
 Vulcan **DOES NOT** include/bundle the Databricks Connect library. You must [install the version of Databricks Connect](https://docs.databricks.com/en/dev-tools/databricks-connect/python/install.html) that matches the Databricks Runtime used in your Databricks cluster.
 
-Find [more configuration details below](#databricks-connect-1).
+Find [more configuration details below](#databricks-connect).
 
 ### Databricks notebook interface
 
-If you are always running Vulcan commands directly in a Databricks Cluster interface (like in a Databricks Notebook using the [notebook magic commands](../../reference/notebook.md)), the SparkSession provided by Databricks is used to execute all Vulcan commands.
+If you are always running Vulcan commands directly in a Databricks Cluster interface, the SparkSession provided by Databricks is used to execute all Vulcan commands.
 
-Find [more configuration details below](#databricks-notebook-interface-1).
+Find [more configuration details below](#databricks-notebook-interface).
 
 ## Connection quickstart
 
@@ -41,7 +41,7 @@ It demonstrates connecting to a Databricks [All-Purpose Compute](https://docs.da
 !!! tip
     This quickstart assumes you are familiar with basic Vulcan commands and functionality.
 
-    If you're not, work through the [Vulcan Quickstart](../../quick_start.md) before continuing!
+    If you're not, work through the [Vulcan Quickstart](../../getting_started/docker.md) before continuing!
 
 ### Prerequisites
 
@@ -51,9 +51,9 @@ Before working through this connection quickstart, ensure that:
     - The Workspace must support authenticating with [personal access tokens](https://docs.databricks.com/en/dev-tools/auth/pat.html) (Databricks [Community Edition workspaces do not](https://docs.databricks.com/en/admin/access-control/tokens.html))
     - Your account must have Workspace Access and Create Compute permissions (these permissions are enabled by default)
 2. Your Databricks compute resources have [Unity Catalog](https://docs.databricks.com/aws/en/data-governance/unity-catalog/) activated
-3. Your computer has [Vulcan installed](../../installation.md) with the [Databricks extra available](../../installation.md#install-extras)
+3. Your computer has Vulcan installed with the Databricks extra available
     - Install from the command line with the command `pip install "vulcan[databricks]"`
-4. You have initialized a [Vulcan example project](../../quickstart/cli#1-create-the-vulcan-project) on your computer
+4. You have initialized a Vulcan example project on your computer
     - Open a command line interface and navigate to the directory where the project files should go
     - Initialize the project with the command `vulcan init duckdb`
 
@@ -166,15 +166,15 @@ First, open a command line terminal. Now enter the command `vulcan --gateway dat
 
 We manually specify the `databricks` gateway because it is not our project's default gateway:
 
-![Run vulcan info command in CLI](./databricks/db-guide_vulcan-info.png){ loading=lazy }
+![Run vulcan info command in CLI](./databricks/db-guide_sqlmesh-info.png){ loading=lazy }
 
 The output shows that our data warehouse connection succeeded:
 
-![Successful data warehouse connection](./databricks/db-guide_vulcan-info-succeeded.png){ loading=lazy }
+![Successful data warehouse connection](./databricks/db-guide_sqlmesh-info-succeeded.png){ loading=lazy }
 
 However, the output includes a `WARNING` about using the Databricks SQL engine for storing Vulcan state:
 
-![Databricks state connection warning](./databricks/db-guide_vulcan-info-warning.png){ loading=lazy }
+![Databricks state connection warning](./databricks/db-guide_sqlmesh-info-warning.png){ loading=lazy }
 
 !!! warning
     Databricks is not designed for transactional workloads and should not be used to store Vulcan state even in testing deployments.
@@ -191,7 +191,7 @@ This example uses the DuckDB engine to store state in the local `databricks_stat
 
 Now we no longer see the warning when running `vulcan --gateway databricks info`, and we see a new entry `State backend connection succeeded`:
 
-![No state connection warning](./databricks/db-guide_vulcan-info-no-warning.png){ loading=lazy }
+![No state connection warning](./databricks/db-guide_sqlmesh-info-no-warning.png){ loading=lazy }
 
 ### Run a `vulcan plan`
 
@@ -201,11 +201,11 @@ For convenience, we can omit the `--gateway` option from our CLI commands by spe
 
 And run a `vulcan plan` in Databricks:
 
-![Run vulcan plan in databricks](./databricks/db-guide_vulcan-plan.png){ loading=lazy }
+![Run vulcan plan in databricks](./databricks/db-guide_sqlmesh-plan.png){ loading=lazy }
 
 And confirm that our schemas and objects exist in the Databricks catalog:
 
-![Vulcan plan objects in databricks](./databricks/db-guide_vulcan-plan-objects.png){ loading=lazy }
+![Vulcan plan objects in databricks](./databricks/db-guide_sqlmesh-plan-objects.png){ loading=lazy }
 
 Congratulations - your Vulcan project is up and running on Databricks!
 
@@ -245,7 +245,7 @@ Databricks Connect can execute SQL and DataFrame operations on different cluster
 
 #### Databricks notebook interface
 
-If you are always running Vulcan commands directly on a Databricks Cluster (like in a Databricks Notebook using the [notebook magic commands](../../reference/notebook.md)), the SparkSession provided by Databricks is used to execute all Vulcan commands.
+If you are always running Vulcan commands directly on a Databricks Cluster (like in a Databricks Notebook), the SparkSession provided by Databricks is used to execute all Vulcan commands.
 
 The only relevant Vulcan configuration parameter is the optional `catalog` parameter.
 

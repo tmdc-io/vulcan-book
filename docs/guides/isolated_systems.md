@@ -106,14 +106,14 @@ Use this workflow if your data system does not use CI/CD to implement changes:
 
 #### CI/CD workflow
 
-Use this workflow with the Vulcan [Github CI/CD bot](../integrations/github.md):
+Use this workflow with the Vulcan Github CI/CD bot:
 
 - `git clone` the project repo
 - Make a change to a model in a git branch
-- Push the branch to the project repo and make a pull request. The bot will create a development environment for you to preview the changes if it is configured for [synchronized deployments](../integrations/github.md#synchronized-vs-desynchronized-deployments).
+- Push the branch to the project repo and make a pull request. The bot will create a development environment for you to preview the changes if it is configured for synchronized deployments.
 - Merge the branch into `main` to apply the changes to the `prod` environment
 
-Learn more about synchronized and desynchronized deployments [here](../integrations/github.md#synchronized-vs-desynchronized-deployments).
+Learn more about synchronized and desynchronized deployments in the CI/CD bot documentation.
 
 #### Reusing computations
 
@@ -128,7 +128,7 @@ This workflow combines the basic and CI/CD workflows above, where the basic work
 - `git clone` the project repo
 - Make a change to a model in a git branch
 - Run `vulcan plan dev` (or another environment name) to preview the changes in the nonproduction system. You may need to include the nonproduction `--gateway` option, depending on your project configuration.
-- Push the branch to the project repo and make a pull request. The bot will create an environment to preview the changes in the production system if it is configured for [synchronized deployments](../integrations/github.md#synchronized-vs-desynchronized-deployments).
+- Push the branch to the project repo and make a pull request. The bot will create an environment to preview the changes in the production system if it is configured for synchronized deployments.
 - Merge the branch into `main` to apply the changes to the `prod` environment
 
 The breaking/non-breaking change classifications in the non-production system will not be available to the production system because the systems do not share Vulcan state data. Therefore, the classifications must occur again in the production system.
@@ -139,6 +139,6 @@ In isolated systems, Vulcan's virtual data environments operate normally *within
 
 In the non-production system, computations will be reused across preview environments. However, the system's data are not representative of the production data and will not be reused by the production system.
 
-In the production system, the CI/CD bot will execute the necessary computations when a pull request is submitted if it is configured for [synchronized deployment](../integrations/github.md#synchronized-vs-desynchronized-deployments). Merging to main and applying the changes to `prod` reuses the preview computations and only requires a virtual update.
+In the production system, the CI/CD bot will execute the necessary computations when a pull request is submitted if it is configured for synchronized deployment. Merging to main and applying the changes to `prod` reuses the preview computations and only requires a virtual update.
 
 This approach enables true [blue-green deployment](https://en.m.wikipedia.org/wiki/Blue%E2%80%93green_deployment). Deploying to production occurs with no system downtime because virtual updates only require swapping views. If issues are identified after changes have been pushed to production, reverting is quick and painless because it just swaps the views back.

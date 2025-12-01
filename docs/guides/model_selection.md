@@ -2,7 +2,7 @@
 
 This guide describes how to select specific models to include in a Vulcan plan, which can be useful when modifying a subset of the models in a Vulcan project.
 
-Note: the selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../concepts/plans.md#destructive-changes) and for the `table_diff` command to [diff a selection of models](./tablediff.md#diffing-multiple-models-across-environments).
+Note: the selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../concepts/plans.md#destructive-changes).
 
 ## Background
 

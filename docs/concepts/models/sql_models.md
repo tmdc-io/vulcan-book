@@ -57,7 +57,7 @@ UNCACHE TABLE countries;
 
 The `MODEL` DDL is used to specify metadata about the model such as its name, [kind](./model_kinds.md), owner, cron, and others. This should be the first statement in your SQL-based model's file.
 
-Refer to `MODEL` [properties](./overview.md#properties) for the full list of allowed properties.
+Refer to `MODEL` [properties](./overview.md#model-properties) for the full list of allowed properties.
 
 ### Optional pre/post-statements
 
@@ -95,7 +95,7 @@ Note that the SQL command `UNCACHE TABLE countries` inside the `@IF()` macro doe
 
 ### Optional on-virtual-update statements
 
-The optional on-virtual-update statements allow you to execute SQL commands after the completion of the [Virtual Update](#virtual-update).
+The optional on-virtual-update statements allow you to execute SQL commands after the completion of the [Virtual Update](../plans.md#virtual-update).
 
 These can be used, for example, to grant privileges on views of the virtual layer.
 
@@ -215,9 +215,9 @@ SELECT
 
 The Python-based definition of SQL models consists of a single python function, decorated with Vulcan's `@model` [decorator](https://wiki.python.org/moin/PythonDecorators). The decorator is required to have the `is_sql` keyword argument set to `True` to distinguish it from [Python models](./python_models.md) that return DataFrame instances.
 
-This function's return value serves as the model's query, and it must be either a SQL string or a [SQLGlot expression](https://github.com/tobymao/sqlglot/blob/main/sqlglot/expressions.py). The `@model` decorator is used to define the model's [metadata](#MODEL-DDL) and, optionally its pre/post-statements or on-virtual-update-statements that are also in the form of SQL strings or SQLGlot expressions.
+This function's return value serves as the model's query, and it must be either a SQL string or a [SQLGlot expression](https://github.com/tobymao/sqlglot/blob/main/sqlglot/expressions.py). The `@model` decorator is used to define the model's metadata and, optionally its pre/post-statements or on-virtual-update-statements that are also in the form of SQL strings or SQLGlot expressions.
 
-Defining a SQL model using Python can be beneficial in cases where its query is too complex to express cleanly in SQL, for example due to having many dynamic components that would require heavy use of [macros](../macros/overview/). Since Python-based models generate SQL, they support the same features as regular SQL models, such as column-level [lineage](../glossary/#lineage).
+Defining a SQL model using Python can be beneficial in cases where its query is too complex to express cleanly in SQL, for example due to having many dynamic components that would require heavy use of [macros](../macros/overview.md). Since Python-based models generate SQL, they support the same features as regular SQL models, such as column-level [lineage](../glossary.md#lineage).
 
 To create a Python-based model, add a new file with the `.py` suffix into the `models/` directory (or a subdirectory of `models/`) within your Vulcan project. The file naming conventions of Python-based models are similar to those of SQL-based models. Inside this file, define a function named `entrypoint` with a single `evaluator` argument, as shown in the example below.
 
@@ -292,7 +292,7 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
     return exp.select(field_a, field_b).from_(f"{customer}.some_source")
 ```
 
-The two models produced from this template are the same as in the [example](#SQL-model-blueprinting) for SQL-based blueprinting.
+The two models produced from this template are the same as in the [example](#sql-model-blueprinting) for SQL-based blueprinting.
 
 Blueprint variable mappings can also be constructed dynamically, e.g., by using a macro: `blueprints="@gen_blueprints()"`. This is useful in cases where the `blueprints` list needs to be sourced from external sources, such as CSV files.
 
@@ -339,7 +339,7 @@ Vulcan will detect that the model depends on both `employees` and `countries`. W
 
 External dependencies not defined in Vulcan are also supported. Vulcan can either depend on them implicitly through the order in which they are executed, or through [signals](../../guides/signals.md).
 
-Although automatic dependency detection works most of the time, there may be specific cases for which you want to define dependencies manually. You can do so in the `MODEL` DDL with the [dependencies property](./overview.md#properties).
+Although automatic dependency detection works most of the time, there may be specific cases for which you want to define dependencies manually. You can do so in the `MODEL` DDL with the [dependencies property](./overview.md#model-properties).
 
 ## Conventions
 

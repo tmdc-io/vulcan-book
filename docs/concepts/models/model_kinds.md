@@ -27,7 +27,7 @@ MODEL (
 In addition to specifying a time column in the `MODEL` DDL, the model's query must contain a `WHERE` clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: `@start_date` / `@end_date` and `@start_ds` / `@end_ds`. Refer to [Macros](../macros/macro_variables.md) for more information.
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
-    This is borrowed from the full walkthrough: [Incremental by Time Range](../../examples/incremental_time_full_walkthrough.md)
+    This example demonstrates incremental by time range models.
 
     Create a model with the following definition and run `vulcan plan dev`:
 
@@ -1489,11 +1489,11 @@ The `MANAGED` model kind is used to create models where the underlying database 
 
 These models don't get updated with new intervals or refreshed when `vulcan run` is called. Responsibility for keeping the *data* up to date falls on the engine.
 
-You can control how the engine creates the managed model by using the [`physical_properties`](../overview#physical_properties-previously-table_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
+You can control how the engine creates the managed model by using the [`physical_properties`](../models/overview.md#physical_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
 
 Due to there being no standard, each vendor has a different implementation with different semantics and different configuration parameters. Therefore, `MANAGED` models are not as portable between database engines as other Vulcan model types. In addition, due to their black-box nature, Vulcan has limited visibility into the integrity and state of the model.
 
-We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](../../concepts/overview#build-a-virtual-environment).
+We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](../overview.md#build-a-virtual-environment).
 
 See [Managed Models](./managed_models.md) for more information on which engines are supported and which properties are available.
 

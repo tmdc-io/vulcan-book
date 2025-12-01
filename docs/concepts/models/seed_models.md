@@ -201,7 +201,7 @@ ALTER SESSION SET TIMEZONE = 'PST';
 
 ## On-virtual-update statements
 
-Seed models also support on-virtual-update statements, which are executed after the completion of the [Virtual Update](#virtual-update).
+Seed models also support on-virtual-update statements, which are executed after the completion of the [Virtual Update](../plans.md#virtual-update).
 
 **Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project (including seed models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
 

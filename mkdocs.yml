@@ -10,18 +10,13 @@ edit_uri: edit/main/docs/
 nav:
   - "Overview": index.md
   - Get started:
-    - quick_start.md
-    - prerequisites.md
-    - installation.md
-    - quickstart/cli.md
-    # - quickstart/notebook.md
-    # - quickstart/ui.md
+    - getting_started/index.md
+    - getting_started/prerequisites.md
+    - getting_started/docker.md
+    - getting_started/cli.md
   - Guides:
     - Project structure:
       - guides/projects.md
-      # - guides/multi_repo.md
-      # - guides/isolated_systems.md
-      - guides/multi_engine.md
     - Project setup:
       - guides/configuration.md
       - guides/connections.md
@@ -36,10 +31,7 @@ nav:
       - guides/testing.md
       - guides/model_selection.md
     - Vulcan tools:
-      - guides/vscode.md
-      - guides/tablediff.md
       - guides/linter.md
-      # - guides/ui.md
     - Advanced usage:
       # - guides/customizing_vulcan.md
       - guides/signals.md
@@ -60,30 +52,27 @@ nav:
       - concepts/models/seed_models.md
       - concepts/models/external_models.md
       - concepts/models/managed_models.md
+    - Semantics:
+      - concepts/semantics/index.md
+      - concepts/semantics/models.md
+      - concepts/semantics/metrics.md
+            
     - Macros:
       - concepts/macros/overview.md
       - concepts/macros/macro_variables.md
       - concepts/macros/vulcan_macros.md
       - concepts/macros/jinja_macros.md
-    # - Metrics:
-    #   - concepts/metrics/overview.md
-    #   - concepts/metrics/definition.md
     - Architecture:
       - concepts/architecture/snapshots.md
       - concepts/architecture/serialization.md
     - concepts/glossary.md
   - Examples:
-    - examples/overview.md
+    - Overview: examples/overview.md
     # - Walkthroughs:
     #   - examples/vulcan_cli_crash_course.md
     #   - examples/incremental_time_full_walkthrough.md
-  - Integrations:
-    # - "Overview": integrations/overview.md
-    # - Tools:
-    #   - integrations/dbt.md
-    #   - integrations/dlt.md
-    #   - integrations/github.md
-    # - Execution engines:
+  - Engines:
+    - integrations/engines/postgres.md
       # - integrations/engines/athena.md
       # - integrations/engines/azuresql.md
       # - integrations/engines/bigquery.md
@@ -94,26 +83,23 @@ nav:
       # - integrations/engines/motherduck.md
       # - integrations/engines/mssql.md
       # - integrations/engines/mysql.md
-      - integrations/engines/postgres.md
       # - integrations/engines/gcp-postgres.md
       # - integrations/engines/redshift.md
       # - integrations/engines/risingwave.md
       # - integrations/engines/snowflake.md
       # - integrations/engines/spark.md
       # - integrations/engines/trino.md
+    - Coming Soon: integrations/engines/coming_soon.md      
   # - Resources:
   #   - comparisons.md
   #   - development.md
-  # - "FAQ": faq/faq.md
   - Reference:
-    - API:
-      # - reference/overview.md
-      - reference/cli.md
+    - reference/cli.md
       # - reference/notebook.md
       # - reference/python.md
-    - Configuration:
-      - reference/configuration.md
-      - reference/model_configuration.md
+    # - Configuration:
+      # - reference/configuration.md # TODO: Add back after due-diligence
+    - reference/model_configuration.md
 
 theme:
   name: material

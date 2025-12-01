@@ -215,7 +215,7 @@ Learn more about these properties and their default values in the [model configu
 :   Audits specifies which [audits](../audits.md) should run after the model is evaluated.
 
 ### dialect
-:   Dialect defines the SQL dialect of the model. By default, this uses the dialect in the [configuration file `model_defaults` `dialect` key](../../reference/configuration.md#model-configuration). All SQL dialects [supported by the SQLGlot library](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/__init__.py) are allowed.
+:   Dialect defines the SQL dialect of the model. By default, this uses the dialect in the [configuration file `model_defaults` `dialect` key](../../reference/model_configuration.md). All SQL dialects [supported by the SQLGlot library](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/__init__.py) are allowed.
 
 ### owner
 :   Owner specifies who the main point of contact is for the model. It is an important field for organizations that have many data collaborators.

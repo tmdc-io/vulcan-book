@@ -5,7 +5,7 @@ A plan is a set of changes that summarizes the difference between the local stat
 During plan creation:
 
 * The local state of the Vulcan project is compared to the state of a target environment. The difference between the two and the actions needed to synchronize the environment with the local state are what constitutes a plan.
-* Users may be prompted to [categorize changes](#change-categories) to existing models so Vulcan can determine what actions to take for indirectly affected models (the downstream models that depend on the updated models). By default, Vulcan attempts to categorize changes automatically, but this behavior can be changed through [configuration](../reference/configuration.md#auto_categorize_changes).
+* Users may be prompted to [categorize changes](#change-categories) to existing models so Vulcan can determine what actions to take for indirectly affected models (the downstream models that depend on the updated models). By default, Vulcan attempts to categorize changes automatically, but this behavior can be changed through [configuration](../reference/configuration.md#plan).
 * Each plan requires a date range to which it will be applied. If not specified, the date range is derived automatically based on model definitions and the target environment.
 
 The benefit of plans is that all changes can be reviewed and verified before they are applied to the data warehouse and any computations are performed. A typical plan contains a combination of the following:
@@ -65,7 +65,7 @@ This category is assigned by Vulcan automatically either when a user opts into u
 ## Plan application
 Once a plan has been created and reviewed, it is then applied to the target [environment](environments.md) in order for its changes to take effect.
 
-Every time a model is changed as part of a plan, a new variant of this model gets created behind the scenes (a [snapshot](architecture/snapshots.md) with a unique [fingerprint](architecture/snapshots.md#fingerprints) is assigned to it). In turn, each model variant's data is stored in a separate physical table. Data between different variants of the same model is never shared, except for [forward-only](#forward-only-plans) plans.
+Every time a model is changed as part of a plan, a new variant of this model gets created behind the scenes (a [snapshot](architecture/snapshots.md) with a unique [fingerprint](architecture/snapshots.md#fingerprinting) is assigned to it). In turn, each model variant's data is stored in a separate physical table. Data between different variants of the same model is never shared, except for [forward-only](#forward-only-plans) plans.
 
 When a plan is applied to an environment, the environment gets associated with the set of model variants that are part of that plan. In other words, each environment is a collection of references to model variants and the physical tables associated with them.
 
@@ -302,7 +302,7 @@ This will ensure that regardless of the plan `--start` date, all added or modifi
 
     If you are running plans manually you can just adjust the `--start` date to be wide enough to cover the models in question.
 
-    The `--min-intervals` option is primarily intended for [automation scenarios](../integrations/github.md) where the plan is always run with a default relative start date and you always want (for example) "2 weeks worth of data" in the target environment.
+    The `--min-intervals` option is primarily intended for automation scenarios where the plan is always run with a default relative start date and you always want (for example) "2 weeks worth of data" in the target environment.
 
 ### Data preview for forward-only changes
 As mentioned earlier, the data output produced by [forward-only changes](#forward-only-change) in a development environment can only be used for preview and will not be reused in production.

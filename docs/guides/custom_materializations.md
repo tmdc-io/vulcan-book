@@ -14,11 +14,11 @@ Some materializations are relatively simple. For example, the SQL [FULL model ki
 
 The materializations for other kinds, such as [INCREMENTAL BY TIME RANGE](../concepts/models/model_kinds.md#incremental_by_time_range), require additional logic to process the correct time intervals and replace/insert their results into an existing table.
 
-A model kind's materialization may differ based on the SQL engine executing the model. For example, PostgreSQL does not support `CREATE OR REPLACE TABLE`, so `FULL` model kinds instead `DROP` the existing table then `CREATE` a new table. Vulcan already contains the logic needed to materialize existing model kinds on all [supported engines](../integrations/overview.md#execution-engines).
+A model kind's materialization may differ based on the SQL engine executing the model. For example, PostgreSQL does not support `CREATE OR REPLACE TABLE`, so `FULL` model kinds instead `DROP` the existing table then `CREATE` a new table. Vulcan already contains the logic needed to materialize existing model kinds on all supported engines.
 
 ## Overview
 
-Custom materializations are analogous to new model kinds. Users [specify them by name](#using-custom-materializations-in-models) in a model definition's `MODEL` block, and they may accept user-specified arguments.
+Custom materializations are analogous to new model kinds. Users [specify them by name](#using-a-custom-materialization) in a model definition's `MODEL` block, and they may accept user-specified arguments.
 
 A custom materialization must:
 

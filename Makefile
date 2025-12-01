@@ -17,6 +17,8 @@ install: venv ## Install dependencies from pyproject.toml
 	@$(PIP) install -e .
 
 serve: venv ## Start development server
+	@echo "Starting MkDocs server at http://127.0.0.1:7000/"
+	@echo "Note: Access the site at http://127.0.0.1:7000/ (root path) for local development"
 	@$(MKDOCS) serve --dev-addr 127.0.0.1:7000 --livereload
 
 build: venv ## Build static site

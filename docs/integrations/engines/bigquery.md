@@ -4,7 +4,7 @@
 
 This guide provides step-by-step instructions on how to connect Vulcan to the BigQuery SQL engine.
 
-It will walk you through the steps of installing Vulcan and BigQuery connection libraries locally, configuring the connection in Vulcan, and running the [quickstart project](../../quick_start.md).
+It will walk you through the steps of installing Vulcan and BigQuery connection libraries locally, configuring the connection in Vulcan, and running the [quickstart project](../../getting_started/docker.md).
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ This guide assumes the following about the BigQuery project being used with Vulc
 
 ## Installation
 
-Follow the [quickstart installation guide](../../installation.md) up to the step that [installs Vulcan](../../installation.md#install-vulcan-core), where we deviate to also install the necessary BigQuery libraries.
+Follow the [quickstart guide](../../getting_started/docker.md) to set up Vulcan, then install the necessary BigQuery libraries.
 
 Instead of installing just Vulcan core, we will also include the BigQuery engine libraries:
 

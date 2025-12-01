@@ -15,7 +15,7 @@ Snowflake provides multiple methods of authorizing a connection (e.g., password,
 !!! tip
     This quickstart assumes you are familiar with basic Vulcan commands and functionality.
 
-    If you're not, work through the [Vulcan Quickstart](../../quick_start.md) before continuing!
+    If you're not, work through the [Vulcan Quickstart](../../getting_started/docker.md) before continuing!
 
 ### Prerequisites
 
@@ -23,9 +23,9 @@ Before working through this connection quickstart, ensure that:
 
 1. You have a Snowflake account and know your username and password
 2. Your Snowflake account has at least one [warehouse](https://docs.snowflake.com/en/user-guide/warehouses-overview) available for running computations
-3. Your computer has [Vulcan installed](../../installation.md) with the [Snowflake extra available](../../installation.md#install-extras)
+3. Your computer has Vulcan installed with the Snowflake extra available
     - Install from the command line with the command `pip install "vulcan[snowflake]"`
-4. You have initialized a [Vulcan example project](../../quickstart/cli#1-create-the-vulcan-project) on your computer
+4. You have initialized a Vulcan example project on your computer
     - Open a command line interface and navigate to the directory where the project files should go
     - Initialize the project with the command `vulcan init snowflake`
 
@@ -192,15 +192,15 @@ We have now specified the `snowflake` gateway connection information, so we can 
 
 First, open a command line terminal. Now enter the command `vulcan info`:
 
-![Run vulcan info command in CLI](./snowflake/snowflake_db-guide_vulcan-info.png){ loading=lazy }
+![Run vulcan info command in CLI](./snowflake/snowflake_db-guide_sqlmesh-info.png){ loading=lazy }
 
 The output shows that our data warehouse connection succeeded:
 
-![Successful data warehouse connection](./snowflake/snowflake_db-guide_vulcan-info-succeeded.png){ loading=lazy }
+![Successful data warehouse connection](./snowflake/snowflake_db-guide_sqlmesh-info-succeeded.png){ loading=lazy }
 
 However, the output includes a `WARNING` about using the Snowflake SQL engine for storing Vulcan state:
 
-![Snowflake state connection warning](./snowflake/snowflake_db-guide_vulcan-info-warning.png){ loading=lazy }
+![Snowflake state connection warning](./snowflake/snowflake_db-guide_sqlmesh-info-warning.png){ loading=lazy }
 
 !!! warning
     Snowflake is not designed for transactional workloads and should not be used to store Vulcan state even in testing deployments.
@@ -236,17 +236,17 @@ model_defaults:
 
 Now we no longer see the warning when running `vulcan info`, and we see a new entry `State backend connection succeeded`:
 
-![No state connection warning](./snowflake/snowflake_db-guide_vulcan-info-no-warning.png){ loading=lazy }
+![No state connection warning](./snowflake/snowflake_db-guide_sqlmesh-info-no-warning.png){ loading=lazy }
 
 ### Run a `vulcan plan`
 
 Now we're ready to run a `vulcan plan` in Snowflake:
 
-![Run vulcan plan in snowflake](./snowflake/snowflake_db-guide_vulcan-plan.png){ loading=lazy }
+![Run vulcan plan in snowflake](./snowflake/snowflake_db-guide_sqlmesh-plan.png){ loading=lazy }
 
 And confirm that our schemas and objects exist in the Snowflake catalog:
 
-![Vulcan plan objects in snowflake](./snowflake/snowflake_db-guide_vulcan-plan-objects.png){ loading=lazy }
+![Vulcan plan objects in snowflake](./snowflake/snowflake_db-guide_sqlmesh-plan-objects.png){ loading=lazy }
 
 Congratulations - your Vulcan project is up and running on Snowflake!
 
@@ -442,7 +442,7 @@ Note: `private_key_passphrase` is only needed if the key was encrypted with a pa
     ```
 
 
-__Private Key Base64__
+#### Private Key Base64
 
 Note: This is base64 encoding of the bytes of the key itself and not the PEM file contents.
 

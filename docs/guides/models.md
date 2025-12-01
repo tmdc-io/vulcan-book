@@ -12,7 +12,7 @@ Before adding a model, ensure that you have [already created your project](./pro
 
 To add a model:
 
-1. Within your `models` folder, create a new file. For example, we might add `new_model.sql` to the [quickstart](../quick_start.md) project.
+1. Within your `models` folder, create a new file. For example, we might add `new_model.sql` to the [quickstart](../getting_started/docker.md) project.
 2. Within the file, define a model. For example:
 
         MODEL (
@@ -42,7 +42,7 @@ The `evaluate` command will run a query against your database or engine and retu
 
 To evaluate a model:
 
-1. Run the `evaluate` command using either the [CLI](../reference/cli.md) or [Notebook](../reference/notebook.md). For example, running the `evaluate` command on `incremental_model` from the [quickstart](../quick_start.md) project:
+1. Run the `evaluate` command using the [CLI](../reference/cli.md). For example, running the `evaluate` command on `incremental_model` from the [quickstart](../getting_started/cli.md) project:
 
         $ vulcan evaluate vulcan_example.incremental_model --start=2020-01-07 --end=2020-01-07
 
@@ -116,7 +116,7 @@ Before trying to revert a change, ensure that you have already made a change and
 
 To revert your change:
 
-1. Open the model file you wish to edit in your preferred editor, and undo a change you made earlier. For this example, we'll remove the column we added in the [quickstart](../quick_start.md) example.
+1. Open the model file you wish to edit in your preferred editor, and undo a change you made earlier. For this example, we'll remove the column we added in the [quickstart](../getting_started/docker.md) example.
 2. Run `vulcan plan` and apply your changes. Enter `y` to run a Virtual Update.
 
 ```bash linenums="1" hl_lines="26"
@@ -185,7 +185,7 @@ Before deleting a model, ensure that you have already run `vulcan plan`.
 
 To delete a model:
 
-1. Within your `models` directory, delete the file containing the model and any associated tests in the `tests` directory. For this example, we'll delete the `models/full_model.sql` and `tests/test_full_model.yaml` files from our [quickstart](../quick_start.md) project.
+1. Within your `models` directory, delete the file containing the model and any associated tests in the `tests` directory. For this example, we'll delete the `models/full_model.sql` and `tests/test_full_model.yaml` files from our [quickstart](../getting_started/docker.md) project.
 2. Run the `vulcan plan <environment>` command, specifying the environment to which you want to apply the change. In this example, we apply the change to our development environment `dev`:
 
         ```bash linenums="1"

@@ -150,7 +150,7 @@ Vulcan provides additional predefined variables used to modify model behavior ba
 
     In practice, `@{variable}` is most commonly used to interpolate a value within an identifier, e.g., `@{variable}_suffix`, whereas `@variable` is used to do plain substitutions for string literals.
 
-    Learn more [above](#embedding-variables-in-strings).
+    Learn more in the [Vulcan macros documentation](./vulcan_macros.md#embedding-variables-in-strings).
 
 #### Before all and after all variables
 

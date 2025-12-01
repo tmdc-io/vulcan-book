@@ -1,7 +1,5 @@
 # Linter guide
 
-![Linter](./linter/linter_example.png)
-
 Linting is a powerful tool for improving code quality and consistency. It enables you to automatically validate model definition, ensuring they adhere to your team's best practices.
 
 When a Vulcan plan is created, each model's code is checked for compliance with a set of rules you choose.

@@ -30,7 +30,7 @@ It uses the following five step approach to accomplish this:
 
     - Creation of user-defined macro variables with the `@DEF` operator (see more about [user-defined macro variables](#user-defined-variables))
     - Macro variables: [Vulcan pre-defined](./macro_variables.md), [user-defined local](#local-variables), and [user-defined global](#global-variables)
-    - Macro functions, both [Vulcan's](#vulcan-macro-operators) and [user-defined](#user-defined-macro-functions)
+    - Macro functions, both [Vulcan's](#macro-operators) and [user-defined](#user-defined-macro-functions)
 
 3. Substitute macro variable values where they are detected. In most cases, this is direct string substitution as with a templating system.
 
@@ -168,7 +168,7 @@ FROM table
 WHERE some_value = @VAR('missing_var', 0)
 ```
 
-A similar API is available for [Python macro functions](#accessing-global-variable-values) via the `evaluator.var` method and [Python models](../models/python_models.md#global-variables) via the `context.var` method.
+A similar API is available for [Python macro functions](#accessing-global-variable-values) via the `evaluator.var` method and [Python models](../models/python_models.md#user-defined-variables) via the `context.var` method.
 
 ### Gateway variables
 
@@ -264,7 +264,7 @@ Vulcan has three basic requirements for using the `@DEF` operator:
 2. All `@DEF` uses must come after the `MODEL` statement and before the SQL query
 3. Each `@DEF` use must end with a semi-colon `;`
 
-For example, consider the following model `vulcan_example.full_model` from the [Vulcan quickstart guide](../../quick_start.md):
+For example, consider the following model `vulcan_example.full_model` from the [Vulcan quickstart guide](../../getting_started/docker.md):
 
 ```sql linenums="1"
 MODEL (
