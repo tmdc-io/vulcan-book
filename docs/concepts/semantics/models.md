@@ -32,6 +32,7 @@ Dimensions are attributes for grouping and filtering:
 - **Automatically exposed**: All columns from your Vulcan model become dimensions automatically
 - **Answer "by what?" questions**: Use dimensions to slice and dice your data
 - **Examples**: `customer_tier`, `country`, `order_date`, `product_category`
+- **Enhancements**: Add granularities to time dimensions for cohort analysis and time-based grouping
 
 ```yaml
 # All columns from analytics.customers automatically become dimensions:
@@ -45,11 +46,17 @@ dimensions:
   excludes:
     - password_hash       # Hide sensitive data
     - internal_notes
-  overrides:
-    customer_tier:
-      tags: [segmentation, revenue]
-      meta:
-        business_owner: "Marketing Team"
+  
+  # Enhance dimensions with additional capabilities:
+  enhancements:
+    - name: start_date
+      granularities:
+        - name: monthly
+          interval: "1 month"
+          description: "Monthly subscription cohorts"
+        - name: quarterly
+          interval: "3 months"
+          description: "Quarterly cohorts"
 ```
 
 ## Measures
@@ -64,21 +71,21 @@ Measures are aggregated calculations:
 measures:
   total_revenue:
     type: sum
-    expression: "SUM(amount)"
+    expression: "{customers.amount}"
     description: "Total revenue from all orders"
     format: currency
   
   avg_order_value:
-    type: expression
-    expression: "SUM(amount) / NULLIF(COUNT(*), 0)"
+    type: number
+    expression: "SUM({customers.total_revenue}) / NULLIF(COUNT(*), 0)"
     format: currency
     description: "Average order value"
   
   active_customers:
     type: count_distinct
-    expression: "COUNT(DISTINCT customer_id)"
+    expression: "{customers.customer_id}"
     filters:
-      - "status = 'active'"
+      - "{customers.status} = 'active'"
     description: "Number of active customers"
 ```
 
@@ -93,15 +100,15 @@ Segments are reusable filter conditions:
 ```yaml
 segments:
   active_customers:
-    expression: "status = 'active'"
+    expression: "{customers.status} = 'active'"
     description: "Customers with active subscriptions"
   
   high_value:
-    expression: "total_spent > 10000"
+    expression: "{customers.total_spent} > 10000"
     description: "Customers who spent over $10K"
   
   recent_signups:
-    expression: "signup_date >= CURRENT_DATE - INTERVAL '30 days'"
+    expression: "{customers.signup_date} >= CURRENT_DATE - INTERVAL '30 days'"
     description: "Customers who signed up in last 30 days"
 ```
 
@@ -111,32 +118,59 @@ Joins define relationships between semantic models:
 
 - **Connect models**: Enable cross-model analysis
 - **Relationship types**: `one_to_one`, `one_to_many`, `many_to_one`
-- **Examples**: `orders → customers`, `subscriptions → customers`
+- **Examples**: `orders → customers`, `orders → products`
 
 ```yaml
 joins:
   customers:
     type: many_to_one
-    expression: "orders.customer_id = customers.customer_id"
+    expression: "{orders.customer_id} = {customers.customer_id}"
     description: "Order's customer"
   
   products:
     type: many_to_one
-    expression: "orders.product_id = products.product_id"
+    expression: "{orders.product_id} = {products.product_id}"
     description: "Ordered product"
 ```
 
-Once joined, you can reference other model's columns in measures:
+## Cross-Model Analysis
+
+Once models are joined, you can reference columns and measures from other models in your current model's definitions.
+
+### Referencing Joined Model Fields
+
+You can use columns from joined models in measure expressions and filters:
 
 ```yaml
 measures:
   enterprise_revenue:
     type: sum
-    expression: "SUM(orders.amount)"
+    expression: "{orders.amount}"
     filters:
-      - "customers.customer_tier = 'Enterprise'"
+      - "{customers.customer_tier} = 'Enterprise'"
     description: "Revenue from Enterprise customers"
+  
 ```
+
+### Proxy Dimensions
+
+Proxy dimensions expose measures from joined models as dimensions on the current model, enabling you to filter and group by aggregated values from other models.
+
+```yaml
+dimensions:
+  proxies:
+    - name: plan_average_monthly_price
+      measure: subscription_plans.avg_monthly_price
+    
+    - name: plan_average_annual_price
+      measure: subscription_plans.avg_annual_price
+```
+
+**Requirements:**
+- The referenced model must be joined to the current model
+- The measure must exist on the target model
+- Format: `model_alias.measure_name`
+
 
 ## Complete Example
 
@@ -149,38 +183,42 @@ models:
       excludes:
         - password_hash
         - internal_notes
-      overrides:
-        customer_tier:
-          tags: [segmentation, revenue]
-          meta:
-            business_owner: "Marketing Team"
+      enhancements:
+        - name: signup_date
+          granularities:
+            - name: monthly
+              interval: "1 month"
+              description: "Monthly signup cohorts"
+            - name: quarterly
+              interval: "3 months"
+              description: "Quarterly signup cohorts"
     
     measures:
       total_customers:
         type: count
-        expression: "COUNT(*)"
+        expression: "{customers.customer_id}"
         description: "Total number of customers"
       
       active_customers:
         type: count_distinct
-        expression: "COUNT(DISTINCT customer_id)"
+        expression: "{customers.customer_id}"
         filters:
-          - "status = 'active'"
+          - "{customers.status} = 'active'"
         description: "Number of active customers"
     
     segments:
       active:
-        expression: "status = 'active'"
+        expression: "{customers.status} = 'active'"
         description: "Active customers"
       
       high_value:
-        expression: "total_spent > 10000"
+        expression: "{customers.total_spent} > 10000"
         description: "High-value customers"
     
     joins:
       orders:
         type: one_to_many
-        expression: "customers.customer_id = orders.customer_id"
+        expression: "{customers.customer_id} = {orders.customer_id}"
         description: "Customer's orders"
 ```
 
@@ -218,12 +256,45 @@ FROM raw.customers;
 measures:
   total_revenue:
     type: sum
-    expression: "SUM(amount)"
+    expression: "{orders.amount}"
     description: "Total revenue from all completed orders"
     meta:
       business_owner: "Finance Team"
       calculation_method: "Sum of order amounts excluding refunds"
 ```
+
+### Use Curly Braces for References
+
+When referencing any column or measure anywhere in your semantic model definitions, always use curly braces `{}` as a best practice:
+
+```yaml
+# ✅ Good: Use curly braces for all references
+measures:
+  total_revenue:
+    type: sum
+    expression: "{orders.amount}"  # Column reference with curly braces
+  
+  active_customers:
+    type: count_distinct
+    expression: "{customers.customer_id}"  # Column reference with curly braces
+    filters:
+      - "{customers.status} = 'active'"  # Column reference in filter
+
+segments:
+  high_value:
+    expression: "{customers.total_spent} > 10000"  # Column reference with curly braces
+
+joins:
+  customers:
+    type: many_to_one
+    expression: "{orders.customer_id} = {customers.customer_id}"  # Both references use curly braces
+```
+
+**Why use curly braces?**
+- ✅ Clear distinction between semantic references and SQL functions
+- ✅ Consistent syntax across all semantic model definitions
+- ✅ Prevents ambiguity in complex expressions
+- ✅ Required for cross-model references (e.g., `{customers.customer_tier}`)
 
 ## Validation
 

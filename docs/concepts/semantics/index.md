@@ -11,7 +11,7 @@ The semantic layer bridges the gap between physical tables and business understa
 **For Developers:**
 
 - ✅ Define metrics once, use everywhere
-- ✅ Automatic validation catches errors early
+<!-- - ✅ Automatic validation catches errors early -->
 - ✅ Version-controlled business logic
 - ✅ Consistent calculations across tools
 
@@ -122,5 +122,6 @@ FROM raw.customers;
 
 - Learn about [Semantic Models](models.md) - mapping physical models to business concepts
 - Explore [Business Metrics](metrics.md) - time-series analytical definitions
+- Learn about [Transpiling Semantic Queries](../../guides/transpiling.md) - converting semantic queries to SQL
 - See examples in your Vulcan project's `semantics/` directory
 

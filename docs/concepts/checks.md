@@ -124,11 +124,12 @@ checks:
             description: "All customers must have an email address"
 ```
 
-**Run the check:**
+<!-- **Run the check:**
 
 ```bash
 vulcan check
 ```
+
 
 **Output:**
 
@@ -143,6 +144,23 @@ Ran 1 check in 0.234s
 
 OK
 ```
+-->
+
+### Check and Profile Execution
+
+Checks and profiles run automatically when models are executed, either through a **plan** or **run** command. Here's what the execution output looks like:
+
+```bash
+Check Executions (1 Models)
+└── hello.subscriptions
+    ├── ✓ completeness (4/4)
+    ├── ✓ uniqueness (1/1)
+    └── ✓ validity (3/3)
+
+Profiled 1 model (3 columns):
+  ✓ warehouse.hello.subscriptions: 3 columns
+```
+
 
 ### Common Check Patterns
 
@@ -695,37 +713,32 @@ MODEL (
 
 Profiles are stored in the `_check_profiles` table:
 
-```sql
-SELECT
-  data_source,        -- Table name (e.g., 'analytics.customers')
-  column_name,        -- Column profiled
-  null_count,         -- Number of NULLs
-  null_percentage,    -- Percentage NULLs
-  distinct_count,     -- Number of unique values
-  duplicate_count,    -- Number of duplicates
-  min_value,          -- Minimum value (numeric/date)
-  max_value,          -- Maximum value (numeric/date)
-  avg_value,          -- Average (numeric)
-  stddev_value,       -- Standard deviation (numeric)
-  profiled_at,        -- When profile was collected
-  histogram           -- Distribution (JSON)
-FROM _check_profiles
-WHERE data_source = 'analytics.customers'
-  AND column_name = 'revenue'
-ORDER BY profiled_at DESC;
-```
+| Column | Meaning |
+|--------|---------|
+| `id` | Unique identifier for this metric row |
+| `run_id` | Identifies which profiling run this metric belongs to |
+| `table_name` | Name of the table being profiled |
+| `column_name` | Name of the column being profiled (NULL for table-level metrics like row_count) |
+| `profile_type` | The type of metric, e.g., row_count, distinct, missing_count, frequent_values, min, max, avg_length, etc. |
+| `value_number` | Numeric metric value (for metrics like row_count, distinct, min, max, avg, etc.) |
+| `value_text` | Used for text values (rare) |
+| `value_json` | JSON-encoded metric (for histograms, frequent values, etc.) |
+| `value_type` | Type of value stored (number, json, etc.) |
+| `profiled_at` | When the profiling was performed (epoch ms in your sample) |
+| `created_ts` | When the row was inserted |
 
 ### Querying Profiles
 
-#### Track null percentage over time
+#### Track missing count over time
 
 ```sql
 SELECT
-  profiled_at::DATE as date,
-  null_percentage
+to_timestamp(profiled_at/1000)::date AS date,
+value_number AS missing_count
 FROM _check_profiles
-WHERE data_source = 'analytics.customers'
-  AND column_name = 'email'
+WHERE table_name = 'warehouse.hello.subscriptions'
+AND column_name = 'mrr'
+and profile_type = 'missing_count'
 ORDER BY profiled_at DESC
 LIMIT 30;  -- Last 30 days
 ```
@@ -733,29 +746,53 @@ LIMIT 30;  -- Last 30 days
 #### Monitor data drift
 
 ```sql
-WITH current AS (
-  SELECT distinct_count, avg_value
+WITH latest_profile AS (
+  -- pick the most recent profiling timestamp for that table/column
+  SELECT profiled_at
   FROM _check_profiles
-  WHERE data_source = 'analytics.customers'
-    AND column_name = 'revenue'
+  WHERE table_name = 'warehouse.hello.subscriptions'
+    AND column_name = 'mrr'
   ORDER BY profiled_at DESC
   LIMIT 1
 ),
+
+current AS (
+  -- get the most recent distinct count and average value from that profiling run
+  SELECT
+    MAX(CASE WHEN profile_type = 'distinct' THEN value_number END)     AS distinct_count,
+    MAX(CASE WHEN profile_type IN ('avg', 'mean', 'average', 'avg_value') THEN value_number END) AS avg_value
+  FROM _check_profiles p
+  JOIN latest_profile l ON p.profiled_at = l.profiled_at
+  WHERE p.table_name = 'warehouse.hello.subscriptions'
+    AND p.column_name = 'mrr'
+),
+
 historical AS (
-  SELECT AVG(distinct_count) as avg_distinct, AVG(avg_value) as avg_revenue
+  -- 30-day historical averages (profiled_at stored as epoch ms → convert to timestamp)
+  SELECT
+    AVG(CASE WHEN profile_type = 'distinct' THEN value_number END)      AS avg_distinct,
+    AVG(CASE WHEN profile_type IN ('avg', 'mean', 'average', 'avg_value') THEN value_number END) AS avg_mrr
   FROM _check_profiles
-  WHERE data_source = 'analytics.customers'
-    AND column_name = 'revenue'
-    AND profiled_at >= CURRENT_DATE - INTERVAL '30 days'
+  WHERE table_name = 'warehouse.hello.subscriptions'
+    AND column_name = 'mrr'
+    AND to_timestamp(profiled_at/1000) >= CURRENT_DATE - INTERVAL '30 days'
 )
+
 SELECT
   c.distinct_count,
   h.avg_distinct,
-  (c.distinct_count - h.avg_distinct) / h.avg_distinct * 100 as distinct_change_pct,
+  CASE
+    WHEN h.avg_distinct IS NULL THEN NULL
+    ELSE (c.distinct_count - h.avg_distinct) / NULLIF(h.avg_distinct, 0) * 100
+  END AS distinct_change_pct,
   c.avg_value,
-  h.avg_revenue,
-  (c.avg_value - h.avg_revenue) / h.avg_revenue * 100 as revenue_change_pct
+  h.avg_mrr,
+  CASE
+    WHEN h.avg_mrr IS NULL THEN NULL
+    ELSE (c.avg_value - h.avg_mrr) / NULLIF(h.avg_mrr, 0) * 100
+  END AS mrr_change_pct
 FROM current c, historical h;
+
 ```
 
 ### Using Profiles to Inform Checks
@@ -780,14 +817,16 @@ MODEL (
 ```sql
 -- Step 2: Query profiles after 30 days
 SELECT
-  MIN(avg_value) as min_revenue,
-  MAX(avg_value) as max_revenue,
-  AVG(avg_value) as typical_revenue,
-  STDDEV(avg_value) as revenue_stddev
+    MIN(value_number) AS min_revenue,
+    MAX(value_number) AS max_revenue,
+    AVG(value_number) AS typical_revenue,
+    STDDEV(value_number) AS revenue_stddev
 FROM _check_profiles
-WHERE data_source = 'analytics.orders'
-  AND column_name = 'revenue'
-  AND profiled_at >= CURRENT_DATE - INTERVAL '30 days';
+WHERE table_name = 'warehouse.hello.subscriptions'
+  AND column_name = 'mrr'
+  AND profile_type IN ('avg', 'mean', 'average', 'avg_value')
+  AND to_timestamp(profiled_at/1000) >= CURRENT_DATE - INTERVAL '30 days';
+
 
 -- Results:
 -- min_revenue: 45000
