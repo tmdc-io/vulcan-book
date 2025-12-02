@@ -343,20 +343,13 @@ make setup
 
 This will create the network and start both infrastructure and warehouse services.
 
-## Step 5: Access Vulcan Shell
+## Step 5: Access Vulcan 
 
-Now that the infrastructure is running, you can access Vulcan through an interactive shell:
+Now that the infrastructure is running, you can access Vulcan through an command:
 
 ```bash
-make vulcan-shell
+docker run -it --network=vulcan  --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev vulcan
 ```
-
-Or directly:
-```bash
-docker compose -f docker/docker-compose.vulcan.yml run --rm vulcan-shell
-```
-
-This will start an interactive bash session inside the Vulcan container, with your project directory mounted at `/workspace`.
 
 ### Create a Convenient Alias (Optional)
 
