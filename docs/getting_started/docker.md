@@ -176,7 +176,7 @@ Create `docker/docker-compose.vulcan.yml`:
 x-images:
   vulcan: &vulcan_image "vulcan:${VERSION:-0.225.0-dev}"
   vulcan-transpiler: &vulcan_transpiler_image "vulcan-transpiler:${VERSION:-0.225.0-dev}"
-  vulcan-graphql: &vulcan_graphql_image "vulcan-graphql:${VERSION:-0.225.0-dev}"
+  #vulcan-graphql: &vulcan_graphql_image "vulcan-graphql:${VERSION:-0.225.0-dev}"
 
 networks:
   vulcan:
