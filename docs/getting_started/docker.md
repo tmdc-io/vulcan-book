@@ -364,7 +364,7 @@ For easier access, you can create a temporary alias in your current shell sessio
 
 ```bash
 alias vulcan="docker run -it --network=vulcan  --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev vulcan"
- ```
+```
 
 After creating this alias, you can use `vulcan` directly instead of entering the shell first:
 
