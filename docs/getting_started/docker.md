@@ -61,7 +61,17 @@ networks:
     external: true
 
 services:
-  # Statestore - Stores Vulcan's internal state
+  #########################################################################
+  # Vulcan infrastructure services                                        #
+  #                                                                       #
+  # The services below (statestore, object store, etc.) are part of the   #
+  # shared Vulcan runtime and are not specific to the b2b_saas project.   #
+  #                                                                       #
+  # NOTE: When deployed in DataOS, these services will be automatically   #
+  # managed by DataOS. You typically should NOT modify them in individual #
+  # projects. Instead, treat them as managed infrastructure that Vulcan   #
+  # depends on.                                                           #
+  #########################################################################
   statestore:
     image: *postgres_image
     environment:
@@ -118,8 +128,8 @@ services:
       "
     networks:
       - vulcan
-```
 
+```
 ### Warehouse Services
 
 Create `docker/docker-compose.warehouse.yml`:
@@ -164,31 +174,21 @@ Create `docker/docker-compose.vulcan.yml`:
 
 ```yaml
 x-images:
-  vulcan: &vulcan_image "vulcan:${VERSION:-latest}"
-  vulcan-transpiler: &vulcan_transpiler_image "vulcan-transpiler:${VERSION:-latest}"
-
-# Shared infrastructure environment variables
-x-environment: &shared_environment
-  VULCAN__GATEWAYS__DEFAULT__STATE_CONNECTION__HOST: statestore
-  VULCAN__GATEWAYS__DEFAULT__STATE_CONNECTION__PORT: 5432
-  VULCAN__OBJECT_STORE__CREDENTIALS__ENDPOINT_URL: http://minio:9000
-  VULCAN__TRANSPILER__BASE_URL: http://vulcan-transpiler:4000/transpiler
-  VULCAN__GRAPHQL__BASE_URL: http://graphql:3000
-  VULCAN__GATEWAYS__DEFAULT__CONNECTION__HOST: warehouse
-  VULCAN__GATEWAYS__DEFAULT__CONNECTION__PORT: 5432
+  vulcan: &vulcan_image "vulcan:${VERSION:-0.225.0-dev}"
+  vulcan-transpiler: &vulcan_transpiler_image "vulcan-transpiler:${VERSION:-0.225.0-dev}"
+  vulcan-graphql: &vulcan_graphql_image "vulcan-graphql:${VERSION:-0.225.0-dev}"
 
 networks:
   vulcan:
     external: true
 
 services:
-  # Vulcan API
+  # Vulcan API for this example project
   vulcan-api:
     image: *vulcan_image
     working_dir: /workspace
     command: ["vulcan", "--log-to-stdout","api", "--host", "0.0.0.0", "--port", "8000"]
     environment:
-      <<: [*shared_environment]
       PROJECT_PATH: ${PROJECT_PATH:-/workspace}
     ports:
       - "8000:8000"
@@ -197,12 +197,13 @@ services:
     restart: unless-stopped
     networks:
       - vulcan
+    # Note: depends_on with external services (statestore, minio) won't work across compose files
+    # Ensure infra services are running before starting this service
 
   # Transpiler service
   vulcan-transpiler:
     image: *vulcan_transpiler_image
     environment:
-      <<: *shared_environment
       VULCAN_API_URL: http://vulcan-api:8000/api/v1
     depends_on:
       - vulcan-api
@@ -210,19 +211,20 @@ services:
     networks:
       - vulcan
 
-  # Vulcan shell
-  vulcan-shell:
-    image: *vulcan_image
-    working_dir: /workspace
-    command: ["/bin/bash"]
+
+  # Vulcan GraphQL service
+  vulcan-graphql:
+    image: *vulcan_graphql_image
     environment:
-      <<: [*shared_environment]
-    tty: true
-    stdin_open: true
-    volumes:
-      - ../:/workspace
+      VULCAN_API_URL: http://vulcan-api:8000
+      VULCAN_TRANSPILER_URL: http://vulcan-transpiler:4000
+    depends_on:
+      - vulcan-api
+      - vulcan-transpiler
+    restart: unless-stopped
     networks:
       - vulcan
+
 ```
 
 ## Step 3: Create a Makefile (Optional but Recommended)
@@ -230,7 +232,7 @@ services:
 Create a `Makefile` in your project root for convenient commands:
 
 ```makefile
-.PHONY: help network infra warehouse vulcan-shell vulcan-api vulcan-up setup all-down infra-down warehouse-down vulcan-down
+.PHONY: help network infra warehouse vulcan vulcan-shell vulcan-api vulcan-up setup all-down infra-down warehouse-down vulcan-down clean-volumes all-clean
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -260,16 +262,10 @@ setup: network infra warehouse ## Run all setup steps (network + infra + warehou
 	@echo "Setup complete! Infrastructure and warehouse are running."
 	@echo "You can now run 'make vulcan-shell' to start working with Vulcan."
 
-vulcan-shell: ## Run Vulcan Shell interactively
-	@echo "Starting Vulcan Shell interactive session..."
-	docker compose -f docker/docker-compose.vulcan.yml run --rm vulcan-shell
-
-vulcan-api: ## Start Vulcan API services - API and transpiler
+vulcan-up: ## Start Vulcan API services - API and transpiler (Getting Started Step 3)
 	@echo "Starting Vulcan API services..."
 	docker compose -f docker/docker-compose.vulcan.yml up -d
-	@echo "Vulcan API is available at http://localhost:8000"
-
-vulcan-up: vulcan-api ## Alias for vulcan-api
+	@echo "Vulcan API is available at http://localhost:8000/redoc"
 
 vulcan-down: ## Stop Vulcan services
 	@echo "Stopping Vulcan services..."
@@ -285,6 +281,13 @@ warehouse-down: ## Stop warehouse services
 
 all-down: vulcan-down infra-down warehouse-down ## Stop all services
 	@echo "All services stopped."
+
+all-clean: all-down ## Stop all services and remove all volumes
+	@echo "Removing all Docker volumes..."
+	@docker compose -f docker/docker-compose.infra.yml down -v || true
+	@docker compose -f docker/docker-compose.warehouse.yml down -v || true
+	@docker compose -f docker/docker-compose.vulcan.yml down -v || true
+	@echo "All volumes removed."
 ```
 
 ## Step 4: Setup Infrastructure
@@ -408,6 +411,8 @@ The scaffold generator will create:
 - `audits/` - Directory for audit files
 - `tests/` - Directory for test files
 - `macros/` - Directory for macro files
+- `checks/` - Directory for checks files
+- `semantics/` - Directory for semantics files
 
 ### Update Configuration
 
@@ -458,12 +463,7 @@ Enter `y` when prompted to apply the plan and backfill your models.
 If you want to use Vulcan's API endpoints (for querying, transpiler, etc.), start the API services:
 
 ```bash
-make vulcan-api
-```
-
-Or directly:
-```bash
-docker compose -f docker/docker-compose.vulcan.yml up -d
+make vulcan-up
 ```
 
 This starts:

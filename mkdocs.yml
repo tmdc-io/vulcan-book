@@ -32,6 +32,7 @@ nav:
       - guides/model_selection.md
     - Vulcan tools:
       - guides/linter.md
+      - guides/transpiling.md
     - Advanced usage:
       # - guides/customizing_vulcan.md
       - guides/signals.md
