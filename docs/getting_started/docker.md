@@ -174,9 +174,8 @@ Create `docker/docker-compose.vulcan.yml`:
 
 ```yaml
 x-images:
-  vulcan: &vulcan_image "vulcan:${VERSION:-0.225.0-dev}"
-  vulcan-transpiler: &vulcan_transpiler_image "vulcan-transpiler:${VERSION:-0.225.0-dev}"
-  #vulcan-graphql: &vulcan_graphql_image "vulcan-graphql:${VERSION:-0.225.0-dev}"
+  vulcan: &vulcan_image "tmdcio/vulcan:${VERSION:-0.225.0-dev}"
+  vulcan-transpiler: &vulcan_transpiler_image "tmdcio/vulcan-transpiler:${VERSION:-0.225.0-dev}"
 
 networks:
   vulcan:
@@ -207,20 +206,6 @@ services:
       VULCAN_API_URL: http://vulcan-api:8000/api/v1
     depends_on:
       - vulcan-api
-    restart: unless-stopped
-    networks:
-      - vulcan
-
-
-  # Vulcan GraphQL service
-  vulcan-graphql:
-    image: *vulcan_graphql_image
-    environment:
-      VULCAN_API_URL: http://vulcan-api:8000
-      VULCAN_TRANSPILER_URL: http://vulcan-transpiler:4000
-    depends_on:
-      - vulcan-api
-      - vulcan-transpiler
     restart: unless-stopped
     networks:
       - vulcan
