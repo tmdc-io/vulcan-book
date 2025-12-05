@@ -1,7 +1,7 @@
 site_name: DataOS Vulcan
 site_description: Complete documentation for Vulcan - complete stack for building data products
 site_author: DataOS Vulcan Team
-site_url: https://tmdc-io.github.io/vulcan-book
+site_url: https://tmdc-io.github.io/vulcan-docs
 
 repo_name: tmdc-io/vulcan-book
 repo_url: https://github.com/tmdc-io/vulcan-book
