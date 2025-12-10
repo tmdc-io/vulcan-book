@@ -1,54 +1,487 @@
-.md-typeset .admonition.question,
-.md-typeset details.question{
-    border-color: rgb(68, 138, 255);
+/* --------------------------------------------------------------------
+   Bento-like theme (merged & adapted from your two CSS blocks)
+   - Warm cream background
+   - Coral/pink accents
+   - Soft brown headings/text
+   -------------------------------------------------------------------- */
+
+/* Palette (tweak these to taste) */
+:root{
+  --bg-cream: #FBF2EB;            /* page background */
+  --panel-cream: #F7E9E2;         /* panels & subtle surfaces */
+  --accent-coral: #E57466;        /* primary accent (buttons/titles) */
+  --accent-coral-10: rgba(229,116,102,0.10); /* translucent accent */
+  --accent-peach: #F2B07A;        /* secondary accent for tips */
+  --muted-grey: #9e9e9e;
+  --text-brown: #4A2F27;          /* primary copy color */
+  --heading-brown: #3C261E;
+  --shadow-soft: 0 6px 0 rgba(0,0,0,0.06);
+  --admonition-border-question: #E86E6E;
+  --admonition-border-tip: #F0A86A;
+  --nav-font-size-sm: 0.75rem;
+  --toc-font-size: 0.7rem;
+  --md-primary-fg-color: #2b1e18;   /* was #3C64E2 */
+  --md-accent-fg-color: var(--accent-coral); /* keep your coral for accents */
 }
 
+/* overall background */
+body,
+.md-main__inner,
+.md-content__inner {
+  background-color: var(--bg-cream);
+  color: var(--text-brown);
+}
+
+/* Remove header shadow (keeps the clean bento bar) */
+.md-header,
+.md-header--shadow {
+  box-shadow: none !important;
+  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.00));
+}
+.md-header .md-header__inner {
+  background-color: #2b1e18 !important;    /* dark header background */
+  background-image: none !important;       /* remove any blue gradient */
+  color: #ffffff !important;               /* header text/icons white */
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Sidebar spacing & fonts */
+:root {
+  --md-nav-link-font-size: var(--nav-font-size-sm);
+  --md-nav-title-font-size: 0.85rem;
+  --md-toc-font-size: var(--toc-font-size);
+}
+
+.md-sidebar--primary .md-nav__link,
+.md-sidebar--secondary .md-nav__link {
+  line-height: 1.3 !important;
+  font-size: var(--md-nav-link-font-size);
+  color: var(--heading-brown);
+}
+
+.md-sidebar--primary .md-nav__title,
+.md-sidebar--secondary .md-nav__title,
+.md-nav__title,
+.md-nav__item .md-nav__title {
+  font-weight: 600 !important;
+  color: var(--heading-brown);
+}
+
+/* compact sidebar items */
+.md-nav__item {
+  margin: 0.12rem 0 !important;
+}
+
+/* hover & focus for accessibility */
+.md-nav__link:hover,
+.md-nav__link:focus {
+  color: var(--accent-coral) !important;
+  outline: 2px solid rgba(229,116,102,0.12);
+  outline-offset: 2px;
+}
+
+/* Page headings */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  color: var(--heading-brown);
+  font-weight: 700;
+}
+
+/* Buttons (Get Started style) */
+.md-typeset .button,
+a.md-button,
+button.md-button {
+  background: linear-gradient(180deg, var(--panel-cream), #f2d2cc);
+  color: var(--heading-brown);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* Tabs last item icon — keeps your existing path but sizes + spacing tuned for the theme */
+.md-tabs__item:last-child a::before {
+  content: "";
+  background: transparent url("../images/vulcan-white.svg") center left no-repeat;
+  background-size: contain;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  display: inline-block;
+  margin-bottom: -4px;
+}
+
+/* Code block styling */
+.md-typeset pre > code {
+  border-radius: 0.4rem;
+  background: #fff7f4;
+  padding: 0.8rem;
+  display: block;
+  overflow-x: auto;
+}
+
+/* Make long code blocks scroll horizontally */
+.md-typeset .highlight {
+  overflow-x: auto;
+}
+
+/* Tabbed sets */
+.md-typeset .tabbed-set {
+  border-radius: 0.4rem;
+  background: var(--panel-cream);
+  padding: 0.4rem;
+}
+
+/* --------------------
+   Admonitions (question, tip, note) — warm Bento style
+   -------------------- */
+
+/* Question admonition converts from original blue -> coral */
+.md-typeset .admonition.question,
+.md-typeset details.question {
+  border-color: var(--admonition-border-question);
+  background: linear-gradient(180deg, rgba(232,110,110,0.03), rgba(0,0,0,0));
+  border-radius: 8px;
+  padding: 0.2rem;
+}
+
+/* Title / summary for question */
 .md-typeset .question > .admonition-title,
 .md-typeset .question > summary {
-    background-color: rgba(68, 138, 255, 0.1);
-
-    &::before {
-      background-color: rgb(68, 138, 255);
-    }
-
-    &::after {
-      color: rgb(68, 138, 255);
-    }
+  background-color: var(--accent-coral-10);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--heading-brown);
 }
 
+/* decorative pseudo elements adapted */
+.md-typeset .question > .admonition-title::before,
+.md-typeset .question > summary::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--admonition-border-question);
+  margin-right: 6px;
+}
+
+/* if your theme uses ::after icons/text adjust color */
+.md-typeset .question > .admonition-title::after,
+.md-typeset .question > summary::after {
+  color: var(--admonition-border-question);
+}
+
+/* Tip admonition (mapped from blue -> peach) */
 .md-typeset .admonition.tip,
-.md-typeset details.tip{
-    border-color: rgb(61, 100, 226);
+.md-typeset details.tip {
+  border-color: var(--admonition-border-tip);
+  background: linear-gradient(180deg, rgba(242,160,106,0.03), rgba(0,0,0,0));
+  border-radius: 8px;
+  padding: 0.2rem;
 }
 
 .md-typeset .tip > .admonition-title,
 .md-typeset .tip > summary {
-    background-color: rgba(61, 100, 226, 0.1);
-
-    &::before {
-      background-color: #3D64E2;
-    }
-
-    &::after {
-      color: #3D64E2;
-    }
+  background-color: rgba(242,160,106,0.10);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--heading-brown);
 }
 
-.md-nav__link {
-    word-break: break-word;
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--admonition-border-tip);
+  display: inline-block;
+  margin-right: 6px;
 }
 
+.md-typeset .tip > .admonition-title::after,
+.md-typeset .tip > summary::after {
+  color: var(--admonition-border-tip);
+}
+
+/* Note admonitions styled muted/grey but warm background */
+.md-typeset .admonition.note,
+.md-typeset details.note {
+  border-color: var(--muted-grey);
+}
+
+.md-typeset .note > .admonition-title,
+.md-typeset .note > summary {
+  background-color: rgba(158,158,158,0.08);
+  border-color: var(--muted-grey);
+  color: var(--text-brown);
+}
+
+.md-typeset .note > .admonition-title::before,
+.md-typeset .note > summary::before {
+  background-color: var(--muted-grey);
+  -webkit-mask-image: var(--md-admonition-icon--note);
+  mask-image: var(--md-admonition-icon--note);
+}
+
+/* adjust the default accent color used widely by MD Kit */
 :root {
-  --md-primary-fg-color: #3C64E2;
+  --md-accent-fg-color: var(--accent-coral);
 }
 
-.md-tabs__item:last-child a::before {
-    content: "";
-    background: transparent url("../images/vulcan-white.svg") center left no-repeat;
-    background-size: contain;
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    display: inline-block;
-    margin-bottom: -4px;
+/* Slightly rounded cards and softer shadows across the page */
+.md-typeset .card,
+.md-typeset .admonition,
+.md-content__inner > .section {
+  border-radius: 10px;
+  box-shadow: none;
+  background: transparent;
 }
+
+/* small adjustment to make the "Get Started" / CTA pop */
+.md-typeset .button--primary,
+a.md-button--primary {
+  background: linear-gradient(180deg, #F7BEB4, #F0A49A);
+  color: var(--heading-brown);
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 8px 0 rgba(224,119,102,0.14);
+}
+
+/* readability for long paragraphs and lists */
+.md-typeset p,
+.md-typeset li {
+  line-height: 1.6;
+  color: var(--text-brown);
+}
+
+/* small tweak: break long nav links */
+.md-nav__link {
+  word-break: break-word;
+}
+
+/* small visual polish on sidebar: separator color and background */
+.md-sidebar {
+  background: linear-gradient(180deg, var(--panel-cream), var(--bg-cream));
+  border-right: 1px solid rgba(0,0,0,0.03);
+}
+
+/* small responsive tweak for table-of-contents */
+@media (max-width: 900px) {
+  .md-sidebar--secondary {
+    display: none;
+  }
+}
+/* --- Full-width + flex layout for mdkit-style layout --- */
+
+/* Make the main wrapper full width */
+.md-main,
+.md-main__inner,
+.md-content__inner {
+  max-width: none !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Create a flexible two-column layout: primary sidebar | content | secondary (toc) */
+.md-main__inner {
+  display: flex;
+  gap: 1.5rem;                /* space between columns */
+  align-items: flex-start;
+  align-content: flex-start;
+  padding: 1.5rem;            /* outer padding */
+}
+
+/* Left sidebar (primary navigation) */
+.md-sidebar--primary {
+  flex: 0 0 240px;            /* fixed-ish width but flexible shrink */
+  min-width: 180px;
+  max-width: 300px;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+}
+
+/* Main content region - take remaining width */
+.md-content {
+  flex: 1 1 auto;
+  min-width: 0;              /* allows children to shrink properly */
+  padding: 0 1rem;
+}
+
+/* Secondary sidebar (table of contents / right column) */
+.md-sidebar--secondary {
+  flex: 0 0 220px;
+  min-width: 160px;
+  max-width: 300px;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Make content column visually full-bleed but keep inner readability width */
+.md-content__inner > .section,
+.md-typeset {
+  max-width: 1200px;         /* controls line-length for readability */
+  margin: 0 auto;
+  padding: 0 0.5rem;
+}
+
+/* Mobile-first: collapse to single column on narrow screens */
+@media (max-width: 1100px) {
+  .md-main__inner {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .md-sidebar--primary,
+  .md-sidebar--secondary,
+  .md-content {
+    flex: none;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  /* hide secondary TOC on smaller devices if you prefer */
+  .md-sidebar--secondary {
+    display: none;
+  }
+
+  /* Slightly larger padding for touch devices */
+  .md-content__inner > .section,
+  .md-typeset {
+    padding: 0 1rem;
+  }
+}
+
+/* smaller mobile polish */
+@media (max-width: 600px) {
+  .md-main__inner {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .md-sidebar--primary {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .md-content__inner > .section {
+    padding: 0;
+  }
+}
+/* 1) Kill stray margins/padding under the top nav */
+.md-header,
+.md-nav,
+.md-tabs,
+.md-toolbar,
+.md-banner,
+.md-hero,
+.md-header--shadow {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* 2) Ensure the main content sits directly under the nav */
+.md-main__inner,
+.md-main,
+.md-content,
+.md-content__inner {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 3) If theme created an empty spacer element immediately after header,
+   collapse elements that commonly appear there. Be specific to avoid hiding useful elements. */
+.md-header + .md-banner,
+.md-header + .md-toolbar,
+.md-header + .md-nav,
+.md-header + .md-header--shadow {
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 4) If you find a named spacer class (e.g. .header-spacer) set it to 0 */
+.header-spacer,
+.md-anchor-offset,
+.md-header-spacer {
+  height: 0 !important;
+  display: none !important;
+}
+
+/* Remove the Material blue bar from the tab navigation */
+.md-tabs {
+  background-color: var(--panel-cream) !important;   /* or var(--bg-cream) */
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(0,0,0,0.05);          /* optional soft line */
+}
+
+/* Ensure tab links match your theme */
+.md-tabs__link {
+  color: var(--heading-brown) !important;
+}
+
+.md-tabs__link--active {
+  color: var(--accent-coral) !important;
+  border-bottom-color: var(--accent-coral) !important;
+}
+/* Flex the entire header row */
+.md-header__inner {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;    /* spreads items across the bar */
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Allow inner blocks to shrink/grow normally */
+.md-header__title {
+  flex: 1 1 auto;                     /* expands title area */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The logo should stay small */
+.md-logo {
+  flex: 0 0 auto;
+}
+
+/* Search bar container */
+.md-search {
+  flex: 0 1 260px;                    /* lets search shrink on small screens */
+  min-width: 140px;
+}
+
+/* Repo info widget */
+.md-header__source {
+  flex: 0 0 auto;                     /* avoid squishing the GitHub block */
+}
+
+/* Optional: tighter mobile layout */
+@media (max-width: 700px) {
+  .md-header__inner {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .md-search {
+    order: 3;
+    flex: 1 1 100%;
+  }
+
+  .md-header__source {
+    order: 4;
+  }
+}
+
+/* End of theme */
