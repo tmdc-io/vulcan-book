@@ -100,17 +100,7 @@ button.md-button {
   border: 1px solid rgba(0,0,0,0.04);
 }
 
-/* Tabs last item icon — keeps your existing path but sizes + spacing tuned for the theme */
-.md-tabs__item:last-child a::before {
-  content: "";
-  background: transparent url("../images/vulcan-white.svg") center left no-repeat;
-  background-size: contain;
-  width: 18px;
-  height: 18px;
-  margin-right: 8px;
-  display: inline-block;
-  margin-bottom: -4px;
-}
+/* Tabs last item icon — removed: was incorrectly targeting last nav tab */
 
 /* Code block styling */
 .md-typeset pre > code {
@@ -483,5 +473,177 @@ a.md-button--primary {
     order: 4;
   }
 }
+
+/* ---------- DEBUG (temporary) ----------
+   Uncomment to visualize header boxes while debugging.
+   Remove after layout is correct.
+*/
+/*
+.md-header * {
+  outline: 1px dashed rgba(255,0,255,0.08) !important;
+}
+*/
+
+/* ---------- Force header to be a responsive flex row ---------- */
+
+/* Ensure header itself spans the full width */
+header.md-header,
+.md-header {
+  display: block !important;
+  width: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Make the inner container a true flex row and remove restrictive max-widths */
+.md-header .md-header__inner,
+.md-header__inner {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  width: 100% !important;
+  max-width: none !important;     /* remove any centered max-width */
+  padding: 0.5rem 1rem !important;/* adjust as needed */
+  box-sizing: border-box !important;
+}
+
+/* Prevent children from being forced to block widths by the theme */
+.md-header .md-header__inner > *,
+.md-header__inner > * {
+  min-width: 0 !important;    /* allows flex children to shrink */
+}
+
+/* Logo / hamburger area - keep compact */
+.md-header__logo,
+.md-logo,
+.md-header__button.md-logo,
+.md-header .md-header__button {
+  flex: 0 0 auto !important;
+  margin-right: 0.5rem !important;
+}
+
+/* Title area should expand and ellipsize when necessary */
+.md-header__title,
+.md-header .md-header__title,
+.md-header__title > * {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;     /* critical for truncation inside flex */
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Search area: can shrink but keep a sensible preferred width */
+.md-search,
+.md-header .md-search,
+.md-header__search {
+  flex: 0 1 320px !important;   /* preferred width, but will shrink */
+  min-width: 120px !important;
+  max-width: 48% !important;
+  box-sizing: border-box !important;
+}
+
+/* Tools / repo block stay on the right */
+.md-header__tools,
+.md-header .md-header__tools,
+.md-header__source,
+.md-header .md-header__source {
+  flex: 0 0 auto !important;
+  margin-left: 0.5rem !important;
+}
+
+/* If the theme uses a separate nav/tabs row below header, make it full-width as well */
+.md-tabs,
+.md-nav,
+.md-tabs__container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* ---------- Mobile wrapping rules ---------- */
+@media (max-width: 900px) {
+  .md-header .md-header__inner,
+  .md-header__inner {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+
+  /* Make title full width on small screens (so it doesn't collide) */
+  .md-header__title {
+    order: 2 !important;
+    width: 100% !important;
+    text-align: left !important;
+    white-space: normal !important; /* allow wrapping on tiny screens */
+  }
+
+  /* Push the search to its own row */
+  .md-search {
+    order: 3 !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+
+  .md-header__tools {
+    order: 4 !important;
+    width: auto !important;
+  }
+}
+
+/* ---------- Final safety: undo any inline background on inner */
+.md-header .md-header__inner {
+  background: transparent !important;
+}
+
+
+/* Darker brown header — clean + global */
+.md-header,
+.md-header__inner,
+.md-toolbar {
+  background-color: #241611 !important;  /* your darker brown */
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure text + icons stay readable */
+.md-header,
+.md-header * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Remove the cream band that sometimes appears under the header */
+.md-header + .md-tabs,
+.md-header + .md-banner,
+.md-header--shadow {
+  background-color: #241611 !important;
+  box-shadow: none !important;
+}
+
+/* Darker subheader (the tabs bar under the header) */
+.md-tabs,
+.md-tabs__inner {
+  background-color: #3a2a22 !important;   /* slightly lighter than header, but darker than cream */
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(0,0,0,0.15);  /* optional subtle line */
+}
+
+/* Make tab text readable on dark background */
+.md-tabs__link {
+  color: #f7e9e2 !important;               /* soft cream text */
+}
+
+/* Active tab highlight (coral underline) */
+.md-tabs__link--active {
+  color: #ffffff !important;
+  border-color: var(--accent-coral) !important;
+}
+
 
 /* End of theme */
