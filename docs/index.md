@@ -1,4 +1,4 @@
-#
+# About
 
 Vulcan is a complete stack for building data products.
 

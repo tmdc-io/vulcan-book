@@ -8,99 +8,179 @@ repo_url: https://github.com/tmdc-io/vulcan-book
 edit_uri: edit/main/docs/
 
 nav:
-  - "Overview": index.md
-  - Get started:
-    - getting_started/index.md
-    - getting_started/prerequisites.md
-    - getting_started/docker.md
-    - getting_started/cli.md
-  - Guides:
-    - Project structure:
-      - guides/projects.md
-    - Project setup:
+  - "Docs": 
+    - About:
+      - index.md
+    - Config & Engines:
+      - Engines:
+        - integrations/engines/postgres.md
+        - integrations/engines/bigquery.md
+        - integrations/engines/databricks.md
+        - integrations/engines/duckdb.md
+        - integrations/engines/motherduck.md
+        - integrations/engines/mssql.md
+        - integrations/engines/mysql.md
+        - integrations/engines/redshift.md
+        - integrations/engines/snowflake.md
+      - Reference:
+        - reference/configuration.md
+      - CI/CD:
+        - ci-cd/index.md
+    - Components:
+      - Model:
+        - Conventions:
+          - concepts/overview.md
+        - Core Properties:
+          - concepts/models/overview.md
+        - Advanced Properties:
+          - concepts/models/overview.md
+        - Statements:
+          - concepts/models/overview.md
+        - Model Types:
+          - concepts/models/sql_models.md
+          - concepts/models/python_models.md
+          - concepts/models/external_models.md
+          - concepts/models/managed_models.md
+        - Model Kinds:
+          - concepts/models/model_kinds.md
+      - Test:
+        - concepts/tests.md
+      - Audit:
+        - concepts/audits.md
+      - Check:
+        - concepts/checks.md
+      - Advanced:
+        - Macro:
+          - concepts/macros/overview.md
+          - concepts/macros/macro_variables.md
+          - concepts/macros/vulcan_macros.md
+          - concepts/macros/jinja_macros.md
+        - Signals:
+          - guides/signals.md
+        - Custom Materialization:
+          - guides/custom_materializations.md
+      - Semantics:
+        - concepts/semantics/overview.md
+        - concepts/semantics/models.md
+        - concepts/semantics/metrics.md
+    - Guides:
+      - Get Started:
+        - getting_started/index.md
+        - getting_started/prerequisites.md
+        - getting_started/docker.md
       - guides/configuration.md
-      - guides/connections.md
       - guides/scheduling.md
-      - guides/notifications.md
-      - guides/migrations.md
-      - guides/table_migration.md
-      - guides/custom_materializations.md
-    - Project content:
       - guides/models.md
       - guides/incremental_time.md
-      - guides/testing.md
+      - Data Quality Guide:
+        - guides/testing.md
+        - guides/audits.md
+        - guides/checks.md
       - guides/model_selection.md
-    - Vulcan tools:
-      - guides/linter.md
-      - guides/transpiling.md
-    - Advanced usage:
-      # - guides/customizing_vulcan.md
-      - guides/signals.md
-  - Concepts:
-    - concepts/overview.md
-    - Development:
-      - concepts/plans.md
-      - concepts/environments.md
-      - concepts/tests.md
-      - concepts/audits.md
-      - concepts/checks.md
-      - concepts/state.md
-    - Models:
-      - concepts/models/overview.md
-      - concepts/models/model_kinds.md
-      - concepts/models/sql_models.md
-      - concepts/models/python_models.md
-      - concepts/models/seed_models.md
-      - concepts/models/external_models.md
-      - concepts/models/managed_models.md
-    - Semantics:
-      - concepts/semantics/index.md
-      - concepts/semantics/models.md
-      - concepts/semantics/metrics.md
+      # - Federated Engines:
+      #   - guides/federated_engines.md
+      - Semantics Guide:
+        - guides/transpiling.md
+      - Advanced:
+        - guides/linter.md
+
+
+  - "Cookbook":
+    - cookbook/index.md
+  - "FAQ":
+    - faq/index.md
+  # - Get started:
+  #   - getting_started/index.md
+  #   - getting_started/prerequisites.md
+  #   - getting_started/docker.md
+  #   - getting_started/cli.md
+  # - Guides:
+  #   - Project structure:
+  #     - guides/projects.md
+  #   - Project setup:
+  #     - guides/configuration.md
+  #     - guides/connections.md
+  #     - guides/scheduling.md
+  #     - guides/notifications.md
+  #     - guides/migrations.md
+  #     - guides/table_migration.md
+  #     - guides/custom_materializations.md
+  #   - Project content:
+  #     - guides/models.md
+  #     - guides/incremental_time.md
+  #     - guides/testing.md
+  #     - guides/model_selection.md
+  #   - Vulcan tools:
+  #     - guides/linter.md
+  #     - guides/transpiling.md
+  #   - Advanced usage:
+  #     # - guides/customizing_vulcan.md
+  #     - guides/signals.md
+  # - Concepts:
+  #   - concepts/overview.md
+  #   - Development:
+  #     - concepts/plans.md
+  #     - concepts/environments.md
+  #     - concepts/tests.md
+  #     - concepts/audits.md
+  #     - concepts/checks.md
+  #     - concepts/state.md
+  #   - Models:
+  #     - concepts/models/overview.md
+  #     - concepts/models/model_kinds.md
+  #     - concepts/models/sql_models.md
+  #     - concepts/models/python_models.md
+  #     - concepts/models/seed_models.md
+  #     - concepts/models/external_models.md
+  #     - concepts/models/managed_models.md
+  #   - Semantics:
+  #     - concepts/semantics/index.md
+  #     - concepts/semantics/models.md
+  #     - concepts/semantics/metrics.md
             
-    - Macros:
-      - concepts/macros/overview.md
-      - concepts/macros/macro_variables.md
-      - concepts/macros/vulcan_macros.md
-      - concepts/macros/jinja_macros.md
-    - Architecture:
-      - concepts/architecture/snapshots.md
-      - concepts/architecture/serialization.md
-    - concepts/glossary.md
-  - Examples:
-    - Overview: examples/overview.md
-    # - Walkthroughs:
-    #   - examples/vulcan_cli_crash_course.md
-    #   - examples/incremental_time_full_walkthrough.md
-  - Engines:
-    - integrations/engines/postgres.md
-      # - integrations/engines/athena.md
-      # - integrations/engines/azuresql.md
-      # - integrations/engines/bigquery.md
-      # - integrations/engines/clickhouse.md
-      # - integrations/engines/databricks.md
-      # - integrations/engines/duckdb.md
-      # - integrations/engines/fabric.md
-      # - integrations/engines/motherduck.md
-      # - integrations/engines/mssql.md
-      # - integrations/engines/mysql.md
-      # - integrations/engines/gcp-postgres.md
-      # - integrations/engines/redshift.md
-      # - integrations/engines/risingwave.md
-      # - integrations/engines/snowflake.md
-      # - integrations/engines/spark.md
-      # - integrations/engines/trino.md
-    - Coming Soon: integrations/engines/coming_soon.md      
-  # - Resources:
-  #   - comparisons.md
-  #   - development.md
-  - Reference:
-    - reference/cli.md
-      # - reference/notebook.md
-      # - reference/python.md
-    # - Configuration:
-      # - reference/configuration.md # TODO: Add back after due-diligence
-    - reference/model_configuration.md
+  #   - Macros:
+  #     - concepts/macros/overview.md
+  #     - concepts/macros/macro_variables.md
+  #     - concepts/macros/vulcan_macros.md
+  #     - concepts/macros/jinja_macros.md
+  #   - Architecture:
+  #     - concepts/architecture/snapshots.md
+  #     - concepts/architecture/serialization.md
+  #   - concepts/glossary.md
+  # - Examples:
+  #   - Overview: examples/overview.md
+  #   # - Walkthroughs:
+  #   #   - examples/vulcan_cli_crash_course.md
+  #   #   - examples/incremental_time_full_walkthrough.md
+  # - Engines:
+  #   - integrations/engines/postgres.md
+  #     # - integrations/engines/athena.md
+  #     # - integrations/engines/azuresql.md
+  #     # - integrations/engines/bigquery.md
+  #     # - integrations/engines/clickhouse.md
+  #     # - integrations/engines/databricks.md
+  #     # - integrations/engines/duckdb.md
+  #     # - integrations/engines/fabric.md
+  #     # - integrations/engines/motherduck.md
+  #     # - integrations/engines/mssql.md
+  #     # - integrations/engines/mysql.md
+  #     # - integrations/engines/gcp-postgres.md
+  #     # - integrations/engines/redshift.md
+  #     # - integrations/engines/risingwave.md
+  #     # - integrations/engines/snowflake.md
+  #     # - integrations/engines/spark.md
+  #     # - integrations/engines/trino.md
+  #   - Coming Soon: integrations/engines/coming_soon.md      
+  # # - Resources:
+  # #   - comparisons.md
+  # #   - development.md
+  # - Reference:
+  #   - reference/cli.md
+  #     # - reference/notebook.md
+  #     # - reference/python.md
+  #   # - Configuration:
+  #     # - reference/configuration.md # TODO: Add back after due-diligence
+  #   - reference/model_configuration.md
 
 theme:
   name: material
@@ -129,9 +209,9 @@ theme:
     - navigation.instant.prefetch  # Prefetch pages for faster loading
     - navigation.tracking       # Update URL with current section
     - navigation.tabs           # Top-level tabs in header
-    - navigation.tabs.sticky   # Sticky navigation tabs
-    - navigation.sections       # Group navigation sections
-    - navigation.expand         # Expand all sections by default
+    - navigation.tabs.sticky    # Sticky navigation tabs
+    # navigation.sections removed to enable collapsible toggle behavior
+    - navigation.indexes        # Section index pages are clickable
     - navigation.path           # Show navigation path
     - navigation.top            # Back to top button
 
