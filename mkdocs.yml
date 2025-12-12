@@ -74,6 +74,8 @@ nav:
       - guides/incremental_time.md
       - Data Quality Guide:
         - guides/testing.md
+        - guides/audits.md
+        - guides/checks.md
       - guides/model_selection.md
       # - Federated Engines:
       #   - guides/federated_engines.md
