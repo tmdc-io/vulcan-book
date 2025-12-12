@@ -120,29 +120,6 @@ MODEL (
 !!! info "More DDL Properties"
     For a complete list of all available model properties and their configurations, see the [Model Properties](./properties.md) reference .
 
-### DDL with Description and Column Comments
-
-You can enhance your DDL with descriptions and column-level documentation:
-
-```sql linenums="1" hl_lines="5-8"
--- Daily sales aggregated by order date
-MODEL (
-  name sales.daily_sales,
-  kind FULL,
-  cron '@daily',
-  grain order_date,
-  description 'Aggregated daily sales metrics including total orders and revenue',
-  column_descriptions (
-    order_date = 'The date of the sales transactions',
-    total_orders = 'Count of orders placed on this date',
-    total_revenue = 'Sum of all order amounts for this date',
-    last_order_id = 'The most recent order ID for this date'
-  )
-);
-```
-
----
-
 ## DML: The SELECT Query
 
 The `SELECT` query is the DML component that contains the transformation logic. It defines what data is selected, how it's transformed, and what columns appear in the final output.
@@ -215,6 +192,29 @@ SELECT
   total_amount + 1 AS adjusted,   -- explicitly adjusted
   SUM(total_amount) AS revenue    -- explicitly revenue
 ```
+
+#### Column Descriptions
+
+You can explicitly define column descriptions in the DDL using the `column_descriptions` property. This is the recommended approach for comprehensive documentation.
+
+```sql linenums="1" hl_lines="7-12"
+MODEL (
+  name sales.daily_sales,
+  kind FULL,
+  cron '@daily',
+  grain order_date,
+  description 'Aggregated daily sales metrics',
+  column_descriptions (
+    order_date = 'The date of the sales transactions',
+    total_orders = 'Count of orders placed on this date',
+    total_revenue = 'Sum of all order amounts for this date',
+    last_order_id = 'The most recent order ID for this date'
+  )
+);
+```
+
+!!! note "Priority"
+    If `column_descriptions` is present in the DDL, Vulcan will use these descriptions and **not** detect inline comments from the query.
 
 #### Inline Column Comments
 
