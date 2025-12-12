@@ -28,14 +28,13 @@ nav:
         - ci-cd/index.md
     - Components:
       - Model:
-        - Conventions:
-          - concepts/overview.md
+        - concepts/models/overview.md
         - Core Properties:
-          - concepts/models/overview.md
+          - concepts/models/properties.md
         - Advanced Properties:
-          - concepts/models/overview.md
+          - concepts/models/advanced_properties.md
         - Statements:
-          - concepts/models/overview.md
+          - concepts/models/statements.md
         - Model Types:
           - concepts/models/sql_models.md
           - concepts/models/python_models.md
