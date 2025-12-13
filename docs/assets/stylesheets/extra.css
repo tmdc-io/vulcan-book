@@ -661,4 +661,198 @@ a.md-button.download-button:hover {
   color: #ffffff !important;
 }
 
+/* Mermaid Diagram Zoom Functionality */
+.mermaid-zoom-wrapper {
+  position: relative;
+  cursor: zoom-in;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+  margin: 1.5rem 0;
+}
+
+.mermaid-zoom-wrapper:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mermaid-zoom-wrapper .mermaid {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mermaid-zoom-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mermaid-zoom-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+  line-height: 1.4;
+  max-width: 300px;
+  text-align: center;
+}
+
+.mermaid-zoom-wrapper:hover .mermaid-zoom-indicator {
+  opacity: 1;
+}
+
+/* Navigation Controls */
+.mermaid-zoom-controls {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  gap: 10px;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-controls {
+  display: flex;
+}
+
+.zoom-control-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.zoom-control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.zoom-control-btn:active {
+  transform: scale(0.95);
+}
+
+/* Zoomed state */
+.mermaid-zoom-wrapper.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  cursor: zoom-out;
+  overflow: hidden;
+  padding: 0;
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  cursor: grab;
+  padding: 40px;
+  box-sizing: border-box;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  /* Better scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container:active {
+  cursor: grabbing;
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid {
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6);
+  margin: auto;
+  display: block;
+  /* Prevent text selection when dragging */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .mermaid-zoom-controls {
+    bottom: 20px;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  
+  .zoom-control-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  
+  .mermaid-zoom-indicator {
+    font-size: 11px;
+    padding: 6px 10px;
+    max-width: 250px;
+  }
+  
+  .mermaid-zoom-wrapper.zoomed .mermaid-zoom-container {
+    padding: 20px;
+  }
+  
+  .mermaid-zoom-wrapper.zoomed .mermaid {
+    padding: 20px;
+  }
+}
+
 /* End of theme */

@@ -72,19 +72,19 @@ nav:
         # - getting_started/index.md
         # - getting_started/prerequisites.md
         
-      - guides/configuration.md
-      - guides/scheduling.md
+      # - guides/configuration.md
+      - guides/plan.md
+      - guides/run.md
       - guides/models.md
       - guides/incremental_time.md
-      - Data Quality Guide:
-        - guides/testing.md
-        - guides/audits.md
-        - guides/checks.md
+      - guides/data_quality.md        
       - guides/model_selection.md
-      # - Federated Engines:
+      - guides/federated_engines.md
+      - Virtual environments Guide:
+      - Vulcan API Guide:
+      - Table Creation Guide:
       #   - guides/federated_engines.md
-      - Semantics Guide:
-        - guides/transpiling.md
+      - guides/transpiling.md
       - Advanced:
         - guides/linter.md
 
@@ -303,6 +303,9 @@ markdown_extensions:
 
 extra_css:
   - assets/stylesheets/extra.css
+
+extra_javascript:
+  - assets/javascripts/mermaid-zoom.js
 
 copyright: |
   Copyright &copy; 2024 DataOS Vulcan Team<br>

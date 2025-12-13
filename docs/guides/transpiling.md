@@ -1,4 +1,4 @@
-# Transpiling Semantic Queries
+# Transpiling Semantics Guide
 
 The `vulcan transpile` command converts semantic queries into executable SQL, allowing you to preview, debug, and validate semantic logic before execution.
 

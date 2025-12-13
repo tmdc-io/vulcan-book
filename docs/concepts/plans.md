@@ -2,6 +2,105 @@
 
 A plan is a set of changes that summarizes the difference between the local state of a project and the state of a target [environment](environments.md). In order for any model changes to take effect in a target environment, a plan needs to be created and applied.
 
+## Plan Architecture Overview
+
+The following diagram illustrates the complete plan lifecycle, from local changes to environment updates:
+
+```mermaid
+flowchart TD
+    subgraph "1️⃣ Local Development"
+        A[👨‍💻 Developer modifies model files<br/>📝 Edit SQL/Python models]
+        B[📁 Local project state<br/>✨ Your changes ready]
+    end
+
+    subgraph "2️⃣ Plan Creation"
+        C[⚡ vulcan plan<br/>🚀 Command execution]
+        D[🔎 Compare local vs environment<br/>📊 State comparison]
+        E{🔍 Changes detected?}
+        F[📋 Generate plan summary<br/>✨ Plan ready for review]
+        G[🏷️ Change categorization<br/>🔴 Breaking / 🟢 Non-breaking / 🟡 Forward-only]
+    end
+
+    subgraph "3️⃣ Plan Review"
+        H[👀 Review plan output<br/>📊 Check changes & impacts]
+        I{✅ Apply plan?}
+        J[❌ Cancel<br/>🚫 No changes applied]
+    end
+
+    subgraph "4️⃣ Plan Application"
+        K[🔷 Create model variants<br/>🔑 With unique fingerprints]
+        L[🗄️ Create physical tables<br/>💾 In data warehouse]
+        M[🔄 Backfill data<br/>📈 Process historical data]
+        N[👁️ Update virtual layer<br/>🔍 Create/update views]
+        O[🌍 Update environment references<br/>🔗 Point to new variants]
+    end
+
+    subgraph "5️⃣ Result"
+        P[✅ Environment updated<br/>🎉 Changes deployed]
+        Q[🔍 Models accessible via views<br/>📊 Ready for queries]
+    end
+
+    A -->|"📤"| B
+    B -->|"➡️"| C
+    C -->|"🔍"| D
+    D -->|"🔎"| E
+    E -->|"✅ Yes"| F
+    E -->|"❌ No"| P
+    F -->|"🏷️"| G
+    G -->|"📋"| H
+    H -->|"👀"| I
+    I -->|"✅ Yes"| K
+    I -->|"❌ No"| J
+    K -->|"🔷"| L
+    L -->|"💾"| M
+    M -->|"🔄"| N
+    N -->|"👁️"| O
+    O -->|"🔗"| P
+    P -->|"✨"| Q
+
+    style A fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
+    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#000
+    style K fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
+    style P fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
+    style E fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    style I fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    style J fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
+```
+
+### Plan Components
+
+```mermaid
+graph LR
+    subgraph "📋 Plan Contents"
+        PC1[➕ Added Models<br/>✨ New models to create]
+        PC2[➖ Removed Models<br/>🗑️ Models to delete]
+        PC3[✏️ Modified Models<br/>📝 With diffs]
+        PC4[🔗 Indirectly Affected<br/>📊 Downstream models]
+        PC5[📅 Backfill Requirements<br/>📆 Date ranges]
+    end
+
+    subgraph "🏷️ Change Types"
+        CT1[🔴 Breaking Change<br/>⚠️ Requires downstream backfill<br/>💥 Cascading impact]
+        CT2[🟢 Non-Breaking Change<br/>✅ Only direct model backfill<br/>🎯 Isolated impact]
+        CT3[🟡 Forward-Only<br/>♻️ Reuses existing tables<br/>💰 Cost-effective]
+    end
+
+    PC3 -->|"🔴"| CT1
+    PC3 -->|"🟢"| CT2
+    PC3 -->|"🟡"| CT3
+    PC4 -->|"🔴"| CT1
+
+    style PC1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style PC2 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
+    style PC3 fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    style PC4 fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    style PC5 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style CT1 fill:#ffebee,stroke:#d32f2f,stroke-width:3px,color:#000
+    style CT2 fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
+    style CT3 fill:#fff9c4,stroke:#fbc02d,stroke-width:3px,color:#000
+```
+
 During plan creation:
 
 * The local state of the Vulcan project is compared to the state of a target environment. The difference between the two and the actions needed to synchronize the environment with the local state are what constitutes a plan.
@@ -28,6 +127,63 @@ If no environment name is specified, the plan is generated for the `prod` enviro
 Categories only need to be provided for models that have been modified directly. The categorization of indirectly modified downstream models is inferred based on the types of changes to the directly modified models.
 
 If more than one upstream dependency of an indirectly modified model has been modified and they have conflicting categories, the most conservative category (breaking) is assigned to this model.
+
+### Change Propagation Flow
+
+The following diagram illustrates how changes propagate through the dependency graph:
+
+```mermaid
+graph TD
+    subgraph "📊 Model Dependencies"
+        A[📥 raw.raw_orders<br/>⬆️ Upstream]
+        B[📊 sales.daily_sales<br/>🔄 Midstream]
+        C[📈 sales.weekly_sales<br/>⬇️ Downstream]
+        D[📉 analytics.revenue_report<br/>⬇️ Downstream]
+    end
+
+    subgraph "🟢 Scenario 1: Non-Breaking Change"
+        NB1[➕ Add column to daily_sales<br/>✨ New column added]
+        NB2[✅ Only daily_sales backfilled<br/>🔄 Single model update]
+        NB3[⏭️ weekly_sales NOT affected<br/>✅ No cascade]
+        NB4[⏭️ revenue_report NOT affected<br/>✅ No cascade]
+    end
+
+    subgraph "🔴 Scenario 2: Breaking Change"
+        BC1[🔍 Add WHERE clause to daily_sales<br/>⚠️ Filter logic changed]
+        BC2[🔄 daily_sales backfilled<br/>📊 Data reprocessed]
+        BC3[🔄 weekly_sales backfilled<br/>🔴 Indirect Breaking<br/>💥 Cascading impact]
+        BC4[🔄 revenue_report backfilled<br/>🔴 Indirect Breaking<br/>💥 Cascading impact]
+    end
+
+    A -->|"📤"| B
+    B -->|"📤"| C
+    B -->|"📤"| D
+
+    NB1 -->|"✏️"| B
+    B -->|"✅"| NB2
+    NB2 -.->|"⏭️ No cascade"| C
+    NB2 -.->|"⏭️ No cascade"| D
+
+    BC1 -->|"⚠️"| B
+    B -->|"🔄"| BC2
+    BC2 -->|"💥 Cascade"| BC3
+    BC2 -->|"💥 Cascade"| BC4
+    BC3 -->|"🔄"| C
+    BC4 -->|"🔄"| D
+
+    style A fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    style C fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    style D fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    style NB1 fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
+    style NB2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+    style NB3 fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+    style NB4 fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+    style BC1 fill:#ffebee,stroke:#d32f2f,stroke-width:3px,color:#000
+    style BC2 fill:#ffcdd2,stroke:#c62828,stroke-width:2px,color:#000
+    style BC3 fill:#ffcdd2,stroke:#c62828,stroke-width:2px,color:#000
+    style BC4 fill:#ffcdd2,stroke:#c62828,stroke-width:2px,color:#000
+```
 
 ### Breaking change
 If a directly modified model change is categorized as breaking, it and its downstream dependencies will be backfilled.
@@ -68,6 +224,64 @@ Once a plan has been created and reviewed, it is then applied to the target [env
 Every time a model is changed as part of a plan, a new variant of this model gets created behind the scenes (a [snapshot](architecture/snapshots.md) with a unique [fingerprint](architecture/snapshots.md#fingerprinting) is assigned to it). In turn, each model variant's data is stored in a separate physical table. Data between different variants of the same model is never shared, except for [forward-only](#forward-only-plans) plans.
 
 When a plan is applied to an environment, the environment gets associated with the set of model variants that are part of that plan. In other words, each environment is a collection of references to model variants and the physical tables associated with them.
+
+### Model Versioning Architecture
+
+The following diagram shows how model variants, physical tables, and environments relate:
+
+```mermaid
+graph TB
+    subgraph "📝 Model Definitions"
+        M1[📊 Model: sales.daily_sales<br/>🔢 Version 1<br/>✨ Original]
+        M2[📊 Model: sales.daily_sales<br/>🔢 Version 2 - Modified<br/>✏️ Updated]
+    end
+
+    subgraph "🔷 Model Variants & Snapshots"
+        V1[🔷 Variant 1<br/>🔑 Fingerprint: abc123<br/>📸 Unique snapshot]
+        V2[🔷 Variant 2<br/>🔑 Fingerprint: def456<br/>📸 Unique snapshot]
+        S1[📸 Snapshot 1<br/>🔐 Immutable state]
+        S2[📸 Snapshot 2<br/>🔐 Immutable state]
+    end
+
+    subgraph "💾 Physical Tables"
+        T1[🗄️ Physical Table 1<br/>📦 db.vulcan__sales.daily_sales__abc123<br/>💾 Actual data storage]
+        T2[🗄️ Physical Table 2<br/>📦 db.vulcan__sales.daily_sales__def456<br/>💾 Actual data storage]
+    end
+
+    subgraph "👁️ Virtual Layer Views"
+        VL1[🔍 View: sales.daily_sales<br/>👁️ Points to Variant 1<br/>🔗 Reference mapping]
+        VL2[🔍 View: sales.daily_sales<br/>👁️ Points to Variant 2<br/>🔗 Reference mapping]
+    end
+
+    subgraph "🌍 Environments"
+        PROD[🚀 Production Environment<br/>✅ References Variant 1<br/>🌐 Live production data]
+        DEV[🧪 Dev Environment<br/>🔬 References Variant 2<br/>🧪 Testing environment]
+    end
+
+    M1 -->|"✨"| V1
+    M2 -->|"✏️"| V2
+    V1 -->|"📸"| S1
+    V2 -->|"📸"| S2
+    S1 -->|"💾"| T1
+    S2 -->|"💾"| T2
+    T1 -->|"👁️"| VL1
+    T2 -->|"👁️"| VL2
+    PROD -->|"🔗"| V1
+    DEV -->|"🔗"| V2
+
+    style M1 fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
+    style M2 fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
+    style V1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style V2 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    style S1 fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+    style S2 fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+    style T1 fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:#000
+    style T2 fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:#000
+    style VL1 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style VL2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style PROD fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
+    style DEV fill:#ffe082,stroke:#f9a825,stroke-width:3px,color:#000
+```
 
 ![Each model variant gets its own physical table, while environments only contain references to these tables](plans/model_versioning.png)
 

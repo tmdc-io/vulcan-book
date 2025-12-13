@@ -1,342 +1,626 @@
 # Model Selection Guide
 
-This guide describes how to select specific models to include in a Vulcan plan, which can be useful when modifying a subset of the models in a Vulcan project.
+This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is useful when you only want to test or apply changes to a subset of your models.
 
-Note: the selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../concepts/plans.md#destructive-changes).
+**Note:** The selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../concepts/plans.md#destructive-changes).
+
+---
 
 ## Background
 
-A Vulcan [plan](../concepts/plans.md) automatically detects changes between the local version of a project and the version deployed in an environment. When applied, the plan backfills the directly modified models and their indirectly modified downstream children. This brings all model data into alignment with the local version of the project.
+A Vulcan [plan](../concepts/plans.md) automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.
 
-In large Vulcan projects, a single model change may impact many downstream models, such that evaluating it and its affected children takes a significant amount of time. In some situations, a user is blocked by the long run time and can accomplish their task without backfilling all changed models and affected children.
+In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything.
 
-Vulcan model selection allows you to filter which direct model changes should be included into a plan. This can be useful when you only need to inspect the results of some of the model changes you have made.
+**Key Concept:**
+- **Directly Modified**: Models you changed in your code
+- **Indirectly Modified**: Downstream models affected by your changes
 
-Model selections only apply to models that have been directly modified. Selected models' indirectly modified children are always included in the plan, unless you additionally specify which models to backfill (more information [below](#backfill)).
+*[Screenshot: Visual showing directly vs indirectly modified models]*
+
+---
+
+## Understanding Model Dependencies
+
+Before we dive into selection, let's understand how models relate to each other in Orders360:
+
+```mermaid
+flowchart TD
+    subgraph "Orders360 Model DAG"
+        RAW_CUSTOMERS[raw.raw_customers<br/>Seed Model]
+        RAW_ORDERS[raw.raw_orders<br/>Seed Model]
+        RAW_PRODUCTS[raw.raw_products<br/>Seed Model]
+        
+        DAILY_SALES[sales.daily_sales<br/>Daily Aggregation]
+        WEEKLY_SALES[sales.weekly_sales<br/>Weekly Aggregation]
+    end
+    
+    RAW_CUSTOMERS --> DAILY_SALES
+    RAW_ORDERS --> DAILY_SALES
+    RAW_PRODUCTS --> DAILY_SALES
+    
+    DAILY_SALES --> WEEKLY_SALES
+    
+    style RAW_CUSTOMERS fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style RAW_ORDERS fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style RAW_PRODUCTS fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style DAILY_SALES fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    style WEEKLY_SALES fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+```
+
+**Dependency Flow:**
+- `raw.raw_orders` → `sales.daily_sales` → `sales.weekly_sales`
+- Changing `raw.raw_orders` affects `daily_sales` (indirectly modified)
+- Changing `daily_sales` affects `weekly_sales` (indirectly modified)
+
+*[Screenshot: Orders360 project structure showing model files]*
+
+---
 
 ## Syntax
 
-Model selections are specified in the CLI `vulcan plan` argument `--select-model`. Selections may be specified in a number of ways.
+Model selections use the `--select-model` argument in `vulcan plan`. You can select models in several ways:
 
-The simplest selection is a single model name (e.g., `example.incremental_model`). The `--select-model` argument may be repeated to specify multiple individual model names:
+### Basic Selection
 
-```bash
-vulcan plan --select-model "example.incremental_model" --select-model "example.full_model"
-```
-
-A selection may use the wildcard asterisk character `*` to select multiple models at once. Any model name matching the non-wildcard characters will match. For example:
-
-- `"example.seed*"` would match both `example.seed_cities` and `example.seed_states`
-- `"example.*l_model"` would match both `example.incremental_model` and `example.full_model`
-
-Multiple models can also be selected by using the tag selector syntax `tag:tag_name`. For example, `"tag:my_tag"` would select all models with the tag `my_tag`.
-
-Assuming all seed models had a "seed" tag and all incremental models had an "incremental" tag:
-
-- `"tag:seed"` would match all seed models
-- `"tag:incremental"` would match all incremental models
-
-Wildcards also apply to tags. For example, `"tag:reporting*"` would match all models that have a tag starting with "reporting".
-
-### Upstream/downstream indicator
-
-By default, only the directly changed models in a selection are included in the plan.
-
-All of a model's changed upstream and/or downstream models may be included in a selection with the plus sign `+`. A plus sign at the beginning of a selection includes changed upstream models, and a plus sign at the end of a selection includes downstream models.
-
-For example, consider a three model project with the following structure, where all three models have been changed:
-
-`example.seed_model` --> `example.incremental_model` --> `example.full_model`
-
-These selections would include different sets of models in the plan:
-
-- `--select-model "example.incremental_model"` = `incremental_model` only
-- `--select-model "+example.incremental_model"` = `incremental_model` and upstream `seed_model`
-- `--select-model "example.incremental_model+"` = `incremental_model` and downstream `full_model`
-
-The upstream/downstream indicator may be combined with the wildcard operator. For example, `--select-model "+example.*l_model"` would include all three models in the project:
-
-- `example.incremental_model` matches the wildcard
-- `example.seed_model` is upstream of the incremental model
-- `example.full_model` matches the wildcard
-
-The combination of the upstream/downstream indicator, wildcards, and multiple `--select-model` arguments enables granular and complex model selections for a plan.
-
-Upstream/downstream indicators also apply to tags. For example, `--select-model "+tag:reporting*"` would select all models with tags that start with `reporting` and their upstream models.
-
-## Backfill
-
-By default, Vulcan backfills all of a plan's directly and indirectly modified models. In large projects, a single model change may impact many downstream models, such that backfilling all the children takes a significant amount of time.
-
-You can limit which downstream models are backfilled with `plan`'s `--backfill-model` argument, which uses the same selection [syntax](#syntax) as `--select-model`.
-
-`--select-model` determines which directly modified models are included in a `plan`, and `--backfill-model` determines which models are backfilled by the `plan`. A model's backfilled data is only current if its parents have also been backfilled, so the parents of each model specified with `--backfill-model` will also be backfilled.
-
-Care is required if both of the `--select-model` and `--backfill-model` options are specified because a single model can be affected by both options. For example, consider a model `test_model`. We have two versions of the model: a new directly modified version ("test_model modified") and the existing version already active in an environment ("test_model existing"). If `test_model` is not selected by `--select-model`, the directly modified version "test_model modified" is excluded from the plan. However, if `test_model` is upstream of a `--backfill-model` model, the existing version "test_model existing" will be backfilled if it has any unprocessed intervals.
-
-NOTE: the `--backfill-model` argument can only be used in development environments (i.e., environments other than `prod`).
-
-## Examples
-
-We now demonstrate the use of `--select-model` and `--backfill-model` with the Vulcan `sushi` example project, available in the `examples/sushi` directory of the [Vulcan Github repository](https://github.com/TobikoData/vulcan).
-
-### sushi
-
-The sushi project generates and transforms data collected at a sushi restaurant. In this guide, we focus on a set of the project's models related to marketing and customers.
-
-The DAG of those models displays the primary set we will use inside the red shape:
-
-![Vulcan sushi example project - model DAG](./model_selection/model-selection_sushi-dag.png)
-
- The root of our sub-DAG is `items` at the bottom. Immediately downstream of it are `order_items`, `waiter_revenue_by_day`, `customer_revenue_lifetime`, and `customer_revenue_by_day`. Finally, `top_waiters` is downstream of `waiter_revenue_by_day`.
-
-To prepare for the examples, we have run an initial plan in `prod` and completed the backfill. We have modified the `sushi.items` and `sushi.order_items` models to demonstrate how model selection impacts plans.
-
-### Selection examples
-
-#### No selection
-
-If we run a `plan` without selecting specific models, Vulcan includes the two directly modified models and the four indirectly modified models downstream of `sushi.order_items`:
+Select a single model by name:
 
 ```bash
-❯ vulcan plan dev
-New environment `dev` will be created from `prod`
-
-Differences from the `prod` environment:
-
-Models:
-├── Directly Modified:
-│   ├── sushi.order_items
-│   └── sushi.items
-└── Indirectly Modified:
-    ├── sushi.waiter_revenue_by_day
-    ├── sushi.customer_revenue_by_day
-    ├── sushi.customer_revenue_lifetime
-    └── sushi.top_waiters
+vulcan plan dev --select-model "sales.daily_sales"
 ```
 
-#### Select `order_items`
+*[Screenshot: Plan output showing only daily_sales selected]*
 
-If we specify the `--select-model` option to select `"sushi.order_items"`, the directly modified `sushi.items` model is no longer included in the plan:
+Select multiple models:
 
 ```bash
-❯ vulcan plan dev --select-model "sushi.order_items"
-New environment `dev` will be created from `prod`
-
-Differences from the `prod` environment:
-
-Models:
-├── Directly Modified:
-│   └── sushi.order_items
-└── Indirectly Modified:
-    ├── sushi.waiter_revenue_by_day
-    ├── sushi.customer_revenue_lifetime
-    ├── sushi.customer_revenue_by_day
-    └── sushi.top_waiters
+vulcan plan dev --select-model "sales.daily_sales" --select-model "raw.raw_orders"
 ```
 
-#### Select `+order_items`
+*[Screenshot: Plan output showing multiple models selected]*
 
-If we specify the `--select-model` option with the upstream `+` to select `"+sushi.order_items"`, the `sushi.items` model is selected because it is upstream of `sushi.order_items`:
+### Wildcard Selection
+
+Use `*` to match multiple models:
 
 ```bash
-❯ vulcan plan dev --select-model "+sushi.order_items"
-New environment `dev` will be created from `prod`
+# Select all models starting with "raw."
+vulcan plan dev --select-model "raw.*"
 
-Differences from the `prod` environment:
+# Select all models ending with "_sales"
+vulcan plan dev --select-model "sales.*_sales"
 
-Models:
-├── Directly Modified:
-│   ├── sushi.items
-│   └── sushi.order_items
-└── Indirectly Modified:
-    ├── sushi.top_waiters
-    ├── sushi.customer_revenue_lifetime
-    ├── sushi.waiter_revenue_by_day
-    └── sushi.customer_revenue_by_day
+# Select all models containing "daily"
+vulcan plan dev --select-model "*daily*"
 ```
 
-#### Select `items`
+**Examples:**
+- `"raw.*"` matches `raw.raw_customers`, `raw.raw_orders`, `raw.raw_products`
+- `"sales.*_sales"` matches `sales.daily_sales`, `sales.weekly_sales`
+- `"*.daily_sales"` matches `sales.daily_sales`
 
-If we specify the `--select-model` option to select `"sushi.items"`, Vulcan does not select `sushi.order_items` (so it is not classified as directly modified).
+*[Screenshot: Plan output showing wildcard selection results]*
 
-However, it does classify `sushi.order_items` as indirectly modified. Its direct modification is excluded by the model selection, but it is indirectly modified by being downstream of the selected `sushi.items` model:
+### Tag Selection
 
-```bash hl_lines="10"
-❯ vulcan plan dev --select-model "sushi.items"
-New environment `dev` will be created from `prod`
-
-Differences from the `prod` environment:
-
-Models:
-├── Directly Modified:
-│   └── sushi.items
-└── Indirectly Modified:
-    ├── sushi.order_items
-    ├── sushi.customer_revenue_by_day
-    ├── sushi.waiter_revenue_by_day
-    ├── sushi.customer_revenue_lifetime
-    └── sushi.top_waiters
-```
-
-#### Select `items+`
-
-If we specify the `--select-model` option with the downstream `+` to select `"sushi.items+"`, the `sushi.order_items` model is selected and classified as directly modified because it is downstream of `sushi.items`:
+Select models by tags using `tag:tag_name`:
 
 ```bash
-❯ vulcan plan dev --select-model "sushi.items+"
-New environment `dev` will be created from `prod`
+# Select all models with "seed" tag
+vulcan plan dev --select-model "tag:seed"
 
-Differences from the `prod` environment:
-
-Models:
-├── Directly Modified:
-│   ├── sushi.items
-│   └── sushi.order_items
-└── Indirectly Modified:
-    ├── sushi.waiter_revenue_by_day
-    ├── sushi.customer_revenue_lifetime
-    ├── sushi.customer_revenue_by_day
-    └── sushi.top_waiters
+# Select all models with tags starting with "reporting"
+vulcan plan dev --select-model "tag:reporting*"
 ```
 
-#### Select `*items`
-
-If we specify the `--select-model` option with the wildcard `*` to select `"sushi.*items"`, both `sushi.items` and `sushi.order_items` are selected because they match the wildcard:
+**Example:** If `raw.raw_orders` and `raw.raw_customers` have the `seed` tag:
 
 ```bash
-❯ vulcan plan dev --select-model "sushi.*items"
-New environment `dev` will be created from `prod`
-
-Differences from the `prod` environment:
-
-Models:
-├── Directly Modified:
-│   ├── sushi.order_items
-│   └── sushi.items
-└── Indirectly Modified:
-    ├── sushi.waiter_revenue_by_day
-    ├── sushi.top_waiters
-    ├── sushi.customer_revenue_by_day
-    └── sushi.customer_revenue_lifetime
+vulcan plan dev --select-model "tag:seed"
+# Selects: raw.raw_orders, raw.raw_customers
 ```
 
-#### Select with tags
+*[Screenshot: Plan output showing tag-based selection]*
 
-If we specify the `--select-model` option with a tag selector like `"tag:reporting"`, all models with the "reporting" tag will be selected. Tags are case-insensitive and support wildcards:
+### Upstream/Downstream Selection
+
+Use `+` to include upstream or downstream models:
+
+- `+model_name` = Include upstream models (dependencies)
+- `model_name+` = Include downstream models (dependents)
+
+```mermaid
+flowchart LR
+    subgraph "Model Dependencies"
+        RAW[raw.raw_orders]
+        DAILY[sales.daily_sales]
+        WEEKLY[sales.weekly_sales]
+    end
+    
+    RAW -->|upstream| DAILY
+    DAILY -->|downstream| WEEKLY
+    
+    style RAW fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style DAILY fill:#fff9c4,stroke:#fbc02d,stroke-width:3px,color:#000
+    style WEEKLY fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+```
+
+**Examples:**
 
 ```bash
-❯ vulcan plan dev --select-model "tag:reporting*"
-New environment `dev` will be created from `prod`
+# Select daily_sales only
+vulcan plan dev --select-model "sales.daily_sales"
+# Result: daily_sales (directly modified)
 
-Differences from the `prod` environment:
+# Select daily_sales + upstream (raw.raw_orders)
+vulcan plan dev --select-model "+sales.daily_sales"
+# Result: raw.raw_orders, daily_sales
 
-Models:
-├── Directly Modified:
-│   ├── sushi.daily_revenue
-│   └── sushi.monthly_revenue
-└── Indirectly Modified:
-    └── sushi.revenue_dashboard
+# Select daily_sales + downstream (weekly_sales)
+vulcan plan dev --select-model "sales.daily_sales+"
+# Result: daily_sales, weekly_sales
+
+# Select daily_sales + both upstream and downstream
+vulcan plan dev --select-model "+sales.daily_sales+"
+# Result: raw.raw_orders, daily_sales, weekly_sales
 ```
 
-#### Select with git changes
+*[Screenshot: Plan outputs showing different selection results]*
 
-The git-based selector allows you to select models whose files have changed compared to a target branch (default: main). This includes:
-- Untracked files (new files not in git)
-- Uncommitted changes in working directory
-- Committed changes different from the target branch
+### Git-Based Selection
 
-For example:
+Select models changed in a git branch:
 
 ```bash
-❯ vulcan plan dev --select-model "git:feature"
-New environment `dev` will be created from `prod`
+# Select models changed in feature branch
+vulcan plan dev --select-model "git:feature"
 
-Differences from the `prod` environment:
+# Select changed models + downstream
+vulcan plan dev --select-model "git:feature+"
 
-Models:
-├── Directly Modified:
-│   └── sushi.items # Changed in feature branch
-└── Indirectly Modified:
-    ├── sushi.order_items
-    └── sushi.daily_revenue
+# Select changed models + upstream
+vulcan plan dev --select-model "+git:feature"
 ```
 
-You can also combine git selection with upstream/downstream indicators:
+**What it includes:**
+- Untracked files (new models)
+- Uncommitted changes
+- Committed changes different from target branch
 
-```bash
-❯ vulcan plan dev --select-model "git:feature+"
-# Selects changed models and their downstream dependencies
+*[Screenshot: Plan output showing git-based selection]*
 
-❯ vulcan plan dev --select-model "+git:feature"
-# Selects changed models and their upstream dependencies
-```
+### Complex Selections
 
-#### Complex selections with logical operators
-
-The model selector supports combining multiple conditions using logical operators:
+Combine conditions with logical operators:
 
 - `&` (AND): Both conditions must be true
 - `|` (OR): Either condition must be true
 - `^` (NOT): Negates a condition
 
-For example:
-
 ```bash
-❯ vulcan plan dev --select-model "(tag:finance & ^tag:deprecated)"
-# Selects models with finance tag that don't have deprecated tag
+# Models with finance tag that don't have deprecated tag
+vulcan plan dev --select-model "(tag:finance & ^tag:deprecated)"
 
-❯ vulcan plan dev --select-model "(+model_a | model_b+)"
-# Selects model_a and its upstream deps OR model_b and its downstream deps
+# daily_sales + upstream OR weekly_sales + downstream
+vulcan plan dev --select-model "(+sales.daily_sales | sales.weekly_sales+)"
 
-❯ vulcan plan dev --select-model "(tag:finance & git:main)"
-# Selects changed models that also have the finance tag
+# Changed models that also have finance tag
+vulcan plan dev --select-model "(tag:finance & git:main)"
 
-❯ vulcan plan dev --select-model "^(tag:test) & metrics.*"
-# Selects models in metrics schema that don't have the test tag
+# Models in sales schema without test tag
+vulcan plan dev --select-model "^(tag:test) & sales.*"
 ```
 
-### Backfill examples
+*[Screenshot: Plan output showing complex selection results]*
 
-#### No backfill selection
+---
 
-Recall that a plan with no selection or backfill options includes all four models, two of which were directly and two of which were indirectly modified.
+## Examples with Orders360
 
-The `--backfill-model` option does not affect whether a model is included in a plan (i.e., it will still appear in the output shown in the selection examples above). Instead, it determines whether a model is included in the list of models needing backfill (shown at the bottom of the plan's output).
+Let's see how model selection works with the Orders360 project. We'll modify `raw.raw_orders` and `sales.daily_sales` to demonstrate different selection scenarios.
 
-With no options specified, the `plan` will backfill all six models. The backfills occur in the `sushi__dev` schema because we are creating a plan for the `dev` environment:
+### Example Setup
+
+We've modified two models:
+- `raw.raw_orders` (directly modified)
+- `sales.daily_sales` (directly modified)
+
+The dependency chain:
+```
+raw.raw_orders → sales.daily_sales → sales.weekly_sales
+```
+
+*[Screenshot: Orders360 project showing modified files]*
+
+### No Selection (Default)
+
+Without selection, Vulcan includes all directly modified models and their downstream dependencies:
 
 ```bash
-❯ vulcan plan dev
+vulcan plan dev
+```
 
-< output omitted>
+**Expected Output:**
+```
+======================================================================
+Successfully Ran 2 tests against postgres
+----------------------------------------------------------------------
 
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   ├── sales.daily_sales
+│   └── raw.raw_orders
+└── Indirectly Modified:
+    └── sales.weekly_sales
+```
+
+*[Screenshot: Plan output showing all modified models]*
+
+**What Happened:**
+- Both directly modified models are included
+- `weekly_sales` is indirectly modified (depends on `daily_sales`)
+
+### Select Single Model
+
+Select only `sales.daily_sales`:
+
+```bash
+vulcan plan dev --select-model "sales.daily_sales"
+```
+
+**Expected Output:**
+```
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   └── sales.daily_sales
+└── Indirectly Modified:
+    └── sales.weekly_sales
+```
+
+*[Screenshot: Plan output showing only daily_sales selected]*
+
+**What Happened:**
+- `raw.raw_orders` is excluded (not selected)
+- `daily_sales` is included (directly modified)
+- `weekly_sales` is included (indirectly modified, downstream of `daily_sales`)
+
+### Select with Upstream Indicator
+
+Select `daily_sales` and include its upstream dependencies:
+
+```bash
+vulcan plan dev --select-model "+sales.daily_sales"
+```
+
+**Expected Output:**
+```
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   ├── raw.raw_orders
+│   └── sales.daily_sales
+└── Indirectly Modified:
+    └── sales.weekly_sales
+```
+
+*[Screenshot: Plan output showing upstream selection]*
+
+**What Happened:**
+- `raw.raw_orders` is included (upstream of `daily_sales`)
+- `daily_sales` is included (selected)
+- `weekly_sales` is included (downstream of `daily_sales`)
+
+### Select with Downstream Indicator
+
+Select `daily_sales` and include its downstream dependencies:
+
+```bash
+vulcan plan dev --select-model "sales.daily_sales+"
+```
+
+**Expected Output:**
+```
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   ├── sales.daily_sales
+│   └── sales.weekly_sales
+└── Indirectly Modified:
+    (none)
+```
+
+*[Screenshot: Plan output showing downstream selection]*
+
+**What Happened:**
+- `daily_sales` is included (selected)
+- `weekly_sales` is included (downstream, now directly modified)
+- `raw.raw_orders` is excluded (not selected)
+
+### Select with Wildcard
+
+Select all models matching a pattern:
+
+```bash
+vulcan plan dev --select-model "sales.*_sales"
+```
+
+**Expected Output:**
+```
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   └── sales.daily_sales
+└── Indirectly Modified:
+    └── sales.weekly_sales
+```
+
+*[Screenshot: Plan output showing wildcard selection]*
+
+**What Happened:**
+- `sales.daily_sales` matches the pattern (selected)
+- `sales.weekly_sales` matches the pattern but is indirectly modified
+- `raw.raw_orders` doesn't match (excluded)
+
+### Select with Tags
+
+If models have tags, select by tag:
+
+```bash
+vulcan plan dev --select-model "tag:seed"
+```
+
+**Expected Output:**
+```
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   └── raw.raw_orders
+└── Indirectly Modified:
+    ├── sales.daily_sales
+    └── sales.weekly_sales
+```
+
+*[Screenshot: Plan output showing tag-based selection]*
+
+**What Happened:**
+- `raw.raw_orders` has `seed` tag (selected)
+- Downstream models are indirectly modified
+
+### Select with Git Changes
+
+Select models changed in a git branch:
+
+```bash
+vulcan plan dev --select-model "git:feature"
+```
+
+**Expected Output:**
+```
+Differences from the `prod` environment:
+
+Models:
+├── Directly Modified:
+│   └── sales.daily_sales  # Changed in feature branch
+└── Indirectly Modified:
+    └── sales.weekly_sales
+```
+
+*[Screenshot: Plan output showing git-based selection]*
+
+**What Happened:**
+- Only models changed in `feature` branch are selected
+- Downstream models are included automatically
+
+---
+
+## Backfill Selection
+
+By default, Vulcan backfills all models in a plan. You can limit which models are backfilled using `--backfill-model`.
+
+**Important:** `--backfill-model` only works in development environments (not `prod`).
+
+### How Backfill Selection Works
+
+```mermaid
+flowchart TB
+    subgraph "Backfill Selection Flow"
+        PLAN[vulcan plan dev]
+        SELECT[--select-model<br/>Which models in plan?]
+        BACKFILL[--backfill-model<br/>Which models to backfill?]
+        
+        subgraph "Plan Includes"
+            IN_PLAN[Models in Plan<br/>daily_sales, weekly_sales]
+        end
+        
+        subgraph "Backfill Includes"
+            BACKFILL_LIST[Models to Backfill<br/>Only daily_sales]
+        end
+        
+        RESULT[Result:<br/>Plan shows all models<br/>Only selected models backfilled]
+    end
+    
+    PLAN --> SELECT
+    PLAN --> BACKFILL
+    SELECT --> IN_PLAN
+    BACKFILL --> BACKFILL_LIST
+    IN_PLAN --> RESULT
+    BACKFILL_LIST --> RESULT
+    
+    style PLAN fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
+    style SELECT fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style BACKFILL fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    style RESULT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+```
+
+**Key Points:**
+- `--select-model` determines which models appear in the plan
+- `--backfill-model` determines which models are actually backfilled
+- Upstream models are always backfilled (required for downstream models)
+
+*[Screenshot: Visual diagram explaining backfill selection]*
+
+### Backfill Examples
+
+#### No Backfill Selection (Default)
+
+All models in the plan are backfilled:
+
+```bash
+vulcan plan dev
+```
+
+**Expected Output:**
+```
 Models needing backfill (missing dates):
-├── sushi__dev.items: 2023-12-01 - 2023-12-07
-├── sushi__dev.order_items: 2023-12-01 - 2023-12-07
-├── sushi__dev.customer_revenue_by_day: 2023-12-01 - 2023-12-07
-├── sushi__dev.customer_revenue_lifetime: 2023-12-01 - 2023-12-07
-├── sushi__dev.waiter_revenue_by_day: 2023-12-01 - 2023-12-07
-└── sushi__dev.top_waiters: 2023-12-01 - 2023-12-07
+├── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
+└── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
 ```
 
-#### Backfill `sushi.waiter_revenue_by_day`
+*[Screenshot: Plan output showing all models needing backfill]*
 
-If we specify the `--backfill-model` option with `"sushi.waiter_revenue_by_day"`, there are fewer models in the backfills list.
+#### Backfill Specific Model
 
-The `sushi__dev.customer_revenue_by_day`, `sushi__dev.customer_revenue_lifetime`, and `sushi__dev.top_waiters` models are excluded because they are not upstream of `sushi.waiter_revenue_by_day`.
-
-The `sushi__dev.items` and `sushi__dev.order_items` models are still included because they are upstream of `sushi.waiter_revenue_by_day`.
-
-Models upstream of those selected in the `--backfill-model` expression are always included, regardless of whether the expression contains a leading `+` sign.
+Only backfill `daily_sales`:
 
 ```bash
-❯ vulcan plan dev --backfill-model "sushi.waiter_revenue_by_day"
-
-< output omitted>
-
-Models needing backfill (missing dates):
-├── sushi__dev.items: 2023-12-04 - 2023-12-10
-├── sushi__dev.order_items: 2023-12-04 - 2023-12-10
-└── sushi__dev.waiter_revenue_by_day: 2023-12-04 - 2023-12-10
+vulcan plan dev --backfill-model "sales.daily_sales"
 ```
+
+**Expected Output:**
+```
+Models needing backfill (missing dates):
+└── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
+```
+
+*[Screenshot: Plan output showing only daily_sales needs backfill]*
+
+**What Happened:**
+- `weekly_sales` is excluded from backfill
+- Only `daily_sales` will be processed
+
+#### Backfill with Upstream
+
+When you backfill a model, its upstream dependencies are automatically included:
+
+```bash
+vulcan plan dev --backfill-model "sales.weekly_sales"
+```
+
+**Expected Output:**
+```
+Models needing backfill (missing dates):
+├── raw__dev.raw_orders: 2025-01-01 - 2025-01-15
+└── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
+```
+
+*[Screenshot: Plan output showing upstream models included in backfill]*
+
+**What Happened:**
+- `weekly_sales` is selected for backfill
+- `raw.raw_orders` is automatically included (upstream dependency)
+- `daily_sales` is excluded (not upstream of `weekly_sales`)
+
+---
+
+## Visual Selection Guide
+
+Here's a quick reference for common selection patterns:
+
+```mermaid
+flowchart LR
+    subgraph "Selection Patterns"
+        PAT1["sales.daily_sales<br/>Select only this model"]
+        PAT2["+sales.daily_sales<br/>Select + upstream"]
+        PAT3["sales.daily_sales+<br/>Select + downstream"]
+        PAT4["+sales.daily_sales+<br/>Select + both"]
+        PAT5["sales.*_sales<br/>Wildcard match"]
+        PAT6["tag:seed<br/>Tag selection"]
+    end
+    
+    subgraph "Results"
+        RES1[daily_sales only]
+        RES2[raw_orders + daily_sales]
+        RES3[daily_sales + weekly_sales]
+        RES4[All connected]
+        RES5[All matching]
+        RES6[All tagged]
+    end
+    
+    PAT1 --> RES1
+    PAT2 --> RES2
+    PAT3 --> RES3
+    PAT4 --> RES4
+    PAT5 --> RES5
+    PAT6 --> RES6
+    
+    style PAT1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT3 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT4 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT5 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT6 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+```
+
+*[Screenshot: Visual cheat sheet for selection patterns]*
+
+---
+
+## Best Practices
+
+1. **Start Small**: Select only the models you're testing
+   ```bash
+   vulcan plan dev --select-model "sales.daily_sales"
+   ```
+
+2. **Use Wildcards**: When selecting multiple related models
+   ```bash
+   vulcan plan dev --select-model "sales.*"
+   ```
+
+3. **Include Dependencies**: Use `+` when you need upstream/downstream models
+   ```bash
+   vulcan plan dev --select-model "+sales.daily_sales+"
+   ```
+
+4. **Limit Backfill**: Use `--backfill-model` to save time in development
+   ```bash
+   vulcan plan dev --backfill-model "sales.daily_sales"
+   ```
+
+5. **Use Tags**: Organize models with tags for easier selection
+   ```bash
+   vulcan plan dev --select-model "tag:reporting"
+   ```
+
+---
+
+## Summary
+
+**Model Selection:**
+- ✅ Filter which models appear in a plan
+- ✅ Use wildcards, tags, and git changes
+- ✅ Include upstream/downstream with `+`
+- ✅ Combine with logical operators
+
+**Backfill Selection:**
+- ✅ Limit which models are actually backfilled
+- ✅ Upstream models are always included
+- ✅ Only works in development environments
+- ✅ Saves time when testing specific models
+
+---
+
+## Next Steps
+
+- Learn about [Plans](../concepts/plans.md) for understanding plan behavior
+- Read the [Plan Guide](./plan.md) for applying changes
+- Check [Model Configuration](../reference/model_configuration.md) for model properties
+- Explore [Orders360 Example](../examples/overview.md) for complete project reference
