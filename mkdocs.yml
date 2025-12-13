@@ -79,11 +79,10 @@ nav:
       - guides/incremental_time.md
       - guides/data_quality.md        
       - guides/model_selection.md
-      - guides/federated_engines.md
-      - Virtual environments Guide:
-      - Vulcan API Guide:
-      - Table Creation Guide:
-      #   - guides/federated_engines.md
+      #- guides/federated_engines.md
+      # - Virtual environments Guide:
+      # - Vulcan API Guide:
+      # - Table Creation Guide:
       - guides/transpiling.md
       - Advanced:
         - guides/linter.md
