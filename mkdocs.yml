@@ -1,7 +1,7 @@
 site_name: DataOS Vulcan
 site_description: Complete documentation for Vulcan - complete stack for building data products
 site_author: DataOS Vulcan Team
-site_url: https://tmdc-io.github.io/vulcan-book
+site_url: https://tmdc-io.github.io/vulcan-docs
 
 repo_name: tmdc-io/vulcan-book
 repo_url: https://github.com/tmdc-io/vulcan-book
@@ -14,16 +14,23 @@ nav:
     - Config & Engines:
       - Engines:
         - integrations/engines/postgres.md
-        - integrations/engines/bigquery.md
-        - integrations/engines/databricks.md
-        - integrations/engines/duckdb.md
-        - integrations/engines/motherduck.md
-        - integrations/engines/mssql.md
-        - integrations/engines/mysql.md
-        - integrations/engines/redshift.md
+        # - integrations/engines/bigquery.md
+        # - integrations/engines/databricks.md
+        # - integrations/engines/duckdb.md
+        # - integrations/engines/motherduck.md
+        # - integrations/engines/mssql.md
+        # - integrations/engines/mysql.md
+        # - integrations/engines/redshift.md
         - integrations/engines/snowflake.md
-      - Reference:
-        - reference/configuration.md
+      - References:
+        - reference/variables.md
+        - reference/model_defaults.md
+        - Config Options:
+            # - reference/config_options.md
+          - reference/config_options/notifications.md
+          - reference/config_options/linters.md
+        - reference/before_all_and_after_all.md
+
       - CI/CD:
         - ci-cd/index.md
     - Components:
@@ -64,10 +71,10 @@ nav:
         - concepts/semantics/models.md
         - concepts/semantics/metrics.md
     - Guides:
-      - Get Started:
-        - getting_started/index.md
-        - getting_started/prerequisites.md
-        - getting_started/docker.md
+      - getting_started/docker.md
+        # - getting_started/index.md
+        # - getting_started/prerequisites.md
+        
       - guides/configuration.md
       - guides/scheduling.md
       - guides/models.md
@@ -214,6 +221,9 @@ theme:
     - navigation.indexes        # Section index pages are clickable
     - navigation.path           # Show navigation path
     - navigation.top            # Back to top button
+
+    # Table of Contents
+    - toc.follow               # Sidebar follows scroll and highlights active section
 
     # Table of Contents
     - toc.follow               # Sidebar follows scroll

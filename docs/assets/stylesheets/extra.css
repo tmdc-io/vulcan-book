@@ -645,5 +645,20 @@ header.md-header,
   border-color: var(--accent-coral) !important;
 }
 
+/* Download button with black background */
+.md-typeset .download-button,
+a.md-button.download-button {
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.md-typeset .download-button:hover,
+a.md-button.download-button:hover {
+  background-color: #333333 !important;
+  background: #333333 !important;
+  color: #ffffff !important;
+}
 
 /* End of theme */
