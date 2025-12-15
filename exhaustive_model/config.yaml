@@ -1,0 +1,57 @@
+project: postgres
+
+linter:
+  enabled: true
+  warn_rules:
+    - RequireGrainForAllModels
+    - RequireAuditsForAllKindsExceptEmbedded
+    - RequireChecksForModels
+
+
+model_defaults:
+  dialect: postgres
+  cron: '*/5 * * * *'  # Every 5 minutes
+
+gateways:
+  default:
+    connection:
+      type: postgres
+      host: warehouse
+      port: 5432
+      user: vulcan
+      password: vulcan
+      database: warehouse
+
+    # State sync - use PostgreSQL (recommended for production)
+    state_connection:
+      type: postgres
+      host: statestore
+      port: 5432
+      user: vulcan
+      password: vulcan
+      database: statestore
+
+    state_schema: state_schemass
+    
+    # Gateway-specific variables (available in checks via ${variable_name})
+    variables:
+      env: prod
+transpiler:
+  base_url: http://vulcan-transpiler:4000/transpiler
+
+
+notification_targets:
+  # Console notifications for all lifecycle events
+  - type: console
+    notify_on:
+      - plan_change      # NEW: Only when code/data changes
+      - run_start
+      - run_end
+
+  
+  - type: slack_webhook
+    url: "https://whc66b4c9aae521b798c.free.beeceptor.com"
+    notify_on:
+      - plan_change     # Track all deployments with changes
+      - apply_failure   # Alert on deployment failures
+# psql -h localhost -p 5433 -U vulcan -d postgres

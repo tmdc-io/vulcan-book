@@ -20,15 +20,26 @@ To create a Python model, add a new file with the `*.py` extension to the `model
 
 ```python linenums="1"
 import typing as t
+import pandas as pd
 from datetime import datetime
-
 from vulcan import ExecutionContext, model
+from vulcan import ModelKindName
 
 @model(
-    "my_model.name",
+    "sales.daily_sales_py",
     columns={
-        "column_name": "int",
+        "order_date": "timestamp",
+        "total_orders": "int",
+        "total_revenue": "decimal(18,2)",
+        "last_order_id": "string",
     },
+    kind=dict(
+        name=ModelKindName.FULL,
+    ),
+    grains=["order_date"],
+    depends_on=["raw.raw_orders"],
+    cron='@daily',
+    description="Daily sales aggregated by order_date.",
 )
 def execute(
     context: ExecutionContext,
@@ -37,6 +48,20 @@ def execute(
     execution_time: datetime,
     **kwargs: t.Any,
 ) -> pd.DataFrame:
+    """FULL model - rebuilds entire daily_sales table each run"""
+
+    query = """
+    SELECT
+      CAST(order_date AS TIMESTAMP) AS order_date,
+      COUNT(order_id) AS total_orders,
+      SUM(total_amount) AS total_revenue,
+      MAX(order_id) AS last_order_id
+    FROM raw.raw_orders
+    GROUP BY order_date
+    ORDER BY order_date
+    """
+
+    return context.fetchdf(query)
 ```
 
 The `execute` function is wrapped with the `@model` [decorator](https://wiki.python.org/moin/PythonDecorators), which is used to capture the model's metadata (similar to the `MODEL` DDL statement in [SQL models](./sql_models.md)).
@@ -70,28 +95,14 @@ Supported `kind` dictionary `name` values are:
 - `ModelKindName.MANAGED`
 - `ModelKindName.EXTERNAL`
 
-This example demonstrates how to specify an incremental by time range model kind in Python:
-
-```python linenums="1"
-from vulcan import ExecutionContext, model
-from vulcan.core.model.kind import ModelKindName
-
-@model(
-    "docs_example.incremental_model",
-    kind=dict(
-        name=ModelKindName.INCREMENTAL_BY_TIME_RANGE,
-        time_column="model_time_column"
-    )
-)
-```
-
 ## Execution context
+
 Python models can do anything you want, but it is strongly recommended for all models to be [idempotent](../glossary.md#idempotency). Python models can fetch data from upstream models or even data outside of Vulcan.
 
 Given an execution `ExecutionContext` "context", you can fetch a DataFrame with the `fetchdf` method:
 
 ```python linenums="1"
-df = context.fetchdf("SELECT * FROM my_table")
+df = context.fetchdf("SELECT * FROM vulcan_demo.products")
 ```
 
 ## Optional pre/post-statements
@@ -106,7 +117,7 @@ You can set the `pre_statements` and `post_statements` arguments to a list of SQ
 
 ``` python linenums="1" hl_lines="8-12"
 @model(
-    "db.test_model",
+    "vulcan_demo.model_with_statements",
     kind="full",
     columns={
         "id": "int",
@@ -173,7 +184,7 @@ def execute(
     ])
 
     # post-statement
-    context.engine_adapter.execute("CREATE INDEX idx ON example.pre_post_statements (id);")
+    context.engine_adapter.execute("CREATE INDEX idx ON vulcan_demo.model_with_statements (id);")
 ```
 
 ## Optional on-virtual-update statements
@@ -188,7 +199,7 @@ Similar to pre/post-statements you can set the `on_virtual_update` argument in t
 
 ``` python linenums="1" hl_lines="8"
 @model(
-    "db.test_model",
+    "vulcan_demo.model_with_grants",
     kind="full",
     columns={
         "id": "int",
@@ -211,14 +222,14 @@ def execute(
 
 !!! note
 
-    Table resolution for these statements occurs at the virtual layer. This means that table names, including `@this_model` macro, are resolved to their qualified view names. For instance, when running the plan in an environment named `dev`, `db.test_model` and `@this_model` would resolve to `db__dev.test_model` and not to the physical table name.
+    Table resolution for these statements occurs at the virtual layer. This means that table names, including `@this_model` macro, are resolved to their qualified view names. For instance, when running the plan in an environment named `dev`, `vulcan_demo.model_with_grants` and `@this_model` would resolve to `vulcan_demo__dev.model_with_grants` and not to the physical table name.
 
 ## Dependencies
 
 In order to fetch data from an upstream model, you first get the table name using `context`'s `resolve_table` method. This returns the appropriate table name for the current runtime [environment](../environments.md):
 
 ```python linenums="1"
-table = context.resolve_table("docs_example.upstream_model")
+table = context.resolve_table("vulcan_demo.products")
 df = context.fetchdf(f"SELECT * FROM {table}")
 ```
 
@@ -226,12 +237,20 @@ The `resolve_table` method will automatically add the referenced model to the Py
 
 The only other way to set dependencies of models in Python models is to define them explicitly in the `@model` decorator using the keyword `depends_on`. The dependencies defined in the model decorator take precedence over any dynamic references inside the function.
 
-In this example, only `upstream_dependency` will be captured, while `another_dependency` will be ignored:
-
 ```python linenums="1"
 @model(
-    "my_model.with_explicit_dependencies",
-    depends_on=["docs_example.upstream_dependency"], # captured
+    "vulcan_demo.full_model_py",
+    columns={
+        "product_id": "int",
+        "product_name": "string",
+        "category": "string",
+        "total_sales": "decimal(10,2)",
+    },
+    kind=dict(
+        name=ModelKindName.FULL,
+    ),
+    grains=["product_id"],
+    depends_on=["vulcan_demo.products", "vulcan_demo.order_items", "vulcan_demo.orders"],
 )
 def execute(
     context: ExecutionContext,
@@ -240,9 +259,21 @@ def execute(
     execution_time: datetime,
     **kwargs: t.Any,
 ) -> pd.DataFrame:
-
-    # ignored due to @model dependency "upstream_dependency"
-    context.resolve_table("docs_example.another_dependency")
+    # Dependencies are explicitly declared above
+    query = """
+    SELECT 
+        p.product_id,
+        p.name AS product_name,
+        p.category,
+        COALESCE(SUM(oi.quantity * oi.unit_price), 0) as total_sales
+    FROM vulcan_demo.products p
+    LEFT JOIN vulcan_demo.order_items oi ON p.product_id = oi.product_id
+    LEFT JOIN vulcan_demo.orders o ON oi.order_id = o.order_id
+    GROUP BY p.product_id, p.name, p.category
+    ORDER BY total_sales DESC
+    """
+    
+    return context.fetchdf(query)
 ```
 
 User-defined [global variables](../../reference/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) can also be used in `resolve_table` calls, as shown in the following example (similarly for `blueprint_var()`):
@@ -267,7 +298,7 @@ If your model could possibly return an empty dataframe, conditionally `yield` th
 
 ```python linenums="1" hl_lines="10-13"
 @model(
-    "my_model.empty_df"
+    "vulcan_demo.empty_df_model"
 )
 def execute(
     context: ExecutionContext,
@@ -289,7 +320,7 @@ For example, this model access the user-defined variables `var` and `var_with_de
 
 ```python linenums="1" hl_lines="11 12"
 @model(
-    "my_model.name",
+    "vulcan_demo.model_with_vars",
 )
 def execute(
     context: ExecutionContext,
@@ -309,7 +340,7 @@ For example, this model specifies `my_var` as an argument to the `execute` metho
 
 ```python linenums="1" hl_lines="9 12"
 @model(
-    "my_model.name",
+    "vulcan_demo.model_with_arg_vars",
 )
 def execute(
     context: ExecutionContext,
@@ -407,7 +438,7 @@ For example when using macro variables inside cron expressions, you need to wrap
 ```python linenums="1"
 # Correct: Wrap the cron expression containing a macro variable
 @model(
-    "my_model",
+    "vulcan_demo.scheduled_model",
     cron="@'*/@{mins} * * * *'",  # Note the @'...' syntax
     ...
 )
@@ -428,7 +459,9 @@ For example when using macro variables inside cron expressions, you need to wrap
 This is necessary because cron expressions often use `@` for aliases (like `@daily`, `@hourly`), which can conflict with Vulcan's macro syntax.
 
 ## Examples
+
 ### Basic
+
 The following is an example of a Python model returning a static Pandas DataFrame.
 
 **Note:** All of the [metadata](./overview.md#model-properties) field names are the same as those in the SQL `MODEL` DDL.
@@ -442,8 +475,8 @@ from sqlglot.expressions import to_column
 from vulcan import ExecutionContext, model
 
 @model(
-    "docs_example.basic",
-    owner="janet",
+    "vulcan_demo.basic_model",
+    owner="data_team",
     cron="@daily",
     columns={
         "id": "int",
@@ -471,6 +504,7 @@ def execute(
 ```
 
 ### SQL Query and Pandas
+
 The following is a more complex example that queries an upstream model and outputs a Pandas DataFrame:
 
 ```python linenums="1"
@@ -481,10 +515,11 @@ import pandas as pd
 from vulcan import ExecutionContext, model
 
 @model(
-    "docs_example.sql_pandas",
+    "vulcan_demo.sql_pandas_model",
     columns={
-        "id": "int",
-        "name": "text",
+        "product_id": "int",
+        "product_name": "text",
+        "total_sales": "decimal(10,2)",
     },
 )
 def execute(
@@ -495,18 +530,27 @@ def execute(
     **kwargs: t.Any,
 ) -> pd.DataFrame:
     # get the upstream model's name and register it as a dependency
-    table = context.resolve_table("upstream_model")
+    products_table = context.resolve_table("vulcan_demo.products")
+    order_items_table = context.resolve_table("vulcan_demo.order_items")
 
     # fetch data from the model as a pandas DataFrame
-    # if the engine is spark, this returns a spark DataFrame
-    df = context.fetchdf(f"SELECT id, name FROM {table}")
+    df = context.fetchdf(f"""
+        SELECT 
+            p.product_id,
+            p.name AS product_name,
+            SUM(oi.quantity * oi.unit_price) as total_sales
+        FROM {products_table} p
+        LEFT JOIN {order_items_table} oi ON p.product_id = oi.product_id
+        GROUP BY p.product_id, p.name
+    """)
 
     # do some pandas stuff
-    df[id] += 1
+    df['total_sales'] = df['total_sales'].fillna(0)
     return df
 ```
 
 ### PySpark
+
 This example demonstrates using the PySpark DataFrame API. If you use Spark, the DataFrame API is preferred to Pandas since it allows you to compute in a distributed fashion.
 
 ```python linenums="1"
@@ -519,11 +563,11 @@ from pyspark.sql import DataFrame, functions
 from vulcan import ExecutionContext, model
 
 @model(
-    "docs_example.pyspark",
+    "vulcan_demo.pyspark_model",
     columns={
-        "id": "int",
-        "name": "text",
-        "country": "text",
+        "customer_id": "int",
+        "customer_name": "text",
+        "region": "text",
     },
 )
 def execute(
@@ -534,10 +578,10 @@ def execute(
     **kwargs: t.Any,
 ) -> DataFrame:
     # get the upstream model's name and register it as a dependency
-    table = context.resolve_table("upstream_model")
+    table = context.resolve_table("vulcan_demo.customers")
 
-    # use the spark DataFrame api to add the country column
-    df = context.spark.table(table).withColumn("country", functions.lit("USA"))
+    # use the spark DataFrame api to add the region column
+    df = context.spark.table(table).withColumn("region", functions.lit("North"))
 
     # returns the pyspark DataFrame directly, so no data is computed locally
     return df
@@ -545,6 +589,7 @@ def execute(
 
 
 ### Snowpark
+
 This example demonstrates using the Snowpark DataFrame API. If you use Snowflake, the DataFrame API is preferred to Pandas since it allows you to compute in a distributed fashion.
 
 ```python linenums="1"
@@ -557,7 +602,7 @@ from snowflake.snowpark.dataframe import DataFrame
 from vulcan import ExecutionContext, model
 
 @model(
-    "docs_example.snowpark",
+    "vulcan_demo.snowpark_model",
     columns={
         "id": "int",
         "name": "text",
@@ -578,6 +623,7 @@ def execute(
 ```
 
 ### Bigframe
+
 This example demonstrates using the [Bigframe](https://cloud.google.com/bigquery/docs/use-bigquery-dataframes#pandas-examples) DataFrame API. If you use Bigquery, the Bigframe API is preferred to Pandas as all computation is done in Bigquery.
 
 ```python linenums="1"
@@ -597,7 +643,7 @@ def get_bucket(num: int):
 
 
 @model(
-    "mart.wiki",
+    "vulcan_demo.bigframe_model",
     columns={
         "title": "text",
         "views": "int",
@@ -629,6 +675,7 @@ def execute(
 ```
 
 ### Batching
+
 If the output of a Python model is very large and you cannot use Spark, it may be helpful to split the output into multiple batches.
 
 With Pandas or other single machine DataFrame libraries, all data is stored in memory. Instead of returning a single DataFrame instance, you can return multiple instances using the Python generator API. This minimizes the memory footprint by reducing the size of data loaded into memory at any given time.
@@ -637,9 +684,9 @@ This examples uses the Python generator `yield` to batch the model output:
 
 ```python linenums="1" hl_lines="20"
 @model(
-    "docs_example.batching",
+    "vulcan_demo.batching_model",
     columns={
-        "id": "int",
+        "customer_id": "int",
     },
 )
 def execute(
@@ -650,13 +697,14 @@ def execute(
     **kwargs: t.Any,
 ) -> pd.DataFrame:
     # get the upstream model's table name
-    table = context.resolve_table("upstream_model")
+    table = context.resolve_table("vulcan_demo.customers")
 
     for i in range(3):
         # run 3 queries to get chunks of data and not run out of memory
-        df = context.fetchdf(f"SELECT id from {table} WHERE id = {i}")
+        df = context.fetchdf(f"SELECT customer_id from {table} WHERE customer_id = {i}")
         yield df
 ```
 
 ## Serialization
+
 Vulcan executes Python code locally where Vulcan is running by using our custom [serialization framework](../architecture/serialization.md).

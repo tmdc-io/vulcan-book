@@ -6,7 +6,7 @@ Vulcan does not manage external tables, but it can use information about the tab
 
 Vulcan stores external tables' column information as `EXTERNAL` models.
 
-## External models are not run
+## How external models work
 
 `EXTERNAL` models consist solely of an external table's column information, so there is no query for Vulcan to run.
 
@@ -22,21 +22,29 @@ External models can be defined in the `external_models.yaml` file in the Vulcan 
 
 You can create this file by either writing the YAML by hand or allowing Vulcan to fetch information about external tables with the `create_external_models` CLI command.
 
-Consider this example model that queries an external table `external_db.external_table`:
+Consider this example model that queries external tables `vulcan_demo.customers`, `vulcan_demo.orders`, and `vulcan_demo.order_items`:
 
 ```sql
 MODEL (
-  name my_db.my_table,
+  name vulcan_demo.full_model,
   kind FULL
 );
 
 SELECT
-  *
-FROM
-  external_db.external_table;
+  c.customer_id,
+  c.name AS customer_name,
+  c.email,
+  COUNT(DISTINCT o.order_id) AS total_orders,
+  COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS total_spent
+FROM vulcan_demo.customers AS c
+LEFT JOIN vulcan_demo.orders AS o
+  ON c.customer_id = o.customer_id
+LEFT JOIN vulcan_demo.order_items AS oi
+  ON o.order_id = oi.order_id
+GROUP BY c.customer_id, c.name, c.email
 ```
 
-The following sections demonstrate how to create an external model containing `external_db.external_table`'s column information.
+The following sections demonstrate how to create external models containing the column information for these tables.
 
 All of a Vulcan project's external models are defined in a single `external_models.yaml` file, so the files created below might also include column information for other external models.
 
@@ -62,22 +70,22 @@ Consider the following model that queries an external table with a dynamic datab
 
 ```
 MODEL (
-  name my_db.my_table,
+  name vulcan_demo.customer_summary,
   kind FULL
 );
 
 SELECT
   *
 FROM
-  @{gateway}_db.external_table;
+  @{gateway}_db.customers;
 ```
 
 This table will be named differently depending on which `--gateway` Vulcan is run with (learn more about the curly brace `@{gateway}` syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings)).
 
 For example:
 
-- `vulcan --gateway dev plan` - Vulcan will try to query `dev_db.external_table`
-- `vulcan --gateway prod plan` - Vulcan will try to query `prod_db.external_table`
+- `vulcan --gateway dev plan` - Vulcan will try to query `dev_db.customers`
+- `vulcan --gateway prod plan` - Vulcan will try to query `prod_db.customers`
 
 To ensure Vulcan can look up the correct schema when the relevant gateway is set, run `create_external_models` with the `--gateway` argument. For example:
 
@@ -87,28 +95,30 @@ This will set `gateway: dev` on the external model and ensure that it is only lo
 
 ### Writing YAML by hand
 
-This example demonstrates the structure of a `external_models.yaml` file:
+This example demonstrates the structure of a `external_models.yaml` file based on a typical e-commerce data model:
 
 ```yaml
-- name: external_db.external_table
-  description: An external table
+- name: '"warehouse"."vulcan_demo"."customers"'
   columns:
-    column_a: int
-    column_b: text
-- name: external_db.some_other_external_table
-  description: Another external table
+    customer_id: INT
+    region_id: INT
+    name: TEXT
+    email: TEXT
+- name: '"warehouse"."vulcan_demo"."orders"'
   columns:
-    column_c: bool
-    column_d: float
-- name: external_db.gateway_specific_external_table
-  description: Another external table that only exists when the gateway is set to "test"
-  gateway: test  # Case-insensitive - could also be "TEST", "Test", etc.
+    order_id: INT
+    customer_id: INT
+    order_date: TIMESTAMP
+    warehouse_id: INT
+- name: '"warehouse"."vulcan_demo"."shipments"'
   columns:
-    column_e: int
-    column_f: varchar
+    shipment_id: INT
+    order_id: INT
+    shipped_date: DATE
+    carrier: TEXT
 ```
 
-It contains each `EXTERNAL` model's name, an optional description, an optional gateway and each of the external table's columns' name and data type.
+It contains each `EXTERNAL` model's name and each of the external table's columns' name and data type. An optional description and gateway can also be specified.
 
 The file can be constructed by hand using a standard text editor or IDE.
 
@@ -132,22 +142,36 @@ When Vulcan loads the definitions, it will first load the models defined in `ext
 
 Therefore, you can use `vulcan create_external_models` to manage the `external_models.yaml` file and then put any models that need to be defined manually inside the `external_models/` directory.
 
-### External Audits
-It is possible to define [audits](../audits.md) on external models. This can be useful to check the data quality of upstream dependencies before your internal models evaluate.
+### External assertions
 
-This example shows an external model with two audits.
+It is possible to define [assertions](../assertions.md) on external models. This can be useful to check the data quality of upstream dependencies before your internal models evaluate.
+
+This example shows an external model with assertions:
 
 ```yaml
-- name: raw.demographics
-  description: Table containing demographics information
-  audits:
+- name: '"warehouse"."vulcan_demo"."customers"'
+  description: Table containing customer information
+  assertions:
     - name: not_null
+      columns: "[customer_id, email]"
+    - name: unique_values
       columns: "[customer_id]"
-    - name: accepted_range
-      column: zip
-      min_v: "'00000'"
-      max_v: "'99999'"
   columns:
-    customer_id: int
-    zip: text
+    customer_id: INT
+    region_id: INT
+    name: TEXT
+    email: TEXT
+- name: '"warehouse"."vulcan_demo"."orders"'
+  description: Table containing order transactions
+  assertions:
+    - name: not_null
+      columns: "[order_id, customer_id, order_date]"
+    - name: accepted_range
+      column: order_id
+      min_v: "1"
+  columns:
+    order_id: INT
+    customer_id: INT
+    order_date: TIMESTAMP
+    warehouse_id: INT
 ```

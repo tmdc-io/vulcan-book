@@ -1,4 +1,4 @@
-# Semantic Models
+# Models
 
 Semantic models map physical Vulcan models to business concepts, providing business-friendly names and exposing analytical capabilities through dimensions, measures, segments, and joins.
 

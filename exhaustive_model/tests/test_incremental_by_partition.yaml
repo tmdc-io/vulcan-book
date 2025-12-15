@@ -1,0 +1,106 @@
+test_incremental_by_partition_basic:
+  model: vulcan_demo.incremental_by_partition
+  description: |
+    Validates partitioned aggregates and ranking across (warehouse_id, order_date).
+    Checks key concatenation, distinct counts, sums, averages, and ranks.
+  # Fix the time window so @start_ds/@end_ds are deterministic
+  vars:
+    start: '2025-01-01'
+    end: '2025-01-01'
+
+  inputs:
+    vulcan_demo.warehouses:
+      - warehouse_id: 1
+        name: East
+      - warehouse_id: 2
+        name: West
+
+    vulcan_demo.products:
+      - product_id: 100
+        category: Electronics
+      - product_id: 200
+        category: Home
+
+    vulcan_demo.orders:
+      # 2025-01-01 in warehouse 1: two orders, two customers
+      - order_id: 5001
+        customer_id: 9001
+        warehouse_id: 1
+        order_date: '2025-01-01'
+      - order_id: 5002
+        customer_id: 9002
+        warehouse_id: 1
+        order_date: '2025-01-01'
+      # 2025-01-01 in warehouse 2: one order
+      - order_id: 6001
+        customer_id: 9010
+        warehouse_id: 2
+        order_date: '2025-01-01'
+
+    vulcan_demo.order_items:
+      # Warehouse 1, order 5001 → Electronics: qty 2 * 100 = 200
+      - order_id: 5001
+        product_id: 100
+        quantity: 2
+        unit_price: 100
+      # Warehouse 1, order 5002 → Home: qty 1 * 50 = 50
+      - order_id: 5002
+        product_id: 200
+        quantity: 1
+        unit_price: 50
+      # Warehouse 2, order 6001 → Electronics: qty 3 * 100 = 300
+      - order_id: 6001
+        product_id: 100
+        quantity: 3
+        unit_price: 100
+
+  outputs:
+    query:
+      # Full assertions are deterministic for this setup.
+      rows:
+        # Warehouse 1, 2025-01-01 — sorted by total_sales_amount DESC
+        - warehouse_id: 1
+          warehouse_name: East
+          category: Electronics
+          order_date: '2025-01-01'
+          partitioned_analysis_key: '1_Electronics_2025-01-01'
+          total_transactions: 1
+          total_quantity_sold: 2
+          total_sales_amount: 200
+          avg_transaction_value: 200
+          unique_customers: 1
+          unique_products: 1
+          avg_order_value: 200.00
+          revenue_per_customer: 200.00
+          category_rank_in_warehouse: 1
+
+        - warehouse_id: 1
+          warehouse_name: East
+          category: Home
+          order_date: '2025-01-01'
+          partitioned_analysis_key: '1_Home_2025-01-01'
+          total_transactions: 1
+          total_quantity_sold: 1
+          total_sales_amount: 50
+          avg_transaction_value: 50
+          unique_customers: 1
+          unique_products: 1
+          avg_order_value: 50.00
+          revenue_per_customer: 50.00
+          category_rank_in_warehouse: 2
+
+        # Warehouse 2, 2025-01-01 — single category → rank 1
+        - warehouse_id: 2
+          warehouse_name: West
+          category: Electronics
+          order_date: '2025-01-01'
+          partitioned_analysis_key: '2_Electronics_2025-01-01'
+          total_transactions: 1
+          total_quantity_sold: 3
+          total_sales_amount: 300
+          avg_transaction_value: 300
+          unique_customers: 1
+          unique_products: 1
+          avg_order_value: 300.00
+          revenue_per_customer: 300.00
+          category_rank_in_warehouse: 1

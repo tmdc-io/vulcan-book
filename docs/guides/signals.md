@@ -1,4 +1,4 @@
-# Signals guide
+# Signals
 
 Vulcan's [built-in scheduler](./scheduling.md#built-in-scheduler) controls which models are evaluated when the `vulcan run` command is executed.
 

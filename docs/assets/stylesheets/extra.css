@@ -1,667 +1,922 @@
-/* --------------------------------------------------------------------
-   Bento-like theme (merged & adapted from your two CSS blocks)
-   - Warm cream background
-   - Coral/pink accents
-   - Soft brown headings/text
-   -------------------------------------------------------------------- */
+/* ============================================================
+   Vulcan Documentation - DataOS Blue Theme
+   Clean, professional documentation experience
+   ============================================================ */
 
-/* Palette (tweak these to taste) */
-:root{
-  --bg-cream: #FBF2EB;            /* page background */
-  --panel-cream: #F7E9E2;         /* panels & subtle surfaces */
-  --accent-coral: #E57466;        /* primary accent (buttons/titles) */
-  --accent-coral-10: rgba(229,116,102,0.10); /* translucent accent */
-  --accent-peach: #F2B07A;        /* secondary accent for tips */
-  --muted-grey: #9e9e9e;
-  --text-brown: #4A2F27;          /* primary copy color */
-  --heading-brown: #3C261E;
-  --shadow-soft: 0 6px 0 rgba(0,0,0,0.06);
-  --admonition-border-question: #E86E6E;
-  --admonition-border-tip: #F0A86A;
-  --nav-font-size-sm: 0.75rem;
-  --toc-font-size: 0.7rem;
-  --md-primary-fg-color: #2b1e18;   /* was #3C64E2 */
-  --md-accent-fg-color: var(--accent-coral); /* keep your coral for accents */
+/* -------------------- Font Imports -------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&display=swap');
+
+/* -------------------- Color Palette -------------------- */
+:root {
+  /* DataOS gray palette */
+  --vl-gray-darkest: #292E33;      /* Dark charcoal */
+  --vl-gray-light: #D9DADA;        /* Light gray */
+  --vl-gray-medium: #9C9C9C;       /* Medium gray */
+  --vl-gray-dark: #828282;         /* Darker gray */
+
+  /* Primary colors - DataOS Blue */
+  --vl-primary: #1D94FC;           /* Bright blue - main brand color */
+  --vl-primary-dark: #1A7FDB;      /* Darker blue for hover */
+  --vl-primary-light: #5CB0FA;     /* Light blue */
+  --vl-primary-subtle: rgba(29, 148, 252, 0.10);
+
+  /* Backgrounds */
+  --vl-bg-main: #FFFFFF;           /* White main background */
+  --vl-bg-sidebar: #F5F6F7;        /* Very light gray sidebar */
+  --vl-bg-code: #F0F2F4;           /* Light gray code background */
+  --vl-bg-hover: #E8EAED;          /* Light gray hover */
+  --vl-bg-header: #292E33;         /* Dark header */
+
+  /* Text colors */
+  --vl-text-primary: #292E33;      /* Dark charcoal */
+  --vl-text-secondary: #4A5056;    /* Medium dark gray */
+  --vl-text-muted: #828282;        /* Muted gray */
+  --vl-text-light: #9C9C9C;        /* Light gray */
+
+  /* Borders */
+  --vl-border: #D9DADA;            /* Light gray border */
+  --vl-border-light: #E8EAED;      /* Lighter gray border */
+
+  /* Accent colors */
+  --vl-success: #22C55E;           /* Green */
+  --vl-warning: #F59E0B;           /* Amber */
+  --vl-error: #EF4444;             /* Red */
+  --vl-info: #1D94FC;              /* Blue (same as primary) */
+
+  /* Shadows */
+  --vl-shadow-sm: 0 1px 2px 0 rgba(41, 46, 51, 0.05);
+  --vl-shadow-md: 0 4px 6px -1px rgba(41, 46, 51, 0.08), 0 2px 4px -2px rgba(41, 46, 51, 0.06);
+  --vl-shadow-lg: 0 10px 15px -3px rgba(41, 46, 51, 0.10), 0 4px 6px -4px rgba(41, 46, 51, 0.05);
+
+  /* Sidebar sizes - INCREASED */
+  --vl-sidebar-width: 340px;
+  --vl-toc-width: 260px;
+
+  /* Typography - Cube-style fonts */
+  --vl-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --vl-font-mono: 'Source Code Pro', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', monospace;
+  
+  /* Font weights */
+  --vl-font-weight-normal: 400;
+  --vl-font-weight-medium: 500;
+  --vl-font-weight-semibold: 600;
+  --vl-font-weight-bold: 700;
+
+  /* Override Material theme variables */
+  --md-primary-fg-color: var(--vl-primary);
+  --md-accent-fg-color: var(--vl-primary);
+  --md-typeset-a-color: var(--vl-primary);
 }
 
-/* overall background */
-body,
-.md-main__inner,
-.md-content__inner {
-  background-color: var(--bg-cream);
-  color: var(--text-brown);
+/* -------------------- Dark Mode Support -------------------- */
+[data-md-color-scheme="slate"] {
+  /* Dark DataOS palette */
+  --vl-gray-darkest: #1A1D21;
+  --vl-gray-light: #3A3F45;
+  --vl-gray-medium: #5A6068;
+  --vl-gray-dark: #4A5056;
+
+  --vl-primary: #5CB0FA;
+  --vl-primary-dark: #1D94FC;
+  --vl-primary-light: #7EC4FF;
+  --vl-primary-subtle: rgba(92, 176, 250, 0.15);
+
+  --vl-bg-main: #1A1D21;
+  --vl-bg-sidebar: #22262B;
+  --vl-bg-code: #2A2F35;
+  --vl-bg-hover: #32383F;
+  --vl-bg-header: #292E33;
+
+  --vl-text-primary: #F5F6F7;
+  --vl-text-secondary: #D9DADA;
+  --vl-text-muted: #9C9C9C;
+  --vl-text-light: #828282;
+
+  --vl-border: #3A3F45;
+  --vl-border-light: #2A2F35;
 }
 
-/* Remove header shadow (keeps the clean bento bar) */
-.md-header,
+/* -------------------- Base Styles -------------------- */
+body {
+  font-family: var(--vl-font-sans);
+  font-weight: var(--vl-font-weight-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga' 1, 'calt' 1;
+  background-color: var(--vl-bg-main);
+}
+
+/* Apply monospace font to code elements */
+code, pre, kbd, samp,
+.md-typeset code,
+.md-typeset pre {
+  font-family: var(--vl-font-mono) !important;
+}
+
+/* -------------------- Main Header -------------------- */
+.md-header {
+  background-color: #292E33 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #3A3F45 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+.md-header__inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0.625rem 1.5rem !important;
+  max-width: none !important;
+  background: transparent !important;
+}
+
+/* DataOS Vulcan title */
+.md-header__title {
+  font-family: var(--vl-font-sans) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 1.125rem !important;
+  letter-spacing: -0.01em;
+  flex-shrink: 0 !important;
+}
+
+.md-header__topic {
+  font-family: var(--vl-font-sans) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 1.125rem !important;
+}
+
 .md-header--shadow {
   box-shadow: none !important;
-  background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.00));
-}
-.md-header .md-header__inner {
-  background-color: #2b1e18 !important;    /* dark header background */
-  background-image: none !important;       /* remove any blue gradient */
-  color: #ffffff !important;               /* header text/icons white */
-  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Sidebar spacing & fonts */
-:root {
-  --md-nav-link-font-size: var(--nav-font-size-sm);
-  --md-nav-title-font-size: 0.85rem;
-  --md-toc-font-size: var(--toc-font-size);
+/* Header text color - light for dark header */
+.md-header,
+.md-header * {
+  color: #FFFFFF !important;
 }
 
-.md-sidebar--primary .md-nav__link,
-.md-sidebar--secondary .md-nav__link {
-  line-height: 1.3 !important;
-  font-size: var(--md-nav-link-font-size);
-  color: var(--heading-brown);
+.md-header .md-icon svg {
+  fill: #FFFFFF !important;
 }
 
-.md-sidebar--primary .md-nav__title,
-.md-sidebar--secondary .md-nav__title,
-.md-nav__title,
-.md-nav__item .md-nav__title {
+/* Header search - ensure it stays on the right */
+.md-search {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.md-search__input {
+  font-family: var(--vl-font-sans) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+  font-size: 0.875rem !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.md-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.md-search__input:focus {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: var(--vl-primary-light) !important;
+}
+
+/* Search result dropdown - fix z-index and position */
+.md-search__output {
+  z-index: 100 !important;
+}
+
+/* -------------------- Navigation Tabs Below Header -------------------- */
+.md-tabs {
+  background-color: #F5F6F7 !important;
+  border-bottom: 1px solid var(--vl-border) !important;
+  position: sticky !important;
+  top: 48px !important;  /* Position below the header */
+  z-index: 99 !important;
+  width: 100% !important;
+  padding: 0 1.5rem !important;
+  min-height: auto !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
+.md-tabs__list {
+  display: flex !important;
+  gap: 0.25rem !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+}
+
+.md-tabs__item {
+  padding: 0 !important;
+}
+
+.md-tabs__link {
+  font-family: var(--vl-font-sans) !important;
+  color: var(--vl-text-secondary) !important;
+  font-size: 0.875rem !important;
+  font-weight: var(--vl-font-weight-medium) !important;
+  padding: 0.5rem 0.875rem !important;
+  transition: all 0.15s ease !important;
+  border-radius: 0 !important;
+  opacity: 1 !important;
+  border-bottom: 2px solid transparent !important;
+  letter-spacing: 0 !important;
+}
+
+.md-tabs__link:hover {
+  color: var(--vl-text-primary) !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.md-tabs__link--active {
+  color: var(--vl-primary) !important;
+  background-color: transparent !important;
   font-weight: 600 !important;
-  color: var(--heading-brown);
+  border-bottom: 2px solid var(--vl-primary) !important;
 }
 
-/* compact sidebar items */
-.md-nav__item {
-  margin: 0.12rem 0 !important;
+/* -------------------- Main Layout -------------------- */
+.md-main {
+  background-color: var(--vl-bg-main);
 }
 
-/* hover & focus for accessibility */
-.md-nav__link:hover,
+.md-main__inner {
+  display: flex !important;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+/* -------------------- Primary Sidebar (Navigation) -------------------- */
+.md-sidebar--primary {
+  width: var(--vl-sidebar-width) !important;
+  min-width: var(--vl-sidebar-width) !important;
+  background: var(--vl-bg-sidebar) !important;
+  border-right: 1px solid var(--vl-border) !important;
+  padding: 1.5rem 0 !important;
+  position: sticky;
+  top: 86px;  /* Below header (48px) + tabs (38px) */
+  height: calc(100vh - 86px);
+  overflow-y: auto;
+}
+
+.md-sidebar--primary .md-sidebar__scrollwrap {
+  padding: 0 1rem;
+}
+
+/* -------------------- Collapsible Navigation Sections -------------------- */
+/* Main section titles (About, Configurations, Components, Guides) */
+.md-nav__title {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.8125rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  letter-spacing: 0 !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.5rem 0.5rem !important;
+  margin-top: 0.375rem !important;
+  cursor: pointer !important;
+  border-radius: 6px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.md-nav__title:first-child {
+  margin-top: 0 !important;
+}
+
+.md-nav__title:hover {
+  background-color: var(--vl-bg-hover) !important;
+}
+
+/* Toggle icon for collapsible sections */
+.md-nav__title .md-nav__icon {
+  transition: transform 0.2s ease !important;
+}
+
+/* Section toggle styling */
+.md-nav--lifted > .md-nav__list > .md-nav__item--nested,
+.md-nav__item--nested {
+  margin: 0.125rem 0 !important;
+}
+
+/* Nested toggle button styling */
+.md-nav__item--nested > .md-nav__link {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.875rem !important;
+  font-weight: var(--vl-font-weight-medium) !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.375rem 0.5rem !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.md-nav__item--nested > .md-nav__link:hover {
+  background-color: var(--vl-bg-hover) !important;
+}
+
+/* Hide the inner arrow icon (the one right after text) - keep only dropdown arrow */
+.md-sidebar--primary .md-nav__link > .md-nav__icon {
+  display: none !important;
+}
+
+/* Hide nested items by default - they show when parent is toggled */
+.md-nav__item--nested > .md-nav {
+  margin-left: 0.375rem !important;
+  padding-left: 0.5rem !important;
+  border-left: 2px solid var(--vl-border) !important;
+  margin-top: 0.125rem !important;
+}
+
+/* Navigation links */
+.md-nav__link {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.875rem !important;
+  font-weight: var(--vl-font-weight-normal) !important;
+  color: var(--vl-text-secondary) !important;
+  padding: 0.375rem 0.5rem !important;
+  border-radius: 6px !important;
+  margin: 1px 0 !important;
+  transition: all 0.15s ease !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.md-nav__link:hover {
+  color: var(--vl-text-primary) !important;
+  background-color: var(--vl-bg-hover) !important;
+}
+
+.md-nav__link--active,
 .md-nav__link:focus {
-  color: var(--accent-coral) !important;
-  outline: 2px solid rgba(229,116,102,0.12);
-  outline-offset: 2px;
+  color: var(--vl-primary) !important;
+  background-color: var(--vl-primary-subtle) !important;
+  font-weight: 500 !important;
 }
 
-/* Page headings */
-.md-typeset h1,
-.md-typeset h2,
+.md-nav__link:focus {
+  outline: none !important;
+}
+
+/* Navigation items spacing */
+.md-nav__item {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* -------------------- Secondary Sidebar (TOC) -------------------- */
+.md-sidebar--secondary {
+  width: var(--vl-toc-width) !important;
+  min-width: var(--vl-toc-width) !important;
+  background: transparent !important;
+  border-left: 1px solid var(--vl-border) !important;
+  padding: 1.5rem 0 !important;
+  position: sticky;
+  top: 86px;  /* Below header (48px) + tabs (38px) */
+  height: calc(100vh - 86px);
+  overflow-y: auto;
+}
+
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+  padding: 0 1rem;
+}
+
+/* TOC title */
+.md-sidebar--secondary .md-nav__title {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  color: var(--vl-text-muted) !important;
+  margin-bottom: 0.5rem !important;
+  cursor: default !important;
+  background: transparent !important;
+}
+
+.md-sidebar--secondary .md-nav__title:hover {
+  background: transparent !important;
+}
+
+/* TOC links */
+.md-sidebar--secondary .md-nav__link {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.8125rem !important;
+  font-weight: var(--vl-font-weight-normal) !important;
+  color: var(--vl-text-muted) !important;
+  padding: 0.375rem 0.75rem !important;
+  border-left: 2px solid transparent !important;
+  border-radius: 0 !important;
+  margin-left: 0 !important;
+  background: transparent !important;
+}
+
+.md-sidebar--secondary .md-nav__link:hover {
+  color: var(--vl-text-primary) !important;
+  background: transparent !important;
+  border-left-color: var(--vl-border) !important;
+}
+
+.md-sidebar--secondary .md-nav__link--active {
+  color: var(--vl-primary) !important;
+  background: transparent !important;
+  border-left-color: var(--vl-primary) !important;
+  font-weight: var(--vl-font-weight-medium) !important;
+}
+
+/* -------------------- Main Content Area -------------------- */
+.md-content {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: 900px !important;
+  margin: 0 auto !important;
+  padding: 2rem 3rem !important;
+  background: var(--vl-bg-main) !important;
+}
+
+.md-content__inner {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* -------------------- Typography -------------------- */
+.md-typeset {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 1rem !important;
+  line-height: 1.75 !important;
+  color: var(--vl-text-primary) !important;
+  font-weight: var(--vl-font-weight-normal) !important;
+}
+
+.md-typeset h1 {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 2rem !important;
+  font-weight: var(--vl-font-weight-bold) !important;
+  letter-spacing: -0.02em !important;
+  color: var(--vl-text-primary) !important;
+  margin-bottom: 1.5rem !important;
+  line-height: 1.25 !important;
+}
+
+.md-typeset h2 {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 1.5rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  letter-spacing: -0.015em !important;
+  color: var(--vl-text-primary) !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1rem !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important;
+}
+
 .md-typeset h3 {
-  color: var(--heading-brown);
-  font-weight: 700;
+  font-family: var(--vl-font-sans) !important;
+  font-size: 1.25rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  color: var(--vl-text-primary) !important;
+  margin-top: 2rem !important;
+  margin-bottom: 0.75rem !important;
 }
 
-/* Buttons (Get Started style) */
-.md-typeset .button,
-a.md-button,
-button.md-button {
-  background: linear-gradient(180deg, var(--panel-cream), #f2d2cc);
-  color: var(--heading-brown);
-  border-radius: 10px;
-  padding: 0.7rem 1rem;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(0,0,0,0.04);
+.md-typeset h4 {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 1.125rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  color: var(--vl-text-primary) !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
-/* Tabs last item icon — removed: was incorrectly targeting last nav tab */
+.md-typeset p {
+  color: var(--vl-text-primary) !important;
+  margin-bottom: 1.25rem !important;
+  line-height: 1.75 !important;
+}
 
-/* Code block styling */
+.md-typeset li {
+  color: var(--vl-text-primary) !important;
+  line-height: 1.75 !important;
+}
+
+/* Links */
+.md-typeset a {
+  color: var(--vl-primary) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: color 0.15s ease !important;
+}
+
+.md-typeset a:hover {
+  color: var(--vl-primary-dark) !important;
+  text-decoration: underline !important;
+}
+
+/* -------------------- Code Blocks -------------------- */
+/* Inline code */
+.md-typeset code {
+  font-family: var(--vl-font-mono) !important;
+  font-size: 0.875em !important;
+  font-weight: 500 !important;
+  background-color: #F3F4F6 !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.125rem 0.375rem !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+/* Code blocks */
+.md-typeset pre {
+  font-family: var(--vl-font-mono) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  background-color: #F8F9FA !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--vl-border) !important;
+  padding: 1rem !important;
+}
+
 .md-typeset pre > code {
-  border-radius: 0.4rem;
-  background: #fff7f4;
-  padding: 0.8rem;
-  display: block;
-  overflow-x: auto;
+  font-family: var(--vl-font-mono) !important;
+  font-size: 0.875rem !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
-/* Make long code blocks scroll horizontally */
-.md-typeset .highlight {
-  overflow-x: auto;
+/* Dark mode code */
+[data-md-color-scheme="slate"] .md-typeset code {
+  background-color: #2A2F35 !important;
 }
 
-/* Tabbed sets */
-.md-typeset .tabbed-set {
-  border-radius: 0.4rem;
-  background: var(--panel-cream);
-  padding: 0.4rem;
+[data-md-color-scheme="slate"] .md-typeset pre {
+  background-color: #1E2228 !important;
 }
 
-/* --------------------
-   Admonitions (question, tip, note) — warm Bento style
-   -------------------- */
-
-/* Question admonition converts from original blue -> coral */
-.md-typeset .admonition.question,
-.md-typeset details.question {
-  border-color: var(--admonition-border-question);
-  background: linear-gradient(180deg, rgba(232,110,110,0.03), rgba(0,0,0,0));
-  border-radius: 8px;
-  padding: 0.2rem;
+/* -------------------- Admonitions -------------------- */
+.md-typeset .admonition,
+.md-typeset details {
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: var(--vl-shadow-sm) !important;
+  margin: 1.5rem 0 !important;
+  overflow: hidden !important;
 }
 
-/* Title / summary for question */
-.md-typeset .question > .admonition-title,
-.md-typeset .question > summary {
-  background-color: var(--accent-coral-10);
-  border-radius: 6px;
-  padding: 0.5rem 0.6rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--heading-brown);
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-family: var(--vl-font-sans) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.875rem !important;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
-/* decorative pseudo elements adapted */
-.md-typeset .question > .admonition-title::before,
-.md-typeset .question > summary::before {
-  content: "";
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: var(--admonition-border-question);
-  margin-right: 6px;
-}
-
-/* if your theme uses ::after icons/text adjust color */
-.md-typeset .question > .admonition-title::after,
-.md-typeset .question > summary::after {
-  color: var(--admonition-border-question);
-}
-
-/* Tip admonition (mapped from blue -> peach) */
-.md-typeset .admonition.tip,
-.md-typeset details.tip {
-  border-color: var(--admonition-border-tip);
-  background: linear-gradient(180deg, rgba(242,160,106,0.03), rgba(0,0,0,0));
-  border-radius: 8px;
-  padding: 0.2rem;
-}
-
-.md-typeset .tip > .admonition-title,
-.md-typeset .tip > summary {
-  background-color: rgba(242,160,106,0.10);
-  border-radius: 6px;
-  padding: 0.5rem 0.6rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--heading-brown);
-}
-
-.md-typeset .tip > .admonition-title::before,
-.md-typeset .tip > summary::before {
-  content: "";
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: var(--admonition-border-tip);
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.md-typeset .tip > .admonition-title::after,
-.md-typeset .tip > summary::after {
-  color: var(--admonition-border-tip);
-}
-
-/* Note admonitions styled muted/grey but warm background */
+/* Note - Blue */
 .md-typeset .admonition.note,
 .md-typeset details.note {
-  border-color: var(--muted-grey);
+  background-color: #F0F7FF !important;
+  border-left: 4px solid var(--vl-primary) !important;
 }
 
 .md-typeset .note > .admonition-title,
 .md-typeset .note > summary {
-  background-color: rgba(158,158,158,0.08);
-  border-color: var(--muted-grey);
-  color: var(--text-brown);
+  background-color: rgba(29, 148, 252, 0.08) !important;
+  color: #1D94FC !important;
 }
 
 .md-typeset .note > .admonition-title::before,
 .md-typeset .note > summary::before {
-  background-color: var(--muted-grey);
-  -webkit-mask-image: var(--md-admonition-icon--note);
-  mask-image: var(--md-admonition-icon--note);
+  background-color: var(--vl-primary) !important;
 }
 
-/* adjust the default accent color used widely by MD Kit */
-:root {
-  --md-accent-fg-color: var(--accent-coral);
+/* Tip - Green */
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  background-color: #F0FDF4 !important;
+  border-left: 4px solid var(--vl-success) !important;
 }
 
-/* Slightly rounded cards and softer shadows across the page */
-.md-typeset .card,
-.md-typeset .admonition,
-.md-content__inner > .section {
-  border-radius: 10px;
-  box-shadow: none;
-  background: transparent;
+.md-typeset .tip > .admonition-title,
+.md-typeset .tip > summary {
+  background-color: rgba(34, 197, 94, 0.08) !important;
+  color: #16A34A !important;
 }
 
-/* small adjustment to make the "Get Started" / CTA pop */
-.md-typeset .button--primary,
-a.md-button--primary {
-  background: linear-gradient(180deg, #F7BEB4, #F0A49A);
-  color: var(--heading-brown);
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 8px 0 rgba(224,119,102,0.14);
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  background-color: var(--vl-success) !important;
 }
 
-/* readability for long paragraphs and lists */
-.md-typeset p,
-.md-typeset li {
-  line-height: 1.6;
-  color: var(--text-brown);
+/* Warning - Amber */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  background-color: #FFFBEB !important;
+  border-left: 4px solid var(--vl-warning) !important;
 }
 
-/* small tweak: break long nav links */
-.md-nav__link {
-  word-break: break-word;
+.md-typeset .warning > .admonition-title,
+.md-typeset .warning > summary {
+  background-color: rgba(245, 158, 11, 0.08) !important;
+  color: #D97706 !important;
 }
 
-/* small visual polish on sidebar: separator color and background */
-.md-sidebar {
-  background: linear-gradient(180deg, var(--panel-cream), var(--bg-cream));
-  border-right: 1px solid rgba(0,0,0,0.03);
+.md-typeset .warning > .admonition-title::before,
+.md-typeset .warning > summary::before {
+  background-color: var(--vl-warning) !important;
 }
 
-/* small responsive tweak for table-of-contents */
-@media (max-width: 900px) {
-  .md-sidebar--secondary {
-    display: none;
-  }
-}
-/* --- Full-width + flex layout for mdkit-style layout --- */
-
-/* Make the main wrapper full width */
-.md-main,
-.md-main__inner,
-.md-content__inner {
-  max-width: none !important;
-  width: 100% !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  box-sizing: border-box;
+/* Danger / Error - Red */
+.md-typeset .admonition.danger,
+.md-typeset details.danger,
+.md-typeset .admonition.error,
+.md-typeset details.error {
+  background-color: #FEF2F2 !important;
+  border-left: 4px solid var(--vl-error) !important;
 }
 
-/* Create a flexible two-column layout: primary sidebar | content | secondary (toc) */
-.md-main__inner {
-  display: flex;
-  gap: 1.5rem;                /* space between columns */
-  align-items: flex-start;
-  align-content: flex-start;
-  padding: 1.5rem;            /* outer padding */
+.md-typeset .danger > .admonition-title,
+.md-typeset .danger > summary,
+.md-typeset .error > .admonition-title,
+.md-typeset .error > summary {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+  color: #DC2626 !important;
 }
 
-/* Left sidebar (primary navigation) */
-.md-sidebar--primary {
-  flex: 0 0 240px;            /* fixed-ish width but flexible shrink */
-  min-width: 180px;
-  max-width: 300px;
-  box-sizing: border-box;
-  padding: 0.5rem 1rem;
+/* Info - Blue */
+.md-typeset .admonition.info,
+.md-typeset details.info {
+  background-color: #F0F7FF !important;
+  border-left: 4px solid var(--vl-primary-light) !important;
 }
 
-/* Main content region - take remaining width */
-.md-content {
-  flex: 1 1 auto;
-  min-width: 0;              /* allows children to shrink properly */
-  padding: 0 1rem;
+.md-typeset .info > .admonition-title,
+.md-typeset .info > summary {
+  background-color: rgba(92, 176, 250, 0.08) !important;
+  color: #1D94FC !important;
 }
 
-/* Secondary sidebar (table of contents / right column) */
-.md-sidebar--secondary {
-  flex: 0 0 220px;
-  min-width: 160px;
-  max-width: 300px;
-  padding: 0.5rem 1rem;
-  box-sizing: border-box;
+/* Question - Light Blue */
+.md-typeset .admonition.question,
+.md-typeset details.question {
+  background-color: #F0F9FF !important;
+  border-left: 4px solid #5CB0FA !important;
 }
 
-/* Make content column visually full-bleed but keep inner readability width */
-.md-content__inner > .section,
-.md-typeset {
-  max-width: 1200px;         /* controls line-length for readability */
-  margin: 0 auto;
-  padding: 0 0.5rem;
+.md-typeset .question > .admonition-title,
+.md-typeset .question > summary {
+  background-color: rgba(92, 176, 250, 0.08) !important;
+  color: #1D94FC !important;
 }
 
-/* Mobile-first: collapse to single column on narrow screens */
-@media (max-width: 1100px) {
-  .md-main__inner {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .md-sidebar--primary,
-  .md-sidebar--secondary,
-  .md-content {
-    flex: none;
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-  }
-
-  /* hide secondary TOC on smaller devices if you prefer */
-  .md-sidebar--secondary {
-    display: none;
-  }
-
-  /* Slightly larger padding for touch devices */
-  .md-content__inner > .section,
-  .md-typeset {
-    padding: 0 1rem;
-  }
-}
-
-/* smaller mobile polish */
-@media (max-width: 600px) {
-  .md-main__inner {
-    padding: 0.75rem;
-    gap: 0.75rem;
-  }
-
-  .md-sidebar--primary {
-    padding: 0.25rem 0.5rem;
-  }
-
-  .md-content__inner > .section {
-    padding: 0;
-  }
-}
-/* 1) Kill stray margins/padding under the top nav */
-.md-header,
-.md-nav,
-.md-tabs,
-.md-toolbar,
-.md-banner,
-.md-hero,
-.md-header--shadow {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* 2) Ensure the main content sits directly under the nav */
-.md-main__inner,
-.md-main,
-.md-content,
-.md-content__inner {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-/* 3) If theme created an empty spacer element immediately after header,
-   collapse elements that commonly appear there. Be specific to avoid hiding useful elements. */
-.md-header + .md-banner,
-.md-header + .md-toolbar,
-.md-header + .md-nav,
-.md-header + .md-header--shadow {
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* 4) If you find a named spacer class (e.g. .header-spacer) set it to 0 */
-.header-spacer,
-.md-anchor-offset,
-.md-header-spacer {
-  height: 0 !important;
-  display: none !important;
-}
-
-/* Remove the Material blue bar from the tab navigation */
-.md-tabs {
-  background-color: var(--panel-cream) !important;   /* or var(--bg-cream) */
-  box-shadow: none !important;
-  border-bottom: 1px solid rgba(0,0,0,0.05);          /* optional soft line */
-}
-
-/* Ensure tab links match your theme */
-.md-tabs__link {
-  color: var(--heading-brown) !important;
-}
-
-.md-tabs__link--active {
-  color: var(--accent-coral) !important;
-  border-bottom-color: var(--accent-coral) !important;
-}
-/* Flex the entire header row */
-.md-header__inner {
-  display: flex !important;
-  align-items: center;
-  justify-content: space-between;    /* spreads items across the bar */
-  gap: 1rem;
-  width: 100%;
-}
-
-/* Allow inner blocks to shrink/grow normally */
-.md-header__title {
-  flex: 1 1 auto;                     /* expands title area */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* The logo should stay small */
-.md-logo {
-  flex: 0 0 auto;
-}
-
-/* Search bar container */
-.md-search {
-  flex: 0 1 260px;                    /* lets search shrink on small screens */
-  min-width: 140px;
-}
-
-/* Repo info widget */
-.md-header__source {
-  flex: 0 0 auto;                     /* avoid squishing the GitHub block */
-}
-
-/* Optional: tighter mobile layout */
-@media (max-width: 700px) {
-  .md-header__inner {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .md-search {
-    order: 3;
-    flex: 1 1 100%;
-  }
-
-  .md-header__source {
-    order: 4;
-  }
-}
-
-/* ---------- DEBUG (temporary) ----------
-   Uncomment to visualize header boxes while debugging.
-   Remove after layout is correct.
-*/
-/*
-.md-header * {
-  outline: 1px dashed rgba(255,0,255,0.08) !important;
-}
-*/
-
-/* ---------- Force header to be a responsive flex row ---------- */
-
-/* Ensure header itself spans the full width */
-header.md-header,
-.md-header {
-  display: block !important;
-  width: 100% !important;
-  left: 0 !important;
-  right: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* Make the inner container a true flex row and remove restrictive max-widths */
-.md-header .md-header__inner,
-.md-header__inner {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 1rem !important;
-  width: 100% !important;
-  max-width: none !important;     /* remove any centered max-width */
-  padding: 0.5rem 1rem !important;/* adjust as needed */
-  box-sizing: border-box !important;
-}
-
-/* Prevent children from being forced to block widths by the theme */
-.md-header .md-header__inner > *,
-.md-header__inner > * {
-  min-width: 0 !important;    /* allows flex children to shrink */
-}
-
-/* Logo / hamburger area - keep compact */
-.md-header__logo,
-.md-logo,
-.md-header__button.md-logo,
-.md-header .md-header__button {
-  flex: 0 0 auto !important;
-  margin-right: 0.5rem !important;
-}
-
-/* Title area should expand and ellipsize when necessary */
-.md-header__title,
-.md-header .md-header__title,
-.md-header__title > * {
-  flex: 1 1 auto !important;
-  min-width: 0 !important;     /* critical for truncation inside flex */
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Search area: can shrink but keep a sensible preferred width */
-.md-search,
-.md-header .md-search,
-.md-header__search {
-  flex: 0 1 320px !important;   /* preferred width, but will shrink */
-  min-width: 120px !important;
-  max-width: 48% !important;
-  box-sizing: border-box !important;
-}
-
-/* Tools / repo block stay on the right */
-.md-header__tools,
-.md-header .md-header__tools,
-.md-header__source,
-.md-header .md-header__source {
-  flex: 0 0 auto !important;
-  margin-left: 0.5rem !important;
-}
-
-/* If the theme uses a separate nav/tabs row below header, make it full-width as well */
-.md-tabs,
-.md-nav,
-.md-tabs__container {
-  width: 100% !important;
-  max-width: none !important;
-}
-
-/* ---------- Mobile wrapping rules ---------- */
-@media (max-width: 900px) {
-  .md-header .md-header__inner,
-  .md-header__inner {
-    flex-wrap: wrap !important;
-    gap: 0.5rem !important;
-    padding: 0.5rem !important;
-  }
-
-  /* Make title full width on small screens (so it doesn't collide) */
-  .md-header__title {
-    order: 2 !important;
-    width: 100% !important;
-    text-align: left !important;
-    white-space: normal !important; /* allow wrapping on tiny screens */
-  }
-
-  /* Push the search to its own row */
-  .md-search {
-    order: 3 !important;
-    flex: 1 1 100% !important;
-    width: 100% !important;
-  }
-
-  .md-header__tools {
-    order: 4 !important;
-    width: auto !important;
-  }
-}
-
-/* ---------- Final safety: undo any inline background on inner */
-.md-header .md-header__inner {
-  background: transparent !important;
-}
-
-
-/* Darker brown header — clean + global */
-.md-header,
-.md-header__inner,
-.md-toolbar {
-  background-color: #241611 !important;  /* your darker brown */
-  background-image: none !important;
-  box-shadow: none !important;
-}
-
-/* Ensure text + icons stay readable */
-.md-header,
-.md-header * {
+/* -------------------- Buttons -------------------- */
+.md-typeset .md-button,
+a.md-button {
+  font-family: var(--vl-font-sans) !important;
+  background-color: var(--vl-primary) !important;
   color: #ffffff !important;
-  fill: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.875rem !important;
+  box-shadow: var(--vl-shadow-sm) !important;
+  transition: all 0.15s ease !important;
 }
 
-/* Remove the cream band that sometimes appears under the header */
-.md-header + .md-tabs,
-.md-header + .md-banner,
-.md-header--shadow {
-  background-color: #241611 !important;
-  box-shadow: none !important;
+.md-typeset .md-button:hover,
+a.md-button:hover {
+  background-color: var(--vl-primary-dark) !important;
+  box-shadow: var(--vl-shadow-md) !important;
+  transform: translateY(-1px) !important;
+  text-decoration: none !important;
 }
 
-/* Darker subheader (the tabs bar under the header) */
-.md-tabs,
-.md-tabs__inner {
-  background-color: #3a2a22 !important;   /* slightly lighter than header, but darker than cream */
-  box-shadow: none !important;
-  border-bottom: 1px solid rgba(0,0,0,0.15);  /* optional subtle line */
+/* Secondary button */
+.md-typeset .md-button--secondary,
+a.md-button--secondary {
+  background-color: transparent !important;
+  color: var(--vl-primary) !important;
+  border: 2px solid var(--vl-primary) !important;
 }
 
-/* Make tab text readable on dark background */
-.md-tabs__link {
-  color: #f7e9e2 !important;               /* soft cream text */
+.md-typeset .md-button--secondary:hover,
+a.md-button--secondary:hover {
+  background-color: var(--vl-primary-subtle) !important;
 }
 
-/* Active tab highlight (coral underline) */
-.md-tabs__link--active {
-  color: #ffffff !important;
-  border-color: var(--accent-coral) !important;
-}
-
-/* Download button with black background */
+/* Download button */
 .md-typeset .download-button,
 a.md-button.download-button {
-  background-color: #000000 !important;
-  background: #000000 !important;
+  background-color: #292E33 !important;
   color: #ffffff !important;
-  border-color: #000000 !important;
 }
 
 .md-typeset .download-button:hover,
 a.md-button.download-button:hover {
-  background-color: #333333 !important;
-  background: #333333 !important;
-  color: #ffffff !important;
+  background-color: #3A3F45 !important;
 }
 
-/* Mermaid Diagram Zoom Functionality */
+/* -------------------- Tables -------------------- */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--vl-border) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+  margin: 1.5rem 0 !important;
+}
+
+.md-typeset table:not([class]) th {
+  font-family: var(--vl-font-sans) !important;
+  background-color: var(--vl-bg-sidebar) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.8125rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 1px solid var(--vl-border) !important;
+}
+
+.md-typeset table:not([class]) td {
+  font-family: var(--vl-font-sans) !important;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 1px solid var(--vl-border-light) !important;
+  font-size: 0.875rem !important;
+}
+
+.md-typeset table:not([class]) tr:last-child td {
+  border-bottom: none !important;
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background-color: var(--vl-bg-hover) !important;
+}
+
+/* -------------------- Tabs -------------------- */
+.md-typeset .tabbed-set {
+  border: 1px solid var(--vl-border) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  margin: 1.5rem 0 !important;
+}
+
+.md-typeset .tabbed-labels {
+  background-color: var(--vl-bg-sidebar) !important;
+  border-bottom: 1px solid var(--vl-border) !important;
+  padding: 0 !important;
+}
+
+.md-typeset .tabbed-labels > label {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.875rem !important;
+  font-weight: var(--vl-font-weight-medium) !important;
+  color: var(--vl-text-muted) !important;
+  padding: 0.75rem 1.25rem !important;
+  border-bottom: 2px solid transparent !important;
+  margin-bottom: -1px !important;
+}
+
+.md-typeset .tabbed-labels > label:hover {
+  color: var(--vl-text-primary) !important;
+}
+
+.md-typeset .tabbed-labels > label.tabbed-label--active {
+  color: var(--vl-primary) !important;
+  border-bottom-color: var(--vl-primary) !important;
+}
+
+.md-typeset .tabbed-content {
+  padding: 1rem 1.25rem !important;
+}
+
+/* -------------------- Lists -------------------- */
+.md-typeset ul,
+.md-typeset ol {
+  margin-left: 0 !important;
+  padding-left: 1.5rem !important;
+}
+
+.md-typeset li {
+  margin-bottom: 0.5rem !important;
+}
+
+.md-typeset li::marker {
+  color: var(--vl-text-light) !important;
+}
+
+/* -------------------- Blockquotes -------------------- */
+.md-typeset blockquote {
+  border-left: 4px solid var(--vl-primary) !important;
+  background-color: var(--vl-bg-sidebar) !important;
+  padding: 1rem 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+.md-typeset blockquote p {
+  color: var(--vl-text-muted) !important;
+  font-style: italic !important;
+}
+
+/* -------------------- Horizontal Rules -------------------- */
+.md-typeset hr {
+  border: none !important;
+  border-top: 1px solid var(--vl-border) !important;
+  margin: 2rem 0 !important;
+}
+
+/* -------------------- Footer -------------------- */
+.md-footer {
+  background-color: #292E33 !important;
+  border-top: none !important;
+}
+
+.md-footer,
+.md-footer * {
+  color: #FFFFFF !important;
+}
+
+.md-footer .md-icon svg {
+  fill: #FFFFFF !important;
+}
+
+.md-footer-meta {
+  background-color: #1A1D21 !important;
+}
+
+.md-footer-nav {
+  background-color: #292E33 !important;
+}
+
+/* -------------------- Responsive Adjustments -------------------- */
+@media (max-width: 1400px) {
+  .md-sidebar--primary {
+    width: 260px !important;
+    min-width: 260px !important;
+  }
+  
+  .md-sidebar--secondary {
+    width: 220px !important;
+    min-width: 220px !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .md-sidebar--secondary {
+    display: none !important;
+  }
+  
+  .md-content {
+    max-width: 100% !important;
+    padding: 2rem !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .md-sidebar--primary {
+    width: 100% !important;
+    position: relative !important;
+    height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--vl-border) !important;
+  }
+  
+  .md-content {
+    padding: 1.5rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .md-content {
+    padding: 1rem !important;
+  }
+  
+  .md-typeset h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  .md-typeset h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .md-typeset h3 {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* -------------------- Mermaid Diagram Zoom -------------------- */
 .mermaid-zoom-wrapper {
   position: relative;
   cursor: zoom-in;
@@ -669,10 +924,12 @@ a.md-button.download-button:hover {
   border-radius: 8px;
   transition: box-shadow 0.3s ease;
   margin: 1.5rem 0;
+  border: 1px solid var(--vl-border);
+  background: #fff;
 }
 
 .mermaid-zoom-wrapper:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--vl-shadow-md);
 }
 
 .mermaid-zoom-wrapper .mermaid {
@@ -691,10 +948,10 @@ a.md-button.download-button:hover {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(41, 46, 51, 0.9);
   color: white;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 12px;
   pointer-events: none;
   opacity: 0;
@@ -702,59 +959,10 @@ a.md-button.download-button:hover {
   z-index: 10;
   font-weight: 500;
   backdrop-filter: blur(4px);
-  line-height: 1.4;
-  max-width: 300px;
-  text-align: center;
 }
 
 .mermaid-zoom-wrapper:hover .mermaid-zoom-indicator {
   opacity: 1;
-}
-
-/* Navigation Controls */
-.mermaid-zoom-controls {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
-  gap: 10px;
-  z-index: 10000;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 10px 15px;
-  border-radius: 12px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-.mermaid-zoom-wrapper.zoomed .mermaid-zoom-controls {
-  display: flex;
-}
-
-.zoom-control-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.zoom-control-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: scale(1.1);
-}
-
-.zoom-control-btn:active {
-  transform: scale(0.95);
 }
 
 /* Zoomed state */
@@ -764,11 +972,13 @@ a.md-button.download-button:hover {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(26, 29, 33, 0.95);
   z-index: 9999;
   cursor: zoom-out;
   overflow: hidden;
   padding: 0;
+  border: none;
+  border-radius: 0;
 }
 
 .mermaid-zoom-wrapper.zoomed .mermaid-zoom-container {
@@ -778,32 +988,8 @@ a.md-button.download-button:hover {
   cursor: grab;
   padding: 40px;
   box-sizing: border-box;
-  /* Smooth scrolling */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  /* Better scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
-}
-
-.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-}
-
-.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 6px;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-}
-
-.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
 }
 
 .mermaid-zoom-wrapper.zoomed .mermaid-zoom-container:active {
@@ -816,42 +1002,90 @@ a.md-button.download-button:hover {
   background: white;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--vl-shadow-lg);
   margin: auto;
   display: block;
-  /* Prevent text selection when dragging */
   user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .mermaid-zoom-controls {
-    bottom: 20px;
-    padding: 8px 12px;
-    gap: 8px;
+/* Zoom controls */
+.mermaid-zoom-controls {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  gap: 10px;
+  z-index: 10000;
+  background: rgba(41, 46, 51, 0.9);
+  padding: 10px 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: var(--vl-shadow-lg);
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-controls {
+  display: flex;
   }
   
   .zoom-control-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.zoom-control-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* -------------------- Scrollbars -------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--vl-bg-sidebar);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vl-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vl-text-light);
+}
+
+/* Firefox scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vl-border) var(--vl-bg-sidebar);
+}
+
+/* -------------------- Print Styles -------------------- */
+@media print {
+  .md-sidebar--primary,
+  .md-sidebar--secondary,
+  .md-header,
+  .md-tabs,
+  .md-footer {
+    display: none !important;
   }
   
-  .mermaid-zoom-indicator {
-    font-size: 11px;
-    padding: 6px 10px;
-    max-width: 250px;
-  }
-  
-  .mermaid-zoom-wrapper.zoomed .mermaid-zoom-container {
-    padding: 20px;
-  }
-  
-  .mermaid-zoom-wrapper.zoomed .mermaid {
-    padding: 20px;
+  .md-content {
+    max-width: 100% !important;
+    padding: 0 !important;
   }
 }
 

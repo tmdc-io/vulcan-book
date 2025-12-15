@@ -1,10 +1,11 @@
-# Custom materializations guide
+# Custom materializations
 
 Vulcan supports a variety of [model kinds](../concepts/models/model_kinds.md) that reflect the most common approaches to evaluating and materializing data transformations.
 
 Sometimes, however, a specific use case cannot be addressed with an existing model kind. For scenarios like this, Vulcan allows users to create their own materialization implementation using Python.
 
-__NOTE__: this is an advanced feature and should only be considered if all other approaches have been exhausted. If you're at this decision point, we recommend you reach out to our team in the [community slack](https://tobikodata.com/community.html) before investing time building a custom materialization. If an existing model kind can solve your problem, we want to clarify the Vulcan documentation; if an existing kind can _almost_ solve your problem, we want to consider modifying the kind so all Vulcan users can solve the problem as well.
+!!! warning "Advanced Feature"
+    This is an advanced feature and should only be considered if all other approaches have been exhausted. If you're at this decision point, we recommend you reach out to our team in the [community slack](https://tobikodata.com/community.html) before investing time building a custom materialization. If an existing model kind can solve your problem, we want to clarify the Vulcan documentation; if an existing kind can _almost_ solve your problem, we want to consider modifying the kind so all Vulcan users can benefit.
 
 ## Background
 
@@ -39,63 +40,114 @@ A Vulcan project will automatically load any custom materializations present in 
 
 ## Creating a custom materialization
 
-Create a new custom materialization by adding a `.py` file containing the implementation to the `materializations/` folder in the project directory. Vulcan will automatically import all Python modules in this folder at project load time and register the custom materializations. (Find more information about sharing and packaging custom materializations [below](#sharing-custom-materializations).)
+Create a new custom materialization by adding a `.py` file containing the implementation to the `materializations/` folder in the project directory. Vulcan will automatically import all Python modules in this folder at project load time and register the custom materializations.
 
 A custom materialization must be a class that inherits the `CustomMaterialization` base class and provides an implementation for the `insert` method.
 
-For example, a minimal full-refresh custom materialization might look like the following:
+### Simple example
+
+Here's a complete example of a custom materialization that demonstrates custom insert logic:
 
 ```python linenums="1"
-from vulcan import CustomMaterialization # required
+import typing as t
+from sqlalchemy import text
+from vulcan import CustomMaterialization
+from vulcan import Model
 
-# argument typing: strongly recommended but optional best practice
-from __future__ import annotations
+class SimpleCustomMaterialization(CustomMaterialization):
+    """Simple custom materialization - demonstrates custom insert logic"""
+    
+    NAME = "simple_custom"
+    
+    def insert(
+        self,
+        table_name: str,
+        query_or_df: t.Union[str, t.Any],
+        model: Model,
+        is_first_insert: bool,
+        render_kwargs: t.Dict[str, t.Any],
+        **kwargs: t.Any,
+    ) -> None:
+        """Custom insert logic for tables"""
+        
+        print(f"Custom materialization: Processing table {table_name}")
+        print(f"Model: {model.name}")
+        print(f"Is first insert: {is_first_insert}")
+        
+        if is_first_insert:
+            print("Creating table for the first time")
+            # Create the table normally using the adapter
+            self.adapter.create_table(
+                table_name,
+                columns=model.columns_to_types,
+                target_columns_to_types=model.columns_to_types,
+                partitioned_by=model.partitioned_by,
+            )
+        
+        # Insert data with custom logic
+        if isinstance(query_or_df, str):
+            print("Executing SQL query")
+            # Execute the query - Vulcan provides the INSERT INTO ... SELECT query
+            self.adapter.execute(text(query_or_df))
+        else:
+            print("Inserting DataFrame")
+            # Insert DataFrame normally - useful for Python models that return DataFrames
+            self.adapter.insert_append(table_name, query_or_df)
+        
+        print(f"Custom materialization completed for {table_name}")
+```
+
+Let's break down this materialization:
+
+| Component | Description |
+|-----------|-------------|
+| `NAME` | The name used to reference this materialization in model definitions (`simple_custom`) |
+| `table_name` | The target table name where data will be inserted |
+| `query_or_df` | Either a SQL query string or a DataFrame (Pandas, PySpark, Snowpark) |
+| `model` | The model definition object with access to all model properties |
+| `is_first_insert` | `True` if this is the first insert for the current model version |
+| `render_kwargs` | Dictionary of arguments used to render the model query |
+| `self.adapter` | The engine adapter for executing SQL and interacting with the database |
+
+### Minimal example
+
+For a simpler full-refresh materialization:
+
+```python linenums="1"
+from vulcan import CustomMaterialization
 from vulcan import Model
 import typing as t
-if t.TYPE_CHECKING:
-    from vulcan import QueryOrDF
 
 class CustomFullMaterialization(CustomMaterialization):
     NAME = "my_custom_full"
 
     def insert(
         self,
-        table_name: str, # ": str" is optional argument typing
-        query_or_df: QueryOrDF,
+        table_name: str,
+        query_or_df: t.Any,
         model: Model,
         is_first_insert: bool,
         render_kwargs: t.Dict[str, t.Any],
         **kwargs: t.Any,
     ) -> None:
         self.adapter.replace_query(table_name, query_or_df)
-
 ```
 
-Let's unpack this materialization:
+### Controlling table creation and deletion
 
-* `NAME` - name of the custom materialization. This name is used to specify the materialization in a model definition `MODEL` block. If not specified in the custom materialization, the name of the class is used in the `MODEL` block instead.
-* The `insert` method has the following arguments:
-    * `table_name` - the name of a target table or view into which the data should be inserted
-    * `query_or_df` - a query (of SQLGlot expression type) or DataFrame (Pandas, PySpark, or Snowpark) instance to be inserted
-    * `model` - the model definition object used to access model parameters and user-specified materialization arguments
-    * `is_first_insert` - whether this is the first insert for the current version of the model (used with batched or multi-step inserts)
-    * `render_kwargs` - a dictionary of arguments used to render the model query
-    * `kwargs` - additional and future arguments
-* The `self.adapter` instance is used to interact with the target engine. It comes with a set of useful high-level APIs like `replace_query`, `columns`, and `table_exists`, but also supports executing arbitrary SQL expressions with its `execute` method.
-
-You can control how data objects (tables, views, etc.) are created and deleted by overriding the `MaterializableStrategy` class's `create` and `delete` methods:
+You can control how data objects (tables, views, etc.) are created and deleted by overriding the `create` and `delete` methods:
 
 ```python linenums="1"
-from vulcan import CustomMaterialization # required
-
-# argument typing: strongly recommended but optional best practice
-from __future__ import annotations
+from vulcan import CustomMaterialization
 from vulcan import Model
 import typing as t
 
 class CustomFullMaterialization(CustomMaterialization):
-    # NAME and `insert` method code here
-    ...
+    NAME = "my_custom_full"
+    
+    def insert(self, table_name: str, query_or_df: t.Any, model: Model, 
+               is_first_insert: bool, render_kwargs: t.Dict[str, t.Any], **kwargs: t.Any) -> None:
+        self.adapter.replace_query(table_name, query_or_df)
 
     def create(
         self,
@@ -105,86 +157,159 @@ class CustomFullMaterialization(CustomMaterialization):
         render_kwargs: t.Dict[str, t.Any],
         **kwargs: t.Any,
     ) -> None:
-        # Custom table/view creation logic.
-        # Likely uses `self.adapter` methods like `create_table`, `create_view`, or `ctas`.
+        # Custom table/view creation logic
+        # Uses self.adapter methods like create_table, create_view, or ctas
+        self.adapter.create_table(
+            table_name,
+            columns=model.columns_to_types,
+            target_columns_to_types=model.columns_to_types,
+        )
 
     def delete(self, name: str, **kwargs: t.Any) -> None:
-        # Custom table/view deletion logic.
-        # Likely uses `self.adapter` methods like `drop_table` or `drop_view`.
+        # Custom table/view deletion logic
+        self.adapter.drop_table(name)
 ```
 
 ## Using a custom materialization
 
-Specify the model kind `CUSTOM` in a model definition `MODEL` block to use the custom materialization. Specify the `NAME` from the custom materialization code in the `materialization` attribute of the `CUSTOM` kind:
+Specify the model kind `CUSTOM` in a model definition to use a custom materialization. Set the `materialization` attribute to the `NAME` from your custom materialization:
+
+=== "SQL"
+
+    ```sql linenums="1"
+    MODEL (
+      name vulcan_demo.custom_model,
+      kind CUSTOM (
+        materialization 'simple_custom'
+      ),
+      grain (customer_id)
+    );
+
+    SELECT
+      c.customer_id,
+      c.name AS customer_name,
+      COUNT(DISTINCT o.order_id) AS total_orders,
+      COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS total_spent
+    FROM vulcan_demo.customers c
+    LEFT JOIN vulcan_demo.orders o ON c.customer_id = o.customer_id
+    LEFT JOIN vulcan_demo.order_items oi ON o.order_id = oi.order_id
+    GROUP BY c.customer_id, c.name
+    ORDER BY total_spent DESC
+    ```
+
+=== "Python"
+
+    ```python linenums="1"
+    import typing as t
+    import pandas as pd
+    from datetime import datetime
+    from vulcan import ExecutionContext, model
+    from vulcan import ModelKindName
+
+    @model(
+        "vulcan_demo.custom_model_py",
+        columns={
+            "customer_id": "int",
+            "customer_name": "string",
+            "total_orders": "int",
+            "total_spent": "decimal(10,2)",
+        },
+        kind=dict(
+            name=ModelKindName.CUSTOM,
+            materialization="simple_custom",
+        ),
+        grain=["customer_id"],
+        depends_on=["vulcan_demo.customers", "vulcan_demo.orders", "vulcan_demo.order_items"],
+    )
+    def execute(
+        context: ExecutionContext,
+        start: datetime,
+        end: datetime,
+        execution_time: datetime,
+        **kwargs: t.Any,
+    ) -> pd.DataFrame:
+        """Python model using custom materialization with dynamic dependencies"""
+        
+        # Simple customer summary
+        query = """
+        SELECT 
+            c.customer_id,
+            c.name as customer_name,
+            COUNT(DISTINCT o.order_id) as total_orders,
+            COALESCE(SUM(oi.quantity * oi.unit_price), 0) as total_spent
+        FROM vulcan_demo.customers c
+        LEFT JOIN vulcan_demo.orders o ON c.customer_id = o.customer_id
+        LEFT JOIN vulcan_demo.order_items oi ON o.order_id = oi.order_id
+        GROUP BY c.customer_id, c.name
+        ORDER BY total_spent DESC
+        """
+        
+        # Execute query and return results
+        return context.fetchdf(query)
+    ```
+
+### Passing properties to the materialization
+
+A custom materialization can accept configuration through `materialization_properties`:
 
 ```sql linenums="1"
 MODEL (
-  name my_db.my_model,
+  name vulcan_demo.custom_model,
   kind CUSTOM (
-      materialization 'my_custom_full'
-  )
-);
-```
-
-A custom materialization may accept arguments specified in an array of key-value pairs in the `CUSTOM` kind's `materialization_properties` attribute:
-
-```sql linenums="1" hl_lines="5-7"
-MODEL (
-  name my_db.my_model,
-  kind CUSTOM (
-    materialization 'my_custom_full',
+    materialization 'simple_custom',
     materialization_properties (
-      'config_key' = 'config_value'
+      'config_key' = 'config_value',
+      'batch_size' = 1000
     )
   )
 );
 ```
 
-The custom materialization implementation accesses the `materialization_properties` via the `model` object's `custom_materialization_properties` dictionary:
+Access these properties in your materialization via `model.custom_materialization_properties`:
 
-```python linenums="1" hl_lines="12"
-class CustomFullMaterialization(CustomMaterialization):
-    NAME = "my_custom_full"
+```python linenums="1"
+class SimpleCustomMaterialization(CustomMaterialization):
+    NAME = "simple_custom"
 
     def insert(
         self,
         table_name: str,
-        query_or_df: QueryOrDF,
+        query_or_df: t.Any,
         model: Model,
         is_first_insert: bool,
         render_kwargs: t.Dict[str, t.Any],
         **kwargs: t.Any,
     ) -> None:
-        config_value = model.custom_materialization_properties["config_key"]
-        # Proceed with implementing the insertion logic.
-        # Example existing materialization for look and feel: https://github.com/TobikoData/vulcan/blob/main/vulcan/core/snapshot/evaluator.py
+        # Access custom properties
+        config_value = model.custom_materialization_properties.get("config_key")
+        batch_size = model.custom_materialization_properties.get("batch_size", 500)
+        
+        print(f"Config value: {config_value}, Batch size: {batch_size}")
+        
+        # Proceed with insert logic
+        self.adapter.replace_query(table_name, query_or_df)
 ```
 
 ## Extending `CustomKind`
 
 !!! warning
-    This is even lower level usage that contains a bunch of extra complexity and relies on knowledge of the Vulcan internals.
-    If you dont need this level of complexity, stick with the method described above.
+    This is even lower level usage that contains extra complexity and relies on knowledge of Vulcan internals.
+    If you don't need this level of complexity, stick with the method described above.
 
-In many cases, the above usage of a custom materialization will suffice.
+In many cases, the above usage of a custom materialization will suffice. However, you may want tighter integration with Vulcan's internals:
 
-However, you may still want tighter integration with Vulcan's internals:
+- Validate custom properties before any database connections are made
+- Leverage existing functionality that relies on specific properties being present
 
-- You may want to validate custom properties are correct before any database connections are made
-- You may want to leverage existing functionality of Vulcan that relies on specific properties being present
+In this case, you can provide a subclass of `CustomKind` for Vulcan to use instead of `CustomKind` itself. During project load, Vulcan will instantiate your *subclass* instead of `CustomKind`.
 
-In this case, you can provide a subclass of `CustomKind` for Vulcan to use instead of `CustomKind` itself.
-During project load, Vulcan will instantiate your *subclass* instead of `CustomKind`.
+### Creating a custom kind
 
-This allows you to run custom validators at load time rather than having to perform extra validation when `insert()` is invoked on your `CustomMaterialization`.
-
-You can also define standard Python `@property` methods to "hoist" properties declared inside `materialization_properties` to the top level on your `Kind` object. This can make using them from within your custom materialization easier.
-
-To extend `CustomKind`, first you define a subclass like so:
-
-```python linenums="1" hl_lines="7"
+```python linenums="1"
+import typing as t
 from typing_extensions import Self
-from pydantic import field_validator, ValidationInfo
+from pydantic import model_validator
+from sqlglot import exp
 from vulcan import CustomKind
 from vulcan.utils.pydantic import list_of_fields_validator
 from vulcan.utils.errors import ConfigError
@@ -197,7 +322,7 @@ class MyCustomKind(CustomKind):
     def _validate_model(self) -> Self:
         self._primary_key = list_of_fields_validator(
             self.materialization_properties.get("primary_key"),
-            { "dialect": self.dialect }
+            {"dialect": self.dialect}
         )
         if not self.primary_key:
             raise ConfigError("primary_key must be specified")
@@ -206,33 +331,34 @@ class MyCustomKind(CustomKind):
     @property
     def primary_key(self) -> t.List[exp.Expression]:
         return self._primary_key
-
 ```
 
-To use it within a model, we can do something like:
+### Using the custom kind in a model
 
-```sql linenums="1" hl_lines="4"
+```sql linenums="1"
 MODEL (
-  name my_db.my_model,
+  name vulcan_demo.my_model,
   kind CUSTOM (
     materialization 'my_custom_full',
     materialization_properties (
-        primary_key = (col1, col2)
+      primary_key = (col1, col2)
     )
   )
 );
 ```
 
-To indicate to Vulcan that it should use the `MyCustomKind` subclass instead of `CustomKind`, specify it as a generic type parameter on your custom materialization class like so:
+### Linking to your materialization
 
-```python linenums="1" hl_lines="1 16"
+Specify the custom kind as a generic type parameter on your materialization class:
+
+```python linenums="1"
 class CustomFullMaterialization(CustomMaterialization[MyCustomKind]):
     NAME = "my_custom_full"
 
     def insert(
         self,
         table_name: str,
-        query_or_df: QueryOrDF,
+        query_or_df: t.Any,
         model: Model,
         is_first_insert: bool,
         render_kwargs: t.Dict[str, t.Any],
@@ -246,13 +372,12 @@ class CustomFullMaterialization(CustomMaterialization[MyCustomKind]):
         )
 ```
 
-When Vulcan loads your custom materialization, it will inspect the Python type signature for generic parameters that are subclasses of `CustomKind`. If it finds one, it will instantiate your subclass when building `model.kind` instead of using the default `CustomKind` class.
+When Vulcan loads your custom materialization, it will inspect the Python type signature for generic parameters that are subclasses of `CustomKind`. If found, it will instantiate your subclass when building `model.kind` instead of using the default `CustomKind` class.
 
-In this example, this means that:
+Benefits of this approach:
 
-- Validation for `primary_key` happens at load time instead of evaluation time. So if there is an issue, you can abort early rather than halfway through applying a plan.
-- When your custom materialization is called to load data into tables, `model.kind` will resolve to your custom kind object so you can access the extra properties you defined without first needing to validate them / coerce them to a usable type.
-
+- **Early validation**: Validation for `primary_key` happens at load time instead of evaluation time, so issues are caught before applying a plan
+- **Type safety**: `model.kind` resolves to your custom kind object, giving access to extra properties without additional validation
 
 ## Sharing custom materializations
 
@@ -262,34 +387,34 @@ The simplest (but least robust) way to use a custom materialization in multiple 
 
 If you use this approach, we strongly recommend storing the materialization code in a version-controlled repository and creating a reliable method of notifying users when it is updated.
 
-This approach may be appropriate for smaller organizations, but it is not robust.
-
 ### Python packaging
 
-A more complex (but robust) way to use a custom materialization in multiple Vulcan projects is to create and publish a Python package containing the implementation.
+A more robust way to share custom materializations is to create and publish a Python package containing the implementation.
 
-One scenario that requires Python packaging is when a Vulcan project uses Airflow or other external schedulers, and the scheduler cluster does not have the `materializations/` folder available. The cluster will use standard Python package installation methods to import the custom materialization.
+This is required when a Vulcan project uses Airflow or other external schedulers where the scheduler cluster doesn't have the `materializations/` folder available.
 
-Package and expose custom materializations with the [setuptools entrypoints](https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata) mechanism. Once the package is installed, Vulcan will automatically load custom materializations from the entrypoint list.
+Package and expose custom materializations with the [setuptools entrypoints](https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata) mechanism:
 
-For example, if your custom materialization class is defined in the `my_package/my_materialization.py` module, you can expose it as an entrypoint in the `pyproject.toml` file as follows:
+=== "pyproject.toml"
 
-```toml
-[project.entry-points."vulcan.materializations"]
-my_materialization = "my_package.my_materialization:CustomFullMaterialization"
-```
+    ```toml
+    [project.entry-points."vulcan.materializations"]
+    my_materialization = "my_package.my_materialization:CustomFullMaterialization"
+    ```
 
-Or in `setup.py`:
+=== "setup.py"
 
-```python
-setup(
-    ...,
-    entry_points={
-        "vulcan.materializations": [
-            "my_materialization = my_package.my_materialization:CustomFullMaterialization",
-        ],
-    },
-)
-```
+    ```python
+    setup(
+        ...,
+        entry_points={
+            "vulcan.materializations": [
+                "my_materialization = my_package.my_materialization:CustomFullMaterialization",
+            ],
+        },
+    )
+    ```
+
+Once the package is installed, Vulcan will automatically load custom materializations from the entrypoint list.
 
 Refer to the Vulcan Github [custom_materializations](https://github.com/TobikoData/vulcan/tree/main/examples/custom_materializations) example for more details on Python packaging.

@@ -25,6 +25,7 @@ The `MODEL` DDL statement accepts various properties that control model metadata
 | `dialect` | SQL dialect of the model | `str` | N |
 | `tags` | Labels for organizing models | `array[str]` | N |
 | `assertions`  | Audits to run after model evaluation | `array` | N |
+| `profiles` | Columns to track statistical metrics over time | `array` | N |
 | `depends_on` | Explicit model dependencies | `array[str]` | N |
 | `references` | Non-unique join relationship columns | `array` | N |
 | `partitioned_by` | Partition key column(s) | `str` \| `array` | N |
@@ -577,6 +578,60 @@ Attaching [audits](../audits.md) to the model, declaring that these validations 
         ],
     )
     ```
+
+### profiles
+
+Specifies columns for which statistical metrics should be tracked over time. Profiles provide observational data about your columns—tracking distributions, null percentages, and patterns—without blocking pipeline execution.
+=== "SQL"
+
+    ```sql
+    MODEL (
+      name vulcan_demo.full_model,
+      kind FULL,
+      grains (customer_id),
+      profiles (customer_id, customer_name, email, total_orders, total_spent, avg_order_value)
+    );
+
+    SELECT
+      c.customer_id,
+      c.name AS customer_name,
+      c.email,
+      COUNT(DISTINCT o.order_id) AS total_orders,
+      COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS total_spent,
+      COALESCE(SUM(oi.quantity * oi.unit_price), 0) / NULLIF(COUNT(DISTINCT o.order_id), 0) AS avg_order_value
+    FROM vulcan_demo.customers AS c
+    LEFT JOIN vulcan_demo.orders AS o ON c.customer_id = o.customer_id
+    LEFT JOIN vulcan_demo.order_items AS oi ON o.order_id = oi.order_id
+    GROUP BY c.customer_id, c.name, c.email
+    ```
+
+=== "Python"
+
+    ```python
+    @model(
+        "vulcan_demo.full_model_py",
+        columns={
+            "customer_id": "int",
+            "customer_name": "string",
+            "email": "string",
+            "total_orders": "int",
+            "total_spent": "decimal(10,2)",
+            "avg_order_value": "decimal(10,2)",
+        },
+        kind="full",
+        grains=["customer_id"],
+        profiles=["customer_id", "customer_name", "email", "total_orders", "total_spent", "avg_order_value"],
+    )
+    def execute(context, **kwargs):
+        ...
+    ```
+
+Profile results are stored in the `_check_profiles` table and can be used to:
+
+- Detect data drift over time
+- Understand column distributions
+- Inform which audits or checks to add
+- Build data quality dashboards
 
 ### depends_on
 

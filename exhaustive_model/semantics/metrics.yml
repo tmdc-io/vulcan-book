@@ -1,0 +1,69 @@
+metrics:
+  daily_sales_trends:
+    measure: sales.total_revenue
+    time: sales.sales_date
+    dimensions:
+      - sales.region_name
+      - sales.category
+      - customers.customer_name
+    description: "Daily sales revenue trends by region, category, and customer"
+    
+  sales_by_region:
+    measure: sales.total_revenue
+    time: sales.sales_date
+    dimensions:
+      - sales.region_name
+      - sales.category_bucket
+    description: "Sales revenue by region and category bucket"
+    
+  product_performance:
+    measure: sales.total_units
+    time: sales.sales_date
+    dimensions:
+      - products.product_name
+      - products.category
+      - products.supplier_name
+    description: "Product performance metrics by product, category, and supplier"
+    
+  customer_analysis:
+    measure: sales.total_revenue
+    time: sales.sales_date
+    dimensions:
+      - customers.customer_name
+      - customers.region_name
+      - sales.category
+    description: "Customer revenue analysis by customer, region, and product category"
+    
+  order_volume_trends:
+    measure: orders.total_order_lines
+    time: orders.order_date
+    dimensions:
+      - customers.region_name
+    description: "Order volume trends by region"
+    
+  revenue_growth:
+    measure: sales.total_revenue
+    time: sales.sales_date
+    dimensions:
+      - sales.region_name
+      - sales.category
+      - products.supplier_name
+    description: "Revenue growth trends by region, category, and supplier"
+    
+  regional_sales_breakdown:
+    measure: sales.total_revenue
+    time: sales.sales_date
+    dimensions:
+      - sales.region_name
+      - sales.category
+    description: "Regional sales breakdown by region and category"
+    
+  product_category_analysis:
+    measure: sales.total_units
+    time: sales.sales_date
+    dimensions:
+      - sales.category
+      - sales.category_bucket
+      - products.supplier_region_id
+    description: "Product category analysis by category, bucket, and supplier region"
+

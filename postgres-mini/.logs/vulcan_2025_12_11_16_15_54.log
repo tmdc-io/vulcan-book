@@ -1,0 +1,2 @@
+2025-12-11 16:15:54,970 - MainThread - vulcan.core.engine_adapter.base - INFO - Connection to the database was lost. Reconnecting... (base.py:2537)
+2025-12-11 16:15:54,978 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:231)

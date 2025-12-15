@@ -1,0 +1,38 @@
+name: orders360
+tenant: sales
+description: Daily sales analytics pipeline tracking order volumes, revenue trends, and customer activity across the e-commerce platform.
+
+# --- Gateway Connection ---
+gateways:
+  default:
+    connection:
+      type: postgres
+      host: warehouse
+      port: 5432
+      database: warehouse
+      user: vulcan
+      password: vulcan
+    state_connection:
+      type: postgres
+      host: statestore
+      port: 5432
+      database: statestore
+      user: vulcan
+      password: vulcan
+
+default_gateway: default
+
+# --- Model Defaults ---
+model_defaults:
+  dialect: postgres
+  start: 2024-01-01
+  cron: '@daily'
+
+# --- Linting Rules ---
+
+linter:
+  enabled: true
+  rules:
+    - ambiguousorinvalidcolumn
+    - invalidselectstarexpansion
+    - noambiguousprojections

@@ -1,0 +1,1004 @@
+2025-12-03 04:47:26,331 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/dim_customer.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,333 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/stg_products.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,333 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/scd_type2_by_time.sql:
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,334 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/full_model.sql:
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,334 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/seed_model.sql:
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,335 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/incremental_by_time_range.sql:
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,336 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/fct_daily_sales__by_region.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,337 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/fct_daily_sales__by_region.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,337 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/fct_daily_sales__by_region.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,338 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/fct_daily_sales__by_region.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,339 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/view_model.sql:
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,340 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/stg_customers.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,340 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/incremental_unmanaged.sql:
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,341 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/incremental_model.sql:
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,341 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/incremental_by_unique_key.sql:
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,342 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/scd_type2_by_column.sql:
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,342 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/incremental_by_partition.sql:
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,343 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/stg_order_lines.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,343 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/staging/fct_daily_sales.sql:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,344 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,345 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,345 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,346 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,347 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,348 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,348 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,349 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,350 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/external_models.yaml:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,351 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/python_models/scd_type2_by_time.py:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,352 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/python_models/full_model.py:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,353 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/python_models/incremental_by_unique_key.py:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,354 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/python_models/incremental_by_partition.py:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,355 - MainThread - vulcan.core.console - WARNING - Linter warnings for /workspace/models/python_models/scd_type2_by_column.py:
+ - requireauditsforallkindsexceptembedded: 
+Missing audit rules: All non-embedded models should include data quality audits.
+
+
+ - requirechecksformodels: 
+Models should have data quality checks defined.
+Consider adding checks for:
+ • Completeness
+ • Validity
+ • Uniqueness
+ • Other relevant quality constraints
+
+ - requiregrainforallmodels: 
+All models must define a grain for data quality assurance.
+ (console.py:2352)
+2025-12-03 04:47:26,370 - MainThread - vulcan.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:502)
+2025-12-03 04:47:26,393 - MainThread - vulcan.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:502)
+2025-12-03 04:47:26,393 - MainThread - vulcan.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:502)
+2025-12-03 04:47:26,394 - ThreadPoolExecutor-1_0 - vulcan.core.console - WARNING - Model '"warehouse"."vulcan_demo"."incremental_by_partition"' was not found at /workspace/tests/test_incremental_by_partition.yaml (console.py:2352)
+2025-12-03 04:47:36,797 - MainThread - vulcan.core.plan.evaluator - INFO - Evaluating plan stage PhysicalLayerSchemaCreationStage (evaluator.py:123)
+2025-12-03 04:47:36,802 - ThreadPoolExecutor-2_0 - vulcan.core.snapshot.evaluator - INFO - Creating schema 'warehouse.vulcan__vulcan_example' (evaluator.py:1443)
+2025-12-03 04:47:36,802 - ThreadPoolExecutor-2_1 - vulcan.core.snapshot.evaluator - INFO - Creating schema 'warehouse.vulcan__vulcan_demo' (evaluator.py:1443)
+2025-12-03 04:47:36,804 - ThreadPoolExecutor-2_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ CREATE SCHEMA IF NOT EXISTS "vulcan__vulcan_example" (base.py:2622)
+2025-12-03 04:47:36,805 - ThreadPoolExecutor-2_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ CREATE SCHEMA IF NOT EXISTS "vulcan__vulcan_demo" (base.py:2622)
+2025-12-03 04:47:36,805 - MainThread - vulcan.core.plan.evaluator - INFO - Evaluating plan stage BackfillStage (evaluator.py:123)
+2025-12-03 04:47:36,894 - ThreadPoolExecutor-3_0 - vulcan.core.snapshot.evaluator - INFO - Listing data objects in schema warehouse.vulcan__vulcan_demo (evaluator.py:1610)
+2025-12-03 04:47:36,894 - ThreadPoolExecutor-3_1 - vulcan.core.snapshot.evaluator - INFO - Listing data objects in schema warehouse.vulcan__vulcan_example (evaluator.py:1610)
+2025-12-03 04:47:36,895 - ThreadPoolExecutor-3_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT current_catalog (base.py:2622)
+2025-12-03 04:47:36,897 - ThreadPoolExecutor-3_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT current_catalog (base.py:2622)
+2025-12-03 04:47:36,959 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_example"."incremental_model": 365216364> (evaluator.py:711)
+2025-12-03 04:47:36,960 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."full_model": 2553446276> (evaluator.py:711)
+2025-12-03 04:47:36,962 - ThreadPoolExecutor-4_2 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."incremental_by_unique_key": 3815681391> (evaluator.py:711)
+2025-12-03 04:47:36,962 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_customers": 4039897219> (evaluator.py:711)
+2025-12-03 04:47:36,963 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_example"."incremental_model": 365216364> (evaluator.py:952)
+2025-12-03 04:47:36,967 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2020-01-01 00:00:00, 2025-12-03 00:00:00) into warehouse.vulcan__vulcan_example.vulcan_example__incremental_model__566797305' (evaluator.py:984)
+2025-12-03 04:47:36,967 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_customers": 4039897219> (evaluator.py:952)
+2025-12-03 04:47:36,968 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."full_model": 2553446276> (evaluator.py:952)
+2025-12-03 04:47:36,968 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ DELETE FROM "vulcan__vulcan_example"."vulcan_example__incremental_model__566797305" WHERE "event_date" BETWEEN CAST('2020-01-01' AS DATE) AND CAST('2025-12-02' AS DATE) (base.py:2622)
+2025-12-03 04:47:36,974 - ThreadPoolExecutor-4_2 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."incremental_by_unique_key": 3815681391> (evaluator.py:952)
+2025-12-03 04:47:36,978 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-12-03 04:40:00, 2025-12-03 04:45:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__stg_customers__2075250225' (evaluator.py:984)
+2025-12-03 04:47:36,984 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-01-01 00:00:00, 2025-12-03 04:45:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__full_model__3230895180' (evaluator.py:984)
+2025-12-03 04:47:36,991 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ INSERT INTO "vulcan__vulcan_example"."vulcan_example__incremental_model__566797305" ("id", "item_id", "event_date") SELECT "id", "item_id", "event_date" FROM (SELECT "seed_model"."id" AS "id", "seed_model"."item_id" AS "item_id", "seed_model"."event_date" AS "event_date" FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__seed_model__353243874" AS "seed_model" WHERE "seed_model"."event_date" <= CAST('2025-12-02' AS DATE) AND "seed_model"."event_date" >= CAST('2020-01-01' AS DATE)) AS "_subquery" WHERE "event_date" BETWEEN CAST('2020-01-01' AS DATE) AND CAST('2025-12-02' AS DATE) (base.py:2622)
+2025-12-03 04:47:36,994 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT 1 FROM "information_schema"."tables" WHERE "table_name" = 'vulcan_demo__stg_customers__2075250225' AND "table_schema" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,001 - ThreadPoolExecutor-4_2 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-01-01 00:00:00, 2025-12-03 00:00:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__incremental_by_unique_key__300824371' (evaluator.py:984)
+2025-12-03 04:47:37,001 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT current_catalog (base.py:2622)
+2025-12-03 04:47:37,003 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__incremental_by_unique_key__300824371') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,003 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Skipping creation of the view 'warehouse.vulcan__vulcan_demo.vulcan_demo__stg_customers__2075250225' (evaluator.py:2659)
+2025-12-03 04:47:37,005 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT current_catalog (base.py:2622)
+2025-12-03 04:47:37,005 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Auditing snapshot SnapshotId<"warehouse"."vulcan_example"."incremental_model": 365216364> (evaluator.py:603)
+2025-12-03 04:47:37,008 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_example__incremental_model__566797305') AND "nspname" = 'vulcan__vulcan_example' (base.py:2622)
+2025-12-03 04:47:37,010 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ DELETE FROM "vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" WHERE TRUE (base.py:2622)
+2025-12-03 04:47:37,010 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ DELETE FROM "vulcan__vulcan_demo"."vulcan_demo__incremental_by_unique_key__300824371" WHERE TRUE (base.py:2622)
+2025-12-03 04:47:37,011 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-03 04:40:00, 2025-12-03 04:45:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_customers": 4039897219> (facade.py:726)
+2025-12-03 04:47:37,012 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ INSERT INTO "vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" ("customer_id", "customer_name", "email", "total_orders", "total_spent", "avg_order_value") SELECT "c"."customer_id" AS "customer_id", "c"."name" AS "customer_name", "c"."email" AS "email", COUNT(DISTINCT "o"."order_id") AS "total_orders", COALESCE(SUM("oi"."quantity" * "oi"."unit_price"), 0) AS "total_spent", COALESCE(SUM("oi"."quantity" * "oi"."unit_price"), 0) / NULLIF(COUNT(DISTINCT "o"."order_id"), 0) AS "avg_order_value" FROM "warehouse"."vulcan_demo"."customers" AS "c" LEFT JOIN "warehouse"."vulcan_demo"."orders" AS "o" ON "c"."customer_id" = "o"."customer_id" LEFT JOIN "warehouse"."vulcan_demo"."order_items" AS "oi" ON "o"."order_id" = "oi"."order_id" GROUP BY "c"."customer_id", "c"."name", "c"."email" ORDER BY "total_spent" DESC (base.py:2622)
+2025-12-03 04:47:37,017 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT "id" AS "id", "event_date" AS "event_date" FROM (SELECT * FROM "warehouse"."vulcan__vulcan_example"."vulcan_example__incremental_model__566797305" AS "vulcan_example__incremental_model__566797305" WHERE "event_date" BETWEEN CAST('2020-01-01' AS DATE) AND CAST('2025-12-02' AS DATE)) AS "_q_0" WHERE TRUE GROUP BY "id", "event_date" HAVING COUNT(*) > 1) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,017 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_customers": 4039897219> (interval.py:215)
+2025-12-03 04:47:37,018 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ INSERT INTO "vulcan__vulcan_demo"."vulcan_demo__incremental_by_unique_key__300824371" ("customer_id", "customer_name", "email", "region_name", "total_orders", "total_spent", "last_order_date", "unique_products_purchased", "customer_segment") SELECT "c"."customer_id" AS "customer_id", "c"."name" AS "customer_name", "c"."email" AS "email", "r"."region_name" AS "region_name", COUNT(DISTINCT "o"."order_id") AS "total_orders", COALESCE(SUM("oi"."quantity" * "oi"."unit_price"), 0) AS "total_spent", MAX("o"."order_date") AS "last_order_date", COUNT(DISTINCT "oi"."product_id") AS "unique_products_purchased", CASE WHEN COALESCE(SUM("oi"."quantity" * "oi"."unit_price"), 0) >= 1000 THEN 'High Value' WHEN COALESCE(SUM("oi"."quantity" * "oi"."unit_price"), 0) >= 500 THEN 'Medium Value' ELSE 'Low V.' END AS "customer_segment" FROM "warehouse"."vulcan_demo"."customers" AS "c" LEFT JOIN "warehouse"."vulcan_demo"."regions" AS "r" ON "c"."region_id" = "r"."region_id" LEFT JOIN "warehouse"."vulcan_demo"."orders" AS "o" ON "c"."customer_id" = "o"."customer_id" LEFT JOIN "warehouse"."vulcan_demo"."order_items" AS "oi" ON "o"."order_id" = "oi"."order_id" LEFT JOIN "warehouse"."vulcan_demo"."dim_dates" AS "dd" ON "dd"."dt" = "o"."order_date" WHERE "o"."order_date" <= CAST('2025-12-02' AS DATE) AND "o"."order_date" >= CAST('2025-01-01' AS DATE) OR "o"."order_date" IS NULL GROUP BY "c"."customer_id", "c"."name", "c"."email", "r"."region_name" (base.py:2622)
+2025-12-03 04:47:37,023 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_example__incremental_model__566797305') AND "nspname" = 'vulcan__vulcan_example' (base.py:2622)
+2025-12-03 04:47:37,028 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM (SELECT * FROM "warehouse"."vulcan__vulcan_example"."vulcan_example__incremental_model__566797305" AS "vulcan_example__incremental_model__566797305" WHERE "event_date" BETWEEN CAST('2020-01-01' AS DATE) AND CAST('2025-12-02' AS DATE)) AS "_q_0" WHERE ("id" IS NULL OR "item_id" IS NULL OR "event_date" IS NULL) AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,030 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Auditing snapshot SnapshotId<"warehouse"."vulcan_demo"."full_model": 2553446276> (evaluator.py:603)
+2025-12-03 04:47:37,030 - ThreadPoolExecutor-4_2 - vulcan.core.snapshot.evaluator - INFO - Auditing snapshot SnapshotId<"warehouse"."vulcan_demo"."incremental_by_unique_key": 3815681391> (evaluator.py:603)
+2025-12-03 04:47:37,031 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_order_lines": 945780940> (evaluator.py:711)
+2025-12-03 04:47:37,032 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__full_model__3230895180') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,034 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_example__incremental_model__566797305') AND "nspname" = 'vulcan__vulcan_example' (base.py:2622)
+2025-12-03 04:47:37,035 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__incremental_by_unique_key__300824371') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,036 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_order_lines": 945780940> (evaluator.py:952)
+2025-12-03 04:47:37,053 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY "customer_id" ORDER BY "customer_id" NULLS FIRST) AS "rank_customer_id" FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__incremental_by_unique_key__300824371" AS "vulcan_demo__incremental_by_unique_key__300824371" WHERE TRUE) AS "_q_0" WHERE "rank_customer_id" > 1) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,054 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-01-01 00:00:00, 2025-12-03 04:45:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__stg_order_lines__917252049' (evaluator.py:984)
+2025-12-03 04:47:37,064 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY "customer_id" ORDER BY "customer_id" NULLS FIRST) AS "rank_customer_id" FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" AS "vulcan_demo__full_model__3230895180" WHERE TRUE) AS "_q_0" WHERE "rank_customer_id" > 1) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,061 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM (SELECT * FROM "warehouse"."vulcan__vulcan_example"."vulcan_example__incremental_model__566797305" AS "vulcan_example__incremental_model__566797305" WHERE "event_date" BETWEEN CAST('2020-01-01' AS DATE) AND CAST('2025-12-02' AS DATE)) AS "_q_0" WHERE "id" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,065 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__stg_order_lines__917252049') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,067 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__incremental_by_unique_key__300824371') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,069 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__full_model__3230895180') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,071 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_example__incremental_model__566797305') AND "nspname" = 'vulcan__vulcan_example' (base.py:2622)
+2025-12-03 04:47:37,072 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ DELETE FROM "vulcan__vulcan_demo"."vulcan_demo__stg_order_lines__917252049" WHERE "order_date" BETWEEN CAST('2025-01-01 00:00:00' AS TIMESTAMP) AND CAST('2025-12-03 04:44:59.999999' AS TIMESTAMP) (base.py:2622)
+2025-12-03 04:47:37,075 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__incremental_by_unique_key__300824371" AS "vulcan_demo__incremental_by_unique_key__300824371" WHERE ("customer_id" IS NULL OR "customer_name" IS NULL OR "email" IS NULL) AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,080 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM (SELECT * FROM "warehouse"."vulcan__vulcan_example"."vulcan_example__incremental_model__566797305" AS "vulcan_example__incremental_model__566797305" WHERE "event_date" BETWEEN CAST('2020-01-01' AS DATE) AND CAST('2025-12-02' AS DATE)) AS "_q_0" WHERE "item_id" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,082 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ INSERT INTO "vulcan__vulcan_demo"."vulcan_demo__stg_order_lines__917252049" ("order_item_sk", "order_id", "item_id", "product_id", "quantity", "unit_price", "line_revenue", "customer_id", "order_date", "warehouse_id", "warehouse_id_filter") WITH "base" AS (SELECT "oi"."order_id" AS "order_id", "oi"."item_id" AS "item_id", "oi"."product_id" AS "product_id", CAST("oi"."quantity" AS INT) AS "quantity", CAST("oi"."unit_price" AS DECIMAL(10, 2)) AS "unit_price", CAST("oi"."quantity" * "oi"."unit_price" AS DECIMAL(18, 2)) AS "line_revenue", "o"."customer_id" AS "customer_id", CAST("o"."order_date" AS TIMESTAMP) AS "order_date", "o"."warehouse_id" AS "warehouse_id", "o"."warehouse_id" AS "warehouse_id_filter" FROM "warehouse"."vulcan_demo"."order_items" AS "oi" LEFT JOIN "warehouse"."vulcan_demo"."orders" AS "o" ON "o"."order_id" = "oi"."order_id" WHERE "o"."order_date" <= CAST('2025-12-03' AS DATE) AND "o"."order_date" >= CAST('2025-01-01' AS DATE)) SELECT "order_item_sk", "order_id", "item_id", "product_id", "quantity", "unit_price", "line_revenue", "customer_id", "order_date", "warehouse_id", "warehouse_id_filter" FROM (SELECT MD5(CONCAT(COALESCE(CAST("base"."order_id" AS TEXT), '_vulcan_surrogate_key_null_'), '|', COALESCE(CAST("base"."item_id" AS TEXT), '_vulcan_surrogate_key_null_'))) AS "order_item_sk", "base"."order_id" AS "order_id", "base"."item_id" AS "item_id", "base"."product_id" AS "product_id", "base"."quantity" AS "quantity", "base"."unit_price" AS "unit_price", "base"."line_revenue" AS "line_revenue", "base"."customer_id" AS "customer_id", CAST("base"."order_date" AS TIMESTAMP) AS "order_date", "base"."warehouse_id" AS "warehouse_id", "base"."warehouse_id_filter" AS "warehouse_id_filter" FROM "base" AS "base") AS "_subquery" WHERE "order_date" BETWEEN CAST('2025-01-01 00:00:00' AS TIMESTAMP) AND CAST('2025-12-03 04:44:59.999999' AS TIMESTAMP) (base.py:2622)
+2025-12-03 04:47:37,085 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" AS "vulcan_demo__full_model__3230895180" WHERE ("customer_id" IS NULL OR "customer_name" IS NULL) AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,087 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__incremental_by_unique_key__300824371') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,089 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__full_model__3230895180') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,090 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2020-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<"warehouse"."vulcan_example"."incremental_model": 365216364> (facade.py:726)
+2025-12-03 04:47:37,090 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_example"."incremental_model": 365216364> (interval.py:215)
+2025-12-03 04:47:37,092 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__incremental_by_unique_key__300824371" AS "vulcan_demo__incremental_by_unique_key__300824371" WHERE "customer_name" = '' AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,095 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" AS "vulcan_demo__full_model__3230895180" WHERE "customer_name" = '' AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,097 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__incremental_by_unique_key__300824371') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,098 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 04:45:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_order_lines": 945780940> (facade.py:726)
+2025-12-03 04:47:37,102 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__full_model__3230895180') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,102 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_order_lines": 945780940> (interval.py:215)
+2025-12-03 04:47:37,104 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__incremental_by_unique_key__300824371" AS "vulcan_demo__incremental_by_unique_key__300824371" WHERE "email" = '' AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,112 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" AS "vulcan_demo__full_model__3230895180" WHERE "total_orders" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,112 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_products": 3206430371> (evaluator.py:711)
+2025-12-03 04:47:37,112 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_products": 3206430371> (evaluator.py:952)
+2025-12-03 04:47:37,115 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."view_model": 2016917419> (evaluator.py:711)
+2025-12-03 04:47:37,116 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__full_model__3230895180') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,124 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__incremental_by_unique_key__300824371') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,130 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-12-03 04:40:00, 2025-12-03 04:45:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__stg_products__1194216587' (evaluator.py:984)
+2025-12-03 04:47:37,130 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."view_model": 2016917419> (evaluator.py:952)
+2025-12-03 04:47:37,131 - ThreadPoolExecutor-4_0 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT 1 FROM "information_schema"."tables" WHERE "table_name" = 'vulcan_demo__stg_products__1194216587' AND "table_schema" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,141 - ThreadPoolExecutor-4_2 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__incremental_by_unique_key__300824371" AS "vulcan_demo__incremental_by_unique_key__300824371" WHERE NOT "customer_segment" IN ('High Value', 'Medium Value', 'Low Value') AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,145 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-01-01 00:00:00, 2025-12-03 04:45:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__view_model__938266766' (evaluator.py:984)
+2025-12-03 04:47:37,149 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" AS "vulcan_demo__full_model__3230895180" WHERE "total_spent" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,149 - ThreadPoolExecutor-4_0 - vulcan.core.snapshot.evaluator - INFO - Skipping creation of the view 'warehouse.vulcan__vulcan_demo.vulcan_demo__stg_products__1194216587' (evaluator.py:2659)
+2025-12-03 04:47:37,150 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT 1 FROM "information_schema"."tables" WHERE "table_name" = 'vulcan_demo__view_model__938266766' AND "table_schema" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,152 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__full_model__3230895180') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,152 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Skipping creation of the view 'warehouse.vulcan__vulcan_demo.vulcan_demo__view_model__938266766' (evaluator.py:2659)
+2025-12-03 04:47:37,152 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-03 04:40:00, 2025-12-03 04:45:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_products": 3206430371> (facade.py:726)
+2025-12-03 04:47:37,152 - ThreadPoolExecutor-4_3 - vulcan.core.snapshot.evaluator - INFO - Auditing snapshot SnapshotId<"warehouse"."vulcan_demo"."view_model": 2016917419> (evaluator.py:603)
+2025-12-03 04:47:37,153 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."incremental_by_unique_key": 3815681391> (facade.py:726)
+2025-12-03 04:47:37,153 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."stg_products": 3206430371> (interval.py:215)
+2025-12-03 04:47:37,155 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,158 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__full_model__3230895180" AS "vulcan_demo__full_model__3230895180" WHERE "avg_order_value" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,158 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."incremental_by_unique_key": 3815681391> (interval.py:215)
+2025-12-03 04:47:37,168 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY "warehouse_performance_key" ORDER BY "warehouse_performance_key" NULLS FIRST) AS "rank_warehouse_performance_key" FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE TRUE) AS "_q_0" WHERE "rank_warehouse_performance_key" > 1) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,169 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.partition:completeness: 1215659941> (facade.py:726)
+2025-12-03 04:47:37,169 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.partition:completeness: 1215659941> (interval.py:215)
+2025-12-03 04:47:37,170 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 04:45:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."full_model": 2553446276> (facade.py:726)
+2025-12-03 04:47:37,174 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."full_model": 2553446276> (interval.py:215)
+2025-12-03 04:47:37,178 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,178 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.partition:uniqueness: 2388226686> (facade.py:726)
+2025-12-03 04:47:37,178 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.partition:validity: 2524307614> (facade.py:726)
+2025-12-03 04:47:37,184 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE ("warehouse_id" IS NULL OR "warehouse_name" IS NULL OR "order_date" IS NULL OR "warehouse_performance_key" IS NULL) AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,184 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.partition:uniqueness: 2388226686> (interval.py:215)
+2025-12-03 04:47:37,184 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.partition:validity: 2524307614> (interval.py:215)
+2025-12-03 04:47:37,189 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."dim_customer": 2359068865> (evaluator.py:711)
+2025-12-03 04:47:37,193 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,194 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_customers:completeness: 3754629681> (facade.py:726)
+2025-12-03 04:47:37,195 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."dim_customer": 2359068865> (evaluator.py:952)
+2025-12-03 04:47:37,195 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_customers:completeness: 3754629681> (interval.py:215)
+2025-12-03 04:47:37,200 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-12-03 04:40:00, 2025-12-03 04:45:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__dim_customer__3881191677' (evaluator.py:984)
+2025-12-03 04:47:37,203 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE ("warehouse_name") = '' AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,205 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_customers:uniqueness: 1545328574> (facade.py:726)
+2025-12-03 04:47:37,207 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT current_catalog (base.py:2622)
+2025-12-03 04:47:37,207 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_customers:uniqueness: 1545328574> (interval.py:215)
+2025-12-03 04:47:37,211 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,211 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_customers:validity: 1600670424> (facade.py:726)
+2025-12-03 04:47:37,214 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_customers:validity: 1600670424> (interval.py:215)
+2025-12-03 04:47:37,219 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ DELETE FROM "vulcan__vulcan_demo"."vulcan_demo__dim_customer__3881191677" WHERE TRUE (base.py:2622)
+2025-12-03 04:47:37,222 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ INSERT INTO "vulcan__vulcan_demo"."vulcan_demo__dim_customer__3881191677" ("customer_sk", "customer_id", "customer_name", "email", "region_id", "region_name") SELECT CAST("sc"."customer_sk" AS TEXT) AS "customer_sk", CAST("sc"."customer_id" AS INT) AS "customer_id", CAST("sc"."customer_name" AS TEXT) AS "customer_name", CAST("sc"."email" AS TEXT) AS "email", CAST("sc"."region_id" AS INT) AS "region_id", CAST("sc"."region_name" AS TEXT) AS "region_name" FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__stg_customers__2075250225" AS "sc" (base.py:2622)
+2025-12-03 04:47:37,227 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE "total_transactions" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,227 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_order_lines:completeness: 3213085855> (facade.py:726)
+2025-12-03 04:47:37,227 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-model.customers: 337814769> (facade.py:726)
+2025-12-03 04:47:37,227 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_order_lines:completeness: 3213085855> (interval.py:215)
+2025-12-03 04:47:37,227 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-model.customers: 337814769> (interval.py:215)
+2025-12-03 04:47:37,229 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-03 04:40:00, 2025-12-03 04:45:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."dim_customer": 2359068865> (facade.py:726)
+2025-12-03 04:47:37,233 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."dim_customer": 2359068865> (interval.py:215)
+2025-12-03 04:47:37,234 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_order_lines:uniqueness: 663117648> (facade.py:726)
+2025-12-03 04:47:37,235 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,239 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_order_lines:uniqueness: 663117648> (interval.py:215)
+2025-12-03 04:47:37,239 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_order_lines:validity: 2824990716> (facade.py:726)
+2025-12-03 04:47:37,240 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_order_lines:validity: 2824990716> (interval.py:215)
+2025-12-03 04:47:37,249 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE "total_quantity_sold" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,251 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-model.orders: 2488715395> (facade.py:726)
+2025-12-03 04:47:37,253 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_products:completeness: 990026874> (facade.py:726)
+2025-12-03 04:47:37,253 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_products:uniqueness: 4108710287> (facade.py:726)
+2025-12-03 04:47:37,253 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-model.orders: 2488715395> (interval.py:215)
+2025-12-03 04:47:37,253 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_products:completeness: 990026874> (interval.py:215)
+2025-12-03 04:47:37,254 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_products:uniqueness: 4108710287> (interval.py:215)
+2025-12-03 04:47:37,265 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,265 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.stg_products:validity: 1141563592> (facade.py:726)
+2025-12-03 04:47:37,269 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-model.products: 3610261554> (facade.py:726)
+2025-12-03 04:47:37,269 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:accuracy: 867719366> (facade.py:726)
+2025-12-03 04:47:37,269 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.stg_products:validity: 1141563592> (interval.py:215)
+2025-12-03 04:47:37,273 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE "total_sales_amount" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,273 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-model.products: 3610261554> (interval.py:215)
+2025-12-03 04:47:37,273 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:accuracy: 867719366> (interval.py:215)
+2025-12-03 04:47:37,285 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:uniqueness: 3765533596> (facade.py:726)
+2025-12-03 04:47:37,285 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:completeness: 1987015854> (facade.py:726)
+2025-12-03 04:47:37,285 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:validity: 1038408627> (facade.py:726)
+2025-12-03 04:47:37,286 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,286 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:uniqueness: 3765533596> (interval.py:215)
+2025-12-03 04:47:37,287 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:completeness: 1987015854> (interval.py:215)
+2025-12-03 04:47:37,287 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.incremental_by_unique_key:validity: 1038408627> (interval.py:215)
+2025-12-03 04:47:37,293 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE "unique_customers" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,301 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.full_model:accuracy: 710271416> (facade.py:726)
+2025-12-03 04:47:37,301 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.full_model:completeness: 482480325> (facade.py:726)
+2025-12-03 04:47:37,302 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.full_model:accuracy: 710271416> (interval.py:215)
+2025-12-03 04:47:37,303 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.full_model:completeness: 482480325> (interval.py:215)
+2025-12-03 04:47:37,303 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.full_model:uniqueness: 2767914680> (facade.py:726)
+2025-12-03 04:47:37,305 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.full_model:uniqueness: 2767914680> (interval.py:215)
+2025-12-03 04:47:37,307 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,314 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.full_model:validity: 3266704429> (facade.py:726)
+2025-12-03 04:47:37,316 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"warehouse"."vulcan_demo"."fct_daily_sales": 3567707351> (evaluator.py:711)
+2025-12-03 04:47:37,316 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.full_model:validity: 3266704429> (interval.py:215)
+2025-12-03 04:47:37,320 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE "avg_order_value" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,322 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"warehouse"."vulcan_demo"."fct_daily_sales": 3567707351> (evaluator.py:952)
+2025-12-03 04:47:37,322 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.dim_customer:completeness: 2936273003> (facade.py:726)
+2025-12-03 04:47:37,346 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,356 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.dim_customer:completeness: 2936273003> (interval.py:215)
+2025-12-03 04:47:37,356 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.dim_customer:uniqueness: 4030954865> (facade.py:726)
+2025-12-03 04:47:37,365 - ThreadPoolExecutor-4_1 - vulcan.core.snapshot.evaluator - INFO - Inserting batch (2025-01-01 00:00:00, 2025-12-03 04:45:00) into warehouse.vulcan__vulcan_demo.vulcan_demo__fct_daily_sales__3137287359' (evaluator.py:984)
+2025-12-03 04:47:37,367 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.dim_customer:uniqueness: 4030954865> (interval.py:215)
+2025-12-03 04:47:37,371 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE "revenue_per_customer" < 0 AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,373 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ DELETE FROM "vulcan__vulcan_demo"."vulcan_demo__fct_daily_sales__3137287359" WHERE "sales_date" BETWEEN CAST('2025-01-01 00:00:00' AS TIMESTAMP) AND CAST('2025-12-03 04:44:59.999999' AS TIMESTAMP) (base.py:2622)
+2025-12-03 04:47:37,377 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-12-02 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.dim_customer:validity: 91474088> (facade.py:726)
+2025-12-03 04:47:37,377 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.dim_customer:validity: 91474088> (interval.py:215)
+2025-12-03 04:47:37,384 - ThreadPoolExecutor-4_1 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ INSERT INTO "vulcan__vulcan_demo"."vulcan_demo__fct_daily_sales__3137287359" ("sales_date", "customer_sk", "product_sk", "region_id", "region_name", "category", "category_bucket", "units", "revenue", "avg_selling_price") WITH "spine" AS (SELECT CAST("dd"."dt" AS DATE) AS "sales_date" FROM "warehouse"."vulcan_demo"."dim_dates" AS "dd" WHERE "dd"."dt" <= CAST('2025-12-03' AS DATE) AND "dd"."dt" >= CAST('2025-01-01' AS DATE)), "line_agg" AS (SELECT CAST("sol"."order_date" AS TIMESTAMP) AS "sales_date", MD5(CONCAT(COALESCE(CAST("sol"."customer_id" AS TEXT), '_vulcan_surrogate_key_null_'), '|', COALESCE(CAST("sc"."email" AS TEXT), '_vulcan_surrogate_key_null_'))) AS "customer_sk", "sp"."product_sk" AS "product_sk", CAST(SUM("sol"."quantity") AS INT) AS "units", CAST(SUM("sol"."line_revenue") AS DECIMAL(18, 2)) AS "revenue", CASE WHEN COALESCE(SUM("sol"."quantity"), 0) = 0 THEN 0.0 ELSE CAST(CAST(COALESCE(SUM("sol"."line_revenue"), 0) AS DOUBLE PRECISION) / COALESCE(SUM("sol"."quantity"), 0) AS DOUBLE PRECISION) END AS "avg_selling_price" FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__stg_order_lines__917252049" AS "sol" JOIN "warehouse"."vulcan__vulcan_demo"."vulcan_demo__stg_customers__2075250225" AS "sc" ON "sc"."customer_id" = "sol"."customer_id" JOIN "warehouse"."vulcan__vulcan_demo"."vulcan_demo__stg_products__1194216587" AS "sp" ON "sol"."item_id" = "sp"."product_id" WHERE "sol"."order_date" <= CAST('2025-12-03' AS DATE) AND "sol"."order_date" >= CAST('2025-01-01' AS DATE) GROUP BY "sol"."order_date", "sol"."customer_id", "sc"."email", "sp"."product_sk"), "cat_rank" AS (SELECT "sp"."category" AS "category", DENSE_RANK() OVER (ORDER BY SUM("sol"."line_revenue") DESC) AS "rnk" FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__stg_order_lines__917252049" AS "sol" JOIN "warehouse"."vulcan__vulcan_demo"."vulcan_demo__stg_products__1194216587" AS "sp" ON "sol"."item_id" = "sp"."product_id" WHERE "sol"."order_date" <= CAST('2025-12-03' AS DATE) AND "sol"."order_date" >= CAST('2025-01-01' AS DATE) GROUP BY "sp"."category"), "joined" AS (SELECT CAST("la"."sales_date" AS TIMESTAMP) AS "sales_date", "la"."customer_sk" AS "customer_sk", "la"."product_sk" AS "product_sk", "dc"."region_id" AS "region_id", "dc"."region_name" AS "region_name", "sp"."category" AS "category", "la"."units" AS "units", "la"."revenue" AS "revenue", "la"."avg_selling_price" AS "avg_selling_price", CASE WHEN "sp"."category" IN ((SELECT "category" FROM "cat_rank" WHERE "rnk" <= 5)) THEN "sp"."category" ELSE 'Other' END AS "category_bucket" FROM "line_agg" AS "la" LEFT JOIN "warehouse"."vulcan__vulcan_demo"."vulcan_demo__dim_customer__3881191677" AS "dc" ON "dc"."customer_sk" = "la"."customer_sk" LEFT JOIN "warehouse"."vulcan__vulcan_demo"."vulcan_demo__stg_products__1194216587" AS "sp" ON "la"."product_sk" = "sp"."product_sk") SELECT "sales_date", "customer_sk", "product_sk", "region_id", "region_name", "category", "category_bucket", "units", "revenue", "avg_selling_price" FROM (SELECT CAST("s"."sales_date" AS TIMESTAMP) AS "sales_date", CAST("j"."customer_sk" AS TEXT) AS "customer_sk", CAST("j"."product_sk" AS TEXT) AS "product_sk", CAST("j"."region_id" AS INT) AS "region_id", CAST("j"."region_name" AS TEXT) AS "region_name", CAST("j"."category" AS TEXT) AS "category", CAST("j"."category_bucket" AS TEXT) AS "category_bucket", CAST("j"."units" AS INT) AS "units", CAST("j"."revenue" AS DECIMAL(18, 4)) AS "revenue", CAST("j"."avg_selling_price" AS DOUBLE PRECISION) AS "avg_selling_price" FROM "spine" AS "s" LEFT JOIN "joined" AS "j" ON "j"."sales_date" = "s"."sales_date" WHERE "s"."sales_date" <= CAST('2025-12-03' AS DATE) AND "s"."sales_date" >= CAST('2025-01-01' AS DATE)) AS "_subquery" WHERE "sales_date" BETWEEN CAST('2025-01-01 00:00:00' AS TIMESTAMP) AND CAST('2025-12-03 04:44:59.999999' AS TIMESTAMP) (base.py:2622)
+2025-12-03 04:47:37,386 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.order_volume_trends: 1589886887> (facade.py:726)
+2025-12-03 04:47:37,388 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'vulcan_demo__view_model__938266766') AND "nspname" = 'vulcan__vulcan_demo' (base.py:2622)
+2025-12-03 04:47:37,388 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.order_volume_trends: 1589886887> (interval.py:215)
+2025-12-03 04:47:37,395 - ThreadPoolExecutor-4_3 - vulcan.core.engine_adapter.base - INFO - Executing SQL: /* VULCAN_PLAN: 0c5297d0172e4bfd9e8950f0ec606660 */ SELECT COUNT(*) FROM (SELECT * FROM "warehouse"."vulcan__vulcan_demo"."vulcan_demo__view_model__938266766" AS "vulcan_demo__view_model__938266766" WHERE NOT "warehouse_performance_tier" IN ('High Performing', 'Medium Performing', 'Low Performing') AND TRUE) AS "audit" (base.py:2622)
+2025-12-03 04:47:37,400 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 04:45:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."view_model": 2016917419> (facade.py:726)
+2025-12-03 04:47:37,400 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."view_model": 2016917419> (interval.py:215)
+2025-12-03 04:47:37,405 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 04:45:00) for snapshot SnapshotId<"warehouse"."vulcan_demo"."fct_daily_sales": 3567707351> (facade.py:726)
+2025-12-03 04:47:37,405 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."vulcan_demo"."fct_daily_sales": 3567707351> (interval.py:215)
+2025-12-03 04:47:37,411 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:accuracy: 2918882631> (facade.py:726)
+2025-12-03 04:47:37,411 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:accuracy: 2918882631> (interval.py:215)
+2025-12-03 04:47:37,411 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:completeness: 3507029630> (facade.py:726)
+2025-12-03 04:47:37,412 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:uniqueness: 153490614> (facade.py:726)
+2025-12-03 04:47:37,412 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:completeness: 3507029630> (interval.py:215)
+2025-12-03 04:47:37,415 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:timeliness: 2912795801> (facade.py:726)
+2025-12-03 04:47:37,415 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:uniqueness: 153490614> (interval.py:215)
+2025-12-03 04:47:37,418 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:timeliness: 2912795801> (interval.py:215)
+2025-12-03 04:47:37,418 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:validity: 755158189> (facade.py:726)
+2025-12-03 04:47:37,426 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.customer_analysis: 2602311127> (facade.py:726)
+2025-12-03 04:47:37,426 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.daily_sales_trends: 4146051043> (facade.py:726)
+2025-12-03 04:47:37,426 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<__checks.vulcan_demo.fct_daily_sales:validity: 755158189> (interval.py:215)
+2025-12-03 04:47:37,428 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.customer_analysis: 2602311127> (interval.py:215)
+2025-12-03 04:47:37,428 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.product_category_analysis: 1650069454> (facade.py:726)
+2025-12-03 04:47:37,428 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.daily_sales_trends: 4146051043> (interval.py:215)
+2025-12-03 04:47:37,432 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.product_category_analysis: 1650069454> (interval.py:215)
+2025-12-03 04:47:37,437 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.product_performance: 814702965> (facade.py:726)
+2025-12-03 04:47:37,439 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.regional_sales_breakdown: 459451691> (facade.py:726)
+2025-12-03 04:47:37,439 - ThreadPoolExecutor-4_1 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.product_performance: 814702965> (interval.py:215)
+2025-12-03 04:47:37,443 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.revenue_growth: 637159871> (facade.py:726)
+2025-12-03 04:47:37,443 - ThreadPoolExecutor-4_2 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.regional_sales_breakdown: 459451691> (interval.py:215)
+2025-12-03 04:47:37,443 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.facade - INFO - Adding interval (2025-01-01 00:00:00, 2025-12-03 00:00:00) for snapshot SnapshotId<semantic-metric.sales_by_region: 1872815588> (facade.py:726)
+2025-12-03 04:47:37,448 - ThreadPoolExecutor-4_0 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.sales_by_region: 1872815588> (interval.py:215)
+2025-12-03 04:47:37,445 - ThreadPoolExecutor-4_3 - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<semantic-metric.revenue_growth: 637159871> (interval.py:215)
+2025-12-03 04:47:37,458 - MainThread - vulcan.core.plan.evaluator - INFO - Evaluating plan stage EnvironmentRecordUpdateStage (evaluator.py:123)
+2025-12-03 04:47:37,460 - MainThread - vulcan.core.state_sync.db.facade - INFO - Promoting environment 'prod' (facade.py:177)
+2025-12-03 04:47:37,483 - MainThread - vulcan.core.plan.evaluator - INFO - Evaluating plan stage FinalizeEnvironmentStage (evaluator.py:123)
+2025-12-03 04:47:37,484 - MainThread - vulcan.core.state_sync.db.environment - INFO - Finalizing environment 'prod' (environment.py:141)
+2025-12-03 04:47:37,836 - MainThread - vulcan.core.context - INFO - Recorded run execution for 9 models (context.py:1947)
+2025-12-03 04:47:37,839 - MainThread - vulcan.core.context - INFO - Logged 9 run_exec events (context.py:1972)
+2025-12-03 04:47:37,894 - MainThread - vulcan.core.check.executor - INFO - Running checks in 1 catalog batch(es) (executor.py:374)
+2025-12-03 04:47:37,895 - MainThread - vulcan.core.check.executor - INFO - Running check batch 1/1 for catalog warehouse (executor.py:390)
+2025-12-03 04:47:38,008 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 24.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].aggregation[0]: column "cust_sk" does not exist
+LINE 4:   COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+                          ^
+
+SELECT 
+  COUNT(*),
+  COUNT(CASE WHEN sales_date >= CAST('2025-12-03' AS DATE) - INTERVAL '7 days' THEN 1 END),
+  COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+  COUNT(CASE WHEN product_sk IS NULL THEN 1 END),
+  COUNT(CASE WHEN sales_date IS NULL THEN 1 END),
+  SUM(revenue) 
+FROM vulcan_demo.fct_daily_sales
+WHERE sales_date >= CURRENT_DATE - INTERVAL '30 days' (log.py:101)
+2025-12-03 04:47:38,008 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 4:   COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+  |                           ^
+ (log.py:105)
+2025-12-03 04:47:38,008 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,008 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 145, in _execute_cursor
+  |     cursor.execute(self.sql)
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 4:   COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+  |                           ^
+
+ (log.py:113)
+2025-12-03 04:47:38,009 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 23.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].duplicate_count: column "cust_sk" does not exist
+LINE 6: AND cust_sk IS NOT NULL 
+            ^
+
+
+          WITH frequencies AS (
+              SELECT COUNT(*) AS frequency
+              FROM vulcan_demo.fct_daily_sales
+              WHERE sales_date IS NOT NULL 
+AND cust_sk IS NOT NULL 
+AND product_sk IS NOT NULL 
+AND sales_date >= CURRENT_DATE - INTERVAL '30 days'
+              GROUP BY sales_date, cust_sk, product_sk)
+          SELECT COUNT(*)
+          FROM frequencies
+          WHERE frequency > 1 (log.py:101)
+2025-12-03 04:47:38,009 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 6: AND cust_sk IS NOT NULL 
+  |             ^
+ (log.py:105)
+2025-12-03 04:47:38,009 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,009 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 145, in _execute_cursor
+  |     cursor.execute(self.sql)
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 6: AND cust_sk IS NOT NULL 
+  |             ^
+
+ (log.py:113)
+2025-12-03 04:47:38,026 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 25.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, revenue, units
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, revenue, units
+FROM vulcan_demo.fct_daily_sales
+WHERE revenue < 0 (log.py:101)
+2025-12-03 04:47:38,026 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue, units
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,026 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,026 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue, units
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,026 - MainThread - soda.scan - ERROR -   +-> line=277,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,027 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 26.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, units, revenue
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, units, revenue
+FROM vulcan_demo.fct_daily_sales
+WHERE units < 0 (log.py:101)
+2025-12-03 04:47:38,027 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, units, revenue
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,027 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,027 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, units, revenue
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,027 - MainThread - soda.scan - ERROR -   +-> line=286,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,029 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 27.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, avg_selling_price, r...
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, avg_selling_price, revenue, units
+FROM vulcan_demo.fct_daily_sales
+ WHERE avg_selling_price < 0 OR (units > 0 AND revenue > 0 AND ABS(avg_selling_price - (revenue / units)) > 0.01) (log.py:101)
+2025-12-03 04:47:38,029 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, avg_selling_price, r...
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,029 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,029 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, avg_selling_price, r...
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,029 - MainThread - soda.scan - ERROR -   +-> line=295,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,030 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 28.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, revenue
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, revenue
+FROM vulcan_demo.fct_daily_sales
+WHERE sales_date > CURRENT_DATE (log.py:101)
+2025-12-03 04:47:38,030 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,030 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,030 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,030 - MainThread - soda.scan - ERROR -   +-> line=304,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,216 - MainThread - matplotlib.font_manager - INFO - generated new fontManager (font_manager.py:1639)
+2025-12-03 04:47:38,307 - MainThread - prophet.plot - ERROR - Importing plotly failed. Interactive plots will not work. (plot.py:40)
+2025-12-03 04:47:38,312 - MainThread - soda.scan - WARNING - [04:47:38] Anomaly Detection Insufficient Training Data Warning: The model requires a minimum of 5 historical measurements for accurate predictions, but currently has only 1 check results available. (log.py:101)
+2025-12-03 04:47:38,318 - MainThread - soda.scan - WARNING - [04:47:38] Anomaly Detection Insufficient Training Data Warning: The model requires a minimum of 5 historical measurements for accurate predictions, but currently has only 1 check results available. (log.py:101)
+2025-12-03 04:47:38,318 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'duplicate_count' were not computed for check 'duplicate_count(sales_date, cust_sk, product_sk) = 0' (log.py:101)
+2025-12-03 04:47:38,319 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'row_count' were not computed for check 'change for row_count >= -50%' (log.py:101)
+2025-12-03 04:47:38,319 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,319 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,319 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,320 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,320 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'row_count' were not computed for check 'row_count > 0' (log.py:101)
+2025-12-03 04:47:38,322 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'row_count' were not computed for check 'anomaly detection for row_count' (log.py:101)
+2025-12-03 04:47:38,323 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'missing_count' were not computed for check 'missing_count(cust_sk) = 0' (log.py:101)
+2025-12-03 04:47:38,323 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'missing_count' were not computed for check 'missing_count(product_sk) = 0' (log.py:101)
+2025-12-03 04:47:38,323 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'missing_count' were not computed for check 'missing_count(sales_date) = 0' (log.py:101)
+2025-12-03 04:47:38,324 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'sum' were not computed for check 'anomaly detection for sum(revenue)' (log.py:101)
+2025-12-03 04:47:38,330 - MainThread - soda.scan - WARNING - [04:47:38] Anomaly Detection Insufficient Training Data Warning: The model requires a minimum of 5 historical measurements for accurate predictions, but currently has only 1 check results available. (log.py:101)
+2025-12-03 04:47:38,335 - MainThread - soda.scan - WARNING - [04:47:38] Anomaly Detection Insufficient Training Data Warning: The model requires a minimum of 5 historical measurements for accurate predictions, but currently has only 1 check results available. (log.py:101)
+2025-12-03 04:47:38,336 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 24.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].aggregation[0]: column "cust_sk" does not exist
+LINE 4:   COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+                          ^
+
+SELECT 
+  COUNT(*),
+  COUNT(CASE WHEN sales_date >= CAST('2025-12-03' AS DATE) - INTERVAL '7 days' THEN 1 END),
+  COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+  COUNT(CASE WHEN product_sk IS NULL THEN 1 END),
+  COUNT(CASE WHEN sales_date IS NULL THEN 1 END),
+  SUM(revenue) 
+FROM vulcan_demo.fct_daily_sales
+WHERE sales_date >= CURRENT_DATE - INTERVAL '30 days' (log.py:101)
+2025-12-03 04:47:38,336 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 4:   COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+  |                           ^
+ (log.py:105)
+2025-12-03 04:47:38,336 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,336 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 145, in _execute_cursor
+  |     cursor.execute(self.sql)
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 4:   COUNT(CASE WHEN cust_sk IS NULL THEN 1 END),
+  |                           ^
+
+ (log.py:113)
+2025-12-03 04:47:38,336 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 23.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].duplicate_count: column "cust_sk" does not exist
+LINE 6: AND cust_sk IS NOT NULL 
+            ^
+
+
+          WITH frequencies AS (
+              SELECT COUNT(*) AS frequency
+              FROM vulcan_demo.fct_daily_sales
+              WHERE sales_date IS NOT NULL 
+AND cust_sk IS NOT NULL 
+AND product_sk IS NOT NULL 
+AND sales_date >= CURRENT_DATE - INTERVAL '30 days'
+              GROUP BY sales_date, cust_sk, product_sk)
+          SELECT COUNT(*)
+          FROM frequencies
+          WHERE frequency > 1 (log.py:101)
+2025-12-03 04:47:38,336 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 6: AND cust_sk IS NOT NULL 
+  |             ^
+ (log.py:105)
+2025-12-03 04:47:38,336 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 145, in _execute_cursor
+  |     cursor.execute(self.sql)
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 6: AND cust_sk IS NOT NULL 
+  |             ^
+
+ (log.py:113)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 25.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, revenue, units
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, revenue, units
+FROM vulcan_demo.fct_daily_sales
+WHERE revenue < 0 (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue, units
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue, units
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   +-> line=277,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 26.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, units, revenue
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, units, revenue
+FROM vulcan_demo.fct_daily_sales
+WHERE units < 0 (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, units, revenue
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, units, revenue
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   +-> line=286,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 27.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, avg_selling_price, r...
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, avg_selling_price, revenue, units
+FROM vulcan_demo.fct_daily_sales
+ WHERE avg_selling_price < 0 OR (units > 0 AND revenue > 0 AND ABS(avg_selling_price - (revenue / units)) > 0.01) (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, avg_selling_price, r...
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, avg_selling_price, r...
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   +-> line=295,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Query execution error in 28.vulcan_prod_warehouse.vulcan_demo.fct_daily_sales[vulcan_demo_fct_daily_sales_filter].failed_rows[failed rows]: column "cust_sk" does not exist
+LINE 1: SELECT sales_date, cust_sk, product_sk, revenue
+                           ^
+
+SELECT sales_date, cust_sk, product_sk, revenue
+FROM vulcan_demo.fct_daily_sales
+WHERE sales_date > CURRENT_DATE (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue
+  |                            ^
+ (log.py:105)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Stacktrace: (log.py:112)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   | Traceback (most recent call last):
+  |   File "/opt/venv/lib/python3.10/site-packages/soda/execution/query/query.py", line 209, in store
+  |     cursor.execute(str(self.sql))
+  | psycopg2.errors.UndefinedColumn: column "cust_sk" does not exist
+  | LINE 1: SELECT sales_date, cust_sk, product_sk, revenue
+  |                            ^
+
+ (log.py:113)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR -   +-> line=304,col=5 in sodacl_string.yml (log.py:115)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'duplicate_count' were not computed for check 'duplicate_count(sales_date, cust_sk, product_sk) = 0' (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'row_count' were not computed for check 'change for row_count >= -50%' (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Metrics '"failed rows"' were not computed for check 'failed rows' (log.py:101)
+2025-12-03 04:47:38,337 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'row_count' were not computed for check 'row_count > 0' (log.py:101)
+2025-12-03 04:47:38,338 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'row_count' were not computed for check 'anomaly detection for row_count' (log.py:101)
+2025-12-03 04:47:38,338 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'missing_count' were not computed for check 'missing_count(cust_sk) = 0' (log.py:101)
+2025-12-03 04:47:38,338 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'missing_count' were not computed for check 'missing_count(product_sk) = 0' (log.py:101)
+2025-12-03 04:47:38,338 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'missing_count' were not computed for check 'missing_count(sales_date) = 0' (log.py:101)
+2025-12-03 04:47:38,338 - MainThread - soda.scan - ERROR - [04:47:38] Metrics 'sum' were not computed for check 'anomaly detection for sum(revenue)' (log.py:101)
+2025-12-03 04:47:38,376 - MainThread - vulcan.core.check.soda_statesync - INFO - Extracted 18 failed row sample(s) from scan context (soda_statesync.py:127)
+2025-12-03 04:47:38,403 - MainThread - vulcan.core.state_sync.db.activity - INFO - Stored check scan 6098b4ad-2e0d-4bed-9cf7-41df8ebef56e: 67 checks, 76 metrics, 0 profile metrics (activity.py:1213)
+2025-12-03 04:47:38,408 - MainThread - vulcan.core.check.soda_statesync - INFO - Logged 6 check_scan events (soda_statesync.py:305)
+2025-12-03 04:47:38,493 - MainThread - vulcan.core.check.executor - INFO - Profiling 7 models in 2 batches (executor.py:500)
+2025-12-03 04:47:38,494 - MainThread - vulcan.core.check.executor - INFO - Running profile batch 1/2 for warehouse.vulcan_example (executor.py:521)
+2025-12-03 04:47:38,503 - MainThread - soda.scan - WARNING - [04:47:38] Column 'incremental_model.event_date' was not profiled because column data type 'date' is not in supported profiling data types (log.py:101)
+2025-12-03 04:47:38,504 - MainThread - soda.scan - WARNING - [04:47:38] No valid checks found, 0 checks evaluated. (log.py:101)
+2025-12-03 04:47:38,504 - MainThread - vulcan.core.check.soda_statesync - INFO - Extracted 0 failed row sample(s) from scan context (soda_statesync.py:127)
+2025-12-03 04:47:38,510 - MainThread - vulcan.core.state_sync.db.activity - INFO - Stored check scan 8610f265-463c-4e85-9d99-f57639ad2668: 0 checks, 0 metrics, 25 profile metrics (activity.py:1213)
+2025-12-03 04:47:38,512 - MainThread - vulcan.core.check.executor - INFO - ✅ Batch complete: 2 columns in 1 tables (executor.py:298)
+2025-12-03 04:47:38,512 - MainThread - vulcan.core.check.executor - INFO - Running profile batch 2/2 for warehouse.vulcan_demo (executor.py:521)
+2025-12-03 04:47:38,536 - MainThread - soda.scan - WARNING - [04:47:38] Column 'fct_daily_sales.sales_date' was not profiled because column data type 'timestamp without time zone' is not in supported profiling data types (log.py:101)
+2025-12-03 04:47:38,536 - MainThread - soda.scan - WARNING - [04:47:38] Database returned no results for textual frequent values in fct_daily_sales, column: customer_sk (log.py:101)
+2025-12-03 04:47:38,536 - MainThread - soda.scan - WARNING - [04:47:38] Database returned no results for textual frequent values in fct_daily_sales, column: product_sk (log.py:101)
+2025-12-03 04:47:38,537 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: region_id (log.py:101)
+2025-12-03 04:47:38,537 - MainThread - soda.scan - WARNING - [04:47:38] Min cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,537 - MainThread - soda.scan - WARNING - [04:47:38] Max cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,537 - MainThread - soda.scan - WARNING - [04:47:38] Histogram query for fct_daily_sales, column region_id skipped. See earlier warnings. (log.py:101)
+2025-12-03 04:47:38,537 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: region_id (log.py:101)
+2025-12-03 04:47:38,537 - MainThread - soda.scan - WARNING - [04:47:38] Database returned no results for textual frequent values in fct_daily_sales, column: region_name (log.py:101)
+2025-12-03 04:47:38,537 - MainThread - soda.scan - WARNING - [04:47:38] Database returned no results for textual frequent values in fct_daily_sales, column: category (log.py:101)
+2025-12-03 04:47:38,538 - MainThread - soda.scan - WARNING - [04:47:38] Database returned no results for textual frequent values in fct_daily_sales, column: category_bucket (log.py:101)
+2025-12-03 04:47:38,538 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: units (log.py:101)
+2025-12-03 04:47:38,538 - MainThread - soda.scan - WARNING - [04:47:38] Min cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,538 - MainThread - soda.scan - WARNING - [04:47:38] Max cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,538 - MainThread - soda.scan - WARNING - [04:47:38] Histogram query for fct_daily_sales, column units skipped. See earlier warnings. (log.py:101)
+2025-12-03 04:47:38,539 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: units (log.py:101)
+2025-12-03 04:47:38,539 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: revenue (log.py:101)
+2025-12-03 04:47:38,539 - MainThread - soda.scan - WARNING - [04:47:38] Min cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,539 - MainThread - soda.scan - WARNING - [04:47:38] Max cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,539 - MainThread - soda.scan - WARNING - [04:47:38] Histogram query for fct_daily_sales, column revenue skipped. See earlier warnings. (log.py:101)
+2025-12-03 04:47:38,539 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: revenue (log.py:101)
+2025-12-03 04:47:38,540 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: avg_selling_price (log.py:101)
+2025-12-03 04:47:38,540 - MainThread - soda.scan - WARNING - [04:47:38] Min cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,540 - MainThread - soda.scan - WARNING - [04:47:38] Max cannot be None, make sure the min metric is derived before histograms (log.py:101)
+2025-12-03 04:47:38,540 - MainThread - soda.scan - WARNING - [04:47:38] Histogram query for fct_daily_sales, column avg_selling_price skipped. See earlier warnings. (log.py:101)
+2025-12-03 04:47:38,540 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: avg_selling_price (log.py:101)
+2025-12-03 04:47:38,543 - MainThread - soda.scan - WARNING - [04:47:38] Column 'incremental_by_unique_key.last_order_date' was not profiled because column data type 'timestamp without time zone' is not in supported profiling data types (log.py:101)
+2025-12-03 04:47:38,569 - MainThread - soda.scan - WARNING - [04:47:38] Column 'view_model.order_date' was not profiled because column data type 'timestamp without time zone' is not in supported profiling data types (log.py:101)
+2025-12-03 04:47:38,584 - MainThread - soda.scan - WARNING - [04:47:38] Min of total_transactions on table: view_model must be smaller than max value. Min is 1.0, and max is 1.0 (log.py:101)
+2025-12-03 04:47:38,584 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: view_model, columns: total_transactions (log.py:101)
+2025-12-03 04:47:38,624 - MainThread - soda.scan - WARNING - [04:47:38] Min of unique_customers on table: view_model must be smaller than max value. Min is 1.0, and max is 1.0 (log.py:101)
+2025-12-03 04:47:38,624 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: view_model, columns: unique_customers (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - WARNING - [04:47:38] No valid checks found, 0 checks evaluated. (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: region_id (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: region_id (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: units (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: units (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: revenue (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: revenue (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for minumum values, maximum values and frequent values in table: fct_daily_sales, columns: avg_selling_price (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: fct_daily_sales, columns: avg_selling_price (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: view_model, columns: total_transactions (log.py:101)
+2025-12-03 04:47:38,673 - MainThread - soda.scan - ERROR - [04:47:38] Database returned no results for histograms in table: view_model, columns: unique_customers (log.py:101)
+2025-12-03 04:47:38,674 - MainThread - vulcan.core.check.soda_statesync - INFO - Extracted 0 failed row sample(s) from scan context (soda_statesync.py:127)
+2025-12-03 04:47:38,714 - MainThread - vulcan.core.state_sync.db.activity - INFO - Stored check scan c135ac59-b5d6-4008-b9eb-d935d7d4c7db: 0 checks, 0 metrics, 394 profile metrics (activity.py:1213)
+2025-12-03 04:47:38,718 - MainThread - vulcan.core.check.executor - INFO - ✅ Batch complete: 49 columns in 6 tables (executor.py:298)
+2025-12-03 04:47:38,721 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:231)

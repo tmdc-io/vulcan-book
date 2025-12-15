@@ -1,95 +1,289 @@
 # Testing
 
-Testing allows you to protect your project from regression by continuously verifying that the output of each model matches your expectations. Unlike [audits](audits.md), tests are executed either on demand (for example, as part of a CI/CD job) or every time a new [plan](plans.md) is created.
+Testing is a critical practice in data engineering that ensures your data transformations produce correct, reliable results. Just as software engineers write unit tests to verify code behavior, data practitioners use tests to validate that models transform data as expected—catching bugs before they reach production and preventing costly data quality issues.
 
-Similar to unit testing in software development, Vulcan evaluates the model's logic against predefined inputs and then compares the output to expected outcomes provided as part of each test.
+## Why testing matters
 
-A comprehensive suite of tests can empower data practitioners to work with confidence, as it allows them to ensure models behave as expected after changes have been applied to them.
+Data pipelines are complex systems where small errors can cascade into significant business impacts. Testing provides several key benefits:
+
+- **Regression prevention**: Catch breaking changes before they affect downstream consumers
+- **Confidence in changes**: Refactor models knowing that tests will flag unintended behavior changes
+- **Documentation**: Tests serve as executable specifications of expected model behavior
+- **Faster debugging**: When something breaks, tests help pinpoint the exact transformation that failed
+- **Data quality assurance**: Verify that aggregations, joins, and calculations produce correct results
+
+Unlike [audits](audits.md) which validate data quality at runtime, tests verify the *logic* of your models against predefined inputs and expected outputs. Tests run either on demand (e.g., in CI/CD pipelines) or automatically when creating a new [plan](plans.md).
 
 ## Creating tests
 
-A test suite is a [YAML file](https://learnxinyminutes.com/docs/yaml/) contained in the `tests/` folder of a Vulcan project, whose name begins with `test` and ends with either `.yaml` or `.yml`. It can contain one or more uniquely named unit tests, each with a number of attributes that define its behavior.
+A test suite is a [YAML file](https://learnxinyminutes.com/docs/yaml/) in the `tests/` folder of your Vulcan project. The filename must begin with `test` and end with `.yaml` or `.yml`. Each file can contain multiple uniquely named unit tests.
 
-At minimum, a unit test must specify the model being tested, the input values for its upstream models, and the expected outputs for the target model's query and/or its [Common Table Expressions](glossary.md#cte). Other optional attributes include a description, the gateway to use, and a mapping that assigns values to [macro variables](macros/macro_variables.md) referenced in the model.
+At minimum, a unit test must specify:
 
-Learn more about the supported attributes in the [unit test structure section](#unit-test-structure).
+- **model**: The model being tested
+- **inputs**: Mock data for upstream dependencies
+- **outputs**: Expected results from the model's query
 
-### Example
+### Basic example
 
-In this example, we'll use the `vulcan_example.full_model` model, which is provided as part of the `vulcan init` command and is defined as follows:
+Consider this `sales.daily_sales` model that aggregates orders by date:
 
 ```sql linenums="1"
 MODEL (
-  name vulcan_example.full_model,
+  name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain item_id,
-  audits (assert_positive_order_ids),
+  grain order_date
 );
 
 SELECT
-  item_id,
-  COUNT(DISTINCT id) AS num_orders,
-FROM
-  vulcan_example.incremental_model
-GROUP BY item_id
+  CAST(order_date AS TIMESTAMP) AS order_date,
+  COUNT(order_id)::INTEGER AS total_orders,
+  SUM(total_amount)::FLOAT AS total_revenue,
+  MAX(order_id)::VARCHAR AS last_order_id
+FROM raw.raw_orders
+GROUP BY order_date
+ORDER BY order_date
 ```
 
-This model aggregates the number of orders per `item_id` from the upstream `vulcan_example.incremental_model`. One way to test it is shown below:
+Here's a test that verifies the aggregation logic:
 
 ```yaml linenums="1"
-test_example_full_model:
-  model: vulcan_example.full_model
+test_daily_sales_aggregation:
+  model: sales.daily_sales
+  description: >
+    Test that daily_sales correctly aggregates orders by date.
+
   inputs:
-    vulcan_example.incremental_model:
+    raw.raw_orders:
       rows:
-      - id: 1
-        item_id: 1
-      - id: 2
-        item_id: 1
-      - id: 3
-        item_id: 2
+        - order_id: O001
+          order_date: '2024-03-15'
+          customer_id: C001
+          product_id: P001
+          total_amount: 50.00
+        - order_id: O002
+          order_date: '2024-03-15'
+          customer_id: C002
+          product_id: P002
+          total_amount: 75.00
+        - order_id: O003
+          order_date: '2024-03-16'
+          customer_id: C001
+          product_id: P003
+          total_amount: 100.00
+
   outputs:
     query:
       rows:
-      - item_id: 1
-        num_orders: 2
-      - item_id: 2
-        num_orders: 1
+        - order_date: "2024-03-15"
+          total_orders: 2
+          total_revenue: 125.00
+          last_order_id: "O002"
+        - order_date: "2024-03-16"
+          total_orders: 1
+          total_revenue: 100.00
+          last_order_id: "O003"
 ```
 
-This test verifies that `vulcan_example.full_model` correctly counts the number of orders per `item_id`. It provides three rows as input to `vulcan_example.incremental_model` and expects two rows as output from the target model's query.
+This test provides three input orders (two on March 15, one on March 16) and verifies that:
+
+- Orders are correctly grouped by date
+- `total_orders` counts distinct orders per day
+- `total_revenue` sums the amounts correctly
+- `last_order_id` returns the maximum order ID per day
+
+### Testing models with multiple dependencies
+
+Real-world models often join multiple tables. Here's a test for a customer summary model that joins customers, orders, and order items:
+
+```yaml linenums="1"
+test_full_model_basic:
+  model: vulcan_demo.full_model
+  description: |
+    Validates aggregates and averages:
+    - DISTINCT order counting
+    - SUM(quantity * unit_price)
+    - avg_order_value = total_spent / total_orders, or NULL when total_orders = 0
+
+  inputs:
+    vulcan_demo.customers:
+      - customer_id: 1
+        name: Alice
+        email: alice@example.com
+      - customer_id: 2
+        name: Bob
+        email: bob@example.com
+      - customer_id: 3
+        name: Charlie
+        email: charlie@example.com
+
+    vulcan_demo.orders:
+      # Alice has 2 orders
+      - order_id: 1001
+        customer_id: 1
+      - order_id: 1002
+        customer_id: 1
+      # Bob has 1 order
+      - order_id: 2001
+        customer_id: 2
+      # Charlie has 0 orders (no rows)
+
+    vulcan_demo.order_items:
+      # Order 1001: 2*50 + 1*25 = 125
+      - order_id: 1001
+        product_id: 501
+        quantity: 2
+        unit_price: 50
+      - order_id: 1001
+        product_id: 502
+        quantity: 1
+        unit_price: 25
+      # Order 1002: 1*200 = 200 → Alice total = 325
+      - order_id: 1002
+        product_id: 503
+        quantity: 1
+        unit_price: 200
+      # Order 2001: 2*5 = 10 → Bob total = 10
+      - order_id: 2001
+        product_id: 504
+        quantity: 2
+        unit_price: 5
+
+  outputs:
+    query:
+      rows:
+        - customer_id: 1
+          customer_name: Alice
+          email: alice@example.com
+          total_orders: 2
+          total_spent: 325
+          avg_order_value: 162.5
+        - customer_id: 2
+          customer_name: Bob
+          email: bob@example.com
+          total_orders: 1
+          total_spent: 10
+          avg_order_value: 10.0
+        - customer_id: 3
+          customer_name: Charlie
+          email: charlie@example.com
+          total_orders: 0
+          total_spent: 0
+          avg_order_value: null  # Division by zero handled
+```
+
+### Testing incremental models
+
+Incremental models require special attention because they filter data by time range. Use the `vars` attribute to set `start` and `end` dates:
+
+```yaml linenums="1"
+test_incremental_by_time_range_basic:
+  model: vulcan_demo.incremental_by_time_range
+  description: |
+    Validates per-(order_date, product_id) aggregates over a fixed two-day window.
+    Checks DISTINCT order counts, quantity and revenue sums, and AVG(unit_price).
+  vars:
+    start: '2025-01-01'
+    end: '2025-01-02'
+
+  inputs:
+    vulcan_demo.products:
+      - product_id: 10
+        name: Widget
+        category: Electronics
+      - product_id: 20
+        name: Gizmo
+        category: Home
+
+    vulcan_demo.orders:
+      - order_id: 1001
+        customer_id: 9001
+        warehouse_id: 1
+        order_date: '2025-01-01'
+      - order_id: 1002
+        customer_id: 9002
+        warehouse_id: 1
+        order_date: '2025-01-01'
+      - order_id: 1003
+        customer_id: 9003
+        warehouse_id: 2
+        order_date: '2025-01-02'
+
+    vulcan_demo.order_items:
+      # 2025-01-01
+      - order_id: 1001
+        product_id: 10
+        quantity: 2
+        unit_price: 50
+      - order_id: 1001
+        product_id: 20
+        quantity: 1
+        unit_price: 200
+      - order_id: 1002
+        product_id: 10
+        quantity: 1
+        unit_price: 60
+      # 2025-01-02
+      - order_id: 1003
+        product_id: 10
+        quantity: 5
+        unit_price: 40
+
+  outputs:
+    query:
+      rows:
+        - order_date: '2025-01-01'
+          product_id: 20
+          product_name: Gizmo
+          category: Home
+          order_count: 1
+          total_quantity: 1
+          total_sales_amount: 200
+          avg_unit_price: 200
+        - order_date: '2025-01-01'
+          product_id: 10
+          product_name: Widget
+          category: Electronics
+          order_count: 2
+          total_quantity: 3
+          total_sales_amount: 160
+          avg_unit_price: 55
+        - order_date: '2025-01-02'
+          product_id: 10
+          product_name: Widget
+          category: Electronics
+          order_count: 1
+          total_quantity: 5
+          total_sales_amount: 200
+          avg_unit_price: 40
+```
 
 ### Testing CTEs
 
-Individual CTEs within the model's query can also be tested. To demonstrate this, let's slightly modify the query of `vulcan_example.full_model` to include a CTE named `filtered_orders_cte`:
+Individual CTEs within the model's query can also be tested. Given a model with a CTE:
 
 ```sql linenums="1"
 WITH filtered_orders_cte AS (
-  SELECT
-    id,
-    item_id
-  FROM
-    vulcan_example.incremental_model
-  WHERE
-    item_id = 1
+  SELECT id, item_id
+  FROM vulcan_demo.incremental_model
+  WHERE item_id = 1
 )
 SELECT
   item_id,
-  COUNT(DISTINCT id) AS num_orders,
-FROM
-  filtered_orders_cte
+  COUNT(DISTINCT id) AS num_orders
+FROM filtered_orders_cte
 GROUP BY item_id
 ```
 
-The following test verifies the output of this CTE before aggregation takes place:
+Test both the CTE and final query:
 
-```yaml linenums="1" hl_lines="13-19"
-test_example_full_model:
-  model: vulcan_example.full_model
+```yaml linenums="1"
+test_model_with_cte:
+  model: vulcan_demo.full_model
   inputs:
-    vulcan_example.incremental_model:
-        rows:
+    vulcan_demo.incremental_model:
+      rows:
         - id: 1
           item_id: 1
         - id: 2
@@ -106,338 +300,136 @@ test_example_full_model:
             item_id: 1
     query:
       rows:
-      - item_id: 1
-        num_orders: 2
+        - item_id: 1
+          num_orders: 2
 ```
 
 ## Supported data formats
 
-Vulcan currently supports the following ways to define input and output data in unit tests:
+Vulcan supports multiple ways to define input and output data:
 
-1. Listing YAML dictionaries where columns are mapped to their values for each row
-2. Listing the rows as comma-separated values (CSV)
-3. Executing a SQL query against the testing connection to generate the data
-
-The previous examples demonstrate the first method, which is the default way to define data in unit tests. The following examples will cover the remaining methods.
-
-### Defining data as CSV
-
-This is how we could define the same test as in the first [example](#example), but with the input data formatted as CSV:
+### YAML dictionaries (default)
 
 ```yaml linenums="1"
-test_example_full_model:
-  model: vulcan_example.full_model
-  inputs:
-    vulcan_example.incremental_model:
-      format: csv
-      rows: |
-        id,item_id
-        1,1
-        2,1
-        3,2
-  outputs:
-    query:
-      rows:
-      - item_id: 1
-        num_orders: 2
-      - item_id: 2
-        num_orders: 1
+inputs:
+  vulcan_demo.orders:
+    rows:
+      - order_id: 1001
+        customer_id: 1
+        order_date: '2025-01-01'
 ```
 
-### Generating data using SQL queries
-
-This is how we could define the same test as in the first [example](#example), but with the input data generated from a SQL query:
+### CSV format
 
 ```yaml linenums="1"
-test_example_full_model:
-  model: vulcan_example.full_model
-  inputs:
-    vulcan_example.incremental_model:
-      query: |
-        SELECT 1 AS id, 1 AS item_id
-        UNION ALL
-        SELECT 2 AS id, 1 AS item_id
-        UNION ALL
-        SELECT 3 AS id, 2 AS item_id
-  outputs:
-    query:
-      rows:
-      - item_id: 1
-        num_orders: 2
-      - item_id: 2
-        num_orders: 1
+inputs:
+  vulcan_demo.orders:
+    format: csv
+    rows: |
+      order_id,customer_id,order_date
+      1001,1,2025-01-01
+      1002,2,2025-01-01
 ```
 
-## Using files to populate data
-
-Vulcan supports loading data from external files. To achieve this, you can use the `path` attribute, which specifies the pathname of the data to be loaded:
+### SQL queries
 
 ```yaml linenums="1"
-test_example_full_model:
-  model: vulcan_example.full_model
-  inputs:
-    vulcan_example.incremental_model:
-      format: csv
-      path: filepath/test_data.csv
+inputs:
+  vulcan_demo.orders:
+    query: |
+      SELECT 1001 AS order_id, 1 AS customer_id, '2025-01-01' AS order_date
+      UNION ALL
+      SELECT 1002 AS order_id, 2 AS customer_id, '2025-01-01' AS order_date
 ```
 
-When `format` is omitted, the file will be loaded as a YAML document.
+### External files
+
+```yaml linenums="1"
+inputs:
+  vulcan_demo.orders:
+    format: csv
+    path: fixtures/orders_test_data.csv
+```
 
 ## Omitting columns
 
-Defining the complete inputs and expected outputs for wide tables, i.e. tables with many columns, can become cumbersome. Therefore, if certain columns can be safely ignored they may be omitted from any row and their value will be treated as `NULL` for that row.
-
-Additionally, it's possible to test only a subset of the output columns by setting `partial` to `true` for the outputs of interest:
+For wide tables, you can omit columns (treated as `NULL`) or use partial matching:
 
 ```yaml linenums="1"
-  outputs:
-    query:
-      partial: true
-      rows:
-        - <column_name>: <column_value>
-          ...
+outputs:
+  query:
+    partial: true  # Only test specified columns
+    rows:
+      - customer_id: 1
+        total_spent: 325
 ```
 
-This is useful when the missing columns can't be treated as `NULL`, but we still want to ignore them. In order to apply this setting to _all_ expected outputs, set it under the `outputs` key:
+To apply partial matching to all outputs:
 
 ```yaml linenums="1"
-  outputs:
-    partial: true
-    ...
+outputs:
+  partial: true
+  query:
+    rows:
+      - customer_id: 1
+        total_spent: 325
 ```
 
 ## Freezing time
 
-Some models may use SQL expressions that compute datetime values at a given point in time, such as `CURRENT_TIMESTAMP`. Since these expressions are non-deterministic, it's not enough to simply specify an expected output value in order to test them.
-
-Setting the `execution_time` macro variable addresses this problem by mocking out the current time in the context of the test, thus making its value deterministic.
-
-The following example demonstrates how `execution_time` can be used to test a column that is computed using `CURRENT_TIMESTAMP`. The model we're going to test is defined as:
-
-```sql linenums="1"
-MODEL (
-  name colors,
-  kind FULL
-);
-
-SELECT
-  'Yellow' AS color,
-  CURRENT_TIMESTAMP AS created_at
-```
-
-And the corresponding test is:
+For models using `CURRENT_TIMESTAMP` or similar functions, set `execution_time` to make tests deterministic:
 
 ```yaml linenums="1"
-test_colors:
-  model: colors
+test_with_timestamp:
+  model: vulcan_demo.audit_log
   outputs:
     query:
-      - color: "Yellow"
+      - event: "login"
         created_at: "2023-01-01 12:05:03"
   vars:
     execution_time: "2023-01-01 12:05:03"
 ```
 
-It's also possible to set a time zone for `execution_time`, by including it in the timestamp string.
+## Running tests
 
-If a time zone is provided, it is currently required that the test's _expected_ datetime values are timestamps without time zone, meaning that they need to be offset accordingly.
+### Command line
 
-Here's how we would write the above test if we wanted to freeze the time to UTC+2:
+```bash
+# Run all tests
+vulcan test
 
-```yaml linenums="1"
-test_colors:
-  model: colors
-  outputs:
-    query:
-      - color: "Yellow"
-        created_at: "2023-01-01 10:05:03"
-  vars:
-    execution_time: "2023-01-01 12:05:03+02:00"
+# Run specific test file
+vulcan test tests/test_daily_sales.yaml
+
+# Run specific test
+vulcan test tests/test_daily_sales.yaml::test_daily_sales_aggregation
+
+# Run tests matching a pattern
+vulcan test tests/test_*
 ```
 
-## Parameterized model names
-
-Testing models with parameterized names, such as `@{gold}.some_schema.some_table`, is possible using Jinja:
-
-```yaml linenums="1"
-test_parameterized_model:
-  model: {{ var('gold') }}.some_schema.some_table
-  ...
-```
-
-For example, assuming `gold` is a [config variable](../reference/configuration.md#variables) with value `gold_db`, the above test would be rendered as:
-
-```yaml linenums="1"
-test_parameterized_model:
-  model: gold_db.some_schema.some_table
-  ...
-```
-
-## Automatic test generation
-
-Creating tests manually can be repetitive and error-prone, which is why Vulcan also provides a way to automate this process using the [`create_test` command](../reference/cli.md#create_test).
-
-This command can generate a complete test for a given model, as long as the tables of its upstream models exist in the project's data warehouse and are already populated with data.
-
-### Example
-
-In this example, we'll show how to generate a test for `vulcan_example.incremental_model`, which is another model provided as part of the `vulcan init` command and is defined as follows:
-
-```sql linenums="1"
-MODEL (
-  name vulcan_example.incremental_model,
-  kind INCREMENTAL_BY_TIME_RANGE (
-    time_column event_date
-  ),
-  start '2020-01-01',
-  cron '@daily',
-  grain (id, event_date)
-);
-
-SELECT
-  id,
-  item_id,
-  event_date,
-FROM
-  vulcan_example.seed_model
-WHERE
-  event_date BETWEEN @start_date AND @end_date
-```
-
-Firstly, we need to specify the input data for the upstream model `vulcan_example.seed_model`. The `create_test` command starts by executing a user-supplied query against the project's data warehouse to fetch this data.
-
-For instance, the following query will return three rows from the table corresponding to the model `vulcan_example.seed_model`:
-
-```sql linenums="1"
-SELECT * FROM vulcan_example.seed_model LIMIT 3
-```
-
-Next, notice that `vulcan_example.incremental_model` contains a filter which references the `@start_date` and `@end_date` [macro variables](macros/macro_variables.md).
-
-To make the generated test deterministic and thus ensure that it will always succeed, we need to define these variables and modify the above query to constrain `event_date` accordingly.
-
-If we set `@start_date` to `'2020-01-01'` and `@end_date` to `'2020-01-04'`, the above query needs to be changed to:
-
-```sql linenums="1"
-SELECT * FROM vulcan_example.seed_model WHERE event_date BETWEEN '2020-01-01' AND '2020-01-04' LIMIT 3
-```
-
-Finally, combining it with the proper macro variable definitions, we can compute the expected output for the model's query in order to generate the complete test.
-
-This can be achieved using the following command:
-
-```
-$ vulcan create_test vulcan_example.incremental_model --query vulcan_example.seed_model "SELECT * FROM vulcan_example.seed_model WHERE event_date BETWEEN '2020-01-01' AND '2020-01-04' LIMIT 3" --var start '2020-01-01' --var end '2020-01-04'
-```
-
-Running this creates the following new test, located at `tests/test_incremental_model.yaml`:
-
-```yaml linenums="1"
-test_incremental_model:
-  model: vulcan_example.incremental_model
-  inputs:
-    vulcan_example.seed_model:
-    - id: 1
-      item_id: 2
-      event_date: 2020-01-01
-    - id: 2
-      item_id: 1
-      event_date: 2020-01-01
-    - id: 3
-      item_id: 3
-      event_date: 2020-01-03
-  outputs:
-    query:
-    - id: 1
-      item_id: 2
-      event_date: 2020-01-01
-    - id: 2
-      item_id: 1
-      event_date: 2020-01-01
-    - id: 3
-      item_id: 3
-      event_date: 2020-01-03
-  vars:
-    start: '2020-01-01'
-    end: '2020-01-04'
-```
-
-As you can see, we now have two passing tests. Hooray!
+### Example output
 
 ```
 $ vulcan test
-.
+..
 ----------------------------------------------------------------------
 Ran 2 tests in 0.024s
 
 OK
 ```
 
-## Using a different testing connection
-
-The testing connection can be changed for a given test. This may be useful when, e.g., the model being tested cannot be correctly transpiled to the dialect of the default testing engine.
-
-The following example demonstrates this by modifying `test_example_full_model`, so that it runs against a single-threaded local Spark process, defined as the `test_connection` of the `spark_testing` gateway in the project's `config.yaml` file:
-
-```yaml linenums="1"
-gateways:
-  local:
-    connection:
-      type: duckdb
-      database: db.db
-  spark_testing:
-    test_connection:
-      type: spark
-      config:
-        # Run Spark locally with one worker thread
-        "spark.master": "local"
-
-        # Move data under /tmp so that it is only temporarily persisted
-        "spark.sql.warehouse.dir": "/tmp/data_dir"
-        "spark.driver.extraJavaOptions": "-Dderby.system.home=/tmp/derby_dir"
-
-default_gateway: local
-
-model_defaults:
-  dialect: duckdb
-```
-
-The test would then be updated as follows:
-
-```yaml linenums="1"
-test_example_full_model:
-  gateway: spark_testing
-  # ... the other test attributes remain the same
-```
-
-## Running tests
-
-Tests run automatically every time a new [plan](plans.md) is created, but they can also be executed on demand as described in the following sections.
-
-### Testing using the CLI
-
-You can execute tests on demand using the `vulcan test` command as follows:
-
-```
-$ vulcan test
-.
-----------------------------------------------------------------------
-Ran 1 test in 0.005s
-
-OK
-```
-
-The command returns a non-zero exit code if there are any failures, and reports them in the standard error stream:
+When tests fail:
 
 ```
 $ vulcan test
 F
 ======================================================================
-FAIL: test_example_full_model (test/tests/test_full_model.yaml)
+FAIL: test_daily_sales_aggregation (tests/test_daily_sales.yaml)
 ----------------------------------------------------------------------
 AssertionError: Data mismatch (exp: expected, act: actual)
 
-  num_orders
+  total_orders
          exp  act
 0        3.0  2.0
 
@@ -447,59 +439,74 @@ Ran 1 test in 0.012s
 FAILED (failures=1)
 ```
 
-Note: when there are many differing columns, the corresponding dataframe will be truncated by default. In order to fully display them, use the `-v` (verbose) option of the `vulcan test` command.
+<!-- ### Notebook magic
 
-To run a specific model test, pass in the suite file name followed by `::` and the name of the test:
+```python
+import vulcan
+%run_test
+``` -->
 
-```
-$ vulcan test tests/test_full_model.yaml::test_example_full_model
-```
+## Automatic test generation
 
-You can also run tests that match a pattern or substring using a glob pathname expansion syntax:
+Generate tests automatically using the `create_test` command:
 
-```
-$ vulcan test tests/test_*
-```
-
-### Testing using notebooks
-
-You can execute tests on demand using the `%run_test` notebook magic as follows:
-
-```
-# This import will register all needed notebook magics
-In [1]: import vulcan
-        %run_test
-
-        ----------------------------------------------------------------------
-        Ran 1 test in 0.018s
-
-        OK
+```bash
+vulcan create_test vulcan_demo.daily_sales \
+  --query raw.raw_orders "SELECT * FROM raw.raw_orders WHERE order_date BETWEEN '2025-01-01' AND '2025-01-02' LIMIT 10" 
 ```
 
-The `%run_test` magic supports the same options as the corresponding [CLI command](#testing-using-the-cli).
+This creates a test file with actual data from your warehouse, making it easy to bootstrap your test suite.
 
-## Troubleshooting issues
+<!-- ## Using a different testing connection
 
-When executing unit tests, Vulcan creates input fixtures as views within the testing connection.
+Override the testing connection for specific tests:
 
-These fixtures are dropped by default after the execution completes, but it is possible to preserve them using the `--preserve-fixtures` option available in both the `vulcan test` CLI command and the `%run_test` notebook magic.
+```yaml linenums="1"
+test_with_spark:
+  gateway: spark_testing
+  model: vulcan_demo.complex_model
+  # ... rest of test
+```
 
-This can be helpful when debugging a test failure, because for example it's possible to query the fixture views directly and verify that they are defined correctly.
+Configure the gateway in `config.yaml`:
 
-!!! note
-    By default, the views that are necessary to run a unit test are created within a new, unique schema, whose name looks like `vulcan_test_<random_ID>`. To specify a custom name for this schema, set the [`<test_name>.schema`](#test_nameschema) test attribute.
+```yaml linenums="1"
+gateways:
+  spark_testing:
+    test_connection:
+      type: spark
+      config:
+        "spark.master": "local"
+``` -->
+
+## Troubleshooting
+
+### Preserving fixtures
+
+Use `--preserve-fixtures` to keep test fixtures for debugging:
+
+```bash
+vulcan test --preserve-fixtures
+```
+
+Fixtures are created as views in a schema named `vulcan_test_<random_ID>`.
 
 ### Type mismatches
 
-It's not always possible to correctly interpret certain values in a unit test without additional context. For example, a YAML dictionary can be used to represent both a `STRUCT` and a `MAP` value in SQL.
+If Vulcan can't infer column types correctly, specify them explicitly:
 
-To avoid this ambiguity, Vulcan needs to know the columns' types. By default, it will try to infer these types based on the model definitions, but they can also be explicitly specified:
-
-- in the [`external_models.yaml`](models/external_models.md#generating-an-external-models-schema-file) file (for external models)
-- using the [`columns`](models/overview.md#columns) model property
-- using the [`columns`](#creating-tests) attribute of the unit test
-
-If none of these options work, consider using a SQL [query](#test_nameinputsupstream_modelquery) to generate the data.
+```yaml linenums="1"
+inputs:
+  vulcan_demo.orders:
+    columns:
+      order_id: INT
+      order_date: DATE
+      total_amount: DECIMAL(10,2)
+    rows:
+      - order_id: 1001
+        order_date: '2025-01-01'
+        total_amount: 99.99
+```
 
 ## Unit test structure
 
@@ -678,7 +685,7 @@ See also: [`<test_name>.inputs.<upstream_model>.rows`](#test_nameinputsupstream_
 
 ### `<test_name>.outputs.ctes.<cte_name>.query`
 
-An optional SQL query that will be executed against the testing connection to generate the expected rows for the CTE with name `<cte_name`.
+An optional SQL query that will be executed against the testing connection to generate the expected rows for the CTE with name `<cte_name>`.
 
 See also: [`<test_name>.inputs.<upstream_model>.query`](#test_nameinputsupstream_modelquery).
 
@@ -686,7 +693,7 @@ See also: [`<test_name>.inputs.<upstream_model>.query`](#test_nameinputsupstream
 
 An optional dictionary that assigns values to macro variables:
 
-```
+```yaml linenums="1"
   vars:
     start: 2022-01-01
     end: 2022-01-01

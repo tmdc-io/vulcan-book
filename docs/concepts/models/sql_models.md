@@ -14,23 +14,18 @@ The SQL-based definition of SQL models is the most common one, and consists of t
 
 These models are designed to look and feel like you're simply using SQL, but they can be customized for advanced use cases.
 
-To create a SQL-based model, add a new file with the `.sql` suffix into the `models/` directory (or a subdirectory of `models/`) within your Vulcan project. Although the name of the file doesn't matter, it is customary to use the model's name (without the schema) as the file name. For example, the file containing the model `vulcan_example.seed_model` would be named `seed_model.sql`.
+To create a SQL-based model, add a new file with the `.sql` suffix into the `models/` directory (or a subdirectory of `models/`) within your Vulcan project. Although the name of the file doesn't matter, it is customary to use the model's name (without the schema) as the file name. For example, the file containing the model `sales.daily_sales` would be named `daily_sales.sql`.
 
 ### Example
 
 ```sql linenums="1"
 -- This is the MODEL DDL, where you specify model metadata and configuration information.
 MODEL (
-  name db.customers,
+  name sales.daily_sales,
   kind FULL,
+  cron '@daily',
+  grain order_date
 );
-
-/*
-  Optional pre-statements that will run before the model's query.
-  You should NOT do things that cause side effects that could error out when
-  executed concurrently with other statements, such as creating physical tables.
-*/
-CACHE TABLE countries AS SELECT * FROM raw.countries;
 
 /*
   This is the single query that defines the model's logic.
@@ -38,19 +33,13 @@ CACHE TABLE countries AS SELECT * FROM raw.countries;
   specify the type for each one of the model's columns through casting.
 */
 SELECT
-  r.id::INT,
-  r.name::TEXT,
-  c.country::TEXT
-FROM raw.restaurants AS r
-JOIN countries AS c
-  ON r.id = c.restaurant_id;
-
-/*
-  Optional post-statements that will run after the model's query.
-  You should NOT do things that cause side effects that could error out when
-  executed concurrently with other statements, such as creating physical tables.
-*/
-UNCACHE TABLE countries;
+  CAST(order_date AS TIMESTAMP)::TIMESTAMP AS order_date,
+  COUNT(order_id)::INTEGER AS total_orders,
+  SUM(total_amount)::FLOAT AS total_revenue,
+  MAX(order_id)::VARCHAR AS last_order_id
+FROM raw.raw_orders
+GROUP BY order_date
+ORDER BY order_date
 ```
 
 ### `MODEL` DDL
@@ -65,7 +54,28 @@ Optional pre/post-statements allow you to execute SQL commands before and after 
 
 For example, pre/post-statements might modify settings or create a table index. However, be careful not to run any statement that could conflict with the execution of another model if they are run concurrently, such as creating a physical table.
 
-Pre/post-statements are just standard SQL commands located before/after the model query. They must end with a semi-colon, and the model query must end with a semi-colon if a post-statement is present. The [example above](#example) contains both pre- and post-statements.
+Pre/post-statements are just standard SQL commands located before/after the model query. They must end with a semi-colon, and the model query must end with a semi-colon if a post-statement is present.
+
+```sql linenums="1"
+MODEL (
+  name sales.daily_sales,
+  kind FULL
+);
+
+-- Pre-statement: Cache a table for use in the query
+CACHE TABLE countries AS SELECT * FROM raw.countries;
+
+-- The model query (must end with semi-colon when post-statements are present)
+SELECT
+  order_date::TIMESTAMP AS order_date,
+  COUNT(order_id)::INTEGER AS total_orders,
+  SUM(total_amount)::FLOAT AS total_revenue
+FROM raw.raw_orders
+GROUP BY order_date;
+
+-- Post-statement: Clean up the cached table
+UNCACHE TABLE countries;
+```
 
 **Project-level defaults:** You can also define pre/post-statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
 
@@ -73,17 +83,23 @@ Pre/post-statements are just standard SQL commands located before/after the mode
 
     Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can [conditionally execute](../macros/vulcan_macros.md#prepost-statements) them based on Vulcan's [runtime stage](../macros/macro_variables.md#runtime-variables).
 
-The pre/post-statements in the [example above](#example) will run twice because they are not conditioned on runtime stage.
+The pre/post-statements in the example above will run twice because they are not conditioned on runtime stage.
 
 We can condition the post-statement to only run after the model query is evaluated using the [`@IF` macro operator](../macros/vulcan_macros.md#if) and [`@runtime_stage` macro variable](../macros/macro_variables.md#runtime-variables) like this:
 
-```sql linenums="1" hl_lines="8-11"
+```sql linenums="1" hl_lines="14-17"
 MODEL (
-  name db.customers,
-  kind FULL,
+  name sales.daily_sales,
+  kind FULL
 );
 
-[...same as example above...]
+CACHE TABLE countries AS SELECT * FROM raw.countries;
+
+SELECT
+  order_date::TIMESTAMP AS order_date,
+  COUNT(order_id)::INTEGER AS total_orders
+FROM raw.raw_orders
+GROUP BY order_date;
 
 @IF(
   @runtime_stage = 'evaluating',
@@ -105,13 +121,15 @@ These SQL statements must be enclosed within an `ON_VIRTUAL_UPDATE_BEGIN;` ...; 
 
 ```sql linenums="1" hl_lines="10-15"
 MODEL (
-  name db.customers,
+  name sales.daily_sales,
   kind FULL
 );
 
 SELECT
-  r.id::INT
-FROM raw.restaurants AS r;
+  order_date::TIMESTAMP,
+  COUNT(order_id)::INTEGER AS total_orders
+FROM raw.raw_orders
+GROUP BY order_date;
 
 ON_VIRTUAL_UPDATE_BEGIN;
 GRANT SELECT ON VIEW @this_model TO ROLE role_name;
@@ -125,7 +143,7 @@ ON_VIRTUAL_UPDATE_END;
 
 !!! note
 
-    Table resolution for these statements occurs at the virtual layer. This means that table names, including `@this_model` macro, are resolved to their qualified view names. For instance, when running the plan in an environment named `dev`, `db.customers` and `@this_model` would resolve to `db__dev.customers` and not to the physical table name.
+    Table resolution for these statements occurs at the virtual layer. This means that table names, including `@this_model` macro, are resolved to their qualified view names. For instance, when running the plan in an environment named `dev`, `sales.daily_sales` and `@this_model` would resolve to `sales__dev.daily_sales` and not to the physical table name.
 
 ### The model query
 
@@ -135,53 +153,59 @@ The model must contain a standalone query, which can be a single `SELECT` expres
 
 A SQL model can also serve as a template for creating multiple models, or _blueprints_, by specifying a list of key-value mappings in the `blueprints` property. In order to achieve this, the model's name must be parameterized with a variable that exists in this mapping.
 
-For instance, the following model will result into two new models, each using the corresponding mapping in the `blueprints` property:
+For instance, the following model will result into four new models, each using the corresponding mapping in the `blueprints` property:
 
 ```sql linenums="1"
 MODEL (
-  name @customer.some_table,
-  kind FULL,
+  name vulcan_demo.fct_daily_sales__@{region},
+  kind VIEW,
   blueprints (
-    (customer := customer1, field_a := x, field_b := y),
-    (customer := customer2, field_a := z, field_b := w)
-  )
+    (region := 'north'),
+    (region := 'south'),
+    (region := 'east'),
+    (region := 'west')
+  ),
+  grains region_id
 );
 
 SELECT
-  @field_a,
-  @{field_b} AS field_b
-FROM @customer.some_source
+  *
+FROM vulcan_demo.fct_daily_sales
+@WHERE(TRUE)
+  LOWER(region_name) = LOWER(@region)
 ```
 
-The two models produced from this template are:
+The four models produced from this template are:
 
 ```sql linenums="1"
 -- This uses the first variable mapping
 MODEL (
-  name customer1.some_table,
-  kind FULL
+  name vulcan_demo.fct_daily_sales__north,
+  kind VIEW
 );
 
 SELECT
-  'x',
-  y AS field_b
-FROM customer1.some_source
+  *
+FROM vulcan_demo.fct_daily_sales
+WHERE
+  LOWER(region_name) = LOWER('north')
 
 -- This uses the second variable mapping
 MODEL (
-  name customer2.some_table,
-  kind FULL
+  name vulcan_demo.fct_daily_sales__south,
+  kind VIEW
 );
 
 SELECT
-  'z',
-  w AS field_b
-FROM customer2.some_source
+  *
+FROM vulcan_demo.fct_daily_sales
+WHERE
+  LOWER(region_name) = LOWER('south')
 ```
 
-Note the use of curly brace syntax `@{field_b} AS field_b` in the model query above. It is used to tell Vulcan that the rendered variable value should be treated as a SQL identifier instead of a string literal.
+Note the use of curly brace syntax `@{region}` in the model name above. It is used to tell Vulcan that the rendered variable value should be treated as a SQL identifier instead of a string literal.
 
-You can see the different behavior in the first rendered model. `@field_a` is resolved to the string literal `'x'` (with single quotes) and `@{field_b}` is resolved to the identifier `y` (without quotes). Learn more about the curly brace syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
+You can see the different behavior in the WHERE clause. `@region` (without braces) is resolved to the string literal `'north'` (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
 
 Blueprint variable mappings can also be constructed dynamically, e.g., by using a macro: `blueprints @gen_blueprints()`. This is useful in cases where the `blueprints` list needs to be sourced from external sources, such as CSV files.
 
@@ -193,8 +217,10 @@ from vulcan import macro
 @macro()
 def gen_blueprints(evaluator):
     return (
-        "((customer := customer1, field_a := x, field_b := y),"
-        " (customer := customer2, field_a := z, field_b := w))"
+        "((region := 'north'),"
+        " (region := 'south'),"
+        " (region := 'east'),"
+        " (region := 'west'))"
     )
 ```
 
@@ -202,125 +228,23 @@ It's also possible to use the `@EACH` macro, combined with a global list variabl
 
 ```sql linenums="1"
 MODEL (
-  name @customer.some_table,
-  kind FULL,
-  blueprints @EACH(@values, x -> (customer := schema_@x)),
+  name vulcan_demo.fct_daily_sales__@{region},
+  kind VIEW,
+  blueprints @EACH(@values, x -> (region := @x)),
 );
 
 SELECT
-  1 AS c
+  *
+FROM vulcan_demo.fct_daily_sales
+@WHERE(TRUE)
+  LOWER(region_name) = LOWER(@region)
 ```
 
 ## Python-based definition
 
-The Python-based definition of SQL models consists of a single python function, decorated with Vulcan's `@model` [decorator](https://wiki.python.org/moin/PythonDecorators). The decorator is required to have the `is_sql` keyword argument set to `True` to distinguish it from [Python models](./python_models.md) that return DataFrame instances.
+SQL models can also be defined using Python. This approach is beneficial when the query is too complex to express cleanly in SQL, or when you need dynamic components that would require heavy use of macros.
 
-This function's return value serves as the model's query, and it must be either a SQL string or a [SQLGlot expression](https://github.com/tobymao/sqlglot/blob/main/sqlglot/expressions.py). The `@model` decorator is used to define the model's metadata and, optionally its pre/post-statements or on-virtual-update-statements that are also in the form of SQL strings or SQLGlot expressions.
-
-Defining a SQL model using Python can be beneficial in cases where its query is too complex to express cleanly in SQL, for example due to having many dynamic components that would require heavy use of [macros](../macros/overview.md). Since Python-based models generate SQL, they support the same features as regular SQL models, such as column-level [lineage](../glossary.md#lineage).
-
-To create a Python-based model, add a new file with the `.py` suffix into the `models/` directory (or a subdirectory of `models/`) within your Vulcan project. The file naming conventions of Python-based models are similar to those of SQL-based models. Inside this file, define a function named `entrypoint` with a single `evaluator` argument, as shown in the example below.
-
-### Example
-
-The following example demonstrates how the above `db.customers` model can be defined as a Python-based model using SQLGlot's `Expression` builder methods:
-
-```python linenums="1"
-from sqlglot import exp
-
-from vulcan.core.model import model
-from vulcan.core.macros import MacroEvaluator
-
-@model(
-    "db.customers",
-    is_sql=True,
-    kind="FULL",
-    pre_statements=["CACHE TABLE countries AS SELECT * FROM raw.countries"],
-    post_statements=["UNCACHE TABLE countries"],
-    on_virtual_update=["GRANT SELECT ON VIEW @this_model TO ROLE dev_role"],
-)
-def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
-    return (
-        exp.select("r.id::int", "r.name::text", "c.country::text")
-        .from_("raw.restaurants as r")
-        .join("countries as c", on="r.id = c.restaurant_id")
-    )
-```
-
-One could also define this model by simply returning a string that contained the SQL query of the SQL-based example. Strings used as pre/post-statements or return values in Python-based models will be parsed into SQLGlot expressions, which means that Vulcan will still be able to understand them semantically and thus provide information such as column-level lineage.
-
-!!! note
-
-    Since python models have access to the macro evaluation context (`MacroEvaluator`), they can also [access model schemas](../macros/vulcan_macros.md#accessing-model-schemas) through its `columns_to_types` method.
-
-### `@model` decorator
-
-The `@model` decorator is the Python equivalent of the `MODEL` DDL.
-
-In addition to model metadata and configuration information, one can also set the keyword arguments `pre_statements`, `post_statements` and `on_virtual_update` to a list of SQL strings and/or SQLGlot expressions to define the pre/post-statements and on-virtual-update-statements of the model, respectively.
-
-!!! note
-
-    All of the [metadata property](./overview.md#model-properties) field names are the same as those in the `MODEL` DDL.
-
-### Python model blueprinting
-
-A Python-based SQL model can also serve as a template for creating multiple models, or _blueprints_, by specifying a list of key-value dicts in the `blueprints` property. In order to achieve this, the model's name must be parameterized with a variable that exists in this mapping.
-
-For instance, the following model will result into two new models, each using the corresponding mapping in the `blueprints` property:
-
-```python linenums="1"
-from sqlglot import exp
-
-from vulcan.core.model import model
-from vulcan.core.macros import MacroEvaluator
-
-@model(
-    "@{customer}.some_table",
-    is_sql=True,
-    kind="FULL",
-    blueprints=[
-        {"customer": "customer1", "field_a": "x", "field_b": "y"},
-        {"customer": "customer2", "field_a": "z", "field_b": "w"},
-    ],
-)
-def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
-    field_a = evaluator.blueprint_var("field_a")
-    field_b = evaluator.blueprint_var("field_b")
-    customer = evaluator.blueprint_var("customer")
-
-    return exp.select(field_a, field_b).from_(f"{customer}.some_source")
-```
-
-The two models produced from this template are the same as in the [example](#sql-model-blueprinting) for SQL-based blueprinting.
-
-Blueprint variable mappings can also be constructed dynamically, e.g., by using a macro: `blueprints="@gen_blueprints()"`. This is useful in cases where the `blueprints` list needs to be sourced from external sources, such as CSV files.
-
-For example, the definition of the `gen_blueprints` may look like this:
-
-```python linenums="1"
-from vulcan import macro
-
-@macro()
-def gen_blueprints(evaluator):
-    return (
-        "((customer := customer1, field_a := x, field_b := y),"
-        " (customer := customer2, field_a := z, field_b := w))"
-    )
-```
-
-It's also possible to use the `@EACH` macro, combined with a global list variable (`@values`):
-
-```python linenums="1"
-
-@model(
-    "@{customer}.some_table",
-    is_sql=True,
-    blueprints="@EACH(@values, x -> (customer := schema_@x))",
-    ...
-)
-...
-```
+For comprehensive documentation on Python-based models, including the `@model` decorator, execution context, pre/post-statements, blueprinting, and examples, see the [Python models](./python_models.md) page.
 
 ## Automatic dependencies
 
@@ -329,13 +253,15 @@ Vulcan parses your SQL, so it understands what the code does and how it relates 
 For example, consider a model with this query:
 
 ```sql linenums="1"
-SELECT employees.id
-FROM employees
-JOIN countries
-  ON employees.id = countries.employee_id
+SELECT
+  order_date,
+  COUNT(order_id) AS total_orders,
+  SUM(total_amount) AS total_revenue
+FROM raw.raw_orders
+GROUP BY order_date
 ```
 
-Vulcan will detect that the model depends on both `employees` and `countries`. When executing this model, it will ensure that `employees` and `countries` are executed first.
+Vulcan will detect that the model depends on `raw.raw_orders`. When executing this model, it will ensure that `raw.raw_orders` is executed first.
 
 External dependencies not defined in Vulcan are also supported. Vulcan can either depend on them implicitly through the order in which they are executed, or through [signals](../../guides/signals.md).
 

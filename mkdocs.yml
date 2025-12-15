@@ -11,9 +11,16 @@ nav:
   - "Docs": 
     - About:
       - index.md
-    - Config & Engines:
+    - Configurations:
+      - configurations/overview.md
+      - Config Options:
+        - configurations/model_defaults.md
+        - configurations/variables.md
+        - configurations/hooks.md
+        - configurations/notifications.md
+        - configurations/linter.md
       - Engines:
-        - integrations/engines/postgres.md
+        - configurations/integrations/engines/postgres.md
         # - integrations/engines/bigquery.md
         # - integrations/engines/databricks.md
         # - integrations/engines/duckdb.md
@@ -21,15 +28,8 @@ nav:
         # - integrations/engines/mssql.md
         # - integrations/engines/mysql.md
         # - integrations/engines/redshift.md
-        - integrations/engines/snowflake.md
-      - References:
-        - reference/variables.md
-        - reference/model_defaults.md
-        - Config Options:
-            # - reference/config_options.md
-          - reference/config_options/notifications.md
-          - reference/config_options/linters.md
-        - reference/before_all_and_after_all.md
+        - configurations/integrations/engines/snowflake.md
+
 
       - CI/CD:
         - ci-cd/index.md
@@ -44,29 +44,23 @@ nav:
           - concepts/models/python_models.md
           - concepts/models/external_models.md
           - concepts/models/managed_models.md
-        - Model Kinds:
-          - concepts/models/model_kinds.md
+        - concepts/models/model_kinds.md
         - concepts/models/statements.md
-      - Test:
-        - concepts/tests.md
-      - Audit:
-        - concepts/audits.md
-      - Check:
-        - concepts/checks.md
+      - concepts/tests.md
+      - concepts/audits.md
+      - concepts/checks.md
+      - Semantics:
+        - concepts/semantics/overview.md
+        - concepts/semantics/models.md
+        - concepts/semantics/metrics.md
       - Advanced:
         - Macro:
           - concepts/macros/overview.md
           - concepts/macros/macro_variables.md
           - concepts/macros/vulcan_macros.md
           - concepts/macros/jinja_macros.md
-        - Signals:
-          - guides/signals.md
-        - Custom Materialization:
-          - guides/custom_materializations.md
-      - Semantics:
-        - concepts/semantics/overview.md
-        - concepts/semantics/models.md
-        - concepts/semantics/metrics.md
+        - guides/signals.md
+        - guides/custom_materializations.md
     - Guides:
       - getting_started/docker.md
         # - getting_started/index.md
@@ -86,12 +80,13 @@ nav:
       - guides/transpiling.md
       - Advanced:
         - guides/linter.md
-
+    - reference/cli.md
 
   - "Cookbook":
     - cookbook/index.md
   - "FAQ":
     - faq/index.md
+ 
   # - Get started:
   #   - getting_started/index.md
   #   - getting_started/prerequisites.md
@@ -190,50 +185,55 @@ theme:
   custom_dir: overrides
   logo: assets/images/vulcan-white.svg
   favicon: assets/images/vulcan.svg
+  font:
+    text: Inter
+    code: JetBrains Mono
   palette:
+    # Light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: #3C64E2
-      accent: #3C64E2
+      primary: pink
+      accent: pink
       toggle:
-        icon: material/weather-sunny
+        icon: material/brightness-7
         name: Switch to dark mode
-    # Palette toggle for dark mode
+    # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: #3C64E2
-      accent: #3C64E2
+      primary: pink
+      accent: pink
       toggle:
-        icon: material/weather-night
+        icon: material/brightness-4
         name: Switch to light mode
 
   features:
-    - navigation.instant        # Single-page app experience
+    # Navigation
+    - navigation.instant           # Single-page app experience
     - navigation.instant.prefetch  # Prefetch pages for faster loading
-    - navigation.tracking       # Update URL with current section
-    - navigation.tabs           # Top-level tabs in header
-    - navigation.tabs.sticky    # Sticky navigation tabs
-    # navigation.sections removed to enable collapsible toggle behavior
-    - navigation.indexes        # Section index pages are clickable
-    - navigation.path           # Show navigation path
-    - navigation.top            # Back to top button
+    - navigation.instant.progress  # Show loading progress bar
+    - navigation.tracking          # Update URL with current section
+    - navigation.tabs              # Top-level tabs in header
+    - navigation.tabs.sticky       # Sticky navigation tabs
+    # navigation.sections removed - sections are now collapsible toggles
+    # navigation.expand removed - keep sections collapsed by default
+    - navigation.indexes           # Section index pages are clickable
+    - navigation.path              # Show breadcrumb navigation path
+    - navigation.top               # Back to top button
+    - navigation.footer            # Previous/next page links in footer
 
     # Table of Contents
-    - toc.follow               # Sidebar follows scroll and highlights active section
-
-    # Table of Contents
-    - toc.follow               # Sidebar follows scroll
-    # - toc.integrate            # Integrate TOC with navigation
+    - toc.follow                   # TOC sidebar follows scroll position
 
     # Search
-    - search.highlight         # Highlight search terms
-    - search.suggest           # Search suggestions
-    # - search.share             # Share search results
+    - search.highlight             # Highlight search terms on page
+    - search.suggest               # Search suggestions as you type
+    - search.share                 # Share search results
 
     # Content
-    - content.tabs.link        # Link content tabs
-    - content.code.copy        # Copy code blocks
-    - content.code.annotate    # Code annotations
+    - content.tabs.link            # Link content tabs across page
+    - content.code.copy            # Copy button on code blocks
+    - content.code.annotate        # Code annotations
+    - content.tooltips             # Improved tooltips
 
 plugins:
   - include-markdown
@@ -258,8 +258,9 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
+      permalink_title: Link to this section
       title: On this page
-      toc_depth: 2
+      toc_depth: 3
   # Python Markdown Extensions
   - pymdownx.arithmatex:
       generic: true

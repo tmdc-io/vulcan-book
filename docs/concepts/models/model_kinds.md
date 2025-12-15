@@ -12,13 +12,13 @@ Only missing time intervals are processed during each execution for `INCREMENTAL
 
 An `INCREMENTAL_BY_TIME_RANGE` model has two requirements that other models do not: it must know which column contains the time data it will use to filter the data by time range, and it must contain a `WHERE` clause that filters the upstream data by time.
 
-The name of the column containing time data is specified in the model's `MODEL` DDL. It is specified in the DDL `kind` specification's `time_column` key. This example shows the `MODEL` DDL for an `INCREMENTAL_BY_TIME_RANGE` model that stores time data in the "event_date" column:
+The name of the column containing time data is specified in the model's `MODEL` DDL. It is specified in the DDL `kind` specification's `time_column` key. This example shows the `MODEL` DDL for an `INCREMENTAL_BY_TIME_RANGE` model that stores time data in the "order_date" column:
 
 ```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.daily_sales,
   kind INCREMENTAL_BY_TIME_RANGE (
-    time_column event_date -- This model's time information is stored in the `event_date` column
+    time_column order_date -- This model's time information is stored in the `order_date` column
   )
 );
 ```
@@ -314,7 +314,7 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
     FROM `vulcan-public-demo`.`vulcan__demo`.`demo__incrementals_demo__50975949`
     ```
 
-!!! tip "Important"
+!!! info "Important"
 
     A model's `time_column` should be in the [UTC time zone](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) to ensure correct interaction with Vulcan's scheduler and predefined macro variables.
 
@@ -325,48 +325,99 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
     If a model must use a different timezone, parameters like [lookback](./overview.md#lookback), [allow_partials](./overview.md#allow_partials), and [cron](./overview.md#cron) with offset time can be used to try to account for misalignment between the model's timezone and the UTC timezone used by Vulcan.
 
 
-This example implements a complete `INCREMENTAL_BY_TIME_RANGE` model that specifies the time column name `event_date` in the `MODEL` DDL and includes a SQL `WHERE` clause to filter records by time range:
+This example implements a complete `INCREMENTAL_BY_TIME_RANGE` model that specifies the time column name `order_date` in the `MODEL` DDL and includes a SQL `WHERE` clause to filter records by time range:
 
-```sql linenums="1" hl_lines="3-5 12-13"
-MODEL (
-  name db.events,
-  kind INCREMENTAL_BY_TIME_RANGE (
-    time_column event_date
-  )
-);
+=== "SQL"
 
-SELECT
-  event_date::TEXT as event_date,
-  event_payload::TEXT as payload
-FROM raw_events
-WHERE
-  event_date BETWEEN @start_ds AND @end_ds;
-```
+    ```sql linenums="1"
+    MODEL (
+      name vulcan_demo.incremental_by_time_range,
+      kind INCREMENTAL_BY_TIME_RANGE (
+        time_column order_date
+      ),
+      start '2025-01-01',
+      grains (order_date, product_id),
+      cron '@daily'
+    );
+
+    SELECT
+      o.order_date,
+      p.product_id,
+      p.name AS product_name,
+      p.category,
+      COUNT(DISTINCT o.order_id) AS order_count,
+      SUM(oi.quantity) AS total_quantity,
+      SUM(oi.quantity * oi.unit_price) AS total_sales_amount
+    FROM vulcan_demo.orders AS o
+    JOIN vulcan_demo.order_items AS oi
+      ON o.order_id = oi.order_id
+    JOIN vulcan_demo.products AS p
+      ON oi.product_id = p.product_id
+    WHERE
+      o.order_date BETWEEN @start_ds AND @end_ds
+    GROUP BY
+      o.order_date, p.product_id, p.name, p.category
+    ```
+
+=== "Python"
+
+    ```python linenums="1"
+    from vulcan import ExecutionContext, model
+    from vulcan import ModelKindName
+
+    @model(
+        "vulcan_demo.incremental_by_time_range_py",
+        columns={
+            "order_date": "date",
+            "product_id": "int",
+            "product_name": "string",
+            "total_sales_amount": "decimal(10,2)",
+        },
+        kind=dict(
+            name=ModelKindName.INCREMENTAL_BY_TIME_RANGE,
+            time_column="order_date",
+        ),
+        grains=["order_date", "product_id"],
+        depends_on=["vulcan_demo.orders", "vulcan_demo.order_items", "vulcan_demo.products"],
+    )
+    def execute(context: ExecutionContext, start, end, **kwargs):
+        query = f"""
+        SELECT o.order_date, p.product_id, p.name AS product_name,
+               SUM(oi.quantity * oi.unit_price) AS total_sales_amount
+        FROM vulcan_demo.orders o
+        JOIN vulcan_demo.order_items oi ON o.order_id = oi.order_id
+        JOIN vulcan_demo.products p ON oi.product_id = p.product_id
+        WHERE o.order_date BETWEEN '{start}' AND '{end}'
+        GROUP BY o.order_date, p.product_id, p.name
+        """
+        return context.fetchdf(query)
+    ```
 
 ### Time column
 Vulcan needs to know which column in the model's output represents the timestamp or date associated with each record.
 
-!!! tip "Important"
+!!! info "Important"
 
     The `time_column` variable should be in the UTC time zone - learn more [above](#timezones).
 
 The time column is used to determine which records will be overwritten during data [restatement](../plans.md#restatement-plans) and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the `MODEL` DDL `kind` specification:
 
-```sql linenums="1" hl_lines="4"
+```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.daily_sales,
   kind INCREMENTAL_BY_TIME_RANGE (
-    time_column event_date -- This model's time information is stored in the `event_date` column
+    time_column order_date -- This model's time information is stored in the `order_date` column
   )
 );
 ```
 
 By default, Vulcan assumes the time column is in the `%Y-%m-%d` format. For other formats, the default can be overridden with a formatting string:
-```sql linenums="1" hl_lines="4"
+
+```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.daily_sales,
   kind INCREMENTAL_BY_TIME_RANGE (
-    time_column (event_date, '%Y-%m-%d')
+    time_column (order_date, '%Y-%m-%d')
   )
 );
 ```
@@ -379,33 +430,38 @@ Vulcan also uses the time column to automatically append a time range filter to 
 
 The required filter you write in the model query's `WHERE` clause filters the **input** data as it is read from upstream tables, reducing the amount of data processed by the model. The automatically appended time range filter is applied to the model query's **output** data to prevent data leakage.
 
-Consider the following model definition, which specifies a `WHERE` clause filter with the `receipt_date` column. The model's `time_column` is a different column `event_date`, whose filter is automatically added to the model query. This approach is useful when an upstream model's time column is different from the model's time column:
+Consider the following model definition, which specifies a `WHERE` clause filter with the `shipped_date` column. The model's `time_column` is a different column `order_date`, whose filter is automatically added to the model query. This approach is useful when an upstream model's time column is different from the model's time column:
 
 ```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.shipment_events,
   kind INCREMENTAL_BY_TIME_RANGE (
-    time_column event_date -- `event_date` is model's time column
+    time_column order_date -- `order_date` is model's time column
   )
 );
 
 SELECT
-  event_date::TEXT as event_date,
-  event_payload::TEXT as payload
-FROM raw_events
+  o.order_date,
+  s.shipped_date,
+  s.carrier
+FROM vulcan_demo.orders AS o
+JOIN vulcan_demo.shipments AS s ON o.order_id = s.order_id
 WHERE
-  receipt_date BETWEEN @start_ds AND @end_ds; -- Filter is based on the user-supplied `receipt_date` column
+  s.shipped_date BETWEEN @start_ds AND @end_ds; -- Filter is based on the user-supplied `shipped_date` column
 ```
 
 At runtime, Vulcan will automatically modify the model's query to look like this:
-```sql linenums="1" hl_lines="7"
+
+```sql linenums="1"
 SELECT
-  event_date::TEXT as event_date,
-  event_payload::TEXT as payload
-FROM raw_events
+  o.order_date,
+  s.shipped_date,
+  s.carrier
+FROM vulcan_demo.orders AS o
+JOIN vulcan_demo.shipments AS s ON o.order_id = s.order_id
 WHERE
-  receipt_date BETWEEN @start_ds AND @end_ds
-  AND event_date BETWEEN @start_ds AND @end_ds; -- `event_date` time column filter automatically added by Vulcan
+  s.shipped_date BETWEEN @start_ds AND @end_ds
+  AND o.order_date BETWEEN @start_ds AND @end_ds; -- `order_date` time column filter automatically added by Vulcan
 ```
 
 ### Partitioning
@@ -416,14 +472,14 @@ However, this may be undesirable if you want to exclusively partition on another
 
 To opt out of this behaviour, you can set `partition_by_time_column false` like so:
 
-```sql linenums="1" hl_lines="5"
+```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.daily_sales,
   kind INCREMENTAL_BY_TIME_RANGE (
-    time_column event_date,
+    time_column order_date,
     partition_by_time_column false
   ),
-  partitioned_by (other_col) -- event_date will no longer be automatically added here and the partition key will just be 'other_col'
+  partitioned_by (warehouse_id) -- order_date will no longer be automatically added here and the partition key will just be 'warehouse_id'
 );
 ```
 
@@ -470,40 +526,93 @@ This kind is a good fit for datasets that have the following traits:
 A [Slowly Changing Dimension](../glossary.md#slowly-changing-dimension-scd) (SCD) is one approach that fits this description well. See the [SCD Type 2](#scd-type-2) model kind for a specific model kind for SCD Type 2 models.
 
 The name of the unique key column must be provided as part of the `MODEL` DDL, as in this example:
-```sql linenums="1" hl_lines="3-5"
-MODEL (
-  name db.employees,
-  kind INCREMENTAL_BY_UNIQUE_KEY (
-    unique_key name
-  )
-);
 
-SELECT
-  name::TEXT as name,
-  title::TEXT as title,
-  salary::INT as salary
-FROM raw_employees;
-```
+=== "SQL"
+
+    ```sql linenums="1"
+    MODEL (
+      name vulcan_demo.incremental_by_unique_key,
+      kind INCREMENTAL_BY_UNIQUE_KEY (
+        unique_key customer_id
+      ),
+      start '2025-01-01',
+      cron '@daily',
+      grains (customer_id)
+    );
+
+    SELECT
+      c.customer_id,
+      c.name AS customer_name,
+      c.email,
+      COUNT(DISTINCT o.order_id) AS total_orders,
+      COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS total_spent,
+      MAX(o.order_date) AS last_order_date
+    FROM vulcan_demo.customers AS c
+    LEFT JOIN vulcan_demo.orders AS o
+      ON c.customer_id = o.customer_id
+    LEFT JOIN vulcan_demo.order_items AS oi
+      ON o.order_id = oi.order_id
+    WHERE
+      o.order_date IS NULL OR o.order_date BETWEEN @start_date AND @end_date
+    GROUP BY c.customer_id, c.name, c.email
+    ```
+
+=== "Python"
+
+    ```python linenums="1"
+    from vulcan import ExecutionContext, model
+    from vulcan import ModelKindName
+
+    @model(
+        "vulcan_demo.incremental_by_unique_key_py",
+        columns={
+            "customer_id": "int",
+            "total_spent": "decimal(10,2)",
+            "last_order_date": "date",
+        },
+        kind=dict(
+            name=ModelKindName.INCREMENTAL_BY_UNIQUE_KEY,
+            unique_key=["customer_id"],
+        ),
+        grains=["customer_id"],
+        depends_on=["vulcan_demo.customers", "vulcan_demo.orders", "vulcan_demo.order_items"],
+    )
+    def execute(context: ExecutionContext, **kwargs):
+        query = """
+        SELECT c.customer_id,
+               SUM(oi.quantity * oi.unit_price) as total_spent,
+               MAX(o.order_date) as last_order_date
+        FROM vulcan_demo.customers c
+        LEFT JOIN vulcan_demo.orders o ON c.customer_id = o.customer_id
+        LEFT JOIN vulcan_demo.order_items oi ON o.order_id = oi.order_id
+        GROUP BY c.customer_id
+        """
+        return context.fetchdf(query)
+    ```
 
 Composite keys are also supported:
-```sql linenums="1" hl_lines="4"
+
+```sql linenums="1"
 MODEL (
-  name db.employees,
+  name vulcan_demo.order_items_agg,
   kind INCREMENTAL_BY_UNIQUE_KEY (
-    unique_key (first_name, last_name)
+    unique_key (order_id, product_id)
   )
 );
 ```
 
 `INCREMENTAL_BY_UNIQUE_KEY` model kinds can also filter upstream records by time range using a SQL `WHERE` clause and the `@start_date`, `@end_date` or other macro variables (similar to the [INCREMENTAL_BY_TIME_RANGE](#incremental_by_time_range) kind). Note that Vulcan macro time variables are in the UTC time zone.
-```sql linenums="1" hl_lines="6-7"
+
+```sql linenums="1"
 SELECT
-  name::TEXT as name,
-  title::TEXT as title,
-  salary::INT as salary
-FROM raw_employee_events
+  c.customer_id,
+  c.name AS customer_name,
+  COUNT(o.order_id) AS total_orders
+FROM vulcan_demo.customers AS c
+LEFT JOIN vulcan_demo.orders AS o ON c.customer_id = o.customer_id
 WHERE
-  event_date BETWEEN @start_date AND @end_date;
+  o.order_date BETWEEN @start_date AND @end_date
+GROUP BY c.customer_id, c.name
 ```
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
@@ -572,11 +681,11 @@ WHERE
 
 The `unique_key` values can either be column names or SQL expressions. For example, if you wanted to create a key that is based on the coalesce of a value then you could do the following:
 
-```sql linenums="1" hl_lines="4"
+```sql linenums="1"
 MODEL (
-  name db.employees,
+  name vulcan_demo.customers_unique,
   kind INCREMENTAL_BY_UNIQUE_KEY (
-    unique_key COALESCE("name", '')
+    unique_key COALESCE("email", '')
   )
 );
 ```
@@ -585,13 +694,13 @@ MODEL (
 
 The logic to use when updating columns when a match occurs (the source and target match on the given keys) by default updates all the columns. This can be overriden with custom logic like below:
 
-```sql linenums="1" hl_lines="5"
+```sql linenums="1"
 MODEL (
-  name db.employees,
+  name vulcan_demo.customers_update,
   kind INCREMENTAL_BY_UNIQUE_KEY (
-    unique_key name,
+    unique_key customer_id,
     when_matched (
-      WHEN MATCHED THEN UPDATE SET target.salary = COALESCE(source.salary, target.salary)
+      WHEN MATCHED THEN UPDATE SET target.email = COALESCE(source.email, target.email)
     )
   )
 );
@@ -601,14 +710,14 @@ The `source` and `target` aliases are required when using the `when_matched` exp
 
 Multiple `WHEN MATCHED` expressions can also be provided. Ex:
 
-```sql linenums="1" hl_lines="5-6"
+```sql linenums="1"
 MODEL (
-  name db.employees,
+  name vulcan_demo.products_update,
   kind INCREMENTAL_BY_UNIQUE_KEY (
-    unique_key name,
+    unique_key product_id,
     when_matched (
-      WHEN MATCHED AND source.value IS NULL THEN UPDATE SET target.salary = COALESCE(source.salary, target.salary)
-      WHEN MATCHED THEN UPDATE SET target.title = COALESCE(source.title, target.title)
+      WHEN MATCHED AND source.price IS NULL THEN UPDATE SET target.price = target.price
+      WHEN MATCHED THEN UPDATE SET target.category = COALESCE(source.category, target.category)
     )
   )
 );
@@ -643,12 +752,12 @@ Prevent a full table scan by passing filtering conditions to the `merge_filter` 
 
 The `merge_filter` accepts a single or a conjunction of predicates to be used in the `ON` clause of the `MERGE` operation:
 
-```sql linenums="1" hl_lines="5"
+```sql linenums="1"
 MODEL (
-  name db.employee_contracts,
+  name vulcan_demo.orders_recent,
   kind INCREMENTAL_BY_UNIQUE_KEY (
-    unique_key id,
-    merge_filter source._operation IS NULL AND target.contract_date > dateadd(day, -7, current_date)
+    unique_key order_id,
+    merge_filter source._operation IS NULL AND target.order_date > dateadd(day, -7, current_date)
   )
 );
 ```
@@ -678,18 +787,65 @@ The `FULL` model kind is somewhat easier to use than incremental kinds due to th
 This kind can be a good fit for aggregate tables that lack a temporal dimension. For aggregate tables with a temporal dimension, consider the [INCREMENTAL_BY_TIME_RANGE](#incremental_by_time_range) kind instead.
 
 This example specifies a `FULL` model kind:
-```sql linenums="1" hl_lines="3"
-MODEL (
-  name db.salary_by_title_agg,
-  kind FULL
-);
 
-SELECT
-  title,
-  AVG(salary)
-FROM db.employees
-GROUP BY title;
-```
+=== "SQL"
+
+    ```sql linenums="1"
+    MODEL (
+      name vulcan_demo.full_model,
+      kind FULL,
+      start '2025-01-01',
+      grains (customer_id)
+    );
+
+    SELECT
+      c.customer_id,
+      c.name AS customer_name,
+      c.email,
+      COUNT(DISTINCT o.order_id) AS total_orders,
+      COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS total_spent,
+      COALESCE(SUM(oi.quantity * oi.unit_price), 0) / NULLIF(COUNT(DISTINCT o.order_id), 0) AS avg_order_value
+    FROM vulcan_demo.customers AS c
+    LEFT JOIN vulcan_demo.orders AS o
+      ON c.customer_id = o.customer_id
+    LEFT JOIN vulcan_demo.order_items AS oi
+      ON o.order_id = oi.order_id
+    GROUP BY c.customer_id, c.name, c.email
+    ORDER BY total_spent DESC
+    ```
+
+=== "Python"
+
+    ```python linenums="1"
+    from vulcan import ExecutionContext, model
+    from vulcan import ModelKindName
+
+    @model(
+        "vulcan_demo.full_model_py",
+        columns={
+            "product_id": "int",
+            "product_name": "string",
+            "category": "string",
+            "total_sales": "decimal(10,2)",
+        },
+        kind=dict(
+            name=ModelKindName.FULL,
+        ),
+        grains=["product_id"],
+        depends_on=["vulcan_demo.products", "vulcan_demo.order_items", "vulcan_demo.orders"],
+    )
+    def execute(context: ExecutionContext, **kwargs):
+        query = """
+        SELECT p.product_id, p.name AS product_name, p.category,
+               COALESCE(SUM(oi.quantity * oi.unit_price), 0) as total_sales
+        FROM vulcan_demo.products p
+        LEFT JOIN vulcan_demo.order_items oi ON p.product_id = oi.product_id
+        LEFT JOIN vulcan_demo.orders o ON oi.order_id = o.order_id
+        GROUP BY p.product_id, p.name, p.category
+        ORDER BY total_sales DESC
+        """
+        return context.fetchdf(query)
+    ```
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
 
@@ -775,15 +931,31 @@ The `VIEW` kind is different, because no data is actually written during model e
 
 
 This example specifies a `VIEW` model kind:
-```sql linenums="1" hl_lines="3"
+
+```sql linenums="1"
 MODEL (
-  name db.highest_salary,
-  kind VIEW
+  name vulcan_demo.view_model,
+  kind VIEW,
+  grains (warehouse_performance_key)
 );
 
 SELECT
-  MAX(salary)
-FROM db.employees;
+  w.warehouse_id,
+  w.name AS warehouse_name,
+  r.region_name,
+  o.order_date,
+  CONCAT(w.warehouse_id::TEXT, '_', o.order_date::TEXT) AS warehouse_performance_key,
+  COUNT(DISTINCT o.order_id) AS total_transactions,
+  SUM(oi.quantity * oi.unit_price) AS total_sales_amount,
+  COUNT(DISTINCT o.customer_id) AS unique_customers
+FROM vulcan_demo.warehouses AS w
+LEFT JOIN vulcan_demo.regions AS r
+  ON w.region_id = r.region_id
+LEFT JOIN vulcan_demo.orders AS o
+  ON w.warehouse_id = o.warehouse_id
+LEFT JOIN vulcan_demo.order_items AS oi
+  ON o.order_id = oi.order_id
+GROUP BY w.warehouse_id, w.name, r.region_name, o.order_date
 ```
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
@@ -824,9 +996,10 @@ FROM db.employees;
 
 ### Materialized Views
 The `VIEW` model kind can be configured to represent a materialized view by setting the `materialized` flag to `true`:
-```sql linenums="1" hl_lines="4"
+
+```sql linenums="1"
 MODEL (
-  name db.highest_salary,
+  name vulcan_demo.sales_summary,
   kind VIEW (
     materialized true
   )
@@ -848,16 +1021,19 @@ There are no data assets (tables or views) associated with `EMBEDDED` models in 
 
 **Note:** Python models do not support the `EMBEDDED` model kind - use a SQL model instead.
 
-This example specifies a `EMBEDDED` model kind:
-```sql linenums="1" hl_lines="3"
+This example specifies an `EMBEDDED` model kind:
+
+```sql linenums="1"
 MODEL (
-  name db.unique_employees,
+  name vulcan_demo.unique_customers,
   kind EMBEDDED
 );
 
 SELECT DISTINCT
-  name
-FROM db.employees;
+  customer_id,
+  name AS customer_name,
+  email
+FROM vulcan_demo.customers
 ```
 
 ## SEED
@@ -867,6 +1043,27 @@ The `SEED` model kind is used to specify [seed models](./seed_models.md) for usi
 
 - Seed models are loaded only once unless the SQL model and/or seed file is updated.
 - Python models do not support the `SEED` model kind - use a SQL model instead.
+
+This example specifies a `SEED` model kind:
+
+```sql linenums="1"
+MODEL (
+  name vulcan_demo.seed_model,
+  kind SEED (
+    path '../seeds/seed_data.csv'
+  ),
+  columns (
+    id INT,
+    item_id INT,
+    event_date DATE
+  ),
+  grains (id),
+  assertions (
+    UNIQUE_COMBINATION_OF_COLUMNS(columns := (id, event_date)),
+    NOT_NULL(columns := (id, item_id, event_date))
+  )
+)
+```
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
 
@@ -945,22 +1142,64 @@ SCD Type 2 By Time supports sourcing from tables that have an "Updated At" times
 This is the recommended way since this "Updated At" gives you a precise time when the record was last updated and therefore improves the accuracy of the SCD Type 2 table that is produced.
 
 This example specifies a `SCD_TYPE_2_BY_TIME` model kind:
-```sql linenums="1" hl_lines="3"
-MODEL (
-  name db.menu_items,
-  kind SCD_TYPE_2_BY_TIME (
-    unique_key id,
-  )
-);
 
-SELECT
-  id::INT,
-  name::STRING,
-  price::DOUBLE,
-  updated_at::TIMESTAMP
-FROM
-  stg.current_menu_items;
-```
+=== "SQL"
+
+    ```sql linenums="1"
+    MODEL (
+      name vulcan_demo.scd_type2_by_time,
+      kind SCD_TYPE_2_BY_TIME (
+        unique_key dt
+      ),
+      grains (dt)
+    );
+
+    SELECT
+      dd.dt,
+      dd.year,
+      dd.month,
+      dd.day_of_week,
+      COUNT(DISTINCT o.order_id) AS total_transactions,
+      SUM(oi.quantity) AS total_quantity_sold,
+      SUM(oi.quantity * oi.unit_price) AS total_sales_amount,
+      CURRENT_TIMESTAMP AS updated_at
+    FROM vulcan_demo.dim_dates AS dd
+    LEFT JOIN vulcan_demo.orders AS o
+      ON dd.dt = o.order_date
+    LEFT JOIN vulcan_demo.order_items AS oi
+      ON o.order_id = oi.order_id
+    GROUP BY dd.dt, dd.year, dd.month, dd.day_of_week
+    ```
+
+=== "Python"
+
+    ```python linenums="1"
+    from vulcan import ExecutionContext, model
+    from vulcan import ModelKindName
+
+    @model(
+        "vulcan_demo.scd_type2_by_time_py",
+        columns={
+            "customer_id": "int",
+            "customer_name": "string",
+            "email": "string",
+            "region_name": "string"
+        },
+        kind=dict(
+            name=ModelKindName.SCD_TYPE_2_BY_TIME,
+            unique_key=["customer_id"],
+        ),
+        grains=["customer_id"],
+        depends_on=["vulcan_demo.customers", "vulcan_demo.regions"],
+    )
+    def execute(context: ExecutionContext, **kwargs):
+        query = """
+        SELECT c.customer_id, c.name as customer_name, c.email, r.region_name
+        FROM vulcan_demo.customers c
+        LEFT JOIN vulcan_demo.regions r ON c.region_id = r.region_id
+        """
+        return context.fetchdf(query)
+    ```
 
 Vulcan will materialize this table with the following structure:
 ```sql linenums="1"
@@ -1011,22 +1250,62 @@ SCD Type 2 By Column supports sourcing from tables that do not have an "Updated 
 Instead, it will check the columns defined in the `columns` field to see if their value has changed and if so it will record the `valid_from` time as the execution time when the change was detected.
 
 This example specifies a `SCD_TYPE_2_BY_COLUMN` model kind:
-```sql linenums="1" hl_lines="3"
-MODEL (
-  name db.menu_items,
-  kind SCD_TYPE_2_BY_COLUMN (
-    unique_key id,
-    columns [name, price]
-  )
-);
 
-SELECT
-  id::INT,
-  name::STRING,
-  price::DOUBLE,
-FROM
-  stg.current_menu_items;
-```
+=== "SQL"
+
+    ```sql linenums="1"
+    MODEL (
+      name vulcan_demo.scd_type2_by_column,
+      kind SCD_TYPE_2_BY_COLUMN (
+        unique_key ARRAY[product_id],
+        columns ARRAY[product_name, category, price]
+      ),
+      grains (product_id)
+    );
+
+    SELECT
+      p.product_id,
+      p.name AS product_name,
+      p.category,
+      p.price,
+      s.name AS supplier_name,
+      r.region_name
+    FROM vulcan_demo.products AS p
+    LEFT JOIN vulcan_demo.suppliers AS s
+      ON p.supplier_id = s.supplier_id
+    LEFT JOIN vulcan_demo.regions AS r
+      ON s.region_id = r.region_id
+    ```
+
+=== "Python"
+
+    ```python linenums="1"
+    from vulcan import ExecutionContext, model
+    from vulcan import ModelKindName
+
+    @model(
+        "vulcan_demo.scd_type2_by_column_py",
+        columns={
+            "product_id": "int",
+            "product_name": "string",
+            "category": "string",
+            "price": "decimal(10,2)"
+        },
+        kind=dict(
+            name=ModelKindName.SCD_TYPE_2_BY_COLUMN,
+            unique_key=["product_id"],
+            columns=["product_name", "category", "price"],
+        ),
+        grains=["product_id"],
+        depends_on=["vulcan_demo.products"],
+    )
+    def execute(context: ExecutionContext, **kwargs):
+        query = """
+        SELECT product_id, name as product_name, category, price
+        FROM vulcan_demo.products
+        """
+        return context.fetchdf(query)
+    ```
 
 Vulcan will materialize this table with the following structure:
 ```sql linenums="1"
@@ -1249,7 +1528,7 @@ This is the most accurate representation of the menu based on the source data pr
 | invalidate_hard_deletes | If set to `true`, when a record is missing from the source table it will be marked as invalid. Default: `false`                                                                                                                                                                                                   | bool                      |
 | batch_size              | The maximum number of intervals that can be evaluated in a single backfill task. If this is `None`, all intervals will be processed as part of a single task. See [Processing Source Table with Historical Data](#processing-source-table-with-historical-data) for more info on this use case. (Default: `None`) | int                       |
 
-!!! tip "Important"
+!!! info "Important"
 
     If using BigQuery, the default data type of the valid_from/valid_to columns is DATETIME. If you want to use TIMESTAMP, you can specify the data type in the model definition.
 
@@ -1528,33 +1807,82 @@ This kind should only be used for datasets that have the following traits:
 * It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their partitioning keys match.
 * All existing records associated with a given partitioning key can be removed or overwritten when any new record has the partitioning key value.
 
-The column defining the partitioning key is specified in the model's `MODEL` DDL `partitioned_by` key. This example shows the `MODEL` DDL for an `INCREMENTAL_BY_PARTITION` model whose partition key is the row's value for the `region` column:
+The column defining the partitioning key is specified in the model's `MODEL` DDL `partitioned_by` key. This example shows the `MODEL` DDL for an `INCREMENTAL_BY_PARTITION` model:
 
-```sql linenums="1" hl_lines="4"
+=== "SQL"
+
+    ```sql linenums="1"
+    MODEL (
+      name vulcan_demo.partition,
+      kind INCREMENTAL_BY_PARTITION,
+      partitioned_by ARRAY[warehouse_id, category],
+      grains (partitioned_analysis_key)
+    );
+
+    SELECT
+      w.warehouse_id,
+      w.name AS warehouse_name,
+      p.category,
+      o.order_date,
+      CONCAT(w.warehouse_id::TEXT, '_', p.category, '_', o.order_date::TEXT) AS partitioned_analysis_key,
+      COUNT(DISTINCT o.order_id) AS total_transactions,
+      SUM(oi.quantity * oi.unit_price) AS total_sales_amount,
+      COUNT(DISTINCT o.customer_id) AS unique_customers
+    FROM vulcan_demo.orders AS o
+    JOIN vulcan_demo.order_items AS oi ON o.order_id = oi.order_id
+    JOIN vulcan_demo.products AS p ON oi.product_id = p.product_id
+    JOIN vulcan_demo.warehouses AS w ON o.warehouse_id = w.warehouse_id
+    GROUP BY w.warehouse_id, w.name, p.category, o.order_date
+    ```
+
+=== "Python"
+
+    ```python linenums="1"
+    from vulcan import ExecutionContext, model
+    from vulcan import ModelKindName
+
+    @model(
+        "vulcan_demo.partition_py",
+        columns={
+            "warehouse_id": "int",
+            "order_date": "date",
+            "daily_revenue": "decimal(10,2)",
+        },
+        partitioned_by=["warehouse_id"],
+        kind=dict(
+            name=ModelKindName.INCREMENTAL_BY_PARTITION,
+        ),
+        grains=["warehouse_id", "order_date"],
+        depends_on=["vulcan_demo.orders", "vulcan_demo.order_items"],
+    )
+    def execute(context: ExecutionContext, **kwargs):
+        query = """
+        SELECT o.warehouse_id, o.order_date,
+               SUM(oi.quantity * oi.unit_price) as daily_revenue
+        FROM vulcan_demo.orders o
+        JOIN vulcan_demo.order_items oi ON o.order_id = oi.order_id
+        GROUP BY o.warehouse_id, o.order_date
+        """
+        return context.fetchdf(query)
+    ```
+
+Compound partition keys are also supported:
+
+```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.events,
   kind INCREMENTAL_BY_PARTITION,
-  partitioned_by region,
+  partitioned_by (warehouse_id, category)
 );
 ```
 
-Compound partition keys are also supported, such as `region` and `department`:
+Date and/or timestamp column expressions are also supported (varies by SQL engine). This BigQuery example's partition key is based on the month each row's `order_date` occurred:
 
-```sql linenums="1" hl_lines="4"
+```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.events,
   kind INCREMENTAL_BY_PARTITION,
-  partitioned_by (region, department),
-);
-```
-
-Date and/or timestamp column expressions are also supported (varies by SQL engine). This BigQuery example's partition key is based on the month each row's `event_date` occurred:
-
-```sql linenums="1" hl_lines="4"
-MODEL (
-  name db.events,
-  kind INCREMENTAL_BY_PARTITION,
-  partitioned_by DATETIME_TRUNC(event_date, MONTH)
+  partitioned_by DATETIME_TRUNC(order_date, MONTH)
 );
 ```
 
@@ -1642,11 +1970,30 @@ The `INCREMENTAL_UNMANAGED` model kind exists to support append-only tables. It'
 
 Usage of the `INCREMENTAL_UNMANAGED` model kind is straightforward:
 
-```sql linenums="1" hl_lines="3"
+```sql linenums="1"
 MODEL (
-  name db.events,
+  name vulcan_demo.incremental_unmanaged,
   kind INCREMENTAL_UNMANAGED,
+  cron '@daily',
+  start '2025-01-01',
+  grains (shipment_id)
 );
+
+/* Append-only shipment event log */
+SELECT
+  s.shipment_id,
+  s.order_id,
+  s.shipped_date,
+  s.carrier,
+  o.customer_id,
+  c.name AS customer_name,
+  o.order_date,
+  (s.shipped_date - o.order_date::DATE)::INT AS days_to_ship,
+  CURRENT_TIMESTAMP AS shipment_event_timestamp
+FROM vulcan_demo.shipments AS s
+JOIN vulcan_demo.orders AS o ON s.order_id = o.order_id
+JOIN vulcan_demo.customers AS c ON o.customer_id = c.customer_id
+ORDER BY s.shipped_date DESC
 ```
 
 Since it's unmanaged, it doesnt support the `batch_size` and `batch_concurrency` properties to control how data is loaded like the other incremental model types do.

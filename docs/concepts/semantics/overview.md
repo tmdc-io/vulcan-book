@@ -1,4 +1,4 @@
-# Semantics Overview
+# Overview
 
 The semantic layer adds **business context** to your Vulcan data models, transforming technical table structures into business-friendly definitions that can be queried without SQL knowledge.
 

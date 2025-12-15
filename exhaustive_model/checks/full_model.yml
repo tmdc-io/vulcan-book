@@ -1,0 +1,87 @@
+checks:
+  vulcan_demo.full_model:
+    completeness:
+      - missing_count(customer_id) = 0:
+          name: no_missing_customer_ids
+          attributes:
+            description: "All customer records must have a customer ID"
+      
+      - missing_count(customer_name) = 0:
+          name: no_missing_customer_names
+          attributes:
+            description: "All customer records must have a customer name"
+      
+      - row_count > 0:
+          name: has_customers
+          attributes:
+            description: "At least one customer exists in the full model"
+    
+    validity:
+      - failed rows:
+          name: negative_total_orders
+          fail query: |
+            SELECT customer_id, customer_name, total_orders, total_spent, avg_order_value
+            FROM vulcan_demo.full_model
+            WHERE total_orders < 0
+          samples limit: 10
+          attributes:
+            description: "Total orders cannot be negative"
+      
+      - failed rows:
+          name: negative_total_spent
+          fail query: |
+            SELECT customer_id, customer_name, total_orders, total_spent, avg_order_value
+            FROM vulcan_demo.full_model
+            WHERE total_spent < 0
+          samples limit: 10
+          attributes:
+            description: "Total spent cannot be negative"
+      
+      - failed rows:
+          name: negative_avg_order_value
+          fail query: |
+            SELECT customer_id, customer_name, total_orders, total_spent, avg_order_value
+            FROM vulcan_demo.full_model
+            WHERE avg_order_value < 0
+          samples limit: 10
+          attributes:
+            description: "Average order value cannot be negative"
+      
+      - failed rows:
+          name: avg_order_value_calculation_mismatch
+          fail query: |
+            SELECT customer_id, customer_name, total_orders, total_spent, avg_order_value,
+                   CASE WHEN total_orders > 0 THEN total_spent / total_orders ELSE 0 END AS calculated_avg
+            FROM vulcan_demo.full_model
+            WHERE total_orders > 0 AND ABS(avg_order_value - (total_spent / total_orders)) > 0.01
+          samples limit: 10
+          attributes:
+            description: "Average order value must equal total_spent / total_orders (within rounding tolerance)"
+      
+      - failed rows:
+          name: empty_customer_names
+          fail query: |
+            SELECT customer_id, customer_name, total_orders, total_spent
+            FROM vulcan_demo.full_model
+            WHERE customer_name IS NULL OR TRIM(customer_name) = ''
+          samples limit: 10
+          attributes:
+            description: "Customer names cannot be empty"
+    
+    uniqueness:
+      - duplicate_count(customer_id) = 0:
+          name: unique_customer_ids
+          attributes:
+            description: "Customer IDs must be unique (this is the grain for the full model)"
+    
+    accuracy:
+      - anomaly detection for row_count:
+          name: row_count_anomaly
+          attributes:
+            description: "Detect anomalies in customer count using historic data"
+      
+      - anomaly detection for avg(total_spent):
+          name: avg_total_spent_anomaly
+          attributes:
+            description: "Detect anomalies in average total spent per customer using historic data"
+

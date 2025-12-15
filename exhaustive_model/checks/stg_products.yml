@@ -1,0 +1,80 @@
+checks:
+  vulcan_demo.stg_products:
+    completeness:
+      - missing_count(product_sk) = 0:
+          name: no_missing_product_sk
+          attributes:
+            description: "All staging products must have a surrogate key"
+      
+      - missing_count(product_id) = 0:
+          name: no_missing_product_ids
+          attributes:
+            description: "All staging products must have a product ID"
+      
+      - missing_count(product_name) = 0:
+          name: no_missing_product_names
+          attributes:
+            description: "All staging products must have a product name"
+      
+      - missing_count(category) = 0:
+          name: no_missing_categories
+          attributes:
+            description: "All staging products must have a category"
+      
+      - row_count > 0:
+          name: has_products
+          attributes:
+            description: "At least one product exists in staging"
+    
+    validity:
+      - failed rows:
+          name: negative_list_price
+          fail query: |
+            SELECT product_sk, product_id, product_name, list_price, category
+            FROM vulcan_demo.stg_products
+            WHERE list_price < 0
+          samples limit: 10
+          attributes:
+            description: "List price cannot be negative"
+      
+      - failed rows:
+          name: empty_product_names
+          fail query: |
+            SELECT product_sk, product_id, product_name, category, list_price
+            FROM vulcan_demo.stg_products
+            WHERE product_name IS NULL OR TRIM(product_name) = ''
+          samples limit: 10
+          attributes:
+            description: "Product names cannot be empty"
+      
+      - failed rows:
+          name: empty_categories
+          fail query: |
+            SELECT product_sk, product_id, product_name, category, list_price
+            FROM vulcan_demo.stg_products
+            WHERE category IS NULL OR TRIM(category) = ''
+          samples limit: 10
+          attributes:
+            description: "Product categories cannot be empty"
+      
+      - failed rows:
+          name: invalid_supplier_ids
+          fail query: |
+            SELECT product_sk, product_id, supplier_id, supplier_name
+            FROM vulcan_demo.stg_products
+            WHERE supplier_id IS NOT NULL AND supplier_id <= 0
+          samples limit: 10
+          attributes:
+            description: "Supplier IDs must be positive if present"
+    
+    uniqueness:
+      - duplicate_count(product_sk) = 0:
+          name: unique_product_sk
+          attributes:
+            description: "Product surrogate keys must be unique in staging"
+      
+      - duplicate_count(product_id) = 0:
+          name: unique_product_ids
+          attributes:
+            description: "Product IDs must be unique in staging"
+

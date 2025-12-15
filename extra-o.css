@@ -1,0 +1,113 @@
+/* Vulcan Documentation - Custom Styling */
+/* ====================================== */
+
+:root {
+  /* Sidebar navigation spacing */
+  --md-nav-link-font-size: 0.75rem;
+  --md-nav-title-font-size: 0.7rem;
+  --md-toc-font-size: 0.7rem;
+}
+
+/* Remove header shadow */
+.md-header {
+  box-shadow: none !important;
+}
+
+.md-header--shadow {
+  box-shadow: none !important;
+}
+
+/* Primary sidebar navigation (main sections) */
+.md-sidebar--primary .md-nav__link {
+  line-height: 1.3 !important;
+}
+
+.md-sidebar--primary .md-nav__title {
+  font-weight: 600 !important;
+}
+
+/* Secondary sidebar navigation (table of contents) */
+.md-sidebar--secondary .md-nav__link {
+  line-height: 1.3 !important;
+}
+
+.md-sidebar--secondary .md-nav__title {
+  font-weight: 600 !important;
+}
+
+/* Navigation titles (section headers in sidebar) */
+.md-nav__title,
+.md-nav__item .md-nav__title {
+  font-weight: 600 !important;
+}
+
+/* Make sidebar items more compact */
+.md-nav__item {
+  margin: 0.1rem 0 !important;
+}
+
+/* Custom white/grey theme - enhance navigation hover effects */
+.md-nav__link:hover {
+  color: var(--md-accent-fg-color) !important;
+}
+
+/* Custom Grey Admonitions - matching Vulcan's white/grey theme */
+.md-typeset .admonition.note,
+.md-typeset details.note {
+  border-color: #9e9e9e;
+}
+
+.md-typeset .note > .admonition-title,
+.md-typeset .note > summary {
+  background-color: rgba(158, 158, 158, 0.1);
+  border-color: #9e9e9e;
+}
+
+.md-typeset .note > .admonition-title::before,
+.md-typeset .note > summary::before {
+  background-color: #9e9e9e;
+  -webkit-mask-image: var(--md-admonition-icon--note);
+  mask-image: var(--md-admonition-icon--note);
+}
+
+/* Tip admonitions in grey as well */
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  border-color: #9e9e9e;
+}
+
+.md-typeset .tip > .admonition-title,
+.md-typeset .tip > summary {
+  background-color: rgba(158, 158, 158, 0.1);
+  border-color: #9e9e9e;
+}
+
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  background-color: #9e9e9e;
+  -webkit-mask-image: var(--md-admonition-icon--tip);
+  mask-image: var(--md-admonition-icon--tip);
+}
+
+/* Code block styling enhancements */
+.md-typeset pre > code {
+  border-radius: 0.4rem;
+}
+
+/* Improve readability for long code blocks */
+.md-typeset .highlight {
+  overflow-x: auto;
+}
+
+/* Custom styling for tabs */
+.md-typeset .tabbed-set {
+  border-radius: 0.4rem;
+}
+
+/* Enhance focus states for accessibility */
+.md-nav__link:focus,
+.md-nav__link:hover {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: 2px;
+}
+

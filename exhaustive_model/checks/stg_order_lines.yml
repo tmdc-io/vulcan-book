@@ -1,0 +1,98 @@
+checks:
+  vulcan_demo.stg_order_lines:
+    filter: order_date >= CURRENT_DATE - INTERVAL '30 days'
+    completeness:
+      - missing_count(order_item_sk) = 0:
+          name: no_missing_order_item_sk
+          attributes:
+            description: "All order lines must have a surrogate key"
+      
+      - missing_count(order_id) = 0:
+          name: no_missing_order_ids
+          attributes:
+            description: "All order lines must have an order ID"
+      
+      - missing_count(item_id) = 0:
+          name: no_missing_item_ids
+          attributes:
+            description: "All order lines must have an item ID"
+      
+      - missing_count(customer_id) = 0:
+          name: no_missing_customer_ids
+          attributes:
+            description: "All order lines must have a customer ID"
+      
+      - missing_count(order_date) = 0:
+          name: no_missing_order_dates
+          attributes:
+            description: "All order lines must have an order date"
+      
+      - row_count > 0:
+          name: has_order_lines
+          filter: "order_date >= CAST('${run_date}' AS DATE) - INTERVAL '7 days'"
+          attributes:
+            description: "Order lines exist in the run window (last 7 days)"
+    
+    validity:
+      - failed rows:
+          name: negative_quantity
+          fail query: |
+            SELECT order_item_sk, order_id, item_id, quantity, unit_price, line_revenue
+            FROM vulcan_demo.stg_order_lines
+            WHERE quantity <= 0
+          samples limit: 10
+          attributes:
+            description: "Quantity must be positive"
+      
+      - failed rows:
+          name: negative_unit_price
+          fail query: |
+            SELECT order_item_sk, order_id, item_id, quantity, unit_price, line_revenue
+            FROM vulcan_demo.stg_order_lines
+            WHERE unit_price < 0
+          samples limit: 10
+          attributes:
+            description: "Unit price cannot be negative"
+      
+      - failed rows:
+          name: negative_line_revenue
+          fail query: |
+            SELECT order_item_sk, order_id, item_id, quantity, unit_price, line_revenue
+            FROM vulcan_demo.stg_order_lines
+            WHERE line_revenue < 0
+          samples limit: 10
+          attributes:
+            description: "Line revenue cannot be negative"
+      
+      - failed rows:
+          name: revenue_calculation_mismatch
+          fail query: |
+            SELECT order_item_sk, order_id, item_id, quantity, unit_price, line_revenue,
+                   (quantity * unit_price) AS calculated_revenue
+            FROM vulcan_demo.stg_order_lines
+            WHERE ABS(line_revenue - (quantity * unit_price)) > 0.01
+          samples limit: 10
+          attributes:
+            description: "Line revenue must equal quantity * unit_price (within rounding tolerance)"
+      
+      - failed rows:
+          name: future_order_dates
+          fail query: |
+            SELECT order_item_sk, order_id, order_date, customer_id
+            FROM vulcan_demo.stg_order_lines
+            WHERE order_date > CURRENT_DATE
+          samples limit: 10
+          attributes:
+            description: "Order dates cannot be in the future"
+    
+    uniqueness:
+      - duplicate_count(order_item_sk) = 0:
+          name: unique_order_item_sk
+          attributes:
+            description: "Order item surrogate keys must be unique"
+      
+      - duplicate_count(order_id, item_id) = 0:
+          name: unique_order_item_combination
+          attributes:
+            description: "Order ID and item ID combination must be unique"
+

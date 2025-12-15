@@ -1,0 +1,91 @@
+checks:
+  vulcan_demo.scd_type2_by_column:
+    completeness:
+      - missing_count(product_id) = 0:
+          name: no_missing_product_ids
+          attributes:
+            description: "All product records must have a product ID"
+      
+      - missing_count(product_name) = 0:
+          name: no_missing_product_names
+          attributes:
+            description: "All product records must have a product name"
+      
+      - missing_count(category) = 0:
+          name: no_missing_categories
+          attributes:
+            description: "All product records must have a category"
+      
+      - row_count > 0:
+          name: has_products
+          attributes:
+            description: "At least one product exists in the SCD Type 2 model"
+    
+    validity:
+      - failed rows:
+          name: negative_price
+          fail query: |
+            SELECT product_id, product_name, category, price, supplier_name
+            FROM vulcan_demo.scd_type2_by_column
+            WHERE price < 0
+          samples limit: 10
+          attributes:
+            description: "Product price cannot be negative"
+      
+      - failed rows:
+          name: negative_total_orders
+          fail query: |
+            SELECT product_id, product_name, category, total_orders, total_quantity_sold
+            FROM vulcan_demo.scd_type2_by_column
+            WHERE total_orders < 0
+          samples limit: 10
+          attributes:
+            description: "Total orders cannot be negative"
+      
+      - failed rows:
+          name: negative_total_quantity_sold
+          fail query: |
+            SELECT product_id, product_name, category, total_orders, total_quantity_sold
+            FROM vulcan_demo.scd_type2_by_column
+            WHERE total_quantity_sold < 0
+          samples limit: 10
+          attributes:
+            description: "Total quantity sold cannot be negative"
+      
+      - failed rows:
+          name: empty_product_names
+          fail query: |
+            SELECT product_id, product_name, category, price
+            FROM vulcan_demo.scd_type2_by_column
+            WHERE product_name IS NULL OR TRIM(product_name) = ''
+          samples limit: 10
+          attributes:
+            description: "Product names cannot be empty"
+      
+      - failed rows:
+          name: empty_categories
+          fail query: |
+            SELECT product_id, product_name, category, price
+            FROM vulcan_demo.scd_type2_by_column
+            WHERE category IS NULL OR TRIM(category) = ''
+          samples limit: 10
+          attributes:
+            description: "Product categories cannot be empty"
+    
+    uniqueness:
+      - duplicate_count(product_id) = 0:
+          name: unique_product_ids
+          attributes:
+            description: "Product IDs must be unique (this is the unique key for SCD Type 2 model)"
+    
+    accuracy:
+      - anomaly detection for row_count:
+          name: row_count_anomaly
+          attributes:
+            description: "Detect anomalies in product count using historic data"
+      
+      - anomaly detection for avg(price):
+          name: avg_price_anomaly
+          attributes:
+            description: "Detect anomalies in average product price using historic data"
+
