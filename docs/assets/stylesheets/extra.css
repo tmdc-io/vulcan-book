@@ -192,24 +192,31 @@ code, pre, kbd, samp,
   z-index: 100 !important;
 }
 
-/* -------------------- Navigation Tabs Below Header -------------------- */
+/* -------------------- Navigation Tabs in Header -------------------- */
+.md-header__inner {
+  position: relative !important;
+}
+
 .md-tabs {
-  background-color: #F5F6F7 !important;
-  border-bottom: 1px solid var(--vl-border) !important;
-  position: sticky !important;
-  top: 48px !important;  /* Position below the header */
-  z-index: 99 !important;
-  width: 100% !important;
-  padding: 0 1.5rem !important;
-  min-height: auto !important;
+  position: absolute !important;
+  top: 50% !important; /* align to search bar center */
+  left: calc(var(--vl-sidebar-width) + 12px) !important; /* align near sidebar/start */
+  transform: translateY(-50%) !important;
   display: flex !important;
-  justify-content: flex-start !important;
+  align-items: center !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  z-index: 120 !important;
+  width: auto !important;
 }
 
 .md-tabs__list {
   display: flex !important;
-  gap: 0.25rem !important;
-  justify-content: flex-start !important;
+  gap: 0.75rem !important;
   align-items: center !important;
 }
 
@@ -219,10 +226,10 @@ code, pre, kbd, samp,
 
 .md-tabs__link {
   font-family: var(--vl-font-sans) !important;
-  color: var(--vl-text-secondary) !important;
-  font-size: 0.875rem !important;
+  color: #f1f3f5 !important;
+  font-size: 0.95rem !important;
   font-weight: var(--vl-font-weight-medium) !important;
-  padding: 0.5rem 0.875rem !important;
+  padding: 0.35rem 0.6rem !important;
   transition: all 0.15s ease !important;
   border-radius: 0 !important;
   opacity: 1 !important;
@@ -231,15 +238,16 @@ code, pre, kbd, samp,
 }
 
 .md-tabs__link:hover {
-  color: var(--vl-text-primary) !important;
-  background-color: rgba(0, 0, 0, 0.05) !important;
+  color: #ffffff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.4) !important;
+  background: transparent !important;
 }
 
 .md-tabs__link--active {
-  color: var(--vl-primary) !important;
+  color: var(--vl-primary-light) !important;
   background-color: transparent !important;
   font-weight: 600 !important;
-  border-bottom: 2px solid var(--vl-primary) !important;
+  border-bottom: 2px solid var(--vl-primary-light) !important;
 }
 
 /* -------------------- Main Layout -------------------- */
@@ -262,7 +270,7 @@ code, pre, kbd, samp,
   min-width: var(--vl-sidebar-width) !important;
   background: var(--vl-bg-sidebar) !important;
   border-right: 1px solid var(--vl-border) !important;
-  padding: 1.5rem 0 !important;
+  padding: 1rem 0 !important;
   position: sticky;
   top: 86px;  /* Below header (48px) + tabs (38px) */
   height: calc(100vh - 86px);
@@ -358,8 +366,8 @@ code, pre, kbd, samp,
 
 .md-nav__link--active,
 .md-nav__link:focus {
-  color: var(--vl-primary) !important;
-  background-color: var(--vl-primary-subtle) !important;
+  color: var(--vl-text-primary) !important;
+  background-color: var(--vl-bg-hover) !important;
   font-weight: 500 !important;
 }
 
@@ -427,9 +435,9 @@ code, pre, kbd, samp,
 }
 
 .md-sidebar--secondary .md-nav__link--active {
-  color: var(--vl-primary) !important;
+  color: var(--vl-text-primary) !important;
   background: transparent !important;
-  border-left-color: var(--vl-primary) !important;
+  border-left-color: var(--vl-border) !important;
   font-weight: var(--vl-font-weight-medium) !important;
 }
 
@@ -437,10 +445,9 @@ code, pre, kbd, samp,
 .md-content {
   flex: 1 1 auto !important;
   min-width: 0 !important;
-  /* Use more of the horizontal space between the side panels */
   max-width: min(1200px, calc(100% - var(--vl-sidebar-width) - var(--vl-toc-width) - 2rem)) !important;
   margin: 0 auto !important;
-  padding: 2rem 2.25rem !important;
+  padding: 2rem 2rem !important;
   background: var(--vl-bg-main) !important;
 }
 
@@ -872,10 +879,6 @@ a.md-button.download-button:hover {
     width: 220px !important;
     min-width: 220px !important;
   }
-  
-  .md-content {
-    max-width: 100% !important;
-  }
 }
 
 @media (max-width: 1200px) {
@@ -900,6 +903,36 @@ a.md-button.download-button:hover {
   
   .md-content {
     padding: 1.5rem !important;
+  }
+
+  /* Return tabs to default stacked position on small screens */
+  .md-tabs {
+    position: sticky !important;
+    top: 48px !important;
+    left: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    background-color: #F5F6F7 !important;
+    border-bottom: 1px solid var(--vl-border) !important;
+    padding: 0 1.5rem !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+
+  .md-tabs__list {
+    gap: 0.25rem !important;
+  }
+
+  .md-tabs__link {
+    color: var(--vl-text-secondary) !important;
+    border-bottom-color: transparent !important;
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.875rem !important;
+  }
+
+  .md-tabs__link--active {
+    color: var(--vl-primary) !important;
+    border-bottom-color: var(--vl-primary) !important;
   }
 }
 
@@ -1064,12 +1097,12 @@ a.md-button.download-button:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--vl-border);
+  background: #b8bcc2;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--vl-text-light);
+  background: #a3a7ad;
 }
 
 /* Firefox scrollbars */
