@@ -1,2 +1,0 @@
-2025-12-10 14:28:57,782 - MainThread - vulcan.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:511)
-2025-12-10 14:28:57,996 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:231)
