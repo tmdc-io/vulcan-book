@@ -437,9 +437,10 @@ code, pre, kbd, samp,
 .md-content {
   flex: 1 1 auto !important;
   min-width: 0 !important;
-  max-width: 900px !important;
+  /* Use more of the horizontal space between the side panels */
+  max-width: min(1200px, calc(100% - var(--vl-sidebar-width) - var(--vl-toc-width) - 2rem)) !important;
   margin: 0 auto !important;
-  padding: 2rem 3rem !important;
+  padding: 2rem 2.25rem !important;
   background: var(--vl-bg-main) !important;
 }
 
@@ -870,6 +871,10 @@ a.md-button.download-button:hover {
   .md-sidebar--secondary {
     width: 220px !important;
     min-width: 220px !important;
+  }
+  
+  .md-content {
+    max-width: 100% !important;
   }
 }
 

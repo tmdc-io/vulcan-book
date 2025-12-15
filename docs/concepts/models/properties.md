@@ -1,4 +1,4 @@
-# Model Properties
+# Properties
 
 The `MODEL` DDL statement accepts various properties that control model metadata and behavior. This page provides a complete reference for all available model properties.
 

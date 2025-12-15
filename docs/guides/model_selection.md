@@ -1,4 +1,4 @@
-# Model Selection Guide
+# Model Selection
 
 This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is useful when you only want to test or apply changes to a subset of your models.
 

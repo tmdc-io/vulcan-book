@@ -1,4 +1,4 @@
-# Migrations guide
+# Migrations
 
 New versions of Vulcan may be incompatible with the project's stored metadata format. Migrations provide a way to upgrade the project metadata format to operate with the new Vulcan version.
 

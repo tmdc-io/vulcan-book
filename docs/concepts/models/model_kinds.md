@@ -1,4 +1,4 @@
-# Model kinds
+# Kinds
 
 This page describes the kinds of [models](./overview.md) Vulcan supports, which determine how the data for a model is loaded.
 

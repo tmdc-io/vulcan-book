@@ -1,4 +1,4 @@
-# Checks guide
+# Checks
 
 Quality checks monitor data quality over time without blocking your pipeline. They track trends, detect anomalies, and help you build data quality dashboards.
 

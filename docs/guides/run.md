@@ -1,4 +1,4 @@
-# Run and Scheduling Guide
+# Run and Scheduling
 
 This guide covers Vulcan's run functionality and scheduling strategies. Learn how `vulcan run` processes new data intervals and how to automate it for production.
 

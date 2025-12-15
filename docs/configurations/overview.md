@@ -1,4 +1,4 @@
-# Configuration Overview
+# Overview
 
 Vulcan projects are configured through a central configuration file that defines how your data pipeline connects to databases, manages environments, and handles model execution.
 

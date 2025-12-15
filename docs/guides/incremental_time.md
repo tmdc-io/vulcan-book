@@ -1,4 +1,4 @@
-# Incremental by Time Guide
+# Incremental by Time
 
 This guide explains how incremental by time models work in Vulcan using the Orders360 example project. You'll learn why they're efficient, how they process data, and how to create them.
 

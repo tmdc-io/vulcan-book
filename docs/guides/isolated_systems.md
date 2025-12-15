@@ -1,4 +1,4 @@
-# Isolated systems guide
+# Isolated systems
 
 Vulcan is optimized for use in systems where developers have access to production data.
 

@@ -1,4 +1,4 @@
-# Table migration guide
+# Table migration
 
 Vulcan projects can read directly from tables not managed by Vulcan, but in some scenarios it may be useful to migrate an existing table into a Vulcan project.
 

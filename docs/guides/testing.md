@@ -1,4 +1,4 @@
-# Testing guide
+# Testing
 ## Testing changes to models
 To run unit tests for your models, run the `vulcan test` command as follows:
 

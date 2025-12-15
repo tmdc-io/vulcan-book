@@ -1,4 +1,4 @@
-# CLI
+# CLI Commands
 
 ```
 Usage: vulcan [OPTIONS] COMMAND [ARGS]...

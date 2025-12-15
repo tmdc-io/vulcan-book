@@ -1,4 +1,4 @@
-# Models Guide
+# Models
 
 This guide walks you through working with models in Vulcan using the Orders360 example project. You'll learn how to add, edit, evaluate, and manage models with practical examples.
 

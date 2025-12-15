@@ -1,4 +1,4 @@
-# Audits guide
+# Audits
 
 Audits validate your model's data after execution. When an audit fails, Vulcan halts the pipeline to prevent invalid data from flowing downstream.
 

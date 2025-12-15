@@ -1,4 +1,4 @@
-# Plan Guide
+# Plan
 
 This guide walks you through Vulcan's plan functionality with practical scenarios using the Orders360 example project. You'll learn how plans work, how to interpret them, and how to apply changes to your data warehouse.
 

@@ -1,4 +1,4 @@
-# Jinja macros
+# Jinja
 
 Vulcan supports macros from the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating system.
 

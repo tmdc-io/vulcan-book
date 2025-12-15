@@ -1,4 +1,4 @@
-# Configuration guide
+# Configuration
 
 Vulcan's behavior is determined by three things: a project's files (e.g., models), user actions (e.g., creating a `plan`), and how Vulcan is configured.
 

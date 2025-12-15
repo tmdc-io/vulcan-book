@@ -1,4 +1,4 @@
-# Project guide
+# Projects
 
 ## Creating a project
 

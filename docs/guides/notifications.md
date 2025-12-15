@@ -1,4 +1,4 @@
-# Notifications guide
+# Notifications
 
 Vulcan can send notifications via Slack or email when certain events occur. This page describes how to configure notifications and specify recipients.
 

@@ -1,4 +1,4 @@
-# Data Quality Guide
+# Data Quality
 
 This guide explains how to use **Audits**, **Checks**, and **Tests** together to ensure data quality in your Orders360 project. Learn when to use each tool and see complex examples where they work together.
 

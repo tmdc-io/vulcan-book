@@ -1,4 +1,4 @@
-# Macro variables
+# Variables
 
 Macro variables are placeholders whose values are substituted in when the macro is rendered.
 

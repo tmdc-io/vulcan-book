@@ -13,7 +13,7 @@ nav:
       - index.md
     - Configurations:
       - configurations/overview.md
-      - Config Options:
+      - Options:
         - configurations/model_defaults.md
         - configurations/variables.md
         - configurations/hooks.md
@@ -21,6 +21,9 @@ nav:
         - configurations/linter.md
       - Engines:
         - configurations/integrations/engines/postgres.md
+        - configurations/integrations/engines/snowflake.md
+
+        # Coming Soon
         # - integrations/engines/bigquery.md
         # - integrations/engines/databricks.md
         # - integrations/engines/duckdb.md
@@ -28,8 +31,7 @@ nav:
         # - integrations/engines/mssql.md
         # - integrations/engines/mysql.md
         # - integrations/engines/redshift.md
-        - configurations/integrations/engines/snowflake.md
-
+  
 
       - CI/CD:
         - ci-cd/index.md
@@ -39,7 +41,7 @@ nav:
         - concepts/models/properties.md
         # - Advanced Properties:
         #   - concepts/models/advanced_properties.md
-        - Model Types:
+        - Types:
           - concepts/models/sql_models.md
           - concepts/models/python_models.md
           - concepts/models/external_models.md
@@ -54,7 +56,7 @@ nav:
         - concepts/semantics/models.md
         - concepts/semantics/metrics.md
       - Advanced:
-        - Macro:
+        - Macros:
           - concepts/macros/overview.md
           - concepts/macros/macro_variables.md
           - concepts/macros/vulcan_macros.md
@@ -63,122 +65,28 @@ nav:
         - guides/custom_materializations.md
     - Guides:
       - getting_started/docker.md
-        # - getting_started/index.md
-        # - getting_started/prerequisites.md
         
-      # - guides/configuration.md
+      # - guides/configuration.md    --make sure every content we have included using this file
       - guides/plan.md
       - guides/run.md
       - guides/models.md
       - guides/incremental_time.md
       - guides/data_quality.md        
       - guides/model_selection.md
+      - guides/transpiling.md
       #- guides/federated_engines.md
       # - Virtual environments Guide:
       # - Vulcan API Guide:
       # - Table Creation Guide:
-      - guides/transpiling.md
-      - Advanced:
-        - guides/linter.md
+
     - reference/cli.md
+      
 
   - "Cookbook":
     - cookbook/index.md
   - "FAQ":
     - faq/index.md
  
-  # - Get started:
-  #   - getting_started/index.md
-  #   - getting_started/prerequisites.md
-  #   - getting_started/docker.md
-  #   - getting_started/cli.md
-  # - Guides:
-  #   - Project structure:
-  #     - guides/projects.md
-  #   - Project setup:
-  #     - guides/configuration.md
-  #     - guides/connections.md
-  #     - guides/scheduling.md
-  #     - guides/notifications.md
-  #     - guides/migrations.md
-  #     - guides/table_migration.md
-  #     - guides/custom_materializations.md
-  #   - Project content:
-  #     - guides/models.md
-  #     - guides/incremental_time.md
-  #     - guides/testing.md
-  #     - guides/model_selection.md
-  #   - Vulcan tools:
-  #     - guides/linter.md
-  #     - guides/transpiling.md
-  #   - Advanced usage:
-  #     # - guides/customizing_vulcan.md
-  #     - guides/signals.md
-  # - Concepts:
-  #   - concepts/overview.md
-  #   - Development:
-  #     - concepts/plans.md
-  #     - concepts/environments.md
-  #     - concepts/tests.md
-  #     - concepts/audits.md
-  #     - concepts/checks.md
-  #     - concepts/state.md
-  #   - Models:
-  #     - concepts/models/overview.md
-  #     - concepts/models/model_kinds.md
-  #     - concepts/models/sql_models.md
-  #     - concepts/models/python_models.md
-  #     - concepts/models/seed_models.md
-  #     - concepts/models/external_models.md
-  #     - concepts/models/managed_models.md
-  #   - Semantics:
-  #     - concepts/semantics/index.md
-  #     - concepts/semantics/models.md
-  #     - concepts/semantics/metrics.md
-            
-  #   - Macros:
-  #     - concepts/macros/overview.md
-  #     - concepts/macros/macro_variables.md
-  #     - concepts/macros/vulcan_macros.md
-  #     - concepts/macros/jinja_macros.md
-  #   - Architecture:
-  #     - concepts/architecture/snapshots.md
-  #     - concepts/architecture/serialization.md
-  #   - concepts/glossary.md
-  # - Examples:
-  #   - Overview: examples/overview.md
-  #   # - Walkthroughs:
-  #   #   - examples/vulcan_cli_crash_course.md
-  #   #   - examples/incremental_time_full_walkthrough.md
-  # - Engines:
-  #   - integrations/engines/postgres.md
-  #     # - integrations/engines/athena.md
-  #     # - integrations/engines/azuresql.md
-  #     # - integrations/engines/bigquery.md
-  #     # - integrations/engines/clickhouse.md
-  #     # - integrations/engines/databricks.md
-  #     # - integrations/engines/duckdb.md
-  #     # - integrations/engines/fabric.md
-  #     # - integrations/engines/motherduck.md
-  #     # - integrations/engines/mssql.md
-  #     # - integrations/engines/mysql.md
-  #     # - integrations/engines/gcp-postgres.md
-  #     # - integrations/engines/redshift.md
-  #     # - integrations/engines/risingwave.md
-  #     # - integrations/engines/snowflake.md
-  #     # - integrations/engines/spark.md
-  #     # - integrations/engines/trino.md
-  #   - Coming Soon: integrations/engines/coming_soon.md      
-  # # - Resources:
-  # #   - comparisons.md
-  # #   - development.md
-  # - Reference:
-  #   - reference/cli.md
-  #     # - reference/notebook.md
-  #     # - reference/python.md
-  #   # - Configuration:
-  #     # - reference/configuration.md # TODO: Add back after due-diligence
-  #   - reference/model_configuration.md
 
 theme:
   name: material

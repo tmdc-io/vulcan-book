@@ -27,10 +27,6 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
 
     2. If not Download from [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/){:target="_blank"}
 
-<div class="grid" markdown>
-
-<div markdown="1">
-
 ## Vulcan Setup Locally
 
 === "Mac/Linux"
@@ -102,10 +98,6 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
         **vulcan-api** for querying your semantic model by **REST API**(available at `http://localhost:8000`) &
 
         **vulcan-transpiler** for transpiling semantic queries to SQL
-
-</div>
-
-<div markdown="1">
 
 ## Create First Project
 
@@ -189,10 +181,6 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
        vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
       ```
       Returns the generated SQL that can be executed against your warehouse
-
-</div>
-
-</div>
 
 ## Stopping Services
 

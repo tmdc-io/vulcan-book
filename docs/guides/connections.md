@@ -1,4 +1,4 @@
-# Connections guide
+# Connections
 
 ## Overview
 
