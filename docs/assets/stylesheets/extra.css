@@ -164,6 +164,19 @@ code, pre, kbd, samp,
   font-size: 0.875rem !important; /* 14px - balanced for header */
 }
 
+/* Keep "DataOS Vulcan" always visible - hide page title on scroll */
+.md-header__title .md-header__topic:first-child {
+  display: flex !important;
+  opacity: 1 !important;
+  transform: none !important;
+  position: relative !important;
+}
+
+/* Hide the second topic (page title) that appears on scroll */
+.md-header__title .md-header__topic:last-child:not(:first-child) {
+  display: none !important;
+}
+
 .md-header--shadow {
   box-shadow: none !important;
 }
@@ -447,10 +460,11 @@ code, pre, kbd, samp,
   top: 86px;  /* Below header (48px) + tabs (38px) */
   height: calc(100vh - 86px);
   overflow-y: auto;
+  margin-left: 0 !important; /* Align with content edge */
 }
 
 .md-sidebar--secondary .md-sidebar__scrollwrap {
-  padding: 0 1.25rem; /* Bento-style horizontal padding */
+  padding: 0 0.5rem 0 0; /* No left padding - TOC at edge */
 }
 
 /* TOC title */
@@ -476,7 +490,7 @@ code, pre, kbd, samp,
   font-size: 0.6875rem !important; /* 11px - 75% zoom size */
   font-weight: var(--vl-font-weight-normal) !important;
   color: var(--vl-text-muted) !important;
-  padding: 0.5rem 0.75rem !important; /* Bento: generous vertical padding */
+  padding: 0.5rem 0.75rem 0.5rem 0.25rem !important; /* Less left padding - closer to edge */
   border-left: 2px solid transparent !important;
   border-radius: 0 !important;
   margin: 0.125rem 0 !important; /* Bento: spacing between TOC items */
@@ -500,10 +514,10 @@ code, pre, kbd, samp,
 .md-content {
   flex: 1 1 auto !important;
   min-width: 0 !important;
-  /* Bento: max-width 800px with 3rem gap on each side from sidebars */
-  max-width: min(800px, calc(100% - var(--vl-sidebar-width) - var(--vl-toc-width) - 6rem)) !important;
-  margin: 0 auto !important;
-  padding: 2rem 3rem !important; /* Bento: 3rem horizontal padding (48px) */
+  /* Fill available space between sidebar and TOC */
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 2rem 2rem !important; /* Consistent padding */
   background: var(--vl-bg-main) !important;
 }
 
@@ -967,23 +981,24 @@ a.md-button.download-button:hover {
 /* -------------------- Tabs -------------------- */
 .md-typeset .tabbed-set {
   border: 1px solid var(--vl-border) !important;
-  border-radius: 8px !important;
+  border-radius: 4px !important;
   overflow: hidden !important;
-  margin: 1.5rem 0 !important;
+  margin: 0.75rem 0 !important;
 }
 
 .md-typeset .tabbed-labels {
   background-color: var(--vl-bg-sidebar) !important;
   border-bottom: 1px solid var(--vl-border) !important;
   padding: 0 !important;
+  min-height: auto !important;
 }
 
 .md-typeset .tabbed-labels > label {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
-  font-weight: var(--vl-font-weight-medium) !important;
+  font-size: 0.75rem !important; /* 12px - normal readable size */
+  font-weight: var(--vl-font-weight-semibold) !important;
   color: var(--vl-text-muted) !important;
-  padding: 0.75rem 1.25rem !important;
+  padding: 0.25rem 0.5rem !important; /* Compact padding, normal text */
   border-bottom: 2px solid transparent !important;
   margin-bottom: -1px !important;
 }
@@ -998,7 +1013,24 @@ a.md-button.download-button:hover {
 }
 
 .md-typeset .tabbed-content {
-  padding: 1rem 1.25rem !important;
+  padding: 0 !important; /* No padding - code fills container */
+}
+
+/* Remove extra padding from code blocks inside tabs */
+.md-typeset .tabbed-content > .highlight,
+.md-typeset .tabbed-content > .highlighttable,
+.md-typeset .tabbed-content > pre {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.md-typeset .tabbed-content > .highlight pre,
+.md-typeset .tabbed-content pre {
+  margin: 0 !important;
+  padding: 0.375rem 0.5rem !important; /* Ultra tight code padding */
+  border: none !important;
+  border-radius: 0 !important;
 }
 
 /* -------------------- Lists -------------------- */
@@ -1076,8 +1108,8 @@ a.md-button.download-button:hover {
   }
 
   .md-content {
-    max-width: min(800px, calc(100% - var(--vl-sidebar-width) - 180px - 6rem)) !important; /* Adjust for sidebar widths */
-    padding: 2rem 2.5rem !important; /* Maintain Bento spacing */
+    max-width: 100% !important;
+    padding: 2rem 2rem !important;
   }
 
   .md-header__inner {
@@ -1097,9 +1129,9 @@ a.md-button.download-button:hover {
   }
   
   .md-content {
-    /* When TOC is hidden, maintain 3rem gap from left sidebar and right edge */
-    max-width: min(800px, calc(100% - var(--vl-sidebar-width) - 6rem)) !important;
-    padding: 2rem 3rem !important; /* Bento-style padding */
+    /* When TOC is hidden, fill available space */
+    max-width: 100% !important;
+    padding: 2rem 2rem !important;
   }
 }
 
