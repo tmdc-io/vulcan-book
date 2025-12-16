@@ -18,14 +18,25 @@ nav:
         - configurations/options/notifications.md
         - configurations/options/linter.md
       - Engines:
-        - configurations/engines/postgres/postgres.md
-        - configurations/engines/snowflake/snowflake.md
+        - configurations/integrations/engines/postgres.md
+        - configurations/integrations/engines/snowflake.md
+
+        # Coming Soon
+        # - integrations/engines/bigquery.md
+        # - integrations/engines/databricks.md
+        # - integrations/engines/duckdb.md
+        # - integrations/engines/motherduck.md
+        # - integrations/engines/mssql.md
+        # - integrations/engines/mysql.md
+        # - integrations/engines/redshift.md
       - CI/CD:
         - ci-cd/index.md
   - Components:
       - Model:
-        - components/models/overview.md
-        - components/models/properties.md
+        - concepts/models/overview.md
+        - concepts/models/properties.md
+        # - Advanced Properties:
+        #   - concepts/models/advanced_properties.md
         - Types:
           - components/model/type/sql_models.md
           - components/model/type/python_models.md
@@ -56,8 +67,14 @@ nav:
       - guides/incremental_by_time.md
       - guides/data_quality.md
       - guides/model_selection.md
-      - guides/transpiling_semantics.md
-  - CLI Commands: reference/cli.md
+      - guides/transpiling.md
+      #- guides/federated_engines.md
+      # - Virtual environments Guide:
+      # - Vulcan API Guide:
+      # - Table Creation Guide:
+  - CLI Commands: reference/cli.md # Changed to "CLI Commands" for consistency with the visual and placed the file directly under it.
+
+  # These items were already top-level and remain as is:
   - Cookbook:
     - cookbook/index.md
   - FAQ:
