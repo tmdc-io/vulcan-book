@@ -456,6 +456,12 @@ code, pre, kbd, samp,
   padding: 0 !important;
 }
 
+/* Breadcrumb navigation path - align with heading */
+.md-path {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
 /* -------------------- Typography -------------------- */
 .md-typeset {
   font-family: var(--vl-font-sans) !important;
