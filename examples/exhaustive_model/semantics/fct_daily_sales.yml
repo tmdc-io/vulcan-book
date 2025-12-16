@@ -1,0 +1,83 @@
+models:
+  vulcan_demo.fct_daily_sales:
+    alias: sales
+    description: "Fact table at day grain with sales metrics and category bucketing"
+    
+    dimensions:
+      includes:
+        - sales_date
+        - customer_sk
+        - product_sk
+        - region_id
+        - region_name
+        - category
+        - category_bucket
+        - units
+        - revenue
+        - avg_selling_price
+      proxies:
+        - name: customer_count_s
+          measure: customers.customer_count
+        - name: product_count_s
+          measure: products.product_count
+    measures:
+      total_units:
+        type: sum
+        expression: "{sales.units}"
+        description: "Total units sold"
+      
+      total_revenue:
+        type: sum
+        expression: "{sales.revenue}" 
+        format: currency
+        description: "Total sales revenue"
+      
+      avg_selling_price01:
+        type: avg
+        expression: "{sales.avg_selling_price}"
+        format: currency
+        description: "Average selling price per unit"
+      
+      avg_units_per_transaction:
+        type: avg
+        expression: "{sales.units}"
+        description: "Average units per transaction"
+      
+      distinct_customers:
+        type: count_distinct
+        expression: "{sales.customer_sk}"
+        description: "Number of distinct customers"
+      
+      distinct_products:
+        type: count_distinct
+        expression: "{sales.product_sk}"    
+        description: "Number of distinct products sold"
+      
+
+    
+    segments:
+      recent_sales:
+        expression: "{sales.sales_date} >= CURRENT_DATE - INTERVAL '30 days'"
+        description: "Sales from the last 30 days"
+      
+      high_value_sales:
+        expression: "{sales.revenue} >= 1000"
+        description: "Sales transactions with revenue >= $1000"
+      
+      top_categories:
+        expression: "{sales.category_bucket} = 'top_5'"
+        description: "Sales from top 5 product categories"
+      
+      bulk_sales:
+        expression: "{sales.units} >= 50"
+        description: "Sales transactions with 50+ units"
+    
+    joins:
+      customers:
+        type: many_to_one
+        expression: "{sales.customer_sk} = {customers.customer_sk}"
+      
+      products:
+        type: many_to_one
+        expression: "{sales.product_sk} = {products.product_sk}"
+

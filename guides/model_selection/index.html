@@ -1,66 +1,23 @@
-<!DOCTYPE html><html lang="en" class="no-js"><head>
-    
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      
-        <meta name="description" content="Complete documentation for Vulcan - complete stack for building data products">
-      
-      
-        <meta name="author" content="DataOS Vulcan Team">
-      
-      
-        <link rel="canonical" href="https://tmdc-io.github.io/vulcan-book/guides/model_selection/">
-      
-      
-        <link rel="prev" href="../testing/">
-      
-      
-        <link rel="next" href="../linter/">
-      
-      
-        
-      
-      
-      <link rel="icon" href="../../assets/images/vulcan.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
-    
-    
-      
-        <title>Model Selection Guide - DataOS Vulcan</title>
-      
-    
-    
-      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
-      
-        
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
-      
-      
-
-
-    
-    
-      
-    
-    
-      
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
-      
-    
-    
-      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
-    
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
-    
-      
-
-    
-    
-  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+<!DOCTYPE html>
+<html class="no-js" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
+<meta content="DataOS Vulcan Team" name="author"/>
+<link href="https://tmdc-io.github.io/vulcan-docs/guides/model_selection/" rel="canonical"/>
+<link href="../data_quality/" rel="prev"/>
+<link href="../transpiling_semantics/" rel="next"/>
+<link href="../../assets/images/vulcan.svg" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<title>Model Selection - DataOS Vulcan</title>
+<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="../../assets/stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
             html.glightbox-open { overflow: initial; height: 100%; }
             .gslide-title { margin-top: 0px; user-select: text; }
             .gslide-desc { color: #666; user-select: text; }
@@ -71,375 +28,160 @@
             body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
             body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
         </style></head>
-  
-  
-    
-    
-      
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
-  
-    
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
-    <div data-md-component="skip">
-      
-        
-        <a href="#model-selection-guide" class="md-skip">
+<body data-md-color-accent="blue-grey" data-md-color-primary="blue-grey" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#model-selection">
           Skip to content
         </a>
-      
-    </div>
-    <div data-md-component="announce">
-      
-    </div>
-    
-    
-      
-
-  
-
-<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="DataOS Vulcan" class="md-header__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
-      
-  <img src="../../assets/images/vulcan-white.svg" alt="logo">
-
-    </a>
-    <label class="md-header__button md-icon" for="__drawer">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
-    </label>
-    <div class="md-header__title" data-md-component="header-title">
-      <div class="md-header__ellipsis">
-        <div class="md-header__topic">
-          <span class="md-ellipsis">
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="DataOS Vulcan" class="md-header__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/vulcan-white.svg"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
             DataOS Vulcan
           </span>
-        </div>
-        <div class="md-header__topic" data-md-component="header-topic">
-          <span class="md-ellipsis">
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
             
-              Model Selection Guide
+              Model Selection
             
           </span>
-        </div>
-      </div>
-    </div>
-    
-      
-        <form class="md-header__option" data-md-component="palette">
-  
-    
-    
-    
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
-    
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
-      </label>
-    
-  
-    
-    
-    
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
-    
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
-      </label>
-    
-  
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="blue-grey" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="blue-grey" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
 </form>
-      
-    
-    
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
-    
-    
-    
-      
-      
-        <label class="md-header__button md-icon" for="__search">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
-        </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
-        </button>
-      </nav>
-      
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<a aria-label="Share" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Share">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+<ol class="md-search-result__list" role="presentation"></ol>
 </div>
-      
-    
-    
-      <div class="md-header__source">
-        <a href="https://github.com/tmdc-io/vulcan-book" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
-  </div>
-  <div class="md-source__repository">
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
     tmdc-io/vulcan-book
   </div>
 </a>
-      </div>
-    
-  </nav>
-  
-    
-      
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
-        
-  
-  
-    
-  
-  Overview
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../getting_started/" class="md-tabs__link">
-          
-  
-  
-  Get started
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-    
-  
-  
-    
-    
-      
-  
-  
-  
-    
-  
-  
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../projects/" class="md-tabs__link">
-          
-  
-  
-  Guides
-
-        </a>
-      </li>
-    
-  
-
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../concepts/overview/" class="md-tabs__link">
-          
-  
-  
-  Concepts
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../examples/overview/" class="md-tabs__link">
-          
-  
-  
-  Examples
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../integrations/engines/postgres/" class="md-tabs__link">
-          
-  
-  
-  Engines
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../reference/cli/" class="md-tabs__link">
-          
-  
-  
-  Reference
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ul>
-  </div>
+</div>
 </nav>
-    
-  
 </header>
-    
-    <div class="md-container" data-md-component="container">
-      
-      
-        
-      
-      <main class="md-main" data-md-component="main">
-        <div class="md-main__inner md-grid">
-          
-            
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-
-  
-
-
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
-  <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="DataOS Vulcan" class="md-nav__button md-logo" aria-label="DataOS Vulcan" data-md-component="logo">
-      
-  <img src="../../assets/images/vulcan-white.svg" alt="logo">
-
-    </a>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="DataOS Vulcan" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/vulcan-white.svg"/>
+</a>
     DataOS Vulcan
   </label>
-  
-    <div class="md-nav__source">
-      <a href="https://github.com/tmdc-io/vulcan-book" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
-  </div>
-  <div class="md-source__repository">
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
     tmdc-io/vulcan-book
   </div>
 </a>
-    </div>
-  
-  <ul class="md-nav__list" data-md-scrollfix>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
     
-      
-      
   
+    About
   
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
   
+    Configurations
   
-    <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
-        
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
   
+    Configurations
   
-  <span class="md-ellipsis">
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/overview/">
+<span class="md-ellipsis">
     
   
     Overview
@@ -447,2251 +189,98 @@
 
     
   </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2">
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Get started
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Get started
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting_started/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Quickstart
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting_started/prerequisites/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Prerequisites
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting_started/docker/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Docker Quickstart
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting_started/cli/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CLI
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Guides
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Guides
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1">
-        
-          
-          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Project structure
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Project structure
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../projects/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Project guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2">
-        
-          
-          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Project setup
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Project setup
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../configuration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configuration guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../connections/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Connections guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../scheduling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Scheduling guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../notifications/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Notifications guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../migrations/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Migrations guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../table_migration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Table migration guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../custom_materializations/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Custom materializations guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Project content
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Project content
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Models guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../incremental_time/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Incremental by time guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../testing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Testing guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Model Selection Guide
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Model Selection Guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#background" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Background
-      
-    </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#syntax" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Syntax
-      
-    </span>
-  </a>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
   
+    Options
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Options
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/model_defaults/">
+<span class="md-ellipsis">
+    
+  
+    Model defaults
+  
+
+    
+  </span>
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#backfill" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Backfill
-      
-    </span>
-  </a>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/variables/">
+<span class="md-ellipsis">
+    
   
+    Variables
+  
+
+    
+  </span>
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Examples
-      
-    </span>
-  </a>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/execution_hooks/">
+<span class="md-ellipsis">
+    
   
+    Execution Hooks
+  
+
+    
+  </span>
+</a>
 </li>
-      
-    </ul>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/notifications/">
+<span class="md-ellipsis">
+    
   
+    Notifications
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/linter/">
+<span class="md-ellipsis">
+    
+  
+    Linter
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
 </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4">
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Vulcan tools
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Vulcan tools
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../linter/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Linter guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../transpiling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Transpiling Semantic Queries
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5">
-        
-          
-          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Advanced usage
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Advanced usage
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../signals/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Signals guide
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4">
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Concepts
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Concepts
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/overview/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2">
-        
-          
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Development
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Development
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/plans/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plans
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/environments/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Environments
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/tests/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Testing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/audits/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Auditing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/checks/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Checks
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/state/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3">
-        
-          
-          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Models
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Models
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/overview/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/model_kinds/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Model kinds
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/sql_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SQL models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/python_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Python models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/seed_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Seed models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/external_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    External models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/models/managed_models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Managed models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4">
-        
-          
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Semantics
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Semantics
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/semantics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Semantics Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/semantics/models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Semantic Models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/semantics/metrics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Business Metrics
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5">
-        
-          
-          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Macros
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Macros
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/macros/overview/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/macros/macro_variables/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Macro variables
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/macros/vulcan_macros/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Vulcan macros
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/macros/jinja_macros/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Jinja macros
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6">
-        
-          
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Architecture
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/architecture/snapshots/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Snapshots
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/architecture/serialization/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Serialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/glossary/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Glossary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5">
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Examples
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Examples
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../examples/overview/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6">
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+<span class="md-ellipsis">
     
   
     Engines
@@ -2699,35 +288,21 @@
 
     
   </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_3">
+<span class="md-nav__icon md-icon"></span>
             
   
     Engines
   
 
           </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../integrations/engines/postgres/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/postgres/postgres/">
+<span class="md-ellipsis">
     
   
     Postgres
@@ -2735,670 +310,1728 @@
 
     
   </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../integrations/engines/coming_soon/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/snowflake/snowflake/">
+<span class="md-ellipsis">
     
   
-    Coming Soon
+    Snowflake
   
 
     
   </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7">
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Reference
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Reference
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/cli/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CLI
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/model_configuration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Model configuration
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-  </ul>
+</a>
+</li>
+</ul>
 </nav>
-                  </div>
-                </div>
-              </div>
-            
-            
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+<span class="md-ellipsis">
     
   
+    CI/CD
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../ci-cd/index.md">
+<span class="md-ellipsis">
+    
+  
+    None
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Components
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Model
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Model
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/properties/">
+<span class="md-ellipsis">
+    
+  
+    Properties
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1_3" id="__nav_3_1_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Types
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_3_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_1_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Types
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/sql_models/">
+<span class="md-ellipsis">
+    
+  
+    SQL models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/python_models/">
+<span class="md-ellipsis">
+    
+  
+    Python models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/external_models/">
+<span class="md-ellipsis">
+    
+  
+    External models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/managed_models/">
+<span class="md-ellipsis">
+    
+  
+    Managed models
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/model_kinds/">
+<span class="md-ellipsis">
+    
+  
+    Kinds
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/statements/">
+<span class="md-ellipsis">
+    
+  
+    Statements
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/tests/tests/">
+<span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/audits/audits/">
+<span class="md-ellipsis">
+    
+  
+    Auditing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/checks/checks/">
+<span class="md-ellipsis">
+    
+  
+    Checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Semantics
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Semantics
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/models/">
+<span class="md-ellipsis">
+    
+  
+    Semantic Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/business_metrics/">
+<span class="md-ellipsis">
+    
+  
+    Business Metrics
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Advance Features
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Advance Features
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6_1" id="__nav_3_6_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_1_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_6_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Macros
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/variables/">
+<span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/built_in/">
+<span class="md-ellipsis">
+    
+  
+    Built In
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/jinja/">
+<span class="md-ellipsis">
+    
+  
+    Jinja
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/signals/">
+<span class="md-ellipsis">
+    
+  
+    Signals
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/custom_materializations/">
+<span class="md-ellipsis">
+    
+  
+    Custom materializations
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../get-started/docker/">
+<span class="md-ellipsis">
+    
+  
+    Get Started
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../plan/">
+<span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../run_and_scheduling/">
+<span class="md-ellipsis">
+    
+  
+    Run and Scheduling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../models/">
+<span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../incremental_by_time/">
+<span class="md-ellipsis">
+    
+  
+    Incremental by Time
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data_quality/">
+<span class="md-ellipsis">
+    
+  
+    Data Quality
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Model Selection
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Model Selection
+  
+
+    
+  </span>
+</a>
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
       On this page
     </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#background" class="md-nav__link">
-    <span class="md-ellipsis">
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#background">
+<span class="md-ellipsis">
       
         Background
       
     </span>
-  </a>
-  
+</a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-model-dependencies">
+<span class="md-ellipsis">
       
-        <li class="md-nav__item">
-  <a href="#syntax" class="md-nav__link">
-    <span class="md-ellipsis">
+        Understanding Model Dependencies
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#syntax">
+<span class="md-ellipsis">
       
         Syntax
       
     </span>
-  </a>
-  
-</li>
+</a>
+<nav aria-label="Syntax" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-selection">
+<span class="md-ellipsis">
       
-        <li class="md-nav__item">
-  <a href="#backfill" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Backfill
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Examples
+        Basic Selection
       
     </span>
-  </a>
-  
+</a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wildcard-selection">
+<span class="md-ellipsis">
       
-    </ul>
-  
+        Wildcard Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tag-selection">
+<span class="md-ellipsis">
+      
+        Tag Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#upstreamdownstream-selection">
+<span class="md-ellipsis">
+      
+        Upstream/Downstream Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#git-based-selection">
+<span class="md-ellipsis">
+      
+        Git-Based Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#complex-selections">
+<span class="md-ellipsis">
+      
+        Complex Selections
+      
+    </span>
+</a>
+</li>
+</ul>
 </nav>
-                  </div>
-                </div>
-              </div>
-            
-          
-          
-            <div class="md-content" data-md-component="content">
-              
-                
-
-
-
-  
-
-
-  <nav class="md-path" aria-label="Navigation">
-    <ol class="md-path__list">
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples-with-orders360">
+<span class="md-ellipsis">
       
-        
+        Examples with Orders360
+      
+    </span>
+</a>
+<nav aria-label="Examples with Orders360" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-setup">
+<span class="md-ellipsis">
+      
+        Example Setup
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#no-selection-default">
+<span class="md-ellipsis">
+      
+        No Selection (Default)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-single-model">
+<span class="md-ellipsis">
+      
+        Select Single Model
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-upstream-indicator">
+<span class="md-ellipsis">
+      
+        Select with Upstream Indicator
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-downstream-indicator">
+<span class="md-ellipsis">
+      
+        Select with Downstream Indicator
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-wildcard">
+<span class="md-ellipsis">
+      
+        Select with Wildcard
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-tags">
+<span class="md-ellipsis">
+      
+        Select with Tags
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-git-changes">
+<span class="md-ellipsis">
+      
+        Select with Git Changes
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backfill-selection">
+<span class="md-ellipsis">
+      
+        Backfill Selection
+      
+    </span>
+</a>
+<nav aria-label="Backfill Selection" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-backfill-selection-works">
+<span class="md-ellipsis">
+      
+        How Backfill Selection Works
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backfill-examples">
+<span class="md-ellipsis">
+      
+        Backfill Examples
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visual-selection-guide">
+<span class="md-ellipsis">
+      
+        Visual Selection Guide
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-practices">
+<span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#summary">
+<span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-steps">
+<span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transpiling_semantics/">
+<span class="md-ellipsis">
+    
   
+    Transpiling Semantics
   
-    <li class="md-path__item">
-      <a href="../.." class="md-path__link">
-        
-  <span class="md-ellipsis">
-    Overview
+
+    
   </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/cli.md">
+<span class="md-ellipsis">
+    
+  
+    CLI Commands
+  
 
-      </a>
-    </li>
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Cookbook
   
 
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Cookbook
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cookbook/index.md">
+<span class="md-ellipsis">
+    
+  
+    None
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    FAQ
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../faq/index.md">
+<span class="md-ellipsis">
+    
+  
+    None
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#background">
+<span class="md-ellipsis">
       
+        Background
       
-        
-  
-  
-    
-    
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-model-dependencies">
+<span class="md-ellipsis">
       
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../projects/" class="md-path__link">
-          
-  <span class="md-ellipsis">
+        Understanding Model Dependencies
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#syntax">
+<span class="md-ellipsis">
+      
+        Syntax
+      
+    </span>
+</a>
+<nav aria-label="Syntax" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-selection">
+<span class="md-ellipsis">
+      
+        Basic Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wildcard-selection">
+<span class="md-ellipsis">
+      
+        Wildcard Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tag-selection">
+<span class="md-ellipsis">
+      
+        Tag Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#upstreamdownstream-selection">
+<span class="md-ellipsis">
+      
+        Upstream/Downstream Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#git-based-selection">
+<span class="md-ellipsis">
+      
+        Git-Based Selection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#complex-selections">
+<span class="md-ellipsis">
+      
+        Complex Selections
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples-with-orders360">
+<span class="md-ellipsis">
+      
+        Examples with Orders360
+      
+    </span>
+</a>
+<nav aria-label="Examples with Orders360" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-setup">
+<span class="md-ellipsis">
+      
+        Example Setup
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#no-selection-default">
+<span class="md-ellipsis">
+      
+        No Selection (Default)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-single-model">
+<span class="md-ellipsis">
+      
+        Select Single Model
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-upstream-indicator">
+<span class="md-ellipsis">
+      
+        Select with Upstream Indicator
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-downstream-indicator">
+<span class="md-ellipsis">
+      
+        Select with Downstream Indicator
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-wildcard">
+<span class="md-ellipsis">
+      
+        Select with Wildcard
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-tags">
+<span class="md-ellipsis">
+      
+        Select with Tags
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#select-with-git-changes">
+<span class="md-ellipsis">
+      
+        Select with Git Changes
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backfill-selection">
+<span class="md-ellipsis">
+      
+        Backfill Selection
+      
+    </span>
+</a>
+<nav aria-label="Backfill Selection" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-backfill-selection-works">
+<span class="md-ellipsis">
+      
+        How Backfill Selection Works
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backfill-examples">
+<span class="md-ellipsis">
+      
+        Backfill Examples
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visual-selection-guide">
+<span class="md-ellipsis">
+      
+        Visual Selection Guide
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-practices">
+<span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#summary">
+<span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-steps">
+<span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigation" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../..">
+<span class="md-ellipsis">
+    About
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../get-started/docker/">
+<span class="md-ellipsis">
     Guides
   </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<h1 id="model-selection">Model Selection<a class="headerlink" href="#model-selection" title="Link to this section">¶</a></h1>
+<p>This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is useful when you only want to test or apply changes to a subset of your models.</p>
+<p><strong>Note:</strong> The selector syntax described below is also used for the Vulcan <code>plan</code> <a href="../concepts/plans.md#destructive-changes"><code>--allow-destructive-model</code> and <code>--allow-additive-model</code> selectors</a>.</p>
+<hr/>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Link to this section">¶</a></h2>
+<p>A Vulcan <a href="../concepts/plans.md">plan</a> automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.</p>
+<p>In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything.</p>
+<p><strong>Key Concept:</strong>
+- <strong>Directly Modified</strong>: Models you changed in your code
+- <strong>Indirectly Modified</strong>: Downstream models affected by your changes</p>
+<p><em>[Screenshot: Visual showing directly vs indirectly modified models]</em></p>
+<hr/>
+<h2 id="understanding-model-dependencies">Understanding Model Dependencies<a class="headerlink" href="#understanding-model-dependencies" title="Link to this section">¶</a></h2>
+<p>Before we dive into selection, let's understand how models relate to each other in Orders360:</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph "Orders360 Model DAG"
+        RAW_CUSTOMERS[raw.raw_customers&lt;br/&gt;Seed Model]
+        RAW_ORDERS[raw.raw_orders&lt;br/&gt;Seed Model]
+        RAW_PRODUCTS[raw.raw_products&lt;br/&gt;Seed Model]
 
-        </a>
-      </li>
-    
-  
+        DAILY_SALES[sales.daily_sales&lt;br/&gt;Daily Aggregation]
+        WEEKLY_SALES[sales.weekly_sales&lt;br/&gt;Weekly Aggregation]
+    end
 
-    
-  
+    RAW_CUSTOMERS --&gt; DAILY_SALES
+    RAW_ORDERS --&gt; DAILY_SALES
+    RAW_PRODUCTS --&gt; DAILY_SALES
 
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../models/" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Project content
-  </span>
+    DAILY_SALES --&gt; WEEKLY_SALES
 
-        </a>
-      </li>
-    
-  
-
-      
-    </ol>
-  </nav>
-
-              
-              <article class="md-content__inner md-typeset">
-                
-                  
-
-
-  
-  
-
-
-<h1 id="model-selection-guide">Model Selection Guide<a class="headerlink" href="#model-selection-guide" title="Permanent link">¶</a></h1>
-<p>This guide describes how to select specific models to include in a Vulcan plan, which can be useful when modifying a subset of the models in a Vulcan project.</p>
-<p>Note: the selector syntax described below is also used for the Vulcan <code>plan</code> <a href="../../concepts/plans/#destructive-changes"><code>--allow-destructive-model</code> and <code>--allow-additive-model</code> selectors</a>.</p>
-<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">¶</a></h2>
-<p>A Vulcan <a href="../../concepts/plans/">plan</a> automatically detects changes between the local version of a project and the version deployed in an environment. When applied, the plan backfills the directly modified models and their indirectly modified downstream children. This brings all model data into alignment with the local version of the project.</p>
-<p>In large Vulcan projects, a single model change may impact many downstream models, such that evaluating it and its affected children takes a significant amount of time. In some situations, a user is blocked by the long run time and can accomplish their task without backfilling all changed models and affected children.</p>
-<p>Vulcan model selection allows you to filter which direct model changes should be included into a plan. This can be useful when you only need to inspect the results of some of the model changes you have made.</p>
-<p>Model selections only apply to models that have been directly modified. Selected models' indirectly modified children are always included in the plan, unless you additionally specify which models to backfill (more information <a href="#backfill">below</a>).</p>
-<h2 id="syntax">Syntax<a class="headerlink" href="#syntax" title="Permanent link">¶</a></h2>
-<p>Model selections are specified in the CLI <code>vulcan plan</code> argument <code>--select-model</code>. Selections may be specified in a number of ways.</p>
-<p>The simplest selection is a single model name (e.g., <code>example.incremental_model</code>). The <code>--select-model</code> argument may be repeated to specify multiple individual model names:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"example.incremental_model"</span><span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"example.full_model"</span>
+    style RAW_CUSTOMERS fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style RAW_ORDERS fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style RAW_PRODUCTS fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style DAILY_SALES fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    style WEEKLY_SALES fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000</code></pre>
+<p><strong>Dependency Flow:</strong>
+- <code>raw.raw_orders</code> → <code>sales.daily_sales</code> → <code>sales.weekly_sales</code>
+- Changing <code>raw.raw_orders</code> affects <code>daily_sales</code> (indirectly modified)
+- Changing <code>daily_sales</code> affects <code>weekly_sales</code> (indirectly modified)</p>
+<p><em>[Screenshot: Orders360 project structure showing model files]</em></p>
+<hr/>
+<h2 id="syntax">Syntax<a class="headerlink" href="#syntax" title="Link to this section">¶</a></h2>
+<p>Model selections use the <code>--select-model</code> argument in <code>vulcan plan</code>. You can select models in several ways:</p>
+<h3 id="basic-selection">Basic Selection<a class="headerlink" href="#basic-selection" title="Link to this section">¶</a></h3>
+<p>Select a single model by name:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
 </span></code></pre></div>
-<p>A selection may use the wildcard asterisk character <code>*</code> to select multiple models at once. Any model name matching the non-wildcard characters will match. For example:</p>
+<p><em>[Screenshot: Plan output showing only daily_sales selected]</em></p>
+<p>Select multiple models:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span><span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"raw.raw_orders"</span>
+</span></code></pre></div>
+<p><em>[Screenshot: Plan output showing multiple models selected]</em></p>
+<h3 id="wildcard-selection">Wildcard Selection<a class="headerlink" href="#wildcard-selection" title="Link to this section">¶</a></h3>
+<p>Use <code>*</code> to match multiple models:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1"># Select all models starting with "raw."</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"raw.*"</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="c1"># Select all models ending with "_sales"</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.*_sales"</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="c1"># Select all models containing "daily"</span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"*daily*"</span>
+</span></code></pre></div>
+<p><strong>Examples:</strong>
+- <code>"raw.*"</code> matches <code>raw.raw_customers</code>, <code>raw.raw_orders</code>, <code>raw.raw_products</code>
+- <code>"sales.*_sales"</code> matches <code>sales.daily_sales</code>, <code>sales.weekly_sales</code>
+- <code>"*.daily_sales"</code> matches <code>sales.daily_sales</code></p>
+<p><em>[Screenshot: Plan output showing wildcard selection results]</em></p>
+<h3 id="tag-selection">Tag Selection<a class="headerlink" href="#tag-selection" title="Link to this section">¶</a></h3>
+<p>Select models by tags using <code>tag:tag_name</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1"># Select all models with "seed" tag</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:seed"</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="c1"># Select all models with tags starting with "reporting"</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:reporting*"</span>
+</span></code></pre></div>
+<p><strong>Example:</strong> If <code>raw.raw_orders</code> and <code>raw.raw_customers</code> have the <code>seed</code> tag:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:seed"</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="c1"># Selects: raw.raw_orders, raw.raw_customers</span>
+</span></code></pre></div>
+<p><em>[Screenshot: Plan output showing tag-based selection]</em></p>
+<h3 id="upstreamdownstream-selection">Upstream/Downstream Selection<a class="headerlink" href="#upstreamdownstream-selection" title="Link to this section">¶</a></h3>
+<p>Use <code>+</code> to include upstream or downstream models:</p>
 <ul>
-<li><code>"example.seed*"</code> would match both <code>example.seed_cities</code> and <code>example.seed_states</code></li>
-<li><code>"example.*l_model"</code> would match both <code>example.incremental_model</code> and <code>example.full_model</code></li>
+<li><code>+model_name</code> = Include upstream models (dependencies)</li>
+<li><code>model_name+</code> = Include downstream models (dependents)</li>
 </ul>
-<p>Multiple models can also be selected by using the tag selector syntax <code>tag:tag_name</code>. For example, <code>"tag:my_tag"</code> would select all models with the tag <code>my_tag</code>.</p>
-<p>Assuming all seed models had a "seed" tag and all incremental models had an "incremental" tag:</p>
-<ul>
-<li><code>"tag:seed"</code> would match all seed models</li>
-<li><code>"tag:incremental"</code> would match all incremental models</li>
-</ul>
-<p>Wildcards also apply to tags. For example, <code>"tag:reporting*"</code> would match all models that have a tag starting with "reporting".</p>
-<h3 id="upstreamdownstream-indicator">Upstream/downstream indicator<a class="headerlink" href="#upstreamdownstream-indicator" title="Permanent link">¶</a></h3>
-<p>By default, only the directly changed models in a selection are included in the plan.</p>
-<p>All of a model's changed upstream and/or downstream models may be included in a selection with the plus sign <code>+</code>. A plus sign at the beginning of a selection includes changed upstream models, and a plus sign at the end of a selection includes downstream models.</p>
-<p>For example, consider a three model project with the following structure, where all three models have been changed:</p>
-<p><code>example.seed_model</code> → <code>example.incremental_model</code> → <code>example.full_model</code></p>
-<p>These selections would include different sets of models in the plan:</p>
-<ul>
-<li><code>--select-model "example.incremental_model"</code> = <code>incremental_model</code> only</li>
-<li><code>--select-model "+example.incremental_model"</code> = <code>incremental_model</code> and upstream <code>seed_model</code></li>
-<li><code>--select-model "example.incremental_model+"</code> = <code>incremental_model</code> and downstream <code>full_model</code></li>
-</ul>
-<p>The upstream/downstream indicator may be combined with the wildcard operator. For example, <code>--select-model "+example.*l_model"</code> would include all three models in the project:</p>
-<ul>
-<li><code>example.incremental_model</code> matches the wildcard</li>
-<li><code>example.seed_model</code> is upstream of the incremental model</li>
-<li><code>example.full_model</code> matches the wildcard</li>
-</ul>
-<p>The combination of the upstream/downstream indicator, wildcards, and multiple <code>--select-model</code> arguments enables granular and complex model selections for a plan.</p>
-<p>Upstream/downstream indicators also apply to tags. For example, <code>--select-model "+tag:reporting*"</code> would select all models with tags that start with <code>reporting</code> and their upstream models.</p>
-<h2 id="backfill">Backfill<a class="headerlink" href="#backfill" title="Permanent link">¶</a></h2>
-<p>By default, Vulcan backfills all of a plan's directly and indirectly modified models. In large projects, a single model change may impact many downstream models, such that backfilling all the children takes a significant amount of time.</p>
-<p>You can limit which downstream models are backfilled with <code>plan</code>'s <code>--backfill-model</code> argument, which uses the same selection <a href="#syntax">syntax</a> as <code>--select-model</code>.</p>
-<p><code>--select-model</code> determines which directly modified models are included in a <code>plan</code>, and <code>--backfill-model</code> determines which models are backfilled by the <code>plan</code>. A model's backfilled data is only current if its parents have also been backfilled, so the parents of each model specified with <code>--backfill-model</code> will also be backfilled.</p>
-<p>Care is required if both of the <code>--select-model</code> and <code>--backfill-model</code> options are specified because a single model can be affected by both options. For example, consider a model <code>test_model</code>. We have two versions of the model: a new directly modified version ("test_model modified") and the existing version already active in an environment ("test_model existing"). If <code>test_model</code> is not selected by <code>--select-model</code>, the directly modified version "test_model modified" is excluded from the plan. However, if <code>test_model</code> is upstream of a <code>--backfill-model</code> model, the existing version "test_model existing" will be backfilled if it has any unprocessed intervals.</p>
-<p>NOTE: the <code>--backfill-model</code> argument can only be used in development environments (i.e., environments other than <code>prod</code>).</p>
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h2>
-<p>We now demonstrate the use of <code>--select-model</code> and <code>--backfill-model</code> with the Vulcan <code>sushi</code> example project, available in the <code>examples/sushi</code> directory of the <a href="https://github.com/TobikoData/vulcan">Vulcan Github repository</a>.</p>
-<h3 id="sushi">sushi<a class="headerlink" href="#sushi" title="Permanent link">¶</a></h3>
-<p>The sushi project generates and transforms data collected at a sushi restaurant. In this guide, we focus on a set of the project's models related to marketing and customers.</p>
-<p>The DAG of those models displays the primary set we will use inside the red shape:</p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="model-selection_sushi-dag.png" data-desc-position="bottom"><img alt="Vulcan sushi example project - model DAG" src="model-selection_sushi-dag.png"></a></p>
-<p>The root of our sub-DAG is <code>items</code> at the bottom. Immediately downstream of it are <code>order_items</code>, <code>waiter_revenue_by_day</code>, <code>customer_revenue_lifetime</code>, and <code>customer_revenue_by_day</code>. Finally, <code>top_waiters</code> is downstream of <code>waiter_revenue_by_day</code>.</p>
-<p>To prepare for the examples, we have run an initial plan in <code>prod</code> and completed the backfill. We have modified the <code>sushi.items</code> and <code>sushi.order_items</code> models to demonstrate how model selection impacts plans.</p>
-<h3 id="selection-examples">Selection examples<a class="headerlink" href="#selection-examples" title="Permanent link">¶</a></h3>
-<h4 id="no-selection">No selection<a class="headerlink" href="#no-selection" title="Permanent link">¶</a></h4>
-<p>If we run a <code>plan</code> without selecting specific models, Vulcan includes the two directly modified models and the four indirectly modified models downstream of <code>sushi.order_items</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Models:
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│<span class="w">   </span>├──<span class="w"> </span>sushi.order_items
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.items
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span>├──<span class="w"> </span>sushi.waiter_revenue_by_day
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_by_day
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_lifetime
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span>└──<span class="w"> </span>sushi.top_waiters
+<pre class="mermaid"><code>flowchart LR
+    subgraph "Model Dependencies"
+        RAW[raw.raw_orders]
+        DAILY[sales.daily_sales]
+        WEEKLY[sales.weekly_sales]
+    end
+
+    RAW --&gt;|upstream| DAILY
+    DAILY --&gt;|downstream| WEEKLY
+
+    style RAW fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style DAILY fill:#fff9c4,stroke:#fbc02d,stroke-width:3px,color:#000
+    style WEEKLY fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000</code></pre>
+<p><strong>Examples:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1"># Select daily_sales only</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="c1"># Result: daily_sales (directly modified)</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="c1"># Select daily_sales + upstream (raw.raw_orders)</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+sales.daily_sales"</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="c1"># Result: raw.raw_orders, daily_sales</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="c1"># Select daily_sales + downstream (weekly_sales)</span>
+</span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales+"</span>
+</span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="c1"># Result: daily_sales, weekly_sales</span>
+</span><span id="__span-5-12"><a href="#__codelineno-5-12" id="__codelineno-5-12" name="__codelineno-5-12"></a>
+</span><span id="__span-5-13"><a href="#__codelineno-5-13" id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="c1"># Select daily_sales + both upstream and downstream</span>
+</span><span id="__span-5-14"><a href="#__codelineno-5-14" id="__codelineno-5-14" name="__codelineno-5-14"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+sales.daily_sales+"</span>
+</span><span id="__span-5-15"><a href="#__codelineno-5-15" id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="c1"># Result: raw.raw_orders, daily_sales, weekly_sales</span>
 </span></code></pre></div>
-<h4 id="select-order_items">Select <code>order_items</code><a class="headerlink" href="#select-order_items" title="Permanent link">¶</a></h4>
-<p>If we specify the <code>--select-model</code> option to select <code>"sushi.order_items"</code>, the directly modified <code>sushi.items</code> model is no longer included in the plan:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sushi.order_items"</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Models:
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.order_items
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span>├──<span class="w"> </span>sushi.waiter_revenue_by_day
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_lifetime
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_by_day
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span>└──<span class="w"> </span>sushi.top_waiters
+<p><em>[Screenshot: Plan outputs showing different selection results]</em></p>
+<h3 id="git-based-selection">Git-Based Selection<a class="headerlink" href="#git-based-selection" title="Link to this section">¶</a></h3>
+<p>Select models changed in a git branch:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1"># Select models changed in feature branch</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"git:feature"</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="c1"># Select changed models + downstream</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"git:feature+"</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="c1"># Select changed models + upstream</span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+git:feature"</span>
 </span></code></pre></div>
-<h4 id="select-order_items_1">Select <code>+order_items</code><a class="headerlink" href="#select-order_items_1" title="Permanent link">¶</a></h4>
-<p>If we specify the <code>--select-model</code> option with the upstream <code>+</code> to select <code>"+sushi.order_items"</code>, the <code>sushi.items</code> model is selected because it is upstream of <code>sushi.order_items</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+sushi.order_items"</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Models:
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│<span class="w">   </span>├──<span class="w"> </span>sushi.items
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.order_items
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span>├──<span class="w"> </span>sushi.top_waiters
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_lifetime
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span>├──<span class="w"> </span>sushi.waiter_revenue_by_day
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span>└──<span class="w"> </span>sushi.customer_revenue_by_day
-</span></code></pre></div>
-<h4 id="select-items">Select <code>items</code><a class="headerlink" href="#select-items" title="Permanent link">¶</a></h4>
-<p>If we specify the <code>--select-model</code> option to select <code>"sushi.items"</code>, Vulcan does not select <code>sushi.order_items</code> (so it is not classified as directly modified).</p>
-<p>However, it does classify <code>sushi.order_items</code> as indirectly modified. Its direct modification is excluded by the model selection, but it is indirectly modified by being downstream of the selected <code>sushi.items</code> model:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sushi.items"</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Models:
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.items
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="hll"><span class="w">    </span>├──<span class="w"> </span>sushi.order_items
-</span></span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_by_day
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span>├──<span class="w"> </span>sushi.waiter_revenue_by_day
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_lifetime
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span>└──<span class="w"> </span>sushi.top_waiters
-</span></code></pre></div>
-<h4 id="select-items_1">Select <code>items+</code><a class="headerlink" href="#select-items_1" title="Permanent link">¶</a></h4>
-<p>If we specify the <code>--select-model</code> option with the downstream <code>+</code> to select <code>"sushi.items+"</code>, the <code>sushi.order_items</code> model is selected and classified as directly modified because it is downstream of <code>sushi.items</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sushi.items+"</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Models:
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│<span class="w">   </span>├──<span class="w"> </span>sushi.items
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.order_items
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span>├──<span class="w"> </span>sushi.waiter_revenue_by_day
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_lifetime
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_by_day
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span>└──<span class="w"> </span>sushi.top_waiters
-</span></code></pre></div>
-<h4 id="select-items_2">Select <code>*items</code><a class="headerlink" href="#select-items_2" title="Permanent link">¶</a></h4>
-<p>If we specify the <code>--select-model</code> option with the wildcard <code>*</code> to select <code>"sushi.*items"</code>, both <code>sushi.items</code> and <code>sushi.order_items</code> are selected because they match the wildcard:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sushi.*items"</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Models:
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>│<span class="w">   </span>├──<span class="w"> </span>sushi.order_items
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.items
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span>├──<span class="w"> </span>sushi.waiter_revenue_by_day
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span>├──<span class="w"> </span>sushi.top_waiters
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span>├──<span class="w"> </span>sushi.customer_revenue_by_day
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span>└──<span class="w"> </span>sushi.customer_revenue_lifetime
-</span></code></pre></div>
-<h4 id="select-with-tags">Select with tags<a class="headerlink" href="#select-with-tags" title="Permanent link">¶</a></h4>
-<p>If we specify the <code>--select-model</code> option with a tag selector like <code>"tag:reporting"</code>, all models with the "reporting" tag will be selected. Tags are case-insensitive and support wildcards:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:reporting*"</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Models:
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>│<span class="w">   </span>├──<span class="w"> </span>sushi.daily_revenue
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.monthly_revenue
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span>└──<span class="w"> </span>sushi.revenue_dashboard
-</span></code></pre></div>
-<h4 id="select-with-git-changes">Select with git changes<a class="headerlink" href="#select-with-git-changes" title="Permanent link">¶</a></h4>
-<p>The git-based selector allows you to select models whose files have changed compared to a target branch (default: main). This includes:
-- Untracked files (new files not in git)
-- Uncommitted changes in working directory
-- Committed changes different from the target branch</p>
-<p>For example:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"git:feature"</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>New<span class="w"> </span>environment<span class="w"> </span><span class="sb">`</span>dev<span class="sb">`</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>created<span class="w"> </span>from<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Differences<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span><span class="sb">`</span>prod<span class="sb">`</span><span class="w"> </span>environment:
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>Models:
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>├──<span class="w"> </span>Directly<span class="w"> </span>Modified:
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>│<span class="w">   </span>└──<span class="w"> </span>sushi.items<span class="w"> </span><span class="c1"># Changed in feature branch</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>└──<span class="w"> </span>Indirectly<span class="w"> </span>Modified:
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span>├──<span class="w"> </span>sushi.order_items
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span>└──<span class="w"> </span>sushi.daily_revenue
-</span></code></pre></div>
-<p>You can also combine git selection with upstream/downstream indicators:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"git:feature+"</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># Selects changed models and their downstream dependencies</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+git:feature"</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Selects changed models and their upstream dependencies</span>
-</span></code></pre></div>
-<h4 id="complex-selections-with-logical-operators">Complex selections with logical operators<a class="headerlink" href="#complex-selections-with-logical-operators" title="Permanent link">¶</a></h4>
-<p>The model selector supports combining multiple conditions using logical operators:</p>
+<p><strong>What it includes:</strong>
+- Untracked files (new models)
+- Uncommitted changes
+- Committed changes different from target branch</p>
+<p><em>[Screenshot: Plan output showing git-based selection]</em></p>
+<h3 id="complex-selections">Complex Selections<a class="headerlink" href="#complex-selections" title="Link to this section">¶</a></h3>
+<p>Combine conditions with logical operators:</p>
 <ul>
 <li><code>&amp;</code> (AND): Both conditions must be true</li>
 <li><code>|</code> (OR): Either condition must be true</li>
 <li><code>^</code> (NOT): Negates a condition</li>
 </ul>
-<p>For example:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"(tag:finance &amp; ^tag:deprecated)"</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># Selects models with finance tag that don't have deprecated tag</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"(+model_a | model_b+)"</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># Selects model_a and its upstream deps OR model_b and its downstream deps</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"(tag:finance &amp; git:main)"</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># Selects changed models that also have the finance tag</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"^(tag:test) &amp; metrics.*"</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c1"># Selects models in metrics schema that don't have the test tag</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1"># Models with finance tag that don't have deprecated tag</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"(tag:finance &amp; ^tag:deprecated)"</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="c1"># daily_sales + upstream OR weekly_sales + downstream</span>
+</span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"(+sales.daily_sales | sales.weekly_sales+)"</span>
+</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="c1"># Changed models that also have finance tag</span>
+</span><span id="__span-7-8"><a href="#__codelineno-7-8" id="__codelineno-7-8" name="__codelineno-7-8"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"(tag:finance &amp; git:main)"</span>
+</span><span id="__span-7-9"><a href="#__codelineno-7-9" id="__codelineno-7-9" name="__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a href="#__codelineno-7-10" id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="c1"># Models in sales schema without test tag</span>
+</span><span id="__span-7-11"><a href="#__codelineno-7-11" id="__codelineno-7-11" name="__codelineno-7-11"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"^(tag:test) &amp; sales.*"</span>
 </span></code></pre></div>
-<h3 id="backfill-examples">Backfill examples<a class="headerlink" href="#backfill-examples" title="Permanent link">¶</a></h3>
-<h4 id="no-backfill-selection">No backfill selection<a class="headerlink" href="#no-backfill-selection" title="Permanent link">¶</a></h4>
-<p>Recall that a plan with no selection or backfill options includes all four models, two of which were directly and two of which were indirectly modified.</p>
-<p>The <code>--backfill-model</code> option does not affect whether a model is included in a plan (i.e., it will still appear in the output shown in the selection examples above). Instead, it determines whether a model is included in the list of models needing backfill (shown at the bottom of the plan's output).</p>
-<p>With no options specified, the <code>plan</code> will backfill all six models. The backfills occur in the <code>sushi__dev</code> schema because we are creating a plan for the <code>dev</code> environment:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>&lt;<span class="w"> </span>output<span class="w"> </span>omitted&gt;
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Models<span class="w"> </span>needing<span class="w"> </span>backfill<span class="w"> </span><span class="o">(</span>missing<span class="w"> </span>dates<span class="o">)</span>:
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>├──<span class="w"> </span>sushi__dev.items:<span class="w"> </span><span class="m">2023</span>-12-01<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-07
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>├──<span class="w"> </span>sushi__dev.order_items:<span class="w"> </span><span class="m">2023</span>-12-01<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-07
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>├──<span class="w"> </span>sushi__dev.customer_revenue_by_day:<span class="w"> </span><span class="m">2023</span>-12-01<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-07
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>├──<span class="w"> </span>sushi__dev.customer_revenue_lifetime:<span class="w"> </span><span class="m">2023</span>-12-01<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-07
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>├──<span class="w"> </span>sushi__dev.waiter_revenue_by_day:<span class="w"> </span><span class="m">2023</span>-12-01<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-07
-</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>└──<span class="w"> </span>sushi__dev.top_waiters:<span class="w"> </span><span class="m">2023</span>-12-01<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-07
+<p><em>[Screenshot: Plan output showing complex selection results]</em></p>
+<hr/>
+<h2 id="examples-with-orders360">Examples with Orders360<a class="headerlink" href="#examples-with-orders360" title="Link to this section">¶</a></h2>
+<p>Let's see how model selection works with the Orders360 project. We'll modify <code>raw.raw_orders</code> and <code>sales.daily_sales</code> to demonstrate different selection scenarios.</p>
+<h3 id="example-setup">Example Setup<a class="headerlink" href="#example-setup" title="Link to this section">¶</a></h3>
+<p>We've modified two models:
+- <code>raw.raw_orders</code> (directly modified)
+- <code>sales.daily_sales</code> (directly modified)</p>
+<p>The dependency chain:
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>raw.raw_orders → sales.daily_sales → sales.weekly_sales
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Orders360 project showing modified files]</em></p>
+<h3 id="no-selection-default">No Selection (Default)<a class="headerlink" href="#no-selection-default" title="Link to this section">¶</a></h3>
+<p>Without selection, Vulcan includes all directly modified models and their downstream dependencies:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
 </span></code></pre></div>
-<h4 id="backfill-sushiwaiter_revenue_by_day">Backfill <code>sushi.waiter_revenue_by_day</code><a class="headerlink" href="#backfill-sushiwaiter_revenue_by_day" title="Permanent link">¶</a></h4>
-<p>If we specify the <code>--backfill-model</code> option with <code>"sushi.waiter_revenue_by_day"</code>, there are fewer models in the backfills list.</p>
-<p>The <code>sushi__dev.customer_revenue_by_day</code>, <code>sushi__dev.customer_revenue_lifetime</code>, and <code>sushi__dev.top_waiters</code> models are excluded because they are not upstream of <code>sushi.waiter_revenue_by_day</code>.</p>
-<p>The <code>sushi__dev.items</code> and <code>sushi__dev.order_items</code> models are still included because they are upstream of <code>sushi.waiter_revenue_by_day</code>.</p>
-<p>Models upstream of those selected in the <code>--backfill-model</code> expression are always included, regardless of whether the expression contains a leading <code>+</code> sign.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>❯<span class="w"> </span>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--backfill-model<span class="w"> </span><span class="s2">"sushi.waiter_revenue_by_day"</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&lt;<span class="w"> </span>output<span class="w"> </span>omitted&gt;
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Models<span class="w"> </span>needing<span class="w"> </span>backfill<span class="w"> </span><span class="o">(</span>missing<span class="w"> </span>dates<span class="o">)</span>:
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>├──<span class="w"> </span>sushi__dev.items:<span class="w"> </span><span class="m">2023</span>-12-04<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-10
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>├──<span class="w"> </span>sushi__dev.order_items:<span class="w"> </span><span class="m">2023</span>-12-04<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-10
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>└──<span class="w"> </span>sushi__dev.waiter_revenue_by_day:<span class="w"> </span><span class="m">2023</span>-12-04<span class="w"> </span>-<span class="w"> </span><span class="m">2023</span>-12-10
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>======================================================================
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a>Successfully Ran 2 tests against postgres
+</span><span id="__span-10-3"><a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a>----------------------------------------------------------------------
+</span><span id="__span-10-4"><a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a href="#__codelineno-10-5" id="__codelineno-10-5" name="__codelineno-10-5"></a>Differences from the `prod` environment:
+</span><span id="__span-10-6"><a href="#__codelineno-10-6" id="__codelineno-10-6" name="__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a href="#__codelineno-10-7" id="__codelineno-10-7" name="__codelineno-10-7"></a>Models:
+</span><span id="__span-10-8"><a href="#__codelineno-10-8" id="__codelineno-10-8" name="__codelineno-10-8"></a>├── Directly Modified:
+</span><span id="__span-10-9"><a href="#__codelineno-10-9" id="__codelineno-10-9" name="__codelineno-10-9"></a>│   ├── sales.daily_sales
+</span><span id="__span-10-10"><a href="#__codelineno-10-10" id="__codelineno-10-10" name="__codelineno-10-10"></a>│   └── raw.raw_orders
+</span><span id="__span-10-11"><a href="#__codelineno-10-11" id="__codelineno-10-11" name="__codelineno-10-11"></a>└── Indirectly Modified:
+</span><span id="__span-10-12"><a href="#__codelineno-10-12" id="__codelineno-10-12" name="__codelineno-10-12"></a>    └── sales.weekly_sales
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing all modified models]</em></p>
+<p><strong>What Happened:</strong>
+- Both directly modified models are included
+- <code>weekly_sales</code> is indirectly modified (depends on <code>daily_sales</code>)</p>
+<h3 id="select-single-model">Select Single Model<a class="headerlink" href="#select-single-model" title="Link to this section">¶</a></h3>
+<p>Select only <code>sales.daily_sales</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
 </span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>Differences from the `prod` environment:
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a>Models:
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a>├── Directly Modified:
+</span><span id="__span-12-5"><a href="#__codelineno-12-5" id="__codelineno-12-5" name="__codelineno-12-5"></a>│   └── sales.daily_sales
+</span><span id="__span-12-6"><a href="#__codelineno-12-6" id="__codelineno-12-6" name="__codelineno-12-6"></a>└── Indirectly Modified:
+</span><span id="__span-12-7"><a href="#__codelineno-12-7" id="__codelineno-12-7" name="__codelineno-12-7"></a>    └── sales.weekly_sales
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing only daily_sales selected]</em></p>
+<p><strong>What Happened:</strong>
+- <code>raw.raw_orders</code> is excluded (not selected)
+- <code>daily_sales</code> is included (directly modified)
+- <code>weekly_sales</code> is included (indirectly modified, downstream of <code>daily_sales</code>)</p>
+<h3 id="select-with-upstream-indicator">Select with Upstream Indicator<a class="headerlink" href="#select-with-upstream-indicator" title="Link to this section">¶</a></h3>
+<p>Select <code>daily_sales</code> and include its upstream dependencies:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+sales.daily_sales"</span>
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>Differences from the `prod` environment:
+</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a>Models:
+</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a>├── Directly Modified:
+</span><span id="__span-14-5"><a href="#__codelineno-14-5" id="__codelineno-14-5" name="__codelineno-14-5"></a>│   ├── raw.raw_orders
+</span><span id="__span-14-6"><a href="#__codelineno-14-6" id="__codelineno-14-6" name="__codelineno-14-6"></a>│   └── sales.daily_sales
+</span><span id="__span-14-7"><a href="#__codelineno-14-7" id="__codelineno-14-7" name="__codelineno-14-7"></a>└── Indirectly Modified:
+</span><span id="__span-14-8"><a href="#__codelineno-14-8" id="__codelineno-14-8" name="__codelineno-14-8"></a>    └── sales.weekly_sales
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing upstream selection]</em></p>
+<p><strong>What Happened:</strong>
+- <code>raw.raw_orders</code> is included (upstream of <code>daily_sales</code>)
+- <code>daily_sales</code> is included (selected)
+- <code>weekly_sales</code> is included (downstream of <code>daily_sales</code>)</p>
+<h3 id="select-with-downstream-indicator">Select with Downstream Indicator<a class="headerlink" href="#select-with-downstream-indicator" title="Link to this section">¶</a></h3>
+<p>Select <code>daily_sales</code> and include its downstream dependencies:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales+"</span>
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>Differences from the `prod` environment:
+</span><span id="__span-16-2"><a href="#__codelineno-16-2" id="__codelineno-16-2" name="__codelineno-16-2"></a>
+</span><span id="__span-16-3"><a href="#__codelineno-16-3" id="__codelineno-16-3" name="__codelineno-16-3"></a>Models:
+</span><span id="__span-16-4"><a href="#__codelineno-16-4" id="__codelineno-16-4" name="__codelineno-16-4"></a>├── Directly Modified:
+</span><span id="__span-16-5"><a href="#__codelineno-16-5" id="__codelineno-16-5" name="__codelineno-16-5"></a>│   ├── sales.daily_sales
+</span><span id="__span-16-6"><a href="#__codelineno-16-6" id="__codelineno-16-6" name="__codelineno-16-6"></a>│   └── sales.weekly_sales
+</span><span id="__span-16-7"><a href="#__codelineno-16-7" id="__codelineno-16-7" name="__codelineno-16-7"></a>└── Indirectly Modified:
+</span><span id="__span-16-8"><a href="#__codelineno-16-8" id="__codelineno-16-8" name="__codelineno-16-8"></a>    (none)
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing downstream selection]</em></p>
+<p><strong>What Happened:</strong>
+- <code>daily_sales</code> is included (selected)
+- <code>weekly_sales</code> is included (downstream, now directly modified)
+- <code>raw.raw_orders</code> is excluded (not selected)</p>
+<h3 id="select-with-wildcard">Select with Wildcard<a class="headerlink" href="#select-with-wildcard" title="Link to this section">¶</a></h3>
+<p>Select all models matching a pattern:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.*_sales"</span>
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>Differences from the `prod` environment:
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a>Models:
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a>├── Directly Modified:
+</span><span id="__span-18-5"><a href="#__codelineno-18-5" id="__codelineno-18-5" name="__codelineno-18-5"></a>│   └── sales.daily_sales
+</span><span id="__span-18-6"><a href="#__codelineno-18-6" id="__codelineno-18-6" name="__codelineno-18-6"></a>└── Indirectly Modified:
+</span><span id="__span-18-7"><a href="#__codelineno-18-7" id="__codelineno-18-7" name="__codelineno-18-7"></a>    └── sales.weekly_sales
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing wildcard selection]</em></p>
+<p><strong>What Happened:</strong>
+- <code>sales.daily_sales</code> matches the pattern (selected)
+- <code>sales.weekly_sales</code> matches the pattern but is indirectly modified
+- <code>raw.raw_orders</code> doesn't match (excluded)</p>
+<h3 id="select-with-tags">Select with Tags<a class="headerlink" href="#select-with-tags" title="Link to this section">¶</a></h3>
+<p>If models have tags, select by tag:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:seed"</span>
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>Differences from the `prod` environment:
+</span><span id="__span-20-2"><a href="#__codelineno-20-2" id="__codelineno-20-2" name="__codelineno-20-2"></a>
+</span><span id="__span-20-3"><a href="#__codelineno-20-3" id="__codelineno-20-3" name="__codelineno-20-3"></a>Models:
+</span><span id="__span-20-4"><a href="#__codelineno-20-4" id="__codelineno-20-4" name="__codelineno-20-4"></a>├── Directly Modified:
+</span><span id="__span-20-5"><a href="#__codelineno-20-5" id="__codelineno-20-5" name="__codelineno-20-5"></a>│   └── raw.raw_orders
+</span><span id="__span-20-6"><a href="#__codelineno-20-6" id="__codelineno-20-6" name="__codelineno-20-6"></a>└── Indirectly Modified:
+</span><span id="__span-20-7"><a href="#__codelineno-20-7" id="__codelineno-20-7" name="__codelineno-20-7"></a>    ├── sales.daily_sales
+</span><span id="__span-20-8"><a href="#__codelineno-20-8" id="__codelineno-20-8" name="__codelineno-20-8"></a>    └── sales.weekly_sales
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing tag-based selection]</em></p>
+<p><strong>What Happened:</strong>
+- <code>raw.raw_orders</code> has <code>seed</code> tag (selected)
+- Downstream models are indirectly modified</p>
+<h3 id="select-with-git-changes">Select with Git Changes<a class="headerlink" href="#select-with-git-changes" title="Link to this section">¶</a></h3>
+<p>Select models changed in a git branch:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"git:feature"</span>
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>Differences from the `prod` environment:
+</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>
+</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a>Models:
+</span><span id="__span-22-4"><a href="#__codelineno-22-4" id="__codelineno-22-4" name="__codelineno-22-4"></a>├── Directly Modified:
+</span><span id="__span-22-5"><a href="#__codelineno-22-5" id="__codelineno-22-5" name="__codelineno-22-5"></a>│   └── sales.daily_sales  # Changed in feature branch
+</span><span id="__span-22-6"><a href="#__codelineno-22-6" id="__codelineno-22-6" name="__codelineno-22-6"></a>└── Indirectly Modified:
+</span><span id="__span-22-7"><a href="#__codelineno-22-7" id="__codelineno-22-7" name="__codelineno-22-7"></a>    └── sales.weekly_sales
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing git-based selection]</em></p>
+<p><strong>What Happened:</strong>
+- Only models changed in <code>feature</code> branch are selected
+- Downstream models are included automatically</p>
+<hr/>
+<h2 id="backfill-selection">Backfill Selection<a class="headerlink" href="#backfill-selection" title="Link to this section">¶</a></h2>
+<p>By default, Vulcan backfills all models in a plan. You can limit which models are backfilled using <code>--backfill-model</code>.</p>
+<p><strong>Important:</strong> <code>--backfill-model</code> only works in development environments (not <code>prod</code>).</p>
+<h3 id="how-backfill-selection-works">How Backfill Selection Works<a class="headerlink" href="#how-backfill-selection-works" title="Link to this section">¶</a></h3>
+<pre class="mermaid"><code>flowchart TB
+    subgraph "Backfill Selection Flow"
+        PLAN[vulcan plan dev]
+        SELECT[--select-model&lt;br/&gt;Which models in plan?]
+        BACKFILL[--backfill-model&lt;br/&gt;Which models to backfill?]
 
+        subgraph "Plan Includes"
+            IN_PLAN[Models in Plan&lt;br/&gt;daily_sales, weekly_sales]
+        end
 
+        subgraph "Backfill Includes"
+            BACKFILL_LIST[Models to Backfill&lt;br/&gt;Only daily_sales]
+        end
 
+        RESULT[Result:&lt;br/&gt;Plan shows all models&lt;br/&gt;Only selected models backfilled]
+    end
 
+    PLAN --&gt; SELECT
+    PLAN --&gt; BACKFILL
+    SELECT --&gt; IN_PLAN
+    BACKFILL --&gt; BACKFILL_LIST
+    IN_PLAN --&gt; RESULT
+    BACKFILL_LIST --&gt; RESULT
 
+    style PLAN fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
+    style SELECT fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style BACKFILL fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    style RESULT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000</code></pre>
+<p><strong>Key Points:</strong>
+- <code>--select-model</code> determines which models appear in the plan
+- <code>--backfill-model</code> determines which models are actually backfilled
+- Upstream models are always backfilled (required for downstream models)</p>
+<p><em>[Screenshot: Visual diagram explaining backfill selection]</em></p>
+<h3 id="backfill-examples">Backfill Examples<a class="headerlink" href="#backfill-examples" title="Link to this section">¶</a></h3>
+<h4 id="no-backfill-selection-default">No Backfill Selection (Default)<a class="headerlink" href="#no-backfill-selection-default" title="Link to this section">¶</a></h4>
+<p>All models in the plan are backfilled:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>Models needing backfill (missing dates):
+</span><span id="__span-24-2"><a href="#__codelineno-24-2" id="__codelineno-24-2" name="__codelineno-24-2"></a>├── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
+</span><span id="__span-24-3"><a href="#__codelineno-24-3" id="__codelineno-24-3" name="__codelineno-24-3"></a>└── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing all models needing backfill]</em></p>
+<h4 id="backfill-specific-model">Backfill Specific Model<a class="headerlink" href="#backfill-specific-model" title="Link to this section">¶</a></h4>
+<p>Only backfill <code>daily_sales</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--backfill-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>Models needing backfill (missing dates):
+</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a>└── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing only daily_sales needs backfill]</em></p>
+<p><strong>What Happened:</strong>
+- <code>weekly_sales</code> is excluded from backfill
+- Only <code>daily_sales</code> will be processed</p>
+<h4 id="backfill-with-upstream">Backfill with Upstream<a class="headerlink" href="#backfill-with-upstream" title="Link to this section">¶</a></h4>
+<p>When you backfill a model, its upstream dependencies are automatically included:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--backfill-model<span class="w"> </span><span class="s2">"sales.weekly_sales"</span>
+</span></code></pre></div>
+<p><strong>Expected Output:</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a>Models needing backfill (missing dates):
+</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a>├── raw__dev.raw_orders: 2025-01-01 - 2025-01-15
+</span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a>└── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
+</span></code></pre></div><p></p>
+<p><em>[Screenshot: Plan output showing upstream models included in backfill]</em></p>
+<p><strong>What Happened:</strong>
+- <code>weekly_sales</code> is selected for backfill
+- <code>raw.raw_orders</code> is automatically included (upstream dependency)
+- <code>daily_sales</code> is excluded (not upstream of <code>weekly_sales</code>)</p>
+<hr/>
+<h2 id="visual-selection-guide">Visual Selection Guide<a class="headerlink" href="#visual-selection-guide" title="Link to this section">¶</a></h2>
+<p>Here's a quick reference for common selection patterns:</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph "Selection Patterns"
+        PAT1["sales.daily_sales&lt;br/&gt;Select only this model"]
+        PAT2["+sales.daily_sales&lt;br/&gt;Select + upstream"]
+        PAT3["sales.daily_sales+&lt;br/&gt;Select + downstream"]
+        PAT4["+sales.daily_sales+&lt;br/&gt;Select + both"]
+        PAT5["sales.*_sales&lt;br/&gt;Wildcard match"]
+        PAT6["tag:seed&lt;br/&gt;Tag selection"]
+    end
 
+    subgraph "Results"
+        RES1[daily_sales only]
+        RES2[raw_orders + daily_sales]
+        RES3[daily_sales + weekly_sales]
+        RES4[All connected]
+        RES5[All matching]
+        RES6[All tagged]
+    end
 
+    PAT1 --&gt; RES1
+    PAT2 --&gt; RES2
+    PAT3 --&gt; RES3
+    PAT4 --&gt; RES4
+    PAT5 --&gt; RES5
+    PAT6 --&gt; RES6
 
-
-
-
-
-                
-              </article>
-            </div>
-          
-          
-  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
-
+    style PAT1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT3 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT4 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT5 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style PAT6 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000</code></pre>
+<p><em>[Screenshot: Visual cheat sheet for selection patterns]</em></p>
+<hr/>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
+<ol>
+<li>
+<p><strong>Start Small</strong>: Select only the models you're testing
+   </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
+</span></code></pre></div><p></p>
+</li>
+<li>
+<p><strong>Use Wildcards</strong>: When selecting multiple related models
+   </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.*"</span>
+</span></code></pre></div><p></p>
+</li>
+<li>
+<p><strong>Include Dependencies</strong>: Use <code>+</code> when you need upstream/downstream models
+   </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+sales.daily_sales+"</span>
+</span></code></pre></div><p></p>
+</li>
+<li>
+<p><strong>Limit Backfill</strong>: Use <code>--backfill-model</code> to save time in development
+   </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--backfill-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
+</span></code></pre></div><p></p>
+</li>
+<li>
+<p><strong>Use Tags</strong>: Organize models with tags for easier selection
+   </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:reporting"</span>
+</span></code></pre></div><p></p>
+</li>
+</ol>
+<hr/>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">¶</a></h2>
+<p><strong>Model Selection:</strong>
+- ✅ Filter which models appear in a plan
+- ✅ Use wildcards, tags, and git changes
+- ✅ Include upstream/downstream with <code>+</code>
+- ✅ Combine with logical operators</p>
+<p><strong>Backfill Selection:</strong>
+- ✅ Limit which models are actually backfilled
+- ✅ Upstream models are always included
+- ✅ Only works in development environments
+- ✅ Saves time when testing specific models</p>
+<hr/>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
+<ul>
+<li>Learn about <a href="../concepts/plans.md">Plans</a> for understanding plan behavior</li>
+<li>Read the <a href="../plan/">Plan Guide</a> for applying changes</li>
+<li>Check <a href="../reference/model_configuration.md">Model Configuration</a> for model properties</li>
+<li>Explore <a href="../../examples/overview/">Orders360 Example</a> for complete project reference</li>
+</ul>
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
-        </div>
-        
-          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
   Back to top
 </button>
-        
-      </main>
-      
-        <footer class="md-footer">
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
-  
-    <div class="md-copyright__highlight">
-      Copyright © 2024 DataOS Vulcan Team<br>
+</main>
+<footer class="md-footer">
+<nav aria-label="Footer" class="md-footer__inner md-grid">
+<a aria-label="Previous: Data Quality" class="md-footer__link md-footer__link--prev" href="../data_quality/">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Previous
+              </span>
+<div class="md-ellipsis">
+                Data Quality
+              </div>
+</div>
+</a>
+<a aria-label="Next: Transpiling Semantics" class="md-footer__link md-footer__link--next" href="../transpiling_semantics/">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Next
+              </span>
+<div class="md-ellipsis">
+                Transpiling Semantics
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2024 DataOS Vulcan Team<br/>
 <small>Complete stack for building data products</small>
-
-    </div>
+</div>
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
       Material for MkDocs
     </a>
-  
 </div>
-      
-        
 <div class="md-social">
-  
-    
-    
-    
-    
-      
-      
-    
-    <a href="https://github.com/tmdc-io/vulcan-book" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
-    </a>
-  
+<a class="md-social__link" href="https://github.com/tmdc-io/vulcan-book" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
 </div>
-      
-    </div>
-  </div>
+</div>
+</div>
 </footer>
-      
-    </div>
-    <div class="md-dialog" data-md-component="dialog">
-      <div class="md-dialog__inner md-typeset"></div>
-    </div>
-    
-    
-    
-      
-      
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "toc.follow", "search.highlight", "search.suggest", "content.tabs.link", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-    
-    
-      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
-      
-    
-  
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<div class="md-progress" data-md-component="progress" role="progressbar"></div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });
 </script></body></html>

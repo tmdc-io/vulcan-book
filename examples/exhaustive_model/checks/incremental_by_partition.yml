@@ -1,0 +1,101 @@
+checks:
+  vulcan_demo.partition:
+    filter: order_date >= CURRENT_DATE - INTERVAL '90 days'
+    completeness:
+      - missing_count(warehouse_id) = 0:
+          name: no_missing_warehouse_ids
+          attributes:
+            description: "All records must have a warehouse ID"
+      
+      - missing_count(warehouse_name) = 0:
+          name: no_missing_warehouse_names
+          attributes:
+            description: "All records must have a warehouse name"
+      
+      - missing_count(category) = 0:
+          name: no_missing_categories
+          attributes:
+            description: "All records must have a product category"
+      
+      - missing_count(order_date) = 0:
+          name: no_missing_order_dates
+          attributes:
+            description: "All records must have an order date"
+      
+      - missing_count(partitioned_analysis_key) = 0:
+          name: no_missing_partitioned_keys
+          attributes:
+            description: "All records must have a partitioned analysis key"
+      
+      - row_count > 0:
+          name: has_partitioned_data
+          attributes:
+            description: "At least one partitioned record exists"
+    
+    validity:
+      - failed rows:
+          name: negative_total_sales_amount
+          fail query: |
+            SELECT warehouse_id, warehouse_name, category, order_date, total_sales_amount, total_transactions
+            FROM vulcan_demo.partition
+            WHERE total_sales_amount < 0
+          samples limit: 10
+          attributes:
+            description: "Total sales amount cannot be negative"
+      
+      - failed rows:
+          name: negative_total_transactions
+          fail query: |
+            SELECT warehouse_id, warehouse_name, category, order_date, total_transactions, total_sales_amount
+            FROM vulcan_demo.partition
+            WHERE total_transactions < 0
+          samples limit: 10
+          attributes:
+            description: "Total transactions cannot be negative"
+      
+      - failed rows:
+          name: negative_unique_customers
+          fail query: |
+            SELECT warehouse_id, warehouse_name, category, order_date, unique_customers, total_transactions
+            FROM vulcan_demo.partition
+            WHERE unique_customers < 0
+          samples limit: 10
+          attributes:
+            description: "Unique customers count cannot be negative"
+      
+      - failed rows:
+          name: negative_avg_order_value
+          fail query: |
+            SELECT warehouse_id, warehouse_name, category, order_date, avg_order_value, total_sales_amount, total_transactions
+            FROM vulcan_demo.partition
+            WHERE avg_order_value < 0
+          samples limit: 10
+          attributes:
+            description: "Average order value cannot be negative"
+      
+      - failed rows:
+          name: empty_warehouse_names
+          fail query: |
+            SELECT warehouse_id, warehouse_name, category, order_date
+            FROM vulcan_demo.partition
+            WHERE warehouse_name IS NULL OR TRIM(warehouse_name) = ''
+          samples limit: 10
+          attributes:
+            description: "Warehouse names cannot be empty"
+      
+      - failed rows:
+          name: future_order_dates
+          fail query: |
+            SELECT warehouse_id, warehouse_name, category, order_date, total_sales_amount
+            FROM vulcan_demo.partition
+            WHERE order_date > CURRENT_DATE
+          samples limit: 10
+          attributes:
+            description: "Order dates cannot be in the future"
+    
+    uniqueness:
+      - duplicate_count(partitioned_analysis_key) = 0:
+          name: unique_partitioned_keys
+          attributes:
+            description: "Partitioned analysis keys must be unique (this is the grain for partitioned model)"
+

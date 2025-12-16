@@ -1,54 +1,1663 @@
-.md-typeset .admonition.question,
-.md-typeset details.question{
-    border-color: rgb(68, 138, 255);
+/* ============================================================
+   Vulcan Documentation - DataOS Blue Theme
+   Clean, professional documentation experience
+   ============================================================ */
+
+
+/* 1. Hides the DataOS Vulcan site title element in the sidebar (Previous Fix) */
+.md-nav__title {
+  display: none;
 }
 
-.md-typeset .question > .admonition-title,
-.md-typeset .question > summary {
-    background-color: rgba(68, 138, 255, 0.1);
+/* 2. THE FINAL FIX: Force top-level sections to be collapsed by default.
+ This hides the sub-navigation list inside any top-level item 
+ that is NOT currently active (i.e., not the page the user is viewing). 
+ This works reliably even when navigation.indexes is on.
+*/
+/* .md-nav__list > .md-nav__item:not(.md-nav__item--active) > .md-nav__list {
+  display: none;
+} */
 
-    &::before {
-      background-color: rgb(68, 138, 255);
-    }
+/* -------------------- Font Imports -------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&display=swap');
 
-    &::after {
-      color: rgb(68, 138, 255);
-    }
+/* -------------------- Color Palette -------------------- */
+:root {
+  /* DataOS gray palette */
+  --vl-gray-darkest: #292E33;      /* Dark charcoal */
+  --vl-gray-light: #D9DADA;        /* Light gray */
+  --vl-gray-medium: #9C9C9C;       /* Medium gray */
+  --vl-gray-dark: #828282;         /* Darker gray */
+
+  /* Primary colors - DataOS Blue */
+  --vl-primary: #1D94FC;           /* Bright blue - main brand color */
+  --vl-primary-dark: #1A7FDB;      /* Darker blue for hover */
+  --vl-primary-light: #5CB0FA;     /* Light blue */
+  --vl-primary-subtle: rgba(29, 148, 252, 0.10);
+
+  /* Backgrounds */
+  --vl-bg-main: #FFFFFF;           /* White main background */
+  --vl-bg-sidebar: #F5F6F7;        /* Very light gray sidebar */
+  --vl-bg-code: #F0F2F4;           /* Light gray code background */
+  --vl-bg-hover: #E8EAED;          /* Light gray hover */
+  --vl-bg-header: #292E33;         /* Dark header */
+
+  /* Text colors */
+  --vl-text-primary: #292E33;      /* Dark charcoal */
+  --vl-text-secondary: #4A5056;    /* Medium dark gray */
+  --vl-text-muted: #828282;        /* Muted gray */
+  --vl-text-light: #9C9C9C;        /* Light gray */
+
+  /* Borders */
+  --vl-border: #D9DADA;            /* Light gray border */
+  --vl-border-light: #E8EAED;      /* Lighter gray border */
+
+  /* Accent colors */
+  --vl-success: #22C55E;           /* Green */
+  --vl-warning: #F59E0B;           /* Amber */
+  --vl-error: #EF4444;             /* Red */
+  --vl-info: #1D94FC;              /* Blue (same as primary) */
+
+  /* Shadows */
+  --vl-shadow-sm: 0 1px 2px 0 rgba(41, 46, 51, 0.05);
+  --vl-shadow-md: 0 4px 6px -1px rgba(41, 46, 51, 0.08), 0 2px 4px -2px rgba(41, 46, 51, 0.06);
+  --vl-shadow-lg: 0 10px 15px -3px rgba(41, 46, 51, 0.10), 0 4px 6px -4px rgba(41, 46, 51, 0.05);
+
+  /* Sidebar sizes - Bento style (matching minimum width) */
+  --vl-sidebar-width: 290px; /* Increased to fully accommodate "Execution Hooks" and other long headings */
+  --vl-toc-width: 270px;
+
+  /* Typography - Cube-style fonts */
+  --vl-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --vl-font-mono: 'Source Code Pro', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', monospace;
+  
+  /* Font weights */
+  --vl-font-weight-normal: 400;
+  --vl-font-weight-medium: 500;
+  --vl-font-weight-semibold: 600;
+  --vl-font-weight-bold: 700;
+
+  /* Override Material theme variables */
+  --md-primary-fg-color: var(--vl-primary);
+  --md-accent-fg-color: var(--vl-primary);
+  --md-typeset-a-color: var(--vl-primary);
 }
 
+/* -------------------- Dark Mode Support -------------------- */
+[data-md-color-scheme="slate"] {
+  /* Dark DataOS palette */
+  --vl-gray-darkest: #1A1D21;
+  --vl-gray-light: #3A3F45;
+  --vl-gray-medium: #5A6068;
+  --vl-gray-dark: #4A5056;
+
+  --vl-primary: #5CB0FA;
+  --vl-primary-dark: #1D94FC;
+  --vl-primary-light: #7EC4FF;
+  --vl-primary-subtle: rgba(92, 176, 250, 0.15);
+
+  --vl-bg-main: #1A1D21;
+  --vl-bg-sidebar: #22262B;
+  --vl-bg-code: #2A2F35;
+  --vl-bg-hover: #32383F;
+  --vl-bg-header: #292E33;
+
+  --vl-text-primary: #F5F6F7;
+  --vl-text-secondary: #D9DADA;
+  --vl-text-muted: #9C9C9C;
+  --vl-text-light: #828282;
+
+  --vl-border: #3A3F45;
+  --vl-border-light: #2A2F35;
+}
+
+/* -------------------- Base Styles -------------------- */
+body {
+  font-family: var(--vl-font-sans);
+  font-weight: var(--vl-font-weight-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga' 1, 'calt' 1;
+  background-color: var(--vl-bg-main);
+}
+
+/* Apply monospace font to code elements */
+code, pre, kbd, samp,
+.md-typeset code,
+.md-typeset pre {
+  font-family: var(--vl-font-mono) !important;
+}
+
+/* -------------------- Main Header -------------------- */
+.md-header {
+  background-color: #292E33 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #3A3F45 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+.md-header__inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0.875rem 2.5rem !important; /* Bento-style generous padding */
+  max-width: none !important;
+  background: transparent !important;
+}
+
+/* DataOS Vulcan title - 75% zoom size */
+.md-header__title {
+  font-family: var(--vl-font-sans) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.875rem !important; /* 14px - balanced for header */
+  letter-spacing: -0.01em;
+  flex-shrink: 0 !important;
+}
+
+.md-header__topic {
+  font-family: var(--vl-font-sans) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.875rem !important; /* 14px - balanced for header */
+}
+
+/* Keep "DataOS Vulcan" always visible - hide page title on scroll */
+.md-header__title .md-header__topic:first-child {
+  display: flex !important;
+  opacity: 1 !important;
+  transform: none !important;
+  position: relative !important;
+}
+
+/* Hide the second topic (page title) that appears on scroll */
+.md-header__title .md-header__topic:last-child:not(:first-child) {
+  display: none !important;
+}
+
+.md-header--shadow {
+  box-shadow: none !important;
+}
+
+/* Header text color - light for dark header */
+.md-header,
+.md-header * {
+  color: #FFFFFF !important;
+}
+
+.md-header .md-icon svg {
+  fill: #FFFFFF !important;
+}
+
+/* Header search - ensure it stays on the right */
+.md-search {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.md-search__input {
+  font-family: var(--vl-font-sans) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.md-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.md-search__input:focus {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: var(--vl-primary-light) !important;
+}
+
+/* Search result dropdown - fix z-index and position */
+.md-search__output {
+  z-index: 100 !important;
+}
+
+/* -------------------- Navigation Tabs in Header -------------------- */
+.md-header__inner {
+  position: relative !important;
+}
+
+.md-tabs {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: calc(var(--vl-sidebar-width) + 3rem) !important; /* Bento: align with content area start (sidebar + 3rem gap) */
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important; /* vertically center with search bar */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  z-index: 120 !important;
+  width: auto !important;
+}
+
+.md-tabs__list {
+  display: flex !important;
+  gap: 0.75rem !important;
+  align-items: center !important;
+}
+
+.md-tabs__item {
+  padding: 0 !important;
+}
+
+.md-tabs__link {
+  font-family: var(--vl-font-sans) !important;
+  color: #f1f3f5 !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-weight: var(--vl-font-weight-medium) !important;
+  padding: 0.35rem 0.6rem !important;
+  transition: all 0.15s ease !important;
+  border-radius: 0 !important;
+  opacity: 1 !important;
+  border-bottom: 2px solid transparent !important;
+  letter-spacing: 0 !important;
+}
+
+.md-tabs__link:hover {
+  color: #ffffff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.4) !important;
+  background: transparent !important;
+}
+
+.md-tabs__link--active {
+  color: var(--vl-primary-light) !important;
+  background-color: transparent !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--vl-primary-light) !important;
+}
+
+/* -------------------- Main Layout -------------------- */
+.md-main {
+  background-color: var(--vl-bg-main);
+}
+
+.md-main__inner {
+  display: flex !important;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+/* -------------------- Primary Sidebar (Navigation) -------------------- */
+.md-sidebar--primary {
+  width: var(--vl-sidebar-width) !important;
+  min-width: var(--vl-sidebar-width) !important;
+  background: var(--vl-bg-sidebar) !important;
+  border-right: 1px solid var(--vl-border) !important;
+  padding: 1.5rem 0 !important; /* Bento-style padding */
+  position: sticky;
+  top: 86px;  /* Below header (48px) + tabs (38px) */
+  height: calc(100vh - 86px);
+  overflow-y: auto;
+  overflow-x: hidden !important; /* Hide horizontal scrollbar */
+  scrollbar-width: none !important; /* Firefox - hide scrollbar */
+  -ms-overflow-style: none !important; /* IE and Edge - hide scrollbar */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.md-sidebar--primary::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.md-sidebar--primary .md-sidebar__scrollwrap {
+  padding: 0 0.5rem !important; /* Reduced padding to give more room for single-line headings */
+  width: 100% !important; /* Use full sidebar width */
+  box-sizing: border-box !important; /* Include padding in width calculation */
+  overflow-x: hidden !important; /* Prevent horizontal scrolling */
+}
+
+/* Ensure navigation lists don't cause horizontal overflow */
+.md-sidebar--primary .md-nav,
+.md-sidebar--primary .md-nav__list {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* -------------------- Collapsible Navigation Sections -------------------- */
+/* Main section titles (About, Configurations, Components, Guides) - 75% zoom, Bento spacing */
+.md-nav__title {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-weight: var(--vl-font-weight-semibold) !important;
+  letter-spacing: 0 !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.625rem 0.5rem !important; /* Bento: generous vertical padding */
+  margin-top: 0.75rem !important; /* Bento: more spacing between sections */
+  cursor: pointer !important;
+  border-radius: 6px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.md-nav__title:first-child {
+  margin-top: 0 !important;
+}
+
+.md-nav__title:hover {
+  background-color: var(--vl-bg-hover) !important;
+}
+
+/* Toggle icon for collapsible sections */
+.md-nav__title .md-nav__icon {
+  transition: transform 0.2s ease !important;
+}
+
+/* Section toggle styling */
+.md-nav--lifted > .md-nav__list > .md-nav__item--nested,
+.md-nav__item--nested {
+  margin: 0.125rem 0 !important;
+}
+
+/* Nested toggle button styling - 75% zoom, Bento spacing, single-line */
+.md-nav__item--nested > .md-nav__link {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-weight: var(--vl-font-weight-medium) !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.5rem 0.375rem !important; /* Reduced horizontal padding to maximize text space */
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  white-space: nowrap !important; /* Prevent text wrapping */
+  word-break: keep-all !important; /* Prevent word breaking */
+  overflow: visible !important; /* Ensure full text is visible - no truncation */
+  text-overflow: clip !important; /* No ellipsis - show full text */
+  max-width: none !important; /* Remove any width restrictions */
+}
+
+.md-nav__item--nested > .md-nav__link:hover {
+  background-color: var(--vl-bg-hover) !important;
+}
+
+/* Hide the inner arrow icon (the one right after text) - keep only dropdown arrow */
+.md-sidebar--primary .md-nav__link > .md-nav__icon {
+  display: none !important;
+}
+
+/* Hide nested items by default - they show when parent is toggled */
+.md-nav__item--nested > .md-nav {
+  margin-left: 0.25rem !important; /* Reduced to give more room for nested text */
+  padding-left: 0.375rem !important; /* Reduced to give more room for nested text */
+  border-left: 2px solid var(--vl-border) !important;
+  margin-top: 0.125rem !important;
+}
+
+/* Navigation links - 75% zoom size, Bento spacing, single-line */
+.md-nav__link {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-weight: var(--vl-font-weight-normal) !important;
+  color: var(--vl-text-secondary) !important;
+  padding: 0.5rem 0.375rem !important; /* Reduced horizontal padding to maximize text space */
+  border-radius: 6px !important;
+  margin: 0.25rem 0 !important; /* Bento: generous spacing between items (10-15px equivalent) */
+  transition: all 0.15s ease !important;
+  line-height: 1.4 !important;
+  white-space: nowrap !important; /* Prevent text wrapping - keep on single line */
+  word-break: keep-all !important; /* Prevent word breaking */
+  overflow: visible !important; /* Ensure full text is visible - no truncation */
+  text-overflow: clip !important; /* No ellipsis - show full text */
+  max-width: none !important; /* Remove any width restrictions */
+}
+
+.md-nav__link:hover {
+  color: var(--vl-text-primary) !important;
+  background-color: var(--vl-bg-hover) !important;
+}
+
+.md-nav__link--active,
+.md-nav__link:focus {
+  color: var(--vl-text-primary) !important;
+  background-color: var(--vl-bg-hover) !important;
+  font-weight: 500 !important;
+}
+
+.md-nav__link:focus {
+  outline: none !important;
+}
+
+/* Navigation items spacing */
+.md-nav__item {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important; /* Ensure items can use full available width */
+  max-width: none !important; /* Remove any width restrictions */
+}
+
+/* Ensure nav link text containers can expand */
+.md-nav__link span,
+.md-nav__link .md-nav__link-text {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+}
+
+/* -------------------- Secondary Sidebar (TOC) -------------------- */
+.md-sidebar--secondary {
+  width: var(--vl-toc-width) !important;
+  min-width: var(--vl-toc-width) !important;
+  background: transparent !important;
+  border-left: 1px solid var(--vl-border) !important;
+  padding: 1.5rem 0 !important; /* Bento-style padding */
+  position: sticky;
+  top: 86px;  /* Below header (48px) + tabs (38px) */
+  height: calc(100vh - 86px);
+  overflow-y: auto;
+  margin-left: 0 !important; /* Align with content edge */
+}
+
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+  padding: 0 0.5rem 0 0; /* No left padding - TOC at edge */
+}
+
+/* TOC title */
+.md-sidebar--secondary .md-nav__title {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  color: var(--vl-text-muted) !important;
+  margin-bottom: 0.5rem !important;
+  cursor: default !important;
+  background: transparent !important;
+}
+
+.md-sidebar--secondary .md-nav__title:hover {
+  background: transparent !important;
+}
+
+/* TOC links - 75% zoom, Bento spacing */
+.md-sidebar--secondary .md-nav__link {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.6875rem !important; /* 11px - 75% zoom size */
+  font-weight: var(--vl-font-weight-normal) !important;
+  color: var(--vl-text-muted) !important;
+  padding: 0.5rem 0.75rem 0.5rem 0.25rem !important; /* Less left padding - closer to edge */
+  border-left: 2px solid transparent !important;
+  border-radius: 0 !important;
+  margin: 0.125rem 0 !important; /* Bento: spacing between TOC items */
+  background: transparent !important;
+}
+
+.md-sidebar--secondary .md-nav__link:hover {
+  color: var(--vl-text-primary) !important;
+  background: transparent !important;
+  border-left-color: var(--vl-border) !important;
+}
+
+.md-sidebar--secondary .md-nav__link--active {
+  color: var(--vl-text-primary) !important;
+  background: transparent !important;
+  border-left-color: var(--vl-border) !important;
+  font-weight: var(--vl-font-weight-medium) !important;
+}
+
+/* -------------------- Main Content Area (Bento style) -------------------- */
+.md-content {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  /* Fill available space between sidebar and TOC */
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 2rem 2rem !important; /* Consistent padding */
+  background: var(--vl-bg-main) !important;
+}
+
+.md-content__inner {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Breadcrumb navigation path - align with heading */
+.md-path {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+
+/* -------------------- Breadcrumbs -------------------- */
+/* Cube-style alignment: Ensure breadcrumbs and h1 share exact same left position */
+/* Remove ALL padding and margin from breadcrumb containers */
+.md-content__inner > nav[aria-label="Breadcrumbs"],
+.md-content__inner > .md-nav__path,
+.md-content .md-nav__path,
+.md-content nav[aria-label="Breadcrumbs"],
+nav[aria-label="Breadcrumbs"],
+.md-nav__path {
+  margin: 0 0 0.5rem 0 !important;
+  padding: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+}
+
+/* Remove all padding from breadcrumb lists and items */
+.md-nav__path ul,
+nav[aria-label="Breadcrumbs"] ul,
+.md-nav__path ol,
+nav[aria-label="Breadcrumbs"] ol,
+.md-nav__path .md-nav__list,
+nav[aria-label="Breadcrumbs"] .md-nav__list {
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  list-style: none !important;
+}
+
+/* Remove padding from all breadcrumb items and links */
+.md-nav__path .md-nav__item,
+nav[aria-label="Breadcrumbs"] .md-nav__item,
+.md-nav__path li,
+nav[aria-label="Breadcrumbs"] li,
+.md-nav__path .md-nav__link,
+nav[aria-label="Breadcrumbs"] .md-nav__link,
+.md-nav__path a,
+nav[aria-label="Breadcrumbs"] a {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Target first element in breadcrumb to ensure it starts at edge */
+.md-nav__path > *:first-child,
+nav[aria-label="Breadcrumbs"] > *:first-child,
+.md-nav__path .md-nav__item:first-child,
+nav[aria-label="Breadcrumbs"] .md-nav__item:first-child,
+.md-nav__path .md-nav__link:first-child,
+nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Ensure breadcrumbs inside md-typeset also have no padding */
+.md-typeset .md-nav__path,
+.md-typeset nav[aria-label="Breadcrumbs"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Match h1 left alignment - ensure both breadcrumb and h1 start at same position */
+.md-typeset h1:first-of-type {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important;
+}
+
+/* Ensure breadcrumb container and h1 are both direct children and aligned */
+.md-content__inner > nav[aria-label="Breadcrumbs"]:first-child,
+.md-content__inner > .md-nav__path:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  width: 100% !important;
+}
+
+/* Force alignment: both breadcrumb and h1 should start at content inner edge */
+.md-content__inner > nav[aria-label="Breadcrumbs"] + .md-typeset,
+.md-content__inner > .md-nav__path + .md-typeset {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.md-content__inner > nav[aria-label="Breadcrumbs"] + .md-typeset h1,
+.md-content__inner > .md-nav__path + .md-typeset h1 {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Universal alignment: Ensure breadcrumb text and h1 text start at exact same position */
+.md-content__inner nav[aria-label="Breadcrumbs"] *:first-child,
+.md-content__inner .md-nav__path *:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Override any Material default styles that might add spacing */
+.md-content__inner > *:first-child nav[aria-label="Breadcrumbs"],
+.md-content__inner > *:first-child .md-nav__path {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* -------------------- Typography (75% zoom → 100% zoom) -------------------- */
+.md-typeset {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.8125rem !important; /* 13px - 75% of previous 14px */
+  line-height: 1.65 !important;
+  color: var(--vl-text-primary) !important;
+  font-weight: var(--vl-font-weight-normal) !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.md-typeset h1 {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 1.21875rem !important; /* ~19.5px - 75% of previous 26px */
+  font-weight: var(--vl-font-weight-bold) !important;
+  letter-spacing: -0.02em !important;
+  color: var(--vl-text-primary) !important;
+  margin-bottom: 0.875rem !important;
+  line-height: 1.3 !important;
+  margin-top: 0 !important;
+}
+
+.md-typeset h2 {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.9375rem !important; /* 15px - 75% of previous 20px */
+  font-weight: var(--vl-font-weight-semibold) !important;
+  letter-spacing: -0.015em !important;
+  color: var(--vl-text-primary) !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.625rem !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important;
+  line-height: 1.4 !important;
+}
+
+.md-typeset h3 {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.875rem !important; /* 14px - rounded from 75% of previous 17px */
+  font-weight: var(--vl-font-weight-semibold) !important;
+  color: var(--vl-text-primary) !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.45 !important;
+}
+
+.md-typeset h4 {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.8125rem !important; /* 13px - rounded from 75% of previous 15px */
+  font-weight: var(--vl-font-weight-semibold) !important;
+  color: var(--vl-text-primary) !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.5 !important;
+}
+
+.md-typeset p {
+  color: var(--vl-text-primary) !important;
+  margin-bottom: 1rem !important; /* Tighter spacing like Bento */
+  line-height: 1.65 !important; /* Bento paragraph line-height */
+}
+
+.md-typeset li {
+  color: var(--vl-text-primary) !important;
+  line-height: 1.65 !important; /* Bento list line-height (tighter) */
+}
+
+/* Links */
+.md-typeset a {
+  color: var(--vl-primary) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: color 0.15s ease !important;
+}
+
+.md-typeset a:hover {
+  color: var(--vl-primary-dark) !important;
+  text-decoration: underline !important;
+}
+
+/* -------------------- Code Blocks -------------------- */
+/* Inline code - 75% zoom */
+.md-typeset code {
+  font-family: var(--vl-font-mono) !important;
+  font-size: 0.75em !important; /* ~9.75px - 75% zoom size */
+  font-weight: 500 !important;
+  background-color: #F3F4F6 !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.125rem 0.375rem !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+/* Code blocks - 75% zoom */
+.md-typeset pre {
+  font-family: var(--vl-font-mono) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  line-height: 1.6 !important;
+  background-color: #F8F9FA !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--vl-border) !important;
+  padding: 0.875rem !important;
+}
+
+.md-typeset pre > code {
+  font-family: var(--vl-font-mono) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Dark mode code */
+[data-md-color-scheme="slate"] .md-typeset code {
+  background-color: #3A4048 !important;
+  color: #E8EAED !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset pre {
+  background-color: #1E2228 !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset pre > code {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+/* -------------------- Admonitions -------------------- */
+.md-typeset .admonition,
+.md-typeset details {
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: var(--vl-shadow-sm) !important;
+  margin: 1.5rem 0 !important;
+  overflow: hidden !important;
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-family: var(--vl-font-sans) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  padding: 0.75rem 1rem !important;
+  padding-left: 2.5rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  position: relative !important;
+}
+
+/* Admonition icon alignment */
+.md-typeset .admonition-title::before,
+.md-typeset summary::before {
+  position: absolute !important;
+  left: 0.75rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}
+
+/* Note - Blue */
+.md-typeset .admonition.note,
+.md-typeset details.note {
+  background-color: #F0F7FF !important;
+  border-left: 4px solid var(--vl-primary) !important;
+}
+
+.md-typeset .note > .admonition-title,
+.md-typeset .note > summary {
+  background-color: rgba(29, 148, 252, 0.08) !important;
+  color: #1D94FC !important;
+}
+
+.md-typeset .note > .admonition-title::before,
+.md-typeset .note > summary::before {
+  background-color: var(--vl-primary) !important;
+}
+
+/* Tip - Green */
 .md-typeset .admonition.tip,
-.md-typeset details.tip{
-    border-color: rgb(61, 100, 226);
+.md-typeset details.tip {
+  background-color: #F0FDF4 !important;
+  border-left: 4px solid var(--vl-success) !important;
 }
 
 .md-typeset .tip > .admonition-title,
 .md-typeset .tip > summary {
-    background-color: rgba(61, 100, 226, 0.1);
-
-    &::before {
-      background-color: #3D64E2;
-    }
-
-    &::after {
-      color: #3D64E2;
-    }
+  background-color: rgba(34, 197, 94, 0.08) !important;
+  color: #16A34A !important;
 }
 
-.md-nav__link {
-    word-break: break-word;
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  background-color: var(--vl-success) !important;
 }
 
-:root {
-  --md-primary-fg-color: #3C64E2;
+/* Warning - Amber */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  background-color: #FFFBEB !important;
+  border-left: 4px solid var(--vl-warning) !important;
 }
 
-.md-tabs__item:last-child a::before {
-    content: "";
-    background: transparent url("../images/vulcan-white.svg") center left no-repeat;
-    background-size: contain;
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    display: inline-block;
-    margin-bottom: -4px;
+.md-typeset .warning > .admonition-title,
+.md-typeset .warning > summary {
+  background-color: rgba(245, 158, 11, 0.08) !important;
+  color: #D97706 !important;
 }
+
+.md-typeset .warning > .admonition-title::before,
+.md-typeset .warning > summary::before {
+  background-color: var(--vl-warning) !important;
+}
+
+/* Danger / Error - Red */
+.md-typeset .admonition.danger,
+.md-typeset details.danger,
+.md-typeset .admonition.error,
+.md-typeset details.error {
+  background-color: #FEF2F2 !important;
+  border-left: 4px solid var(--vl-error) !important;
+}
+
+.md-typeset .danger > .admonition-title,
+.md-typeset .danger > summary,
+.md-typeset .error > .admonition-title,
+.md-typeset .error > summary {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+  color: #DC2626 !important;
+}
+
+/* Info - Blue */
+.md-typeset .admonition.info,
+.md-typeset details.info {
+  background-color: #F0F7FF !important;
+  border-left: 4px solid var(--vl-primary-light) !important;
+}
+
+.md-typeset .info > .admonition-title,
+.md-typeset .info > summary {
+  background-color: rgba(92, 176, 250, 0.08) !important;
+  color: #1D94FC !important;
+}
+
+/* Question - Light Blue */
+.md-typeset .admonition.question,
+.md-typeset details.question {
+  background-color: #F0F9FF !important;
+  border-left: 4px solid #5CB0FA !important;
+}
+
+.md-typeset .question > .admonition-title,
+.md-typeset .question > summary {
+  background-color: rgba(92, 176, 250, 0.08) !important;
+  color: #1D94FC !important;
+}
+
+/* -------------------- Buttons -------------------- */
+.md-typeset .md-button,
+a.md-button {
+  font-family: var(--vl-font-sans) !important;
+  background-color: var(--vl-primary) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  box-shadow: var(--vl-shadow-sm) !important;
+  transition: all 0.15s ease !important;
+}
+
+.md-typeset .md-button:hover,
+a.md-button:hover {
+  background-color: var(--vl-primary-dark) !important;
+  box-shadow: var(--vl-shadow-md) !important;
+  transform: translateY(-1px) !important;
+  text-decoration: none !important;
+}
+
+/* Secondary button */
+.md-typeset .md-button--secondary,
+a.md-button--secondary {
+  background-color: transparent !important;
+  color: var(--vl-primary) !important;
+  border: 2px solid var(--vl-primary) !important;
+}
+
+.md-typeset .md-button--secondary:hover,
+a.md-button--secondary:hover {
+  background-color: var(--vl-primary-subtle) !important;
+}
+
+/* Download button */
+.md-typeset .download-button,
+a.md-button.download-button {
+  background-color: #292E33 !important;
+  color: #ffffff !important;
+}
+
+.md-typeset .download-button:hover,
+a.md-button.download-button:hover {
+  background-color: #3A3F45 !important;
+}
+
+/* -------------------- Tables -------------------- */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--vl-border) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+  margin: 1.5rem 0 !important;
+}
+
+.md-typeset table:not([class]) th {
+  font-family: var(--vl-font-sans) !important;
+  background-color: var(--vl-bg-sidebar) !important;
+  font-weight: var(--vl-font-weight-semibold) !important;
+  font-size: 0.6875rem !important; /* 11px - 75% zoom size */
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--vl-text-primary) !important;
+  padding: 0.625rem 0.875rem !important;
+  border-bottom: 1px solid var(--vl-border) !important;
+}
+
+.md-typeset table:not([class]) td {
+  font-family: var(--vl-font-sans) !important;
+  padding: 0.625rem 0.875rem !important;
+  border-bottom: 1px solid var(--vl-border-light) !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+}
+
+.md-typeset table:not([class]) tr:last-child td {
+  border-bottom: none !important;
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background-color: var(--vl-bg-hover) !important;
+}
+
+/* -------------------- Tabs -------------------- */
+.md-typeset .tabbed-set {
+  border: 1px solid var(--vl-border) !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  margin: 0.75rem 0 !important;
+}
+
+.md-typeset .tabbed-labels {
+  background-color: var(--vl-bg-sidebar) !important;
+  border-bottom: 1px solid var(--vl-border) !important;
+  padding: 0 !important;
+  min-height: auto !important;
+}
+
+.md-typeset .tabbed-labels > label {
+  font-family: var(--vl-font-sans) !important;
+  font-size: 0.75rem !important; /* 12px - normal readable size */
+  font-weight: var(--vl-font-weight-semibold) !important;
+  color: var(--vl-text-muted) !important;
+  padding: 0.25rem 0.5rem !important; /* Compact padding, normal text */
+  border-bottom: 2px solid transparent !important;
+  margin-bottom: -1px !important;
+}
+
+.md-typeset .tabbed-labels > label:hover {
+  color: var(--vl-text-primary) !important;
+}
+
+.md-typeset .tabbed-labels > label.tabbed-label--active {
+  color: var(--vl-primary) !important;
+  border-bottom-color: var(--vl-primary) !important;
+}
+
+.md-typeset .tabbed-content {
+  padding: 0 !important; /* No padding - code fills container */
+}
+
+/* Remove extra padding from code blocks inside tabs */
+.md-typeset .tabbed-content > .highlight,
+.md-typeset .tabbed-content > .highlighttable,
+.md-typeset .tabbed-content > pre {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.md-typeset .tabbed-content > .highlight pre,
+.md-typeset .tabbed-content pre {
+  margin: 0 !important;
+  padding: 0.375rem 0.5rem !important; /* Ultra tight code padding */
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* -------------------- Lists -------------------- */
+.md-typeset ul,
+.md-typeset ol {
+  margin-left: 0 !important;
+  padding-left: 1.5rem !important;
+}
+
+.md-typeset li {
+  margin-bottom: 0.5rem !important;
+}
+
+.md-typeset li::marker {
+  color: var(--vl-text-light) !important;
+}
+
+/* -------------------- Blockquotes -------------------- */
+.md-typeset blockquote {
+  border-left: 4px solid var(--vl-primary) !important;
+  background-color: var(--vl-bg-sidebar) !important;
+  padding: 1rem 1.25rem !important;
+  margin: 1.5rem 0 !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+.md-typeset blockquote p {
+  color: var(--vl-text-muted) !important;
+  font-style: italic !important;
+}
+
+/* -------------------- Horizontal Rules -------------------- */
+.md-typeset hr {
+  border: none !important;
+  border-top: 1px solid var(--vl-border) !important;
+  margin: 2rem 0 !important;
+}
+
+/* -------------------- Footer -------------------- */
+.md-footer {
+  background-color: #292E33 !important;
+  border-top: none !important;
+}
+
+.md-footer,
+.md-footer * {
+  color: #FFFFFF !important;
+}
+
+.md-footer .md-icon svg {
+  fill: #FFFFFF !important;
+}
+
+.md-footer-meta {
+  background-color: #1A1D21 !important;
+}
+
+.md-footer-nav {
+  background-color: #292E33 !important;
+}
+
+/* -------------------- Responsive Adjustments (Bento style) -------------------- */
+/* MacBook M4 Pro and large desktops (1400px+) - use default Bento styles */
+
+/* Medium desktops and smaller laptops */
+@media (max-width: 1400px) {
+  .md-sidebar--primary {
+    width: var(--vl-sidebar-width) !important; /* Use CSS variable for consistency */
+    min-width: var(--vl-sidebar-width) !important;
+  }
+  
+  .md-sidebar--secondary {
+    width: 180px !important; /* Maintain TOC width */
+    min-width: 180px !important;
+  }
+
+  .md-content {
+    max-width: 100% !important;
+    padding: 2rem 2rem !important;
+  }
+
+  .md-header__inner {
+    padding: 0.875rem 2rem !important; /* Slightly reduced for medium screens */
+  }
+
+  /* Adjust tabs position to match sidebar */
+  .md-tabs {
+    left: calc(var(--vl-sidebar-width) + 3rem) !important;
+  }
+}
+
+/* Tablets and smaller desktops */
+@media (max-width: 1200px) {
+  .md-sidebar--secondary {
+    display: none !important;
+  }
+  
+  .md-content {
+    /* When TOC is hidden, fill available space */
+    max-width: 100% !important;
+    padding: 2rem 2rem !important;
+  }
+}
+
+/* iPad (768px) and tablets */
+@media (max-width: 768px) {
+  .md-sidebar--primary {
+    width: 100% !important;
+    position: relative !important;
+    height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--vl-border) !important;
+  }
+  
+  .md-content {
+    max-width: 100% !important;
+    padding: 1.5rem 2rem !important; /* Bento-style padding for tablets */
+  }
+
+  /* Return tabs to default stacked position on tablets */
+  .md-tabs {
+    position: sticky !important;
+    top: 48px !important;
+    left: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    background-color: #F5F6F7 !important;
+    border-bottom: 1px solid var(--vl-border) !important;
+    padding: 0 1.25rem !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+
+  .md-tabs__list {
+    gap: 0.25rem !important;
+  }
+
+  .md-tabs__link {
+    color: var(--vl-text-secondary) !important;
+    border-bottom-color: transparent !important;
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  .md-tabs__link--active {
+    color: var(--vl-primary) !important;
+    border-bottom-color: var(--vl-primary) !important;
+  }
+
+  .md-typeset {
+    font-size: 0.8125rem !important;
+  }
+
+  .md-typeset h1 {
+    font-size: 1.125rem !important; /* ~18px for tablets */
+  }
+  
+  .md-typeset h2 {
+    font-size: 0.875rem !important; /* ~14px for tablets */
+  }
+  
+  .md-typeset h3 {
+    font-size: 0.8125rem !important; /* ~13px for tablets */
+  }
+}
+
+/* Pixel 7 (412px) and similar phones */
+@media (max-width: 420px) {
+  .md-content {
+    padding: 1.25rem 1.5rem !important; /* Bento-style mobile padding */
+  }
+
+  .md-header__inner {
+    padding: 0.75rem 1.5rem !important; /* Bento-style mobile header padding */
+  }
+
+  .md-header__title {
+    font-size: 0.8125rem !important;
+  }
+
+  .md-tabs {
+    padding: 0 1.5rem !important; /* Match header padding */
+  }
+
+  .md-tabs__link {
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.625rem !important;
+  }
+
+  .md-typeset {
+    font-size: 0.75rem !important; /* 12px for phones */
+  }
+
+  .md-typeset h1 {
+    font-size: 1rem !important; /* 16px for phones */
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .md-typeset h2 {
+    font-size: 0.8125rem !important; /* 13px for phones */
+    margin-top: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .md-typeset h3 {
+    font-size: 0.75rem !important; /* 12px for phones */
+    margin-top: 1rem !important;
+  }
+
+  .md-typeset h4 {
+    font-size: 0.75rem !important; /* 12px for phones */
+  }
+
+  .md-typeset p {
+    margin-bottom: 0.875rem !important;
+  }
+
+  /* Navigation adjustments for small phones */
+  .md-nav__link {
+    font-size: 0.75rem !important;
+    padding: 0.375rem 0.5rem !important;
+  }
+
+  .md-nav__title {
+    font-size: 0.75rem !important;
+  }
+}
+
+/* iPhone 13 mini (375px) and smaller phones */
+@media (max-width: 375px) {
+  .md-content {
+    padding: 1rem 1.25rem !important; /* Bento-style small phone padding */
+  }
+
+  .md-header__inner {
+    padding: 0.75rem 1.25rem !important; /* Bento-style small phone header padding */
+  }
+
+  .md-tabs {
+    padding: 0 1.25rem !important; /* Match header padding */
+  }
+
+  .md-tabs__link {
+    font-size: 0.6875rem !important; /* 11px for very small phones */
+    padding: 0.5rem 0.5rem !important;
+  }
+
+  .md-typeset {
+    font-size: 0.6875rem !important; /* 11px for very small phones */
+  }
+
+  .md-typeset h1 {
+    font-size: 0.9375rem !important; /* 15px for very small phones */
+  }
+  
+  .md-typeset h2 {
+    font-size: 0.75rem !important; /* 12px for very small phones */
+  }
+  
+  .md-typeset h3 {
+    font-size: 0.6875rem !important; /* 11px for very small phones */
+  }
+
+  .md-typeset code {
+    font-size: 0.6875em !important;
+  }
+
+  .md-typeset pre {
+    font-size: 0.6875rem !important;
+    padding: 0.75rem !important;
+  }
+}
+
+/* -------------------- Mermaid Diagram Zoom -------------------- */
+.mermaid-zoom-wrapper {
+  position: relative;
+  cursor: zoom-in;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+  margin: 1.5rem 0;
+  border: 1px solid var(--vl-border);
+  background: #fff;
+}
+
+.mermaid-zoom-wrapper:hover {
+  box-shadow: var(--vl-shadow-md);
+}
+
+.mermaid-zoom-wrapper .mermaid {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mermaid-zoom-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mermaid-zoom-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(41, 46, 51, 0.9);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+.mermaid-zoom-wrapper:hover .mermaid-zoom-indicator {
+  opacity: 1;
+}
+
+/* Zoomed state */
+.mermaid-zoom-wrapper.zoomed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(26, 29, 33, 0.95);
+  z-index: 9999;
+  cursor: zoom-out;
+  overflow: hidden;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  cursor: grab;
+  padding: 40px;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-container:active {
+  cursor: grabbing;
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid {
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: var(--vl-shadow-lg);
+  margin: auto;
+  display: block;
+  user-select: none;
+}
+
+/* Zoom controls */
+.mermaid-zoom-controls {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  gap: 10px;
+  z-index: 10000;
+  background: rgba(41, 46, 51, 0.9);
+  padding: 10px 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: var(--vl-shadow-lg);
+}
+
+.mermaid-zoom-wrapper.zoomed .mermaid-zoom-controls {
+  display: flex;
+  }
+  
+  .zoom-control-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.zoom-control-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* -------------------- Scrollbars -------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--vl-bg-sidebar);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b8bcc2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a3a7ad;
+}
+
+/* Firefox scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vl-border) var(--vl-bg-sidebar);
+}
+
+/* -------------------- Admonitions (Dark Mode Fix) -------------------- */
+/* Fix for white text on light background issue in dark mode */
+
+[data-md-color-scheme="slate"] .md-typeset .admonition,
+[data-md-color-scheme="slate"] .md-typeset details {
+  background-color: var(--vl-bg-code) !important;
+  box-shadow: var(--vl-shadow-sm) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset summary {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* NOTE - Blue */
+[data-md-color-scheme="slate"] .md-typeset .admonition.note,
+[data-md-color-scheme="slate"] .md-typeset details.note {
+  background-color: rgba(92, 176, 250, 0.12) !important;
+  border-left-color: var(--vl-primary) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .note > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .note > summary {
+  background-color: rgba(92, 176, 250, 0.18) !important;
+  color: var(--vl-primary-light) !important;
+}
+
+/* TIP - Green */
+[data-md-color-scheme="slate"] .md-typeset .admonition.tip,
+[data-md-color-scheme="slate"] .md-typeset details.tip {
+  background-color: rgba(34, 197, 94, 0.12) !important;
+  border-left-color: var(--vl-success) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tip > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .tip > summary {
+  background-color: rgba(34, 197, 94, 0.18) !important;
+  color: #4ADE80 !important;
+}
+
+/* WARNING - Amber */
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning,
+[data-md-color-scheme="slate"] .md-typeset details.warning {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+  border-left-color: var(--vl-warning) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .warning > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .warning > summary {
+  background-color: rgba(245, 158, 11, 0.18) !important;
+  color: #FBBF24 !important;
+}
+
+/* DANGER / ERROR - Red */
+[data-md-color-scheme="slate"] .md-typeset .admonition.danger,
+[data-md-color-scheme="slate"] .md-typeset details.danger,
+[data-md-color-scheme="slate"] .md-typeset .admonition.error,
+[data-md-color-scheme="slate"] .md-typeset details.error {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  border-left-color: var(--vl-error) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .danger > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .danger > summary,
+[data-md-color-scheme="slate"] .md-typeset .error > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .error > summary {
+  background-color: rgba(239, 68, 68, 0.18) !important;
+  color: #F87171 !important;
+}
+
+/* INFO - Blue */
+[data-md-color-scheme="slate"] .md-typeset .admonition.info,
+[data-md-color-scheme="slate"] .md-typeset details.info {
+  background-color: rgba(92, 176, 250, 0.12) !important;
+  border-left-color: var(--vl-primary-light) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .info > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .info > summary {
+  background-color: rgba(92, 176, 250, 0.18) !important;
+  color: var(--vl-primary-light) !important;
+}
+
+/* QUESTION - Light Blue */
+[data-md-color-scheme="slate"] .md-typeset .admonition.question,
+[data-md-color-scheme="slate"] .md-typeset details.question {
+  background-color: rgba(92, 176, 250, 0.12) !important;
+  border-left-color: #5CB0FA !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .question > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .question > summary {
+  background-color: rgba(92, 176, 250, 0.18) !important;
+  color: #7EC4FF !important;
+}
+
+/* Ensure readable body text inside admonitions in dark mode */
+[data-md-color-scheme="slate"] .md-typeset .admonition,
+[data-md-color-scheme="slate"] .md-typeset details,
+[data-md-color-scheme="slate"] .md-typeset .admonition p,
+[data-md-color-scheme="slate"] .md-typeset details p,
+[data-md-color-scheme="slate"] .md-typeset .admonition li,
+[data-md-color-scheme="slate"] .md-typeset details li {
+  color: var(--vl-text-secondary) !important;
+}
+
+/* -------------------- Fix line-number code block alignment -------------------- */
+
+.md-typeset .highlighttable {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--vl-border) !important;
+}
+
+/* Reset all inner pre elements */
+.md-typeset .highlighttable pre {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  line-height: 1.6 !important;
+}
+
+/* Line numbers column */
+.md-typeset .highlighttable td.linenos {
+  width: auto !important;
+  padding: 0 !important;
+  vertical-align: top !important;
+  background: var(--vl-bg-sidebar) !important;
+  border-right: 1px solid var(--vl-border) !important;
+}
+
+.md-typeset .highlighttable td.linenos .linenodiv {
+  padding: 1rem 0.5rem !important;
+}
+
+.md-typeset .highlighttable td.linenos pre {
+  text-align: right !important;
+  color: var(--vl-text-muted) !important;
+  user-select: none !important;
+}
+
+/* Code column */
+.md-typeset .highlighttable td.code {
+  padding: 0 !important;
+  vertical-align: top !important;
+  background: var(--vl-bg-code) !important;
+  width: 100% !important;
+}
+
+.md-typeset .highlighttable td.code > div {
+  padding: 1rem !important;
+}
+
+/* Hide the copy button nav to fix alignment, or position it absolutely */
+.md-typeset .highlighttable .md-code__nav {
+  position: absolute !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+}
+
+.md-typeset .highlighttable td.code > div {
+  position: relative !important;
+}
+
+/* Dark mode */
+[data-md-color-scheme="slate"] .md-typeset .highlighttable {
+  border-color: var(--vl-border) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .highlighttable td.linenos {
+  background: #1E2228 !important;
+  border-right-color: var(--vl-border) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .highlighttable td.code {
+  background: var(--vl-bg-code) !important;
+}
+
+/* -------------------- Print Styles -------------------- */
+@media print {
+  .md-sidebar--primary,
+  .md-sidebar--secondary,
+  .md-header,
+  .md-tabs,
+  .md-footer {
+    display: none !important;
+  }
+  
+  .md-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}
+
+/* End of theme */
