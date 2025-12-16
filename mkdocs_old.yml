@@ -1,0 +1,226 @@
+site_name: DataOS Vulcan
+site_description: Complete documentation for Vulcan - complete stack for building data products
+site_author: DataOS Vulcan Team
+site_url: https://tmdc-io.github.io/vulcan-docs
+
+repo_name: tmdc-io/vulcan-book
+repo_url: https://github.com/tmdc-io/vulcan-book
+edit_uri: edit/main/docs/
+
+nav:
+  # The items previously under 'Docs' are now top-level:
+  # - About:
+  #     - index.md
+  - About: index.md
+  - Configurations:
+      - configurations/overview.md
+      - Options:
+        - configurations/model_defaults.md
+        - configurations/variables.md
+        - configurations/hooks.md
+        - configurations/notifications.md
+        - configurations/linter.md
+      - Engines:
+        - configurations/integrations/engines/postgres.md
+        - configurations/integrations/engines/snowflake.md
+
+        # Coming Soon
+        # - integrations/engines/bigquery.md
+        # - integrations/engines/databricks.md
+        # - integrations/engines/duckdb.md
+        # - integrations/engines/motherduck.md
+        # - integrations/engines/mssql.md
+        # - integrations/engines/mysql.md
+        # - integrations/engines/redshift.md
+      - CI/CD:
+        - ci-cd/index.md
+  - Components:
+      - Model:
+        - concepts/models/overview.md
+        - concepts/models/properties.md
+        # - Advanced Properties:
+        #   - concepts/models/advanced_properties.md
+        - Types:
+          - concepts/models/sql_models.md
+          - concepts/models/python_models.md
+          - concepts/models/external_models.md
+          - concepts/models/managed_models.md
+        - concepts/models/model_kinds.md
+        - concepts/models/statements.md
+      - concepts/tests.md
+      - concepts/audits.md
+      - concepts/checks.md
+      - Semantics:
+        - concepts/semantics/overview.md
+        - concepts/semantics/models.md
+        - concepts/semantics/metrics.md
+      - Advance Features:
+        - Macros:
+          - concepts/macros/overview.md
+          - concepts/macros/macro_variables.md
+          - concepts/macros/vulcan_macros.md
+          - concepts/macros/jinja_macros.md
+        - guides/signals.md
+        - guides/custom_materializations.md
+  - Guides:
+      - getting_started/docker.md
+
+      # - guides/configuration.md    --make sure every content we have included using this file
+      - guides/plan.md
+      - guides/run.md
+      - guides/models.md
+      - guides/incremental_time.md
+      - guides/data_quality.md
+      - guides/model_selection.md
+      - guides/transpiling.md
+      #- guides/federated_engines.md
+      # - Virtual environments Guide:
+      # - Vulcan API Guide:
+      # - Table Creation Guide:
+  - CLI Commands: reference/cli.md # Changed to "CLI Commands" for consistency with the visual and placed the file directly under it.
+
+  # These items were already top-level and remain as is:
+  - Cookbook:
+    - cookbook/index.md
+  - FAQ:
+    - faq/index.md
+ 
+
+theme:
+  name: material
+  custom_dir: overrides
+  logo: assets/images/vulcan-white.svg
+  favicon: assets/images/vulcan.svg
+  font:
+    text: Inter
+    code: JetBrains Mono
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: pink
+      accent: pink
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: pink
+      accent: pink
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  features:
+    # Navigation
+    - navigation.instant           # Single-page app experience
+    - navigation.instant.prefetch  # Prefetch pages for faster loading
+    - navigation.instant.progress  # Show loading progress bar
+    - navigation.tracking          # Update URL with current section
+    # - navigation.tabs            # Top-level tabs in header
+    # - navigation.tabs.sticky     # Sticky navigation tabs
+    # - navigation.sections          # removed - sections are now collapsible toggles
+    # - navigation.expand            # removed - keep sections collapsed by default
+    - navigation.indexes           # Section index pages are clickable
+    - navigation.path              # Show breadcrumb navigation path
+    - navigation.top               # Back to top button
+    - navigation.footer            # Previous/next page links in footer
+
+    # Table of Contents
+    - toc.follow                   # TOC sidebar follows scroll position
+
+    # Search
+    - search.highlight             # Highlight search terms on page
+    - search.suggest               # Search suggestions as you type
+    - search.share                 # Share search results
+
+    # Content
+    - content.tabs.link            # Link content tabs across page
+    - content.code.copy            # Copy button on code blocks
+    - content.code.annotate        # Code annotations
+    - content.tooltips             # Improved tooltips
+
+plugins:
+  - include-markdown
+  - search:
+      separator: '[\s\-,:!=\[\]()"/_]+'
+  - glightbox
+  - mermaid2:
+      arguments:
+        theme: base
+        themeVariables:
+          primaryColor: '#9e9e9e'
+          primaryTextColor: '#ffffff'
+
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - def_list
+  - tables
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      permalink_title: Link to this section
+      title: On this page
+      toc_depth: 3
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: tmdc-io
+      repo: vulcan-book
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.blocks.admonition
+  - pymdownx.blocks.definition
+  - pymdownx.blocks.details
+  - pymdownx.blocks.html
+  - pymdownx.blocks.tab
+  - sane_lists
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+extra_javascript:
+  - assets/javascripts/mermaid-zoom.js
+
+copyright: |
+  Copyright &copy; 2024 DataOS Vulcan Team<br>
+  <small>Complete stack for building data products</small>
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/tmdc-io/vulcan-book
+  # analytics:
+  #   provider: google
+  #   property: G-JXQ1R227VS
