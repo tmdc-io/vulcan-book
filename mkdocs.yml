@@ -18,32 +18,24 @@ nav:
         - configurations/options/notifications.md
         - configurations/options/linter.md
       - Engines:
-        - configurations/integrations/engines/postgres.md
-        - configurations/integrations/engines/snowflake.md
+        - configurations/engines/postgres/postgres.md
+        - configurations/engines/snowflake/snowflake.md
 
-        # Coming Soon
-        # - integrations/engines/bigquery.md
-        # - integrations/engines/databricks.md
-        # - integrations/engines/duckdb.md
-        # - integrations/engines/motherduck.md
-        # - integrations/engines/mssql.md
-        # - integrations/engines/mysql.md
-        # - integrations/engines/redshift.md
       - CI/CD:
         - ci-cd/index.md
   - Components:
       - Model:
-        - concepts/models/overview.md
-        - concepts/models/properties.md
+        - components/model/overview.md
+        - components/model/properties.md
         # - Advanced Properties:
-        #   - concepts/models/advanced_properties.md
+        #   - components/models/advanced_properties.md
         - Types:
-          - components/model/type/sql_models.md
-          - components/model/type/python_models.md
-          - components/model/type/external_models.md
-          - components/model/type/managed_models.md
-        - components/model_kinds.md
-        - components/statements.md
+          - components/model/types/sql_models.md
+          - components/model/types/python_models.md
+          - components/model/types/external_models.md
+          - components/model/types/managed_models.md
+        - components/model/model_kinds.md
+        - components/model/statements.md
       - components/tests/tests.md
       - components/audits/audits.md
       - components/checks/checks.md
@@ -57,8 +49,8 @@ nav:
           - components/advanced-features/macros/variables.md
           - components/advanced-features/macros/built_in.md
           - components/advanced-features/macros/jinja.md
-        - signals.md
-        - custom_materializations.md
+        - components/advanced-features/signals.md
+        - components/advanced-features/custom_materializations.md
   - Guides:
       - guides/get-started/docker.md
       - guides/plan.md
@@ -67,7 +59,7 @@ nav:
       - guides/incremental_by_time.md
       - guides/data_quality.md
       - guides/model_selection.md
-      - guides/transpiling.md
+      - guides/transpiling_semantics.md
       #- guides/federated_engines.md
       # - Virtual environments Guide:
       # - Vulcan API Guide:
