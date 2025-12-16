@@ -3,6 +3,21 @@
    Clean, professional documentation experience
    ============================================================ */
 
+
+/* 1. Hides the DataOS Vulcan site title element in the sidebar (Previous Fix) */
+.md-nav__title {
+  display: none;
+}
+
+/* 2. THE FINAL FIX: Force top-level sections to be collapsed by default.
+ This hides the sub-navigation list inside any top-level item 
+ that is NOT currently active (i.e., not the page the user is viewing). 
+ This works reliably even when navigation.indexes is on.
+*/
+/* .md-nav__list > .md-nav__item:not(.md-nav__item--active) > .md-nav__list {
+  display: none;
+} */
+
 /* -------------------- Font Imports -------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&display=swap');
@@ -49,9 +64,9 @@
   --vl-shadow-md: 0 4px 6px -1px rgba(41, 46, 51, 0.08), 0 2px 4px -2px rgba(41, 46, 51, 0.06);
   --vl-shadow-lg: 0 10px 15px -3px rgba(41, 46, 51, 0.10), 0 4px 6px -4px rgba(41, 46, 51, 0.05);
 
-  /* Sidebar sizes - INCREASED */
-  --vl-sidebar-width: 340px;
-  --vl-toc-width: 260px;
+  /* Sidebar sizes - Bento style (matching minimum width) */
+  --vl-sidebar-width: 290px; /* Increased to fully accommodate "Execution Hooks" and other long headings */
+  --vl-toc-width: 270px;
 
   /* Typography - Cube-style fonts */
   --vl-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -129,16 +144,16 @@ code, pre, kbd, samp,
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 0.625rem 1.5rem !important;
+  padding: 0.875rem 2.5rem !important; /* Bento-style generous padding */
   max-width: none !important;
   background: transparent !important;
 }
 
-/* DataOS Vulcan title */
+/* DataOS Vulcan title - 75% zoom size */
 .md-header__title {
   font-family: var(--vl-font-sans) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 1.125rem !important;
+  font-size: 0.875rem !important; /* 14px - balanced for header */
   letter-spacing: -0.01em;
   flex-shrink: 0 !important;
 }
@@ -146,7 +161,7 @@ code, pre, kbd, samp,
 .md-header__topic {
   font-family: var(--vl-font-sans) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 1.125rem !important;
+  font-size: 0.875rem !important; /* 14px - balanced for header */
 }
 
 .md-header--shadow {
@@ -173,7 +188,7 @@ code, pre, kbd, samp,
   font-family: var(--vl-font-sans) !important;
   background-color: rgba(255, 255, 255, 0.15) !important;
   border-radius: 6px !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   color: #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
@@ -199,17 +214,18 @@ code, pre, kbd, samp,
 
 .md-tabs {
   position: absolute !important;
-  top: 50% !important; /* align to search bar center */
-  left: calc(var(--vl-sidebar-width) + 12px) !important; /* align near sidebar/start */
-  transform: translateY(-50%) !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: calc(var(--vl-sidebar-width) + 3rem) !important; /* Bento: align with content area start (sidebar + 3rem gap) */
+  transform: none !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: center !important; /* vertically center with search bar */
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   padding: 0 !important;
   min-height: 0 !important;
-  height: auto !important;
+  height: 100% !important;
   z-index: 120 !important;
   width: auto !important;
 }
@@ -227,7 +243,7 @@ code, pre, kbd, samp,
 .md-tabs__link {
   font-family: var(--vl-font-sans) !important;
   color: #f1f3f5 !important;
-  font-size: 0.95rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-medium) !important;
   padding: 0.35rem 0.6rem !important;
   transition: all 0.15s ease !important;
@@ -270,27 +286,48 @@ code, pre, kbd, samp,
   min-width: var(--vl-sidebar-width) !important;
   background: var(--vl-bg-sidebar) !important;
   border-right: 1px solid var(--vl-border) !important;
-  padding: 1rem 0 !important;
+  padding: 1.5rem 0 !important; /* Bento-style padding */
   position: sticky;
   top: 86px;  /* Below header (48px) + tabs (38px) */
   height: calc(100vh - 86px);
   overflow-y: auto;
+  overflow-x: hidden !important; /* Hide horizontal scrollbar */
+  scrollbar-width: none !important; /* Firefox - hide scrollbar */
+  -ms-overflow-style: none !important; /* IE and Edge - hide scrollbar */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.md-sidebar--primary::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .md-sidebar--primary .md-sidebar__scrollwrap {
-  padding: 0 1rem;
+  padding: 0 0.5rem !important; /* Reduced padding to give more room for single-line headings */
+  width: 100% !important; /* Use full sidebar width */
+  box-sizing: border-box !important; /* Include padding in width calculation */
+  overflow-x: hidden !important; /* Prevent horizontal scrolling */
+}
+
+/* Ensure navigation lists don't cause horizontal overflow */
+.md-sidebar--primary .md-nav,
+.md-sidebar--primary .md-nav__list {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* -------------------- Collapsible Navigation Sections -------------------- */
-/* Main section titles (About, Configurations, Components, Guides) */
+/* Main section titles (About, Configurations, Components, Guides) - 75% zoom, Bento spacing */
 .md-nav__title {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.8125rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-semibold) !important;
   letter-spacing: 0 !important;
   color: var(--vl-text-primary) !important;
-  padding: 0.5rem 0.5rem !important;
-  margin-top: 0.375rem !important;
+  padding: 0.625rem 0.5rem !important; /* Bento: generous vertical padding */
+  margin-top: 0.75rem !important; /* Bento: more spacing between sections */
   cursor: pointer !important;
   border-radius: 6px !important;
   transition: background-color 0.15s ease !important;
@@ -315,16 +352,21 @@ code, pre, kbd, samp,
   margin: 0.125rem 0 !important;
 }
 
-/* Nested toggle button styling */
+/* Nested toggle button styling - 75% zoom, Bento spacing, single-line */
 .md-nav__item--nested > .md-nav__link {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-medium) !important;
   color: var(--vl-text-primary) !important;
-  padding: 0.375rem 0.5rem !important;
+  padding: 0.5rem 0.375rem !important; /* Reduced horizontal padding to maximize text space */
   border-radius: 6px !important;
   display: flex !important;
   align-items: center !important;
+  white-space: nowrap !important; /* Prevent text wrapping */
+  word-break: keep-all !important; /* Prevent word breaking */
+  overflow: visible !important; /* Ensure full text is visible - no truncation */
+  text-overflow: clip !important; /* No ellipsis - show full text */
+  max-width: none !important; /* Remove any width restrictions */
 }
 
 .md-nav__item--nested > .md-nav__link:hover {
@@ -338,25 +380,28 @@ code, pre, kbd, samp,
 
 /* Hide nested items by default - they show when parent is toggled */
 .md-nav__item--nested > .md-nav {
-  margin-left: 0.375rem !important;
-  padding-left: 0.5rem !important;
+  margin-left: 0.25rem !important; /* Reduced to give more room for nested text */
+  padding-left: 0.375rem !important; /* Reduced to give more room for nested text */
   border-left: 2px solid var(--vl-border) !important;
   margin-top: 0.125rem !important;
 }
 
-/* Navigation links */
+/* Navigation links - 75% zoom size, Bento spacing, single-line */
 .md-nav__link {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-normal) !important;
   color: var(--vl-text-secondary) !important;
-  padding: 0.375rem 0.5rem !important;
+  padding: 0.5rem 0.375rem !important; /* Reduced horizontal padding to maximize text space */
   border-radius: 6px !important;
-  margin: 1px 0 !important;
+  margin: 0.25rem 0 !important; /* Bento: generous spacing between items (10-15px equivalent) */
   transition: all 0.15s ease !important;
-  line-height: 1.35 !important;
-  white-space: normal !important;
-  word-break: break-word !important;
+  line-height: 1.4 !important;
+  white-space: nowrap !important; /* Prevent text wrapping - keep on single line */
+  word-break: keep-all !important; /* Prevent word breaking */
+  overflow: visible !important; /* Ensure full text is visible - no truncation */
+  text-overflow: clip !important; /* No ellipsis - show full text */
+  max-width: none !important; /* Remove any width restrictions */
 }
 
 .md-nav__link:hover {
@@ -379,6 +424,16 @@ code, pre, kbd, samp,
 .md-nav__item {
   margin: 0 !important;
   padding: 0 !important;
+  width: 100% !important; /* Ensure items can use full available width */
+  max-width: none !important; /* Remove any width restrictions */
+}
+
+/* Ensure nav link text containers can expand */
+.md-nav__link span,
+.md-nav__link .md-nav__link-text {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
 }
 
 /* -------------------- Secondary Sidebar (TOC) -------------------- */
@@ -387,7 +442,7 @@ code, pre, kbd, samp,
   min-width: var(--vl-toc-width) !important;
   background: transparent !important;
   border-left: 1px solid var(--vl-border) !important;
-  padding: 1.5rem 0 !important;
+  padding: 1.5rem 0 !important; /* Bento-style padding */
   position: sticky;
   top: 86px;  /* Below header (48px) + tabs (38px) */
   height: calc(100vh - 86px);
@@ -395,7 +450,7 @@ code, pre, kbd, samp,
 }
 
 .md-sidebar--secondary .md-sidebar__scrollwrap {
-  padding: 0 1rem;
+  padding: 0 1.25rem; /* Bento-style horizontal padding */
 }
 
 /* TOC title */
@@ -415,16 +470,16 @@ code, pre, kbd, samp,
   background: transparent !important;
 }
 
-/* TOC links */
+/* TOC links - 75% zoom, Bento spacing */
 .md-sidebar--secondary .md-nav__link {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.8125rem !important;
+  font-size: 0.6875rem !important; /* 11px - 75% zoom size */
   font-weight: var(--vl-font-weight-normal) !important;
   color: var(--vl-text-muted) !important;
-  padding: 0.375rem 0.75rem !important;
+  padding: 0.5rem 0.75rem !important; /* Bento: generous vertical padding */
   border-left: 2px solid transparent !important;
   border-radius: 0 !important;
-  margin-left: 0 !important;
+  margin: 0.125rem 0 !important; /* Bento: spacing between TOC items */
   background: transparent !important;
 }
 
@@ -441,13 +496,14 @@ code, pre, kbd, samp,
   font-weight: var(--vl-font-weight-medium) !important;
 }
 
-/* -------------------- Main Content Area -------------------- */
+/* -------------------- Main Content Area (Bento style) -------------------- */
 .md-content {
   flex: 1 1 auto !important;
   min-width: 0 !important;
-  max-width: min(1200px, calc(100% - var(--vl-sidebar-width) - var(--vl-toc-width) - 2rem)) !important;
+  /* Bento: max-width 800px with 3rem gap on each side from sidebars */
+  max-width: min(800px, calc(100% - var(--vl-sidebar-width) - var(--vl-toc-width) - 6rem)) !important;
   margin: 0 auto !important;
-  padding: 2rem 2rem !important;
+  padding: 2rem 3rem !important; /* Bento: 3rem horizontal padding (48px) */
   background: var(--vl-bg-main) !important;
 }
 
@@ -462,64 +518,175 @@ code, pre, kbd, samp,
   padding-left: 0 !important;
 }
 
-/* -------------------- Typography -------------------- */
+
+/* -------------------- Breadcrumbs -------------------- */
+/* Cube-style alignment: Ensure breadcrumbs and h1 share exact same left position */
+/* Remove ALL padding and margin from breadcrumb containers */
+.md-content__inner > nav[aria-label="Breadcrumbs"],
+.md-content__inner > .md-nav__path,
+.md-content .md-nav__path,
+.md-content nav[aria-label="Breadcrumbs"],
+nav[aria-label="Breadcrumbs"],
+.md-nav__path {
+  margin: 0 0 0.5rem 0 !important;
+  padding: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+}
+
+/* Remove all padding from breadcrumb lists and items */
+.md-nav__path ul,
+nav[aria-label="Breadcrumbs"] ul,
+.md-nav__path ol,
+nav[aria-label="Breadcrumbs"] ol,
+.md-nav__path .md-nav__list,
+nav[aria-label="Breadcrumbs"] .md-nav__list {
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  list-style: none !important;
+}
+
+/* Remove padding from all breadcrumb items and links */
+.md-nav__path .md-nav__item,
+nav[aria-label="Breadcrumbs"] .md-nav__item,
+.md-nav__path li,
+nav[aria-label="Breadcrumbs"] li,
+.md-nav__path .md-nav__link,
+nav[aria-label="Breadcrumbs"] .md-nav__link,
+.md-nav__path a,
+nav[aria-label="Breadcrumbs"] a {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Target first element in breadcrumb to ensure it starts at edge */
+.md-nav__path > *:first-child,
+nav[aria-label="Breadcrumbs"] > *:first-child,
+.md-nav__path .md-nav__item:first-child,
+nav[aria-label="Breadcrumbs"] .md-nav__item:first-child,
+.md-nav__path .md-nav__link:first-child,
+nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Ensure breadcrumbs inside md-typeset also have no padding */
+.md-typeset .md-nav__path,
+.md-typeset nav[aria-label="Breadcrumbs"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Match h1 left alignment - ensure both breadcrumb and h1 start at same position */
+.md-typeset h1:first-of-type {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important;
+}
+
+/* Ensure breadcrumb container and h1 are both direct children and aligned */
+.md-content__inner > nav[aria-label="Breadcrumbs"]:first-child,
+.md-content__inner > .md-nav__path:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  width: 100% !important;
+}
+
+/* Force alignment: both breadcrumb and h1 should start at content inner edge */
+.md-content__inner > nav[aria-label="Breadcrumbs"] + .md-typeset,
+.md-content__inner > .md-nav__path + .md-typeset {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.md-content__inner > nav[aria-label="Breadcrumbs"] + .md-typeset h1,
+.md-content__inner > .md-nav__path + .md-typeset h1 {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Universal alignment: Ensure breadcrumb text and h1 text start at exact same position */
+.md-content__inner nav[aria-label="Breadcrumbs"] *:first-child,
+.md-content__inner .md-nav__path *:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Override any Material default styles that might add spacing */
+.md-content__inner > *:first-child nav[aria-label="Breadcrumbs"],
+.md-content__inner > *:first-child .md-nav__path {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* -------------------- Typography (75% zoom → 100% zoom) -------------------- */
 .md-typeset {
   font-family: var(--vl-font-sans) !important;
-  font-size: 1rem !important;
-  line-height: 1.75 !important;
+  font-size: 0.8125rem !important; /* 13px - 75% of previous 14px */
+  line-height: 1.65 !important;
   color: var(--vl-text-primary) !important;
   font-weight: var(--vl-font-weight-normal) !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 
 .md-typeset h1 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 2rem !important;
+  font-size: 1.21875rem !important; /* ~19.5px - 75% of previous 26px */
   font-weight: var(--vl-font-weight-bold) !important;
   letter-spacing: -0.02em !important;
   color: var(--vl-text-primary) !important;
-  margin-bottom: 1.5rem !important;
-  line-height: 1.25 !important;
+  margin-bottom: 0.875rem !important;
+  line-height: 1.3 !important;
+  margin-top: 0 !important;
 }
 
 .md-typeset h2 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 1.5rem !important;
+  font-size: 0.9375rem !important; /* 15px - 75% of previous 20px */
   font-weight: var(--vl-font-weight-semibold) !important;
   letter-spacing: -0.015em !important;
   color: var(--vl-text-primary) !important;
-  margin-top: 2.5rem !important;
-  margin-bottom: 1rem !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.625rem !important;
   padding-bottom: 0 !important;
   border-bottom: none !important;
+  line-height: 1.4 !important;
 }
 
 .md-typeset h3 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 1.25rem !important;
+  font-size: 0.875rem !important; /* 14px - rounded from 75% of previous 17px */
   font-weight: var(--vl-font-weight-semibold) !important;
   color: var(--vl-text-primary) !important;
-  margin-top: 2rem !important;
-  margin-bottom: 0.75rem !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.45 !important;
 }
 
 .md-typeset h4 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 1.125rem !important;
+  font-size: 0.8125rem !important; /* 13px - rounded from 75% of previous 15px */
   font-weight: var(--vl-font-weight-semibold) !important;
   color: var(--vl-text-primary) !important;
-  margin-top: 1.5rem !important;
+  margin-top: 1rem !important;
   margin-bottom: 0.5rem !important;
+  line-height: 1.5 !important;
 }
 
 .md-typeset p {
   color: var(--vl-text-primary) !important;
-  margin-bottom: 1.25rem !important;
-  line-height: 1.75 !important;
+  margin-bottom: 1rem !important; /* Tighter spacing like Bento */
+  line-height: 1.65 !important; /* Bento paragraph line-height */
 }
 
 .md-typeset li {
   color: var(--vl-text-primary) !important;
-  line-height: 1.75 !important;
+  line-height: 1.65 !important; /* Bento list line-height (tighter) */
 }
 
 /* Links */
@@ -536,10 +703,10 @@ code, pre, kbd, samp,
 }
 
 /* -------------------- Code Blocks -------------------- */
-/* Inline code */
+/* Inline code - 75% zoom */
 .md-typeset code {
   font-family: var(--vl-font-mono) !important;
-  font-size: 0.875em !important;
+  font-size: 0.75em !important; /* ~9.75px - 75% zoom size */
   font-weight: 500 !important;
   background-color: #F3F4F6 !important;
   color: var(--vl-text-primary) !important;
@@ -548,20 +715,20 @@ code, pre, kbd, samp,
   border: none !important;
 }
 
-/* Code blocks */
+/* Code blocks - 75% zoom */
 .md-typeset pre {
   font-family: var(--vl-font-mono) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   line-height: 1.6 !important;
   background-color: #F8F9FA !important;
   border-radius: 8px !important;
   border: 1px solid var(--vl-border) !important;
-  padding: 1rem !important;
+  padding: 0.875rem !important;
 }
 
 .md-typeset pre > code {
   font-family: var(--vl-font-mono) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   background: transparent !important;
   padding: 0 !important;
   border: none !important;
@@ -569,11 +736,17 @@ code, pre, kbd, samp,
 
 /* Dark mode code */
 [data-md-color-scheme="slate"] .md-typeset code {
-  background-color: #2A2F35 !important;
+  background-color: #3A4048 !important;
+  color: #E8EAED !important;
 }
 
 [data-md-color-scheme="slate"] .md-typeset pre {
   background-color: #1E2228 !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset pre > code {
+  background: transparent !important;
+  color: inherit !important;
 }
 
 /* -------------------- Admonitions -------------------- */
@@ -590,7 +763,7 @@ code, pre, kbd, samp,
 .md-typeset summary {
   font-family: var(--vl-font-sans) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   padding: 0.75rem 1rem !important;
   padding-left: 2.5rem !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
@@ -715,7 +888,7 @@ a.md-button {
   border-radius: 8px !important;
   padding: 0.75rem 1.5rem !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   box-shadow: var(--vl-shadow-sm) !important;
   transition: all 0.15s ease !important;
 }
@@ -768,19 +941,19 @@ a.md-button.download-button:hover {
   font-family: var(--vl-font-sans) !important;
   background-color: var(--vl-bg-sidebar) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.8125rem !important;
+  font-size: 0.6875rem !important; /* 11px - 75% zoom size */
   text-transform: none !important;
   letter-spacing: 0 !important;
   color: var(--vl-text-primary) !important;
-  padding: 0.75rem 1rem !important;
+  padding: 0.625rem 0.875rem !important;
   border-bottom: 1px solid var(--vl-border) !important;
 }
 
 .md-typeset table:not([class]) td {
   font-family: var(--vl-font-sans) !important;
-  padding: 0.75rem 1rem !important;
+  padding: 0.625rem 0.875rem !important;
   border-bottom: 1px solid var(--vl-border-light) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
 }
 
 .md-typeset table:not([class]) tr:last-child td {
@@ -807,7 +980,7 @@ a.md-button.download-button:hover {
 
 .md-typeset .tabbed-labels > label {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important; /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-medium) !important;
   color: var(--vl-text-muted) !important;
   padding: 0.75rem 1.25rem !important;
@@ -887,31 +1060,51 @@ a.md-button.download-button:hover {
   background-color: #292E33 !important;
 }
 
-/* -------------------- Responsive Adjustments -------------------- */
+/* -------------------- Responsive Adjustments (Bento style) -------------------- */
+/* MacBook M4 Pro and large desktops (1400px+) - use default Bento styles */
+
+/* Medium desktops and smaller laptops */
 @media (max-width: 1400px) {
   .md-sidebar--primary {
-    width: 260px !important;
-    min-width: 260px !important;
+    width: var(--vl-sidebar-width) !important; /* Use CSS variable for consistency */
+    min-width: var(--vl-sidebar-width) !important;
   }
   
   .md-sidebar--secondary {
-    width: 220px !important;
-    min-width: 220px !important;
+    width: 180px !important; /* Maintain TOC width */
+    min-width: 180px !important;
+  }
+
+  .md-content {
+    max-width: min(800px, calc(100% - var(--vl-sidebar-width) - 180px - 6rem)) !important; /* Adjust for sidebar widths */
+    padding: 2rem 2.5rem !important; /* Maintain Bento spacing */
+  }
+
+  .md-header__inner {
+    padding: 0.875rem 2rem !important; /* Slightly reduced for medium screens */
+  }
+
+  /* Adjust tabs position to match sidebar */
+  .md-tabs {
+    left: calc(var(--vl-sidebar-width) + 3rem) !important;
   }
 }
 
+/* Tablets and smaller desktops */
 @media (max-width: 1200px) {
   .md-sidebar--secondary {
     display: none !important;
   }
   
   .md-content {
-    max-width: 100% !important;
-    padding: 2rem !important;
+    /* When TOC is hidden, maintain 3rem gap from left sidebar and right edge */
+    max-width: min(800px, calc(100% - var(--vl-sidebar-width) - 6rem)) !important;
+    padding: 2rem 3rem !important; /* Bento-style padding */
   }
 }
 
-@media (max-width: 960px) {
+/* iPad (768px) and tablets */
+@media (max-width: 768px) {
   .md-sidebar--primary {
     width: 100% !important;
     position: relative !important;
@@ -921,10 +1114,11 @@ a.md-button.download-button:hover {
   }
   
   .md-content {
-    padding: 1.5rem !important;
+    max-width: 100% !important;
+    padding: 1.5rem 2rem !important; /* Bento-style padding for tablets */
   }
 
-  /* Return tabs to default stacked position on small screens */
+  /* Return tabs to default stacked position on tablets */
   .md-tabs {
     position: sticky !important;
     top: 48px !important;
@@ -933,7 +1127,7 @@ a.md-button.download-button:hover {
     width: 100% !important;
     background-color: #F5F6F7 !important;
     border-bottom: 1px solid var(--vl-border) !important;
-    padding: 0 1.5rem !important;
+    padding: 0 1.25rem !important;
     display: flex !important;
     justify-content: flex-start !important;
   }
@@ -945,31 +1139,136 @@ a.md-button.download-button:hover {
   .md-tabs__link {
     color: var(--vl-text-secondary) !important;
     border-bottom-color: transparent !important;
-    font-size: 0.875rem !important;
-    padding: 0.5rem 0.875rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.75rem !important;
   }
 
   .md-tabs__link--active {
     color: var(--vl-primary) !important;
     border-bottom-color: var(--vl-primary) !important;
   }
-}
 
-@media (max-width: 600px) {
-  .md-content {
-    padding: 1rem !important;
+  .md-typeset {
+    font-size: 0.8125rem !important;
   }
-  
+
   .md-typeset h1 {
-    font-size: 1.75rem !important;
+    font-size: 1.125rem !important; /* ~18px for tablets */
   }
   
   .md-typeset h2 {
-    font-size: 1.25rem !important;
+    font-size: 0.875rem !important; /* ~14px for tablets */
   }
   
   .md-typeset h3 {
-    font-size: 1.125rem !important;
+    font-size: 0.8125rem !important; /* ~13px for tablets */
+  }
+}
+
+/* Pixel 7 (412px) and similar phones */
+@media (max-width: 420px) {
+  .md-content {
+    padding: 1.25rem 1.5rem !important; /* Bento-style mobile padding */
+  }
+
+  .md-header__inner {
+    padding: 0.75rem 1.5rem !important; /* Bento-style mobile header padding */
+  }
+
+  .md-header__title {
+    font-size: 0.8125rem !important;
+  }
+
+  .md-tabs {
+    padding: 0 1.5rem !important; /* Match header padding */
+  }
+
+  .md-tabs__link {
+    font-size: 0.75rem !important;
+    padding: 0.5rem 0.625rem !important;
+  }
+
+  .md-typeset {
+    font-size: 0.75rem !important; /* 12px for phones */
+  }
+
+  .md-typeset h1 {
+    font-size: 1rem !important; /* 16px for phones */
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .md-typeset h2 {
+    font-size: 0.8125rem !important; /* 13px for phones */
+    margin-top: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .md-typeset h3 {
+    font-size: 0.75rem !important; /* 12px for phones */
+    margin-top: 1rem !important;
+  }
+
+  .md-typeset h4 {
+    font-size: 0.75rem !important; /* 12px for phones */
+  }
+
+  .md-typeset p {
+    margin-bottom: 0.875rem !important;
+  }
+
+  /* Navigation adjustments for small phones */
+  .md-nav__link {
+    font-size: 0.75rem !important;
+    padding: 0.375rem 0.5rem !important;
+  }
+
+  .md-nav__title {
+    font-size: 0.75rem !important;
+  }
+}
+
+/* iPhone 13 mini (375px) and smaller phones */
+@media (max-width: 375px) {
+  .md-content {
+    padding: 1rem 1.25rem !important; /* Bento-style small phone padding */
+  }
+
+  .md-header__inner {
+    padding: 0.75rem 1.25rem !important; /* Bento-style small phone header padding */
+  }
+
+  .md-tabs {
+    padding: 0 1.25rem !important; /* Match header padding */
+  }
+
+  .md-tabs__link {
+    font-size: 0.6875rem !important; /* 11px for very small phones */
+    padding: 0.5rem 0.5rem !important;
+  }
+
+  .md-typeset {
+    font-size: 0.6875rem !important; /* 11px for very small phones */
+  }
+
+  .md-typeset h1 {
+    font-size: 0.9375rem !important; /* 15px for very small phones */
+  }
+  
+  .md-typeset h2 {
+    font-size: 0.75rem !important; /* 12px for very small phones */
+  }
+  
+  .md-typeset h3 {
+    font-size: 0.6875rem !important; /* 11px for very small phones */
+  }
+
+  .md-typeset code {
+    font-size: 0.6875em !important;
+  }
+
+  .md-typeset pre {
+    font-size: 0.6875rem !important;
+    padding: 0.75rem !important;
   }
 }
 
