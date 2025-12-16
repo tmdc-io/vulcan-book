@@ -8,78 +8,56 @@ repo_url: https://github.com/tmdc-io/vulcan-book
 edit_uri: edit/main/docs/
 
 nav:
-  # The items previously under 'Docs' are now top-level:
-  # - About:
-  #     - index.md
   - About: index.md
   - Configurations:
       - configurations/overview.md
       - Options:
-        - configurations/model_defaults.md
-        - configurations/variables.md
-        - configurations/hooks.md
-        - configurations/notifications.md
-        - configurations/linter.md
+        - configurations/options/model_defaults.md
+        - configurations/options/variables.md
+        - configurations/options/execution_hooks.md
+        - configurations/options/notifications.md
+        - configurations/options/linter.md
       - Engines:
-        - configurations/integrations/engines/postgres.md
-        - configurations/integrations/engines/snowflake.md
-
-        # Coming Soon
-        # - integrations/engines/bigquery.md
-        # - integrations/engines/databricks.md
-        # - integrations/engines/duckdb.md
-        # - integrations/engines/motherduck.md
-        # - integrations/engines/mssql.md
-        # - integrations/engines/mysql.md
-        # - integrations/engines/redshift.md
+        - configurations/engines/postgres/postgres.md
+        - configurations/engines/snowflake/snowflake.md
       - CI/CD:
         - ci-cd/index.md
   - Components:
       - Model:
-        - concepts/models/overview.md
-        - concepts/models/properties.md
-        # - Advanced Properties:
-        #   - concepts/models/advanced_properties.md
+        - components/models/overview.md
+        - components/models/properties.md
         - Types:
-          - concepts/models/sql_models.md
-          - concepts/models/python_models.md
-          - concepts/models/external_models.md
-          - concepts/models/managed_models.md
-        - concepts/models/model_kinds.md
-        - concepts/models/statements.md
-      - concepts/tests.md
-      - concepts/audits.md
-      - concepts/checks.md
+          - components/model/type/sql_models.md
+          - components/model/type/python_models.md
+          - components/model/type/external_models.md
+          - components/model/type/managed_models.md
+        - components/model_kinds.md
+        - components/statements.md
+      - components/tests/tests.md
+      - components/audits/audits.md
+      - components/checks/checks.md
       - Semantics:
-        - concepts/semantics/overview.md
-        - concepts/semantics/models.md
-        - concepts/semantics/metrics.md
+        - components/semantics/overview.md
+        - components/semantics/models.md
+        - components/semantics/business_metrics.md
       - Advance Features:
         - Macros:
-          - concepts/macros/overview.md
-          - concepts/macros/macro_variables.md
-          - concepts/macros/vulcan_macros.md
-          - concepts/macros/jinja_macros.md
-        - guides/signals.md
-        - guides/custom_materializations.md
+          - components/advanced-features/macros/overview.md
+          - components/advanced-features/macros/variables.md
+          - components/advanced-features/macros/built_in.md
+          - components/advanced-features/macros/jinja.md
+        - signals.md
+        - custom_materializations.md
   - Guides:
-      - getting_started/docker.md
-
-      # - guides/configuration.md    --make sure every content we have included using this file
+      - guides/get-started/docker.md
       - guides/plan.md
-      - guides/run.md
+      - guides/run_and_scheduling.md
       - guides/models.md
-      - guides/incremental_time.md
+      - guides/incremental_by_time.md
       - guides/data_quality.md
       - guides/model_selection.md
-      - guides/transpiling.md
-      #- guides/federated_engines.md
-      # - Virtual environments Guide:
-      # - Vulcan API Guide:
-      # - Table Creation Guide:
-  - CLI Commands: reference/cli.md # Changed to "CLI Commands" for consistency with the visual and placed the file directly under it.
-
-  # These items were already top-level and remain as is:
+      - guides/transpiling_semantics.md
+  - CLI Commands: reference/cli.md
   - Cookbook:
     - cookbook/index.md
   - FAQ:
