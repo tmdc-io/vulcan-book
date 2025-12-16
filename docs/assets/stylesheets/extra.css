@@ -592,7 +592,20 @@ code, pre, kbd, samp,
   font-weight: var(--vl-font-weight-semibold) !important;
   font-size: 0.875rem !important;
   padding: 0.75rem 1rem !important;
+  padding-left: 2.5rem !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  position: relative !important;
+}
+
+/* Admonition icon alignment */
+.md-typeset .admonition-title::before,
+.md-typeset summary::before {
+  position: absolute !important;
+  left: 0.75rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
 }
 
 /* Note - Blue */
@@ -1115,6 +1128,189 @@ a.md-button.download-button:hover {
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--vl-border) var(--vl-bg-sidebar);
+}
+
+/* -------------------- Admonitions (Dark Mode Fix) -------------------- */
+/* Fix for white text on light background issue in dark mode */
+
+[data-md-color-scheme="slate"] .md-typeset .admonition,
+[data-md-color-scheme="slate"] .md-typeset details {
+  background-color: var(--vl-bg-code) !important;
+  box-shadow: var(--vl-shadow-sm) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset summary {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* NOTE - Blue */
+[data-md-color-scheme="slate"] .md-typeset .admonition.note,
+[data-md-color-scheme="slate"] .md-typeset details.note {
+  background-color: rgba(92, 176, 250, 0.12) !important;
+  border-left-color: var(--vl-primary) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .note > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .note > summary {
+  background-color: rgba(92, 176, 250, 0.18) !important;
+  color: var(--vl-primary-light) !important;
+}
+
+/* TIP - Green */
+[data-md-color-scheme="slate"] .md-typeset .admonition.tip,
+[data-md-color-scheme="slate"] .md-typeset details.tip {
+  background-color: rgba(34, 197, 94, 0.12) !important;
+  border-left-color: var(--vl-success) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tip > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .tip > summary {
+  background-color: rgba(34, 197, 94, 0.18) !important;
+  color: #4ADE80 !important;
+}
+
+/* WARNING - Amber */
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning,
+[data-md-color-scheme="slate"] .md-typeset details.warning {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+  border-left-color: var(--vl-warning) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .warning > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .warning > summary {
+  background-color: rgba(245, 158, 11, 0.18) !important;
+  color: #FBBF24 !important;
+}
+
+/* DANGER / ERROR - Red */
+[data-md-color-scheme="slate"] .md-typeset .admonition.danger,
+[data-md-color-scheme="slate"] .md-typeset details.danger,
+[data-md-color-scheme="slate"] .md-typeset .admonition.error,
+[data-md-color-scheme="slate"] .md-typeset details.error {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  border-left-color: var(--vl-error) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .danger > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .danger > summary,
+[data-md-color-scheme="slate"] .md-typeset .error > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .error > summary {
+  background-color: rgba(239, 68, 68, 0.18) !important;
+  color: #F87171 !important;
+}
+
+/* INFO - Blue */
+[data-md-color-scheme="slate"] .md-typeset .admonition.info,
+[data-md-color-scheme="slate"] .md-typeset details.info {
+  background-color: rgba(92, 176, 250, 0.12) !important;
+  border-left-color: var(--vl-primary-light) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .info > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .info > summary {
+  background-color: rgba(92, 176, 250, 0.18) !important;
+  color: var(--vl-primary-light) !important;
+}
+
+/* QUESTION - Light Blue */
+[data-md-color-scheme="slate"] .md-typeset .admonition.question,
+[data-md-color-scheme="slate"] .md-typeset details.question {
+  background-color: rgba(92, 176, 250, 0.12) !important;
+  border-left-color: #5CB0FA !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .question > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .question > summary {
+  background-color: rgba(92, 176, 250, 0.18) !important;
+  color: #7EC4FF !important;
+}
+
+/* Ensure readable body text inside admonitions in dark mode */
+[data-md-color-scheme="slate"] .md-typeset .admonition,
+[data-md-color-scheme="slate"] .md-typeset details,
+[data-md-color-scheme="slate"] .md-typeset .admonition p,
+[data-md-color-scheme="slate"] .md-typeset details p,
+[data-md-color-scheme="slate"] .md-typeset .admonition li,
+[data-md-color-scheme="slate"] .md-typeset details li {
+  color: var(--vl-text-secondary) !important;
+}
+
+/* -------------------- Fix line-number code block alignment -------------------- */
+
+.md-typeset .highlighttable {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--vl-border) !important;
+}
+
+/* Reset all inner pre elements */
+.md-typeset .highlighttable pre {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  line-height: 1.6 !important;
+}
+
+/* Line numbers column */
+.md-typeset .highlighttable td.linenos {
+  width: auto !important;
+  padding: 0 !important;
+  vertical-align: top !important;
+  background: var(--vl-bg-sidebar) !important;
+  border-right: 1px solid var(--vl-border) !important;
+}
+
+.md-typeset .highlighttable td.linenos .linenodiv {
+  padding: 1rem 0.5rem !important;
+}
+
+.md-typeset .highlighttable td.linenos pre {
+  text-align: right !important;
+  color: var(--vl-text-muted) !important;
+  user-select: none !important;
+}
+
+/* Code column */
+.md-typeset .highlighttable td.code {
+  padding: 0 !important;
+  vertical-align: top !important;
+  background: var(--vl-bg-code) !important;
+  width: 100% !important;
+}
+
+.md-typeset .highlighttable td.code > div {
+  padding: 1rem !important;
+}
+
+/* Hide the copy button nav to fix alignment, or position it absolutely */
+.md-typeset .highlighttable .md-code__nav {
+  position: absolute !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+}
+
+.md-typeset .highlighttable td.code > div {
+  position: relative !important;
+}
+
+/* Dark mode */
+[data-md-color-scheme="slate"] .md-typeset .highlighttable {
+  border-color: var(--vl-border) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .highlighttable td.linenos {
+  background: #1E2228 !important;
+  border-right-color: var(--vl-border) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .highlighttable td.code {
+  background: var(--vl-bg-code) !important;
 }
 
 /* -------------------- Print Styles -------------------- */
