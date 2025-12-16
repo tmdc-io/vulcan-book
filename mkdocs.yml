@@ -64,7 +64,7 @@ nav:
       # - Virtual environments Guide:
       # - Vulcan API Guide:
       # - Table Creation Guide:
-  - CLI Commands: reference/cli.md # Changed to "CLI Commands" for consistency with the visual and placed the file directly under it.
+  - CLI Commands: cli-command/cli.md # Changed to "CLI Commands" for consistency with the visual and placed the file directly under it.
 
   # These items were already top-level and remain as is:
   - Cookbook:
