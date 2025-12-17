@@ -2,9 +2,7 @@
 
 Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies—each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.
 
-The kind you choose affects performance, cost, and how your data stays up to date. Pick the right one, and your pipelines run efficiently. Pick the wrong one, and you might be waiting forever (or paying too much).
-
-For a complete reference of all model kind configuration parameters, check out the [model configuration reference page](../../configurations-old/configuration.md).
+Find information about all model kind configuration parameters in the [model configuration reference page](../../reference/model_configuration.md).
 
 ## INCREMENTAL_BY_TIME_RANGE
 
@@ -28,9 +26,7 @@ MODEL (
 ```
 
 <a id="timezones"></a>
-Your query also needs a `WHERE` clause that filters upstream data by time range. Vulcan gives you special macros for this: `@start_date` / `@end_date` (for timestamps) and `@start_ds` / `@end_ds` (for dates). These automatically get filled in with the time range Vulcan is processing.
-
-Want to learn more about these macros? Check out the [Macros documentation](../advanced-features/macros/variables.md).
+In addition to specifying a time column in the `MODEL` DDL, the model's query must contain a `WHERE` clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: `@start_date` / `@end_date` and `@start_ds` / `@end_ds`. Refer to [Macros](../macros/macro_variables.md) for more information.
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
     This example demonstrates incremental by time range models.
@@ -407,11 +403,7 @@ Vulcan needs to know which column in your model's output represents the timestam
 
     Your `time_column` should be in UTC timezone. Learn more about why this matters [above](#timezones).
 
-The time column does two important things:
-- **Determines which records get overwritten** during data restatement (so you can reprocess specific time ranges)
-- **Provides a partition key** for engines that support partitioning (like Spark), which makes queries faster
-
-You specify it in your `MODEL` DDL like this:
+The time column is used to determine which records will be overwritten during data [restatement](../plans.md#restatement-plans) and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the `MODEL` DDL `kind` specification:
 
 ```sql linenums="1"
 MODEL (
@@ -501,8 +493,9 @@ MODEL (
 ```
 
 ### Idempotency
+We recommend making sure incremental by time range model queries are [idempotent](../glossary.md#idempotency) to prevent unexpected results during data [restatement](../plans.md#restatement-plans).
 
-We recommend making your incremental by time range queries [idempotent](components/glossary.md#idempotency). This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
+We recommend making your incremental by time range queries [idempotent](../glossary.md#idempotency). This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
 
 **Watch out:** Your upstream models can affect idempotency. If you reference a FULL model (which rebuilds everything each run), your incremental model becomes non-idempotent because that upstream data changes every time. This is usually fine, but it's good to be aware of.
 
@@ -530,16 +523,15 @@ Here's how it works:
 
 **Why use this?** Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list—you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.
 
-This kind works great for:
-- Dimension tables (customers, products, etc.)
-- Slowly Changing Dimensions (SCDs) - though for SCD Type 2 specifically, check out the [SCD Type 2](#scd-type-2) model kind
-- Any dataset where each record has a unique key and you want to upsert
+This kind is a good fit for datasets that have the following traits:
 
-!!! important "Prevent Duplicated Keys"
+* Each record has a unique key associated with it.
+* There is at most one record associated with each unique key.
+* It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their keys match.
 
-    Vulcan doesn't automatically detect duplicate keys. If your query returns multiple rows with the same key, you'll get duplicates in your table. Make sure your query returns at most one row per unique key!
+A [Slowly Changing Dimension](../glossary.md#slowly-changing-dimension-scd) (SCD) is one approach that fits this description well. See the [SCD Type 2](#scd-type-2) model kind for a specific model kind for SCD Type 2 models.
 
-You specify the unique key column(s) in your `MODEL` DDL. Here's how:
+The name of the unique key column must be provided as part of the `MODEL` DDL, as in this example:
 
 === "SQL"
 
@@ -691,9 +683,7 @@ GROUP BY c.customer_id, c.name
     SELECT * FROM `vulcan-public-demo`.`vulcan__demo`.`demo__incremental_by_unique_key_example__1161945221`
     ```
 
-!!! note "Restatement Behavior"
-
-    `INCREMENTAL_BY_UNIQUE_KEY` models are inherently [non-idempotent](components/glossary.md#idempotency), which means partial data restatement isn't supported. If you restate one of these models, the entire table gets recreated from scratch. Keep this in mind when planning restatements!
+**Note:** Models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are inherently [non-idempotent](../glossary.md#idempotency), which should be taken into consideration during data [restatement](../plans.md#restatement-plans). As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.
 
 ### Unique Key Expressions
 
@@ -1098,8 +1088,7 @@ FROM vulcan_demo.customers
 ```
 
 ## SEED
-
-`SEED` models let you load static CSV files into your data warehouse. Perfect for reference data like country codes, product categories, or any data that doesn't change often.
+The `SEED` model kind is used to specify [seed models](./seed_models.md) for using static CSV datasets in your Vulcan project.
 
 **How it works:** You point to a CSV file, define the schema, and Vulcan loads it into a table. The data only gets reloaded if you change the model definition or update the CSV file.
 
@@ -1199,30 +1188,13 @@ MODEL (
 
 ## SCD Type 2
 
-SCD Type 2 models track historical changes to your data. They're perfect for dimension tables where you need to know not just what the current value is, but what it was at any point in time.
+SCD Type 2 is a model kind that supports [slowly changing dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) (SCDs) in your Vulcan project. SCDs are a common pattern in data warehousing that allow you to track changes to records over time.
 
-**How it works:** Vulcan automatically adds `valid_from` and `valid_to` columns to your table. Each time a record changes, the old version gets a `valid_to` timestamp, and a new version is created with a `valid_from` timestamp. The current version has `valid_to = NULL`.
+Vulcan achieves this by adding a `valid_from` and `valid_to` column to your model. The `valid_from` column is the timestamp that the record became valid (inclusive) and the `valid_to` column is the timestamp that the record became invalid (exclusive). The `valid_to` column is set to `NULL` for the latest record.
 
-**Example:** If a customer's address changes on January 15th, you'll have:
-- One row with the old address (`valid_from: 2020-01-01`, `valid_to: 2025-01-15`)
-- One row with the new address (`valid_from: 2025-01-15`, `valid_to: NULL`)
+Therefore, you can use these models to not only tell you what the latest value is for a given record but also what the values were anytime in the past. Note that maintaining this history does come at a cost of increased storage and compute and this may not be a good fit for sources that change frequently since the history could get very large.
 
-**When to use:**
-- Customer dimension tables (track address/name changes)
-- Product catalogs (track price/category changes)
-- Employee records (track department/role changes)
-- Any dimension where history matters
-
-**Trade-offs:**
-- ✅ Full history of all changes
-- ✅ Query "what was the value on date X?"
-- ❌ More storage (you're keeping multiple versions)
-- ❌ More compute (comparing versions each run)
-- ❌ Not great for frequently-changing sources (history gets huge fast)
-
-!!! warning "Restatement Behavior"
-
-    Partial data restatement isn't supported for SCD Type 2 models. If you restate one, the entire table gets recreated from scratch, which can cause data loss. That's why restatement is disabled by default for these models.
+**Note**: Partial data [restatement](../plans.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.
 
 Vulcan supports two ways to detect changes: **By Time** (recommended) or **By Column**. Let's look at both:
 
@@ -1828,9 +1800,8 @@ MODEL (
 );
 ```
 
-1. Set `disable_restatement: false` in your model definition
-2. Plan and apply this change to production
-3. Restate the model: `vulcan plan --restate-model db.menu_items`
+Plan/apply this change to production.
+Then you will want to [restate the model](../plans.md#restatement-plans).
 
 !!! warning "Data Loss Warning"
 
@@ -1851,66 +1822,60 @@ MODEL (
 
 ## EXTERNAL
 
-`EXTERNAL` models are special—they don't create tables or run queries. Instead, they just store metadata (column names and types) about tables that exist outside your Vulcan project.
-
-**Why use this?** If you're querying external tables (like tables managed by another system or a third-party data source), defining them as EXTERNAL models helps Vulcan understand their schema. This enables better column-level lineage and query optimization.
-
-**Important:** External models are defined in YAML files, not SQL files. They're optional but recommended if you're querying external tables. Learn more in the [External Models documentation](components/model/external_models.md).
+The EXTERNAL model kind is used to specify [external models](./external_models.md) that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.
 
 ## MANAGED
 
-`MANAGED` models let the database engine handle data updates automatically. Instead of Vulcan managing when data refreshes, the engine keeps it up to date in the background.
+!!! warning
 
-**How it works:** You define the query, and the engine takes over. It monitors upstream tables and automatically refreshes your managed table when source data changes. No need to run `vulcan run` to update the data—the engine handles it.
+    Managed models are still under development and the API / semantics may change as support for more engines is added
 
-**When to use:** When you need automatic, real-time updates and your engine supports managed tables (like Snowflake Dynamic Tables). These are great for dashboards or APIs that need always-fresh data.
+**Note:** Python models do not support the `MANAGED` model kind - use a SQL model instead.
 
-**Trade-offs:**
-- ✅ Automatic updates (no manual refreshes)
-- ✅ Real-time or near-real-time data
-- ✅ Less to manage
-- ❌ Engine-specific (not portable between databases)
-- ❌ Less visibility (Vulcan can't see what the engine is doing)
-- ❌ Usually costs more (engines charge for managed table features)
+The `MANAGED` model kind is used to create models where the underlying database engine manages the data lifecycle.
 
-!!! warning "Under Development"
+These models don't get updated with new intervals or refreshed when `vulcan run` is called. Responsibility for keeping the *data* up to date falls on the engine.
 
-    Managed models are still being developed, and the API/semantics may change as we add support for more engines.
+You can control how the engine creates the managed model by using the [`physical_properties`](../models/overview.md#physical_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
 
-!!! note "Python Models"
+Due to there being no standard, each vendor has a different implementation with different semantics and different configuration parameters. Therefore, `MANAGED` models are not as portable between database engines as other Vulcan model types. In addition, due to their black-box nature, Vulcan has limited visibility into the integrity and state of the model.
 
-    Python models don't support the `MANAGED` kind—use a SQL model instead.
+We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](../overview.md#build-a-virtual-environment).
 
-**Recommendation:** Start with standard Vulcan model types (FULL, INCREMENTAL, etc.). Only use MANAGED if you specifically need automatic engine-managed updates. You still get other Vulcan benefits like virtual environments, even with managed models.
-
-For details on supported engines and configuration options, see the [Managed Models documentation](./managed_models.md).
+See [Managed Models](./managed_models.md) for more information on which engines are supported and which properties are available.
 
 ## INCREMENTAL_BY_PARTITION
 
-`INCREMENTAL_BY_PARTITION` models update data based on partition keys. When new data arrives, Vulcan replaces entire partitions rather than individual rows.
+Models of the `INCREMENTAL_BY_PARTITION` kind are computed incrementally based on partition. A set of columns defines the model's partitioning key, and a partition is the group of rows with the same partitioning key value.
 
-**How it works:** You define partition columns (like `warehouse_id` or `region`). When new data comes in:
-- **New partition?** → Insert all rows for that partition
-- **Existing partition?** → Replace ALL rows for that partition with new data
-- **Partition missing from new data?** → Leave existing partition alone
+!!! question "Should you use this model kind?"
 
-!!! question "Should You Use This?"
+    Any model kind can use a partitioned **table** by specifying the [`partitioned_by` key](../models/overview.md#partitioned_by) in the `MODEL` DDL.
 
-    **Important distinction:** Any model kind can use a partitioned **table** (via `partitioned_by`). `INCREMENTAL_BY_PARTITION` is about how data is **loaded**—it loads and updates entire partitions at once.
+    The "partition" in `INCREMENTAL_BY_PARTITION` is about how the data is **loaded** when the model runs.
 
-    **When to use:** Only when you specifically need partition-based loading (usually for performance reasons with very large datasets). In most cases, `INCREMENTAL_BY_TIME_RANGE` will meet your needs and be easier to manage.
+    `INCREMENTAL_BY_PARTITION` models are inherently [non-idempotent](../glossary.md#idempotency), so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.
 
-    **Why it's complex:** These models are inherently [non-idempotent](components/glossary.md#idempotency), so restatements can cause data loss. They're more complex to manage than other incremental kinds.
+    In most scenarios, an `INCREMENTAL_BY_TIME_RANGE` model can meet your needs and will be easier to manage. The `INCREMENTAL_BY_PARTITION` model kind should only be used when the data must be loaded by partition (usually for performance reasons).
 
-**Use this kind when:**
-- Your data naturally groups by partition (warehouse, region, category, etc.)
-- You need to replace entire partitions at once (not individual rows)
-- Performance requires partition-based loading
-- You're okay with the complexity trade-off
+This model kind is designed for the scenario where data rows should be loaded and updated as a group based on their shared value for the partitioning key.
 
-Vulcan automatically creates partitioned tables on engines that support it (BigQuery, Databricks, etc.), which helps with query performance.
+It may be used with any SQL engine. Vulcan will automatically create partitioned tables on engines that support explicit table partitioning (e.g., [BigQuery](https://cloud.google.com/bigquery/docs/creating-partitioned-tables), [Databricks](https://docs.databricks.com/en/sql/language-manual/sql-ref-partition.html)).
 
-You specify the partition columns using the `partitioned_by` property in your `MODEL` DDL. Here's an example:
+New rows are loaded based on their partitioning key value:
+
+- If a partitioning key in newly loaded data is not present in the model table, the new partitioning key and its data rows are inserted.
+- If a partitioning key in newly loaded data is already present in the model table, **all the partitioning key's existing data rows in the model table are replaced** with the partitioning key's data rows in the newly loaded data.
+- If a partitioning key is present in the model table but not present in the newly loaded data, the partitioning key's existing data rows are not modified and remain in the model table.
+
+This kind should only be used for datasets that have the following traits:
+
+* The dataset's records can be grouped by a partitioning key.
+* Each record has a partitioning key associated with it.
+* It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their partitioning keys match.
+* All existing records associated with a given partitioning key can be removed or overwritten when any new record has the partitioning key value.
+
+The column defining the partitioning key is specified in the model's `MODEL` DDL `partitioned_by` key. This example shows the `MODEL` DDL for an `INCREMENTAL_BY_PARTITION` model:
 
 === "SQL"
 
@@ -1991,7 +1956,11 @@ MODEL (
 
 !!! warning "Only Full Restatements Supported"
 
-    Partial data restatements aren't supported for `INCREMENTAL_BY_PARTITION` models. If you restate one, the entire table gets recreated from scratch, which can cause data loss. Be careful when restating these models!
+    Partial data [restatements](../plans.md#restatement-plans) are used to reprocess part of a table's data (usually a limited time range).
+
+    Partial data restatement is not supported for `INCREMENTAL_BY_PARTITION` models. If you restate an `INCREMENTAL_BY_PARTITION` model, its entire table will be recreated from scratch.
+
+    Restating `INCREMENTAL_BY_PARTITION` models may lead to data loss and should be performed with care.
 
 ### Example
 
@@ -2042,9 +2011,7 @@ SELECT
 FROM product_usage
 ```
 
-!!! note "Restatement Behavior"
-
-    Remember: partial restatements aren't supported. Restating this model recreates the entire table from scratch, which can cause data loss.
+**Note**: Partial data [restatement](../plans.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.
 
 ### Materialization strategy
 Depending on the target engine, models of the `INCREMENTAL_BY_PARTITION` kind are materialized using the following strategies:
@@ -2109,6 +2076,6 @@ ORDER BY s.shipped_date DESC
 
 !!! warning "Only Full Restatements Supported"
 
-    Like `INCREMENTAL_BY_PARTITION`, restating an `INCREMENTAL_UNMANAGED` model triggers a full restatement (rebuilds from scratch). This is because append-only tables are inherently non-idempotent—you can't safely reprocess part of the data without risking duplicates or data loss.
+    Similar to `INCREMENTAL_BY_PARTITION`, attempting to [restate](../plans.md#restatement-plans) an `INCREMENTAL_UNMANAGED` model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.
 
     Be very careful when restating these models!

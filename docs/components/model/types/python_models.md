@@ -13,7 +13,7 @@ Vulcan has first-class support for Python models. As long as your function retur
 
 !!! info "Unsupported Model Kinds"
 
-    Python models don't support these [model kinds](components/model/types/model_kinds.md). If you need one of these, use a SQL model instead:
+Python models don't support these [model kinds](components/model/types/model_kinds.md). If you need one of these, use a SQL model instead:
     
     - `VIEW` - Views need to be SQL
     - `SEED` - Seed models load CSV files (SQL only)
@@ -88,7 +88,7 @@ The `@model` decorator captures your model's metadata (just like the `MODEL` DDL
 
 The `@model` decorator accepts the same properties as SQL models—just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc.—they all work the same way.
 
-**Model kinds:** For Python models, `kind` is a dictionary with the kind name and its properties. You need to import `ModelKindName` and use it like this:
+Python model `kind`s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the [models configuration reference page](../../../references/model_configuration.md#model-kind-properties).
 
 ```python
 from vulcan import ModelKindName
@@ -121,7 +121,7 @@ Supported `kind` dictionary `name` values are:
 
 ## Execution Context
 
-The `ExecutionContext` is your gateway to the database. You can run queries, resolve table names, and access runtime information.
+Python models can do anything you want, but it is strongly recommended for all models to be [idempotent](../../../references/glossary.md#idempotency). Python models can fetch data from upstream models or even data outside of Vulcan.
 
 **Fetching data:** Use `context.fetchdf()` to run SQL queries and get DataFrames:
 
@@ -185,7 +185,9 @@ def execute(
 
 ```
 
-The example above uses a custom macro `@CREATE_INDEX(@this_model, id)`. You can define macros like this in your project's `macros` directory. Here's how you might implement it:
+The previous example's `post_statements` called user-defined Vulcan macro `@CREATE_INDEX(@this_model, id)`.
+
+We could define the `CREATE_INDEX` macro in the project's `macros` directory like this. The macro creates a table index on a single column, conditional on the [runtime stage](../../advanced-features/macros/variables.md#runtime-variables) being `creating` (table creation time).
 
 
 ``` python linenums="1"
@@ -235,7 +237,7 @@ On-virtual-update statements run when views are created or updated in the virtua
 
 You can set `on_virtual_update` in the `@model` decorator to a list of SQL strings, SQLGlot expressions, or macro calls.
 
-**Project-level defaults:** Like pre/post-statements, you can define these in `model_defaults` for consistent behavior. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](components/configurations-old/configuration.md#model-defaults).
+**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
 
 ``` python linenums="1" hl_lines="8"
 @model(

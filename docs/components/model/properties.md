@@ -543,8 +543,7 @@ Explicitly defines your model's column names and data types. When you use this, 
     ```
 
 !!! note "Python Models"
-
-    This is required for [Python models](components/model/python_models.md) since Vulcan can't infer column types from Python code. You must explicitly define your schema.
+This is required for [Python models](components/model/python_models.md) since Vulcan can't infer column types from Python code. You must explicitly define your schema.
 
 ### dialect
 
@@ -1205,10 +1204,10 @@ These properties work with all incremental model kinds. They're your toolkit for
 
 | Property | Description | Type | Default |
 |----------|-------------|:----:|:-------:|
-| `forward_only` | All changes should be [forward-only](components/plans.md#forward-only-plans) | `bool` | `false` |
+| `forward_only` | All changes should be [forward-only](../guides/plan.md#forward-only-plans) | `bool` | `false` |
 | `on_destructive_change` | Behavior for destructive schema changes | `str` | `error` |
 | `on_additive_change` | Behavior for additive schema changes | `str` | `allow` |
-| `disable_restatement` | Disable [data restatement](components/plans.md#restatement-plans) | `bool` | `false` |
+| `disable_restatement` | Disable [data restatement](../guides/plan.md#restatement-plans) | `bool` | `false` |
 | `auto_restatement_cron` | Cron expression for automatic restatement | `str` | - |
 
 **Values for `on_destructive_change` / `on_additive_change`:**
@@ -1663,4 +1662,4 @@ infer_names: true
 
 **When to use:** If your project structure matches your schema structure, this saves you from typing `name` in every model. Pretty convenient!
 
-Learn more in the [configuration guide](guides-old/configuration.md#model-naming).
+Learn more in the [configuration guide](../guides-old/configuration.md#model-naming).

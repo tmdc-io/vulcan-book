@@ -4,16 +4,12 @@
    ============================================================ */
 
 
-/* 1. Hides the DataOS Vulcan site title element in the sidebar (Previous Fix) */
+/* Hide the DataOS Vulcan site title element in the sidebar */
 .md-nav__title {
   display: none;
 }
 
-/* 2. THE FINAL FIX: Force top-level sections to be collapsed by default.
- This hides the sub-navigation list inside any top-level item 
- that is NOT currently active (i.e., not the page the user is viewing). 
- This works reliably even when navigation.indexes is on.
-*/
+/* Force top-level sections to be collapsed by default */
 /* .md-nav__list > .md-nav__item:not(.md-nav__item--active) > .md-nav__list {
   display: none;
 } */
@@ -181,9 +177,13 @@ code, pre, kbd, samp,
   box-shadow: none !important;
 }
 
-/* Header text color - light for dark header */
+/* Header text color - light for dark header (scoped to avoid affecting search dialog) */
 .md-header,
-.md-header * {
+.md-header .md-header__inner,
+.md-header .md-header__title,
+.md-header .md-header__button,
+.md-header .md-tabs,
+.md-header .md-tabs * {
   color: #FFFFFF !important;
 }
 
@@ -215,7 +215,7 @@ code, pre, kbd, samp,
   border-color: var(--vl-primary-light) !important;
 }
 
-/* Search result dropdown - fix z-index and position */
+/* Search result dropdown */
 .md-search__output {
   z-index: 100 !important;
 }
@@ -386,9 +386,42 @@ code, pre, kbd, samp,
   background-color: var(--vl-bg-hover) !important;
 }
 
-/* Hide the inner arrow icon (the one right after text) - keep only dropdown arrow */
+/* Hide the default Material toggle icon */
 .md-sidebar--primary .md-nav__link > .md-nav__icon {
   display: none !important;
+}
+
+/* -------------------- Dropdown Arrows (Bento-style) -------------------- */
+/* Add chevron arrows to nav items with children */
+.md-sidebar--primary .md-nav__item--nested > .md-nav__link {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding-right: 0.5rem !important;
+}
+
+/* The chevron arrow ">" */
+.md-sidebar--primary .md-nav__item--nested > .md-nav__link::after {
+  content: "" !important;
+  flex-shrink: 0 !important;
+  width: 6px !important;
+  height: 6px !important;
+  margin-left: 0.5rem !important;
+  border-right: 2px solid var(--vl-text-muted) !important;
+  border-bottom: 2px solid var(--vl-text-muted) !important;
+  transform: rotate(-45deg) !important;
+  transition: transform 0.2s ease, border-color 0.2s ease !important;
+}
+
+/* Rotate chevron down when expanded */
+.md-sidebar--primary .md-nav__item--nested > .md-toggle:checked ~ .md-nav__link::after {
+  transform: rotate(45deg) !important;
+  border-color: var(--vl-primary) !important;
+}
+
+/* Chevron hover state */
+.md-sidebar--primary .md-nav__item--nested > .md-nav__link:hover::after {
+  border-color: var(--vl-text-primary) !important;
 }
 
 /* Hide nested items by default - they show when parent is toggled */
@@ -1122,7 +1155,7 @@ a.md-button.download-button:hover {
   }
 }
 
-/* Tablets and smaller desktops */
+/* Medium screens (max-width: 1200px) */
 @media (max-width: 1200px) {
   .md-sidebar--secondary {
     display: none !important;
@@ -1135,22 +1168,45 @@ a.md-button.download-button:hover {
   }
 }
 
-/* iPad (768px) and tablets */
+/* Tablets and smaller (max-width: 768px) */
 @media (max-width: 768px) {
+  /* Reset sidebar to let Material theme handle mobile drawer */
   .md-sidebar--primary {
-    width: 100% !important;
-    position: relative !important;
-    height: auto !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--vl-border) !important;
+    width: auto !important;
+    min-width: auto !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100vh !important;
+    z-index: 4 !important;
+    background: var(--vl-bg-sidebar) !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s !important;
   }
   
+  /* Show sidebar when drawer is open */
+  .md-toggle--drawer:checked ~ .md-container .md-sidebar--primary {
+    transform: translateX(0) !important;
+  }
+  
+  /* Full width content on mobile */
   .md-content {
     max-width: 100% !important;
-    padding: 1.5rem 2rem !important; /* Bento-style padding for tablets */
+    width: 100% !important;
+    padding: 1rem 1.25rem !important;
+  }
+  
+  /* Main container should not use flex that constrains content */
+  .md-main__inner {
+    display: block !important;
+  }
+  
+  /* Hide TOC on mobile */
+  .md-sidebar--secondary {
+    display: none !important;
   }
 
-  /* Return tabs to default stacked position on tablets */
+  /* Tabs styling */
   .md-tabs {
     position: sticky !important;
     top: 48px !important;
@@ -1181,117 +1237,125 @@ a.md-button.download-button:hover {
   }
 
   .md-typeset {
-    font-size: 0.8125rem !important;
+    font-size: 0.875rem !important;
   }
 
   .md-typeset h1 {
-    font-size: 1.125rem !important; /* ~18px for tablets */
+    font-size: 1.25rem !important;
   }
   
   .md-typeset h2 {
-    font-size: 0.875rem !important; /* ~14px for tablets */
+    font-size: 1rem !important;
   }
   
   .md-typeset h3 {
-    font-size: 0.8125rem !important; /* ~13px for tablets */
+    font-size: 0.875rem !important;
   }
 }
 
-/* Pixel 7 (412px) and similar phones */
+/* Small screens (max-width: 420px) */
 @media (max-width: 420px) {
   .md-content {
-    padding: 1.25rem 1.5rem !important; /* Bento-style mobile padding */
+    padding: 1rem 1rem !important;
   }
 
   .md-header__inner {
-    padding: 0.75rem 1.5rem !important; /* Bento-style mobile header padding */
+    padding: 0.5rem 0.75rem !important;
   }
 
   .md-header__title {
-    font-size: 0.8125rem !important;
+    font-size: 0.875rem !important;
   }
 
   .md-tabs {
-    padding: 0 1.5rem !important; /* Match header padding */
+    padding: 0 0.75rem !important;
   }
 
   .md-tabs__link {
     font-size: 0.75rem !important;
-    padding: 0.5rem 0.625rem !important;
+    padding: 0.5rem 0.5rem !important;
   }
 
   .md-typeset {
-    font-size: 0.75rem !important; /* 12px for phones */
+    font-size: 0.875rem !important;
   }
 
   .md-typeset h1 {
-    font-size: 1rem !important; /* 16px for phones */
+    font-size: 1.125rem !important;
     margin-bottom: 0.75rem !important;
   }
   
   .md-typeset h2 {
-    font-size: 0.8125rem !important; /* 13px for phones */
+    font-size: 0.9375rem !important;
     margin-top: 1.25rem !important;
     margin-bottom: 0.5rem !important;
   }
   
   .md-typeset h3 {
-    font-size: 0.75rem !important; /* 12px for phones */
+    font-size: 0.875rem !important;
     margin-top: 1rem !important;
   }
 
   .md-typeset h4 {
-    font-size: 0.75rem !important; /* 12px for phones */
+    font-size: 0.8125rem !important;
   }
 
   .md-typeset p {
     margin-bottom: 0.875rem !important;
   }
 
-  /* Navigation adjustments for small phones */
-  .md-nav__link {
+  /* Code blocks on mobile - prevent overflow */
+  .md-typeset pre {
+    overflow-x: auto !important;
+    max-width: 100% !important;
+  }
+  
+  .md-typeset code {
     font-size: 0.75rem !important;
-    padding: 0.375rem 0.5rem !important;
+    word-break: break-word !important;
   }
 
-  .md-nav__title {
-    font-size: 0.75rem !important;
+  /* Tables on mobile */
+  .md-typeset table {
+    display: block !important;
+    overflow-x: auto !important;
+    max-width: 100% !important;
   }
 }
 
-/* iPhone 13 mini (375px) and smaller phones */
+/* Extra small screens (max-width: 375px) */
 @media (max-width: 375px) {
   .md-content {
-    padding: 1rem 1.25rem !important; /* Bento-style small phone padding */
+    padding: 0.75rem 0.75rem !important;
   }
 
   .md-header__inner {
-    padding: 0.75rem 1.25rem !important; /* Bento-style small phone header padding */
-  }
-
-  .md-tabs {
-    padding: 0 1.25rem !important; /* Match header padding */
-  }
-
-  .md-tabs__link {
-    font-size: 0.6875rem !important; /* 11px for very small phones */
     padding: 0.5rem 0.5rem !important;
   }
 
+  .md-tabs {
+    padding: 0 0.5rem !important;
+  }
+
+  .md-tabs__link {
+    font-size: 0.6875rem !important;
+    padding: 0.5rem 0.375rem !important;
+  }
+
   .md-typeset {
-    font-size: 0.6875rem !important; /* 11px for very small phones */
+    font-size: 0.8125rem !important;
   }
 
   .md-typeset h1 {
-    font-size: 0.9375rem !important; /* 15px for very small phones */
+    font-size: 0.9375rem !important;
   }
   
   .md-typeset h2 {
-    font-size: 0.75rem !important; /* 12px for very small phones */
+    font-size: 0.75rem !important;
   }
   
   .md-typeset h3 {
-    font-size: 0.6875rem !important; /* 11px for very small phones */
+    font-size: 0.6875rem !important;
   }
 
   .md-typeset code {
@@ -1461,8 +1525,7 @@ a.md-button.download-button:hover {
   scrollbar-color: var(--vl-border) var(--vl-bg-sidebar);
 }
 
-/* -------------------- Admonitions (Dark Mode Fix) -------------------- */
-/* Fix for white text on light background issue in dark mode */
+/* -------------------- Admonitions (Dark Mode) -------------------- */
 
 [data-md-color-scheme="slate"] .md-typeset .admonition,
 [data-md-color-scheme="slate"] .md-typeset details {
@@ -1567,7 +1630,7 @@ a.md-button.download-button:hover {
   color: var(--vl-text-secondary) !important;
 }
 
-/* -------------------- Fix line-number code block alignment -------------------- */
+/* -------------------- Line-number code block alignment -------------------- */
 
 .md-typeset .highlighttable {
   width: 100% !important;
@@ -1619,7 +1682,7 @@ a.md-button.download-button:hover {
   padding: 1rem !important;
 }
 
-/* Hide the copy button nav to fix alignment, or position it absolutely */
+/* Copy button positioning */
 .md-typeset .highlighttable .md-code__nav {
   position: absolute !important;
   top: 0.5rem !important;
@@ -1658,6 +1721,247 @@ a.md-button.download-button:hover {
     max-width: 100% !important;
     padding: 0 !important;
   }
+}
+
+/* =========================
+   Search input light mode
+   ========================= */
+
+/* Light scheme: when search is open, make typed text + placeholder dark */
+[data-md-color-scheme="default"] .md-search--active .md-search__input {
+  color: var(--vl-text-primary) !important;
+  background-color: #ffffff !important;
+  border: 1px solid var(--vl-border) !important;
+}
+
+[data-md-color-scheme="default"] .md-search--active .md-search__input::placeholder {
+  color: var(--vl-text-muted) !important;
+  opacity: 1 !important;
+}
+
+/* Fallback: any search input in light scheme should not be forced white */
+[data-md-color-scheme="default"] .md-search__input {
+  color: var(--vl-text-primary) !important;
+}
+
+/* =========================================================
+   Search dialog — Compact + consistent (Light & Dark)
+   ========================================================= */
+
+/* Panel background + borders per scheme */
+[data-md-color-scheme="default"] .md-search__output {
+  background: #ffffff !important;
+  border: 1px solid var(--vl-border) !important;
+}
+
+[data-md-color-scheme="slate"] .md-search__output {
+  background: #1e2228 !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Compact sizing */
+.md-search__output {
+  max-height: min(60vh, 520px) !important;
+  overflow: auto !important;
+}
+
+.md-search-result__meta {
+  font-size: 0.7rem !important;
+  padding: 0.35rem 0.75rem !important;
+  margin: 0 !important;
+  opacity: 0.85 !important;
+}
+
+/* Each row */
+.md-search-result__item {
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top: 1px solid var(--vl-border-light) !important;
+}
+.md-search-result__item:first-child {
+  border-top: none !important;
+}
+
+/* =========================================================
+   SEARCH RESULTS - Clean layout without icon overlap
+   ========================================================= */
+
+/* Search result link - simple layout */
+.md-search-result__link {
+  display: block !important;
+  padding: 0.55rem 0.85rem !important;
+}
+
+/* Hide the document icons in search results completely */
+.md-search-result__icon {
+  display: none !important;
+}
+
+/* Article content */
+.md-search-result__article {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Titles */
+.md-search-result__title,
+.md-search-result__article h1,
+.md-search-result__article h2,
+.md-search-result__article h3 {
+  font-size: 0.82rem !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+  font-weight: 650 !important;
+}
+
+/* Teaser/snippet */
+.md-search-result__teaser {
+  font-size: 0.72rem !important;
+  line-height: 1.35 !important;
+  margin-top: 0.2rem !important;
+  opacity: 0.85 !important;
+}
+
+/* Light mode text colors */
+[data-md-color-scheme="default"] .md-search__output,
+[data-md-color-scheme="default"] .md-search__output * {
+  color: var(--vl-text-primary) !important;
+}
+
+[data-md-color-scheme="default"] .md-search-result__meta {
+  color: var(--vl-text-muted) !important;
+}
+
+/* Dark mode text colors */
+[data-md-color-scheme="slate"] .md-search__output,
+[data-md-color-scheme="slate"] .md-search__output * {
+  color: #f5f6f7 !important;
+}
+
+/* Highlighted matches */
+.md-search-result mark {
+  padding: 0 !important;
+  border-radius: 2px !important;
+}
+
+/* =========================================================
+   SEARCH INPUT - Magnifier + Clear button properly positioned
+   ========================================================= */
+
+/* Hide the share button */
+.md-search__options > a[href*="?q="],
+.md-search__options > a[data-md-component="search-share"],
+.md-search__share {
+  display: none !important;
+}
+
+/* Search wrapper - positioning context */
+.md-search__inner {
+  position: relative !important;
+}
+
+/* Search form - positioning context */
+.md-search__form {
+  position: relative !important;
+}
+
+/* Input - space for magnifier on left and clear on right */
+.md-search__input {
+  padding-left: 2.2rem !important;
+  padding-right: 2.2rem !important;
+}
+
+/* Magnifier icon - positioned on the left inside input */
+.md-search__form > .md-search__icon {
+  position: absolute !important;
+  left: 0.55rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+}
+
+/* Clear button container - positioned on the right inside input */
+.md-search__options {
+  position: absolute !important;
+  right: 0.4rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 4 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Clear button styling */
+.md-search__options button[type="reset"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1.4rem !important;
+  height: 1.4rem !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  cursor: pointer !important;
+}
+
+.md-search__options button svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+/* =========================================================
+   LIGHT MODE - Search icons visible (dark on white)
+   ========================================================= */
+
+/* Magnifier icon in light mode when search active */
+[data-md-color-scheme="default"] .md-search--active .md-search__icon {
+  color: #4a5568 !important;
+}
+[data-md-color-scheme="default"] .md-search--active .md-search__icon svg {
+  fill: #4a5568 !important;
+}
+
+/* Clear button in light mode */
+[data-md-color-scheme="default"] .md-search__options button {
+  color: #4a5568 !important;
+}
+[data-md-color-scheme="default"] .md-search__options button svg {
+  fill: #4a5568 !important;
+}
+[data-md-color-scheme="default"] .md-search__options button:hover {
+  color: #1a202c !important;
+}
+[data-md-color-scheme="default"] .md-search__options button:hover svg {
+  fill: #1a202c !important;
+}
+
+/* =========================================================
+   DARK MODE - Search icons visible (light on dark)
+   ========================================================= */
+
+/* Magnifier icon in dark mode */
+[data-md-color-scheme="slate"] .md-search__icon {
+  color: rgba(255,255,255,0.8) !important;
+}
+[data-md-color-scheme="slate"] .md-search__icon svg {
+  fill: rgba(255,255,255,0.8) !important;
+}
+
+/* Clear button in dark mode */
+[data-md-color-scheme="slate"] .md-search__options button {
+  color: rgba(255,255,255,0.7) !important;
+}
+[data-md-color-scheme="slate"] .md-search__options button svg {
+  fill: rgba(255,255,255,0.7) !important;
+}
+[data-md-color-scheme="slate"] .md-search__options button:hover {
+  color: #ffffff !important;
+}
+[data-md-color-scheme="slate"] .md-search__options button:hover svg {
+  fill: #ffffff !important;
 }
 
 /* End of theme */

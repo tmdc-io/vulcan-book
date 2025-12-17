@@ -4,7 +4,7 @@ Vulcan can send notifications via Slack or email when certain events occur. This
 
 ## Notification targets
 
-Notifications are configured with `notification targets`. Targets are specified in a project's [configuration](https://vulcan.readthedocs.io/en/stable/reference/configuration/) file (`config.yml` or `config.py`), and multiple targets can be specified for a project.
+Notifications are configured with `notification targets`. Targets are specified in a project's [configuration](../../references/configuration.md) file (`config.yml` or `config.py`), and multiple targets can be specified for a project.
 
 A project may specify both global and user-specific notifications. Each target's notifications will be sent for all instances of each [event type](#vulcan-event-types) (e.g., notifications for `run` will be sent for *all* of the project's environments), with exceptions for audit failures and when an [override is configured for development](#notifications-during-development).
 

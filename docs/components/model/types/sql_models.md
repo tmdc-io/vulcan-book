@@ -90,11 +90,11 @@ UNCACHE TABLE countries;
 
 !!! warning "Statements Run Twice"
 
-    Pre/post-statements are evaluated twice: once when the table is created, and once when the query runs. If your statements have side effects (like inserting into a log table), they'll happen twice!
+Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can [conditionally execute](../../advanced-features/macros/vulcan_macros.md#prepost-statements) them based on Vulcan's [runtime stage](../../advanced-features/macros/variables.md#runtime-variables).
 
     **Solution:** Use conditional execution with `@IF` and `@runtime_stage` to control when statements run. For example, only run a post-statement when the query is actually being evaluated:
 
-Here's how to conditionally execute statements:
+We can condition the post-statement to only run after the model query is evaluated using the [`@IF` macro operator](../../advanced-features/macros/vulcan_macros.md#if) and [`@runtime_stage` macro variable](../../advanced-features/macros/variables.md#runtime-variables) like this:
 
 ```sql linenums="1" hl_lines="14-17"
 MODEL (
@@ -124,7 +124,7 @@ On-virtual-update statements run when views are created or updated in the virtua
 
 **Common use case:** Granting permissions on views so users can query them.
 
-**Project-level defaults:** Like pre/post-statements, you can define these in `model_defaults` for consistent behavior. Default statements run first, then model-specific ones.
+**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
 
 **Syntax:** Wrap these statements in `ON_VIRTUAL_UPDATE_BEGIN;` ... `ON_VIRTUAL_UPDATE_END;` blocks:
 
@@ -222,7 +222,7 @@ WHERE
 
 **Important syntax:** Notice `@{region}` in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal).
 
-**In the WHERE clause:** `@region` (without braces) resolves to the string literal `'north'` (with quotes). `@{region}` (with braces) would resolve to `north` (no quotes, as an identifier).
+You can see the different behavior in the WHERE clause. `@region` (without braces) is resolved to the string literal `'north'` (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax [here](../../advanced-features/macros/vulcan_macros.md#embedding-variables-in-strings).
 
 Learn more about this syntax [here](../../../advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
