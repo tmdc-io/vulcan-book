@@ -1,6 +1,6 @@
 # Custom materializations
 
-Vulcan comes with a variety of [model kinds](../concepts/models/model_kinds.md) that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?
+Vulcan comes with a variety of [model kinds](../../model/model_kinds.md) that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?
 
 Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in—they let you write your own Python code to control exactly how your models get materialized.
 
@@ -32,7 +32,7 @@ You can also:
 
 - Override other methods from `MaterializableStrategy` or `EngineAdapter` classes
 - Execute arbitrary SQL using the engine adapter
-- Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a [Python model](../concepts/models/python_models.md) instead)
+- Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a [Python model](../../model/types/python_models.md) instead)
 
 Vulcan will automatically load any Python files in your project's `materializations/` directory. Or, if you prefer, you can package your materialization as a [Python package](#python-packaging) and install it like any other dependency.
 

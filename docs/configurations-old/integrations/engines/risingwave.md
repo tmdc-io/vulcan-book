@@ -17,7 +17,7 @@ pip install "vulcan[risingwave]"
 
 ## Connection options
 
-RisingWave is based on Postgres and uses the same `psycopg2` connection library. Therefore, the connection parameters are very similar to [Postgres](./postgres.md).
+RisingWave is based on Postgres and uses the same `psycopg2` connection library. Therefore, the connection parameters are very similar to [Postgres](../../configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md).
 
 | Option         | Description                                                       | Type   | Required |
 |----------------|-------------------------------------------------------------------|:------:|:--------:|
@@ -38,7 +38,7 @@ Primarily, these are:
  - [Sources](https://docs.risingwave.com/sql/commands/sql-create-source) which are used to stream records into RisingWave from streaming sources like Kafka
  - [Sinks](https://docs.risingwave.com/sql/commands/sql-create-sink) which are used to write the results of data processed by RisingWave to an external target, such as an Apache Iceberg table in object storage.
 
-RisingWave exposes these features via normal SQL statements, namely `CREATE SOURCE` and `CREATE SINK`. To utilize these in Vulcan, you can use them in [pre / post statements](../../concepts/models/sql_models.md#optional-prepost-statements).
+RisingWave exposes these features via normal SQL statements, namely `CREATE SOURCE` and `CREATE SINK`. To utilize these in Vulcan, you can use them in [pre / post statements](configurations-old/components/model/types/sql_models.md#optional-prepost-statements).
 
 Here is an example of creating a Sink from a Vulcan model using a post statement:
 
@@ -71,4 +71,4 @@ ENCODE JSON (force_append_only=true);
 ```
 
 !!! info "@this_model"
-    The `@this_model` macro resolves to the physical table for the current version of the model. See [here](../../concepts/macros/macro_variables.md#runtime-variables) for more information.
+    The `@this_model` macro resolves to the physical table for the current version of the model. See [here](configurations-old/components/advanced-features/macros/variables.md#runtime-variables) for more information.

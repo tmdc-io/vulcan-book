@@ -20,7 +20,7 @@ Vulcan's `VulcanLoader` class handles the loading process - customize it by subc
 
 !!! note "Python configuration only"
 
-    Custom loaders require using the [Python configuration format](./configuration.md#python) (YAML is not supported).
+    Custom loaders require using the [Python configuration format](guides-old/configuration.md#python) (YAML is not supported).
 
 ### Modify every model
 

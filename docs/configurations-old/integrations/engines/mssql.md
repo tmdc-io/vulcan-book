@@ -13,13 +13,13 @@ pip install "vulcan[mssql-odbc]"
 
 ## Incremental by unique key `MERGE`
 
-Vulcan executes a `MERGE` statement to insert rows for [incremental by unique key](../../concepts/models/model_kinds.md#incremental_by_unique_key) model kinds.
+Vulcan executes a `MERGE` statement to insert rows for [incremental by unique key](configurations-old/components/model/model_kinds.md#incremental_by_unique_key) model kinds.
 
 By default, the `MERGE` statement updates all non-key columns of an existing row when a new row with the same key values is inserted. If all column values match between the two rows, those updates are unnecessary.
 
 Vulcan provides an optional performance optimization that skips unnecessary updates by comparing column values with the `EXISTS` and `EXCEPT` operators.
 
-Enable the optimization by setting the `mssql_merge_exists` key to `true` in the [`physical_properties`](../../concepts/models/overview.md#physical_properties) section of the `MODEL` statement.
+Enable the optimization by setting the `mssql_merge_exists` key to `true` in the [`physical_properties`](configurations-old/components/model/overview.md#physical_properties) section of the `MODEL` statement.
 
 For example:
 

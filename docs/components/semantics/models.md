@@ -343,6 +343,6 @@ If something's wrong, you'll know about it before you try to use the semantic la
 
 ## Next steps
 
-- Learn about [Business Metrics](business_metrics.md) that combine measures with time and dimensions
+- Learn about [Business Metrics](../../../../business_semantics/business_metrics.md) that combine measures with time and dimensions
 - Explore semantic model examples in your project's `semantics/` directory
 - See the [Semantics Overview](overview.md) for the complete picture

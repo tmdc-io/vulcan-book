@@ -49,7 +49,7 @@ ORDER BY order_date
 
 The `MODEL` DDL is where you define your model's metadata—name, kind, schedule, owner, and more. It must be the first statement in your SQL file.
 
-Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the [Model Properties](./overview.md#model-properties) documentation.
+Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the [Model Properties](components/model/types/overview.md#model-properties) documentation.
 
 ### Optional Pre/Post-Statements
 
@@ -86,7 +86,7 @@ GROUP BY order_date;
 UNCACHE TABLE countries;
 ```
 
-**Project-level defaults:** You can define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
+**Project-level defaults:** You can define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](components/configurations-old/configuration.md#model-defaults).
 
 !!! warning "Statements Run Twice"
 
@@ -148,7 +148,7 @@ JINJA_END;
 ON_VIRTUAL_UPDATE_END;
 ```
 
-**Jinja support:** You can use [Jinja expressions](../macros/jinja_macros.md) in these statements. Just wrap them in `JINJA_STATEMENT_BEGIN;` ... `JINJA_END;` blocks (as shown in the example above).
+**Jinja support:** You can use [Jinja expressions](../../advanced-features/macros/jinja.md) in these statements. Just wrap them in `JINJA_STATEMENT_BEGIN;` ... `JINJA_END;` blocks (as shown in the example above).
 
 !!! note "Virtual Layer Resolution"
 
@@ -224,7 +224,7 @@ WHERE
 
 **In the WHERE clause:** `@region` (without braces) resolves to the string literal `'north'` (with quotes). `@{region}` (with braces) would resolve to `north` (no quotes, as an identifier).
 
-Learn more about this syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
+Learn more about this syntax [here](../../../advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
 **Dynamic blueprints:** You can generate blueprints using macros. This is handy when your blueprint list comes from external sources (CSV files, APIs, etc.):
 
@@ -276,7 +276,7 @@ You can also define SQL models using Python! This is useful when:
 
 **How it works:** You write Python code that generates SQL, and Vulcan executes it. You still get SQL models (they run SQL queries), but you write them in Python.
 
-For the complete guide on Python-based SQL models, including the `@model` decorator, execution context, and examples, see the [Python Models](./python_models.md) page.
+For the complete guide on Python-based SQL models, including the `@model` decorator, execution context, and examples, see the [Python Models](components/model/types/python_models.md) page.
 
 ## Automatic Dependencies
 
@@ -294,7 +294,7 @@ GROUP BY order_date
 
 Vulcan will make sure `raw.raw_orders` runs before this model. Pretty neat!
 
-**External dependencies:** If you reference tables that aren't Vulcan models, Vulcan can handle them too—either implicitly (through execution order) or via [signals](../../guides/signals.md).
+**External dependencies:** If you reference tables that aren't Vulcan models, Vulcan can handle them too—either implicitly (through execution order) or via [signals](../../../advanced-features/signals.md).
 
 **Manual dependencies:** Sometimes you need to add extra dependencies manually (maybe a hidden dependency or a macro that references another model). Use the `depends_on` property in your `MODEL` DDL for that.
 
@@ -321,7 +321,7 @@ SELECT
 
 Avoid `SELECT *` when possible. It's convenient, but dangerous—if an upstream source adds or removes columns, your model's output changes unexpectedly.
 
-**Best practice:** List every column you need explicitly. If you're querying external sources, use [`create_external_models`](../../reference/cli.md#create_external_models) to capture their schema, or define them as [external models](./model_kinds.md#external).
+**Best practice:** List every column you need explicitly. If you're querying external sources, use [`create_external_models`](components/getting_started/cli.md#create_external_models) to capture their schema, or define them as [external models](components/model/types/model_kinds.md#external).
 
 **Why avoid `SELECT *` on external sources:** It prevents Vulcan from optimizing queries and determining column-level lineage. Define external models instead!
 
@@ -345,8 +345,8 @@ Standard SQL is powerful, but real-world data pipelines need dynamic components.
 
 **Macro variables:** Vulcan provides automatic date/time variables for incremental models. Use `@start_date`, `@end_date`, `@start_ds`, `@end_ds` and Vulcan fills them in with the current time range. No more hardcoding dates!
 
-**Custom macros:** For complex logic or reusable patterns, Vulcan supports a powerful [macro syntax](../macros/overview.md) and [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/). Write macros once, use them everywhere.
+**Custom macros:** For complex logic or reusable patterns, Vulcan supports a powerful [macro syntax](../../advanced-features/macros/overview.md) and [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/). Write macros once, use them everywhere.
 
 **Why macros matter:** They make your SQL more maintainable. Instead of copy-pasting complex logic, define it once as a macro and reuse it. Your queries stay clean and readable.
 
-Learn more about macros in the [Macros documentation](../macros/overview.md).
+Learn more about macros in the [Macros documentation](../../advanced-features/macros/overview.md).

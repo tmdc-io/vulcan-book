@@ -52,7 +52,7 @@ def random_signal(batch: DatetimeRanges, threshold: float) -> t.Union[bool, Date
     return random.random() > threshold
 ```
 
-This signal takes a `threshold` argument (you'll pass this from your model definition) and returns `True` if a random number exceeds that threshold. Notice how the function signature includes `threshold: float`—Vulcan will automatically extract this from your model definition and pass it to the function. The type inference works the same way as [Vulcan macros](../concepts/macros/vulcan_macros.md#typed-macros).
+This signal takes a `threshold` argument (you'll pass this from your model definition) and returns `True` if a random number exceeds that threshold. Notice how the function signature includes `threshold: float`—Vulcan will automatically extract this from your model definition and pass it to the function. The type inference works the same way as [Vulcan macros](../../advanced-features/macros/built_in.md#typed-macros).
 
 To use this signal in a model, add it to the `signals` key in your `MODEL` block:
 

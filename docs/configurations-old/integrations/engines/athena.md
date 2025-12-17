@@ -36,14 +36,14 @@ These options are specific to Vulcan itself and are not passed to PyAthena
 
 ## Model properties
 
-The Athena adapter utilises the following model top-level [properties](../../concepts/models/overview.md#model-properties):
+The Athena adapter utilises the following model top-level [properties](configurations-old/components/model/overview.md#model-properties):
 
 | Name             | Description                                                                                                                                                                                                                                                                                                                          | Type   | Required |
 |------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|
 | `table_format`   | Sets the [table_type](https://docs.aws.amazon.com/athena/latest/ug/create-table-as.html#ctas-table-properties) Athena uses when creating the table. Valid values are `hive` or `iceberg`.                                                                                                                                            | string | N        |
 | `storage_format` | Configures the file format to be used by the `table_format`. For Hive tables, this sets the [STORED AS](https://docs.aws.amazon.com/athena/latest/ug/create-table.html#parameters) option. For Iceberg tables, this sets [format](https://docs.aws.amazon.com/athena/latest/ug/create-table-as.html#ctas-table-properties) property. | string | N        |
 
-The Athena adapter recognises the following model [physical_properties](../../concepts/models/overview.md#physical_properties):
+The Athena adapter recognises the following model [physical_properties](configurations-old/components/model/overview.md#physical_properties):
 
 | Name              | Description                                                                                                                                                                               | Type   | Default |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|---------|
@@ -64,10 +64,10 @@ Therefore, in order for Vulcan to issue correct `CREATE TABLE` statements to Ath
 ## Limitations
 Athena was initially designed to read data stored in S3 and to do so without changing that data. This means that it does not have good support for mutating tables. In particular, it will not delete data from Hive tables.
 
-Consequently, [forward only changes](../../concepts/plans.md#forward-only-change) that mutate the schemas of existing tables have a high chance of failure because Athena supports very limited schema modifications on Hive tables.
+Consequently, [forward only changes](configurations-old/guides/plan.md#forward-only-change) that mutate the schemas of existing tables have a high chance of failure because Athena supports very limited schema modifications on Hive tables.
 
-However, Athena does support [Apache Iceberg](https://docs.aws.amazon.com/athena/latest/ug/querying-iceberg.html) tables which allow a full range of operations. These can be used for more complex model types such as [`INCREMENTAL_BY_UNIQUE_KEY`](../../concepts/models/model_kinds.md#incremental_by_unique_key) and [`SCD_TYPE_2`](../../concepts/models/model_kinds.md#scd-type-2).
+However, Athena does support [Apache Iceberg](https://docs.aws.amazon.com/athena/latest/ug/querying-iceberg.html) tables which allow a full range of operations. These can be used for more complex model types such as [`INCREMENTAL_BY_UNIQUE_KEY`](configurations-old/components/model/model_kinds.md#incremental_by_unique_key) and [`SCD_TYPE_2`](configurations-old/components/model/model_kinds.md#scd-type-2).
 
-To use an Iceberg table for a model, set `table_format iceberg` in the model [properties](../../concepts/models/overview.md#model-properties).
+To use an Iceberg table for a model, set `table_format iceberg` in the model [properties](configurations-old/components/model/overview.md#model-properties).
 
 In general, Iceberg tables offer the most flexibility and you'll run into the least Vulcan limitations when using them. However, we create Hive tables by default because Athena creates Hive tables by default, so Iceberg tables are opt-in rather than opt-out.

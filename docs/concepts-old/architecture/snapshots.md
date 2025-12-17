@@ -7,4 +7,4 @@ Snapshots have unique fingerprints that are derived from their models. Vulcan us
 Because Vulcan can understand SQL with SQLGlot, it can generate fingerprints such that superficial changes to a model, such as applying formatting to its query, will not return a new fingerprint.
 
 ## Change categories
-Refer to [change categories](../plans.md#change-categories).
+Refer to [change categories](../../guides/plan.md#change-categories).

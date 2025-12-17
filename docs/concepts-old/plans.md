@@ -104,7 +104,7 @@ graph LR
 During plan creation:
 
 * The local state of the Vulcan project is compared to the state of a target environment. The difference between the two and the actions needed to synchronize the environment with the local state are what constitutes a plan.
-* Users may be prompted to [categorize changes](#change-categories) to existing models so Vulcan can determine what actions to take for indirectly affected models (the downstream models that depend on the updated models). By default, Vulcan attempts to categorize changes automatically, but this behavior can be changed through [configuration](../reference/configuration.md#plan).
+* Users may be prompted to [categorize changes](#change-categories) to existing models so Vulcan can determine what actions to take for indirectly affected models (the downstream models that depend on the updated models). By default, Vulcan attempts to categorize changes automatically, but this behavior can be changed through [configuration](../configurations-old/configuration.md#plan).
 * Each plan requires a date range to which it will be applied. If not specified, the date range is derived automatically based on model definitions and the target environment.
 
 The benefit of plans is that all changes can be reviewed and verified before they are applied to the data warehouse and any computations are performed. A typical plan contains a combination of the following:
@@ -319,7 +319,7 @@ If during plan creation no data gaps have been detected and only references to n
 
 The `plan` command provides two temporal options: `--start` and `--end`. These options are only applicable to plans for non-prod environments.
 
-For context, every model has a start date. The start can be specified in [the model definition](./models/overview.md#start), in the [project configuration's `model_defaults`](../guides/configuration.md#model-defaults), or by Vulcan's default value of yesterday.
+For context, every model has a start date. The start can be specified in [the model definition](../components/model/overview.md#start), in the [project configuration's `model_defaults`](guides-old/configuration.md#model-defaults), or by Vulcan's default value of yesterday.
 
 Because the prod environment supports business operations, prod plans ensure every model is backfilled from its start date until the most recent completed time interval. Due to that restriction, the `plan` command's `--start` and `--end` options are not supported for regular plans against prod. The options are supported for [restatement plans](#restatement-plans) against prod to allow re-processing a subset of existing data.
 
@@ -333,10 +333,10 @@ For context, Vulcan strives to make models _idempotent_, meaning that if we ran 
 
 However, some model kinds are inherently non-idempotent:
 
-- [INCREMENTAL_BY_UNIQUE_KEY](models/model_kinds.md#incremental_by_unique_key)
-- [INCREMENTAL_BY_PARTITION](models/model_kinds.md#incremental_by_partition)
-- [SCD_TYPE_2_BY_TIME](models/model_kinds.md#scd-type-2-by-time-recommended)
-- [SCD_TYPE_2_BY_COLUMN](models/model_kinds.md#scd-type-2-by-column)
+- [INCREMENTAL_BY_UNIQUE_KEY](components/model/model_kinds.md#incremental_by_unique_key)
+- [INCREMENTAL_BY_PARTITION](components/model/model_kinds.md#incremental_by_partition)
+- [SCD_TYPE_2_BY_TIME](components/model/model_kinds.md#scd-type-2-by-time-recommended)
+- [SCD_TYPE_2_BY_COLUMN](components/model/model_kinds.md#scd-type-2-by-column)
 - Any model whose query is self-referential (i.e., the contents of new data rows are affected by the data rows already present in the table)
 
 Those model kinds will behave as follows in a non-prod plan that specifies a limited date range:
@@ -559,20 +559,20 @@ vulcan plan [environment name] --forward-only
 ```
 
 !!! note
-    The `--forward-only` flag is not required when applying changes to models that have been explicitly configured as [forward-only](models/overview.md#forward_only).
+    The `--forward-only` flag is not required when applying changes to models that have been explicitly configured as [forward-only](components/model/overview.md#forward_only).
 
     Use it only if you need to provide a time range for the preview window or the [effective date](#effective-date).
 
 ### Destructive changes
 
-Some model changes destroy existing data in a table. Vulcan automatically detects and optionally prevents destructive changes to [forward-only models](../guides/incremental_time.md#forward-only-models) - learn more [here](../guides/incremental_time.md#destructive-changes).
+Some model changes destroy existing data in a table. Vulcan automatically detects and optionally prevents destructive changes to [forward-only models](guides/incremental_by_time.md#forward-only-models) - learn more [here](guides/incremental_by_time.md#destructive-changes).
 
 Forward-only plans treats all of the plan's model changes as forward-only. In these plans, Vulcan will check all modified incremental models for destructive schema changes, not just forward-only models.
 
 Vulcan determines what to do for each model based on this setting hierarchy: 
 
-- **For destructive changes**: the [model's `on_destructive_change` value](../guides/incremental_time.md#schema-changes) (if present), the `on_destructive_change` [model defaults](../reference/model_configuration.md#model-defaults) value (if present), and the Vulcan global default of `error`
-- **For additive changes**: the [model's `on_additive_change` value](../guides/incremental_time.md#schema-changes) (if present), the `on_additive_change` [model defaults](../reference/model_configuration.md#model-defaults) value (if present), and the Vulcan global default of `allow`
+- **For destructive changes**: the [model's `on_destructive_change` value](guides/incremental_by_time.md#schema-changes) (if present), the `on_destructive_change` [model defaults](../configurations-old/configuration.md#model-defaults) value (if present), and the Vulcan global default of `error`
+- **For additive changes**: the [model's `on_additive_change` value](guides/incremental_by_time.md#schema-changes) (if present), the `on_additive_change` [model defaults](../configurations-old/configuration.md#model-defaults) value (if present), and the Vulcan global default of `allow`
 
 If you want to temporarily allow destructive changes to models that don't allow them, use the `plan` command's `--allow-destructive-model` selector to specify which models. 
 Similarly, if you want to temporarily allow additive changes to models configured with `on_additive_change=error`, use the `--allow-additive-model` selector. 
@@ -620,7 +620,7 @@ Restate one or more models' data with the `plan` command's `--restate-model` sel
 
 Applying a restatement plan will trigger a cascading backfill for all selected models, as well as all models downstream from them. Models with restatement disabled will be skipped and not backfilled.
 
-You may restate external models. An [external model](./models/external_models.md) is just metadata about an external table, so the model does not actually reprocess anything. Instead, it triggers a cascading backfill of all downstream models.
+You may restate external models. An [external model](../components/model/types/external_models.md) is just metadata about an external table, so the model does not actually reprocess anything. Instead, it triggers a cascading backfill of all downstream models.
 
 The plan's `--start` and `--end` date options determine which data intervals will be reprocessed. Some model kinds cannot be backfilled for limited date ranges, though - learn more [below](#model-kind-limitations).
 
@@ -630,7 +630,7 @@ The plan's `--start` and `--end` date options determine which data intervals wil
 
     If you pass an `--end` date later than the environment's most recent time interval, Vulcan will just catch up to the environment and will ignore any additional intervals.
 
-To prevent models from ever being restated, set the [disable_restatement](models/overview.md#disable_restatement) attribute to `true`.
+To prevent models from ever being restated, set the [disable_restatement](components/model/overview.md#disable_restatement) attribute to `true`.
 
 <a name="restatement-examples"></a>
 These examples demonstrate how to select which models to restate based on model names or model tags.
@@ -668,7 +668,7 @@ These examples demonstrate how to select which models to restate based on model 
 
 ### Restating production vs development
 
-Restatement plans behave differently depending on if you're targeting the `prod` environment or a [development environment](./environments.md#how-to-use-environments).
+Restatement plans behave differently depending on if you're targeting the `prod` environment or a [development environment](concepts-old/environments.md#how-to-use-environments).
 
 If you target a development environment by including an environment name like `dev`:
 

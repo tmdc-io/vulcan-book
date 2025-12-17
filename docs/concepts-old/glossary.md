@@ -10,10 +10,10 @@ Load or refresh model data, triggered by a vulcan plan command.
 A catalog is a collection of schemas. A schema is a collection of database objects such as tables and views.
 
 ## CI/CD
-An engineering process that combines both Continuous Integration (automated code creation and testing) and Continuous Delivery (deployment of code and tests) in a manner that is scalable, reliable, and secure. Vulcan accomplishes this with [tests](tests.md) and [audits](audits.md).
+An engineering process that combines both Continuous Integration (automated code creation and testing) and Continuous Delivery (deployment of code and tests) in a manner that is scalable, reliable, and secure. Vulcan accomplishes this with [tests](components/tests/tests.md) and [audits](components/audits/audits.md).
 
 ## CTE
-A Common Table Expression is a temporary named result set created from a SELECT statement, which can then be used in a subsequent SELECT statement. For more information, refer to [tests](tests.md).
+A Common Table Expression is a temporary named result set created from a SELECT statement, which can then be used in a subsequent SELECT statement. For more information, refer to [tests](components/tests/tests.md).
 
 ## DAG
 Directed Acyclic Graph. In this type of graph, objects are represented as nodes with relationships that show the dependencies between them; as such, the relationships are directed, meaning there is no way for data to travel through the graph in a loop that can circle back to the starting point. Vulcan uses a DAG to keep track of a project's models. This allows Vulcan to easily determine a model's lineage and to identify upstream and downstream dependencies.
@@ -46,7 +46,7 @@ In a full data refresh, a complete dataset is deleted and then entirely overwrit
 The property that, given a particular operation, the same outputs will be produced when given the same inputs no matter how many times the operation is applied.
 
 ## Incremental Loads
-Incremental loads are a type of data refresh that only updates the data that has changed since the last refresh. This is significantly faster and more efficient than a full refresh loads. Vulcan encourages developers to incrementally load when possible by offering easy to use variables and macros to help define your incremental models. See [Model Kinds](models/model_kinds.md) for more information.
+Incremental loads are a type of data refresh that only updates the data that has changed since the last refresh. This is significantly faster and more efficient than a full refresh loads. Vulcan encourages developers to incrementally load when possible by offering easy to use variables and macros to help define your incremental models. See [Model Kinds](components/model/model_kinds.md) for more information.
 
 ## Indirect Modification
 A change to model's upstream dependency and not to the model itself like a [Direct Modification](#direct-modification).
@@ -79,13 +79,13 @@ Functions that a user of a database server provides to extend its functionality,
 A view is the result of a SQL query on a database.
 
 ## Virtual Environments
-Vulcan's unique approach to environment that allows it to provide both environment isolation and the ability to share tables across environments. This is done in a way to ensure data consistency and accuracy. See [plan application](plans.md#plan-application) for more information.
+Vulcan's unique approach to environment that allows it to provide both environment isolation and the ability to share tables across environments. This is done in a way to ensure data consistency and accuracy. See [plan application](guides/plan.md#plan-application) for more information.
 
 ## Virtual Layer
 The virtual layer is Vulcan's abstraction layer over the [physical layer and physical data storage](#physical-layer). While the physical layer consists of tables where data is actually stored, the virtual layer consists of views that expose tables in the underlying physical layer. Most users should only interact with the virtual layer when building models or querying data.
 
 ## Virtual Update
-Term used to describe a plan that can be applied without having to load any additional data or build any additional tables. See [Virtual Update](plans.md#virtual-update) for more information.
+Term used to describe a plan that can be applied without having to load any additional data or build any additional tables. See [Virtual Update](guides/plan.md#virtual-update) for more information.
 
 ## Virtual Preview
 Term used to describe the ability to create an environment without having to build any additional tables. By comparing the version of models in the repo against what currently exists, Vulcan can create an environment that exactly represents what is in the repo by just updating views.

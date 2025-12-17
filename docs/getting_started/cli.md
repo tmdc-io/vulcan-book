@@ -23,7 +23,7 @@ Before beginning, ensure that you meet all the [prerequisites](./prerequisites.m
     alias vulcan="docker compose -f docker/docker-compose.vulcan.yml run --rm vulcan-shell vulcan"
     ```
 
-    For a complete Docker setup guide, see the [Docker Quickstart](./docker.md).
+    For a complete Docker setup guide, see the [Docker Quickstart](guides/get-started/docker.md).
 
 ??? info "Learn more about the quickstart project structure"
     This project demonstrates key Vulcan features by walking through the Vulcan workflow on a simple data pipeline. This section describes the project structure and the Vulcan concepts you will encounter as you work through it.
@@ -61,7 +61,7 @@ cd vulcan-example
 ```
 
 !!! note "Docker Users"
-    If you're using Docker, make sure your Docker infrastructure is set up and running. See the [Docker Quickstart](./docker.md) for setup instructions. Then access the Vulcan shell before running the commands below.
+    If you're using Docker, make sure your Docker infrastructure is set up and running. See the [Docker Quickstart](guides/get-started/docker.md) for setup instructions. Then access the Vulcan shell before running the commands below.
 
 !!! note "Python Library Users (Coming Soon)"
     If using a Python virtual environment (when available), ensure it's activated first by running the `source .venv/bin/activate` command.
@@ -82,7 +82,7 @@ vulcan init
 
 ??? info "Skip the questions"
 
-    If you don't want to use the interactive scaffold generator, you can initialize your project with arguments to the [`vulcan init` command](../reference/cli.md#init).
+    If you don't want to use the interactive scaffold generator, you can initialize your project with arguments to the [`vulcan init` command](getting_started/cli.md#init).
 
     The only required argument is `engine`, which specifies the SQL engine your project will use. Specify one of the engine `type`s from the supported execution engines.
 
@@ -235,7 +235,7 @@ Need help?
         - invalidselectstarexpansion
     ```
 
-    Learn more about Vulcan project configuration [here](../reference/configuration.md).
+    Learn more about Vulcan project configuration [here](../configurations-old/configuration.md).
 
 The scaffold generator creates multiple directories where Vulcan project files are stored and multiple files that constitute the example project (e.g., SQL models).
 
@@ -245,17 +245,17 @@ The scaffold generator creates multiple directories where Vulcan project files a
     The scaffold generator will create the following configuration file and directories:
 
     - config.yaml
-        - The file for project configuration. More info about configuration [here](../guides/configuration.md).
+        - The file for project configuration. More info about configuration [here](guides-old/configuration.md).
     - ./models
-        - SQL and Python models. More info about models [here](../concepts/models/overview.md).
+        - SQL and Python models. More info about models [here](components/model/overview.md).
     - ./seeds
-        - Seed files. More info about seeds [here](../concepts/models/seed_models.md).
+        - Seed files. More info about seeds [here](components/model/model_kinds.md#seed).
     - ./audits
-        - Shared audit files. More info about audits [here](../concepts/audits.md).
+        - Shared audit files. More info about audits [here](components/audits/audits.md).
     - ./tests
-        - Unit test files. More info about tests [here](../concepts/tests.md).
+        - Unit test files. More info about tests [here](components/tests/tests.md).
     - ./macros
-        - Macro files. More info about macros [here](../concepts/macros/overview.md).
+        - Macro files. More info about macros [here](../components/advanced-features/macros/overview.md).
 
     It will also create the files needed for this quickstart example:
 
@@ -297,11 +297,11 @@ Vulcan's key actions are creating and applying *plans* to *environments*. At thi
 
     Vulcan's key actions are creating and applying *plans* to *environments*.
 
-    A [Vulcan environment](../concepts/environments.md) is an isolated namespace containing models and the data they generated.
+    A [Vulcan environment](concepts-old/environments.md) is an isolated namespace containing models and the data they generated.
 
     The most important environment is `prod` ("production"), which consists of the databases behind the applications your business uses to operate each day. Environments other than `prod` provide a place where you can test and preview changes to model code before they go live and affect business operations.
 
-    A [Vulcan plan](../concepts/plans.md) contains a comparison of one environment to another and the set of changes needed to bring them into alignment.
+    A [Vulcan plan](guides/plan.md) contains a comparison of one environment to another and the set of changes needed to bring them into alignment.
 
     For example, if a new SQL model was added, tested, and run in the `dev` environment, it would need to be added and run in the `prod` environment to bring them into alignment. Vulcan identifies all such changes and classifies them as either breaking or non-breaking.
 
@@ -415,11 +415,11 @@ Lines 13-16 list each model that will be executed by the plan, along with the da
 
 ??? info "Learn more about the project's models"
 
-    A plan's actions are determined by the [kinds](../concepts/models/model_kinds.md) of models the project uses. This example project uses three model kinds:
+    A plan's actions are determined by the [kinds](components/model/model_kinds.md) of models the project uses. This example project uses three model kinds:
 
-    1. [`SEED` models](../concepts/models/model_kinds.md#seed) read data from CSV files stored in the Vulcan project directory.
-    2. [`FULL` models](../concepts/models/model_kinds.md#full) fully refresh (rewrite) the data associated with the model every time the model is run.
-    3. [`INCREMENTAL_BY_TIME_RANGE` models](../concepts/models/model_kinds.md#incremental_by_time_range) use a date/time data column to track which time intervals are affected by a plan and process only the affected intervals when a model is run.
+    1. [`SEED` models](components/model/model_kinds.md#seed) read data from CSV files stored in the Vulcan project directory.
+    2. [`FULL` models](components/model/model_kinds.md#full) fully refresh (rewrite) the data associated with the model every time the model is run.
+    3. [`INCREMENTAL_BY_TIME_RANGE` models](components/model/model_kinds.md#incremental_by_time_range) use a date/time data column to track which time intervals are affected by a plan and process only the affected intervals when a model is run.
 
     We now briefly review each model in the project.
 
@@ -469,7 +469,7 @@ Lines 13-16 list each model that will be executed by the plan, along with the da
       event_date between @start_date and @end_date
     ```
 
-    The final model in the project is a `FULL` model. In addition to properties used in the other models, its `MODEL` statement includes the [`audits`](../concepts/audits.md) property. The project includes a custom `assert_positive_order_ids` audit in the project `audits` directory; it verifies that all `item_id` values are positive numbers. It will be run every time the model is executed.
+    The final model in the project is a `FULL` model. In addition to properties used in the other models, its `MODEL` statement includes the [`audits`](components/audits/audits.md) property. The project includes a custom `assert_positive_order_ids` audit in the project `audits` directory; it verifies that all `item_id` values are positive numbers. It will be run every time the model is executed.
 
     ```sql linenums="1"
     MODEL (
@@ -755,7 +755,7 @@ Congratulations, you've now conquered the basics of using Vulcan!
 
 From here, you can:
 
-* [Learn more about Vulcan CLI commands](../reference/cli.md)
-* [Set up a connection to a database or SQL engine](../guides/connections.md)
-* [Learn more about Vulcan concepts](../concepts/overview.md)
+* [Learn more about Vulcan CLI commands](getting_started/cli.md)
+* [Set up a connection to a database or SQL engine](guides-old/connections.md)
+* [Learn more about Vulcan concepts](concepts-old/overview.md)
 * [Join our Slack community](https://tobikodata.com/slack)

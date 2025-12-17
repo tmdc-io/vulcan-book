@@ -4,7 +4,7 @@ Model kinds determine how Vulcan loads and processes your data. Think of them as
 
 The kind you choose affects performance, cost, and how your data stays up to date. Pick the right one, and your pipelines run efficiently. Pick the wrong one, and you might be waiting forever (or paying too much).
 
-For a complete reference of all model kind configuration parameters, check out the [model configuration reference page](../../reference/model_configuration.md).
+For a complete reference of all model kind configuration parameters, check out the [model configuration reference page](../../configurations-old/configuration.md).
 
 ## INCREMENTAL_BY_TIME_RANGE
 
@@ -30,7 +30,7 @@ MODEL (
 <a id="timezones"></a>
 Your query also needs a `WHERE` clause that filters upstream data by time range. Vulcan gives you special macros for this: `@start_date` / `@end_date` (for timestamps) and `@start_ds` / `@end_ds` (for dates). These automatically get filled in with the time range Vulcan is processing.
 
-Want to learn more about these macros? Check out the [Macros documentation](../macros/macro_variables.md).
+Want to learn more about these macros? Check out the [Macros documentation](../advanced-features/macros/variables.md).
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
     This example demonstrates incremental by time range models.
@@ -502,7 +502,7 @@ MODEL (
 
 ### Idempotency
 
-We recommend making your incremental by time range queries [idempotent](../glossary.md#idempotency). This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
+We recommend making your incremental by time range queries [idempotent](components/glossary.md#idempotency). This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
 
 **Watch out:** Your upstream models can affect idempotency. If you reference a FULL model (which rebuilds everything each run), your incremental model becomes non-idempotent because that upstream data changes every time. This is usually fine, but it's good to be aware of.
 
@@ -693,7 +693,7 @@ GROUP BY c.customer_id, c.name
 
 !!! note "Restatement Behavior"
 
-    `INCREMENTAL_BY_UNIQUE_KEY` models are inherently [non-idempotent](../glossary.md#idempotency), which means partial data restatement isn't supported. If you restate one of these models, the entire table gets recreated from scratch. Keep this in mind when planning restatements!
+    `INCREMENTAL_BY_UNIQUE_KEY` models are inherently [non-idempotent](components/glossary.md#idempotency), which means partial data restatement isn't supported. If you restate one of these models, the entire table gets recreated from scratch. Keep this in mind when planning restatements!
 
 ### Unique Key Expressions
 
@@ -1855,7 +1855,7 @@ MODEL (
 
 **Why use this?** If you're querying external tables (like tables managed by another system or a third-party data source), defining them as EXTERNAL models helps Vulcan understand their schema. This enables better column-level lineage and query optimization.
 
-**Important:** External models are defined in YAML files, not SQL files. They're optional but recommended if you're querying external tables. Learn more in the [External Models documentation](./external_models.md).
+**Important:** External models are defined in YAML files, not SQL files. They're optional but recommended if you're querying external tables. Learn more in the [External Models documentation](components/model/external_models.md).
 
 ## MANAGED
 
@@ -1900,7 +1900,7 @@ For details on supported engines and configuration options, see the [Managed Mod
 
     **When to use:** Only when you specifically need partition-based loading (usually for performance reasons with very large datasets). In most cases, `INCREMENTAL_BY_TIME_RANGE` will meet your needs and be easier to manage.
 
-    **Why it's complex:** These models are inherently [non-idempotent](../glossary.md#idempotency), so restatements can cause data loss. They're more complex to manage than other incremental kinds.
+    **Why it's complex:** These models are inherently [non-idempotent](components/glossary.md#idempotency), so restatements can cause data loss. They're more complex to manage than other incremental kinds.
 
 **Use this kind when:**
 - Your data naturally groups by partition (warehouse, region, category, etc.)

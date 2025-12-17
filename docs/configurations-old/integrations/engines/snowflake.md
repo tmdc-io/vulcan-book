@@ -15,7 +15,7 @@ Snowflake provides multiple methods of authorizing a connection (e.g., password,
 !!! tip
     This quickstart assumes you are familiar with basic Vulcan commands and functionality.
 
-    If you're not, work through the [Vulcan Quickstart](../../getting_started/docker.md) before continuing!
+    If you're not, work through the [Vulcan Quickstart](configurations-old/guides/get-started/docker.md) before continuing!
 
 ### Prerequisites
 
@@ -114,7 +114,7 @@ Snowflake account identifiers have two components: your organization name and yo
 
 This shows the default view when you log in to your Snowflake account, where we can see the two components of the account identifier:
 
-![Snowflake account info in web URL](./snowflake/snowflake_db-guide_account-url.png){ loading=lazy }
+![Snowflake account info in web URL](../../configurations-old/configurations-old/configurations-old/integrations/engines/snowflake/snowflake_db-guide_account-url.png){ loading=lazy }
 
 In this example, our organization name is `idapznw`, and our account name is `wq29399`.
 
@@ -174,7 +174,7 @@ model_defaults:
 ```
 
 !!! warning
-    Best practice for storing secrets like passwords is placing them in [environment variables that the configuration file loads dynamically](../../guides/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
+    Best practice for storing secrets like passwords is placing them in [environment variables that the configuration file loads dynamically](../../guides-old/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
 
     This code demonstrates how to use the environment variable `SNOWFLAKE_PASSWORD` for the configuration's `password` parameter:
 
@@ -192,20 +192,20 @@ We have now specified the `snowflake` gateway connection information, so we can 
 
 First, open a command line terminal. Now enter the command `vulcan info`:
 
-![Run vulcan info command in CLI](./snowflake/snowflake_db-guide_sqlmesh-info.png){ loading=lazy }
+![Run vulcan info command in CLI](../../configurations-old/configurations-old/configurations-old/integrations/engines/snowflake/snowflake_db-guide_sqlmesh-info.png){ loading=lazy }
 
 The output shows that our data warehouse connection succeeded:
 
-![Successful data warehouse connection](./snowflake/snowflake_db-guide_sqlmesh-info-succeeded.png){ loading=lazy }
+![Successful data warehouse connection](../../configurations-old/configurations-old/configurations-old/integrations/engines/snowflake/snowflake_db-guide_sqlmesh-info-succeeded.png){ loading=lazy }
 
 However, the output includes a `WARNING` about using the Snowflake SQL engine for storing Vulcan state:
 
-![Snowflake state connection warning](./snowflake/snowflake_db-guide_sqlmesh-info-warning.png){ loading=lazy }
+![Snowflake state connection warning](../../configurations-old/configurations-old/configurations-old/integrations/engines/snowflake/snowflake_db-guide_sqlmesh-info-warning.png){ loading=lazy }
 
 !!! warning
     Snowflake is not designed for transactional workloads and should not be used to store Vulcan state even in testing deployments.
 
-    Learn more about storing Vulcan state [here](../../guides/configuration.md#state-connection).
+    Learn more about storing Vulcan state [here](../../guides-old/configuration.md#state-connection).
 
 ### Specify state connection
 
@@ -236,17 +236,17 @@ model_defaults:
 
 Now we no longer see the warning when running `vulcan info`, and we see a new entry `State backend connection succeeded`:
 
-![No state connection warning](./snowflake/snowflake_db-guide_sqlmesh-info-no-warning.png){ loading=lazy }
+![No state connection warning](../../configurations-old/configurations-old/configurations-old/integrations/engines/snowflake/snowflake_db-guide_sqlmesh-info-no-warning.png){ loading=lazy }
 
 ### Run a `vulcan plan`
 
 Now we're ready to run a `vulcan plan` in Snowflake:
 
-![Run vulcan plan in snowflake](./snowflake/snowflake_db-guide_sqlmesh-plan.png){ loading=lazy }
+![Run vulcan plan in snowflake](../../configurations-old/configurations-old/configurations-old/integrations/engines/snowflake/snowflake_db-guide_sqlmesh-plan.png){ loading=lazy }
 
 And confirm that our schemas and objects exist in the Snowflake catalog:
 
-![Vulcan plan objects in snowflake](./snowflake/snowflake_db-guide_sqlmesh-plan-objects.png){ loading=lazy }
+![Vulcan plan objects in snowflake](../../configurations-old/configurations-old/configurations-old/integrations/engines/snowflake/snowflake_db-guide_sqlmesh-plan-objects.png){ loading=lazy }
 
 Congratulations - your Vulcan project is up and running on Snowflake!
 
@@ -591,7 +591,7 @@ To prevent having to specify `catalog = 'snowflake'` and `external_volume = '<ex
   - [Configuring a default Catalog](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-catalog-integration#set-a-default-catalog-at-the-account-database-or-schema-level)
   - [Configuring a default External Volume](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-external-volume#set-a-default-external-volume-at-the-account-database-or-schema-level)
 
-Alternatively you can also use [model defaults](../../guides/configuration.md#model-defaults) to set defaults at the Vulcan level instead.
+Alternatively you can also use [model defaults](../../guides-old/configuration.md#model-defaults) to set defaults at the Vulcan level instead.
 
 To utilize the wide variety of [optional properties](https://docs.snowflake.com/en/sql-reference/sql/create-iceberg-table-snowflake#optional-parameters) that Snowflake makes available for Iceberg tables, simply specify them as `physical_properties`:
 
@@ -612,7 +612,7 @@ MODEL (
 
     Setting `catalog = 'snowflake'` to use Snowflake's internal catalog is a good default because Vulcan needs to be able to write to the tables it's managing and Snowflake [does not support](https://docs.snowflake.com/en/user-guide/tables-iceberg#catalog-options) writing to Iceberg tables configured under external catalogs.
 
-    You can however still reference a table from an external catalog in your model as a normal [external table](../../concepts/models/external_models.md).
+    You can however still reference a table from an external catalog in your model as a normal [external table](configurations-old/components/model/types/external_models.md).
 
 ## Troubleshooting
 

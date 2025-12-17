@@ -8,6 +8,6 @@ Vulcan supports two macro systems: Vulcan macros and the [Jinja](https://jinja.p
 
 Learn more about macros in Vulcan:
 
-- [Pre-defined macro variables](./macro_variables.md) available in both macro systems
-- [Vulcan macros](./vulcan_macros.md)
-- [Jinja macros](./jinja_macros.md)
+- [Pre-defined macro variables](../../components/advanced-features/macros/variables.md) available in both macro systems
+- [Vulcan macros](../../components/advanced-features/macros/built_in.md)
+- [Jinja macros](../../components/advanced-features/macros/jinja.md)

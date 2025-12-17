@@ -2,7 +2,7 @@
 
 Quality checks are validation rules that monitor your data quality over time without blocking your pipelines. Think of them as your data's health checkup—they'll warn you when something looks off, but they won't stop the show.
 
-Unlike [audits](audits.md) (which block pipeline execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.
+Unlike [audits](../audits/audits.md) (which block pipeline execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.
 
 **What makes checks special:**
 - Configured in simple YAML files in the `checks/` directory

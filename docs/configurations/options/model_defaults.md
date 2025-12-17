@@ -31,7 +31,7 @@ Example configuration:
     )
     ```
 
-The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](../concepts/models/model_kinds.md).
+The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](configurations/components/model/model_kinds.md).
 
 ## Identifier resolution
 

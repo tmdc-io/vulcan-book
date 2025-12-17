@@ -6,7 +6,7 @@ This guide describes two methods for migrating existing tables into a Vulcan pro
 
 ## Do you need to migrate?
 
-Vulcan does not assume it manages all data sources: SQL models can read from any data source accessible by the SQL engine, treating them as [external models](../concepts/models/model_kinds.md#external) that include column-level lineage or as generic sources. This approach is preferred to migrating existing tables into a Vulcan project.
+Vulcan does not assume it manages all data sources: SQL models can read from any data source accessible by the SQL engine, treating them as [external models](components/model/model_kinds.md#external) that include column-level lineage or as generic sources. This approach is preferred to migrating existing tables into a Vulcan project.
 
 You should only migrate a table if both of the following are true:
 
@@ -39,9 +39,9 @@ Consider an existing table named `my_schema.existing_table`. Migrating this tabl
 
 1. Ensure `my_schema.existing_table` is up to date (has ingested all available source data)
 2. Rename `my_schema.existing_table` to any other name, such as `my_schema.existing_table_historical`
-    - Optionally, enable column-level lineage for the table by making it an [`EXTERNAL` model](../concepts/models/model_kinds.md#external) and adding it to the project's `external_models.yaml` file
+    - Optionally, enable column-level lineage for the table by making it an [`EXTERNAL` model](components/model/model_kinds.md#external) and adding it to the project's `external_models.yaml` file
 3. Create a new incremental staging model named `my_schema.existing_table_staging` (see below for code)
-4. Create a new [`VIEW` model](../concepts/models/model_kinds.md#view) named `my_schema.existing_table` (see below for code)
+4. Create a new [`VIEW` model](components/model/model_kinds.md#view) named `my_schema.existing_table` (see below for code)
 5. Run `vulcan plan` to create and backfill the models
 
 The staging model would contain code similar to the following for an `INCREMENTAL_BY_TIME_RANGE` model. An `INCREMENTAL_BY_UNIQUE_KEY` model would have a different `kind` specification in the `MODEL` DDL and might not include the query's `WHERE` clause.
@@ -125,7 +125,7 @@ Consider an existing table named `my_schema.existing_table`. Migrating this tabl
 2. Rename `my_schema.existing_table` to any other name, such as `my_schema.existing_table_temp`
 3. Create and initialize an empty incremental model named `my_schema.existing_table`:
 
-    a. Make the model [forward only](./incremental_time.md#forward-only-models) by setting the `MODEL` DDL `kind`'s `forward_only` key to `true`
+    a. Make the model [forward only](guides-old/incremental_time.md#forward-only-models) by setting the `MODEL` DDL `kind`'s `forward_only` key to `true`
 
     b. Specify the start of the first time interval Vulcan should track in the `MODEL` DDL `start` key (example uses "2024-01-01")
 

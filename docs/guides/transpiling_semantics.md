@@ -488,7 +488,7 @@ vulcan transpile --format sql "SELECT users.industry, MEASURE(total_arr) FROM su
 
 ## Next Steps
 
-- Learn about [Semantic Models](../concepts/semantics/models.md) that define the queryable members
-- Explore [Business Metrics](../concepts/semantics/metrics.md) for time-series analysis
-- See the [Semantics Overview](../concepts/semantics/index.md) for the complete picture
+- Learn about [Semantic Models](../../semantics/models.md) that define the queryable members
+- Explore [Business Metrics](../../semantics/business_metrics.md) for time-series analysis
+- See the [Semantics Overview](components/semantics/index.md) for the complete picture
 

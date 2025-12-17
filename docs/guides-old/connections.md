@@ -49,7 +49,7 @@ This connection configuration will be used if one is not provided in the target 
 
 ## Test connection
 
-By default, when running [tests](../concepts/tests.md), Vulcan uses an in-memory DuckDB database connection. You can override this behavior by providing connection settings in the `test_connection` key of the gateway configuration:
+By default, when running [tests](components/tests/tests.md), Vulcan uses an in-memory DuckDB database connection. You can override this behavior by providing connection settings in the `test_connection` key of the gateway configuration:
 
 ```yaml linenums="1"
 gateways:
@@ -79,15 +79,15 @@ default_gateway: local_db
 
 ## Supported engines
 
-* [BigQuery](../integrations/engines/bigquery.md)
-* [Databricks](../integrations/engines/databricks.md)
-* [DuckDB](../integrations/engines/duckdb.md)
-* [MotherDuck](../integrations/engines/motherduck.md)
-* [MySQL](../integrations/engines/mysql.md)
-* [MSSQL](../integrations/engines/mssql.md)
-* [Postgres](../integrations/engines/postgres.md)
-* [GCP Postgres](../integrations/engines/gcp-postgres.md)
-* [Redshift](../integrations/engines/redshift.md)
-* [Snowflake](../integrations/engines/snowflake.md)
-* [Spark](../integrations/engines/spark.md)
-* [Trino](../integrations/engines/trino.md)
+* [BigQuery](../references/configurations-old/configurations-old/configurations-old/integrations/engines/bigquery.md)
+* [Databricks](../references/configurations-old/configurations-old/configurations-old/integrations/engines/databricks.md)
+* [DuckDB](../references/configurations-old/configurations-old/configurations-old/integrations/engines/duckdb.md)
+* [MotherDuck](../references/configurations-old/configurations-old/configurations-old/integrations/engines/motherduck.md)
+* [MySQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/mysql.md)
+* [MSSQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/mssql.md)
+* [Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md)
+* [GCP Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/gcp-postgres.md)
+* [Redshift](../references/configurations-old/configurations-old/configurations-old/integrations/engines/redshift.md)
+* [Snowflake](../references/configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md)
+* [Spark](../references/configurations-old/configurations-old/configurations-old/integrations/engines/spark.md)
+* [Trino](../references/configurations-old/configurations-old/configurations-old/integrations/engines/trino.md)

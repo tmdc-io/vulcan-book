@@ -41,7 +41,7 @@ It demonstrates connecting to a Databricks [All-Purpose Compute](https://docs.da
 !!! tip
     This quickstart assumes you are familiar with basic Vulcan commands and functionality.
 
-    If you're not, work through the [Vulcan Quickstart](../../getting_started/docker.md) before continuing!
+    If you're not, work through the [Vulcan Quickstart](configurations-old/guides/get-started/docker.md) before continuing!
 
 ### Prerequisites
 
@@ -71,33 +71,33 @@ We must have something to connect to, so we first create and activate a Databric
 
 We begin in the default view for our Databricks Workspace. Access the Compute view by clicking the `Compute` entry in the left-hand menu:
 
-![Databricks Workspace default view](./databricks/db-guide_workspace.png){ loading=lazy }
+![Databricks Workspace default view](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_workspace.png){ loading=lazy }
 
 In the Compute view, click the `Create compute` button:
 
-![Databricks Compute default view](./databricks/db-guide_compute.png){ loading=lazy }
+![Databricks Compute default view](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute.png){ loading=lazy }
 
 Modify compute cluster options if desired and click the `Create compute` button:
 
-![Databricks Create Compute view](./databricks/db-guide_compute-create.png){ loading=lazy }
+![Databricks Create Compute view](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute-create.png){ loading=lazy }
 
 #### Get JDBC/ODBC info
 
 Scroll to the bottom of the view and click the open the `Advanced Options` view:
 
-![Databricks Compute Advanced Options link](./databricks/db-guide_compute-advanced-options-link.png){ loading=lazy }
+![Databricks Compute Advanced Options link](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute-advanced-options-link.png){ loading=lazy }
 
 Click the `JDBC/ODBC` tab:
 
-![Databricks Compute Advanced Options JDBC/ODBC tab](./databricks/db-guide_advanced-options.png){ loading=lazy }
+![Databricks Compute Advanced Options JDBC/ODBC tab](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_advanced-options.png){ loading=lazy }
 
 Open your project's `config.yaml` configuration file in a text editor and add a new gateway named `databricks` below the existing `local` gateway:
 
-![Project config.yaml databricks gateway](./databricks/db-guide_config-yaml.png){ loading=lazy }
+![Project config.yaml databricks gateway](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_config-yaml.png){ loading=lazy }
 
 Copy the `server_hostname` and `http_path` connection values from the Databricks JDBC/ODBC tab to the `config.yaml` file:
 
-![Copy server_hostname and http_path to config.yaml](./databricks/db-guide_copy-server-http.png){ loading=lazy }
+![Copy server_hostname and http_path to config.yaml](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_copy-server-http.png){ loading=lazy }
 
 #### Get personal access token
 
@@ -106,7 +106,7 @@ The final piece of information we need for the `config.yaml` file is your person
 !!! warning
     **Do not share your personal access token with anyone.**
 
-    Best practice for storing secrets like access tokens is placing them in [environment variables that the configuration file loads dynamically](../../guides/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
+    Best practice for storing secrets like access tokens is placing them in [environment variables that the configuration file loads dynamically](../../guides-old/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
 
     This code demonstrates how to use the environment variable `DATABRICKS_ACCESS_TOKEN` for the configuration's `access_token` parameter:
 
@@ -121,32 +121,32 @@ The final piece of information we need for the `config.yaml` file is your person
 <br></br>
 To create a personal access token, click on your profile logo and go to your profile's `Settings` page:
 
-![Navigate to profile Settings page](./databricks/db-guide_profile-settings-link.png){ loading=lazy }
+![Navigate to profile Settings page](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_profile-settings-link.png){ loading=lazy }
 
 Go to the `Developer` view in the User menu. Depending on your account's role, your page may not display the Workspace Admin section of the page.
 
-![Navigate to User Developer view](./databricks/db-guide_profile-settings-developer.png){ loading=lazy }
+![Navigate to User Developer view](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_profile-settings-developer.png){ loading=lazy }
 
 Click the `Manage` button in the Access Tokens section:
 
-![Navigate to Access Tokens management](./databricks/db-guide_access-tokens-link.png){ loading=lazy }
+![Navigate to Access Tokens management](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-link.png){ loading=lazy }
 
 Click the `Generate new token` button:
 
-![Open the token generation menu](./databricks/db-guide_access-tokens-generate-button.png){ loading=lazy }
+![Open the token generation menu](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-generate-button.png){ loading=lazy }
 
 Name your token in the `Comment` field, and click the `Generate` button:
 
-![Generate a new token](./databricks/db-guide_access-tokens-generate.png){ loading=lazy }
+![Generate a new token](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-generate.png){ loading=lazy }
 
 Click the copy button and paste the token into the `access_token` key:
 
-![Copy token to config.yaml access_token key](./databricks/db-guide_copy-token.png){ loading=lazy }
+![Copy token to config.yaml access_token key](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_copy-token.png){ loading=lazy }
 
 !!! warning
     **Do not share your personal access token with anyone.**
 
-    Best practice for storing secrets like access tokens is placing them in [environment variables that the configuration file loads dynamically](../../guides/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
+    Best practice for storing secrets like access tokens is placing them in [environment variables that the configuration file loads dynamically](../../guides-old/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
 
     This code demonstrates how to use the environment variable `DATABRICKS_ACCESS_TOKEN` for the configuration's `access_token` parameter:
 
@@ -166,20 +166,20 @@ First, open a command line terminal. Now enter the command `vulcan --gateway dat
 
 We manually specify the `databricks` gateway because it is not our project's default gateway:
 
-![Run vulcan info command in CLI](./databricks/db-guide_sqlmesh-info.png){ loading=lazy }
+![Run vulcan info command in CLI](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info.png){ loading=lazy }
 
 The output shows that our data warehouse connection succeeded:
 
-![Successful data warehouse connection](./databricks/db-guide_sqlmesh-info-succeeded.png){ loading=lazy }
+![Successful data warehouse connection](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-succeeded.png){ loading=lazy }
 
 However, the output includes a `WARNING` about using the Databricks SQL engine for storing Vulcan state:
 
-![Databricks state connection warning](./databricks/db-guide_sqlmesh-info-warning.png){ loading=lazy }
+![Databricks state connection warning](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-warning.png){ loading=lazy }
 
 !!! warning
     Databricks is not designed for transactional workloads and should not be used to store Vulcan state even in testing deployments.
 
-    Learn more about storing Vulcan state [here](../../guides/configuration.md#state-connection).
+    Learn more about storing Vulcan state [here](../../guides-old/configuration.md#state-connection).
 
 ### Specify state connection
 
@@ -187,25 +187,25 @@ We can store Vulcan state in a different SQL engine by specifying a `state_conne
 
 This example uses the DuckDB engine to store state in the local `databricks_state.db` file:
 
-![Specify DuckDB state connection](./databricks/db-guide_state-connection.png){ loading=lazy }
+![Specify DuckDB state connection](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_state-connection.png){ loading=lazy }
 
 Now we no longer see the warning when running `vulcan --gateway databricks info`, and we see a new entry `State backend connection succeeded`:
 
-![No state connection warning](./databricks/db-guide_sqlmesh-info-no-warning.png){ loading=lazy }
+![No state connection warning](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-no-warning.png){ loading=lazy }
 
 ### Run a `vulcan plan`
 
 For convenience, we can omit the `--gateway` option from our CLI commands by specifying `databricks` as our project's `default_gateway`:
 
-![Specify databricks as default gateway](./databricks/db-guide_default-gateway.png){ loading=lazy }
+![Specify databricks as default gateway](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_default-gateway.png){ loading=lazy }
 
 And run a `vulcan plan` in Databricks:
 
-![Run vulcan plan in databricks](./databricks/db-guide_sqlmesh-plan.png){ loading=lazy }
+![Run vulcan plan in databricks](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-plan.png){ loading=lazy }
 
 And confirm that our schemas and objects exist in the Databricks catalog:
 
-![Vulcan plan objects in databricks](./databricks/db-guide_sqlmesh-plan-objects.png){ loading=lazy }
+![Vulcan plan objects in databricks](../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-plan-objects.png){ loading=lazy }
 
 Congratulations - your Vulcan project is up and running on Databricks!
 
@@ -273,7 +273,7 @@ The only relevant Vulcan configuration parameter is the optional `catalog` param
 
 ## Model table properties to support altering tables
 
-If you are making a change to the structure of a table that is [forward only](../../guides/incremental_time.md#forward-only-models), then you may need to add the following to your model's `physical_properties`:
+If you are making a change to the structure of a table that is [forward only](configurations-old/guides/incremental_by_time.md#forward-only-models), then you may need to add the following to your model's `physical_properties`:
 
 
 ```sql

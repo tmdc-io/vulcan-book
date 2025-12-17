@@ -501,4 +501,4 @@ Here's a complete example showing all statement types:
 | `@start_date`, `@end_date` | Time range macros for incremental models |
 | `{{ this_model }}` | Jinja equivalent of `@this_model` |
 
-For more information on macros, see the [Macro Variables](../macros/macro_variables.md) documentation.
+For more information on macros, see the [Macro Variables](../advanced-features/macros/variables.md) documentation.

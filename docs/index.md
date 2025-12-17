@@ -101,7 +101,7 @@ Vulcan sits at the heart of your data stack, transforming raw data into producti
 
 ## Getting started
 
-Ready to dive in? The [quickstart guide](getting_started/docker.md) will have you up and running in minutes. It walks you through setting up Vulcan and creating your first data transformation.
+Ready to dive in? The [quickstart guide](guides/get-started/docker.md) will have you up and running in minutes. It walks you through setting up Vulcan and creating your first data transformation.
 
 !!! note "Python version note"
     Depending on your system, you might need to use `python3` or `pip3` instead of `python` or `pip`. If you run into issues, try the `3` versions first.

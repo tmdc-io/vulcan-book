@@ -340,7 +340,7 @@ def execute(
 The DataFrame columns need to match your `columns` definition exactly—same names, compatible types.
 
 !!! info "Learn more"
-    Want to dive deeper into Python models? Check out the [Python Models](./python_models.md) documentation for detailed information, advanced patterns, and more examples.
+    Want to dive deeper into Python models? Check out the [Python Models](components/model/python_models.md) documentation for detailed information, advanced patterns, and more examples.
 
 ## Comment Registration
 
@@ -398,4 +398,4 @@ Macros are like variables for your SQL. They let you parameterize queries and av
 
 Macros use the `@` prefix. For example, `@this_model` refers to the current model being processed, and `@start_ds` is the start date for incremental processing.
 
-Want to learn more? Check out the [macros documentation](../macros/overview.md) for all the details.
+Want to learn more? Check out the [macros documentation](../advanced-features/macros/overview.md) for all the details.

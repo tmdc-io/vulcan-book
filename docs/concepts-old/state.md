@@ -4,23 +4,23 @@ Vulcan stores information about your project in a state database that is usually
 
 The Vulcan state database contains:
 
-- Information about every [Model Version](./models/overview.md) in your project (query, loaded intervals, dependencies)
-- A list of every [Virtual Data Environment](./environments.md) in the project
-- Which model versions are [promoted](./plans.md#plan-application) into each [Virtual Data Environment](./environments.md)
-- Information about any [auto restatements](./models/overview.md#auto_restatement_cron) present in your project
+- Information about every [Model Version](../components/model/overview.md) in your project (query, loaded intervals, dependencies)
+- A list of every [Virtual Data Environment](concepts-old/environments.md) in the project
+- Which model versions are [promoted](../guides/plan.md#plan-application) into each [Virtual Data Environment](concepts-old/environments.md)
+- Information about any [auto restatements](../components/model/overview.md#auto_restatement_cron) present in your project
 - Other metadata about your project such as current Vulcan / SQLGlot version
 
-The state database is how Vulcan "remembers" what it's done before so it can compute a minimum set of operations to apply changes instead of rebuilding everything every time. It's also how Vulcan tracks what historical data has already been backfilled for [incremental models](./models/model_kinds.md#incremental_by_time_range) so you dont need to add branching logic into the model query to handle this.
+The state database is how Vulcan "remembers" what it's done before so it can compute a minimum set of operations to apply changes instead of rebuilding everything every time. It's also how Vulcan tracks what historical data has already been backfilled for [incremental models](../components/model/model_kinds.md#incremental_by_time_range) so you dont need to add branching logic into the model query to handle this.
 
 !!! info "State database performance"
 
     The workload against the state database is an OLTP workload that requires transaction support in order to work correctly.
 
-    For the best experience, we recommend databases designed for OLTP workloads such as [PostgreSQL](../integrations/engines/postgres.md).
+    For the best experience, we recommend databases designed for OLTP workloads such as [PostgreSQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md).
 
     Using your warehouse OLAP database to store state is supported for proof-of-concept projects but is not suitable for production and **will** lead to poor performance and consistency.
 
-    For more information on engines suitable for the Vulcan state database, see the [configuration guide](../guides/configuration.md#state-connection).
+    For more information on engines suitable for the Vulcan state database, see the [configuration guide](guides-old/configuration.md#state-connection).
 
 ## Exporting / Importing State
 
@@ -170,7 +170,7 @@ State imported successfully from 'state.json'
 
 ### Specific gateways
 
-If your project has [multiple gateways](../guides/configuration.md#gateways) with different state connections per gateway, you can target the [state_connection](../guides/configuration.md#state-connection) of a specific gateway like so:
+If your project has [multiple gateways](guides-old/configuration.md#gateways) with different state connections per gateway, you can target the [state_connection](guides-old/configuration.md#state-connection) of a specific gateway like so:
 
 ```bash
 # state export

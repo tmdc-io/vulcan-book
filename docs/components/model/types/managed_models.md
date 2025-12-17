@@ -6,17 +6,17 @@ Most Vulcan models manage their own data—you run `vulcan run`, and Vulcan upda
 
 **Why use this?** Perfect for scenarios where you need always-fresh data without managing refresh schedules yourself. The engine handles the complexity of incremental updates, change detection, and refresh timing.
 
-**Best use case:** Managed models are typically built on [External Models](./external_models.md) rather than other Vulcan models. Since Vulcan already keeps its models up to date, the main benefit comes when you're reading from external tables that aren't tracked by Vulcan. The engine keeps your managed table in sync with those external sources automatically.
+**Best use case:** Managed models are typically built on [External Models](components/model/types/external_models.md) rather than other Vulcan models. Since Vulcan already keeps its models up to date, the main benefit comes when you're reading from external tables that aren't tracked by Vulcan. The engine keeps your managed table in sync with those external sources automatically.
 
 !!! warning "Python Models Not Supported"
 
-    Python models don't support the `MANAGED` [model kind](./model_kinds.md). You'll need to use a SQL model instead.
+    Python models don't support the `MANAGED` [model kind](components/model/types/model_kinds.md). You'll need to use a SQL model instead.
 
 ## Difference from Materialized Views
 
 You might be wondering: "What's the difference between a managed model and a materialized view?" Good question!
 
-Vulcan already supports [materialized views](./model_kinds.md#materialized-views), but they have limitations:
+Vulcan already supports [materialized views](components/model/types/model_kinds.md#materialized-views), but they have limitations:
 - Some engines only allow materialized views from a single base table
 - Materialized views aren't automatically refreshed—you need to run `REFRESH MATERIALIZED VIEW` manually
 - You're responsible for scheduling refreshes
@@ -53,7 +53,7 @@ Currently, Vulcan supports managed models on:
 |--------|----------------|
 | [Snowflake](../../configurations/engines/snowflake.md) | [Dynamic Tables](https://docs.snowflake.com/en/user-guide/dynamic-tables-intro) |
 
-To create a managed model, use the [`MANAGED`](./model_kinds.md#managed) model kind. More engines are coming soon!
+To create a managed model, use the [`MANAGED`](components/model/types/model_kinds.md#managed) model kind. More engines are coming soon!
 
 ### Snowflake
 
@@ -99,7 +99,7 @@ FROM raw_events
 
 Dynamic Tables have properties that control refresh frequency, initial data population, retention, and more. You can find the complete list in the [Snowflake documentation](https://docs.snowflake.com/sql-reference/sql/create-dynamic-table).
 
-In Vulcan, you set these properties using [`physical_properties`](../overview.md#physical_properties) in your model definition. Here are the key ones:
+In Vulcan, you set these properties using [`physical_properties`](components/model/overview.md#physical_properties) in your model definition. Here are the key ones:
 
 | Snowflake Property              | Required | Notes
 | ------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -114,4 +114,4 @@ The following Dynamic Table properties can be set directly on the model:
 
 | Snowflake Property | Required   | Notes                                                                                                                                                                   |
 | ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| cluster by         | N          | `clustered_by` is a [standard model property](../models/overview.md#clustered_by), so set `clustered_by` on the model to add a `CLUSTER BY` clause to the Dynamic Table |
+| cluster by         | N          | `clustered_by` is a [standard model property](../overview.md#clustered_by), so set `clustered_by` on the model to add a `CLUSTER BY` clause to the Dynamic Table |

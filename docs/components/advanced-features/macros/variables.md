@@ -54,7 +54,7 @@ Vulcan uses Python's [datetime module](https://docs.python.org/3/library/datetim
 !!! tip "Important"
     All time-related predefined variables use [UTC time zone](https://en.wikipedia.org/wiki/Coordinated_Universal_Time). If you need to work with other timezones, you'll handle that in your query logic.
 
-    Learn more about timezones and incremental models [here](../model/model_kinds.md#timezones).
+    Learn more about timezones and incremental models [here](components/advanced-features/model/model_kinds.md#timezones).
 
 **Prefixes** tell you what time period the variable represents:
 
@@ -134,13 +134,13 @@ Beyond time, Vulcan provides variables that give you information about the curre
   - `'auditing'` - Audit is being run
   - `'testing'` - Model is being evaluated in a unit test context
   
-  Learn more about using this in [pre/post-statements](../model/sql_models.md#optional-prepost-statements).
+  Learn more about using this in [pre/post-statements](components/advanced-features/model/sql_models.md#optional-prepost-statements).
 
-- **`@gateway`** - The name of the current [gateway](../../guides/connections.md) (your database connection)
+- **`@gateway`** - The name of the current [gateway](components/guides-old/connections.md) (your database connection)
 
-- **`@this_model`** - The physical table name that the model's view selects from. Handy for creating [generic audits](../audits.md#generic-audits). When used in [on_virtual_update statements](../model/sql_models.md#optional-on-virtual-update-statements), it contains the qualified view name instead.
+- **`@this_model`** - The physical table name that the model's view selects from. Handy for creating [generic audits](../../../../../audits/audits.md#generic-audits). When used in [on_virtual_update statements](components/advanced-features/model/sql_models.md#optional-on-virtual-update-statements), it contains the qualified view name instead.
 
-- **`@model_kind_name`** - The name of the current model kind (like `'FULL'` or `'INCREMENTAL_BY_TIME_RANGE'`). Useful when you need to control [physical properties in model defaults](../../reference/model_configuration.md#model-defaults) based on the model kind.
+- **`@model_kind_name`** - The name of the current model kind (like `'FULL'` or `'INCREMENTAL_BY_TIME_RANGE'`). Useful when you need to control [physical properties in model defaults](components/configurations-old/configuration.md#model-defaults) based on the model kind.
 
 !!! note "Embedding variables in strings"
     Sometimes you'll see variables written with curly braces like `@{variable}` instead of just `@variable`. They do different things!
@@ -155,10 +155,10 @@ Beyond time, Vulcan provides variables that give you information about the curre
 
 #### Before all and after all variables
 
-These variables are available in [`before_all` and `after_all` statements](../../guides/configuration.md#before_all-and-after_all-statements), as well as in any macros called within those statements:
+These variables are available in [`before_all` and `after_all` statements](../../guides-old/configuration.md#before_all-and-after_all-statements), as well as in any macros called within those statements:
 
-- **`@this_env`** - The name of the current [environment](../environments.md)
-- **`@schemas`** - A list of schema names in the [virtual layer](../../concepts/glossary.md#virtual-layer) for the current environment
-- **`@views`** - A list of view names in the [virtual layer](../../concepts/glossary.md#virtual-layer) for the current environment
+- **`@this_env`** - The name of the current [environment](components/advanced-features/environments.md)
+- **`@schemas`** - A list of schema names in the [virtual layer](components/concepts-old/glossary.md#virtual-layer) for the current environment
+- **`@views`** - A list of view names in the [virtual layer](components/concepts-old/glossary.md#virtual-layer) for the current environment
 
 These are handy when you need to perform setup or cleanup operations that depend on the environment context.

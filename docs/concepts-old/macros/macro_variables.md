@@ -6,7 +6,7 @@ They enable dynamic macro behavior - for example, a date parameter's value might
 
 !!! note
 
-    This page discusses Vulcan's built-in macro variables. Learn more about custom, user-defined macro variables on the [Vulcan macros page](./vulcan_macros.md#user-defined-variables).
+    This page discusses Vulcan's built-in macro variables. Learn more about custom, user-defined macro variables on the [Vulcan macros page](../../components/advanced-features/macros/built_in.md#user-defined-variables).
 
 ## Example
 
@@ -42,7 +42,7 @@ WHERE my_date > '2023-02-01'
 
 This example used one of Vulcan's predefined variables, but you can also define your own macro variables.
 
-We describe Vulcan's predefined variables below; user-defined macro variables are discussed in the [Vulcan macros](./vulcan_macros.md#user-defined-variables) and [Jinja macros](./jinja_macros.md#user-defined-variables) pages.
+We describe Vulcan's predefined variables below; user-defined macro variables are discussed in the [Vulcan macros](../../components/advanced-features/macros/built_in.md#user-defined-variables) and [Jinja macros](../../components/advanced-features/macros/jinja.md#user-defined-variables) pages.
 
 ## Predefined variables
 Vulcan comes with predefined variables that can be used in your queries. They are automatically set by the Vulcan runtime.
@@ -57,7 +57,7 @@ Vulcan uses the python [datetime module](https://docs.python.org/3/library/datet
 
     Predefined variables with a time component always use the [UTC time zone](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
 
-    Learn more about timezones and incremental models [here](../models/model_kinds.md#timezones).
+    Learn more about timezones and incremental models [here](../../components/model/model_kinds.md#timezones).
 
 Prefixes:
 
@@ -128,7 +128,7 @@ All predefined temporal macro variables:
 
 Vulcan provides additional predefined variables used to modify model behavior based on information available at runtime.
 
-* @runtime_stage - A string value denoting the current stage of the Vulcan runtime. Typically used in models to conditionally execute pre/post-statements (learn more [here](../models/sql_models.md#optional-prepost-statements)). It returns one of these values:
+* @runtime_stage - A string value denoting the current stage of the Vulcan runtime. Typically used in models to conditionally execute pre/post-statements (learn more [here](../../components/model/types/sql_models.md#optional-prepost-statements)). It returns one of these values:
     * 'loading' - The project is being loaded into Vulcan's runtime context.
     * 'creating' - The model tables are being created for the first time. The data may be inserted during table creation.
     * 'evaluating' - The model query logic is evaluated, and the data is inserted into the existing model table.
@@ -136,9 +136,9 @@ Vulcan provides additional predefined variables used to modify model behavior ba
     * 'demoting' - The model is being demoted in the target environment (view dropped during virtual layer update).
     * 'auditing' - The audit is being run.
     * 'testing' - The model query logic is being evaluated in the context of a unit test.
-* @gateway - A string value containing the name of the current [gateway](../../guides/connections.md).
-* @this_model - The physical table name that the model's view selects from. Typically used to create [generic audits](../audits.md#generic-audits). When used in [on_virtual_update statements](../models/sql_models.md#optional-on-virtual-update-statements), it contains the qualified view name instead.
-* @model_kind_name - A string value containing the name of the current model kind. Intended to be used in scenarios where you need to control the [physical properties in model defaults](../../reference/model_configuration.md#model-defaults).
+* @gateway - A string value containing the name of the current [gateway](guides-old/connections.md).
+* @this_model - The physical table name that the model's view selects from. Typically used to create [generic audits](../../components/audits/audits.md#generic-audits). When used in [on_virtual_update statements](../../components/model/types/sql_models.md#optional-on-virtual-update-statements), it contains the qualified view name instead.
+* @model_kind_name - A string value containing the name of the current model kind. Intended to be used in scenarios where you need to control the [physical properties in model defaults](../../configurations-old/configuration.md#model-defaults).
 
 !!! note "Embedding variables in strings"
 
@@ -150,12 +150,12 @@ Vulcan provides additional predefined variables used to modify model behavior ba
 
     In practice, `@{variable}` is most commonly used to interpolate a value within an identifier, e.g., `@{variable}_suffix`, whereas `@variable` is used to do plain substitutions for string literals.
 
-    Learn more in the [Vulcan macros documentation](./vulcan_macros.md#embedding-variables-in-strings).
+    Learn more in the [Vulcan macros documentation](../../components/advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
 #### Before all and after all variables
 
-The following variables are also available in [`before_all` and `after_all` statements](../../guides/configuration.md#before_all-and-after_all-statements), as well as in macros invoked within them.
+The following variables are also available in [`before_all` and `after_all` statements](guides-old/configuration.md#before_all-and-after_all-statements), as well as in macros invoked within them.
 
-* @this_env - A string value containing the name of the current [environment](../environments.md).
-* @schemas - A list of the schema names of the [virtual layer](../../concepts/glossary.md#virtual-layer) of the current environment.
-* @views - A list of the view names of the [virtual layer](../../concepts/glossary.md#virtual-layer) of the current environment.
+* @this_env - A string value containing the name of the current [environment](concepts-old/environments.md).
+* @schemas - A list of the schema names of the [virtual layer](concepts-old/glossary.md#virtual-layer) of the current environment.
+* @views - A list of the view names of the [virtual layer](concepts-old/glossary.md#virtual-layer) of the current environment.

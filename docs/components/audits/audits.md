@@ -2,7 +2,7 @@
 
 Audits are your data quality bouncers—they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your pipeline if something's wrong.
 
-Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audits run automatically whenever you apply a [plan](./plans.md). They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.
+Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audits run automatically whenever you apply a [plan](../../guides/plan.md). They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.
 
 **Here's the key thing:** All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything—no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire pipeline and causing headaches later.
 
@@ -72,7 +72,7 @@ So an audit failed. Don't panic! Here's how to fix it:
 1. **Find the root cause** - Look at the audit query results. What data failed? Check upstream models and data sources.
 
 2. **Fix the source** - This depends on where the problem came from:
-   - **External data source?** Fix it at the source, then run a [restatement plan](./plans.md#restatement-plans) on the first Vulcan model that ingests it. This will restate all downstream models automatically.
+   - **External data source?** Fix it at the source, then run a [restatement plan](../../guides/plan.md#restatement-plans) on the first Vulcan model that ingests it. This will restate all downstream models automatically.
    - **Vulcan model?** Update the model's logic, then apply the change with a `plan`. Vulcan will automatically re-evaluate all downstream models.
 
 The key is fixing the root cause, not just the symptom. If bad data is coming from upstream, fixing it downstream won't help long-term.
@@ -130,7 +130,7 @@ SELECT * FROM @this_model
 WHERE @column >= @threshold;
 ```
 
-This uses [macros](./macros/overview.md) to make it flexible:
+This uses [macros](../advanced-features/macros/overview.md) to make it flexible:
 - `@this_model` is a special macro that refers to the model being audited (and handles incremental models correctly)
 - `@column` and `@threshold` are parameters you'll specify when you use the audit
 

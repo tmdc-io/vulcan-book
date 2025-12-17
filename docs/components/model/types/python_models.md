@@ -13,7 +13,7 @@ Vulcan has first-class support for Python models. As long as your function retur
 
 !!! info "Unsupported Model Kinds"
 
-    Python models don't support these [model kinds](./model_kinds.md). If you need one of these, use a SQL model instead:
+    Python models don't support these [model kinds](components/model/types/model_kinds.md). If you need one of these, use a SQL model instead:
     
     - `VIEW` - Views need to be SQL
     - `SEED` - Seed models load CSV files (SQL only)
@@ -102,7 +102,7 @@ from vulcan import ModelKindName
 )
 ```
 
-All model kind properties are documented in the [model configuration reference](../../reference/model_configuration.md#model-kind-properties).
+All model kind properties are documented in the [model configuration reference](components/configurations-old/configuration.md#model-kind-properties).
 
 Supported `kind` dictionary `name` values are:
 
@@ -136,7 +136,7 @@ table = context.resolve_table("vulcan_demo.products")
 df = context.fetchdf(f"SELECT * FROM {table}")
 ```
 
-**Best practice:** Make your models [idempotent](../glossary.md#idempotency)—running them multiple times should produce the same result. This makes debugging and restatements much easier.
+**Best practice:** Make your models [idempotent](components/model/glossary.md#idempotency)—running them multiple times should produce the same result. This makes debugging and restatements much easier.
 
 ```python linenums="1"
 df = context.fetchdf("SELECT * FROM vulcan_demo.products")
@@ -155,7 +155,7 @@ You can pass SQL strings, SQLGlot expressions, or macro calls as lists to `pre_s
 
     Be careful with pre-statements that create or alter physical tables—if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.
 
-**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
+**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](components/configurations-old/configuration.md#model-defaults).
 
 ``` python linenums="1" hl_lines="8-12"
 @model(
@@ -235,7 +235,7 @@ On-virtual-update statements run when views are created or updated in the virtua
 
 You can set `on_virtual_update` in the `@model` decorator to a list of SQL strings, SQLGlot expressions, or macro calls.
 
-**Project-level defaults:** Like pre/post-statements, you can define these in `model_defaults` for consistent behavior. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
+**Project-level defaults:** Like pre/post-statements, you can define these in `model_defaults` for consistent behavior. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](components/configurations-old/configuration.md#model-defaults).
 
 ``` python linenums="1" hl_lines="8"
 @model(
@@ -266,7 +266,7 @@ def execute(
 
 ## Dependencies
 
-In order to fetch data from an upstream model, you first get the table name using `context`'s `resolve_table` method. This returns the appropriate table name for the current runtime [environment](../environments.md):
+In order to fetch data from an upstream model, you first get the table name using `context`'s `resolve_table` method. This returns the appropriate table name for the current runtime [environment](components/model/environments.md):
 
 ```python linenums="1"
 table = context.resolve_table("vulcan_demo.products")
@@ -316,7 +316,7 @@ def execute(
     return context.fetchdf(query)
 ```
 
-You can use [global variables](../../reference/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
+You can use [global variables](components/configurations-old/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
 
 ```python linenums="1"
 @model(
@@ -354,7 +354,7 @@ def execute(
 
 ## User-defined variables
 
-[User-defined global variables](../../reference/configuration.md#variables) can be accessed from within the Python model with the `context.var` method.
+[User-defined global variables](components/configurations-old/configuration.md#variables) can be accessed from within the Python model with the `context.var` method.
 
 For example, this model access the user-defined variables `var` and `var_with_default`. It specifies a default value of `default_value` if `variable_with_default` resolves to a missing value.
 
@@ -444,7 +444,7 @@ def entrypoint(
     )
 ```
 
-**Important:** Notice the `@{customer}` syntax in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal). Learn more about this syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
+**Important:** Notice the `@{customer}` syntax in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal). Learn more about this syntax [here](../../../advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
 **Dynamic blueprints:** You can generate blueprints dynamically using macros. This is handy when your blueprint list comes from external sources (like CSV files or API calls):
 
@@ -518,7 +518,7 @@ Here are some practical examples showing different ways to use Python models.
 
 ### Basic
 
-A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](./overview.md#model-properties) work the same as SQL models—just use Python syntax.
+A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](components/model/types/overview.md#model-properties) work the same as SQL models—just use Python syntax.
 
 ```python linenums="1"
 import typing as t

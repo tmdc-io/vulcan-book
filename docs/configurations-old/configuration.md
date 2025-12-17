@@ -1,8 +1,8 @@
 # Vulcan configuration
 
-This page lists Vulcan configuration options and their parameters. Learn more about Vulcan configuration in the [configuration guide](../guides/configuration.md).
+This page lists Vulcan configuration options and their parameters. Learn more about Vulcan configuration in the [configuration guide](guides-old/configuration.md).
 
-Configuration options for model definitions are listed in the [model configuration reference page](./model_configuration.md).
+Configuration options for model definitions are listed in the [model configuration reference page](configurations-old/model_configuration.md).
 
 ## Root configurations
 
@@ -25,25 +25,25 @@ Configuration options for Vulcan project directories.
 
 ### Database (Physical Layer)
 
-Configuration options for how Vulcan manages database objects in the [physical layer](../concepts/glossary.md#physical-layer).
+Configuration options for how Vulcan manages database objects in the [physical layer](concepts-old/glossary.md#physical-layer).
 
 | Option                        | Description                                                                                                                                                                                                                                                                                        | Type                 | Required |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|:--------:|
 | `snapshot_ttl`                | The period of time that a model snapshot not a part of any environment should exist before being deleted. This is defined as a string with the default `in 1 week`. Other [relative dates](https://dateparser.readthedocs.io/en/latest/) can be used, such as `in 30 days`. (Default: `in 1 week`) | string               | N        |
 | `physical_schema_override`    | (Deprecated) Use `physical_schema_mapping` instead. A mapping from model schema names to names of schemas in which physical tables for the corresponding models will be placed.                                                                                                                    | dict[string, string] | N        |
-| `physical_schema_mapping`     | A mapping from regular expressions to names of schemas in which physical tables for the corresponding models [will be placed](../guides/configuration.md#physical-table-schemas). (Default physical schema name: `vulcan__[model schema]`)                                                        | dict[string, string] | N        |
-| `physical_table_naming_convention`| Sets which parts of the model name are included in the physical table names. Options are `schema_and_table`, `table_only` or `hash_md5` - [additional details](../guides/configuration.md#physical-table-naming-convention). (Default: `schema_and_table`)                                     | string               | N        |
+| `physical_schema_mapping`     | A mapping from regular expressions to names of schemas in which physical tables for the corresponding models [will be placed](guides-old/configuration.md#physical-table-schemas). (Default physical schema name: `vulcan__[model schema]`)                                                        | dict[string, string] | N        |
+| `physical_table_naming_convention`| Sets which parts of the model name are included in the physical table names. Options are `schema_and_table`, `table_only` or `hash_md5` - [additional details](guides-old/configuration.md#physical-table-naming-convention). (Default: `schema_and_table`)                                     | string               | N        |
 
 ### Environments (Virtual Layer)
 
-Configuration options for how Vulcan manages environment creation and promotion in the [virtual layer](../concepts/glossary.md#virtual-layer).
+Configuration options for how Vulcan manages environment creation and promotion in the [virtual layer](concepts-old/glossary.md#virtual-layer).
 
 | Option                        | Description                                                                                                                                                                                                                                                                                        | Type                 | Required |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|:--------:|
 | `environment_ttl`             | The period of time that a development environment should exist before being deleted. This is defined as a string with the default `in 1 week`. Other [relative dates](https://dateparser.readthedocs.io/en/latest/) can be used, such as `in 30 days`. (Default: `in 1 week`)                      | string               | N        |
 | `pinned_environments`         | The list of development environments that are exempt from deletion due to expiration                                                                                                                                                                                                               | list[string]         | N        |
 | `default_target_environment`  | The name of the environment that will be the default target for the `vulcan plan` and `vulcan run` commands. (Default: `prod`)                                                                                                                                                                   | string               | N        |
-| `environment_suffix_target`   | Whether Vulcan views should append their environment name to the `schema`, `table` or `catalog` - [additional details](../guides/configuration.md#disable-environment-specific-schemas). (Default: `schema`)                                                                                                      | string               | N        |
+| `environment_suffix_target`   | Whether Vulcan views should append their environment name to the `schema`, `table` or `catalog` - [additional details](guides-old/configuration.md#disable-environment-specific-schemas). (Default: `schema`)                                                                                                      | string               | N        |
 | `gateway_managed_virtual_layer`   | Whether Vulcan views of the virtual layer will be created by the default gateway or model specified gateways. (Default: False)                                                                                | boolean              | N        |
 | `environment_catalog_mapping` | A mapping from regular expressions to catalog names. The catalog name is used to determine the target catalog for a given environment.                                                                                                                                                             | dict[string, string] | N        |
 | `virtual_environment_mode` | Determines the Virtual Data Environment (VDE) mode. If set to `full`, VDE is used in both production and development environments. The `dev_only` option enables VDE only in development environments, while in production, no virtual layer is used and models are materialized directly using their original names (i.e., no versioned physical tables). (Default: `full`) | string | N |
@@ -54,17 +54,17 @@ Configuration options for how Vulcan manages environment creation and promotion 
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|:--------:|
 | `time_column_format`          | The default format to use for all model time columns. This time format uses [python format codes](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes) (Default: `%Y-%m-%d`)                                                                                        | string               | N        |
 | `infer_python_dependencies`   | Whether Vulcan will statically analyze Python code to automatically infer Python package requirements. (Default: True)                                                                                                                                                                            | boolean              | N        |
-| `model_defaults`              | Default [properties](./model_configuration.md#model-defaults) to set on each model. At a minimum, `dialect` must be set.                                                                                                                                                                           | dict[string, any]    | Y        |
+| `model_defaults`              | Default [properties](configurations-old/model_configuration.md#model-defaults) to set on each model. At a minimum, `dialect` must be set.                                                                                                                                                                           | dict[string, any]    | Y        |
 
 The `model_defaults` key is **required** and must contain a value for the `dialect` key.
 
-See all the keys allowed in `model_defaults` at the [model configuration reference page](./model_configuration.md#model-defaults).
+See all the keys allowed in `model_defaults` at the [model configuration reference page](configurations-old/model_configuration.md#model-defaults).
 
 ### Variables
 
-The `variables` key can be used to provide values for user-defined variables, accessed using the [`@VAR` macro function](../concepts/macros/vulcan_macros.md#global-variables) in SQL model definitions, [`context.var` method](../concepts/models/python_models.md#user-defined-variables) in Python model definitions, and [`evaluator.var` method](../concepts/macros/vulcan_macros.md#accessing-global-variable-values) in Python macro functions.
+The `variables` key can be used to provide values for user-defined variables, accessed using the [`@VAR` macro function](components/advanced-features/macros/built_in.md#global-variables) in SQL model definitions, [`context.var` method](components/model/types/python_models.md#user-defined-variables) in Python model definitions, and [`evaluator.var` method](components/advanced-features/macros/built_in.md#accessing-global-variable-values) in Python macro functions.
 
-The `variables` key consists of a mapping of variable names to their values - see an example on the [Vulcan macros concepts page](../concepts/macros/vulcan_macros.md#global-variables). Note that keys are case insensitive.
+The `variables` key consists of a mapping of variable names to their values - see an example on the [Vulcan macros concepts page](components/advanced-features/macros/built_in.md#global-variables). Note that keys are case insensitive.
 
 Global variable values may be any of the data types in the table below or lists or dictionaries containing those types.
 
@@ -74,7 +74,7 @@ Global variable values may be any of the data types in the table below or lists 
 
 ### Before_all / after_all
 
-The `before_all` and `after_all` keys can be used to specify lists of SQL statements and/or Vulcan macros that are executed at the start and end, respectively, of the `vulcan plan` and `vulcan run` commands. For more information and examples, see [the configuration guide](../guides/configuration.md#before_all-and-after_all-statements).
+The `before_all` and `after_all` keys can be used to specify lists of SQL statements and/or Vulcan macros that are executed at the start and end, respectively, of the `vulcan plan` and `vulcan run` commands. For more information and examples, see [the configuration guide](guides-old/configuration.md#before_all-and-after_all-statements).
 
 | Option       | Description                                                                          | Type         | Required |
 |--------------|--------------------------------------------------------------------------------------|:------------:|:--------:|
@@ -87,11 +87,11 @@ Configuration for the `vulcan plan` command.
 
 | Option                    | Description                                                                                                                                                                                                                                             | Type                 | Required |
 |---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|:--------:|
-| `auto_categorize_changes` | Indicates whether Vulcan should attempt to automatically [categorize](../concepts/plans.md#change-categories) model changes during plan creation per each model source type ([additional details](../guides/configuration.md#auto-categorize-model-changes)) | dict[string, string] | N        |
+| `auto_categorize_changes` | Indicates whether Vulcan should attempt to automatically [categorize](guides/plan.md#change-categories) model changes during plan creation per each model source type ([additional details](guides-old/configuration.md#auto-categorize-model-changes)) | dict[string, string] | N        |
 | `include_unmodified`      | Indicates whether to create views for all models in the target development environment or only for modified ones (Default: False)                                                                                                                       | boolean              | N        |
 | `auto_apply`              | Indicates whether to automatically apply a new plan after creation (Default: False)                                                                                                                                                                     | boolean              | N        |
-| `forward_only`            | Indicates whether the plan should be [forward-only](../concepts/plans.md#forward-only-plans) (Default: False)                                                                                                                                           | boolean              | N        |
-| `enable_preview`          | Indicates whether to enable [data preview](../concepts/plans.md#data-preview-for-forward-only-changes) for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)                | Boolean              | N        |
+| `forward_only`            | Indicates whether the plan should be [forward-only](guides/plan.md#forward-only-plans) (Default: False)                                                                                                                                           | boolean              | N        |
+| `enable_preview`          | Indicates whether to enable [data preview](guides/plan.md#data-preview-for-forward-only-changes) for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)                | Boolean              | N        |
 | `no_diff`                 | Don't show diffs for changed models (Default: False)                                                                                                                                                                                                    | boolean              | N        |
 | `no_prompts`              | Disables interactive prompts in CLI (Default: True)                                                                                                                                                                                                     | boolean              | N        |
 | `always_recreate_environment`              | Always recreates the target environment from the environment specified in `create_from` (by default `prod`) (Default: False)                                                                                                                                                                                                     | boolean              | N        |
@@ -155,7 +155,7 @@ gateways:
       ...
 ```
 
-Find additional information about gateways in the configuration guide [gateways section](../guides/configuration.md#gateways).
+Find additional information about gateways in the configuration guide [gateways section](guides-old/configuration.md#gateways).
 
 ### Gateway
 
@@ -202,16 +202,16 @@ Most parameters are specific to the connection engine `type` - see [below](#engi
 
 These pages describe the connection configuration options for each execution engine.
 
-* [Postgres](./integrations/engines/postgres.md)
-* [Snowflake](./integrations/engines/snowflake.md)
+* [Postgres](./configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md)
+* [Snowflake](./configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md)
 
 ### Scheduler
 
-Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing [plans](../concepts/plans.md).
+Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing [plans](guides/plan.md).
 
 By default, the scheduler type is set to `builtin` and uses the gateway's connection to store metadata.
 
-Below is the list of configuration options specific to each corresponding scheduler type. Find additional details in the [configuration overview scheduler section](../guides/configuration.md#scheduler).
+Below is the list of configuration options specific to each corresponding scheduler type. Find additional details in the [configuration overview scheduler section](guides-old/configuration.md#scheduler).
 
 #### Builtin
 
@@ -221,7 +221,7 @@ No configuration options are supported by this scheduler type.
 
 ## Gateway/connection defaults
 
-The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. Find additional details in the configuration overview page [gateway/connection defaults section](../guides/configuration.md#gatewayconnection-defaults).
+The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. Find additional details in the configuration overview page [gateway/connection defaults section](guides-old/configuration.md#gatewayconnection-defaults).
 
 ### Default gateway
 

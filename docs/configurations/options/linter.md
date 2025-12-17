@@ -127,7 +127,7 @@ Use `vulcan lint --help` for more information.
 
 ## Applying linting rules
 
-Specify which linting rules a project should apply in the project's [configuration file](./configuration.md).
+Specify which linting rules a project should apply in the project's [configuration file](configurations/options/configuration.md).
 
 Rules are specified as lists of rule names under the `linter` key. Globally enable or disable linting with the `enabled` key, which is `false` by default.
 

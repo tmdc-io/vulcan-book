@@ -127,8 +127,8 @@ Plans allow you to review and verify all changes before they're applied to your 
 
 Before following this guide, ensure you have:
 
-1. **Orders360 example project** set up (see [Examples Overview](../examples/overview.md))
-2. **Docker environment** running (see [Docker Quickstart](../getting_started/docker.md))
+1. **Orders360 example project** set up (see [Examples Overview](examples/overview.md))
+2. **Docker environment** running (see [Docker Quickstart](guides/get-started/docker.md))
 3. **Vulcan CLI** accessible via `vulcan` command or `vulcan.bat` (Windows)
 
 ## Scenario 1: First Plan - Initializing Production
@@ -927,9 +927,9 @@ The explain output shows three main phases:
 
 ## Next Steps
 
-- Learn about [Plans Concepts](../concepts/plans.md) for deeper understanding
-- Explore [Environments](../concepts/environments.md) for managing multiple environments
-- Read about [Model Kinds](../concepts/models/model_kinds.md) to understand different model types
-- Check [Run Guide](./run.md) for scheduled execution after applying plans
-- Set up [Notifications](./notifications.md) to monitor plan execution
+- Learn about [Plans Concepts](guides/plan.md) for deeper understanding
+- Explore [Environments](concepts-old/environments.md) for managing multiple environments
+- Read about [Model Kinds](components/model/model_kinds.md) to understand different model types
+- Check [Run Guide](guides/run_and_scheduling.md) for scheduled execution after applying plans
+- Set up [Notifications](guides-old/notifications.md) to monitor plan execution
 

@@ -3,7 +3,7 @@
 This page describes Vulcan support for the ClickHouse engine, including configuration options specific to ClickHouse.
 
 !!! note
-    ClickHouse may not be used for the Vulcan [state connection](../../reference/configuration.md#connections).
+    ClickHouse may not be used for the Vulcan [state connection](configurations-old/configurations-old/configuration.md#connections).
 
 ## Background
 
@@ -67,7 +67,7 @@ Alternatively, you can configure specific databases where Vulcan should create t
 
 ### Environment views
 
-Use the [`environment_suffix_target` key in your project configuration](../../guides/configuration.md#disable-environment-specific-schemas) to specify that environment views should be created within the model's database instead of in a new database:
+Use the [`environment_suffix_target` key in your project configuration](../../guides-old/configuration.md#disable-environment-specific-schemas) to specify that environment views should be created within the model's database instead of in a new database:
 
 ``` yaml
 environment_suffix_target: table
@@ -75,7 +75,7 @@ environment_suffix_target: table
 
 ### Physical tables
 
-Use the [`physical_schema_mapping` key in your project configuration](../../guides/configuration.md#physical-table-schemas) to specify the databases where physical tables should be created.
+Use the [`physical_schema_mapping` key in your project configuration](../../guides-old/configuration.md#physical-table-schemas) to specify the databases where physical tables should be created.
 
 The key accepts a dictionary of regular expressions that map model database names to the corresponding databases where physical tables should be created.
 
@@ -338,10 +338,10 @@ This section describes why Vulcan needs to delete/replace records and how the Cl
 
 Vulcan "materializes" model kinds in a number of ways, such as:
 
-- Replacing an entire table ([`FULL` models](../../concepts/models/model_kinds.md#full))
-- Replacing records in a specific time range ([`INCREMENTAL_BY_TIME_RANGE` models](../../concepts/models/model_kinds.md#incremental_by_time_range))
-- Replacing records with specific key values ([`INCREMENTAL_BY_UNIQUE_KEY` models](../../concepts/models/model_kinds.md#incremental_by_unique_key))
-- Replacing records in specific partitions ([`INCREMENTAL_BY_PARTITION` models](../../concepts/models/model_kinds.md#incremental_by_partition))
+- Replacing an entire table ([`FULL` models](configurations-old/components/model/model_kinds.md#full))
+- Replacing records in a specific time range ([`INCREMENTAL_BY_TIME_RANGE` models](configurations-old/components/model/model_kinds.md#incremental_by_time_range))
+- Replacing records with specific key values ([`INCREMENTAL_BY_UNIQUE_KEY` models](configurations-old/components/model/model_kinds.md#incremental_by_unique_key))
+- Replacing records in specific partitions ([`INCREMENTAL_BY_PARTITION` models](configurations-old/components/model/model_kinds.md#incremental_by_partition))
 
 Different SQL engines provide different methods for performing record replacement.
 
@@ -367,7 +367,7 @@ The temp table swap has four steps:
 Figure 1 illustrates these four steps:
 <br></br>
 
-![ClickHouse table swap steps](./clickhouse/clickhouse_table-swap-steps.png){ loading=lazy }
+![ClickHouse table swap steps](../../configurations-old/configurations-old/configurations-old/integrations/engines/clickhouse/clickhouse_table-swap-steps.png){ loading=lazy }
 _Figure 1: steps to execute a temp table swap_
 <br></br>
 
@@ -387,7 +387,7 @@ Table partitioning provides a major benefit for improving swap performance: reco
 
 Vulcan leverages this to avoid copying large numbers of existing records into a temp table. Instead, it only copies the records that are in partitions affected by a load's newly ingested records.
 
-Vulcan automatically uses partition swapping for any incremental model that specifies the [`partitioned_by`](../../concepts/models/overview.md#partitioned_by) key.
+Vulcan automatically uses partition swapping for any incremental model that specifies the [`partitioned_by`](configurations-old/components/model/overview.md#partitioned_by) key.
 
 #### Choosing a partitioning key
 

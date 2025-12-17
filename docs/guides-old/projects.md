@@ -66,5 +66,5 @@ If using CLI, you can open a file in your project for editing by using the `vulc
 vulcan -p <your-project-path>
 ```
 
-For more details, refer to [CLI](../reference/cli.md)
+For more details, refer to [CLI](getting_started/cli.md)
 

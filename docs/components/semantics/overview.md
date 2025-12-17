@@ -66,7 +66,7 @@ This takes your `analytics.customers` model and exposes a `total_customers` meas
 
 ### Business Metrics
 
-Business metrics combine measures with dimensions and time to create complete analytical definitions. They're like pre-built queries that are ready to use. Learn more in the [Business Metrics](metrics.md) guide.
+Business metrics combine measures with dimensions and time to create complete analytical definitions. They're like pre-built queries that are ready to use. Learn more in the [Business Metrics](./business_metrics.md) guide.
 
 Here's what makes metrics powerful:
 
@@ -156,7 +156,7 @@ Then you can add measures and metrics on top. The semantic layer builds on your 
 Ready to dive in? Here's where to go next:
 
 - **[Semantic Models](models.md)** - Learn how to map physical models to business concepts
-- **[Business Metrics](metrics.md)** - Create time-series analytical definitions
+- **[Business Metrics](./business_metrics.md)** - Create time-series analytical definitions
 - **[Transpiling Semantic Queries](../../guides/transpiling_semantics.md)** - See how semantic queries get converted to SQL
 - **Check your project** - Look at the `semantics/` directory in your Vulcan project for examples
 

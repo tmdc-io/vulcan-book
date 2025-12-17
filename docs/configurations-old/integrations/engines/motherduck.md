@@ -15,7 +15,7 @@ MotherDuck provides a single way to authorize a connection. This quickstart demo
 !!! tip
     This quick start assumes you are familiar with basic Vulcan commands and functionality.
 
-    If you're not familiar, work through the [Vulcan Quickstart](../../getting_started/docker.md) before continuing.
+    If you're not familiar, work through the [Vulcan Quickstart](configurations-old/guides/get-started/docker.md) before continuing.
 
 ### Prerequisites
 
@@ -51,10 +51,10 @@ gateways:
 default_gateway: motherduck
 ```
 
-Catalogs can be defined to connect to anything that [DuckDB can be attached to](./duckdb.md#other-connection-catalogs-example).
+Catalogs can be defined to connect to anything that [DuckDB can be attached to](../../configurations-old/configurations-old/configurations-old/integrations/engines/duckdb.md#other-connection-catalogs-example).
 
 !!! warning
-    Best practice for storing secrets like tokens is placing them in [environment variables that the configuration file loads dynamically](../../guides/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
+    Best practice for storing secrets like tokens is placing them in [environment variables that the configuration file loads dynamically](../../guides-old/configuration.md#environment-variables). For simplicity, this guide instead places the value directly in the configuration file.
 
     This code demonstrates how to use the environment variable `MOTHERDUCK_TOKEN` for the configuration's `token` parameter:
 

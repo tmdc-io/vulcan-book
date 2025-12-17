@@ -3,7 +3,7 @@
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `spark`
 
-NOTE: Spark may not be used for the Vulcan [state connection](../../reference/configuration.md#connections).
+NOTE: Spark may not be used for the Vulcan [state connection](configurations-old/configurations-old/configuration.md#connections).
 
 ### Connection options
 

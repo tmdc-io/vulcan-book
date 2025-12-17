@@ -613,7 +613,7 @@ By default, Vulcan stores scheduler state in your SQL engine. For production:
 - You observe performance degradation
 - You need better isolation
 
-See [Connections Guide](./connections.md#state-connection) for configuring a separate state database.
+See [Connections Guide](guides-old/connections.md#state-connection) for configuring a separate state database.
 
 ---
 
@@ -624,7 +624,7 @@ See [Connections Guide](./connections.md#state-connection) for configuring a sep
 3. **Monitor execution** - Check logs to ensure intervals are processing correctly
 4. **Use `--ignore-cron` sparingly** - Only when catching up on missed intervals
 5. **Separate state database** - Consider PostgreSQL for state storage in production
-6. **Handle errors gracefully** - Set up [notifications](./notifications.md) for run failures
+6. **Handle errors gracefully** - Set up [notifications](guides-old/notifications.md) for run failures
 
 ---
 
@@ -642,8 +642,8 @@ See [Connections Guide](./connections.md#state-connection) for configuring a sep
 
 ## Next Steps
 
-- Learn about [Plan Guide](./plan.md) for applying model changes
-- Check [Run Command](../reference/cli.md#run) for complete CLI reference
-- Set up [Notifications](./notifications.md) to monitor run execution
-- Explore [Environments](../concepts/environments.md) for managing multiple environments
-- Configure [Connections](./connections.md) for state database setup
+- Learn about [Plan Guide](guides/plan.md) for applying model changes
+- Check [Run Command](getting_started/cli.md#run) for complete CLI reference
+- Set up [Notifications](guides-old/notifications.md) to monitor run execution
+- Explore [Environments](concepts-old/environments.md) for managing multiple environments
+- Configure [Connections](guides-old/connections.md) for state database setup

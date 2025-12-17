@@ -155,7 +155,7 @@ external_models/legacy_tables.yaml # More manual definitions
 
 ### External Assertions
 
-You can define [assertions](../audits.md) on external models! This is super useful for validating upstream data quality before your internal models run.
+You can define [assertions](components/model/audits.md) on external models! This is super useful for validating upstream data quality before your internal models run.
 
 **Why this matters:** If your external data source has quality issues, you want to catch them early—before they flow into your models and cause bigger problems downstream.
 

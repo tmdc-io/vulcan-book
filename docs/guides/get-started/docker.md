@@ -103,7 +103,7 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
 
 === "Mac/Linux"
     
-    1. **Initialize project:** [*Click here*](../reference/cli.md#init){:target="_blank"}
+    1. **Initialize project:** [*Click here*](guides/getting_started/cli.md#init){:target="_blank"}
        ```bash
        vulcan init
        ```
@@ -111,14 +111,14 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
        
         It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
 
-    2. **Check connection and number of models, macros, and other project components:** [*Click here*](../reference/cli.md#info){:target="_blank"}
+    2. **Check connection and number of models, macros, and other project components:** [*Click here*](guides/getting_started/cli.md#info){:target="_blank"}
        ```bash
        vulcan info
        ```
       It verifies that the setup is correct before running plans
 
 
-    3. **Run the plan:** [*Click here*](../reference/cli.md#plan){:target="_blank"}
+    3. **Run the plan:** [*Click here*](guides/getting_started/cli.md#plan){:target="_blank"}
        ```bash
        vulcan plan
        ```
@@ -130,13 +130,13 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
 
         Enter `y` when prompted to apply the plan and backfill your models.
         
-    4. **Query the models:** [*Click here*](../reference/cli.md#fetchdf){:target="_blank"}
+    4. **Query the models:** [*Click here*](guides/getting_started/cli.md#fetchdf){:target="_blank"}
        ```bash
        vulcan fetchdf "select * from schema.model_name"
        ```
        Executes a SQL query and returns results as a pandas DataFrame
 
-    5. **Query the Semantic:** [*Click here*](../reference/cli.md#transpile){:target="_blank"}
+    5. **Query the Semantic:** [*Click here*](guides/getting_started/cli.md#transpile){:target="_blank"}
       ```bash
        vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
       ```
@@ -144,7 +144,7 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
 
 === "Windows"
     
-    1. **Initialize project:** [*Click here*](../reference/cli.md#init){:target="_blank"}
+    1. **Initialize project:** [*Click here*](guides/getting_started/cli.md#init){:target="_blank"}
        ```cmd
        vulcan init
        ```
@@ -152,13 +152,13 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
        
         It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
 
-    2. **Check connection and number of models, macros, and other project components:** [*Click here*](../reference/cli.md#info){:target="_blank"}
+    2. **Check connection and number of models, macros, and other project components:** [*Click here*](guides/getting_started/cli.md#info){:target="_blank"}
        ```cmd
        vulcan info
        ```
        It verifies that the setup is correct before running plans
 
-    3. **Run the plan:** [*Click here*](../reference/cli.md#plan){:target="_blank"}
+    3. **Run the plan:** [*Click here*](guides/getting_started/cli.md#plan){:target="_blank"}
        ```cmd
        vulcan plan
        ```
@@ -170,13 +170,13 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
 
         Enter `y` when prompted to apply the plan and backfill your models.
         
-    4. **Query the models:** [*Click here*](../reference/cli.md#fetchdf){:target="_blank"}
+    4. **Query the models:** [*Click here*](guides/getting_started/cli.md#fetchdf){:target="_blank"}
        ```cmd
        vulcan fetchdf "select * from schema.model_name"
        ```
        Executes a SQL query and returns results as a pandas DataFrame
 
-    5. **Query the Semantic:** [*Click here*](../reference/cli.md#transpile){:target="_blank"}
+    5. **Query the Semantic:** [*Click here*](guides/getting_started/cli.md#transpile){:target="_blank"}
       ```cmd
        vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
       ```
@@ -248,6 +248,6 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
 
 ## Next Steps
 
-- [Learn more about Vulcan CLI commands](../reference/cli.md){:target="_blank"}
-- [Explore Vulcan concepts](../concepts/overview.md){:target="_blank"}
-- [Set up connections to different warehouses](../guides/connections.md){:target="_blank"}
+- [Learn more about Vulcan CLI commands](guides/getting_started/cli.md){:target="_blank"}
+- [Explore Vulcan concepts](../concepts-old/overview.md){:target="_blank"}
+- [Set up connections to different warehouses](guides/guides-old/connections.md){:target="_blank"}

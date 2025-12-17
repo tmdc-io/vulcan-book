@@ -16,7 +16,7 @@ Isolated systems are sometimes referred to as "isolated environments," but we av
 
 Instead, we will refer to them as isolated systems - the "production system" and "non-production system."
 
-When we refer to "environments," we are always talking about [Vulcan environments](../concepts/environments.md) - the isolated namespaces created and managed by Vulcan.
+When we refer to "environments," we are always talking about [Vulcan environments](concepts-old/environments.md) - the isolated namespaces created and managed by Vulcan.
 
 ## Configuring Vulcan
 
@@ -24,13 +24,13 @@ When we refer to "environments," we are always talking about [Vulcan environment
 
 Vulcan maintains a record of every model version so it can identify changes when models are updated. Those records are called "state" data, as in "the state of the model at that point in time."
 
-State data can be stored alongside other data in the primary data warehouse or in a [separate database](./configuration.md#state-connection). We recommend using a separate transactional database for projects running on cloud SQL engines.
+State data can be stored alongside other data in the primary data warehouse or in a [separate database](guides-old/configuration.md#state-connection). We recommend using a separate transactional database for projects running on cloud SQL engines.
 
 Isolated systems must use a **separate** state database for each system. The state of models and other objects in the non-production system is not accurate for the production system, and sharing state data will prevent the project from running correctly.
 
 ### Multiple gateways
 
-Vulcan database connections are configured with [gateways](./configuration.md#gateways) that contain [connections](./connections.md) and other configuration parameters.
+Vulcan database connections are configured with [gateways](guides-old/configuration.md#gateways) that contain [connections](guides-old/connections.md) and other configuration parameters.
 
 A gateway must contain a connection to a SQL engine and may optionally contain a different connection to the database where Vulcan should store its state data.
 
@@ -60,9 +60,9 @@ Commands can override the default gateway with the `--gateway` option, such as `
 
 We recommend using identical schema and model names in both systems, but in some scenarios that is not possible.
 
-Schema and model names may be parameterized by gateway using the predefined [`@gateway` macro variable](../concepts/macros/macro_variables.md#runtime-variables).
+Schema and model names may be parameterized by gateway using the predefined [`@gateway` macro variable](components/advanced-features/macros/variables.md#runtime-variables).
 
-This example demonstrates conditioning the model schema name on the current gateway with the Vulcan [`@IF` macro operator](../concepts/macros/vulcan_macros.md#if). If the gateway is named `production`, `my_model`'s schema is `prod_schema`; otherwise, it is `dev_schema`.
+This example demonstrates conditioning the model schema name on the current gateway with the Vulcan [`@IF` macro operator](components/advanced-features/macros/built_in.md#if). If the gateway is named `production`, `my_model`'s schema is `prod_schema`; otherwise, it is `dev_schema`.
 
 ```sql linenums="1"
 MODEL (
@@ -78,7 +78,7 @@ MODEL (
 )
 ```
 
-Learn more about the curly brace `@{}` syntax [here](../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
+Learn more about the curly brace `@{}` syntax [here](components/advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
 ## Workflow
 

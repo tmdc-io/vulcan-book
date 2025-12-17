@@ -7,7 +7,7 @@ Vulcan is a Python framework that automates everything needed to run a scalable 
 
 It was created with a focus on both data and organizational scale and works regardless of your data warehouse or SQL engine's capabilities.
 
-You can use Vulcan with the [CLI](../reference/cli.md).
+You can use Vulcan with the [CLI](getting_started/cli.md).
 
 ## How Vulcan works
 ### Create models
@@ -18,14 +18,14 @@ Creating new models or changing existing models can have dramatic downstream eff
 
 Beyond understanding the logical implications of a change, you also need to understand the computations required to implement the change *before* you expend the time and resources to actually perform the computations.
 
-Vulcan automatically identifies all affected models and the computations a change entails by creating a "Vulcan plan." When you execute the [`plan` command](../reference/cli.md#plan), Vulcan generates the plan *for the environment specified in the command* (e.g., dev, test, prod).
+Vulcan automatically identifies all affected models and the computations a change entails by creating a "Vulcan plan." When you execute the [`plan` command](getting_started/cli.md#plan), Vulcan generates the plan *for the environment specified in the command* (e.g., dev, test, prod).
 
 The plan conveys the full scope of a change's effects in the environment by automatically identifying both directly and indirectly-impacted models. This gives a holistic view of all impacts a change will have.
 
-Learn more about [plans](./plans.md).
+Learn more about [plans](../guides/plan.md).
 
 #### Apply the plan
-After using [`plan`](../reference/cli.md#plan) to understand the impacts of a change in an environment, Vulcan offers to execute the computations by [`apply`](./plans.md#plan-application)ing the plan. However, you must provide additional information that determines the scope of what computations are executed.
+After using [`plan`](getting_started/cli.md#plan) to understand the impacts of a change in an environment, Vulcan offers to execute the computations by [`apply`](../guides/plan.md#plan-application)ing the plan. However, you must provide additional information that determines the scope of what computations are executed.
 
 The computations needed to apply a Vulcan plan are determined by both the code changes reflected in the plan and the backfill parameters you specify.
 
@@ -49,21 +49,21 @@ Because Vulcan uses virtual environments instead of re-computing everything in t
 ## Test your code and data
 Bad data is worse than no data. The best way to keep bad data out of your system is by testing your transformation code and results.
 
-### [Tests](./tests.md)
+### [Tests](../components/tests/tests.md)
 Vulcan "tests" are similar to unit tests in software development, where the unit is a single model. Vulcan tests validate model *code* &mdash; you specify the input data and expected output, then Vulcan runs the test and compares the expected and actual output.
 
-Vulcan automatically runs tests when you apply a `plan`, or you can run them on demand with the [`test` command](../reference/cli.md#test).
+Vulcan automatically runs tests when you apply a `plan`, or you can run them on demand with the [`test` command](getting_started/cli.md#test).
 
-### [Audits](./audits.md)
+### [Audits](../components/audits/audits.md)
 In contrast to tests, Vulcan "audits" validate the results of model code applied to your actual data.
 
 You create audits by writing SQL queries that should return 0 rows. For example, an audit query to ensure `your_field` has no `NULL` values would include `WHERE your_field IS NULL`. If any NULLs are detected, the query will return at least one row and the audit will fail.
 
-Audits are flexible &mdash; they can be tied to a specific model's contents, or you can use [macros](./macros/overview.md) to create audits that are usable by multiple models. Vulcan also includes pre-made audits for common use cases, such as detecting NULL or duplicated values.
+Audits are flexible &mdash; they can be tied to a specific model's contents, or you can use [macros](../components/advanced-features/macros/overview.md) to create audits that are usable by multiple models. Vulcan also includes pre-made audits for common use cases, such as detecting NULL or duplicated values.
 
 You specify which audits should run for a model by including them in the model's metadata properties. To apply them globally across your project, include them in the model defaults configuration.
 
-Vulcan automatically runs audits when you apply a `plan` to an environment, or you can run them on demand with the [`audit` command](../reference/cli.md#audit).
+Vulcan automatically runs audits when you apply a `plan` to an environment, or you can run them on demand with the [`audit` command](getting_started/cli.md#audit).
 
 ## Infrastructure and orchestration
 Every company's data infrastructure is different. Vulcan is flexible with regard to which engines and orchestration frameworks you use &mdash; its only requirement is access to the target SQL/analytics engine.

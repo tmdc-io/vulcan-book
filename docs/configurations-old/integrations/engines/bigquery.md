@@ -4,7 +4,7 @@
 
 This guide provides step-by-step instructions on how to connect Vulcan to the BigQuery SQL engine.
 
-It will walk you through the steps of installing Vulcan and BigQuery connection libraries locally, configuring the connection in Vulcan, and running the [quickstart project](../../getting_started/docker.md).
+It will walk you through the steps of installing Vulcan and BigQuery connection libraries locally, configuring the connection in Vulcan, and running the [quickstart project](configurations-old/guides/get-started/docker.md).
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ This guide assumes the following about the BigQuery project being used with Vulc
 
 ## Installation
 
-Follow the [quickstart guide](../../getting_started/docker.md) to set up Vulcan, then install the necessary BigQuery libraries.
+Follow the [quickstart guide](configurations-old/guides/get-started/docker.md) to set up Vulcan, then install the necessary BigQuery libraries.
 
 Instead of installing just Vulcan core, we will also include the BigQuery engine libraries:
 
@@ -73,11 +73,11 @@ It uses the [`oauth` authentication method](#authentication-methods), which does
 
 In BigQuery, navigate to the dashboard and select the BigQuery project your Vulcan project will use. From the Google Cloud dashboard, use the arrow to open the pop-up menu:
 
-![BigQuery Dashboard](./bigquery/bigquery-1.png)
+![BigQuery Dashboard](../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-1.png)
 
 Now we can identify the project ID needed in the `config.yaml` gateway specification above. Select the project that you want to work with, the project ID that you need to add to your yaml file is the ID label from the pop-up menu.
 
-![BigQuery Dashboard: selecting your project](./bigquery/bigquery-2.png)
+![BigQuery Dashboard: selecting your project](../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-2.png)
 
 For this guide, the Docs-Demo is the one we will use, thus the project ID for this example is `healthy-life-440919-s0`.
 
@@ -93,13 +93,13 @@ Run the following command to verify that Vulcan can connect to BigQuery:
 
 The output will look something like this:
 
-![Terminal Output](./bigquery/bigquery-3.png)
+![Terminal Output](../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-3.png)
 
 - **Set quota project (optional)**
 
     You may see warnings like this when you run `vulcan info`:
 
-    ![Terminal Output with warnings](./bigquery/bigquery-4.png)
+    ![Terminal Output with warnings](../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-4.png)
 
     You can avoid these warnings about quota projects by running:
 
@@ -123,11 +123,11 @@ Let's confirm that our project models are as expected.
 
 First, navigate to the BigQuery Studio Console:
 
-![Steps to the Studio](./bigquery/bigquery-5.png)
+![Steps to the Studio](../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-5.png)
 
 Then use the left sidebar to find your project and the newly created models:
 
-![New Models](./bigquery/bigquery-6.png)
+![New Models](../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-6.png)
 
 We have confirmed that our Vulcan project is running properly in BigQuery!
 

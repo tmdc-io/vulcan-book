@@ -4,7 +4,7 @@ Vulcan's behavior is determined by three things: a project's files (e.g., models
 
 This page describes how Vulcan configuration works and discusses the aspects of Vulcan behavior that can be modified via configuration.
 
-The [configuration reference page](../reference/configuration.md) contains concise lists of all configuration parameters and their default values.
+The [configuration reference page](../configurations-old/configuration.md) contains concise lists of all configuration parameters and their default values.
 
 ## Configuration files
 
@@ -93,7 +93,7 @@ The `config` sub-module API documentation describes the individual classes used 
 - [User configuration](https://vulcan.readthedocs.io/en/latest/_readthedocs/html/vulcan/core/user.html#User): `User()`
 - [Notification configuration](https://vulcan.readthedocs.io/en/latest/_readthedocs/html/vulcan/core/notification_target.html) (separate classes for each notification target)
 
-See the [notifications guide](../guides/notifications.md) for more information about user and notification specification.
+See the [notifications guide](guides-old/notifications.md) for more information about user and notification specification.
 
 ## Environment variables
 
@@ -278,18 +278,18 @@ After the initial string `VULCAN__`, the environment variable name components mo
 
 A Vulcan project configuration is hierarchical and consists of root level parameters within which other parameters are defined.
 
-Conceptually, we can group the root level parameters into the following types. Each type links to its table of parameters in the [Vulcan configuration reference page](../reference/configuration.md):
+Conceptually, we can group the root level parameters into the following types. Each type links to its table of parameters in the [Vulcan configuration reference page](../configurations-old/configuration.md):
 
-1. [Project](../reference/configuration.md#projects) - configuration options for Vulcan project directories.
-2. [Environment](../reference/configuration.md#environments-virtual-layer) - configuration options for Vulcan environment creation/promotion, physical table schemas, and view schemas.
-3. [Gateways](../reference/configuration.md#gateways) - configuration options for how Vulcan should connect to the data warehouse, state backend, and scheduler.
-4. [Gateway/connection defaults](../reference/configuration.md#gatewayconnection-defaults) - configuration options for what should happen when gateways or connections are not all explicitly specified.
-5. [Model defaults](../reference/model_configuration.md) - configuration options for what should happen when model-specific configurations are not explicitly specified in a model's file.
-6. [Debug mode](../reference/configuration.md#debug-mode) - configuration option for Vulcan to print and log actions and full backtraces.
+1. [Project](../configurations-old/configuration.md#projects) - configuration options for Vulcan project directories.
+2. [Environment](../configurations-old/configuration.md#environments-virtual-layer) - configuration options for Vulcan environment creation/promotion, physical table schemas, and view schemas.
+3. [Gateways](../configurations-old/configuration.md#gateways) - configuration options for how Vulcan should connect to the data warehouse, state backend, and scheduler.
+4. [Gateway/connection defaults](../configurations-old/configuration.md#gatewayconnection-defaults) - configuration options for what should happen when gateways or connections are not all explicitly specified.
+5. [Model defaults](../configurations-old/configuration.md) - configuration options for what should happen when model-specific configurations are not explicitly specified in a model's file.
+6. [Debug mode](../configurations-old/configuration.md#debug-mode) - configuration option for Vulcan to print and log actions and full backtraces.
 
 ## Configuration details
 
-The rest of this page provides additional detail for some of the configuration options and provides brief examples. Comprehensive lists of configuration options are at the [configuration reference page](../reference/configuration.md).
+The rest of this page provides additional detail for some of the configuration options and provides brief examples. Comprehensive lists of configuration options are at the [configuration reference page](../configurations-old/configuration.md).
 
 ### Cache directory
 
@@ -325,7 +325,7 @@ Vulcan creates schemas, physical tables, and views in the data warehouse/engine.
 
 You can also override *what* the physical tables are called by using the `physical_table_naming_convention` option.
 
-These options are in the [environments](../reference/configuration.md#environments-virtual-layer) section of the configuration reference page.
+These options are in the [environments](../configurations-old/configuration.md#environments-virtual-layer) section of the configuration reference page.
 
 #### Physical table schemas
 By default, Vulcan creates physical schemas for a model with a naming convention of `vulcan__[model schema]`.
@@ -409,7 +409,7 @@ If neither the schema (default) nor the table level are sufficient for your use 
 
 This can be useful if you have downstream BI reporting tools and you would like to point them at a development environment to test something out without renaming all the table / schema references within the report query.
 
-In order to achieve this, you can configure [environment_suffix_target](../reference/configuration.md#environments-virtual-layer) like so:
+In order to achieve this, you can configure [environment_suffix_target](../configurations-old/configuration.md#environments-virtual-layer) like so:
 
 === "YAML"
 
@@ -570,7 +570,7 @@ To mitigate this, Vulcan offers an alternative 'dev-only' mode for using VDE. It
 
 Please note the following tradeoffs when enabling this mode:
 
-- All data inserted in development environments is used only for [preview](../concepts/plans.md#data-preview-for-forward-only-changes) and will **not** be reused in production
+- All data inserted in development environments is used only for [preview](guides/plan.md#data-preview-for-forward-only-changes) and will **not** be reused in production
 - Reverting a model to a previous version will be applied going forward and may require an explicit data restatement
 
 !!! warning
@@ -579,14 +579,14 @@ Please note the following tradeoffs when enabling this mode:
 
 #### Environment view catalogs
 
-By default, Vulcan creates an environment view in the same [catalog](../concepts/glossary.md#catalog) as the physical table the view points to. The physical table's catalog is determined by either the catalog specified in the model name or the default catalog defined in the connection.
+By default, Vulcan creates an environment view in the same [catalog](concepts-old/glossary.md#catalog) as the physical table the view points to. The physical table's catalog is determined by either the catalog specified in the model name or the default catalog defined in the connection.
 
 It can be desirable to create `prod` and non-prod virtual layer objects in separate catalogs instead. For example, there might be a "prod" catalog that contains all `prod` environment views and a separate "dev" catalog that contains all `dev` environment views.
 
 Separate prod and non-prod catalogs can also be useful if you have a CI/CD pipeline that creates environments, like the Vulcan Github Actions CI/CD Bot. You might want to store the CI/CD environment objects in a dedicated catalog since there can be many of them.
 
 !!! info "Virtual layer only"
-    Note that the following setting only affects the [virtual layer](../concepts/glossary.md#virtual-layer). If you need full segregation by catalog between environments in the [physical layer](../concepts/glossary.md#physical-layer) as well, see the [Isolated Systems Guide](../guides/isolated_systems.md).
+    Note that the following setting only affects the [virtual layer](concepts-old/glossary.md#virtual-layer). If you need full segregation by catalog between environments in the [physical layer](concepts-old/glossary.md#physical-layer) as well, see the [Isolated Systems Guide](../guides/isolated_systems.md).
 
 To configure separate catalogs, provide a mapping from [regex patterns](https://en.wikipedia.org/wiki/Regular_expression) to catalog names. Vulcan will compare the name of an environment to the regex patterns; when it finds a match it will store the environment's objects in the corresponding catalog.
 
@@ -629,9 +629,9 @@ With the example configuration above, Vulcan would evaluate environment names as
 
 *Note:* This feature is only available for engines that support querying across catalogs. At the time of writing, the following engines are **NOT** supported:
 
-* [MySQL](../integrations/engines/mysql.md)
-* [Postgres](../integrations/engines/postgres.md)
-* [GCP Postgres](../integrations/engines/gcp-postgres.md)
+* [MySQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/mysql.md)
+* [Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md)
+* [GCP Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/gcp-postgres.md)
 
 ##### Regex Tips
 * If you are less familiar with regex, you can use a tool like [regex101](https://regex101.com/) to help you build your regex patterns.
@@ -644,11 +644,11 @@ With the example configuration above, Vulcan would evaluate environment names as
 
 Vulcan compares the current state of project files to an environment when `vulcan plan` is run. It detects changes to models, which can be classified as breaking or non-breaking.
 
-Vulcan can  attempt to automatically [categorize](../concepts/plans.md#change-categories) the changes it detects. The `plan.auto_categorize_changes` option determines whether Vulcan should attempt automatic change categorization. This option is in the [plan](../reference/configuration.md#plan) section of the configuration reference page.
+Vulcan can  attempt to automatically [categorize](guides/plan.md#change-categories) the changes it detects. The `plan.auto_categorize_changes` option determines whether Vulcan should attempt automatic change categorization. This option is in the [plan](../configurations-old/configuration.md#plan) section of the configuration reference page.
 
 Supported values:
 
-* `full`: Never prompt the user for input, instead fall back to the most conservative category ([breaking](../concepts/plans.md#breaking-change)) if the category can't be determined automatically.
+* `full`: Never prompt the user for input, instead fall back to the most conservative category ([breaking](guides/plan.md#breaking-change)) if the category can't be determined automatically.
 * `semi`: Prompt the user for input only if the change category can't be determined automatically.
 * `off`: Always prompt the user for input; automatic categorization will not be attempted.
 
@@ -804,7 +804,7 @@ Even though the second change should have been a metadata change (thus not requi
 
 ### Gateways
 
-The `gateways` configuration defines how Vulcan should connect to the data warehouse, state backend, and scheduler. These options are in the [gateway](../reference/configuration.md#gateway) section of the configuration reference page.
+The `gateways` configuration defines how Vulcan should connect to the data warehouse, state backend, and scheduler. These options are in the [gateway](../configurations-old/configuration.md#gateway) section of the configuration reference page.
 
 Each gateway key represents a unique gateway name and configures its connections. **Gateway names are case-insensitive** - Vulcan automatically normalizes gateway names to lowercase during configuration validation. This means you can use any case in your configuration files (e.g., `MyGateway`, `mygateway`, `MYGATEWAY`) and they will all work correctly.
 
@@ -855,7 +855,7 @@ Gateways do not need to specify all four components in the example above. The ga
 
 ### Connections
 
-The `connection` configuration controls the data warehouse connection. These options are in the [connection](../reference/configuration.md#connection) section of the configuration reference page.
+The `connection` configuration controls the data warehouse connection. These options are in the [connection](../configurations-old/configuration.md#connection) section of the configuration reference page.
 
 The allowed keys include:
 
@@ -906,20 +906,20 @@ Example snowflake connection configuration:
 
 These pages describe the connection configuration options for each execution engine.
 
-* [Athena](../integrations/engines/athena.md)
-* [BigQuery](../integrations/engines/bigquery.md)
-* [Databricks](../integrations/engines/databricks.md)
-* [DuckDB](../integrations/engines/duckdb.md)
-* [Fabric](../integrations/engines/fabric.md)
-* [MotherDuck](../integrations/engines/motherduck.md)
-* [MySQL](../integrations/engines/mysql.md)
-* [MSSQL](../integrations/engines/mssql.md)
-* [Postgres](../integrations/engines/postgres.md)
-* [GCP Postgres](../integrations/engines/gcp-postgres.md)
-* [Redshift](../integrations/engines/redshift.md)
-* [Snowflake](../integrations/engines/snowflake.md)
-* [Spark](../integrations/engines/spark.md)
-* [Trino](../integrations/engines/trino.md)
+* [Athena](../references/configurations-old/configurations-old/configurations-old/integrations/engines/athena.md)
+* [BigQuery](../references/configurations-old/configurations-old/configurations-old/integrations/engines/bigquery.md)
+* [Databricks](../references/configurations-old/configurations-old/configurations-old/integrations/engines/databricks.md)
+* [DuckDB](../references/configurations-old/configurations-old/configurations-old/integrations/engines/duckdb.md)
+* [Fabric](../references/configurations-old/configurations-old/configurations-old/integrations/engines/fabric.md)
+* [MotherDuck](../references/configurations-old/configurations-old/configurations-old/integrations/engines/motherduck.md)
+* [MySQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/mysql.md)
+* [MSSQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/mssql.md)
+* [Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md)
+* [GCP Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/gcp-postgres.md)
+* [Redshift](../references/configurations-old/configurations-old/configurations-old/integrations/engines/redshift.md)
+* [Snowflake](../references/configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md)
+* [Spark](../references/configurations-old/configurations-old/configurations-old/integrations/engines/spark.md)
+* [Trino](../references/configurations-old/configurations-old/configurations-old/integrations/engines/trino.md)
 
 #### State connection
 
@@ -936,21 +936,21 @@ The easiest and most reliable way to manage your state connection is for [Tobiko
 
 Recommended state engines for production deployments:
 
-* [Postgres](../integrations/engines/postgres.md)
-* [GCP Postgres](../integrations/engines/gcp-postgres.md)
+* [Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md)
+* [GCP Postgres](../references/configurations-old/configurations-old/configurations-old/integrations/engines/gcp-postgres.md)
 
 Other state engines with fast and reliable database transactions (less tested than the recommended engines):
 
-* [DuckDB](../integrations/engines/duckdb.md)
+* [DuckDB](../references/configurations-old/configurations-old/configurations-old/integrations/engines/duckdb.md)
     * With the caveat that it's a [single user](https://duckdb.org/docs/connect/concurrency.html#writing-to-duckdb-from-multiple-processes) database so will not scale to production usage
-* [MySQL](../integrations/engines/mysql.md)
-* [MSSQL](../integrations/engines/mssql.md)
+* [MySQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/mysql.md)
+* [MSSQL](../references/configurations-old/configurations-old/configurations-old/integrations/engines/mssql.md)
 
 Unsupported state engines, even for development:
 
-* [ClickHouse](../integrations/engines/clickhouse.md)
-* [Spark](../integrations/engines/spark.md)
-* [Trino](../integrations/engines/trino.md)
+* [ClickHouse](../references/configurations-old/configurations-old/configurations-old/integrations/engines/clickhouse.md)
+* [Spark](../references/configurations-old/configurations-old/configurations-old/integrations/engines/spark.md)
+* [Trino](../references/configurations-old/configurations-old/configurations-old/integrations/engines/trino.md)
 
 This example gateway configuration uses Snowflake for the data warehouse connection and Postgres for the state backend connection:
 
@@ -1099,9 +1099,9 @@ Configuration for a connection used to run unit tests. An in-memory DuckDB datab
 
 ### Scheduler
 
-Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing [plans](../concepts/plans.md). By default, the scheduler type is set to `builtin`, which uses the existing SQL engine to store metadata.
+Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing [plans](guides/plan.md). By default, the scheduler type is set to `builtin`, which uses the existing SQL engine to store metadata.
 
-These options are in the [scheduler](../reference/configuration.md#scheduler) section of the configuration reference page.
+These options are in the [scheduler](../configurations-old/configuration.md#scheduler) section of the configuration reference page.
 
 #### Builtin
 
@@ -1143,9 +1143,9 @@ No additional configuration options are supported by this scheduler type.
 
 ### Gateway/connection defaults
 
-The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. These options are in the [gateway/connection defaults](../reference/configuration.md#gatewayconnection-defaults) section of the configuration reference page.
+The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. These options are in the [gateway/connection defaults](../configurations-old/configuration.md#gatewayconnection-defaults) section of the configuration reference page.
 
-The gateway specified in `default_gateway` is used when a `vulcan` command does not explicitly specify a gateway. All Vulcan CLI commands [accept a gateway option](../reference/cli.md#cli) after `vulcan` and before the command name; for example, `vulcan --gateway my_gateway plan`. If the option is not specified in a command call, the `default_gateway` is used.
+The gateway specified in `default_gateway` is used when a `vulcan` command does not explicitly specify a gateway. All Vulcan CLI commands [accept a gateway option](getting_started/cli.md#cli) after `vulcan` and before the command name; for example, `vulcan --gateway my_gateway plan`. If the option is not specified in a command call, the `default_gateway` is used.
 
 The three default connection types are used when some gateways in the `gateways` configuration dictionaries do not specify every connection type.
 
@@ -1239,7 +1239,7 @@ Example configuration specifying a Postgres default connection, in-memory DuckDB
 
 The `model_defaults` key is **required** and must contain a value for the `dialect` key. All SQL dialects [supported by the SQLGlot library](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py) are allowed. Other values are set automatically unless explicitly overridden in the model definition.
 
-All supported `model_defaults` keys are listed in the [models configuration reference page](../reference/model_configuration.md#model-defaults).
+All supported `model_defaults` keys are listed in the [models configuration reference page](../configurations-old/configuration.md#model-defaults).
 
 Example configuration:
 
@@ -1266,7 +1266,7 @@ Example configuration:
     )
     ```
 
-The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](../concepts/models/model_kinds.md).
+The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](components/model/model_kinds.md).
 
 ##### Identifier resolution
 
@@ -1326,7 +1326,7 @@ That value tells Vulcan that the `redshift` gateway's models will be written in 
 
 Model kinds are required in each model file's `MODEL` DDL statement. They may optionally be used to specify a default kind in the model defaults configuration key.
 
-All model kind specification keys are listed in the [models configuration reference page](../reference/model_configuration.md#model-kind-properties).
+All model kind specification keys are listed in the [models configuration reference page](../configurations-old/configuration.md#model-kind-properties).
 
 The `VIEW`, `FULL`, and `EMBEDDED` model kinds are specified by name only, while other models kinds require additional parameters and are provided with an array of parameters:
 
@@ -1352,7 +1352,7 @@ The `VIEW`, `FULL`, and `EMBEDDED` model kinds are specified by name only, while
     );
     ```
 
-Python model kinds are specified with model kind objects. Python model kind objects have the same arguments as their SQL counterparts, listed in the [models configuration reference page](../reference/model_configuration.md#model-kind-properties).
+Python model kinds are specified with model kind objects. Python model kind objects have the same arguments as their SQL counterparts, listed in the [models configuration reference page](../configurations-old/configuration.md#model-kind-properties).
 
 This example demonstrates how to specify an incremental by time range model kind in Python:
 
@@ -1371,7 +1371,7 @@ This example demonstrates how to specify an incremental by time range model kind
     )
     ```
 
-Learn more about specifying Python models at the [Python models concepts page](../concepts/models/python_models.md#model-specification).
+Learn more about specifying Python models at the [Python models concepts page](components/model/types/python_models.md#model-specification).
 
 
 #### Model Naming

@@ -14,7 +14,7 @@ Data pipelines are tricky beasts. Small errors can snowball into significant bus
 - **Data quality assurance** - Verify that aggregations, joins, and calculations produce correct results
 - **Confidence in changes** - Make updates knowing you'll catch regressions before they hit production
 
-Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new [plan](plans.md). Either way, they're there to help you sleep better at night.
+Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new [plan](guides/plan.md). Either way, they're there to help you sleep better at night.
 
 ## Creating Tests
 

@@ -21,24 +21,24 @@ Vulcan aims to be dbt format-compatible. Importing existing dbt projects with mi
 | Feature                           | dbt | Vulcan
 | -------                           | --- | -------
 | Modeling
-| `SQL models`                      | ✅ | [✅](concepts/models/overview.md)
-| `Python models`                   | ✅ | [✅✅](concepts/models/python_models.md)
+| `SQL models`                      | ✅ | [✅](components/model/overview.md)
+| `Python models`                   | ✅ | [✅✅](components/model/types/python_models.md)
 | `Jinja support`                   | ✅ | ✅
-| `Jinja macros`                    | ✅ | [✅](concepts/macros/jinja_macros.md)
-| `Python macros`                   | ❌ | [✅](concepts/macros/vulcan_macros.md)
+| `Jinja macros`                    | ✅ | [✅](components/advanced-features/macros/jinja.md)
+| `Python macros`                   | ❌ | [✅](components/advanced-features/macros/built_in.md)
 | Validation
-| `SQL semantic validation`         | ❌ | [✅](concepts/glossary.md#semantic-understanding)
-| `Unit tests`                      | ❌ | [✅](concepts/tests.md)
+| `SQL semantic validation`         | ❌ | [✅](concepts-old/glossary.md#semantic-understanding)
+| `Unit tests`                      | ❌ | [✅](components/tests/tests.md)
 | `Table diff`                      | ❌ | ✅
-| `Data audits`                     | ✅ | [✅](concepts/audits.md)
-| `Schema contracts`                | ✅ | [✅](concepts/plans.md)
-| `Data contracts`                  | ❌ | [✅](concepts/plans.md)
+| `Data audits`                     | ✅ | [✅](components/audits/audits.md)
+| `Schema contracts`                | ✅ | [✅](guides/plan.md)
+| `Data contracts`                  | ❌ | [✅](guides/plan.md)
 | Deployment
-| `Virtual Data Environments`       | ❌ | [✅](concepts/environments.md)
+| `Virtual Data Environments`       | ❌ | [✅](concepts-old/environments.md)
 | `Open-source CI/CD bot`           | ❌ | ✅
 | `Data consistency enforcement`    | ❌ | ✅
 | Interfaces
-| `CLI`                             | ✅ | [✅](reference/cli.md)
+| `CLI`                             | ✅ | [✅](getting_started/cli.md)
 | `Paid UI`                         | ✅ | ❌
 | `Open-source UI`                  | ❌ | ✅
 | `Native Notebook Support`         | ❌ | ✅
@@ -48,7 +48,7 @@ Vulcan aims to be dbt format-compatible. Importing existing dbt projects with mi
 | Miscellaneous
 | `Package manager`                 | ✅ | ❌
 | `Multi-repository support`        | ❌ | ✅
-| `SQL transpilation`               | ❌ | [✅](concepts/models/sql_models.md#transpilation)
+| `SQL transpilation`               | ❌ | [✅](components/model/types/sql_models.md#transpilation)
 
 ### Environments
 Development and staging environments in dbt are costly to make and not fully representative of what will go into production.
@@ -62,7 +62,7 @@ dbt's default full refresh approach leads to the most costly version of this loo
 
 Vulcan takes another approach. It examines the code modifications and the dependency structure among the models to determine which models are affected -- and executes only those models. This results in the least costly version of the loop: computing only what is required every time through.
 
-This enables Vulcan to provide efficient isolated [Virtual Environments](./concepts/plans.md#plan-application). Environments in dbt cost compute and storage, but creating a development environment in Vulcan is free -- you can quickly access a full replica of any other environment with a single command.
+This enables Vulcan to provide efficient isolated [Virtual Environments](guides/plan.md#plan-application). Environments in dbt cost compute and storage, but creating a development environment in Vulcan is free -- you can quickly access a full replica of any other environment with a single command.
 
 Additionally, Vulcan ensures that promotion of staging environments to production is predictable and consistent. There is no concept of promotion in dbt, so queries are all rerun when it's time to deploy something. In Vulcan, promotions are simple pointer swaps so there is no wasted compute.
 
@@ -149,7 +149,7 @@ Subqueries that look for MAX(date) could have a performance impact on the primar
 
 Additionally, dbt expects an incremental model to be able to fully refresh the first time it runs. For some large data sets, this is cost-prohibitive or infeasible.
 
-Vulcan is able to [batch](concepts/models/overview.md#batch_size) up backfills into more manageable chunks.
+Vulcan is able to [batch](components/model/overview.md#batch_size) up backfills into more manageable chunks.
 
 ### SQL understanding
 dbt heavily relies on [Jinja](https://jinja.palletsprojects.com/en/3.1.x/). It has no understanding of SQL and treats all queries as raw strings without context. This means that simple syntax errors like trailing commas are difficult to debug and require a full run to detect.
@@ -161,16 +161,16 @@ Additionally, having a first-class understanding of SQL supercharges Vulcan with
 ### Testing
 Data quality checks such as detecting NULL values and duplicated rows are extremely valuable for detecting upstream data issues and large scale problems. However, they are not meant for testing edge cases or business logic, and they are not sufficient for creating robust data pipelines.
 
-[Unit and integration tests](./concepts/tests.md) are the tools to use to validate business logic. Vulcan encourages users to add unit tests to all of their models to ensure changes don't unexpectedly break assumptions. Unit tests are designed to be fast and self contained so that they can run in continuous integration (CI) frameworks.
+[Unit and integration tests](components/tests/tests.md) are the tools to use to validate business logic. Vulcan encourages users to add unit tests to all of their models to ensure changes don't unexpectedly break assumptions. Unit tests are designed to be fast and self contained so that they can run in continuous integration (CI) frameworks.
 
 ### Python models
 dbt's Python models only run remotely on adapters of data platforms that have a full Python runtime, limiting the number of users that can take advantage of them and making the models difficult to debug.
 
-Vulcan's [Python models](concepts/models/python_models.md) run locally and can be used with any data warehouse. Breakpoints can be added to debug the model.
+Vulcan's [Python models](components/model/types/python_models.md) run locally and can be used with any data warehouse. Breakpoints can be added to debug the model.
 
 ### Data contracts
 dbt offers manually configured schema contracts that will check the model's schema against the yaml schema at runtime. Models can be versioned to allow downstream teams time to migrate to the latest version, at the risk of a fragmented source of truth during the migration period.
 
-Vulcan provides automatic schema contracts and data contracts via [`vulcan plan`](concepts/plans.md), which checks the model's schema and query logic for changes that affect downstream users. `vulcan plan` will show which models have breaking changes and which downstream models are affected.
+Vulcan provides automatic schema contracts and data contracts via [`vulcan plan`](guides/plan.md), which checks the model's schema and query logic for changes that affect downstream users. `vulcan plan` will show which models have breaking changes and which downstream models are affected.
 
-While breaking changes can be rolled out as separate models to allow for a migration period, Vulcan's [Virtual Preview](concepts/glossary.md#virtual-preview) empowers teams to collaborate on migrations before the changes are deployed to prod, maintaining a single source of truth across the business.
+While breaking changes can be rolled out as separate models to allow for a migration period, Vulcan's [Virtual Preview](concepts-old/glossary.md#virtual-preview) empowers teams to collaborate on migrations before the changes are deployed to prod, maintaining a single source of truth across the business.

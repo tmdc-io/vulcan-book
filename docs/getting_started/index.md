@@ -12,7 +12,7 @@ Vulcan can be run in different ways. Choose the option that works best for you:
 
 The Docker approach uses Docker Compose to set up all necessary infrastructure and services. This is the fastest way to start working with Vulcan and provides a production-like environment.
 
-👉 **[Start with Docker Quickstart](./docker.md)**
+👉 **[Start with Docker Quickstart](guides/get-started/docker.md)**
 
 ## Prerequisites
 

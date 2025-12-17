@@ -6,7 +6,7 @@
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `fabric`
 
-NOTE: Fabric Warehouse is not recommended to be used for the Vulcan [state connection](../../reference/configuration.md#connections).
+NOTE: Fabric Warehouse is not recommended to be used for the Vulcan [state connection](configurations-old/configurations-old/configuration.md#connections).
 
 ### Installation
 #### Microsoft Entra ID / Azure Active Directory Authentication:

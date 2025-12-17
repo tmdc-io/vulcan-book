@@ -52,11 +52,11 @@ JINJA_END;
 
 ## Vulcan predefined variables
 
-Vulcan provides multiple [predefined macro variables](./macro_variables.md) you may reference in jinja code.
+Vulcan provides multiple [predefined macro variables](../../components/advanced-features/macros/variables.md) you may reference in jinja code.
 
-Some predefined variables provide information about the Vulcan project itself, like the [`runtime_stage`](./macro_variables.md#runtime-variables) and [`this_model`](./macro_variables.md#runtime-variables) variables.
+Some predefined variables provide information about the Vulcan project itself, like the [`runtime_stage`](../../components/advanced-features/macros/variables.md#runtime-variables) and [`this_model`](../../components/advanced-features/macros/variables.md#runtime-variables) variables.
 
-Other predefined variables are [temporal](./macro_variables.md#temporal-variables), like `start_ds` and `execution_date`. They are used to build incremental model queries and are only available in incremental model kinds.
+Other predefined variables are [temporal](../../components/advanced-features/macros/variables.md#temporal-variables), like `start_ds` and `execution_date`. They are used to build incremental model queries and are only available in incremental model kinds.
 
 Access predefined macro variables by passing their unquoted name in curly braces. For example, this demonstrates how to access the `start_ds` and `end_ds` variables:
 
@@ -84,7 +84,7 @@ Local macro variables are defined in a model definition and can only be accessed
 
 ### Global variables
 
-Learn more about defining global variables in the [Vulcan macros documentation](./vulcan_macros.md#global-variables).
+Learn more about defining global variables in the [Vulcan macros documentation](../../components/advanced-features/macros/built_in.md#global-variables).
 
 Access global variable values in a model definition using the `{{ var() }}` jinja function. The function requires the name of the variable _in single quotes_ as the first argument and an optional default value as the second argument. The default value is a safety mechanism used if the variable name is not found in the project configuration file.
 
@@ -116,7 +116,7 @@ JINJA_END;
 
 ### Gateway variables
 
-Like global variables, gateway variables are defined in the project configuration file. However, they are specified in a specific gateway's `variables` key. Learn more about defining gateway variables in the [Vulcan macros documentation](./vulcan_macros.md#gateway-variables).
+Like global variables, gateway variables are defined in the project configuration file. However, they are specified in a specific gateway's `variables` key. Learn more about defining gateway variables in the [Vulcan macros documentation](../../components/advanced-features/macros/built_in.md#gateway-variables).
 
 Access gateway variables in models using the same methods as [global variables](#global-variables).
 
@@ -124,7 +124,7 @@ Gateway-specific variable values take precedence over variables with the same na
 
 ### Blueprint variables
 
-Blueprint variables are defined as a property of the `MODEL` statement, and serve as a mechanism for [creating model templates](../models/sql_models.md):
+Blueprint variables are defined as a property of the `MODEL` statement, and serve as a mechanism for [creating model templates](../../components/model/types/sql_models.md):
 
 ```sql linenums="1"
 MODEL (
@@ -321,6 +321,6 @@ Some SQL dialects interpret double and single quotes differently. We could repla
 
 ## Mixing macro systems
 
-Vulcan supports both the Jinja and [Vulcan](./vulcan_macros.md) macro systems. We strongly recommend using only one system in a single model - if both are present, they may fail or behave in unintuitive ways.
+Vulcan supports both the Jinja and [Vulcan](../../components/advanced-features/macros/built_in.md) macro systems. We strongly recommend using only one system in a single model - if both are present, they may fail or behave in unintuitive ways.
 
-[Predefined Vulcan macro variables](./macro_variables.md) can be used in a query containing user-defined Jinja variables and functions. However, predefined variables passed as arguments to a user-defined Jinja macro function must use the Jinja curly brace syntax `{{ start_ds }}` instead of the Vulcan macro `@` prefix syntax `@start_ds`. Note that curly brace syntax may require quoting to generate the equivalent of the `@` syntax.
+[Predefined Vulcan macro variables](../../components/advanced-features/macros/variables.md) can be used in a query containing user-defined Jinja variables and functions. However, predefined variables passed as arguments to a user-defined Jinja macro function must use the Jinja curly brace syntax `{{ start_ds }}` instead of the Vulcan macro `@` prefix syntax `@start_ds`. Note that curly brace syntax may require quoting to generate the equivalent of the `@` syntax.

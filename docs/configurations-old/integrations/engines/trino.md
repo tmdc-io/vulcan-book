@@ -3,7 +3,7 @@
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `trino`
 
-NOTE: Trino may not be used for the Vulcan [state connection](../../reference/configuration.md#connections).
+NOTE: Trino may not be used for the Vulcan [state connection](configurations-old/configurations-old/configuration.md#connections).
 
 ## Installation
 ```
@@ -182,7 +182,7 @@ This would perform the following mappings:
 
     If there is a match on one of the patterns then the catalog / schema that Vulcan is about to use in the `CREATE SCHEMA` statement will be substituted into these placeholders.
 
-    Note the use of curly brace syntax `@{}` when referencing these placeholders - learn more [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
+    Note the use of curly brace syntax `@{}` when referencing these placeholders - learn more [here](configurations-old/components/advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
 #### Tables
 
@@ -190,7 +190,7 @@ Often, you don't need to configure an explicit table location because if you hav
 
 However, if you need to, you can configure an explicit table location by adding a `location` property to the model `physical_properties`.
 
-Note that you need to use the [@resolve_template](../../concepts/macros/vulcan_macros.md#resolve_template) macro to generate a unique table location for each model version. Otherwise, all model versions will be written to the same location and clobber each other.
+Note that you need to use the [@resolve_template](configurations-old/components/advanced-features/macros/built_in.md#resolve_template) macro to generate a unique table location for each model version. Otherwise, all model versions will be written to the same location and clobber each other.
 
 ```sql hl_lines="5"
 MODEL (

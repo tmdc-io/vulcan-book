@@ -27,7 +27,7 @@ It uses the following five step approach to accomplish this:
 2. Examine the placeholder values to classify them as one of the following types:
 
     - Creation of user-defined macro variables with the `@DEF` operator (see more about [user-defined macro variables](#user-defined-variables))
-    - Macro variables: [Vulcan pre-defined](./macro_variables.md), [user-defined local](#local-variables), and [user-defined global](#global-variables)
+    - Macro variables: [Vulcan pre-defined](./variables.md), [user-defined local](#local-variables), and [user-defined global](#global-variables)
     - Macro functions, both [Vulcan's](#macro-operators) and [user-defined](#user-defined-macro-functions)
 
 3. Substitute macro variable values where they are detected. In most cases, this is direct string substitution as with a templating system.
@@ -102,7 +102,7 @@ What happens if you have variables with the same name at different levels? The m
 
 ### Global variables
 
-Global variables live in your project configuration file under the [`variables` key](../../reference/configuration.md#variables). They're perfect for values you want to use across multiple models.
+Global variables live in your project configuration file under the [`variables` key](components/configurations-old/configuration.md#variables). They're perfect for values you want to use across multiple models.
 
 You can store numbers (`int`, `float`), booleans (`bool`), strings (`str`), or even lists and dictionaries containing these types.
 
@@ -168,7 +168,7 @@ FROM table
 WHERE some_value = @VAR('missing_var', 0)
 ```
 
-A similar API is available for [Python macro functions](#accessing-global-variable-values) via the `evaluator.var` method and [Python models](../models/python_models.md#user-defined-variables) via the `context.var` method.
+A similar API is available for [Python macro functions](#accessing-global-variable-values) via the `evaluator.var` method and [Python models](../../model/types/python_models.md#user-defined-variables) via the `context.var` method.
 
 ### Gateway variables
 
@@ -209,7 +209,7 @@ Gateway-specific variable values take precedence over variables with the same na
 
 Blueprint macro variables are defined in a model. Blueprint variable values take precedence over [global](#global-variables) or [gateway-specific](#gateway-variables) variables with the same name.
 
-Blueprint variables are defined as a property of the `MODEL` statement, and serve as a mechanism for [creating model templates](../models/sql_models.md):
+Blueprint variables are defined as a property of the `MODEL` statement, and serve as a mechanism for [creating model templates](../../model/types/sql_models.md):
 
 ```sql linenums="1"
 MODEL (
@@ -264,7 +264,7 @@ Vulcan has three basic requirements for using the `@DEF` operator:
 2. All `@DEF` uses must come after the `MODEL` statement and before the SQL query
 3. Each `@DEF` use must end with a semi-colon `;`
 
-For example, consider the following model `vulcan_example.full_model` from the [Vulcan quickstart guide](../../getting_started/docker.md):
+For example, consider the following model `vulcan_example.full_model` from the [Vulcan quickstart guide](components/guides/get-started/docker.md):
 
 ```sql linenums="1"
 MODEL (
@@ -612,7 +612,7 @@ Your macro might do things besides returning a value, such as printing a message
 
 The `@IF` statement itself must end with a semi-colon, but the inner statement argument must not.
 
-This example conditionally executes a pre/post-statement depending on the model's [runtime stage](./macro_variables.md#predefined-variables), accessed via the pre-defined macro variable `@runtime_stage`. The `@IF` post-statement will only be executed at model evaluation time:
+This example conditionally executes a pre/post-statement depending on the model's [runtime stage](./variables.md#predefined-variables), accessed via the pre-defined macro variable `@runtime_stage`. The `@IF` post-statement will only be executed at model evaluation time:
 
 ```sql linenums="1" hl_lines="17-20"
 MODEL (
@@ -1150,7 +1150,7 @@ Note: This is DuckDB SQL and other dialects will be transpiled accordingly.
 - Providing explicit control over table locations on a per-model basis for engines that decouple storage and compute (such as Athena, Trino, Spark etc)
 - Generating references to engine-specific metadata tables that are derived from the physical table name, such as the [`<table>$properties`](https://trino.io/docs/current/connector/iceberg.html#metadata-tables) metadata table in Trino.
 
-Under the hood, it uses the `@this_model` variable so it can only be used during the `creating` and `evaluation` [runtime stages](./macro_variables.md#runtime-variables). Attempting to use it at the `loading` runtime stage will result in a no-op.
+Under the hood, it uses the `@this_model` variable so it can only be used during the `creating` and `evaluation` [runtime stages](./variables.md#runtime-variables). Attempting to use it at the `loading` runtime stage will result in a no-op.
 
 The `@resolve_template` macro supports the following arguments:
 
@@ -1687,7 +1687,7 @@ Because they are unquoted, SQLGlot will parse them all as `Column` expressions. 
 
 #### Accessing predefined and local variable values
 
-[Pre-defined variables](./macro_variables.md#predefined-variables) and [user-defined local variables](#local-variables) can be accessed within the macro's body via the `evaluator.locals` attribute.
+[Pre-defined variables](./variables.md#predefined-variables) and [user-defined local variables](#local-variables) can be accessed within the macro's body via the `evaluator.locals` attribute.
 
 The first argument to every macro function, the macro evaluation context `evaluator`, contains macro variable values in its `locals` attribute. `evaluator.locals` is a dictionary whose key:value pairs are macro variables names and the associated values.
 
@@ -1828,7 +1828,7 @@ def some_macro(evaluator):
 
 #### Accessing model schemas
 
-Model schemas can be accessed within a Python macro function through its evaluation context's `column_to_types()` method, if the column types can be statically determined. For instance, a schema of an [external model](../models/external_models.md) can be accessed only after the `vulcan create_external_models` command has been executed.
+Model schemas can be accessed within a Python macro function through its evaluation context's `column_to_types()` method, if the column types can be statically determined. For instance, a schema of an [external model](../../model/types/external_models.md) can be accessed only after the `vulcan create_external_models` command has been executed.
 
 This macro function renames the columns of an upstream model by adding a prefix to them:
 
