@@ -95,7 +95,7 @@ Gateways define connections to your data warehouse, state backend, and other ser
 | `scheduler` | Scheduler configuration | `builtin` |
 | `state_schema` | Schema name for state tables | `vulcan` |
 
-→ See [Configuration Reference](./configuration.md#gateways) for detailed gateway options.
+→ See [Configuration Reference](../configurations-old/configuration.md) for detailed gateway options.
 
 ### Model Defaults (Required)
 
