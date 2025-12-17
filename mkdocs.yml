@@ -20,9 +20,7 @@ nav:
       - Engines:
         - configurations/engines/postgres/postgres.md
         - configurations/engines/snowflake/snowflake.md
-
-      - CI/CD:
-        - ci-cd/index.md
+      - CI/CD: ci-cd/index.md 
   - Components:
       - Model:
         - components/model/overview.md
@@ -64,13 +62,9 @@ nav:
       # - Virtual environments Guide:
       # - Vulcan API Guide:
       # - Table Creation Guide:
-  - CLI Commands: cli-command/cli.md # Changed to "CLI Commands" for consistency with the visual and placed the file directly under it.
-
-  # These items were already top-level and remain as is:
-  - Cookbook:
-    - cookbook/index.md
-  - FAQ:
-    - faq/index.md
+  - CLI Commands: cli-command/cli.md
+  - Cookbook: cookbook/index.md
+  - FAQ: faq/index.md
  
 
 theme:
