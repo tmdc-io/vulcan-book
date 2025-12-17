@@ -6,4 +6,4 @@ Vulcan is a next-generation data transformation framework designed to ship data 
 
 > Note: You may need to run `python3` or `pip3` instead of `python` or `pip`, depending on your python installation.
 
-Follow the [quickstart guide](getting_started/docker.md) to learn how to use Vulcan. You already have a head start!
+Follow the [quickstart guide](guides/get-started/docker.md) to learn how to use Vulcan. You already have a head start!
