@@ -4,7 +4,7 @@ Vulcan is a complete stack for building data products. Think of it as your all-i
 
 ## What is Vulcan?
 
-Vulcan is a next-generation data transformation framework that helps you ship data quickly, efficiently, and reliably. It's designed for data teams who want to move fast without breaking things.
+Vulcan is a next-generation data transformation framework that helps you ship data products quickly, efficiently, and reliably. It's designed for data teams who want to move fast without breaking things.
 
 Here's what makes it special:
 
