@@ -1,18 +1,22 @@
 # Kinds
 
-This page describes the kinds of [models](./overview.md) Vulcan supports, which determine how the data for a model is loaded.
+Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies—each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.
 
-Find information about all model kind configuration parameters in the [model configuration reference page](../../reference/model_configuration.md).
+The kind you choose affects performance, cost, and how your data stays up to date. Pick the right one, and your pipelines run efficiently. Pick the wrong one, and you might be waiting forever (or paying too much).
+
+For a complete reference of all model kind configuration parameters, check out the [model configuration reference page](../../reference/model_configuration.md).
 
 ## INCREMENTAL_BY_TIME_RANGE
 
-Models of the `INCREMENTAL_BY_TIME_RANGE` kind are computed incrementally based on a time range. This is an optimal choice for datasets in which records are captured over time and represent immutable facts such as events, logs, or transactions. Using this kind for appropriate datasets typically results in significant cost and time savings.
+`INCREMENTAL_BY_TIME_RANGE` models are perfect for time-series data—things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.
 
-Only missing time intervals are processed during each execution for `INCREMENTAL_BY_TIME_RANGE` models. This is in contrast to the [FULL](#full) model kind, where the entire dataset is recomputed every time the model is executed.
+**Why this matters:** If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With `INCREMENTAL_BY_TIME_RANGE`, Vulcan only processes the new intervals, which saves you time and money. Pretty smart, right?
 
-An `INCREMENTAL_BY_TIME_RANGE` model has two requirements that other models do not: it must know which column contains the time data it will use to filter the data by time range, and it must contain a `WHERE` clause that filters the upstream data by time.
+To use this kind, you need to tell Vulcan two things:
+1. **Which column has your time data** - So Vulcan knows how to partition and filter
+2. **A WHERE clause** - That filters your upstream data by time range using Vulcan's time macros
 
-The name of the column containing time data is specified in the model's `MODEL` DDL. It is specified in the DDL `kind` specification's `time_column` key. This example shows the `MODEL` DDL for an `INCREMENTAL_BY_TIME_RANGE` model that stores time data in the "order_date" column:
+You specify the time column in your `MODEL` DDL using the `time_column` key. Here's a simple example:
 
 ```sql linenums="1"
 MODEL (
@@ -24,7 +28,9 @@ MODEL (
 ```
 
 <a id="timezones"></a>
-In addition to specifying a time column in the `MODEL` DDL, the model's query must contain a `WHERE` clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: `@start_date` / `@end_date` and `@start_ds` / `@end_ds`. Refer to [Macros](../macros/macro_variables.md) for more information.
+Your query also needs a `WHERE` clause that filters upstream data by time range. Vulcan gives you special macros for this: `@start_date` / `@end_date` (for timestamps) and `@start_ds` / `@end_ds` (for dates). These automatically get filled in with the time range Vulcan is processing.
+
+Want to learn more about these macros? Check out the [Macros documentation](../macros/macro_variables.md).
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
     This example demonstrates incremental by time range models.
@@ -314,15 +320,15 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
     FROM `vulcan-public-demo`.`vulcan__demo`.`demo__incrementals_demo__50975949`
     ```
 
-!!! info "Important"
+!!! info "Important: Timezone Requirements"
 
-    A model's `time_column` should be in the [UTC time zone](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) to ensure correct interaction with Vulcan's scheduler and predefined macro variables.
+    Your `time_column` should be in UTC timezone. This ensures Vulcan's scheduler and time macros work correctly.
 
-    This requirement aligns with the data engineering best practice of converting datetime/timestamp columns to UTC as soon as they are ingested into the data system and only converting them to local timezones when they exit the system for downstream uses. The `cron_tz` flag **does not** change this requirement.
+    **Why UTC?** It's a data engineering best practice—convert everything to UTC when it enters your system, then convert to local timezones only when data leaves for end users. This prevents timezone-related bugs as data flows between models.
 
-    Placing all timezone conversion code in the system's first/last transformation models prevents inadvertent timezone-related errors as data flows between models.
+    **Important:** The `cron_tz` flag doesn't change this requirement—it only affects when your model runs, not how time intervals are calculated.
 
-    If a model must use a different timezone, parameters like [lookback](./overview.md#lookback), [allow_partials](./overview.md#allow_partials), and [cron](./overview.md#cron) with offset time can be used to try to account for misalignment between the model's timezone and the UTC timezone used by Vulcan.
+    If you absolutely must use a different timezone, you can try to work around it using `lookback`, `allow_partials`, or cron offsets, but UTC is strongly recommended. Trust us on this one—timezone bugs are no fun!
 
 
 This example implements a complete `INCREMENTAL_BY_TIME_RANGE` model that specifies the time column name `order_date` in the `MODEL` DDL and includes a SQL `WHERE` clause to filter records by time range:
@@ -393,14 +399,19 @@ This example implements a complete `INCREMENTAL_BY_TIME_RANGE` model that specif
         return context.fetchdf(query)
     ```
 
-### Time column
-Vulcan needs to know which column in the model's output represents the timestamp or date associated with each record.
+### Time Column
 
-!!! info "Important"
+Vulcan needs to know which column in your model's output represents the timestamp or date for each record. This is your `time_column`.
 
-    The `time_column` variable should be in the UTC time zone - learn more [above](#timezones).
+!!! info "Remember: UTC Timezone"
 
-The time column is used to determine which records will be overwritten during data [restatement](../plans.md#restatement-plans) and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the `MODEL` DDL `kind` specification:
+    Your `time_column` should be in UTC timezone. Learn more about why this matters [above](#timezones).
+
+The time column does two important things:
+- **Determines which records get overwritten** during data restatement (so you can reprocess specific time ranges)
+- **Provides a partition key** for engines that support partitioning (like Spark), which makes queries faster
+
+You specify it in your `MODEL` DDL like this:
 
 ```sql linenums="1"
 MODEL (
@@ -411,7 +422,7 @@ MODEL (
 );
 ```
 
-By default, Vulcan assumes the time column is in the `%Y-%m-%d` format. For other formats, the default can be overridden with a formatting string:
+By default, Vulcan assumes your time column is in `%Y-%m-%d` format (like `2025-01-15`). If your dates are in a different format, you can specify it:
 
 ```sql linenums="1"
 MODEL (
@@ -422,15 +433,19 @@ MODEL (
 );
 ```
 
-!!! note
+!!! note "Format String Dialect"
 
-    The time format should be defined using the same SQL dialect as the one used to define the model's query.
+    Use the same SQL dialect for your format string as the one used in your model's query.
 
-Vulcan also uses the time column to automatically append a time range filter to the model's query at runtime, which prevents records that are not part of the target interval from being stored. This is a safety mechanism that prevents unintentionally overwriting unrelated records when handling late-arriving data.
+**Safety feature:** Vulcan automatically adds a time range filter to your query's output to prevent data leakage. This means even if your `WHERE` clause has a bug, Vulcan won't accidentally store records outside the target interval.
 
-The required filter you write in the model query's `WHERE` clause filters the **input** data as it is read from upstream tables, reducing the amount of data processed by the model. The automatically appended time range filter is applied to the model query's **output** data to prevent data leakage.
+Here's how it works:
+- **Your WHERE clause** filters the **input** data as it's read from upstream tables (makes queries faster)
+- **Vulcan's automatic filter** filters the **output** data before it's stored (prevents data leakage)
 
-Consider the following model definition, which specifies a `WHERE` clause filter with the `shipped_date` column. The model's `time_column` is a different column `order_date`, whose filter is automatically added to the model query. This approach is useful when an upstream model's time column is different from the model's time column:
+This is especially important when handling late-arriving data—you don't want to accidentally overwrite unrelated records!
+
+Here's a cool example: sometimes your upstream data uses a different time column than your model. In this case, you filter on the upstream column (`shipped_date`), but Vulcan still adds a filter on your model's time column (`order_date`):
 
 ```sql linenums="1"
 MODEL (
@@ -466,11 +481,13 @@ WHERE
 
 ### Partitioning
 
-By default, we ensure that the `time_column` is part of the [partitioned_by](./overview.md#partitioned_by) property of the model so that it forms part of the partition key and allows the database engine to do partition pruning. If it is not explicitly listed in the Model definition, we will automatically add it.
+By default, Vulcan automatically adds your `time_column` to the partition key. This lets database engines do partition pruning (skipping partitions that don't match your query), which makes queries faster.
 
-However, this may be undesirable if you want to exclusively partition on another column or you want to partition on something like `month(time_column)` but the engine you're using doesnt support partitioning based on expressions.
+**Why this matters:** If you're querying data from the last 7 days, the engine can skip scanning all the old partitions. That's a huge performance win!
 
-To opt out of this behaviour, you can set `partition_by_time_column false` like so:
+Sometimes you might not want this though—maybe you want to partition exclusively on another column, or you want to partition on `month(time_column)` but your engine doesn't support expression-based partitioning.
+
+To disable automatic time column partitioning, set `partition_by_time_column false`:
 
 ```sql linenums="1"
 MODEL (
@@ -484,9 +501,10 @@ MODEL (
 ```
 
 ### Idempotency
-We recommend making sure incremental by time range model queries are [idempotent](../glossary.md#idempotency) to prevent unexpected results during data [restatement](../plans.md#restatement-plans).
 
-Note, however, that upstream models and tables can impact a model's idempotency. For example, referencing an upstream model of kind [FULL](#full) in the model query automatically causes the model to be non-idempotent because its data could change on every model execution.
+We recommend making your incremental by time range queries [idempotent](../glossary.md#idempotency). This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
+
+**Watch out:** Your upstream models can affect idempotency. If you reference a FULL model (which rebuilds everything each run), your incremental model becomes non-idempotent because that upstream data changes every time. This is usually fine, but it's good to be aware of.
 
 ### Materialization strategy
 Depending on the target engine, models of the `INCREMENTAL_BY_TIME_RANGE` kind are materialized using the following strategies:
@@ -503,29 +521,25 @@ Depending on the target engine, models of the `INCREMENTAL_BY_TIME_RANGE` kind a
 
 ## INCREMENTAL_BY_UNIQUE_KEY
 
-Models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are computed incrementally based on a key.
+`INCREMENTAL_BY_UNIQUE_KEY` models update data based on a unique key. Think of it like an upsert operation—if a key exists, update it; if it doesn't, insert it.
 
-They insert or update rows based on these rules:
+Here's how it works:
+- **New key?** → Insert the row
+- **Existing key?** → Update the row with new data
+- **Key missing from new data?** → Leave the existing row alone
 
-- If a key in newly loaded data is not present in the model table, the new data row is inserted.
-- If a key in newly loaded data is already present in the model table, the existing row is updated with the new data.
-- If a key is present in the model table but not present in the newly loaded data, its row is not modified and remains in the model table.
+**Why use this?** Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list—you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.
 
-!!! important "Prevent duplicated keys"
+This kind works great for:
+- Dimension tables (customers, products, etc.)
+- Slowly Changing Dimensions (SCDs) - though for SCD Type 2 specifically, check out the [SCD Type 2](#scd-type-2) model kind
+- Any dataset where each record has a unique key and you want to upsert
 
-    If you do not want duplicated keys in the model table, you must ensure the model query does not return rows with duplicate keys.
+!!! important "Prevent Duplicated Keys"
 
-    Vulcan does not automatically detect or prevent duplicates.
+    Vulcan doesn't automatically detect duplicate keys. If your query returns multiple rows with the same key, you'll get duplicates in your table. Make sure your query returns at most one row per unique key!
 
-This kind is a good fit for datasets that have the following traits:
-
-* Each record has a unique key associated with it.
-* There is at most one record associated with each unique key.
-* It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their keys match.
-
-A [Slowly Changing Dimension](../glossary.md#slowly-changing-dimension-scd) (SCD) is one approach that fits this description well. See the [SCD Type 2](#scd-type-2) model kind for a specific model kind for SCD Type 2 models.
-
-The name of the unique key column must be provided as part of the `MODEL` DDL, as in this example:
+You specify the unique key column(s) in your `MODEL` DDL. Here's how:
 
 === "SQL"
 
@@ -590,7 +604,7 @@ The name of the unique key column must be provided as part of the `MODEL` DDL, a
         return context.fetchdf(query)
     ```
 
-Composite keys are also supported:
+You can use composite keys (multiple columns) too:
 
 ```sql linenums="1"
 MODEL (
@@ -601,7 +615,9 @@ MODEL (
 );
 ```
 
-`INCREMENTAL_BY_UNIQUE_KEY` model kinds can also filter upstream records by time range using a SQL `WHERE` clause and the `@start_date`, `@end_date` or other macro variables (similar to the [INCREMENTAL_BY_TIME_RANGE](#incremental_by_time_range) kind). Note that Vulcan macro time variables are in the UTC time zone.
+You can also filter upstream records by time range using `@start_date`, `@end_date`, or other time macros (just like `INCREMENTAL_BY_TIME_RANGE`). This is useful when you only want to process records from a specific time period.
+
+**Note:** Vulcan's time macros are always in UTC timezone.
 
 ```sql linenums="1"
 SELECT
@@ -675,11 +691,13 @@ GROUP BY c.customer_id, c.name
     SELECT * FROM `vulcan-public-demo`.`vulcan__demo`.`demo__incremental_by_unique_key_example__1161945221`
     ```
 
-**Note:** Models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are inherently [non-idempotent](../glossary.md#idempotency), which should be taken into consideration during data [restatement](../plans.md#restatement-plans). As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.
+!!! note "Restatement Behavior"
+
+    `INCREMENTAL_BY_UNIQUE_KEY` models are inherently [non-idempotent](../glossary.md#idempotency), which means partial data restatement isn't supported. If you restate one of these models, the entire table gets recreated from scratch. Keep this in mind when planning restatements!
 
 ### Unique Key Expressions
 
-The `unique_key` values can either be column names or SQL expressions. For example, if you wanted to create a key that is based on the coalesce of a value then you could do the following:
+You're not limited to just column names—you can use SQL expressions too! This is handy when you need to create a key from multiple columns or transform values. Here's an example using `COALESCE`:
 
 ```sql linenums="1"
 MODEL (
@@ -692,7 +710,9 @@ MODEL (
 
 ### When Matched Expression
 
-The logic to use when updating columns when a match occurs (the source and target match on the given keys) by default updates all the columns. This can be overriden with custom logic like below:
+By default, when a key matches (source and target have the same key), Vulcan updates all columns. But sometimes you want more control—maybe you want to preserve certain values, or only update specific columns.
+
+You can customize this behavior with `when_matched` expressions:
 
 ```sql linenums="1"
 MODEL (
@@ -706,9 +726,9 @@ MODEL (
 );
 ```
 
-The `source` and `target` aliases are required when using the `when_matched` expression in order to distinguish between the source and target columns.
+**Important:** You must use `source` and `target` aliases to distinguish between the source (new data) and target (existing table) columns.
 
-Multiple `WHEN MATCHED` expressions can also be provided. Ex:
+You can also provide multiple `WHEN MATCHED` expressions for more complex logic:
 
 ```sql linenums="1"
 MODEL (
@@ -723,16 +743,18 @@ MODEL (
 );
 ```
 
-**Note**: `when_matched` is only available on engines that support the `MERGE` statement. Currently supported engines include:
+!!! note "Engine Support"
 
-* BigQuery
-* Databricks
-* Postgres
-* Redshift
-* Snowflake
-* Spark
+    `when_matched` only works on engines that support the `MERGE` statement. Supported engines include:
+    
+    - BigQuery
+    - Databricks
+    - Postgres
+    - Redshift (requires `enable_merge: true` in connection config)
+    - Snowflake
+    - Spark
 
-In Redshift's case, to enable the use of the native `MERGE` statement, you need to pass the `enable_merge` flag in the connection and set it to `true`. It is disabled by default.
+    **Redshift users:** You need to enable MERGE support by setting `enable_merge: true` in your connection config. It's disabled by default.
 
 ```yaml linenums="1"
 gateways:
@@ -746,11 +768,11 @@ Redshift supports only the `UPDATE` or `DELETE` actions for the `WHEN MATCHED` c
 
 ### Merge Filter Expression
 
-The `MERGE` statement typically induces a full table scan of the existing table, which can be problematic with large data volumes.
+MERGE operations can be slow on large tables because they typically scan the entire existing table. If you're only updating a small subset of records, this is wasteful.
 
-Prevent a full table scan by passing filtering conditions to the `merge_filter` parameter.
+**Solution:** Use `merge_filter` to add conditions to the MERGE's `ON` clause. This limits the scan to only the rows that might match, making things much faster.
 
-The `merge_filter` accepts a single or a conjunction of predicates to be used in the `ON` clause of the `MERGE` operation:
+The `merge_filter` accepts predicates (single or combined with AND) that get added to the MERGE operation:
 
 ```sql linenums="1"
 MODEL (
@@ -762,9 +784,9 @@ MODEL (
 );
 ```
 
-Similar to `when_matched`, the `source` and `target` aliases are used to distinguish between the source and target tables.
+Just like `when_matched`, use `source` and `target` aliases to reference the source and target tables.
 
-If an existing dbt project uses the [incremental_predicates](https://docs.getdbt.com/docs/build/incremental-strategy#about-incremental_predicates) functionality, Vulcan will automatically convert them into the equivalent `merge_filter` specification.
+**Coming from dbt?** If your dbt project uses `incremental_predicates`, Vulcan will automatically convert them to `merge_filter` for you. Pretty convenient!
 
 ### Materialization strategy
 Depending on the target engine, models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are materialized using the following strategies:
@@ -780,11 +802,21 @@ Depending on the target engine, models of the `INCREMENTAL_BY_UNIQUE_KEY` kind a
 | DuckDB     | DELETE ON matched + INSERT new rows |
 
 ## FULL
-Models of the `FULL` kind cause the dataset associated with a model to be fully refreshed (rewritten) upon each model evaluation.
 
-The `FULL` model kind is somewhat easier to use than incremental kinds due to the lack of special settings or additional query considerations. This makes it suitable for smaller datasets, where recomputing data from scratch is relatively cheap and doesn't require preservation of processing history. However, using this kind with datasets containing a large volume of records will result in significant runtime and compute costs.
+`FULL` models are the simplest kind—they rebuild everything from scratch every time they run. No incremental logic, no time columns, no unique keys. Just run the query and replace the entire table.
 
-This kind can be a good fit for aggregate tables that lack a temporal dimension. For aggregate tables with a temporal dimension, consider the [INCREMENTAL_BY_TIME_RANGE](#incremental_by_time_range) kind instead.
+**When to use FULL:**
+- Small datasets where rebuilding is fast and cheap
+- Aggregate tables without a time dimension
+- Tables that change completely each run (like a "current state" snapshot)
+- Development and testing (simpler is better when you're iterating)
+
+**When NOT to use FULL:**
+- Large datasets (you'll wait forever and pay a lot)
+- Time-series data (use `INCREMENTAL_BY_TIME_RANGE` instead)
+- Tables that only change partially (use incremental kinds)
+
+The trade-off is simplicity vs. performance. For small tables, FULL is perfect. For large tables, incremental kinds will save you time and money.
 
 This example specifies a `FULL` model kind:
 
@@ -919,15 +951,29 @@ Depending on the target engine, models of the `FULL` kind are materialized using
 | DuckDB     | CREATE OR REPLACE TABLE          |
 
 ## VIEW
-The model kinds described so far cause the output of a model query to be materialized and stored in a physical table.
 
-The `VIEW` kind is different, because no data is actually written during model execution. Instead, a non-materialized view (or "virtual table") is created or replaced based on the model's query.
+Unlike the other kinds, `VIEW` models don't store any data. Instead, they create a virtual table (a view) that runs your query every time someone queries it.
 
-**Note:** `VIEW` is the default model kind if kind is not specified.
+**How it works:** When a downstream model or user queries your VIEW model, the database executes your query on-the-fly. No data is pre-computed or stored.
 
-**Note:** Python models do not support the `VIEW` model kind - use a SQL model instead.
+**When to use VIEW:**
+- Simple transformations that are fast to compute
+- When you want always-fresh data (no caching)
+- When storage is expensive but compute is cheap
+- For lightweight transformations that don't need materialization
 
-**Note:** With this kind, the model's query is evaluated every time the model is referenced in a downstream query. This may incur undesirable compute cost and time in cases where the model's query is compute-intensive, or when the model is referenced in many downstream queries.
+**When NOT to use VIEW:**
+- Expensive queries that run frequently (you'll pay the compute cost every time)
+- Complex aggregations or joins (materialize these instead)
+- Python models (VIEW isn't supported for Python—use SQL)
+
+!!! note "Default Kind"
+
+    `VIEW` is the default model kind if you don't specify one. So if you write a model without a `kind`, it becomes a VIEW automatically.
+
+!!! warning "Performance Consideration"
+
+    Since VIEW queries run every time they're referenced, expensive queries can get costly fast. If your view is referenced by many downstream models, you might be running that expensive query dozens of times. Consider materializing expensive views as FULL or incremental models instead.
 
 
 This example specifies a `VIEW` model kind:
@@ -995,7 +1041,10 @@ GROUP BY w.warehouse_id, w.name, r.region_name, o.order_date
 
 
 ### Materialized Views
-The `VIEW` model kind can be configured to represent a materialized view by setting the `materialized` flag to `true`:
+
+Want the best of both worlds? You can turn a VIEW into a materialized view by setting `materialized: true`. Materialized views store the query results (like a table) but automatically refresh when the underlying data changes (like a view).
+
+Set it up like this:
 
 ```sql linenums="1"
 MODEL (
@@ -1006,20 +1055,32 @@ MODEL (
 );
 ```
 
-**Note:** This flag only applies to engines that support materialized views and is ignored by other engines. Supported engines include:
+!!! note "Engine Support"
 
-* BigQuery
-* Databricks
-* Snowflake
+    Materialized views are only supported on:
+    
+    - BigQuery
+    - Databricks
+    - Snowflake
+    
+    On other engines, this flag is ignored and you'll get a regular VIEW.
 
-During the evaluation of a model of this kind, the view will be replaced or recreated only if the model's query rendered during evaluation does not match the query used during the previous view creation for this model, or if the target view does not exist. Thus, views are recreated only when necessary in order to realize all the benefits provided by materialized views.
+**Smart refresh:** Vulcan only recreates the materialized view when your query changes or the view doesn't exist. This means you get all the performance benefits of materialized views without unnecessary refreshes. Pretty efficient!
 
 ## EMBEDDED
-Embedded models are a way to share common logic between different models of other kinds.
 
-There are no data assets (tables or views) associated with `EMBEDDED` models in the data warehouse. Instead, an `EMBEDDED` model's query is injected directly into the query of each downstream model that references it, as a subquery.
+`EMBEDDED` models are like reusable SQL snippets. They don't create tables or views—instead, their query gets injected directly into any downstream model that references them, as a subquery.
 
-**Note:** Python models do not support the `EMBEDDED` model kind - use a SQL model instead.
+**Why use this?** If you have common logic that multiple models need (like a CTE that filters active customers), you can define it once in an EMBEDDED model and reuse it everywhere. It's like a macro, but for SQL.
+
+**Perfect for:**
+- Common CTEs used across multiple models
+- Reusable business logic (like "active customers" or "valid orders")
+- Avoiding code duplication
+
+!!! note "Python Models"
+
+    Python models don't support the `EMBEDDED` kind—use a SQL model instead.
 
 This example specifies an `EMBEDDED` model kind:
 
@@ -1037,12 +1098,24 @@ FROM vulcan_demo.customers
 ```
 
 ## SEED
-The `SEED` model kind is used to specify [seed models](./seed_models.md) for using static CSV datasets in your Vulcan project.
 
-**Notes:**
+`SEED` models let you load static CSV files into your data warehouse. Perfect for reference data like country codes, product categories, or any data that doesn't change often.
 
-- Seed models are loaded only once unless the SQL model and/or seed file is updated.
-- Python models do not support the `SEED` model kind - use a SQL model instead.
+**How it works:** You point to a CSV file, define the schema, and Vulcan loads it into a table. The data only gets reloaded if you change the model definition or update the CSV file.
+
+**Use cases:**
+- Reference data (countries, states, categories)
+- Lookup tables
+- Static configuration data
+- Test data
+
+!!! note "Python Models"
+
+    Python models don't support the `SEED` kind—use a SQL model instead.
+
+!!! note "When Data Reloads"
+
+    Seed models are loaded once and stay loaded unless you update the model definition or change the CSV file. This keeps things efficient—no point reloading static data every run!
 
 This example specifies a `SEED` model kind:
 
@@ -1126,20 +1199,40 @@ MODEL (
 
 ## SCD Type 2
 
-SCD Type 2 is a model kind that supports [slowly changing dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) (SCDs) in your Vulcan project. SCDs are a common pattern in data warehousing that allow you to track changes to records over time.
+SCD Type 2 models track historical changes to your data. They're perfect for dimension tables where you need to know not just what the current value is, but what it was at any point in time.
 
-Vulcan achieves this by adding a `valid_from` and `valid_to` column to your model. The `valid_from` column is the timestamp that the record became valid (inclusive) and the `valid_to` column is the timestamp that the record became invalid (exclusive). The `valid_to` column is set to `NULL` for the latest record.
+**How it works:** Vulcan automatically adds `valid_from` and `valid_to` columns to your table. Each time a record changes, the old version gets a `valid_to` timestamp, and a new version is created with a `valid_from` timestamp. The current version has `valid_to = NULL`.
 
-Therefore, you can use these models to not only tell you what the latest value is for a given record but also what the values were anytime in the past. Note that maintaining this history does come at a cost of increased storage and compute and this may not be a good fit for sources that change frequently since the history could get very large.
+**Example:** If a customer's address changes on January 15th, you'll have:
+- One row with the old address (`valid_from: 2020-01-01`, `valid_to: 2025-01-15`)
+- One row with the new address (`valid_from: 2025-01-15`, `valid_to: NULL`)
 
-**Note**: Partial data [restatement](../plans.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.
+**When to use:**
+- Customer dimension tables (track address/name changes)
+- Product catalogs (track price/category changes)
+- Employee records (track department/role changes)
+- Any dimension where history matters
 
-There are two ways to tracking changes: By Time (Recommended) or By Column.
+**Trade-offs:**
+- ✅ Full history of all changes
+- ✅ Query "what was the value on date X?"
+- ❌ More storage (you're keeping multiple versions)
+- ❌ More compute (comparing versions each run)
+- ❌ Not great for frequently-changing sources (history gets huge fast)
+
+!!! warning "Restatement Behavior"
+
+    Partial data restatement isn't supported for SCD Type 2 models. If you restate one, the entire table gets recreated from scratch, which can cause data loss. That's why restatement is disabled by default for these models.
+
+Vulcan supports two ways to detect changes: **By Time** (recommended) or **By Column**. Let's look at both:
 
 ### SCD Type 2 By Time (Recommended)
 
-SCD Type 2 By Time supports sourcing from tables that have an "Updated At" timestamp defined in the table that tells you when a given record was last updated.
-This is the recommended way since this "Updated At" gives you a precise time when the record was last updated and therefore improves the accuracy of the SCD Type 2 table that is produced.
+**By Time** is the recommended approach. It works with source tables that have an "Updated At" timestamp column (like `updated_at`, `modified_at`, `last_changed`).
+
+**Why it's recommended:** The timestamp tells you exactly when a record changed, which makes your SCD Type 2 table more accurate. You get precise `valid_from` times based on when the source system actually updated the record.
+
+If your source table has an `updated_at` column, use this approach!
 
 This example specifies a `SCD_TYPE_2_BY_TIME` model kind:
 
@@ -1246,8 +1339,11 @@ TABLE db.menu_items (
 
 ### SCD Type 2 By Column
 
-SCD Type 2 By Column supports sourcing from tables that do not have an "Updated At" timestamp defined in the table.
-Instead, it will check the columns defined in the `columns` field to see if their value has changed and if so it will record the `valid_from` time as the execution time when the change was detected.
+**By Column** works when your source table doesn't have an "Updated At" timestamp. Instead, Vulcan compares the values in specific columns between runs and detects changes.
+
+**How it works:** You specify which columns to watch (or use `*` to watch all columns). When Vulcan detects a change in any of those columns, it records `valid_from` as the execution time when the change was detected.
+
+**Use this when:** Your source system doesn't track update timestamps, but you still want to maintain history. The trade-off is that `valid_from` times are based on when Vulcan detected the change, not when the source system actually changed it.
 
 This example specifies a `SCD_TYPE_2_BY_COLUMN` model kind:
 
@@ -1319,8 +1415,8 @@ TABLE db.menu_items (
 ```
 
 ### Change Column Names
-Vulcan will automatically add the `valid_from` and `valid_to` columns to your table.
-If you would like to specify the names of these columns you can do so by adding the following to your model definition:
+
+Vulcan automatically adds `valid_from` and `valid_to` columns to your table. If you want different names (maybe to match your existing schema conventions), you can customize them:
 ```sql linenums="1" hl_lines="5-6"
 MODEL (
   name db.menu_items,
@@ -1346,9 +1442,9 @@ TABLE db.menu_items (
 
 ### Deletes
 
-A hard delete is when a record no longer exists in the source table. When this happens,
+A "hard delete" is when a record disappears from your source table entirely. How should SCD Type 2 handle this?
 
-If `invalidate_hard_deletes` is set to `false` (default):
+**Default behavior (`invalidate_hard_deletes: false`):**
 
 * `valid_to` column will continue to be set to `NULL` (therefore still considered "valid")
 * If the record is added back, then the `valid_to` column will be set to the `valid_from` of the new record.
@@ -1358,18 +1454,22 @@ When a record is added back, the new record will be inserted into the table with
 * SCD_TYPE_2_BY_TIME: the largest of either the `updated_at` timestamp of the new record or the `valid_from` timestamp of the deleted record in the SCD Type 2 table
 * SCD_TYPE_2_BY_COLUMN: the `execution_time` when the record was detected again
 
-If `invalidate_hard_deletes` is set to `true`:
+**With `invalidate_hard_deletes: true`:**
 
-* `valid_to` column will be set to the time when the Vulcan run started that detected the missing record (called `execution_time`).
-* If the record is added back, then the `valid_to` column will remain unchanged.
+* `valid_to` is set to the execution time when Vulcan detected the missing record
+* If the record comes back later, `valid_to` stays unchanged (you'll have a gap in history)
 
-One way to think about `invalidate_hard_deletes` is that, if `invalidate_hard_deletes` is set to `true`, deletes are most accurately tracked in the SCD Type 2 table since it records when the delete occurred.
-As a result though, you can have gaps between records if the there is a gap of time between when it was deleted and added back.
-If you would prefer to not have gaps, and a result consider missing records in source as still "valid", then you can leave the default value or set `invalidate_hard_deletes` to `false`.
+**Which should you use?**
+
+- **`false` (default):** Missing records are still considered "valid" (no gaps in history). Use this if you think missing records might be temporary or if you prefer continuous history.
+
+- **`true`:** Deletes are accurately tracked with precise timestamps. Use this if you want to know exactly when records were deleted, even if it creates gaps in history.
+
+Think of it this way: `false` assumes "missing = still valid", while `true` assumes "missing = deleted at this time".
 
 ### Example of SCD Type 2 By Time in Action
 
-Lets say that you started with the following data in your source table and `invalidate_hard_deletes` is set to `true`:
+Let's walk through a real example. Say you're tracking a restaurant menu, and you start with this source data (with `invalidate_hard_deletes: true`):
 
 | ID | Name             | Price |     Updated At      |
 |----|------------------|:-----:|:-------------------:|
@@ -1437,15 +1537,16 @@ Target table will be updated with the following data:
 | 4  | Milkshake           | 3.99  | 2020-01-02 00:00:00 | 2020-01-02 00:00:00 | 2020-01-03 00:00:00 |
 | 4  | Chocolate Milkshake | 3.99  | 2020-01-03 00:00:00 | 2020-01-03 00:00:00 |        NULL         |
 
-**Note:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 00:00:00` meaning if you queried the table during that time range then you would not see `Cheeseburger` in the menu.
-This is the most accurate representation of the menu based on the source data provided.
-If `Cheeseburger` were added back to the menu with it's original updated at timestamp of `2020-01-01 00:00:00` then the `valid_from` timestamp of the new record would have been `2020-01-02 11:00:00` resulting in no period of time where the item was deleted.
-Since in this case the updated at timestamp did not change it is likely the item was removed in error and this again most accurately represents the menu based on the source data.
+**Notice:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 00:00:00`. If you query the table for that time range, you won't see it—which accurately reflects that it wasn't on the menu during that period.
+
+This is the most accurate representation based on your source data. If `Cheeseburger` had been added back with its original `updated_at` timestamp (`2020-01-01`), Vulcan would have set the new record's `valid_from` to `2020-01-02 11:00:00` (when it was detected again), filling the gap. But since the timestamp didn't change, it's likely the item was removed in error, and the gap accurately represents that.
 
 
 ### Example of SCD Type 2 By Column in Action
 
-Lets say that you started with the following data in your source table and `invalidate_hard_deletes` is set to `true`:
+Now let's see how **By Column** works. Same restaurant menu example, but this time the source table doesn't have an `updated_at` column. We'll configure the model to watch `Name` and `Price` for changes.
+
+Starting data:
 
 | ID | Name             | Price |
 |----|------------------|:-----:|
@@ -1453,9 +1554,7 @@ Lets say that you started with the following data in your source table and `inva
 | 2  | Cheeseburger     | 8.99  |
 | 3  | French Fries     | 4.99  |
 
-We configure the SCD Type 2 By Column model to check the columns `Name` and `Price` for changes
-
-The target table, which is currently empty, will be materialized with the following data:
+After the first run, your SCD Type 2 table looks like this:
 
 | ID | Name             | Price |     Valid From      | Valid To |
 |----|------------------|:-----:|:-------------------:|:--------:|
@@ -1502,7 +1601,7 @@ Summary of changes:
 * Cheeseburger was added back to the menu with original name and price.
 * Milkshake name was updated to be "Chocolate Milkshake".
 
-Assuming your pipeline ran at `2020-01-03 11:00:00`, Target table will be updated with the following data:
+After running at `2020-01-03 11:00:00`, your final SCD Type 2 table:
 
 | ID | Name                | Price |     Valid From      |      Valid To       |
 |----|---------------------|:-----:|:-------------------:|:-------------------:|
@@ -1515,8 +1614,7 @@ Assuming your pipeline ran at `2020-01-03 11:00:00`, Target table will be update
 | 4  | Milkshake           | 3.99  | 2020-01-02 11:00:00 | 2020-01-03 11:00:00 |
 | 4  | Chocolate Milkshake | 3.99  | 2020-01-03 11:00:00 |        NULL         |
 
-**Note:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 11:00:00` meaning if you queried the table during that time range then you would not see `Cheeseburger` in the menu.
-This is the most accurate representation of the menu based on the source data provided.
+**Notice:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 11:00:00`. Query the table for that time range, and you won't see it—which accurately reflects that it wasn't on the menu during that period.
 
 ### Shared Configuration Options
 
@@ -1528,9 +1626,9 @@ This is the most accurate representation of the menu based on the source data pr
 | invalidate_hard_deletes | If set to `true`, when a record is missing from the source table it will be marked as invalid. Default: `false`                                                                                                                                                                                                   | bool                      |
 | batch_size              | The maximum number of intervals that can be evaluated in a single backfill task. If this is `None`, all intervals will be processed as part of a single task. See [Processing Source Table with Historical Data](#processing-source-table-with-historical-data) for more info on this use case. (Default: `None`) | int                       |
 
-!!! info "Important"
+!!! info "BigQuery Data Types"
 
-    If using BigQuery, the default data type of the valid_from/valid_to columns is DATETIME. If you want to use TIMESTAMP, you can specify the data type in the model definition.
+    On BigQuery, `valid_from` and `valid_to` columns default to `DATETIME`. If you want `TIMESTAMP` instead, specify it in your model definition:
 
     ```sql linenums="1" hl_lines="5"
     MODEL (
@@ -1542,7 +1640,7 @@ This is the most accurate representation of the menu based on the source data pr
     );
     ```
 
-    This could likely be used on other engines to change the expected data type but has only been tested on BigQuery.
+    This might work on other engines too, but it's only been tested on BigQuery.
 
 ### SCD Type 2 By Time Configuration Options
 
@@ -1562,14 +1660,11 @@ This is the most accurate representation of the menu based on the source data pr
 
 ### Processing Source Table with Historical Data
 
-The most common case for SCD Type 2 is creating history for a table that it doesn't have it already. 
-In the example of the restaurant menu, the menu just tells you what is offered right now, but you want to know what was offered over time.
-In this case, the default setting of `None` for `batch_size` is the best option.
+Most of the time, you're creating history for a table that doesn't have it. Like the restaurant menu—it just shows what's available now, but you want to track what was available over time. For this use case, leave `batch_size` as `None` (the default).
 
-Another use case though is processing a source table that already has history in it. 
-A common example of this is a "daily snapshot" table that is created by a source system that takes a snapshot of the data at the end of each day.
-If your source table has historical records, like a "daily snapshot" table, then set `batch_size` to `1` to process each interval (each day if a `@daily` cron) in sequential order.
-That way the historical records will be properly captured in the SCD Type 2 table.
+**But what if your source already has history?** Some systems create "daily snapshot" tables that contain historical records. If you're sourcing from one of these, set `batch_size` to `1` to process each interval sequentially (one day at a time if you're using `@daily` cron).
+
+**Why sequential?** SCD Type 2 needs to compare each day's snapshot to the previous day to detect changes. Processing them in order ensures the history is captured correctly.
 
 #### Example - Source from Daily Snapshot Table
 
@@ -1595,7 +1690,7 @@ WHERE
     ds between @start_ds and @end_ds
 ```
 
-This will process each day of the source table in sequential order (if more than one day to process), checking `some_value` column to see if it changed. If it did change, `valid_from` will be set to match the `ds` column (except for first value which would be `1970-01-01 00:00:00`).
+This processes each day sequentially, checking if `some_value` changed. When a change is detected, `valid_from` is set to match the `ds` column value (except for the very first record, which gets `1970-01-01 00:00:00`).
 
 If the source data was the following:
 
@@ -1616,10 +1711,11 @@ Then the resulting SCD Type 2 table would be:
 
 ### Querying SCD Type 2 Models
 
-#### Querying the current version of a record
+Even though SCD Type 2 models track history, querying the current version is still simple. Here are some common patterns:
 
-Although SCD Type 2 models support history, it is still very easy to query for just the latest version of a record. Simply query the model as you would any other table.
-For example, if you wanted to query the latest version of the `menu_items` table you would simply run:
+#### Querying the Current Version
+
+Want just the latest version of each record? Filter for `valid_to IS NULL`:
 
 ```sql linenums="1"
 SELECT
@@ -1630,7 +1726,7 @@ WHERE
   valid_to IS NULL;
 ```
 
-One could also create a view on top of the SCD Type 2 model that creates a new `is_current` column to make it easy for consumers to identify the current record.
+You can also create a view that adds an `is_current` flag to make it even easier for downstream consumers:
 
 ```sql linenums="1"
 SELECT
@@ -1640,9 +1736,9 @@ FROM
   menu_items;
 ```
 
-#### Querying for a specific version of a record at a give point in time
+#### Querying for a Specific Point in Time
 
-If you wanted to query the `menu_items` table as it was on `2020-01-02 01:00:00` you would simply run:
+Want to see what the menu looked like on a specific date? Filter by `valid_from` and `valid_to`:
 
 ```sql linenums="1"
 SELECT
@@ -1655,7 +1751,7 @@ WHERE
   AND '2020-01-02 01:00:00' < COALESCE(valid_to, CAST('2199-12-31 23:59:59+00:00' AS TIMESTAMP));
 ```
 
-Example in a join:
+Here's how you'd use it in a join (to get the menu item price that was valid when an order was placed):
 
 ```sql linenums="1"
 SELECT
@@ -1669,7 +1765,7 @@ INNER JOIN
   AND orders.created_at < COALESCE(menu_items.valid_to, CAST('2199-12-31 23:59:59+00:00' AS TIMESTAMP));
 ```
 
-A view can be created to do the `COALESCE` automatically. This, combined with the `is_current` flag, makes it easier to query for a specific version of a record.
+You can create a view that handles the `COALESCE` automatically, making point-in-time queries even easier:
 
 ```sql linenums="1"
 SELECT
@@ -1684,7 +1780,7 @@ FROM
   menu_items;
 ```
 
-Furthermore if you want to make it so users can use `BETWEEN` when querying by making `valid_to` inclusive you can do the following:
+Want to make `valid_to` inclusive so users can use `BETWEEN`? Adjust it like this:
 ```sql linenums="1"
 SELECT
   id,
@@ -1696,11 +1792,13 @@ SELECT
   valid_to IS NULL AS is_current,
 ```
 
-Note: The precision of the timestamps in this example is second so I subtract 1 second. Make sure to subtract a value equal to the precision of your timestamps.
+!!! note "Timestamp Precision"
 
-#### Querying for deleted records
+    This example uses second precision, so we subtract 1 second. Adjust the subtraction based on your timestamp precision (milliseconds, microseconds, etc.).
 
-One way to identify deleted records is to query for records that do not have a `valid_to` record of `NULL`. For example, if you wanted to query for all deleted ids in the `menu_items` table you would simply run:
+#### Querying for Deleted Records
+
+To find records that were deleted, query for IDs that don't have a current version (`valid_to IS NULL`). Here's how:
 
 ```sql linenums="1"
 SELECT
@@ -1712,11 +1810,13 @@ GROUP BY
   id
 ```
 
-### Reset SCD Type 2 Model (clearing history)
+### Reset SCD Type 2 Model (Clearing History)
 
-SCD Type 2 models are designed by default to protect the data that has been captured because it is not possible to recreate the history once it has been lost.
-However, there are cases where you may want to clear the history and start fresh.
-For this use use case you will want to start by setting `disable_restatement` to `false` in the model definition.
+By default, SCD Type 2 models protect your history—once it's gone, you can't recreate it. But sometimes you need to start fresh (maybe you're fixing a bug, or the history got corrupted).
+
+**Warning:** This will delete all historical data. Make sure you really want to do this!
+
+To reset history, follow these steps:
 
 ```sql linenums="1" hl_lines="5"
 MODEL (
@@ -1728,18 +1828,15 @@ MODEL (
 );
 ```
 
-Plan/apply this change to production.
-Then you will want to [restate the model](../plans.md#restatement-plans).
+1. Set `disable_restatement: false` in your model definition
+2. Plan and apply this change to production
+3. Restate the model: `vulcan plan --restate-model db.menu_items`
 
-```bash
-vulcan plan --restate-model db.menu_items
-```
+!!! warning "Data Loss Warning"
 
-!!! warning
+    This will permanently remove all historical data. In most cases, you cannot recover it. Make absolutely sure this is what you want!
 
-    This will remove the historical data on the model which in most situations cannot be recovered.
-
-Once complete you will want to remove `disable_restatement` on the model definition which will set it back to `true` and prevent accidental data loss.
+4. Once complete, remove `disable_restatement` from your model definition (sets it back to `true`) to prevent accidental data loss in the future
 
 ```sql linenums="1"
 MODEL (
@@ -1750,64 +1847,70 @@ MODEL (
 );
 ```
 
-Plan/apply this change to production.
+5. Plan and apply this change to production
 
 ## EXTERNAL
 
-The EXTERNAL model kind is used to specify [external models](./external_models.md) that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.
+`EXTERNAL` models are special—they don't create tables or run queries. Instead, they just store metadata (column names and types) about tables that exist outside your Vulcan project.
+
+**Why use this?** If you're querying external tables (like tables managed by another system or a third-party data source), defining them as EXTERNAL models helps Vulcan understand their schema. This enables better column-level lineage and query optimization.
+
+**Important:** External models are defined in YAML files, not SQL files. They're optional but recommended if you're querying external tables. Learn more in the [External Models documentation](./external_models.md).
 
 ## MANAGED
 
-!!! warning
+`MANAGED` models let the database engine handle data updates automatically. Instead of Vulcan managing when data refreshes, the engine keeps it up to date in the background.
 
-    Managed models are still under development and the API / semantics may change as support for more engines is added
+**How it works:** You define the query, and the engine takes over. It monitors upstream tables and automatically refreshes your managed table when source data changes. No need to run `vulcan run` to update the data—the engine handles it.
 
-**Note:** Python models do not support the `MANAGED` model kind - use a SQL model instead.
+**When to use:** When you need automatic, real-time updates and your engine supports managed tables (like Snowflake Dynamic Tables). These are great for dashboards or APIs that need always-fresh data.
 
-The `MANAGED` model kind is used to create models where the underlying database engine manages the data lifecycle.
+**Trade-offs:**
+- ✅ Automatic updates (no manual refreshes)
+- ✅ Real-time or near-real-time data
+- ✅ Less to manage
+- ❌ Engine-specific (not portable between databases)
+- ❌ Less visibility (Vulcan can't see what the engine is doing)
+- ❌ Usually costs more (engines charge for managed table features)
 
-These models don't get updated with new intervals or refreshed when `vulcan run` is called. Responsibility for keeping the *data* up to date falls on the engine.
+!!! warning "Under Development"
 
-You can control how the engine creates the managed model by using the [`physical_properties`](../models/overview.md#physical_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
+    Managed models are still being developed, and the API/semantics may change as we add support for more engines.
 
-Due to there being no standard, each vendor has a different implementation with different semantics and different configuration parameters. Therefore, `MANAGED` models are not as portable between database engines as other Vulcan model types. In addition, due to their black-box nature, Vulcan has limited visibility into the integrity and state of the model.
+!!! note "Python Models"
 
-We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](../overview.md#build-a-virtual-environment).
+    Python models don't support the `MANAGED` kind—use a SQL model instead.
 
-See [Managed Models](./managed_models.md) for more information on which engines are supported and which properties are available.
+**Recommendation:** Start with standard Vulcan model types (FULL, INCREMENTAL, etc.). Only use MANAGED if you specifically need automatic engine-managed updates. You still get other Vulcan benefits like virtual environments, even with managed models.
+
+For details on supported engines and configuration options, see the [Managed Models documentation](./managed_models.md).
 
 ## INCREMENTAL_BY_PARTITION
 
-Models of the `INCREMENTAL_BY_PARTITION` kind are computed incrementally based on partition. A set of columns defines the model's partitioning key, and a partition is the group of rows with the same partitioning key value.
+`INCREMENTAL_BY_PARTITION` models update data based on partition keys. When new data arrives, Vulcan replaces entire partitions rather than individual rows.
 
-!!! question "Should you use this model kind?"
+**How it works:** You define partition columns (like `warehouse_id` or `region`). When new data comes in:
+- **New partition?** → Insert all rows for that partition
+- **Existing partition?** → Replace ALL rows for that partition with new data
+- **Partition missing from new data?** → Leave existing partition alone
 
-    Any model kind can use a partitioned **table** by specifying the [`partitioned_by` key](../models/overview.md#partitioned_by) in the `MODEL` DDL.
+!!! question "Should You Use This?"
 
-    The "partition" in `INCREMENTAL_BY_PARTITION` is about how the data is **loaded** when the model runs.
+    **Important distinction:** Any model kind can use a partitioned **table** (via `partitioned_by`). `INCREMENTAL_BY_PARTITION` is about how data is **loaded**—it loads and updates entire partitions at once.
 
-    `INCREMENTAL_BY_PARTITION` models are inherently [non-idempotent](../glossary.md#idempotency), so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.
+    **When to use:** Only when you specifically need partition-based loading (usually for performance reasons with very large datasets). In most cases, `INCREMENTAL_BY_TIME_RANGE` will meet your needs and be easier to manage.
 
-    In most scenarios, an `INCREMENTAL_BY_TIME_RANGE` model can meet your needs and will be easier to manage. The `INCREMENTAL_BY_PARTITION` model kind should only be used when the data must be loaded by partition (usually for performance reasons).
+    **Why it's complex:** These models are inherently [non-idempotent](../glossary.md#idempotency), so restatements can cause data loss. They're more complex to manage than other incremental kinds.
 
-This model kind is designed for the scenario where data rows should be loaded and updated as a group based on their shared value for the partitioning key.
+**Use this kind when:**
+- Your data naturally groups by partition (warehouse, region, category, etc.)
+- You need to replace entire partitions at once (not individual rows)
+- Performance requires partition-based loading
+- You're okay with the complexity trade-off
 
-It may be used with any SQL engine. Vulcan will automatically create partitioned tables on engines that support explicit table partitioning (e.g., [BigQuery](https://cloud.google.com/bigquery/docs/creating-partitioned-tables), [Databricks](https://docs.databricks.com/en/sql/language-manual/sql-ref-partition.html)).
+Vulcan automatically creates partitioned tables on engines that support it (BigQuery, Databricks, etc.), which helps with query performance.
 
-New rows are loaded based on their partitioning key value:
-
-- If a partitioning key in newly loaded data is not present in the model table, the new partitioning key and its data rows are inserted.
-- If a partitioning key in newly loaded data is already present in the model table, **all the partitioning key's existing data rows in the model table are replaced** with the partitioning key's data rows in the newly loaded data.
-- If a partitioning key is present in the model table but not present in the newly loaded data, the partitioning key's existing data rows are not modified and remain in the model table.
-
-This kind should only be used for datasets that have the following traits:
-
-* The dataset's records can be grouped by a partitioning key.
-* Each record has a partitioning key associated with it.
-* It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their partitioning keys match.
-* All existing records associated with a given partitioning key can be removed or overwritten when any new record has the partitioning key value.
-
-The column defining the partitioning key is specified in the model's `MODEL` DDL `partitioned_by` key. This example shows the `MODEL` DDL for an `INCREMENTAL_BY_PARTITION` model:
+You specify the partition columns using the `partitioned_by` property in your `MODEL` DDL. Here's an example:
 
 === "SQL"
 
@@ -1866,7 +1969,7 @@ The column defining the partitioning key is specified in the model's `MODEL` DDL
         return context.fetchdf(query)
     ```
 
-Compound partition keys are also supported:
+You can use multiple columns for composite partition keys:
 
 ```sql linenums="1"
 MODEL (
@@ -1876,7 +1979,7 @@ MODEL (
 );
 ```
 
-Date and/or timestamp column expressions are also supported (varies by SQL engine). This BigQuery example's partition key is based on the month each row's `order_date` occurred:
+Some engines support expression-based partitioning. Here's a BigQuery example that partitions by month:
 
 ```sql linenums="1"
 MODEL (
@@ -1886,17 +1989,13 @@ MODEL (
 );
 ```
 
-!!! warning "Only full restatements supported"
+!!! warning "Only Full Restatements Supported"
 
-    Partial data [restatements](../plans.md#restatement-plans) are used to reprocess part of a table's data (usually a limited time range).
-
-    Partial data restatement is not supported for `INCREMENTAL_BY_PARTITION` models. If you restate an `INCREMENTAL_BY_PARTITION` model, its entire table will be recreated from scratch.
-
-    Restating `INCREMENTAL_BY_PARTITION` models may lead to data loss and should be performed with care.
+    Partial data restatements aren't supported for `INCREMENTAL_BY_PARTITION` models. If you restate one, the entire table gets recreated from scratch, which can cause data loss. Be careful when restating these models!
 
 ### Example
 
-This is a fuller example of how you would use this model kind in practice. It limits the number of partitions to backfill based on time range in the `partitions_to_update` CTE.
+Here's a practical example that shows how to limit which partitions get updated using a CTE. This is a common pattern to avoid full restatements:
 
 ```sql linenums="1"
 MODEL (
@@ -1943,7 +2042,9 @@ SELECT
 FROM product_usage
 ```
 
-**Note**: Partial data [restatement](../plans.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.
+!!! note "Restatement Behavior"
+
+    Remember: partial restatements aren't supported. Restating this model recreates the entire table from scratch, which can cause data loss.
 
 ### Materialization strategy
 Depending on the target engine, models of the `INCREMENTAL_BY_PARTITION` kind are materialized using the following strategies:
@@ -1960,15 +2061,23 @@ Depending on the target engine, models of the `INCREMENTAL_BY_PARTITION` kind ar
 
 ## INCREMENTAL_UNMANAGED
 
-The `INCREMENTAL_UNMANAGED` model kind exists to support append-only tables. It's "unmanaged" in the sense that Vulcan doesnt try to manage how the data is loaded. Vulcan will just run your query on the configured cadence and append whatever it gets into the table.
+`INCREMENTAL_UNMANAGED` models are for append-only tables. They're "unmanaged" because Vulcan doesn't try to deduplicate or manage the data—it just runs your query and appends whatever it gets to the table.
 
-!!! question "Should you use this model kind?"
+**How it works:** Every time the model runs, Vulcan executes your query and appends the results to the table. No deduplication, no updates, no deletes—just append, append, append.
 
-    Some patterns for data management, such as Data Vault, may rely on append-only tables. In this situation, `INCREMENTAL_UNMANAGED` is the correct type to use.
+!!! question "Should You Use This?"
 
-    In most other situations, you probably want `INCREMENTAL_BY_TIME_RANGE` or `INCREMENTAL_BY_UNIQUE_KEY` because they give you much more control over how the data is loaded.
+    **Use it for:** Data Vault patterns, event logs, audit trails, or any scenario where you need true append-only behavior.
 
-Usage of the `INCREMENTAL_UNMANAGED` model kind is straightforward:
+    **Don't use it for:** Most other cases. `INCREMENTAL_BY_TIME_RANGE` or `INCREMENTAL_BY_UNIQUE_KEY` give you much more control and are usually better choices.
+
+**When to use:**
+- Data Vault hubs, links, or satellites
+- Event logs where every event should be preserved
+- Audit trails
+- Any pattern that requires true append-only semantics
+
+Here's how you'd set one up:
 
 ```sql linenums="1"
 MODEL (
@@ -1996,10 +2105,10 @@ JOIN vulcan_demo.customers AS c ON o.customer_id = c.customer_id
 ORDER BY s.shipped_date DESC
 ```
 
-Since it's unmanaged, it doesnt support the `batch_size` and `batch_concurrency` properties to control how data is loaded like the other incremental model types do.
+**Note:** Since it's unmanaged, `INCREMENTAL_UNMANAGED` doesn't support `batch_size` or `batch_concurrency` properties. Vulcan just runs your query and appends the results—no batching or concurrency control.
 
-!!! warning "Only full restatements supported"
+!!! warning "Only Full Restatements Supported"
 
-    Similar to `INCREMENTAL_BY_PARTITION`, attempting to [restate](../plans.md#restatement-plans) an `INCREMENTAL_UNMANAGED` model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.
+    Like `INCREMENTAL_BY_PARTITION`, restating an `INCREMENTAL_UNMANAGED` model triggers a full restatement (rebuilds from scratch). This is because append-only tables are inherently non-idempotent—you can't safely reprocess part of the data without risking duplicates or data loss.
 
-    This is because an append-only table is inherently non-idempotent. Restating `INCREMENTAL_UNMANAGED` models may lead to data loss and should be performed with care.
+    Be very careful when restating these models!

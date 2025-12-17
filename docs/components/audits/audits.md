@@ -1,20 +1,23 @@
-# Auditing
-Audits are one of the tools Vulcan provides to validate your models. Along with [tests](tests.md), they are a great way to ensure the quality of your data and to build trust in it across your organization.
+# Audits
 
-Unlike tests, audits are used to validate the output of a model after every run. When you apply a [plan](./plans.md), Vulcan will automatically run each model's audits.
+Audits are your data quality bouncers—they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your pipeline if something's wrong.
 
-**All audits in Vulcan are blocking** - when an audit fails, Vulcan halts plan application or run execution to prevent potentially invalid data from propagating further downstream. This ensures data quality by stopping the pipeline whenever data validation fails.
+Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audits run automatically whenever you apply a [plan](./plans.md). They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.
 
-A comprehensive suite of audits can identify data issues upstream, whether they are from your vendors or other teams. Audits also empower your data engineers and analysts to work with confidence by catching problems early as they work on new features or make updates to your models.
+**Here's the key thing:** All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything—no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire pipeline and causing headaches later.
 
-**NOTE**: For incremental by time range models, audits are only applied to intervals being processed - not for the entire underlying table.
+A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.
+
+> **Note:** For incremental by time range models, audits only run on the intervals being processed, not the entire table. This keeps things fast and focused on what actually changed.
 
 ## Terminology: Audits and Assertions
 
-Vulcan uses two related but distinct concepts:
+Before we dive in, let's clear up some terminology. Vulcan uses two related but distinct concepts:
 
-- **AUDIT** - The validation rule (the SQL query that checks for problems)
+- **AUDIT** - The validation rule itself (the SQL query that checks for problems)
 - **ASSERTION** - Attaching an audit to a model (claiming it should pass)
+
+Think of it this way: an audit is the rule ("prices must be positive"), and an assertion is you saying "this model follows that rule."
 
 **In MODEL definitions:**
 
@@ -30,40 +33,59 @@ MODEL (
 );
 ```
 
-> **Note:** You may encounter older code that attaches audits using `audits` instead of `assertions` in MODEL definitions. While both work identically, please use `assertions` for clearer semantics. This documentation uses `assertions` throughout.
+> **Note:** You might see older code using `audits` instead of `assertions` in MODEL definitions. Both work identically, but `assertions` is clearer—you're asserting that your model passes these audits. This documentation uses `assertions` throughout.
 
 ## How Audits Work
-A failed audit halts the execution of a `plan` or `run` to prevent invalid data from propagating to downstream models. The impact of a failure depends on whether you are running a `plan` or a `run`.
 
-Vulcan's audit process is:
+When an audit fails, Vulcan stops everything. No ifs, ands, or buts. This is by design—it's better to catch problems early than to let bad data flow downstream and cause bigger issues.
 
-1. Evaluate the model (e.g., insert new data or rebuild the table)
-2. Run the audit query against the newly updated model table. For incremental models, the audit only runs on the processed time intervals.
-3. If the query returns any rows, the audit fails, halting the `plan` or `run`.
+Here's what happens when you run a model:
+
+1. **Evaluate the model** - Vulcan runs your model SQL (inserts new data, rebuilds the table, etc.)
+2. **Run the audit query** - Vulcan executes your audit SQL against the newly updated table. For incremental models, this only checks the intervals you're processing (keeps things fast!)
+3. **Check the results** - If the query returns any rows, the audit fails and everything stops
+
+**Why this matters:** Audits query for bad data. If your audit finds bad data (returns rows), that's a problem. If it finds nothing (returns zero rows), you're good to go.
 
 ### Plan vs. Run
 
-The key difference is when the model's data is promoted to the production environment:
+The difference between `plan` and `run` matters a lot when it comes to audits:
 
-*   **`plan`**: Vulcan evaluates and audits all modified models *before* promoting them to production. If an audit fails, the `plan` stops, and the production table is untouched. Invalid data is contained in an isolated table and never reaches the production environment.
+**`plan`** - The safe way:
+- Vulcan evaluates and audits all modified models *before* promoting them to production
+- If an audit fails, the plan stops and your production table is untouched
+- Invalid data stays in an isolated table and never reaches production
+- This is like testing in a sandbox before deploying
 
-*   **`run`**: Vulcan evaluates and audits models directly against the production environment. If an audit fails, the `run` stops, but the invalid data *is already present* in the production table. The blocking action prevents this bad data from being used to build other downstream models.
+**`run`** - The direct way:
+- Vulcan evaluates and audits models directly against the production environment
+- If an audit fails, the run stops, but the invalid data *is already in production*
+- The blocking prevents this bad data from being used to build downstream models
+- This is like deploying directly—faster, but riskier
+
+**Which should you use?** For production changes, use `plan`. It's safer and gives you a chance to fix issues before they hit production. Use `run` when you're confident or doing quick iterations.
 
 ### Fixing a Failed Audit
 
-If an audit fails during a `run`, you must fix the invalid data in the production table. To do so:
+So an audit failed. Don't panic! Here's how to fix it:
 
-1.  **Find the root cause**: examine upstream models and data sources
-2.  **Fix the source**
-    *   If the cause is an **external data source**, fix it there. Then, run a [restatement plan](./plans.md#restatement-plans) on the first Vulcan model that ingests the source data. This will restate all downstream models, including the one with the failed audit.
-    *   If the cause is a **Vulcan model**, update the model's logic. Then apply the change with a `plan`, which will automatically re-evaluate all downstream models.
+1. **Find the root cause** - Look at the audit query results. What data failed? Check upstream models and data sources.
+
+2. **Fix the source** - This depends on where the problem came from:
+   - **External data source?** Fix it at the source, then run a [restatement plan](./plans.md#restatement-plans) on the first Vulcan model that ingests it. This will restate all downstream models automatically.
+   - **Vulcan model?** Update the model's logic, then apply the change with a `plan`. Vulcan will automatically re-evaluate all downstream models.
+
+The key is fixing the root cause, not just the symptom. If bad data is coming from upstream, fixing it downstream won't help long-term.
 
 ## User-Defined Audits
-In Vulcan, user-defined audits are defined in `.sql` files in an `audits` directory in your Vulcan project. Multiple audits can be defined in a single file, so you can organize them to your liking. Alternatively, audits can be defined inline within the model definition itself.
 
-Audits are SQL queries that should not return any rows; in other words, they query for bad data, so returned rows indicates that something is wrong.
+You can write your own audits! They're just SQL queries that should return zero rows. If they return rows, that means they found bad data and the audit fails.
 
-In its simplest form, an audit is defined with the `AUDIT` statement along with a query, as in the following example:
+Audits live in `.sql` files in an `audits` directory in your project. You can put multiple audits in one file (organize them however makes sense) or define them inline in your model files.
+
+### Your First Audit
+
+Let's create a simple audit. Here's the basic structure:
 
 ```sql linenums="1"
 AUDIT (
@@ -76,11 +98,14 @@ WHERE
   AND price IS NULL;
 ```
 
-In the example, we defined an audit named `assert_item_price_is_not_null`, ensuring that every sushi item has a price.
+This audit checks that every sushi item has a price. If any items are missing prices (the query returns rows), the audit fails.
 
-**Note:** If the query is in a different dialect than the rest of your project, you can specify it in the `AUDIT` statement. In the example above we set it to `spark`, so SQLGlot will automatically understand how to execute the query behind the scenes.
+**A few things to note:**
+- The `name` is what you'll reference when attaching it to a model
+- If your query uses a different SQL dialect than your project, specify it with `dialect` (like `spark` in the example)
+- The `@start_ds` and `@end_ds` macros are automatically filled in for incremental models
 
-To run the audit, attach it to a model using `assertions` in the `MODEL` statement:
+To actually use this audit, attach it to a model:
 
 ```sql linenums="1"
 MODEL (
@@ -89,12 +114,13 @@ MODEL (
 );
 ```
 
-Now `assert_item_price_is_not_null` will run every time the `sushi.items` model is run.
+Now this audit runs every time the `sushi.items` model runs. Pretty straightforward!
 
-### Generic audits
-Audits can also be parameterized and implemented in a model-agnostic way so the same audit can be used for multiple models.
+### Generic Audits
 
-Consider the following audit definition that checks whether the target column exceeds a configured threshold:
+Here's where audits get really powerful. You can create parameterized audits that work across multiple models. This saves you from writing the same audit over and over.
+
+Consider this audit that checks if a column exceeds a threshold:
 
 ```sql linenums="1"
 AUDIT (
@@ -104,11 +130,11 @@ SELECT * FROM @this_model
 WHERE @column >= @threshold;
 ```
 
-This example utilizes [macros](./macros/overview.md) to parameterize the audit. `@this_model` is a special macro which refers to the model that is being audited. For incremental models, this macro also ensures that only relevant data intervals are affected.
+This uses [macros](./macros/overview.md) to make it flexible:
+- `@this_model` is a special macro that refers to the model being audited (and handles incremental models correctly)
+- `@column` and `@threshold` are parameters you'll specify when you use the audit
 
-`@column` and `@threshold` are parameters whose values are specified in a model definition's `MODEL` statement.
-
-Apply the generic audit to a model by referencing it in the `MODEL` statement using `assertions`:
+Now you can use this same audit for different columns and thresholds:
 
 ```sql linenums="1"
 MODEL (
@@ -120,11 +146,12 @@ MODEL (
 );
 ```
 
-Notice how `column` and `threshold` parameters have been set. These values will be propagated into the audit query and substituted into the `@column` and `@threshold` macro variables.
+See how we're using the same audit twice with different parameters? That's the power of generic audits. You can even use the same audit multiple times on the same model with different parameters.
 
-Note that the same audit can be applied more than once to the a model using different sets of parameters.
+**Default values:**
 
-Generic audits can define default values as follows:
+You can set default values for parameters:
+
 ```sql linenums="1"
 AUDIT (
   name does_not_exceed_threshold,
@@ -137,7 +164,11 @@ SELECT * FROM @this_model
 WHERE @column >= @threshold;
 ```
 
-Alternatively, you can apply specific audits globally by including them in the model defaults configuration:
+Now if someone uses the audit without specifying parameters, it'll use these defaults. Handy for common cases!
+
+**Global audits:**
+
+You can also apply audits globally using model defaults:
 
 ```sql linenums="1"
 model_defaults:
@@ -146,12 +177,15 @@ model_defaults:
     - does_not_exceed_threshold(column := id, threshold := 1000)
 ```
 
-> **Note:** In `model_defaults`, you can use either `audits` or `assertions` - both are supported for backward compatibility.
+This applies these audits to all models by default. Useful for organization-wide rules!
+
+> **Note:** In `model_defaults`, you can use either `audits` or `assertions`—both work for backward compatibility.
 
 ### Naming
-We recommended avoiding SQL keywords when naming audit parameters. Quote any audit argument that is also a SQL keyword.
 
-For example, if an audit `my_audit` uses a `values` parameter, invoking it will require quotes because `values` is a SQL keyword:
+**Avoid SQL keywords** when naming audit parameters. If you must use a keyword, quote it.
+
+For example, if your audit uses a `values` parameter (which is a SQL keyword), you'll need quotes:
 
 ```sql linenums="1" hl_lines="4"
 MODEL (
@@ -162,10 +196,11 @@ MODEL (
 )
 ```
 
-### Inline audits
+It's easier to just avoid keywords in the first place, but if you need them, quotes work fine.
 
-You can also define audits directly within a model definition using the same syntax. Multiple audits can be specified within the same SQL model file:
+### Inline Audits
 
+You can also define audits right in your model file. This is handy when an audit is specific to one model:
 
 ```sql linenums="1"
 MODEL (
@@ -184,19 +219,19 @@ SELECT * FROM @this_model
 WHERE price IS NULL;
 ```
 
-## Built-in audits
-Vulcan comes with a suite of built-in generic audits that cover a broad set of common use cases. All built-in audits are blocking - when they fail, execution halts immediately.
+You can define multiple audits in the same file. Just make sure they're defined before (or alongside) the MODEL that uses them.
 
-This section describes the audits, grouped by general purpose.
+## Built-in Audits
 
-### Generic assertion audit
+Vulcan comes with a whole suite of built-in audits that cover most common use cases. These are ready to use—no need to write SQL yourself for these scenarios.
 
-The `forall` audit is the most generic built-in audit, allowing arbitrary boolean SQL expressions.
+All built-in audits are blocking (they stop execution when they fail), and they're grouped by what they check. Let's walk through them:
 
-#### forall
-Ensures that a set of arbitrary boolean expressions evaluate to `TRUE` for all rows in the model. The boolean expressions should be written in SQL.
+### Generic Assertion Audit
 
-This example asserts that all rows have a `price` greater than 0 and a `name` value containing at least one character:
+#### `forall`
+
+The most flexible built-in audit. It lets you write arbitrary boolean SQL expressions:
 
 ```sql linenums="1" hl_lines="4-7"
 MODEL (
@@ -210,14 +245,15 @@ MODEL (
 );
 ```
 
-### Row counts and NULL value audits
+This checks that all rows have a `price` greater than 0 AND a `name` with at least one character. You can add as many criteria as you want—they all need to pass.
 
-These audits concern row counts and presence of `NULL` values.
+### Row Counts and NULL Value Audits
 
-#### number_of_rows
-Ensures that the number of rows in the model's table exceeds the threshold.
+These audits check that you have enough data and that required fields aren't missing.
 
-This example asserts that the model has more than 10 rows:
+#### `number_of_rows`
+
+Make sure you have enough rows. Useful for catching cases where a model didn't run properly or data didn't load:
 
 ```sql linenums="1"
 MODEL (
@@ -228,10 +264,11 @@ MODEL (
 );
 ```
 
-#### not_null
-Ensures that specified columns do not contain `NULL` values.
+This ensures your model has more than 10 rows. If you have 10 or fewer, something's probably wrong.
 
-This example asserts that none of the `id`, `customer_id`, or `waiter_id` columns contain `NULL` values:
+#### `not_null`
+
+The classic "required field" check. Ensures specified columns don't have NULL values:
 
 ```sql linenums="1"
 MODEL (
@@ -242,10 +279,11 @@ MODEL (
 );
 ```
 
-#### at_least_one
-Ensures that specified columns contain at least one non-NULL value.
+This checks that `id`, `customer_id`, and `waiter_id` are never NULL. If any of them are NULL, the audit fails.
 
-This example asserts that the `zip` column contains at least one non-NULL value:
+#### `at_least_one`
+
+Sometimes you just need at least one non-NULL value, not all of them. This is useful for optional fields that should have some data:
 
 ```sql linenums="1"
 MODEL (
@@ -256,10 +294,11 @@ MODEL (
 );
 ```
 
-#### not_null_proportion
-Ensures that the specified column's proportion of `NULL` values is no greater than a threshold.
+This ensures the `zip` column has at least one non-NULL value. Maybe most customers don't have zip codes, but at least some should.
 
-This example asserts that the `zip` column has no more than 80% `NULL` values:
+#### `not_null_proportion`
+
+Check that NULL values don't exceed a certain percentage. Useful when some NULLs are okay, but too many is a problem:
 
 ```sql linenums="1"
 MODEL (
@@ -270,14 +309,15 @@ MODEL (
 );
 ```
 
-### Specific data values audits
+This ensures that at least 80% of rows have a zip code. The other 20% can be NULL, but if more than 20% are missing, that's a problem.
 
-These audits concern the specific set of data values present in a column.
+### Specific Data Values Audits
 
-#### not_constant
-Ensures that the specified columns are not constant (i.e., have at least two non-NULL values).
+These audits check the actual values in your data, not just whether they exist.
 
-This example asserts that the column `customer_id` has at least two non-NULL values:
+#### `not_constant`
+
+Make sure a column has variety. If every row has the same value, something might be wrong:
 
 ```sql linenums="1"
 MODEL (
@@ -288,10 +328,11 @@ MODEL (
 );
 ```
 
-#### unique_values
-Ensures that specified columns contain unique values (i.e., have no duplicated values).
+This ensures `customer_id` has at least two different non-NULL values. If every row has the same customer ID, that's suspicious.
 
-This example asserts that the `id` and `item_id` columns have unique values:
+#### `unique_values`
+
+The classic uniqueness check. Ensures no duplicate values:
 
 ```sql linenums="1"
 MODEL (
@@ -302,10 +343,11 @@ MODEL (
 );
 ```
 
-#### unique_combination_of_columns
-Ensures that each row has a unique combination of values over the specified columns.
+This checks that `id` and `item_id` each have unique values. No duplicates allowed!
 
-This example asserts that the combination of `id` and `ds` columns has no duplicated values:
+#### `unique_combination_of_columns`
+
+Check uniqueness across multiple columns. Maybe individual columns can repeat, but combinations must be unique:
 
 ```sql linenums="1"
 MODEL (
@@ -316,13 +358,11 @@ MODEL (
 );
 ```
 
-#### accepted_values
-Ensures that all rows of the specified column contain one of the accepted values.
+This ensures that the combination of `id` and `ds` is unique. So `id` can repeat across different dates, but the same `id` can't appear twice on the same date.
 
-!!! note
-    Rows with `NULL` values for the column will pass this audit in most databases/engines. Use the [`not_null` audit](#not_null) to ensure there are no `NULL` values present in a column.
+#### `accepted_values`
 
-This example asserts that column `name` has a value of 'Hamachi', 'Unagi', or 'Sake':
+Make sure values are in an allowed set. Like an enum check:
 
 ```sql linenums="1"
 MODEL (
@@ -333,13 +373,14 @@ MODEL (
 );
 ```
 
-#### not_accepted_values
-Ensures that no rows of the specified column contain one of the not accepted values.
+This ensures that `name` is one of the three allowed values. Anything else fails the audit.
 
 !!! note
-    This audit does not support rejecting `NULL` values. Use the [`not_null` audit](#not_null) to ensure there are no `NULL` values present in a column.
+    Rows with `NULL` values will pass this audit in most databases. If you want to reject NULLs, combine this with a `not_null` audit.
 
-This example asserts that column `name` is not one of 'Hamburger' or 'French fries':
+#### `not_accepted_values`
+
+The opposite—make sure certain values are NOT present:
 
 ```sql linenums="1"
 MODEL (
@@ -350,16 +391,18 @@ MODEL (
 );
 ```
 
-### Numeric data audits
+This ensures that `name` is never 'Hamburger' or 'French fries'. Useful for catching data that shouldn't be there.
 
-These audits concern the distribution of values in numeric columns.
+!!! note
+    This audit doesn't support rejecting `NULL` values. Use `not_null` if you need to ensure no NULLs.
 
-#### sequential_values
-Ensures that each of an ordered numeric column's values contains the previous row's value plus `interval`.
+### Numeric Data Audits
 
-For example, with a column having minimum value 1 and maximum value 4 and `interval := 1`, it ensures that the rows contain values `[1, 2, 3, 4]`.
+These audits check numeric ranges and distributions.
 
-This example asserts that column `item_id` contains sequential values that differ by `1`:
+#### `sequential_values`
+
+Check that values are sequential. Useful for IDs or sequence numbers:
 
 ```sql linenums="1"
 MODEL (
@@ -370,10 +413,11 @@ MODEL (
 );
 ```
 
-#### accepted_range
-Ensures that a column's values are in a numeric range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.
+This ensures that `item_id` values are sequential (1, 2, 3, 4...). If you have gaps or duplicates, the audit fails.
 
-This example asserts that all rows have a `price` greater than or equal 1 and less than or equal to 100:
+#### `accepted_range`
+
+Check that values are within a numeric range:
 
 ```sql linenums="1"
 MODEL (
@@ -384,7 +428,11 @@ MODEL (
 );
 ```
 
-This example specifies the `inclusive := false` argument to assert that all rows have a `price` greater than 0 and less than 100:
+This ensures all prices are between 1 and 100 (inclusive). Values outside this range fail the audit.
+
+**Exclusive ranges:**
+
+You can make the range exclusive (not including the boundaries):
 
 ```sql linenums="1"
 MODEL (
@@ -395,10 +443,11 @@ MODEL (
 );
 ```
 
-#### mutually_exclusive_ranges
-Ensures that each row's numeric range does not overlap with any other row's range.
+Now prices must be greater than 0 and less than 100 (not equal to the boundaries).
 
-This example asserts that each row's range [min_price, max_price] does not overlap with any other row's range:
+#### `mutually_exclusive_ranges`
+
+Check that ranges don't overlap. Useful for pricing tiers or time slots:
 
 ```sql linenums="1"
 MODEL (
@@ -409,17 +458,18 @@ MODEL (
 );
 ```
 
-### Character data audits
+This ensures that each row's price range [min_price, max_price] doesn't overlap with any other row's range. Perfect for ensuring pricing tiers don't conflict.
 
-These audits concern the characteristics of values in character/string columns.
+### Character Data Audits
+
+These audits check string formats and patterns.
 
 !!! warning
-    Databases/engines may exhibit different behavior for different character sets or languages.
+    Different databases may behave differently with character sets or languages. Test your audits!
 
-#### not_empty_string
-Ensures that no rows of a column contain an empty string value `''`.
+#### `not_empty_string`
 
-This example asserts that no `name` is an empty string:
+Make sure strings aren't empty. NULL is okay, but empty strings `''` are not:
 
 ```sql linenums="1"
 MODEL (
@@ -430,10 +480,11 @@ MODEL (
 );
 ```
 
-#### string_length_equal
-Ensures that all rows of a column contain a string with the specified number of characters.
+This ensures no `name` is an empty string. NULL values pass, but `''` fails.
 
-This example asserts that all `zip` values are 5 characters long:
+#### `string_length_equal`
+
+Check that all strings have the exact same length:
 
 ```sql linenums="1"
 MODEL (
@@ -444,10 +495,11 @@ MODEL (
 );
 ```
 
-#### string_length_between
-Ensures that all rows of a column contain a string with number of characters in the specified range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.
+This ensures all `zip` values are exactly 5 characters. Useful for fixed-length codes.
 
-This example asserts that all `name` values have 5 or more and 50 or fewer characters:
+#### `string_length_between`
+
+Check that string lengths are within a range:
 
 ```sql linenums="1"
 MODEL (
@@ -458,7 +510,11 @@ MODEL (
 );
 ```
 
-This example specifies the `inclusive := false` argument to assert that all rows have a `name` with 5 or more and 59 or fewer characters:
+This ensures all `name` values are between 5 and 50 characters (inclusive).
+
+**Exclusive ranges:**
+
+You can make the range exclusive:
 
 ```sql linenums="1"
 MODEL (
@@ -469,12 +525,11 @@ MODEL (
 );
 ```
 
-#### valid_uuid
-Ensures that all non-NULL rows of a column contain a string with the UUID structure.
+Now names must be longer than 4 characters and shorter than 60 (not equal to the boundaries).
 
-UUID structure determined by matching regular expression `'^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'`.
+#### `valid_uuid`
 
-This example asserts that all `uuid` values have the UUID structure:
+Check that values match UUID format:
 
 ```sql linenums="1"
 MODEL (
@@ -485,12 +540,11 @@ MODEL (
 );
 ```
 
-#### valid_email
-Ensures that all non-NULL rows of a column contain a string with the email address structure.
+This ensures all `uuid` values match the UUID structure (like `550e8400-e29b-41d4-a716-446655440000`).
 
-Email address structure determined by matching regular expression `'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'`.
+#### `valid_email`
 
-This example asserts that all `email` values have the email address structure:
+Check email format:
 
 ```sql linenums="1"
 MODEL (
@@ -501,12 +555,11 @@ MODEL (
 );
 ```
 
-#### valid_url
-Ensures that all non-NULL rows of a column contain a string with the URL structure.
+This ensures all `email` values look like valid email addresses (has `@`, has domain, etc.).
 
-URL structure determined by matching regular expression `'^(https?|ftp)://[^\s/$.?#].[^\s]*$'`.
+#### `valid_url`
 
-This example asserts that all `url` values have the URL structure:
+Check URL format:
 
 ```sql linenums="1"
 MODEL (
@@ -517,12 +570,11 @@ MODEL (
 );
 ```
 
-#### valid_http_method
-Ensures that all non-NULL rows of a column contain a valid HTTP method.
+This ensures all `url` values are valid URLs (starts with `http://`, `https://`, or `ftp://`, etc.).
 
-Valid HTTP methods determined by matching values `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`, `TRACE`, `CONNECT`.
+#### `valid_http_method`
 
-This example asserts that all `http_method` values are valid HTTP methods:
+Check that values are valid HTTP methods:
 
 ```sql linenums="1"
 MODEL (
@@ -533,10 +585,11 @@ MODEL (
 );
 ```
 
-#### match_regex_pattern_list
-Ensures that all non-NULL rows of a column match at least one of the specified regular expressions.
+This ensures `http_method` is one of: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`, `TRACE`, `CONNECT`.
 
-This example asserts that all `todo` values match one of `'^\d.*'` (string starts with a digit) or `'.*!$'` (ends with an exclamation mark):
+#### `match_regex_pattern_list`
+
+Check that values match at least one regex pattern:
 
 ```sql linenums="1"
 MODEL (
@@ -547,10 +600,11 @@ MODEL (
 );
 ```
 
-#### not_match_regex_pattern_list
-Ensures that no non-NULL rows of a column match any of the specified regular expressions.
+This ensures all `todo` values match at least one pattern: either start with a digit (`^\d.*`) or end with an exclamation mark (`.*!$`).
 
-This example asserts that no `todo` values match one of `'^!.*'` (string starts with an exclamation mark) or `'.*\d$'` (ends with a digit):
+#### `not_match_regex_pattern_list`
+
+The opposite—make sure values don't match any pattern:
 
 ```sql linenums="1"
 MODEL (
@@ -561,10 +615,11 @@ MODEL (
 );
 ```
 
-#### match_like_pattern_list
-Ensures that all non-NULL rows of a column are `LIKE` at least one of the specified patterns.
+This ensures no `todo` values start with `!` or end with a digit.
 
-This example asserts that all `name` values are `LIKE` one of `'jim%'` or `'pam%'`:
+#### `match_like_pattern_list`
+
+Check that values match at least one SQL LIKE pattern:
 
 ```sql linenums="1"
 MODEL (
@@ -575,10 +630,11 @@ MODEL (
 );
 ```
 
-#### not_match_like_pattern_list
-Ensures that no non-NULL rows of a column are `LIKE` any of the specified patterns.
+This ensures all `name` values start with 'jim' or 'pam'. Uses SQL LIKE syntax, so `%` matches any characters.
 
-This example asserts that no `name` values are `LIKE` `'%doe'` or `'%smith'`:
+#### `not_match_like_pattern_list`
+
+Make sure values don't match any LIKE pattern:
 
 ```sql linenums="1"
 MODEL (
@@ -589,19 +645,18 @@ MODEL (
 );
 ```
 
+This ensures no `name` values end with 'doe' or 'smith'.
 
-### Statistical audits
+### Statistical Audits
 
-These audits concern the statistical distributions of numeric columns.
+These audits check statistical properties of your data. They're powerful but require some tuning to get the thresholds right.
 
 !!! note
+    Statistical audit thresholds usually need fine-tuning through trial and error. Start with wide ranges and tighten them as you learn what's normal for your data.
 
-    Audit thresholds will likely require fine-tuning via trial and error for each column being audited.
+#### `mean_in_range`
 
-#### mean_in_range
-Ensures that a numeric column's mean is in the specified range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.
-
-This example asserts that the `age` column has a mean of at least 21 and at most 50:
+Check that a column's average is within a range:
 
 ```sql linenums="1"
 MODEL (
@@ -612,7 +667,9 @@ MODEL (
 );
 ```
 
-This example specifies the `inclusive := false` argument to assert that `age` has a mean greater than 18 and less than 65:
+This ensures the average `age` is between 21 and 50. Useful for catching when your data distribution shifts unexpectedly.
+
+**Exclusive ranges:**
 
 ```sql linenums="1"
 MODEL (
@@ -623,10 +680,11 @@ MODEL (
 );
 ```
 
-#### stddev_in_range
-Ensures that a numeric column's standard deviation is in the specified range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.
+Now the mean must be greater than 18 and less than 65 (not equal to the boundaries).
 
-This example asserts that the `age` column has a standard deviation of at least 2 and at most 5:
+#### `stddev_in_range`
+
+Check that standard deviation is within a range:
 
 ```sql linenums="1"
 MODEL (
@@ -637,7 +695,9 @@ MODEL (
 );
 ```
 
-This example specifies the `inclusive := false` argument to assert that `age` has a standard deviation greater than 3 and less than 6:
+This ensures the standard deviation of `age` is between 2 and 5. Useful for detecting when your data becomes more or less spread out than expected.
+
+**Exclusive ranges:**
 
 ```sql linenums="1"
 MODEL (
@@ -648,12 +708,11 @@ MODEL (
 );
 ```
 
-#### z_score
-Ensures that no rows of a numeric column contain a value whose absolute z-score exceeds the threshold.
+Now the standard deviation must be greater than 3 and less than 6.
 
-z-score is calculated as `ABS(([row value] - [column mean]) / NULLIF([column standard deviation], 0))`.
+#### `z_score`
 
-This example asserts that the `age` column contains no rows with z-scores greater than 3:
+Check for statistical outliers. Values with high z-scores are far from the mean:
 
 ```sql linenums="1"
 MODEL (
@@ -664,10 +723,13 @@ MODEL (
 );
 ```
 
-#### kl_divergence
-Ensures that the [symmetrised Kullback-Leibler divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence) (aka "Jeffreys divergence" or "Population Stability Index") between two columns does not exceed a threshold.
+This ensures no `age` values have a z-score greater than 3 (meaning they're more than 3 standard deviations from the mean). Useful for catching outliers that might indicate data quality issues.
 
-This example asserts that the symmetrised KL Divergence between columns `age` and `reference_age` is less than or equal to 0.1:
+The z-score is calculated as: `ABS(([row value] - [column mean]) / NULLIF([column standard deviation], 0))`
+
+#### `kl_divergence`
+
+Check how different two distributions are. Useful for comparing current data to a reference:
 
 ```sql linenums="1"
 MODEL (
@@ -678,18 +740,13 @@ MODEL (
 );
 ```
 
-#### chi_square
-Ensures that the [chi-square](https://en.wikipedia.org/wiki/Chi-squared_test) statistic for two categorical columns does not exceed a critical value.
+This ensures the [symmetrised Kullback-Leibler divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence) (also called "Jeffreys divergence" or "Population Stability Index") between `age` and `reference_age` is less than or equal to 0.1.
 
-You can look up the critical value corresponding to a p-value with a table (such as [this one](https://www.medcalc.org/manual/chi-square-table.php)) or by using the Python [scipy library](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2.html):
+Lower values mean the distributions are more similar. This is great for detecting when your data distribution has shifted significantly from a known good reference.
 
-```python linenums="1"
-from scipy.stats import chi2
+#### `chi_square`
 
-# critical value for p-value := 0.95 and degrees of freedom := 1
-chi2.ppf(0.95, 1)
-```
-This example asserts that the chi-square statistic0 for columns `user_state` and `user_type` does not exceed 6.635:
+Check the relationship between two categorical columns:
 
 ```sql linenums="1"
 MODEL (
@@ -700,10 +757,26 @@ MODEL (
 );
 ```
 
-## Running audits
-### The CLI audit command
+This ensures the [chi-square statistic](https://en.wikipedia.org/wiki/Chi-squared_test) for `user_state` and `user_type` doesn't exceed 6.635.
 
-You can execute audits with the `vulcan audit` command as follows:
+**Finding critical values:**
+
+You can look up critical values in a [chi-square table](https://www.medcalc.org/manual/chi-square-table.php) or calculate them with Python:
+
+```python linenums="1"
+from scipy.stats import chi2
+
+# critical value for p-value := 0.95 and degrees of freedom := 1
+chi2.ppf(0.95, 1)
+```
+
+This is useful for detecting when the relationship between two categorical variables has changed unexpectedly.
+
+## Running Audits
+
+### The CLI Audit Command
+
+You can run audits manually with the `vulcan audit` command:
 
 ```bash
 $ vulcan -p project audit --start 2022-01-01 --end 2022-01-02
@@ -718,14 +791,19 @@ SELECT * FROM vulcan.sushi__items__1836721418_83893210 WHERE ds BETWEEN '2022-01
 Done.
 ```
 
-### Automated auditing
-When you apply a plan, Vulcan will automatically run each model's audits.
+This is useful for testing audits before running a full plan, or for debugging why an audit is failing. The output shows you exactly what query failed and how many rows it found.
 
-Vulcan will halt the pipeline when an audit fails to prevent potentially invalid data from propagating further downstream.
+### Automated Auditing
 
-## Advanced usage
-### Skipping audits
-Audits can be skipped by setting the `skip` argument to `true` as in the following example:
+When you apply a plan, Vulcan automatically runs all audits for models being evaluated. You don't need to do anything special—just run your plan and audits happen automatically.
+
+If any audit fails, Vulcan halts the pipeline immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us—it's better than finding out later that bad data made it into production.
+
+## Advanced Usage
+
+### Skipping Audits
+
+Sometimes you need to temporarily disable an audit. Maybe you're debugging, or you know there's a temporary data issue you're working on fixing. You can skip audits by setting `skip` to `true`:
 
 ```sql linenums="1" hl_lines="3"
 AUDIT (
@@ -736,3 +814,44 @@ SELECT * from sushi.items
 WHERE ds BETWEEN @start_ds AND @end_ds AND
    price IS NULL;
 ```
+
+**Use this sparingly!** Skipped audits won't run, which means they won't catch problems. It's better to fix the underlying issue than to skip the audit. But sometimes you need it for debugging or temporary situations.
+
+## Troubleshooting
+
+### Audit Fails Unexpectedly
+
+**Problem:** Your audit is failing, but you're not sure why.
+
+**Solution:** Run the audit query manually to see what it's finding:
+
+```bash
+vulcan -p project audit --start 2022-01-01 --end 2022-01-02 --verbose
+```
+
+This will show you the exact query and the rows that failed. Once you see what data is causing the failure, you can either fix the data or adjust the audit.
+
+### Audit Too Strict
+
+**Problem:** Your audit is failing during normal operation, even though the data is actually fine.
+
+**Solution:** Review your thresholds. Maybe your `accepted_range` is too narrow, or your `number_of_rows` threshold is too high. Statistical audits especially need tuning—start with wide ranges and tighten them as you learn what's normal.
+
+### Performance Issues
+
+**Problem:** Audits are slowing down your plan execution.
+
+**Solution:** 
+- Make sure your audit queries use indexes on the columns they're checking
+- For incremental models, audits only run on processed intervals (which helps), but you can also add date filters to your audit queries
+- Consider if you really need all those audits—sometimes less is more
+
+### Understanding Audit Results
+
+When an audit fails, Vulcan shows you:
+- Which audit failed
+- Which model it was attached to
+- The exact query that was run
+- How many rows were returned (when it expected 0)
+
+Use this information to understand what went wrong. The query results tell you exactly what data failed the check.

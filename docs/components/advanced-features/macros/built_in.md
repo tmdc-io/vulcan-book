@@ -2,19 +2,17 @@
 
 ## Macro systems: two approaches
 
-Vulcan macros behave differently than those of templating systems like [Jinja](https://jinja.palletsprojects.com/en/3.1.x/).
+Vulcan macros work differently than templating systems like [Jinja](https://jinja.palletsprojects.com/en/3.1.x/). Here's the key difference: templating systems are all about string substitution—they scan your code, find special characters, and replace them with other text. That's their whole job.
 
-Macro systems are based on string substitution. The macro system scans code files, identifies special characters that signify macro content, and replaces the macro elements with other text.
+Templating systems are intentionally language-agnostic. They work for blog posts, HTML, SQL, or pretty much anything. They have control flow (if-then, loops) and other features, but those are just tools to help them substitute the right strings.
 
-In a general sense, that is the entire functionality of templating systems. They have tools that provide control flow logic (if-then) and other functionality, but *that functionality is solely to support substituting in the correct strings*.
+Vulcan macros are different. They're built specifically for SQL, and they understand what your SQL actually means. Instead of just swapping strings, Vulcan macros analyze your SQL using the [sqlglot](https://github.com/tobymao/sqlglot) library to build a semantic representation of your query. Then they modify that representation. This means they can do things templating systems can't—like knowing whether something is a column name or a string literal, or understanding the structure of your query.
 
-Templating systems are intentionally agnostic to the programming language being templated, and most of them work for everything from blog posts to HTML to SQL.
+Plus, you can write macro logic in Python, which gives you way more power than simple string substitution.
 
-In contrast, Vulcan macros are designed specifically for generating SQL code. They have *semantic understanding* of the SQL code being created by analyzing it with the Python [sqlglot](https://github.com/tobymao/sqlglot) library, and they allow use of Python code so users can tidily implement sophisticated macro logic.
+### How Vulcan macros work
 
-### Vulcan macro approach
-
-This section describes how Vulcan macros work under the hood. Feel free to skip over this section and return if and when it is useful. This information is **not** required to use Vulcan macros, but it will be useful for debugging any macros exhibiting puzzling behavior.
+This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's super helpful when you're debugging something that's not working as expected. Feel free to skip it and come back later if you need to.
 
 The critical distinction between the Vulcan macro approach and templating systems is the role string substitution plays. In templating systems, string substitution is the entire and only point.
 
@@ -94,19 +92,21 @@ SELECT @{my_variable} AS the_column; -- renders to SELECT col AS the_column
 
 ## User-defined variables
 
-Vulcan supports four kinds of user-defined macro variables: [global](#global-variables), [gateway](#gateway-variables), [blueprint](#blueprint-variables) and [local](#local-variables).
+Vulcan supports four kinds of user-defined macro variables: [global](#global-variables), [gateway](#gateway-variables), [blueprint](#blueprint-variables), and [local](#local-variables).
 
-Global and gateway macro variables are defined in the project configuration file and can be accessed in any project model. Blueprint and macro variables are defined in a model definition and can only be accessed in that model.
+Here's how they're organized:
+- **Global and gateway variables** are defined in your project configuration file and can be used in any model
+- **Blueprint and local variables** are defined in a specific model and only work in that model
 
-Macro variables with the same name may be specified at any or all of the global, gateway, blueprint and local levels. When variables are specified at multiple levels, the value of the most specific level takes precedence. For example, the value of a local variable takes precedence over the value of a blueprint or gateway variable with the same name, and the value of a gateway variable takes precedence over the value of a global variable.
+What happens if you have variables with the same name at different levels? The most specific one wins. Local variables override blueprint or gateway variables, gateway variables override global variables, and so on. This lets you set defaults globally but override them when needed.
 
 ### Global variables
 
-Global variables are defined in the project configuration file [`variables` key](../../reference/configuration.md#variables).
+Global variables live in your project configuration file under the [`variables` key](../../reference/configuration.md#variables). They're perfect for values you want to use across multiple models.
 
-Global variable values may be any of the following data types or lists or dictionaries containing these types: `int`, `float`, `bool`, `str`.
+You can store numbers (`int`, `float`), booleans (`bool`), strings (`str`), or even lists and dictionaries containing these types.
 
-Access global variable values in a model definition using the `@<VAR_NAME>` macro or the `@VAR()` macro function. The latter function requires the name of the variable _in single quotes_ as the first argument and an optional default value as the second argument. The default value is a safety mechanism used if the variable name is not found in the project configuration file.
+Access them in your models using either `@VAR_NAME` (the simple syntax) or `@VAR('var_name')` (the function syntax). The function syntax is handy because you can provide a default value as the second argument—useful if the variable might not be defined.
 
 For example, this Vulcan configuration key defines six variables of different data types:
 
@@ -370,11 +370,11 @@ SELECT container_id, @container_volume((cont_di / 2), cont_hi) AS volume
 
 ## Macro operators
 
-Vulcan's macro system has multiple operators that allow different forms of dynamic behavior in models.
+Vulcan's macro system comes with a bunch of operators that let you add dynamic behavior to your models. These are the built-in tools that make your SQL adapt to different situations.
 
 ### @EACH
 
-`@EACH` is used to transform a list of items by applying a function to each of them, analogous to a `for` loop.
+`@EACH` is like a `for` loop for your SQL. It takes a list of items and applies a function to each one, transforming them into whatever you need.
 
 ??? info "Learn more about `for` loops and `@EACH`"
 
@@ -522,21 +522,19 @@ This syntax works regardless of whether the array values are quoted or not.
 
 !!! note "Embedding macros in strings"
 
-    Vulcan macros support placing macro values at the end of a column name using `column_@x`.
-
-    However, if you wish to substitute the variable anywhere else in the identifier, you need to use the more explicit curly brace syntax `@{}` to avoid ambiguity. For example, these are valid uses: `@{x}_column` or `my_@{x}_column`.
+    You can put macro values at the end of a column name using `column_@x`, but if you want to put the variable anywhere else in the identifier, use curly braces `@{}` to avoid confusion. For example: `@{x}_column` or `my_@{x}_column` work great.
 
     Learn more about embedding macros in strings [above](#embedding-variables-in-strings)
 
 ### @IF
 
-Vulcan's `@IF` macro allows components of a SQL query to change based on the result of a logical condition.
+`@IF` lets you conditionally include parts of your SQL based on a logical condition. It's like an if-then statement, but for your query.
 
-It includes three elements:
+It has three parts:
 
-1. A logical condition that evaluates to `TRUE` or `FALSE`
-2. A value to return if the condition is `TRUE`
-3. A value to return if the condition is `FALSE` [optional]
+1. A condition that evaluates to `TRUE` or `FALSE` (written in SQL)
+2. What to return if the condition is `TRUE`
+3. What to return if the condition is `FALSE` (this is optional—if you omit it and the condition is false, nothing gets included)
 
 These elements are specified as:
 
@@ -1470,12 +1468,12 @@ LIMIT 10
 
 ## User-defined macro functions
 
-User-defined macro functions allow the same macro code to be used in multiple models.
+Macro functions let you write reusable logic that you can call from multiple models. Instead of copying the same code everywhere, you define it once and reuse it.
 
-Vulcan supports user-defined macro functions written in two languages - SQL and Python:
+Vulcan supports macro functions in two languages:
 
-- SQL macro functions must use the [Jinja templating system](./jinja_macros.md#user-defined-macro-functions).
-- Python macro functions use the SQLGlot library to allow more complex operations than macro variables and operators provide alone.
+- **SQL functions** use the [Jinja templating system](./jinja.md#user-defined-macro-functions)
+- **Python functions** use SQLGlot and give you way more power—you can do complex operations that go beyond what variables and operators can handle alone
 
 ### Python macro functions
 
@@ -1963,9 +1961,9 @@ def print_message(evaluator, message):
   print(message)
 ```
 
-### Typed Macros
+### Typed macros
 
-Typed macros in Vulcan bring the power of type hints from Python, enhancing readability, maintainability, and usability of your SQL macros. These macros enable developers to specify expected types for arguments, making the macros more intuitive and less error-prone.
+Typed macros bring Python's type hinting to your SQL macros. By specifying what types your macro expects, you make your code more readable, easier to maintain, and less prone to errors. Plus, IDEs can give you better autocomplete and catch mistakes before you run your code.
 
 #### Benefits of Typed Macros
 
@@ -2119,4 +2117,4 @@ Typed macros in Vulcan not only enhance the development experience by making mac
 
 ## Mixing macro systems
 
-Vulcan supports both Vulcan and [Jinja](./jinja_macros.md) macro systems. We strongly recommend using only one system in a model - if both are present, they may fail or behave in unintuitive ways.
+Vulcan supports both Vulcan macros and [Jinja macros](./jinja.md), but we strongly recommend picking one system per model. If you mix them, things can get confusing or break in unexpected ways. Pick the one that fits your needs and stick with it.

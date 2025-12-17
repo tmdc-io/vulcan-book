@@ -1,22 +1,21 @@
 # Jinja
 
-Vulcan supports macros from the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating system.
+Vulcan supports macros from the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating system. If you're already familiar with Jinja (maybe from dbt or other tools), you'll feel right at home here.
 
-Jinja's macro approach is pure string substitution. Unlike Vulcan macros, they assemble SQL query text without building a semantic representation.
+Jinja works differently than Vulcan's native macros. While Vulcan macros understand the semantic structure of your SQL, Jinja macros are pure string substitution—they assemble SQL text by replacing placeholders, without building a semantic representation of the query.
 
-**NOTE:** Vulcan projects support the standard Jinja function library only - they do **not** support dbt-specific jinja functions like `{{ ref() }}`. dbt-specific functions are allowed in dbt projects being run with the Vulcan adapter.
+!!! note "dbt compatibility"
+    Vulcan supports the standard Jinja function library, but **not** dbt-specific functions like `{{ ref() }}`. If you're working with a dbt project using the Vulcan adapter, dbt-specific functions will work there, but not in native Vulcan projects.
 
-## Basics
+## The basics
 
-Jinja uses curly braces `{}` to differentiate macro from non-macro text. It uses the second character after the left brace to determine what the text inside the braces will do.
+Jinja uses curly braces `{}` to mark macro code. The second character after the opening brace tells Jinja what to do:
 
-The three curly brace symbols are:
+- `{{...}}` - **Expressions**: These get replaced with values in your rendered SQL. Use them for variables and function calls.
+- `{%...%}` - **Statements**: These control flow and logic. Use them for `if` statements, `for` loops, and setting variables.
+- `{#...#}` - **Comments**: These are stripped out and won't appear in your final SQL.
 
-- `{{...}}` creates Jinja expressions. Expressions are replaced by text that is incorporated into the rendered SQL query; they can contain macro variables and functions.
-- `{%...%}` creates Jinja statements. Statements give instructions to Jinja, such as setting variable values, control flow with `if`, `for` loops, and defining macro functions.
-- `{#...#}` creates Jinja comments. These comments will not be included in the rendered SQL query.
-
-Since Jinja strings are not syntactically valid SQL expressions and cannot be parsed as such, the model query must be wrapped in a special `JINJA_QUERY_BEGIN; ...; JINJA_END;` block in order for Vulcan to detect it:
+Since Jinja syntax isn't valid SQL, you need to wrap your Jinja queries in special blocks so Vulcan knows to process them. For queries, use `JINJA_QUERY_BEGIN; ...; JINJA_END;`:
 
 ```sql linenums="1" hl_lines="5 9"
 MODEL (
@@ -30,7 +29,7 @@ SELECT {{ 1 + 1 }};
 JINJA_END;
 ```
 
-Similarly, to use Jinja expressions as part of statements that should be evaluated before or after the model query, the `JINJA_STATEMENT_BEGIN; ...; JINJA_END;` block should be used:
+For pre/post-statements (code that runs before or after your query), use `JINJA_STATEMENT_BEGIN; ...; JINJA_END;`:
 
 ```sql linenums="1"
 MODEL (
@@ -50,15 +49,11 @@ JINJA_STATEMENT_BEGIN;
 JINJA_END;
 ```
 
-## Vulcan predefined variables
+## Using Vulcan's predefined variables
 
-Vulcan provides multiple [predefined macro variables](./macro_variables.md) you may reference in jinja code.
+You can use all of Vulcan's [predefined macro variables](./variables.md) in your Jinja code. Some give you information about the Vulcan project itself (like `runtime_stage` or `this_model`), while others are temporal (like `start_ds` and `execution_date` for incremental models).
 
-Some predefined variables provide information about the Vulcan project itself, like the [`runtime_stage`](./macro_variables.md#runtime-variables) and [`this_model`](./macro_variables.md#runtime-variables) variables.
-
-Other predefined variables are [temporal](./macro_variables.md#temporal-variables), like `start_ds` and `execution_date`. They are used to build incremental model queries and are only available in incremental model kinds.
-
-Access predefined macro variables by passing their unquoted name in curly braces. For example, this demonstrates how to access the `start_ds` and `end_ds` variables:
+Access them by putting the variable name (unquoted) inside curly braces:
 
 ```sql linenums="1"
 JINJA_QUERY_BEGIN;
@@ -70,25 +65,19 @@ WHERE time_column BETWEEN '{{ start_ds }}' and '{{ end_ds }}';
 JINJA_END;
 ```
 
-Because the two macro variables return string values, we must surround the curly braces with single quotes `'`. Other macro variables, such as `start_epoch`, return numeric values and do not require the single quotes.
+Notice the single quotes around the variable references? That's because `start_ds` and `end_ds` return string values. For numeric variables like `start_epoch`, you wouldn't need the quotes.
 
-The `gateway` variable uses a slightly different syntax than other predefined variables because it is a function call. Instead of the bare name `{{ gateway }}`, it must include parentheses: `{{ gateway() }}`.
+One special case: the `gateway` variable is a function call, so you need parentheses: `{{ gateway() }}` instead of just `{{ gateway }}`.
 
 ## User-defined variables
 
-Vulcan supports two kinds of user-defined macro variables: global and local.
-
-Global macro variables are defined in the project configuration file and can be accessed in any project model.
-
-Local macro variables are defined in a model definition and can only be accessed in that model.
+Beyond the predefined variables, you can create your own. Vulcan supports global variables (defined in your project config) and local variables (defined in a specific model).
 
 ### Global variables
 
-Learn more about defining global variables in the [Vulcan macros documentation](./vulcan_macros.md#global-variables).
+Global variables are defined in your project configuration file and can be used in any model. Learn more about setting them up in the [Vulcan macros documentation](./built_in.md#global-variables).
 
-Access global variable values in a model definition using the `{{ var() }}` jinja function. The function requires the name of the variable _in single quotes_ as the first argument and an optional default value as the second argument. The default value is a safety mechanism used if the variable name is not found in the project configuration file.
-
-For example, a model would access a global variable named `int_var` like this:
+Access them using the `{{ var() }}` function. Pass the variable name (in single quotes) as the first argument, and optionally a default value as the second:
 
 ```sql linenums="1"
 JINJA_QUERY_BEGIN;
@@ -100,9 +89,7 @@ WHERE int_variable = {{ var('int_var') }};
 JINJA_END;
 ```
 
-A default value can be passed as a second argument to the `{{ var() }}` jinja function, which will be used as a fallback value if the variable is missing from the configuration file.
-
-In this example, the `WHERE` clause would render to `WHERE some_value = 0` if no variable named `missing_var` was defined in the project configuration file:
+If the variable might not exist, provide a default:
 
 ```sql linenums="1"
 JINJA_QUERY_BEGIN;
@@ -114,17 +101,17 @@ WHERE some_value = {{ var('missing_var', 0) }};
 JINJA_END;
 ```
 
+If `missing_var` isn't defined, this will use `0` as the fallback value.
+
 ### Gateway variables
 
-Like global variables, gateway variables are defined in the project configuration file. However, they are specified in a specific gateway's `variables` key. Learn more about defining gateway variables in the [Vulcan macros documentation](./vulcan_macros.md#gateway-variables).
+Gateway variables work just like global variables, but they're defined in a specific gateway's configuration. They take precedence over global variables with the same name. Learn more in the [Vulcan macros documentation](./built_in.md#gateway-variables).
 
-Access gateway variables in models using the same methods as [global variables](#global-variables).
-
-Gateway-specific variable values take precedence over variables with the same name specified in the configuration file's root `variables` key.
+Access them the same way as global variables using `{{ var() }}`.
 
 ### Blueprint variables
 
-Blueprint variables are defined as a property of the `MODEL` statement, and serve as a mechanism for [creating model templates](../models/sql_models.md):
+Blueprint variables let you create model templates. They're defined in the `MODEL` block and can be used to generate multiple models from one template:
 
 ```sql linenums="1"
 MODEL (
@@ -144,12 +131,11 @@ FROM {{ blueprint_var('customer') }}.some_source
 JINJA_END;
 ```
 
-Blueprint variables can be accessed using the `{{ blueprint_var() }}` macro function, which also supports specifying default values in case the variable is undefined (similar to `{{ var() }}`).
-
+Use `{{ blueprint_var() }}` to access them, with an optional default value just like `{{ var() }}`.
 
 ### Local variables
 
-Define your own variables with the Jinja statement `{% set ... %}`. For example, we could specify the name of the `num_orders` column in the `vulcan_example.full_model` like this:
+Define variables that are only available in the current model using `{% set ... %}`:
 
 ```sql linenums="1"
 MODEL (
@@ -173,33 +159,39 @@ GROUP BY item_id
 JINJA_END;
 ```
 
-Note that the Jinja set statement is written after the `MODEL` statement and before the SQL query.
+The `{% set %}` statement goes after the `MODEL` block and before your SQL query.
 
-Jinja variables can be string, integer, or float data types. They can also be an iterable data structure, such as a list, tuple, or dictionary. Each of these data types and structures supports multiple [Python methods](https://jinja.palletsprojects.com/en/3.1.x/templates/#python-methods), such as the `upper()` method for strings.
+Jinja variables can be strings, numbers, or even complex data structures like lists, tuples, or dictionaries. They support Python methods too—so you can call `.upper()` on strings, iterate over lists, and so on.
 
-## Macro operators
+## Control flow
 
-### Control flow operators
+Jinja gives you control flow operators to make your SQL dynamic.
 
-#### for loops
+### For loops
 
-For loops let you iterate over a collection of items to condense repetitive code and easily change the values used by the code.
+For loops let you iterate over collections to generate repetitive SQL. They start with `{% for ... %}` and end with `{% endfor %}`.
 
-Jinja for loops begin with `{% for ... %}` and end with `{% endfor %}`. This example demonstrates creating indicator variables with `CASE WHEN` using a Jinja for loop:
+Here's an example that creates indicator columns for different vehicle types:
 
 ```sql linenums="1"
+JINJA_QUERY_BEGIN;
+
 SELECT
-  {% for vehicle_type in ['car', 'truck', 'bus']}
+  {% for vehicle_type in ['car', 'truck', 'bus'] %}
     CASE WHEN user_vehicle = '{{ vehicle_type }}' THEN 1 ELSE 0 END as vehicle_{{ vehicle_type }},
   {% endfor %}
 FROM table
+
+JINJA_END;
 ```
 
-Note that the `vehicle_type` values are quoted in the list `['car', 'truck', 'bus']`. Jinja removes those quotes during processing, so the reference `'{{ vehicle_type }}` in the `CASE WHEN` statement must be in quotes. The reference `vehicle_{{ vehicle_type }}` does not require quotes.
+A few things to notice:
+- The values in the list are quoted: `['car', 'truck', 'bus']`
+- When you use `{{ vehicle_type }}` in the `CASE WHEN`, you need quotes around it: `'{{ vehicle_type }}'`
+- When you use it in an identifier name like `vehicle_{{ vehicle_type }}`, no quotes needed
+- There's a trailing comma after the `CASE WHEN` line—Vulcan's semantic understanding will remove it automatically
 
-Also note that a comma is present at the end of the `CASE WHEN` line. Trailing commas are not valid SQL and would normally require special handling, but Vulcan's semantic understanding of the query allows it to identify and remove the offending comma.
-
-The example renders to this after Vulcan processing:
+This renders to:
 
 ```sql linenums="1"
 SELECT
@@ -209,29 +201,35 @@ SELECT
 FROM table
 ```
 
-In general, it is a best practice to define lists of values separately from their use. We could do that like this:
+It's usually better to define your lists separately:
 
 ```sql linenums="1"
+JINJA_QUERY_BEGIN;
+
 {% set vehicle_types = ['car', 'truck', 'bus'] %}
 
 SELECT
-  {% for vehicle_type in vehicle_types }
+  {% for vehicle_type in vehicle_types %}
     CASE WHEN user_vehicle = '{{ vehicle_type }}' THEN 1 ELSE 0 END as vehicle_{{ vehicle_type }},
   {% endfor %}
 FROM table
+
+JINJA_END;
 ```
 
-The rendered query would be the same as before.
+Same result, but easier to maintain.
 
-#### if
+### If statements
 
-if statements allow you to take an action (or not) based on some condition.
+If statements let you conditionally include SQL based on some condition. They start with `{% if ... %}` and end with `{% endif %}`.
 
-Jinja if statements begin with `{% if ... %}` and end with `{% endif %}`. The starting `if` statement must contain code that evaluates to `True` or `False`. For example, all of `True`, `1 + 1 == 2`, and `'a' in ['a', 'b']` evaluate to `True`.
+The condition needs to evaluate to `True` or `False`. Things like `True`, `1 + 1 == 2`, or `'a' in ['a', 'b']` all work.
 
-As an example, you might want a model to only include a column if the model was being run for testing purposes. We can do that by setting a variable indicating whether it's a testing run that determines whether the query includes `testing_column`:
+Here's an example that conditionally includes a testing column:
 
 ```sql linenums="1"
+JINJA_QUERY_BEGIN;
+
 {% set testing = True %}
 
 SELECT
@@ -240,9 +238,11 @@ SELECT
     testing_column
   {% endif %}
 FROM table
+
+JINJA_END;
 ```
 
-Because `testing` is `True`, the rendered query would be:
+Since `testing` is `True`, this renders to:
 
 ```sql linenums="1"
 SELECT
@@ -253,13 +253,9 @@ FROM table
 
 ## User-defined macro functions
 
-User-defined macro functions allow the same macro code to be used in multiple models.
+Macro functions let you reuse code across multiple models. Define them in `.sql` files in your project's `macros` directory (you can put multiple functions in one file or split them up).
 
-Jinja macro functions should be placed in `.sql` files in the Vulcan project's `macros` directory. Multiple functions can be defined in one `.sql` file, or they can be distributed across multiple files.
-
-Jinja macro functions are defined with the `{% macro %}` and `{% endmacro %}` statements. The macro function name and arguments are specified in the `{% macro %}` statement.
-
-For example, a macro function named `print_text` that takes no arguments could be defined with:
+Define a function with `{% macro %}` and `{% endmacro %}`:
 
 ```sql linenums="1"
 {% macro print_text() %}
@@ -267,9 +263,9 @@ text
 {% endmacro %}
 ```
 
-This macro function would be called in a SQL model with `{{ print_text() }}`, which would be substituted with `text`" in the rendered query.
+Call it in your model with `{{ print_text() }}`, and it gets replaced with `text`.
 
-Macro function arguments are placed in the parentheses next to the macro name. For example, this macro generates a SQL column with an alias based on the arguments `expression` and `alias`:
+Functions can take arguments:
 
 ```sql linenums="1"
 {% macro alias(expression, alias) %}
@@ -277,16 +273,20 @@ Macro function arguments are placed in the parentheses next to the macro name. F
 {% endmacro %}
 ```
 
-We might call this macro function in a SQL query like this:
+Use it like this:
 
 ```sql linenums="1"
+JINJA_QUERY_BEGIN;
+
 SELECT
   item_id,
   {{ alias('item_id', 'item_id2')}}
 FROM table
+
+JINJA_END;
 ```
 
-After processing, it would render to this:
+This renders to:
 
 ```sql linenums="1"
 SELECT
@@ -295,18 +295,22 @@ SELECT
 FROM table
 ```
 
-Note that both argument values are quoted in the call `alias('item_id', 'item_id2')` but are not quoted in the rendered query. During the rendering process, Vulcan uses its semantic understanding of the query to build the rendered text - it recognizes that the first argument is a column name and that column aliases are unquoted by default.
+Notice that even though you quoted the arguments in the function call, they're not quoted in the output. Vulcan's semantic understanding recognizes that `item_id` is a column name and handles it appropriately.
 
-In that example, the SQL query selects the column `item_id` with the alias `item_id2`. If instead we wanted to select the *string* `'item_id'` with the name `item_id2`, we would pass the `expression` argument with double quotes around it: `"'item_id'"`:
+If you want to select a string literal instead of a column, use double quotes around the string in the function call:
 
 ```sql linenums="1"
+JINJA_QUERY_BEGIN;
+
 SELECT
   item_id,
   {{ alias("'item_id'", 'item_id2')}}
 FROM table
+
+JINJA_END;
 ```
 
-After processing, it would render to this:
+This renders to:
 
 ```sql linenums="1"
 SELECT
@@ -315,12 +319,10 @@ SELECT
 FROM table
 ```
 
-The double quotes around `"'item_id'"` signal to Vulcan that it is not a column name.
-
-Some SQL dialects interpret double and single quotes differently. We could replace the rendered single quoted `'item_id'` with double quoted `"item_id"` in the previous example by switching the placement of quotes in the macro function call. Instead of `alias("'item_id'", 'item_id2')` we would use `alias('"item_id"', 'item_id2')`.
+The double quotes tell Vulcan "this is a string literal, not a column name." You can also use `'"item_id"'` if you want double quotes in the output (useful for some SQL dialects).
 
 ## Mixing macro systems
 
-Vulcan supports both the Jinja and [Vulcan](./vulcan_macros.md) macro systems. We strongly recommend using only one system in a single model - if both are present, they may fail or behave in unintuitive ways.
+Vulcan supports both Jinja and [Vulcan macros](./built_in.md), but we strongly recommend picking one system per model. Mixing them can lead to confusing behavior or errors.
 
-[Predefined Vulcan macro variables](./macro_variables.md) can be used in a query containing user-defined Jinja variables and functions. However, predefined variables passed as arguments to a user-defined Jinja macro function must use the Jinja curly brace syntax `{{ start_ds }}` instead of the Vulcan macro `@` prefix syntax `@start_ds`. Note that curly brace syntax may require quoting to generate the equivalent of the `@` syntax.
+You can use [predefined Vulcan macro variables](./variables.md) in Jinja queries, but if you're passing them as arguments to a Jinja macro function, use the Jinja syntax `{{ start_ds }}` instead of the Vulcan `@start_ds` syntax. You may need to add quotes depending on what you're doing.

@@ -1,8 +1,10 @@
 # Semantic Models
 
-Semantic models map physical Vulcan models to business concepts, providing business-friendly names and exposing analytical capabilities through dimensions, measures, segments, and joins.
+Semantic models are your bridge between technical data structures and business understanding. They take your physical Vulcan models (the tables and columns in your database) and map them to business concepts that make sense to analysts, product managers, and other non-technical users.
 
-## What are Semantic Models?
+Think of semantic models as a translation layer. Your database might have tables named `dim_customers` or `fact_orders` (technical naming), but your semantic layer can expose them as `customers` and `orders` (business-friendly naming). More importantly, semantic models define what you can actually do with the data—dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.
+
+## What are semantic models?
 
 Semantic models bridge the gap between technical table structures and business understanding:
 
@@ -10,9 +12,11 @@ Semantic models bridge the gap between technical table structures and business u
 - **Provide business aliases**: Hide technical naming (like `dim_customers` or `fact_orders`) behind consumer-friendly names
 - **Expose analytical capabilities**: Define dimensions, measures, segments, and joins for each model
 
-## Basic Structure
+They're the foundation of your semantic layer—everything else (business metrics, semantic queries) builds on top of semantic models.
 
-A semantic model maps a physical Vulcan model to a semantic representation:
+## Basic structure
+
+A semantic model maps a physical Vulcan model to a semantic representation. Here's the basic structure:
 
 ```yaml
 models:
@@ -25,14 +29,15 @@ models:
     joins: {...}         # Optional: relationships to other models
 ```
 
+The physical model name (`analytics.customers`) is the key, and everything else defines how it appears in the semantic layer.
+
 ## Dimensions
 
-Dimensions are attributes for grouping and filtering:
+Dimensions are attributes you use for grouping and filtering. They answer "by what?" questions—like "revenue by customer tier" or "orders by country."
 
-- **Automatically exposed**: All columns from your Vulcan model become dimensions automatically
-- **Answer "by what?" questions**: Use dimensions to slice and dice your data
-- **Examples**: `customer_tier`, `country`, `order_date`, `product_category`
-- **Enhancements**: Add granularities to time dimensions for cohort analysis and time-based grouping
+**The good news:** All columns from your Vulcan model automatically become dimensions. You don't have to define them manually unless you want to control which ones are exposed or add enhancements.
+
+Here's how you can control dimensions:
 
 ```yaml
 # All columns from analytics.customers automatically become dimensions:
@@ -59,13 +64,13 @@ dimensions:
           description: "Quarterly cohorts"
 ```
 
+Use `excludes` to hide sensitive or internal columns. Use `enhancements` to add time granularities for cohort analysis—super useful for subscription or signup dates.
+
 ## Measures
 
-Measures are aggregated calculations:
+Measures are aggregated calculations that answer "how much?" or "how many?" questions. They're what you use to calculate totals, averages, counts, and other aggregations.
 
-- **Answer "how much?" or "how many?" questions**: Calculate totals, averages, counts, etc.
-- **SQL expressions**: Use aggregations like `SUM(amount)`, `COUNT(*)`, `AVG(value)`
-- **Examples**: `total_revenue`, `customer_count`, `avg_order_value`
+You define measures using SQL expressions with aggregations like `SUM()`, `COUNT()`, `AVG()`, etc.:
 
 ```yaml
 measures:
@@ -89,13 +94,15 @@ measures:
     description: "Number of active customers"
 ```
 
+Notice the curly braces around column references like `{customers.amount}`? That's the semantic reference syntax. We'll talk more about that in the best practices section.
+
+Measures can have filters (like `active_customers` above), which let you calculate metrics on subsets of data. They can also have formatting hints (like `currency`) to help visualization tools display them correctly.
+
 ## Segments
 
-Segments are reusable filter conditions:
+Segments are reusable filter conditions that answer "which ones?" questions. They define meaningful subsets of your data that you can use across multiple queries and metrics.
 
-- **Answer "which ones?" questions**: Define meaningful subsets of data
-- **Reusable filters**: Use segments across multiple queries and metrics
-- **Examples**: `active_customers`, `high_value`, `recent_signups`
+Think of segments as saved filters. Instead of writing `WHERE status = 'active'` every time, you define an `active_customers` segment once and reuse it:
 
 ```yaml
 segments:
@@ -112,13 +119,13 @@ segments:
     description: "Customers who signed up in last 30 days"
 ```
 
+Segments make your semantic layer more consistent—everyone uses the same definition of "active customers" or "high value," so there's no confusion about what those terms mean.
+
 ## Joins
 
-Joins define relationships between semantic models:
+Joins define relationships between semantic models. They're what enable cross-model analysis—like combining order data with customer data or product data.
 
-- **Connect models**: Enable cross-model analysis
-- **Relationship types**: `one_to_one`, `one_to_many`, `many_to_one`
-- **Examples**: `orders → customers`, `orders → products`
+You define the relationship type (`one_to_one`, `one_to_many`, `many_to_one`) and the join expression:
 
 ```yaml
 joins:
@@ -133,11 +140,13 @@ joins:
     description: "Ordered product"
 ```
 
-## Cross-Model Analysis
+The relationship type helps Vulcan understand the cardinality, which is important for aggregations and preventing double-counting. The expression is the actual SQL join condition, using semantic references with curly braces.
 
-Once models are joined, you can reference columns and measures from other models in your current model's definitions.
+## Cross-model analysis
 
-### Referencing Joined Model Fields
+Once you've defined joins, you can reference columns and measures from other models in your current model's definitions. This is where semantic models really shine—you can build complex analytical definitions that span multiple models.
+
+### Referencing joined model fields
 
 You can use columns from joined models in measure expressions and filters:
 
@@ -149,12 +158,13 @@ measures:
     filters:
       - "{customers.customer_tier} = 'Enterprise'"
     description: "Revenue from Enterprise customers"
-  
 ```
 
-### Proxy Dimensions
+Even though `enterprise_revenue` is defined on the `orders` model, it filters by `customers.customer_tier` from the joined `customers` model. Vulcan handles the join logic automatically.
 
-Proxy dimensions expose measures from joined models as dimensions on the current model, enabling you to filter and group by aggregated values from other models.
+### Proxy dimensions
+
+Proxy dimensions let you expose measures from joined models as dimensions on the current model. This is useful when you want to filter or group by aggregated values from other models:
 
 ```yaml
 dimensions:
@@ -169,10 +179,13 @@ dimensions:
 **Requirements:**
 - The referenced model must be joined to the current model
 - The measure must exist on the target model
-- Format: `model_alias.measure_name`
+- Use the format `model_alias.measure_name`
 
+Proxy dimensions are powerful—they let you analyze one model using aggregated values from another model, all without writing complex SQL.
 
-## Complete Example
+## Complete example
+
+Here's a complete semantic model definition that brings it all together:
 
 ```yaml
 models:
@@ -222,9 +235,17 @@ models:
         description: "Customer's orders"
 ```
 
-## Best Practices
+This semantic model:
+- Exposes customer dimensions (with some exclusions and enhancements)
+- Defines customer measures (total and active counts)
+- Creates reusable segments (active and high-value customers)
+- Joins to orders for cross-model analysis
 
-### Use Business-Friendly Aliases
+## Best practices
+
+### Use business-friendly aliases
+
+Your aliases should make sense to business users, not just developers:
 
 ```yaml
 # ✅ Good: Consumer-friendly
@@ -237,7 +258,11 @@ alias: dim_customers
 alias: fact_orders
 ```
 
-### Design Models with Semantics in Mind
+The whole point of semantic models is to hide technical complexity. Don't bring it back with technical naming!
+
+### Design models with semantics in mind
+
+When you're building your Vulcan models, think about how they'll be used semantically:
 
 ```sql
 -- ✅ Good: Clean column names, business-friendly
@@ -250,7 +275,11 @@ SELECT
 FROM raw.customers;
 ```
 
-### Document Business Logic
+Clean, descriptive column names make semantic models easier to build and use. Avoid abbreviations and technical jargon.
+
+### Document business logic
+
+Add descriptions and metadata to help people understand what measures and segments mean:
 
 ```yaml
 measures:
@@ -263,9 +292,11 @@ measures:
       calculation_method: "Sum of order amounts excluding refunds"
 ```
 
-### Use Curly Braces for References
+The `meta` section is perfect for business context, ownership, calculation details, and other information that helps people understand and trust the metric.
 
-When referencing any column or measure anywhere in your semantic model definitions, always use curly braces `{}` as a best practice:
+### Use curly braces for references
+
+When referencing any column or measure anywhere in your semantic model definitions, always use curly braces `{}`:
 
 ```yaml
 # ✅ Good: Use curly braces for all references
@@ -291,24 +322,27 @@ joins:
 ```
 
 **Why use curly braces?**
-- ✅ Clear distinction between semantic references and SQL functions
-- ✅ Consistent syntax across all semantic model definitions
-- ✅ Prevents ambiguity in complex expressions
-- ✅ Required for cross-model references (e.g., `{customers.customer_tier}`)
+- Clear distinction between semantic references and SQL functions
+- Consistent syntax across all semantic model definitions
+- Prevents ambiguity in complex expressions
+- Required for cross-model references (e.g., `{customers.customer_tier}`)
+
+It's a best practice that makes your semantic models more maintainable and less error-prone.
 
 ## Validation
 
-Vulcan automatically validates semantic model definitions during `plan` creation:
+Vulcan automatically validates semantic model definitions when you create a plan. It checks:
 
-- ✅ All column references in measures exist
-- ✅ All column references in segments exist
-- ✅ Join expressions reference valid columns
-- ✅ Cross-model references have valid join paths
-- ✅ Semantic aliases are properly defined
+- All column references in measures exist
+- All column references in segments exist
+- Join expressions reference valid columns
+- Cross-model references have valid join paths
+- Semantic aliases are properly defined
 
-## Next Steps
+If something's wrong, you'll know about it before you try to use the semantic layer. This catches errors early and keeps your semantic models reliable.
 
-- Learn about [Business Metrics](metrics.md) that combine measures with time and dimensions
+## Next steps
+
+- Learn about [Business Metrics](business_metrics.md) that combine measures with time and dimensions
 - Explore semantic model examples in your project's `semantics/` directory
-- See the [Semantics Overview](index.md) for the complete picture
-
+- See the [Semantics Overview](overview.md) for the complete picture

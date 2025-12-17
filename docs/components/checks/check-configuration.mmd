@@ -1,0 +1,45 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#c92a2a','lineColor':'#495057','secondaryColor':'#4dabf7','tertiaryColor':'#51cf66'}}}%%
+
+%% Check Configuration Structure
+%% Shows how YAML config maps to execution
+
+flowchart TD
+    subgraph "Configuration Structure"
+        YAMLFile[checks/customers.yml] --> |Parse| Structure[YAML Structure]
+        
+        Structure --> Table[Table: analytics.customers]
+        
+        Table --> Filter[Optional Filter<br/>status = 'active']
+        Table --> Dimensions[Quality Dimensions]
+        
+        Dimensions --> D1[completeness]
+        Dimensions --> D2[validity]
+        Dimensions --> D3[uniqueness]
+        
+        D1 --> Check1[Check 1:<br/>missing_count email = 0]
+        D1 --> Check2[Check 2:<br/>row_count > 1000]
+        
+        D2 --> Check3[Check 3:<br/>failed rows SQL]
+        
+        D3 --> Check4[Check 4:<br/>duplicate_count id = 0]
+        
+        Check1 --> Attr1[Attributes:<br/>name, description, severity]
+        Check2 --> Attr2[Attributes:<br/>name, description]
+        Check3 --> Attr3[Attributes:<br/>name, samples_limit]
+        Check4 --> Attr4[Attributes:<br/>name, description]
+        
+        Attr1 --> Exec1[Execute Check 1]
+        Attr2 --> Exec2[Execute Check 2]
+        Attr3 --> Exec3[Execute Check 3]
+        Attr4 --> Exec4[Execute Check 4]
+        
+        Exec1 --> Results[Check Results]
+        Exec2 --> Results
+        Exec3 --> Results
+        Exec4 --> Results
+    end
+
+    style YAMLFile fill:#4dabf7
+    style Table fill:#51cf66
+    style Results fill:#ffd43b
+

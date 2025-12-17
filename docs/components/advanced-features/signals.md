@@ -1,46 +1,45 @@
 # Signals
 
-Vulcan's [built-in scheduler](./scheduling.md#built-in-scheduler) controls which models are evaluated when the `vulcan run` command is executed.
+Vulcan's [built-in scheduler](./scheduling.md#built-in-scheduler) is pretty smart—it knows when to run your models based on their `cron` schedules. If you have a model set to run `@daily`, it checks whether a day has passed since the last run and evaluates the model if needed.
 
-It determines whether to evaluate a model based on whether the model's [`cron`](../concepts/models/overview.md#cron) has elapsed since the previous evaluation. For example, if a model's `cron` was `@daily`, the scheduler would evaluate the model if its last evaluation occurred on any day before today.
+But here's the thing: real-world data doesn't always follow our schedules. Sometimes data arrives late—maybe your upstream system had an issue, or a batch job ran behind schedule. When that happens, your daily model might have already run for the day, and that late data won't get processed until tomorrow's scheduled run.
 
-Unfortunately, the world does not always accommodate our data system's schedules. Data may land in our system _after_ downstream daily models already ran. The scheduler did its job correctly, but today's late data will not be processed until tomorrow's scheduled run.
-
-You can use signals to prevent this problem.
+Signals solve this problem by letting you add custom conditions that must be met before a model runs. Think of them as extra gates that the scheduler checks—beyond just "has enough time passed?" and "are upstream dependencies done?"
 
 ## What is a signal?
 
-The scheduler uses two criteria to determine whether a model should be evaluated: whether its `cron` elapsed since the last evaluation and whether it upstream dependencies' runs have completed.
+By default, Vulcan's scheduler uses two criteria to decide if a model should run:
 
-Signals allow you to specify additional criteria that must be met before the scheduler evaluates the model.
+1. Has the model's `cron` interval elapsed since the last evaluation?
+2. Have all upstream dependencies finished running?
 
-A signal definition is simply a function that checks whether a criterion is met. Before describing the checking function, we provide some background information about how the scheduler works.
+Signals let you add a third criterion: your own custom check. A signal is just a Python function that examines a batch of time intervals and decides whether they're ready for evaluation.
 
-The scheduler doesn't actually evaluate "a model" - it evaluates a model over a specific time interval. This is clearest for incremental models, where only rows in the time interval are ingested during an evaluation. However, evaluation of non-temporal model kinds like `FULL` and `VIEW` are also based on a time interval: the model's `cron` frequency.
+Here's how it works under the hood: The scheduler doesn't actually evaluate "a model"—it evaluates a model over specific time intervals. For incremental models, this is obvious (you're processing a date range). But even non-temporal models like `FULL` and `VIEW` are evaluated based on time intervals—their `cron` frequency determines the interval.
 
-The scheduler's decisions are based on these time intervals. For each model, the scheduler examines a set of candidate intervals and identifies the ones that are ready for evaluation.
+The scheduler looks at candidate intervals, groups them into batches (controlled by your model's `batch_size` parameter), and then checks signals to see if those batches are ready. Your signal function gets called with a batch of time intervals and can return:
 
-It then divides those into _batches_ (configured with the model's [batch_size](../concepts/models/overview.md#batch_size) parameter). For incremental models, it evaluates the model once for each batch. For non-incremental models, it evaluates the model once if any batch contains an interval.
-
-Signal checking functions examines a batch of time intervals. The function is always called with a batch of time intervals (DateTimeRanges). It can also optionally be called with key word arguments. It may return `True` if all intervals are ready for evaluation, `False` if no intervals are ready, or the time intervals themselves if only some are ready. A checking function is defined with the `@signal` decorator.
+- `True` if all intervals in the batch are ready
+- `False` if none are ready
+- A list of specific intervals if only some are ready
 
 !!! note "One model, multiple signals"
-
-    Multiple signals may be specified for a model. Vulcan categorizes a candidate interval as ready for evaluation if **all** the signal checking functions determine it is ready.
+    You can specify multiple signals for a single model. When you do, Vulcan requires that **all** signal functions agree an interval is ready before it gets evaluated. Think of it as an AND gate—every signal must give the green light.
 
 ## Defining a signal
 
-To define a signal, create a `signals` directory in your project folder. Define your signal in a file named `__init__.py` in that directory (you can have additional python file names as well).
+To create a signal, add a `signals` directory to your project and create your signal function in `__init__.py` (you can organize signals across multiple Python files if you prefer).
 
-A signal is a function that accepts a batch (`DateTimeRanges: t.List[t.Tuple[datetime, datetime]]`) and returns a batch or a boolean. It needs to use the `@signal` decorator.
+A signal function needs to:
+- Accept a batch of time intervals (`DateTimeRanges: t.List[t.Tuple[datetime, datetime]]`)
+- Return either a boolean or a list of intervals
+- Use the `@signal` decorator
 
-We now demonstrate signals of varying complexity.
+Let's look at some examples, starting simple and building up to more complex use cases.
 
 ### Simple example
 
-This example defines a `RandomSignal` method.
-
-The method returns `True` (indicating that all intervals are ready for evaluation) if a random number is greater than a threshold specified in the model definition:
+Here's a basic signal that randomly decides whether intervals are ready (useful for testing, maybe not so much for production!):
 
 ```python linenums="1"
 import random
@@ -53,15 +52,9 @@ def random_signal(batch: DatetimeRanges, threshold: float) -> t.Union[bool, Date
     return random.random() > threshold
 ```
 
-Note that the `random_signal()` takes a mandatory user defined `threshold` argument.
+This signal takes a `threshold` argument (you'll pass this from your model definition) and returns `True` if a random number exceeds that threshold. Notice how the function signature includes `threshold: float`—Vulcan will automatically extract this from your model definition and pass it to the function. The type inference works the same way as [Vulcan macros](../concepts/macros/vulcan_macros.md#typed-macros).
 
-The `random_signal()` method extracts the threshold metadata and compares a random number to it. The type is inferred based on the same [rules as Vulcan Macros](../concepts/macros/vulcan_macros.md#typed-macros).
-
-Now that we have a working signal, we need to specify that a model should use the signal by passing metadata to the model DDL's `signals` key.
-
-The `signals` key accepts an array delimited by brackets `[]`. Each function in the list should contain the metadata needed for one signal evaluation.
-
-This example specifies that the `random_signal()` should evaluate once with a threshold of 0.5:
+To use this signal in a model, add it to the `signals` key in your `MODEL` block:
 
 ```sql linenums="1" hl_lines="4-6"
 MODEL (
@@ -75,11 +68,11 @@ MODEL (
 SELECT 1
 ```
 
-The next time this project is `vulcan run`, our signal will metaphorically flip a coin to determine whether the model should be evaluated.
+The `signals` key accepts a list of signal calls, each with its own arguments. When you run `vulcan run`, this signal will essentially flip a coin—if the random number is greater than 0.5, the model runs; otherwise, it waits.
 
-### Advanced Example
+### Advanced example
 
-This example demonstrates more advanced use of signals: a signal returning a subset of intervals from a batch (rather than a single `True`/`False` value for all intervals in the batch)
+Sometimes you want more fine-grained control. Instead of saying "all intervals are ready" or "none are ready," you can return specific intervals from the batch. Here's an example that only allows intervals from at least one week ago:
 
 ```python
 import typing as t
@@ -100,10 +93,9 @@ def one_week_ago(batch: DatetimeRanges) -> t.Union[bool, DatetimeRanges]:
     ]
 ```
 
-Instead of returning a single `True`/`False` value for whether a batch of intervals is ready for evaluation, the `one_week_ago()` function returns specific intervals from the batch.
+Instead of returning `True` or `False` for the entire batch, this function filters the batch and returns only the intervals that meet the criteria. It compares each interval's start time to "1 week ago" and includes only those that are old enough.
 
-It generates a datetime argument, to which it compares the beginning of each interval in the batch. If the interval start is before that argument, the interval is ready for evaluation and included in the returned list.
-These signals can be added to a model like so.
+Use it in an incremental model like this:
 
 ```sql linenums="1" hl_lines="7-10"
 MODEL (
@@ -117,12 +109,14 @@ MODEL (
   )
 );
 
-
 SELECT @start_ds AS ds
 ```
 
-### Accessing execution context / engine adapter
-It is possible to access the execution context in a signal and access the engine adapter (warehouse connection).
+This ensures that only data from at least a week ago gets processed—useful if you want to wait for late-arriving data to stabilize before processing it.
+
+### Accessing execution context
+
+Sometimes you need to check something in your database or access the execution context. You can do that by adding a `context` parameter to your signal function:
 
 ```python
 import typing as t
@@ -136,18 +130,19 @@ def one_week_ago(batch: DatetimeRanges, context: ExecutionContext) -> t.Union[bo
     return len(context.engine_adapter.fetchdf("SELECT 1")) > 1
 ```
 
-### Testing Signals
-Signals only evaluate on `run` or with `check_intervals`.
+The `context` parameter gives you access to the engine adapter, so you can query your warehouse, check if certain tables exist, verify data freshness, or perform any other checks you need.
 
-To test signals with the [check_intervals](../reference/cli.md#check_intervals) command:
+### Testing signals
 
-1. Deploy your changes to an environment with `vulcan plan my_dev`.
-2. Run `vulcan check_intervals my_dev`.
+Signals only evaluate when you run `vulcan run` or use the `check_intervals` command. To test your signals without actually running models:
 
-   * To check a subset of models use the --select-model flag.
-   * To turn off signals and just check missing intervals, use the --no-signals flag.
-
-3. To iterate, make changes to the signal, and redeploy with step 1.
+1. Deploy your changes to an environment: `vulcan plan my_dev`
+2. Check which intervals would be evaluated: `vulcan check_intervals my_dev`
+   - Use `--select-model` to check specific models
+   - Use `--no-signals` to see what would run without signal checks
+3. Iterate by making changes to your signal and redeploying
 
 !!! note
-    `check_intervals` only works on remote models in an environment. Local signal changes are never run.
+    The `check_intervals` command only works with remote models that have been deployed to an environment. Local signal changes won't be tested until you deploy them.
+
+This workflow lets you verify your signal logic before it affects your actual model runs.

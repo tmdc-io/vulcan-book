@@ -1,0 +1,66 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#c92a2a','lineColor':'#495057','secondaryColor':'#4dabf7','tertiaryColor':'#51cf66'}}}%%
+
+%% Three-Layer Data Quality Strategy
+%% Visual representation of Audits → Checks → Profiles
+
+flowchart TB
+    subgraph "Data Quality Layers"
+        direction TB
+        
+        subgraph Layer1["Layer 1: Audits (Critical - Blocks Pipeline)"]
+            A1[not_null checks]
+            A2[unique_values checks]
+            A3[accepted_range checks]
+            A4[Foreign key checks]
+            
+            A1 --> Block{Any Fail?}
+            A2 --> Block
+            A3 --> Block
+            A4 --> Block
+            
+            Block -->|Yes| Stop[STOP PIPELINE<br/>Fix Data First]
+            Block -->|No| Pass1[✓ All Passed]
+        end
+        
+        subgraph Layer2["Layer 2: Checks (Monitoring - Non-Blocking)"]
+            C1[Completeness Checks]
+            C2[Validity Checks]
+            C3[Anomaly Detection]
+            C4[Change Monitoring]
+            
+            C1 --> Monitor[Monitor Results]
+            C2 --> Monitor
+            C3 --> Monitor
+            C4 --> Monitor
+            
+            Monitor --> Warn{Warn if Issues}
+            Warn -->|Alert| Alert[Send Alert<br/>Don't Block]
+            Warn -->|OK| Pass2[✓ Continue]
+        end
+        
+        subgraph Layer3["Layer 3: Profiles (Observation - Tracking)"]
+            P1[Row Count Metrics]
+            P2[Null Percentages]
+            P3[Distinct Counts]
+            P4[Statistical Distributions]
+            
+            P1 --> Track[Track Over Time]
+            P2 --> Track
+            P3 --> Track
+            P4 --> Track
+            
+            Track --> Store[(Store in<br/>_check_profiles)]
+            Store --> Analyze[Analyze Patterns]
+            Analyze --> Inform[Inform Check<br/>Creation]
+        end
+        
+        Pass1 --> Pass2
+        Pass2 --> Track
+    end
+
+    style Layer1 fill:#ff6b6b
+    style Layer2 fill:#4dabf7
+    style Layer3 fill:#51cf66
+    style Stop fill:#c92a2a
+    style Alert fill:#ffd43b
+

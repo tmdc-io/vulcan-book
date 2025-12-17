@@ -1,13 +1,20 @@
 # Overview
 
-SQL is a [declarative language](https://en.wikipedia.org/wiki/Declarative_programming). It does not natively have features like variables or control flow logic (if-then, for loops) that allow SQL commands to behave differently in different situations.
+SQL is a [declarative language](https://en.wikipedia.org/wiki/Declarative_programming), which means you describe what you want, not how to get it. That's great for clarity, but it also means SQL doesn't have built-in features like variables or control flow (if-then statements, loops) that let your queries adapt to different situations.
 
-However, data pipelines are dynamic and need different behavior depending on context. SQL is made dynamic with *macros*.
+The problem? Data pipelines are dynamic. You need different behavior depending on context—maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.
 
-Vulcan supports two macro systems: Vulcan macros and the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating system.
+Macros let you make your SQL dynamic. Instead of hardcoding values, you can use variables that get substituted at runtime. Instead of writing repetitive code, you can use functions that generate SQL for you.
 
-Learn more about macros in Vulcan:
+Vulcan supports two macro systems, each with its own strengths:
 
-- [Pre-defined macro variables](./macro_variables.md) available in both macro systems
-- [Vulcan macros](./vulcan_macros.md)
-- [Jinja macros](./jinja_macros.md)
+- **Vulcan macros**: Built specifically for SQL, with semantic understanding of your queries
+- **Jinja macros**: The popular templating system, great if you're already familiar with it
+
+Both systems can use the same [pre-defined variables](./variables.md) that Vulcan provides, like `@execution_ds` for the current execution date or `@this_model` for the current model name.
+
+Ready to dive in? Here's where to go next:
+
+- [Pre-defined macro variables](./variables.md) - Built-in variables available in both systems
+- [Vulcan macros](./built_in.md) - Vulcan's native macro system with SQL-aware features
+- [Jinja macros](./jinja.md) - The Jinja templating system for SQL

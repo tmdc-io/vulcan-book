@@ -1,23 +1,29 @@
 # Business Metrics
 
-Business metrics combine measures with dimensions and time to create complete analytical definitions ready for time-series analysis.
+Business metrics are where your semantic layer really shines. They combine measures (the calculations) with dimensions (the attributes) and time (the when) to create complete analytical definitions that are ready for time-series analysis.
 
-## What are Business Metrics?
+Think of it this way: semantic models give you the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can actually analyze over time. They're pre-configured for dashboards, reports, and APIs—no SQL required.
+
+## What are business metrics?
 
 Business metrics are complete analytical definitions that:
 
-- **Combine measures with time**: Enable time-series analysis at different granularities
-- **Include dimensions**: Allow slicing and dicing by business attributes
-- **Ready for analysis**: Pre-configured for dashboards, reports, and APIs
+- **Combine measures with time**: Let you analyze trends at different time granularities (daily, weekly, monthly, etc.)
+- **Include dimensions**: Enable slicing and dicing by business attributes (customer tier, region, product category, etc.)
+- **Ready for analysis**: Pre-configured so they can power dashboards, reports, and APIs directly
 - **Examples**: `monthly_revenue_by_tier`, `daily_active_users`, `customer_acquisition_trend`
 
-## Basic Structure
+They're the bridge between your technical data models and the business questions people actually want to answer.
 
-A business metric combines:
+## Basic structure
 
-- **Measure**: The calculation to perform (e.g., `orders.total_revenue`)
-- **Time**: The time dimension for analysis (e.g., `orders.order_date`)
-- **Dimensions**: Optional attributes for grouping (e.g., `customers.customer_tier`)
+A business metric brings together three things:
+
+- **Measure**: The calculation you want to perform (like `orders.total_revenue`)
+- **Time**: The time dimension for your analysis (like `orders.order_date`)
+- **Dimensions**: Optional attributes for grouping and filtering (like `customers.customer_tier`)
+
+Here's the simplest possible metric:
 
 ```yaml
 metrics:
@@ -27,9 +33,11 @@ metrics:
     description: "Monthly revenue trends"
 ```
 
-## Simple Metric
+That's it! This metric is now ready to be queried at any time granularity you want.
 
-A basic metric with just a measure and time:
+## Simple metric
+
+Let's start with the basics—a metric that just has a measure and time:
 
 ```yaml
 metrics:
@@ -39,11 +47,11 @@ metrics:
     description: "Daily revenue trends"
 ```
 
-This metric can be queried at different time granularities (day, week, month, quarter, year) without redefinition.
+Even though it's called `daily_revenue`, you're not locked into daily granularity. You can query this same metric at different time intervals (day, week, month, quarter, year) without redefining it. The metric definition stays the same; you just change the granularity when you query it.
 
-## Metric with Dimensions
+## Metric with dimensions
 
-Add dimensions for slicing and grouping:
+Add dimensions to enable slicing and grouping:
 
 ```yaml
 metrics:
@@ -56,14 +64,16 @@ metrics:
     description: "Revenue trends by customer tier and country"
 ```
 
-This enables queries like:
-- Revenue by tier over time
-- Revenue by country over time
-- Revenue by tier and country over time
+Now you can answer questions like:
+- What's our revenue by tier over time?
+- How does revenue vary by country?
+- What's the revenue breakdown by tier and country together?
 
-## Cross-Model Metrics
+The dimensions give you flexibility to analyze the metric from different angles.
 
-Combine measures and dimensions from multiple models:
+## Cross-model metrics
+
+You're not limited to one model. Combine measures and dimensions from multiple models:
 
 ```yaml
 metrics:
@@ -78,11 +88,13 @@ metrics:
     description: "Product revenue segmented by customer demographics"
 ```
 
-**Requirement:** Proper joins must be defined between models for cross-model metrics to work.
+This metric pulls the measure from `orders`, time from `orders`, product dimensions from `products`, and customer dimensions from `customers`. As long as you've defined the proper joins between these semantic models, Vulcan will handle the cross-model logic for you.
 
-## Reference Format
+**Important:** Make sure your semantic models have the right joins defined, or cross-model metrics won't work.
 
-Always use **dot notation** with semantic model aliases:
+## Reference format
+
+Always use **dot notation** with semantic model aliases when referencing measures, dimensions, and time:
 
 ```yaml
 # ✅ Good: Use aliases
@@ -96,9 +108,11 @@ measure: analytics.fact_orders.revenue
 time: order_date  # Missing alias
 ```
 
-## Time Granularity
+The dot notation (`orders.total_revenue`) tells Vulcan which semantic model to look in and what to reference. Physical table names won't work here—you need the semantic aliases.
 
-Metrics support different time granularities at query time:
+## Time granularity
+
+One of the coolest things about metrics is that you define them once, then query them at any time granularity you want:
 
 ```yaml
 metrics:
@@ -115,7 +129,11 @@ The same metric can be queried with different granularities:
 - Quarterly: `granularity=quarter`
 - Yearly: `granularity=year`
 
-## Complete Example
+You don't need separate metric definitions for each granularity—just change the query parameter.
+
+## Complete example
+
+Here's a more complete example showing different types of metrics:
 
 ```yaml
 metrics:
@@ -149,35 +167,39 @@ metrics:
     tags: [revenue, products, segmentation]
 ```
 
+Notice how each metric has a clear purpose, good description, and relevant tags. The tags help organize and discover metrics later.
+
 ## Benefits
 
-### Time-Series Analysis
+### Time-series analysis
 
-Metrics are designed for time-series analysis:
+Metrics are built for analyzing trends over time:
 
-- **Flexible granularity**: Query the same metric at different time intervals
-- **Consistent definitions**: Same calculation logic across all time periods
-- **Trend analysis**: Built-in support for comparing periods
+- **Flexible granularity**: Query the same metric at different time intervals without redefinition
+- **Consistent definitions**: Same calculation logic applies across all time periods
+- **Trend analysis**: Built-in support for comparing periods (month-over-month, year-over-year, etc.)
 
-### Self-Service Analytics
+### Self-service analytics
 
-Business users can query metrics without SQL:
+Business users can query metrics without writing SQL:
 
-- **Simple API**: Query metrics by name with time range and dimensions
-- **Consistent results**: Same metric definition used everywhere
-- **No SQL required**: Abstract away complex joins and aggregations
+- **Simple API**: Query metrics by name with a time range and dimensions
+- **Consistent results**: Same metric definition is used everywhere, so everyone gets the same answer
+- **No SQL required**: Complex joins and aggregations are abstracted away
 
-### Single Source of Truth
+### Single source of truth
 
-Centralized metric definitions:
+Centralized metric definitions mean:
 
 - **Define once**: Create metric definitions in YAML files
 - **Use everywhere**: Same metrics power dashboards, reports, and APIs
-- **Version controlled**: Metric definitions live alongside your code
+- **Version controlled**: Metric definitions live alongside your code, so changes are tracked
 
-## Best Practices
+## Best practices
 
-### Descriptive Names
+### Descriptive names
+
+Make your metric names self-explanatory:
 
 ```yaml
 # ✅ Good: Self-explanatory
@@ -191,7 +213,11 @@ metrics:
   rev: ...
 ```
 
-### Include Essential Dimensions
+Good names make it obvious what the metric measures and how it's broken down.
+
+### Include essential dimensions
+
+Think about what business questions people will want to answer, and include those dimensions:
 
 ```yaml
 # ✅ Good: Key business dimensions
@@ -209,10 +235,14 @@ metrics:
   revenue:
     measure: orders.total_revenue
     time: orders.order_date
-    # Missing dimensions
+    # Missing dimensions - can't slice and dice!
 ```
 
-### Document Business Context
+Dimensions are what make metrics useful. Without them, you can only see the overall trend, not the breakdowns that drive business decisions.
+
+### Document business context
+
+Add descriptions and metadata to help people understand what the metric means:
 
 ```yaml
 metrics:
@@ -226,19 +256,20 @@ metrics:
       benchmark: ">110% is good for SaaS"
 ```
 
-## Integration with Semantic Models
+The `meta` section is perfect for business context, calculation details, benchmarks, and ownership information. This helps people understand not just what the metric is, but what it means and how to interpret it.
 
-Metrics build on semantic models:
+## Integration with semantic models
+
+Metrics build on top of semantic models:
 
 1. **Semantic models** define measures, dimensions, and joins
 2. **Metrics** combine these components with time for analysis
 3. **APIs** expose metrics for querying and visualization
 
-The semantic layer provides the foundation, and metrics add the time-series analytical capabilities.
+The semantic layer provides the foundation (the building blocks), and metrics add the time-series analytical capabilities (the finished product).
 
-## Next Steps
+## Next steps
 
 - Learn about [Semantic Models](models.md) that provide the foundation for metrics
-- See the [Semantics Overview](index.md) for the complete picture
+- See the [Semantics Overview](overview.md) for the complete picture
 - Explore metric definitions in your project's `semantics/` directory
-

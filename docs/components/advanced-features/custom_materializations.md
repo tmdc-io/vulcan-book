@@ -1,52 +1,50 @@
 # Custom materializations
 
-Vulcan supports a variety of [model kinds](../concepts/models/model_kinds.md) that reflect the most common approaches to evaluating and materializing data transformations.
+Vulcan comes with a variety of [model kinds](../concepts/models/model_kinds.md) that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?
 
-Sometimes, however, a specific use case cannot be addressed with an existing model kind. For scenarios like this, Vulcan allows users to create their own materialization implementation using Python.
+Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in—they let you write your own Python code to control exactly how your models get materialized.
 
 !!! warning "Advanced Feature"
-    This is an advanced feature and should only be considered if all other approaches have been exhausted. If you're at this decision point, we recommend you reach out to our team in the [community slack](https://tobikodata.com/community.html) before investing time building a custom materialization. If an existing model kind can solve your problem, we want to clarify the Vulcan documentation; if an existing kind can _almost_ solve your problem, we want to consider modifying the kind so all Vulcan users can benefit.
+    Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If you're considering this path, we'd love to hear from you in our [community slack](https://tobikodata.com/community.html). If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.
 
-## Background
+## What is a materialization?
 
-A Vulcan model kind consists of methods for executing and managing the outputs of data transformations - collectively, these are the kind's "materialization."
+Think of a materialization as the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to actually get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.
 
-Some materializations are relatively simple. For example, the SQL [FULL model kind](../concepts/models/model_kinds.md#full) completely replaces existing data each time it is run, so its materialization boils down to executing `CREATE OR REPLACE [table name] AS [your model query]`.
+Some materializations are straightforward. For example, a `FULL` model kind completely replaces the table each time it runs—so its materialization is essentially just `CREATE OR REPLACE TABLE [name] AS [your query]`. Simple!
 
-The materializations for other kinds, such as [INCREMENTAL BY TIME RANGE](../concepts/models/model_kinds.md#incremental_by_time_range), require additional logic to process the correct time intervals and replace/insert their results into an existing table.
+Other materializations are more complex. An `INCREMENTAL_BY_TIME_RANGE` model needs to figure out which time intervals to process, query only that data, and then merge it into the existing table. That requires more logic.
 
-A model kind's materialization may differ based on the SQL engine executing the model. For example, PostgreSQL does not support `CREATE OR REPLACE TABLE`, so `FULL` model kinds instead `DROP` the existing table then `CREATE` a new table. Vulcan already contains the logic needed to materialize existing model kinds on all supported engines.
+The materialization logic can also vary by SQL engine. PostgreSQL doesn't support `CREATE OR REPLACE TABLE`, so `FULL` models on Postgres use `DROP` then `CREATE` instead. Vulcan handles all these engine-specific details for built-in model kinds, but with custom materializations, you're in control.
 
-## Overview
+## How custom materializations work
 
-Custom materializations are analogous to new model kinds. Users [specify them by name](#using-a-custom-materialization) in a model definition's `MODEL` block, and they may accept user-specified arguments.
+Custom materializations are like creating your own model kind. You define them in Python, give them a name, and then reference that name in your model's `MODEL` block. They can even accept configuration arguments that you pass in from your model definition.
 
-A custom materialization must:
+Here's what every custom materialization needs:
 
-- Be written in Python code
-- Be a Python class that inherits the Vulcan `CustomMaterialization` base class
-- Use or override the `insert` method from the Vulcan [`MaterializableStrategy`](https://github.com/TobikoData/vulcan/blob/034476e7f64d261860fd630c3ac56d8a9c9f3e3a/vulcan/core/snapshot/evaluator.py#L1146) class/subclasses
-- Be loaded or imported by Vulcan at runtime
+- **Python code**: Written as a Python class
+- **Base class**: Must inherit from Vulcan's `CustomMaterialization` class
+- **Insert method**: At minimum, you need to implement the `insert` method
+- **Auto-loading**: Vulcan automatically discovers materializations in your `materializations/` directory
 
-A custom materialization may:
+You can also:
 
-- Use or override methods from the Vulcan [`MaterializableStrategy`](https://github.com/TobikoData/vulcan/blob/034476e7f64d261860fd630c3ac56d8a9c9f3e3a/vulcan/core/snapshot/evaluator.py#L1146) class/subclasses
-- Use or override methods from the Vulcan [`EngineAdapter`](https://github.com/TobikoData/vulcan/blob/034476e7f64d261860fd630c3ac56d8a9c9f3e3a/vulcan/core/engine_adapter/base.py#L67) class/subclasses
-- Execute arbitrary SQL code and fetch results with the engine adapter `execute` and related methods
+- Override other methods from `MaterializableStrategy` or `EngineAdapter` classes
+- Execute arbitrary SQL using the engine adapter
+- Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a [Python model](../concepts/models/python_models.md) instead)
 
-A custom materialization may perform arbitrary Python processing with Pandas or other libraries, but in most cases that logic should reside in a [Python model](../concepts/models/python_models.md) instead of the materialization.
-
-A Vulcan project will automatically load any custom materializations present in its `materializations/` directory. Alternatively, the materialization may be bundled into a [Python package](#python-packaging) and installed with standard methods.
+Vulcan will automatically load any Python files in your project's `materializations/` directory. Or, if you prefer, you can package your materialization as a [Python package](#python-packaging) and install it like any other dependency.
 
 ## Creating a custom materialization
 
-Create a new custom materialization by adding a `.py` file containing the implementation to the `materializations/` folder in the project directory. Vulcan will automatically import all Python modules in this folder at project load time and register the custom materializations.
+To create a custom materialization, just add a `.py` file to your project's `materializations/` folder. Vulcan will automatically import all Python modules in this folder when your project loads, so your materializations will be ready to use.
 
-A custom materialization must be a class that inherits the `CustomMaterialization` base class and provides an implementation for the `insert` method.
+Your materialization class needs to inherit from `CustomMaterialization` and implement at least the `insert` method. Let's look at some examples to see how this works.
 
 ### Simple example
 
-Here's a complete example of a custom materialization that demonstrates custom insert logic:
+Here's a complete example that shows custom insert logic with some helpful logging:
 
 ```python linenums="1"
 import typing as t
@@ -97,21 +95,21 @@ class SimpleCustomMaterialization(CustomMaterialization):
         print(f"Custom materialization completed for {table_name}")
 ```
 
-Let's break down this materialization:
+Let's break down what's happening here:
 
-| Component | Description |
-|-----------|-------------|
-| `NAME` | The name used to reference this materialization in model definitions (`simple_custom`) |
-| `table_name` | The target table name where data will be inserted |
-| `query_or_df` | Either a SQL query string or a DataFrame (Pandas, PySpark, Snowpark) |
-| `model` | The model definition object with access to all model properties |
-| `is_first_insert` | `True` if this is the first insert for the current model version |
+| Component | What It Does |
+|-----------|--------------|
+| `NAME` | The identifier you'll use in your model definition (like `simple_custom`) |
+| `table_name` | The target table where your data will be inserted |
+| `query_or_df` | Either a SQL query string or a DataFrame (works with Pandas, PySpark, Snowpark) |
+| `model` | The full model definition object—gives you access to all model properties |
+| `is_first_insert` | `True` if this is the first time inserting data for this model version |
 | `render_kwargs` | Dictionary of arguments used to render the model query |
-| `self.adapter` | The engine adapter for executing SQL and interacting with the database |
+| `self.adapter` | The engine adapter—your interface to execute SQL and interact with the database |
 
 ### Minimal example
 
-For a simpler full-refresh materialization:
+If you just want a simple full-refresh materialization, here's the minimal version:
 
 ```python linenums="1"
 from vulcan import CustomMaterialization
@@ -133,9 +131,11 @@ class CustomFullMaterialization(CustomMaterialization):
         self.adapter.replace_query(table_name, query_or_df)
 ```
 
+That's it! This will completely replace the table contents each time the model runs, just like a `FULL` model kind.
+
 ### Controlling table creation and deletion
 
-You can control how data objects (tables, views, etc.) are created and deleted by overriding the `create` and `delete` methods:
+You can also customize how tables and views are created and deleted by overriding the `create` and `delete` methods:
 
 ```python linenums="1"
 from vulcan import CustomMaterialization
@@ -170,9 +170,11 @@ class CustomFullMaterialization(CustomMaterialization):
         self.adapter.drop_table(name)
 ```
 
+This gives you full control over the lifecycle of your data objects.
+
 ## Using a custom materialization
 
-Specify the model kind `CUSTOM` in a model definition to use a custom materialization. Set the `materialization` attribute to the `NAME` from your custom materialization:
+Once you've created your materialization, using it is straightforward. In your model definition, set the `kind` to `CUSTOM` and specify the `materialization` name (the `NAME` from your Python class):
 
 === "SQL"
 
@@ -250,7 +252,7 @@ Specify the model kind `CUSTOM` in a model definition to use a custom materializ
 
 ### Passing properties to the materialization
 
-A custom materialization can accept configuration through `materialization_properties`:
+You can pass configuration to your materialization using `materialization_properties`. This is useful when you want to customize behavior per model:
 
 ```sql linenums="1"
 MODEL (
@@ -265,7 +267,7 @@ MODEL (
 );
 ```
 
-Access these properties in your materialization via `model.custom_materialization_properties`:
+Then access these properties in your materialization code via `model.custom_materialization_properties`:
 
 ```python linenums="1"
 class SimpleCustomMaterialization(CustomMaterialization):
@@ -290,20 +292,20 @@ class SimpleCustomMaterialization(CustomMaterialization):
         self.adapter.replace_query(table_name, query_or_df)
 ```
 
+This lets you create flexible materializations that can adapt to different use cases.
+
 ## Extending `CustomKind`
 
 !!! warning
-    This is even lower level usage that contains extra complexity and relies on knowledge of Vulcan internals.
-    If you don't need this level of complexity, stick with the method described above.
+    This is advanced territory. You're working with Vulcan's internals here, so there's extra complexity involved. If the basic custom materialization approach works for you, stick with that. Only dive into this if you really need the extra control.
 
-In many cases, the above usage of a custom materialization will suffice. However, you may want tighter integration with Vulcan's internals:
+Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals—maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.
 
-- Validate custom properties before any database connections are made
-- Leverage existing functionality that relies on specific properties being present
-
-In this case, you can provide a subclass of `CustomKind` for Vulcan to use instead of `CustomKind` itself. During project load, Vulcan will instantiate your *subclass* instead of `CustomKind`.
+In those cases, you can create a subclass of `CustomKind` that Vulcan will use instead of the default. When your project loads, Vulcan will detect your subclass and use it instead of the standard `CustomKind`.
 
 ### Creating a custom kind
+
+Here's how you'd create a custom kind that validates a `primary_key` property:
 
 ```python linenums="1"
 import typing as t
@@ -335,6 +337,8 @@ class MyCustomKind(CustomKind):
 
 ### Using the custom kind in a model
 
+Use it in your model like this:
+
 ```sql linenums="1"
 MODEL (
   name vulcan_demo.my_model,
@@ -349,7 +353,7 @@ MODEL (
 
 ### Linking to your materialization
 
-Specify the custom kind as a generic type parameter on your materialization class:
+To connect your custom kind to your materialization, specify it as a generic type parameter:
 
 ```python linenums="1"
 class CustomFullMaterialization(CustomMaterialization[MyCustomKind]):
@@ -372,28 +376,28 @@ class CustomFullMaterialization(CustomMaterialization[MyCustomKind]):
         )
 ```
 
-When Vulcan loads your custom materialization, it will inspect the Python type signature for generic parameters that are subclasses of `CustomKind`. If found, it will instantiate your subclass when building `model.kind` instead of using the default `CustomKind` class.
+When Vulcan loads your materialization, it inspects the type signature for generic parameters that are subclasses of `CustomKind`. If it finds one, it uses your subclass when building `model.kind` instead of the default.
 
-Benefits of this approach:
+Why would you want this? Two main benefits:
 
-- **Early validation**: Validation for `primary_key` happens at load time instead of evaluation time, so issues are caught before applying a plan
-- **Type safety**: `model.kind` resolves to your custom kind object, giving access to extra properties without additional validation
+- **Early validation**: Your `primary_key` validation happens at load time, not evaluation time. Issues get caught before you even create a plan.
+- **Type safety**: `model.kind` resolves to your custom kind object, so you get access to extra properties without additional validation.
 
 ## Sharing custom materializations
 
+Once you've built a custom materialization, you'll probably want to use it across multiple projects. You have a couple of options.
+
 ### Copying files
 
-The simplest (but least robust) way to use a custom materialization in multiple Vulcan projects is for each project to place a copy of the materialization's Python code in its `materializations/` directory.
+The simplest approach is to copy the materialization code into each project's `materializations/` directory. It works, but it's not the most maintainable approach—you'll need to manually update each copy when you make changes.
 
-If you use this approach, we strongly recommend storing the materialization code in a version-controlled repository and creating a reliable method of notifying users when it is updated.
+If you go this route, we strongly recommend keeping the materialization code in version control and setting up a reliable way to notify users when updates are available.
 
 ### Python packaging
 
-A more robust way to share custom materializations is to create and publish a Python package containing the implementation.
+A more robust approach is to package your materialization as a Python package. This is especially useful if you're using Airflow or other external schedulers where the scheduler cluster doesn't have direct access to your project's `materializations/` folder.
 
-This is required when a Vulcan project uses Airflow or other external schedulers where the scheduler cluster doesn't have the `materializations/` folder available.
-
-Package and expose custom materializations with the [setuptools entrypoints](https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata) mechanism:
+Package your materialization using [setuptools entrypoints](https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata):
 
 === "pyproject.toml"
 
@@ -415,6 +419,6 @@ Package and expose custom materializations with the [setuptools entrypoints](htt
     )
     ```
 
-Once the package is installed, Vulcan will automatically load custom materializations from the entrypoint list.
+Once the package is installed, Vulcan automatically discovers and loads your materialization from the entrypoint list. No manual configuration needed!
 
-Refer to the Vulcan Github [custom_materializations](https://github.com/TobikoData/vulcan/tree/main/examples/custom_materializations) example for more details on Python packaging.
+For more details on Python packaging, check out the Vulcan GitHub [custom_materializations](https://github.com/TobikoData/vulcan/tree/main/examples/custom_materializations) example.

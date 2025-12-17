@@ -1,62 +1,65 @@
-# Managed models
-Unlike normal tables where the user is responsible for managing the data within the table, some database engines have a concept of a table where the engine itself ensures that the data within the table is up to date. These tables are typically based on a query that reads from other tables within the database. Each time these other tables are updated, the database will ensure that the managed table reflects the changes without the user having to do anything special (such as issue a `REFRESH` command).
+# Managed
 
-Under the hood, each supported database engine achieves this in a slightly different way but most of them have background processes that run and automatically keep the tables up to date, within the parameters you define when you create the table.
+Most Vulcan models manage their own data—you run `vulcan run`, and Vulcan updates the tables. Managed models are different: the database engine handles data updates automatically in the background.
 
-For supported engines, we expose this functionality through Managed models. This indicates to Vulcan that the underlying database engine will ensure that the data remains up to date and all Vulcan needs to do is maintain the schema.
+**How it works:** You define a query, and the engine monitors upstream tables. When source data changes, the engine automatically refreshes your managed table. No manual `REFRESH` commands needed—it just happens.
 
-Due to this, managed models would typically be built off an [External Model](./external_models.md) rather than another Vulcan model. Since Vulcan already ensures that models it's tracking are kept up to date, the main benefit of managed models comes when they read from external tables that arent tracked by Vulcan.
+**Why use this?** Perfect for scenarios where you need always-fresh data without managing refresh schedules yourself. The engine handles the complexity of incremental updates, change detection, and refresh timing.
 
-!!! warning "Not supported in Python models"
+**Best use case:** Managed models are typically built on [External Models](./external_models.md) rather than other Vulcan models. Since Vulcan already keeps its models up to date, the main benefit comes when you're reading from external tables that aren't tracked by Vulcan. The engine keeps your managed table in sync with those external sources automatically.
 
-    Python models do not support the `MANAGED` [model kind](./model_kinds.md) - use a SQL model isntead.
+!!! warning "Python Models Not Supported"
 
-## Difference from materialized views
-The difference between an Managed model and a materialized view is down to semantics and in some engines there is no difference.
+    Python models don't support the `MANAGED` [model kind](./model_kinds.md). You'll need to use a SQL model instead.
 
-Vulcan has support for [materialized views](./model_kinds.md#materialized-views) already. However, depending on the engine, these are subject to some limitations, such as:
+## Difference from Materialized Views
 
-- A Materialized View query can only be derived from a single base table
-- The Materialized View is not automatically maintained by the engine. To refresh the data, a `REFRESH MATERIALIZED VIEW` or equivalent command must be issued
+You might be wondering: "What's the difference between a managed model and a materialized view?" Good question!
 
-Managed models are different in that:
+Vulcan already supports [materialized views](./model_kinds.md#materialized-views), but they have limitations:
+- Some engines only allow materialized views from a single base table
+- Materialized views aren't automatically refreshed—you need to run `REFRESH MATERIALIZED VIEW` manually
+- You're responsible for scheduling refreshes
 
-- The engine updates the table data automatically when a base table changes
-- When performing updates, the engine has a semantic understanding of the query and can decide if an incremental or full refresh should be applied
-- There is no need to issue manual `REFRESH` commands. The engine maintains the table transparently in a background process
+**Managed models are different:**
+- ✅ **Automatic updates** - The engine refreshes data when source tables change
+- ✅ **Smart refresh** - The engine understands your query and can do incremental or full refreshes as needed
+- ✅ **No manual commands** - Everything happens in the background
+
+**In some engines, there's no difference** (they're the same thing). In others, managed models give you more automation and flexibility.
 
 ## Lifecycle in Vulcan
-Managed models follow the same lifecycle as other models:
 
-- Creating a Virtual Environment creates a pointer to the current model snapshot
-- Modifying the model causes a new snapshot to be created
-- Any upstream changes cause a new snapshot to be created
-- The model can be deployed and rolled back via the usual pointer swap mechanism
-- Once the TTL expires, model snapshots are cleaned up
+Managed models follow the same lifecycle as other Vulcan models:
+- Virtual environments create pointers to model snapshots
+- Model changes create new snapshots
+- Upstream changes trigger new snapshots
+- You can deploy and rollback like any other model
+- Snapshots get cleaned up when TTL expires
 
-However, there is usually extra vendor-imposed costs associated with Managed models. For example, Snowflake has [additional costs](https://docs.snowflake.com/en/user-guide/dynamic-tables-cost) for Dynamic Tables.
+**Cost consideration:** Managed models usually cost more than regular tables. For example, Snowflake charges extra for Dynamic Tables. To save money, Vulcan uses regular tables for dev previews (in forward-only plans) and only creates managed tables when deploying to production.
 
-Therefore, we try to not create managed tables unnecessarily. For example, in [forward-only plans](../plans.md#forward-only-change) we just create a normal table to preview the changes and only re-create the managed table on deployment to prod.
+!!! warning "Dev vs Prod Differences"
 
-!!! warning
-    Due to the use of normal tables for dev previews, it is possible to write a query that uses features that are available to normal tables in the target engine but not managed tables. This could result in a scenario where a plan works in a dev environment but fails when deployed to production.
+    Since dev uses regular tables and prod uses managed tables, it's possible to write a query that works in dev but fails in prod. This happens if you use features available to regular tables but not managed tables.
 
-    We believe the cost savings are worth it, however please [reach out](https://tobikodata.com/slack) if this causes problems for you.
+    We think the cost savings are worth it, but if this causes issues, [let us know](https://tobikodata.com/slack)!
 
 ## Supported Engines
-Vulcan supports managed models in the following database engines:
 
-| Engine                                               | Implementatation                                                               |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [Snowflake](../../integrations/engines/snowflake.md) | [Dynamic Table](https://docs.snowflake.com/en/user-guide/dynamic-tables-intro) |
+Currently, Vulcan supports managed models on:
 
-To define a managed model, you can use the [`MANAGED`](./model_kinds.md#managed) model Kind.
+| Engine | Implementation |
+|--------|----------------|
+| [Snowflake](../../configurations/engines/snowflake.md) | [Dynamic Tables](https://docs.snowflake.com/en/user-guide/dynamic-tables-intro) |
+
+To create a managed model, use the [`MANAGED`](./model_kinds.md#managed) model kind. More engines are coming soon!
 
 ### Snowflake
 
-Managed Models are in Snowflake are implemented as [Dynamic Tables](https://docs.snowflake.com/en/user-guide/dynamic-tables-intro).
+On Snowflake, managed models are implemented as [Dynamic Tables](https://docs.snowflake.com/en/user-guide/dynamic-tables-intro). Dynamic Tables automatically refresh when their source data changes, which is exactly what managed models need.
 
-Here is an example of a Vulcan model that will result in a dynamic table being created:
+Here's how you'd create one:
 
 ```sql linenums="1"
 MODEL (
@@ -88,17 +91,15 @@ AS SELECT
 FROM raw_events
 ```
 
-!!! note
+!!! note "No Intervals"
 
-    Vulcan will not create intervals and run this model for each interval, so there is no need to add a WHERE clause with date filters like you would for a normal incremental model. How the data in this model is refreshed is completely up to Snowflake.
+    Vulcan doesn't create intervals or run this model on a schedule. You don't need `WHERE` clauses with date filters like you would for incremental models. Snowflake handles all the refreshing automatically—you just define the query and let Snowflake do its thing.
 
-#### Table properties
+#### Table Properties
 
-Dynamic Tables have some properties that affect things like how often the data is refreshed by Snowflake, when the initial data is populated, how long data is retained for etc. The list of available properties is located in the [Snowflake documentation](https://docs.snowflake.com/sql-reference/sql/create-dynamic-table).
+Dynamic Tables have properties that control refresh frequency, initial data population, retention, and more. You can find the complete list in the [Snowflake documentation](https://docs.snowflake.com/sql-reference/sql/create-dynamic-table).
 
-In Vulcan, these properties are set on the model definition.
-
-The following Dynamic Table properties are set on the model [`physical_properties`](../models/overview.md#physical_properties):
+In Vulcan, you set these properties using [`physical_properties`](../overview.md#physical_properties) in your model definition. Here are the key ones:
 
 | Snowflake Property              | Required | Notes
 | ------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |

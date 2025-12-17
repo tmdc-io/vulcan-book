@@ -1,0 +1,37 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#c92a2a','lineColor':'#495057','secondaryColor':'#4dabf7','tertiaryColor':'#51cf66'}}}%%
+
+%% Check Types Breakdown
+%% Detailed view of all check types and their use cases
+
+flowchart TD
+    subgraph "Check Types Overview"
+        Root[Check Types]
+        
+        Root --> Simple[Simple Checks]
+        Root --> SQL[SQL-Based Checks]
+        Root --> Anomaly[Anomaly Detection]
+        Root --> Change[Change Monitoring]
+        
+        Simple --> S1[missing_count<br/>Count NULL values]
+        Simple --> S2[missing_percent<br/>% NULL values]
+        Simple --> S3[row_count<br/>Total rows]
+        Simple --> S4[duplicate_count<br/>Duplicate values]
+        
+        SQL --> SQL1[failed rows<br/>Custom SQL query]
+        SQL --> SQL2[Complex Joins<br/>Cross-model validation]
+        SQL --> SQL3[Outlier Detection<br/>Z-score calculations]
+        
+        Anomaly --> A1[ML-based<br/>Learns from history]
+        Anomaly --> A2[Statistical Model<br/>Mean, StdDev, Trends]
+        Anomaly --> A3[Requires 30+ runs<br/>Builds baseline]
+        
+        Change --> C1[Compare to Previous<br/>% change calculation]
+        Change --> C2[Track Trends<br/>Growth/decline alerts]
+        Change --> C3[Time-based<br/>Monitor over time]
+    end
+
+    style Simple fill:#4dabf7
+    style SQL fill:#51cf66
+    style Anomaly fill:#ffd43b
+    style Change fill:#ff8787
+

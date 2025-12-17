@@ -1,6 +1,8 @@
 # Properties
 
-The `MODEL` DDL statement accepts various properties that control model metadata and behavior. This page provides a complete reference for all available model properties.
+The `MODEL` DDL statement has a bunch of properties you can use to control how your model behaves. Think of them as knobs and switches—you can configure scheduling, storage, validation, and more.
+
+This page is your complete reference for all available properties. We'll cover what each one does, when to use it, and show you examples.
 
 ---
 
@@ -51,7 +53,11 @@ The `MODEL` DDL statement accepts various properties that control model metadata
 
 ### name
 
-The model name, representing the production view/table name. Must include at least a qualifying schema (`schema.model`) and may include a catalog (`catalog.schema.model`).
+Your model's name is how it's identified in the data warehouse. It needs at least a schema (`schema.model`), and you can optionally include a catalog (`catalog.schema.model`).
+
+**Format:** `schema.model` or `catalog.schema.model`
+
+This becomes the production table/view name that other models and users will reference.
 
 === "SQL"
 
@@ -82,11 +88,12 @@ The model name, representing the production view/table name. Must include at lea
     ```
 
 !!! note "Environment Prefixing"
-    In non-production environments, Vulcan automatically prefixes names. For example, `sales.daily_sales` becomes `sales__dev.daily_sales` in dev.
+
+    In non-production environments, Vulcan automatically prefixes your model names. So `sales.daily_sales` becomes `sales__dev.daily_sales` in the dev environment. This keeps your dev and prod data separate without you having to think about it.
 
 ### project
 
-Specifies the project name for multi-repo Vulcan deployments.
+If you're running multiple Vulcan projects in the same repository (multi-repo setup), use `project` to specify which project this model belongs to. This helps Vulcan organize and isolate models from different projects.
 
 === "SQL"
 
@@ -108,7 +115,9 @@ Specifies the project name for multi-repo Vulcan deployments.
 
 ### kind
 
-Determines how the model is computed and stored. See [Model Kinds](model_kinds.md) for details.
+The `kind` property determines how your model is computed and stored. Do you want to rebuild everything each run? Update incrementally? Create a view? This is where you decide.
+
+For all the details on each kind and when to use them, check out the [Model Kinds](model_kinds.md) documentation.
 
 === "SQL"
 
@@ -174,7 +183,9 @@ Determines how the model is computed and stored. See [Model Kinds](model_kinds.m
 
 ### cron
 
-Schedules when the model processes or refreshes data. Accepts [cron expressions](https://en.wikipedia.org/wiki/Cron) or shortcuts.
+Controls when your model runs. You can use standard cron expressions or Vulcan's shortcuts for common schedules.
+
+**Why this matters:** Without a schedule, your model only runs when you manually trigger it. Set a cron, and Vulcan will automatically process new data on schedule.
 
 === "SQL"
 
@@ -214,11 +225,19 @@ Schedules when the model processes or refreshes data. Accepts [cron expressions]
     )
     ```
 
-**Cron shortcuts:** `@hourly`, `@daily`, `@weekly`, `@monthly`
+**Cron shortcuts:** Vulcan provides convenient shortcuts:
+- `@hourly` - Every hour
+- `@daily` - Every day at midnight UTC
+- `@weekly` - Once per week
+- `@monthly` - Once per month
+
+These are much easier than writing `0 * * * *`!
 
 ### cron_tz
 
-Specifies the timezone for the cron schedule. Only affects scheduling, not the interval boundaries passed to incremental models.
+Sets the timezone for your cron schedule. This only affects **when** the model runs, not how time intervals are calculated (those are always UTC).
+
+**Example:** If you set `cron '@daily'` and `cron_tz 'America/Los_Angeles'`, your model runs at midnight Pacific time, but the time intervals it processes are still in UTC.
 
 === "SQL"
 
@@ -242,9 +261,11 @@ Specifies the timezone for the cron schedule. Only affects scheduling, not the i
 
 ### interval_unit
 
-Determines the temporal granularity for calculating time intervals. By default, inferred from the `cron` expression.
+Controls the granularity of time intervals for incremental models. By default, Vulcan figures this out from your `cron` expression, but you can override it if needed.
 
 **Supported values:** `year`, `month`, `day`, `hour`, `half_hour`, `quarter_hour`, `five_minute`
+
+**When to override:** If your cron runs daily but you want to process hourly intervals, set `interval_unit 'hour'`. This is useful when you want finer-grained control over incremental processing.
 
 === "SQL"
 
@@ -270,7 +291,12 @@ Determines the temporal granularity for calculating time intervals. By default, 
 
 ### start
 
-The earliest date/time for processing. Accepts absolute dates, epoch milliseconds, or relative expressions.
+Sets the earliest date/time your model should process. This is useful for limiting backfills or defining when your model's data begins.
+
+You can use:
+- **Absolute dates:** `'2024-01-01'`
+- **Relative expressions:** `'1 year ago'`
+- **Epoch milliseconds:** `1704067200000`
 
 === "SQL"
 
@@ -310,7 +336,7 @@ The earliest date/time for processing. Accepts absolute dates, epoch millisecond
 
 ### end
 
-The latest date/time for processing. Same format as `start`.
+Sets the latest date/time your model should process. Uses the same format as `start`. This is handy for historical models or limiting processing to a specific time range.
 
 === "SQL"
 
@@ -334,7 +360,11 @@ The latest date/time for processing. Same format as `start`.
 
 ### grain / grains
 
-Defines the column(s) that uniquely identify each row. Used by tools like `table_diff`.
+Defines the column(s) that make each row unique. This is like a primary key—it tells Vulcan what identifies a single row in your table.
+
+**Why this matters:** Tools like `table_diff` use grains to compare tables. It also helps Vulcan understand your data structure for better optimization and validation.
+
+You can specify a single grain (`grain order_id`) or multiple grains (`grains (order_id, (customer_id, order_date))`).
 
 === "SQL"
 
@@ -388,7 +418,9 @@ Defines the column(s) that uniquely identify each row. Used by tools like `table
 
 ### owner
 
-Specifies the main point of contact for governance and notifications.
+Sets the owner of the model—usually a team name or individual. This is used for governance, notifications, and knowing who to contact when something breaks.
+
+**Example:** `owner 'analytics_team'` or `owner 'data_engineers'`
 
 === "SQL"
 
@@ -410,7 +442,9 @@ Specifies the main point of contact for governance and notifications.
 
 ### description
 
-Model description automatically registered as a table comment in the SQL engine (if supported).
+A human-readable description of what your model does. Vulcan automatically registers this as a table comment in your SQL engine (if it supports comments), so it shows up in your BI tools and data catalogs.
+
+**Pro tip:** Write descriptions that explain the business purpose, not just the technical details. Future you (and your teammates) will thank you!
 
 === "SQL"
 
@@ -432,7 +466,9 @@ Model description automatically registered as a table comment in the SQL engine 
 
 ### column_descriptions
 
-Explicit column descriptions registered as column comments.
+Document your columns! This property lets you add descriptions for each column, which get registered as column comments in your database.
+
+**Why document columns?** When someone queries your table in a BI tool, they'll see what each column means. It's like inline documentation that travels with your data.
 
 === "SQL"
 
@@ -470,7 +506,12 @@ Explicit column descriptions registered as column comments.
 
 ### columns
 
-Explicitly specifies column names and data types, disabling automatic inference.
+Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query—it'll use exactly what you specify.
+
+**When to use:**
+- Python models (required—Vulcan can't infer types from Python code)
+- Seed models (you need to define the CSV schema)
+- When you want strict type control
 
 === "SQL"
 
@@ -502,11 +543,16 @@ Explicitly specifies column names and data types, disabling automatic inference.
     ```
 
 !!! note "Python Models"
-    Required for [Python models](./python_models.md) that return DataFrames.
+
+    This is required for [Python models](./python_models.md) since Vulcan can't infer column types from Python code. You must explicitly define your schema.
 
 ### dialect
 
-The SQL dialect of the model. Defaults to the project's `model_defaults` dialect. Supports all [SQLGlot dialects](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/__init__.py).
+Specifies the SQL dialect your model uses. Defaults to whatever you set in `model_defaults`, but you can override it per-model if needed.
+
+**Why this matters:** Vulcan uses SQLGlot to parse and transpile SQL. You can write in one dialect (like PostgreSQL) and Vulcan will convert it to whatever your engine needs (like BigQuery). Pretty neat!
+
+Supports all [SQLGlot dialects](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/__init__.py).
 
 === "SQL"
 
@@ -550,7 +596,11 @@ Labels for organizing and filtering models.
 
 ### assertions
 
-Attaching [audits](../audits.md) to the model, declaring that these validations should pass after each model evaluation.
+Attach [audits](../audits.md) directly to your model. These validations run after each model evaluation and will block the pipeline if they fail.
+
+**Why use assertions?** They're your safety net—they catch bad data before it flows downstream. If revenue can't be negative, assert it. If customer IDs must be unique, assert it. Fail fast, fix fast.
+
+Think of assertions as "this data must be true" validations that run automatically.
 
 === "SQL"
 
@@ -581,7 +631,18 @@ Attaching [audits](../audits.md) to the model, declaring that these validations 
 
 ### profiles
 
-Specifies columns for which statistical metrics should be tracked over time. Profiles provide observational data about your columns—tracking distributions, null percentages, and patterns—without blocking pipeline execution.
+Enable automatic data profiling for specific columns. Profiles track statistical metrics over time (like null percentages, distinct counts, distributions) without blocking your pipeline.
+
+**How it works:** Vulcan collects metrics each run and stores them in the `_check_profiles` table. You can query this to see how your data changes over time—detect data drift, understand patterns, and decide which checks or audits to add.
+
+**Use cases:**
+- Track null percentages over time
+- Monitor distinct value counts
+- Detect data drift
+- Understand column distributions
+- Inform which checks/audits to create
+
+Think of profiles as your data observability layer—they watch and learn, but don't block.
 === "SQL"
 
     ```sql
@@ -626,16 +687,17 @@ Specifies columns for which statistical metrics should be tracked over time. Pro
         ...
     ```
 
-Profile results are stored in the `_check_profiles` table and can be used to:
-
-- Detect data drift over time
-- Understand column distributions
-- Inform which audits or checks to add
-- Build data quality dashboards
 
 ### depends_on
 
-Explicitly declares dependencies in addition to those inferred from the query.
+Explicitly declare model dependencies. Vulcan automatically infers dependencies from SQL queries, but sometimes you need to add extra ones.
+
+**When to use:**
+- Python models (required—Vulcan can't parse Python to find dependencies)
+- Hidden dependencies (like a macro that references another model)
+- External dependencies that aren't in your SQL
+
+**Note:** Dependencies you declare here are added to the ones Vulcan infers—they don't replace them.
 
 === "SQL"
 
@@ -656,11 +718,14 @@ Explicitly declares dependencies in addition to those inferred from the query.
     ```
 
 !!! note "Python Models"
-    Python models **require** `depends_on` since dependencies cannot be automatically inferred from the code.
+
+    Python models **require** `depends_on` since Vulcan can't automatically infer dependencies from Python code. You need to tell it explicitly what your model depends on.
 
 ### references
 
-Non-unique columns that define join relationships to other models.
+Declare non-unique join relationships to other models. These help Vulcan understand how models relate to each other for better lineage and optimization.
+
+**Example:** If your `orders` table has a `customer_id` that joins to `customers.customer_id`, you'd add `customer_id` to references. This tells Vulcan about the relationship even though `customer_id` isn't unique in the orders table.
 
 === "SQL"
 
@@ -690,9 +755,15 @@ Non-unique columns that define join relationships to other models.
 
 ## Storage Properties
 
+These properties control how your data is physically stored in the database. They're engine-specific, so check your engine's documentation for what's supported.
+
 ### partitioned_by
 
-Defines partition key for engines supporting table partitioning (Spark, BigQuery, etc.).
+Defines the partition key for your table. Partitioning splits your table into chunks based on column values, which makes queries faster (the engine can skip irrelevant partitions).
+
+**Supported engines:** Spark, BigQuery, Databricks, and others that support table partitioning.
+
+**Why partition?** If you're querying data from the last 7 days and your table is partitioned by date, the engine only scans 7 partitions instead of scanning the entire table. That's a huge performance win!
 
 === "SQL"
 
@@ -733,7 +804,11 @@ Defines partition key for engines supporting table partitioning (Spark, BigQuery
 
 ### clustered_by
 
-Clustering column(s) for engines supporting clustering (BigQuery, etc.).
+Sets clustering columns for engines that support it (like BigQuery). Clustering organizes data within partitions based on column values, which makes range queries and filters faster.
+
+**How it works:** Data is physically stored sorted by the clustering columns. When you filter on those columns, the engine can skip reading irrelevant data blocks.
+
+**Example:** If you cluster by `customer_id`, queries filtering by customer will be faster because related data is stored together.
 
 === "SQL"
 
@@ -757,7 +832,14 @@ Clustering column(s) for engines supporting clustering (BigQuery, etc.).
 
 ### table_format
 
-Table format for engines supporting multiple formats: `iceberg`, `hive`, `delta`.
+Specifies the table format for engines that support multiple formats. Different formats have different features and performance characteristics.
+
+**Supported formats:** `iceberg`, `hive`, `delta`
+
+**When to use:** If your engine supports multiple formats, choose based on your needs:
+- **Iceberg:** Great for time travel and schema evolution
+- **Delta:** Good for ACID transactions and time travel
+- **Hive:** Traditional format, widely supported
 
 === "SQL"
 
@@ -779,7 +861,11 @@ Table format for engines supporting multiple formats: `iceberg`, `hive`, `delta`
 
 ### storage_format
 
-Physical file format: `parquet`, `orc`, etc.
+Sets the physical file format for your table's data files. This affects compression, query performance, and storage costs.
+
+**Common formats:** `parquet`, `orc`
+
+**Parquet** is usually the best choice—it's columnar (great for analytics), has good compression, and is widely supported. **ORC** is another option, especially if you're using Hive.
 
 === "SQL"
 
@@ -803,9 +889,17 @@ Physical file format: `parquet`, `orc`, etc.
 
 ## Engine Properties
 
+These properties let you pass engine-specific settings to Vulcan. Each engine has different capabilities, so these properties vary by engine.
+
 ### physical_properties
 
-Engine-specific properties applied to the physical table/view.
+Pass engine-specific properties directly to the physical table/view creation. This is where you set things like retention policies, labels, or other engine-specific features.
+
+**Use cases:**
+- Set table retention (BigQuery: `partition_expiration_days`)
+- Add labels or tags (BigQuery, Snowflake)
+- Configure table type (Snowflake: `TRANSIENT` tables)
+- Any other engine-specific table settings
 
 === "SQL"
 
@@ -835,7 +929,13 @@ Engine-specific properties applied to the physical table/view.
 
 ### virtual_properties
 
-Engine-specific properties applied to the virtual layer view.
+Pass engine-specific properties to the virtual layer view. This is useful for things like view-level security, labels, or other view-specific settings.
+
+**Use cases:**
+- Create secure views (Snowflake: `SECURE` views)
+- Add labels to views
+- Set view-level permissions
+- Configure view-specific engine features
 
 === "SQL"
 
@@ -863,7 +963,15 @@ Engine-specific properties applied to the virtual layer view.
 
 ### session_properties
 
-Engine-specific session properties applied during execution.
+Set session-level properties that apply when Vulcan executes your model. These affect how queries run but don't change the table structure.
+
+**Use cases:**
+- Set query timeouts
+- Configure parallelism
+- Adjust memory limits
+- Set engine-specific session variables
+
+**Example:** If you have a large query that needs more time, set `query_timeout: 3600` to give it an hour instead of the default timeout.
 
 === "SQL"
 
@@ -891,7 +999,9 @@ Engine-specific session properties applied during execution.
 
 ### gateway
 
-Specifies a specific gateway for model execution (when not using the default).
+Specifies which gateway to use for executing this model. Useful when you have multiple database connections and want to route specific models to specific databases.
+
+**When to use:** Multi-warehouse setups, isolated environments, or when you need to run certain models on a different database than the default.
 
 === "SQL"
 
@@ -915,9 +1025,13 @@ Specifies a specific gateway for model execution (when not using the default).
 
 ## Behavior Properties
 
+These properties control how Vulcan behaves when processing your model.
+
 ### stamp
 
-Arbitrary string to create a new model version without changing the definition.
+Force a new model version without changing the definition. This is like a version tag—useful for tracking deployments or forcing a refresh.
+
+**When to use:** When you want to create a new version for tracking purposes, or when you need to force downstream models to rebuild even though this model's definition hasn't changed.
 
 === "SQL"
 
@@ -939,7 +1053,14 @@ Arbitrary string to create a new model version without changing the definition.
 
 ### enabled
 
-Whether the model is active. Set to `false` to ignore during project loading. (Default: `true`)
+Control whether the model is active. Set to `false` to disable a model without deleting it.
+
+**When to use:**
+- Temporarily disable a model while debugging
+- Deprecate a model but keep it for reference
+- Skip models during development
+
+**Default:** `true` (models are enabled by default)
 
 === "SQL"
 
@@ -961,34 +1082,27 @@ Whether the model is active. Set to `false` to ignore during project loading. (D
 
 ### allow_partials
 
-Allows processing of incomplete data intervals. (Default: `false`)
+Allow processing of incomplete data intervals. By default, Vulcan waits for complete intervals before processing (keeps data quality high). Set this to `true` if you need to process partial intervals.
 
-=== "SQL"
+**When to use:**
+- Real-time or near-real-time pipelines
+- When you need data ASAP, even if it's incomplete
+- Streaming data scenarios
 
-    ```sql
-    MODEL (
-      name sales.realtime_events,
-      cron '@hourly',
-      allow_partials true,  -- Process incomplete intervals
-    );
-    ```
+**Trade-off:** You lose the ability to distinguish between "missing data" (pipeline issue) and "partial interval" (expected). Use with caution!
 
-=== "Python"
-
-    ```python
-    @model(
-        "sales.realtime_events",
-        cron="@hourly",
-        allow_partials=True,
-    )
-    ```
-
-!!! warning "Use with caution"
-    When enabled, you cannot distinguish between missing data due to pipeline issues vs. partial backfills.
+**Default:** `false` (wait for complete intervals)
 
 ### optimize_query
 
-Whether to optimize the model's query. (Default: `true`)
+Enable or disable query optimization. Vulcan optimizes queries by default (rewrites them for better performance), but sometimes you want to disable this.
+
+**When to disable:**
+- The optimizer is breaking your query
+- You have engine-specific optimizations you want to preserve
+- Debugging query issues
+
+**Default:** `true` (optimize queries)
 
 === "SQL"
 
@@ -1010,7 +1124,14 @@ Whether to optimize the model's query. (Default: `true`)
 
 ### formatting
 
-Whether the model is formatted during `vulcan format`. (Default: `true`)
+Control whether Vulcan formats this model when you run `vulcan format`. Set to `false` if you want to preserve custom formatting.
+
+**When to disable:**
+- Legacy models with specific formatting requirements
+- Models where formatting breaks something
+- When you prefer manual formatting control
+
+**Default:** `true` (format models automatically)
 
 === "SQL"
 
@@ -1032,7 +1153,11 @@ Whether the model is formatted during `vulcan format`. (Default: `true`)
 
 ### ignored_rules
 
-Linter rules to ignore for this model.
+Tell Vulcan's linter to ignore specific rules for this model. Useful when you have a legitimate reason to break a rule, or when a rule doesn't apply to your use case.
+
+You can ignore specific rules (`['rule_name', 'another_rule']`) or all rules (`'ALL'`).
+
+**Use sparingly:** If you're ignoring lots of rules, maybe the rules need updating, or maybe the model needs refactoring.
 
 === "SQL"
 
@@ -1070,11 +1195,13 @@ Linter rules to ignore for this model.
 
 ## Incremental Model Properties
 
-Properties specified within the `kind` definition for incremental models. See [Model Kinds](model_kinds.md) for detailed documentation.
+These properties are specified inside the `kind` definition for incremental models. They control how incremental models behave—things like handling schema changes, restatements, and batch processing.
+
+For the full picture on incremental models, check out the [Model Kinds](model_kinds.md) documentation.
 
 ### Common Incremental Properties
 
-These properties apply to all incremental model kinds.
+These properties work with all incremental model kinds. They're your toolkit for controlling incremental behavior:
 
 | Property | Description | Type | Default |
 |----------|-------------|:----:|:-------:|
@@ -1084,7 +1211,13 @@ These properties apply to all incremental model kinds.
 | `disable_restatement` | Disable [data restatement](../plans.md#restatement-plans) | `bool` | `false` |
 | `auto_restatement_cron` | Cron expression for automatic restatement | `str` | - |
 
-**Values for `on_destructive_change` / `on_additive_change`:** `allow`, `warn`, `error`, `ignore`
+**Values for `on_destructive_change` / `on_additive_change`:**
+- `allow` - Let the change happen (default for additive)
+- `warn` - Allow but warn about it
+- `error` - Block the change (default for destructive)
+- `ignore` - Pretend it didn't happen
+
+**Why this matters:** Schema changes can break downstream models. These settings let you control how strict Vulcan should be when your schema evolves.
 
 === "SQL"
 
@@ -1121,7 +1254,9 @@ These properties apply to all incremental model kinds.
 
 ### INCREMENTAL_BY_TIME_RANGE
 
-Incrementally updates data based on a time column. See [INCREMENTAL_BY_TIME_RANGE](model_kinds.md#incremental_by_time_range).
+Properties for models that update incrementally based on a time column. These control how time-based incremental processing works.
+
+For the full guide on `INCREMENTAL_BY_TIME_RANGE` models, see the [Model Kinds documentation](model_kinds.md#incremental_by_time_range).
 
 | Property | Description | Type | Required |
 |----------|-------------|:----:|:--------:|
@@ -1186,14 +1321,17 @@ Incrementally updates data based on a time column. See [INCREMENTAL_BY_TIME_RANG
         return context.fetchdf(query)
     ```
 
-!!! info "Important"
-    The `time_column` should be in UTC timezone.
+!!! info "Important: UTC Timezone"
+
+    Your `time_column` should be in UTC timezone. This ensures Vulcan's scheduler and time macros work correctly.
 
 ---
 
 ### INCREMENTAL_BY_UNIQUE_KEY
 
-Incrementally updates data based on a unique key using MERGE operations. See [INCREMENTAL_BY_UNIQUE_KEY](model_kinds.md#incremental_by_unique_key).
+Properties for models that update based on unique keys (upsert operations). These control MERGE behavior and key handling.
+
+For details on `INCREMENTAL_BY_UNIQUE_KEY` models, see the [Model Kinds documentation](model_kinds.md#incremental_by_unique_key).
 
 | Property | Description | Type | Required |
 |----------|-------------|:----:|:--------:|
@@ -1264,15 +1402,18 @@ Incrementally updates data based on a unique key using MERGE operations. See [IN
     ```
 
 !!! note "Batch Concurrency"
-    `batch_concurrency` cannot be set for this kind because these models cannot safely run in parallel.
+
+    `batch_concurrency` isn't supported for this kind because MERGE operations can't safely run in parallel. Vulcan processes these models sequentially to avoid conflicts.
 
 ---
 
 ### INCREMENTAL_BY_PARTITION
 
-Incrementally updates data based on partition key. See [INCREMENTAL_BY_PARTITION](model_kinds.md#incremental_by_partition).
+Properties for models that update by partition. This kind uses the `partitioned_by` property (from the General Properties section) as its partition key.
 
-This kind uses the `partitioned_by` general property as its partition key and does not have additional kind-specific properties.
+**Note:** There are no additional kind-specific properties—just use `partitioned_by` to define your partition columns.
+
+For details on `INCREMENTAL_BY_PARTITION` models, see the [Model Kinds documentation](model_kinds.md#incremental_by_partition).
 
 === "SQL"
 
@@ -1311,7 +1452,9 @@ This kind uses the `partitioned_by` general property as its partition key and do
 
 ### SCD_TYPE_2
 
-Slowly Changing Dimension Type 2 models track historical changes. See [SCD_TYPE_2](model_kinds.md#scd-type-2).
+Properties for Slowly Changing Dimension Type 2 models, which track historical changes to your data.
+
+For the complete guide on SCD Type 2 models, see the [Model Kinds documentation](model_kinds.md#scd-type-2).
 
 #### Common SCD Type 2 Properties
 
@@ -1324,7 +1467,7 @@ Slowly Changing Dimension Type 2 models track historical changes. See [SCD_TYPE_
 
 #### SCD_TYPE_2_BY_TIME
 
-Tracks changes based on an `updated_at` timestamp column.
+Properties for SCD Type 2 models that detect changes using an `updated_at` timestamp column. This is the recommended approach when your source table has update timestamps.
 
 | Property | Description | Type | Required |
 |----------|-------------|:----:|:--------:|
@@ -1379,7 +1522,7 @@ Tracks changes based on an `updated_at` timestamp column.
 
 #### SCD_TYPE_2_BY_COLUMN
 
-Tracks changes by comparing column values (no `updated_at` column needed).
+Properties for SCD Type 2 models that detect changes by comparing column values. Use this when your source table doesn't have an `updated_at` column.
 
 | Property | Description | Type | Required |
 |----------|-------------|:----:|:--------:|
@@ -1504,7 +1647,11 @@ MODEL (
 
 ## Model Naming
 
-Enable automatic name inference from directory structure:
+By default, you need to specify the `name` property in every model. But if you organize your models in a directory structure that matches your schema names, you can enable automatic name inference.
+
+**How it works:** With `infer_names: true`, a model at `models/sales/daily_sales.sql` automatically gets the name `sales.daily_sales`. The directory structure becomes your schema, and the filename becomes your model name.
+
+Enable it in your config:
 
 ```yaml
 model_defaults:
@@ -1514,6 +1661,6 @@ model_defaults:
 infer_names: true
 ```
 
-With `infer_names: true`, a model at `models/sales/daily_sales.sql` automatically gets the name `sales.daily_sales`.
+**When to use:** If your project structure matches your schema structure, this saves you from typing `name` in every model. Pretty convenient!
 
 Learn more in the [configuration guide](../../guides/configuration.md#model-naming).

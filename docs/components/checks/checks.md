@@ -1,23 +1,19 @@
 # Checks
 
-Quality checks are comprehensive validation rules configured in YAML files that monitor data quality over time. Unlike [audits](audits.md) (which block pipeline execution), checks:
+Quality checks are validation rules that monitor your data quality over time without blocking your pipelines. Think of them as your data's health checkup—they'll warn you when something looks off, but they won't stop the show.
 
-- Run separately from model execution (or alongside it)
-- Don't block pipelines (non-blocking validation)
-- Track trends and historical patterns
+Unlike [audits](audits.md) (which block pipeline execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.
+
+**What makes checks special:**
+- Configured in simple YAML files in the `checks/` directory
+- Don't block pipelines (your models keep running even if checks fail)
+- Track historical patterns and trends
 - Support complex statistical analysis
-- Integrate with Activity API for monitoring
-
-**Key characteristics:**
-- Configured in `checks/` directory
-- Use declarative YAML syntax
-- Organized by data quality dimensions
-- Results stored for historical analysis
-- Integrated with Activity API
+- Integrate with Activity API for monitoring and alerting
 
 ## Checks vs Audits vs Profiles
 
-Understanding the three data quality mechanisms:
+Before we dive in, let's clear up the confusion around these three data quality mechanisms. They all serve different purposes, and understanding when to use each one will save you headaches later.
 
 | Feature | Audits | Checks | Profiles |
 |---------|--------|--------|----------|
@@ -30,6 +26,8 @@ Understanding the three data quality mechanisms:
 | **Historical tracking** | No | Yes (Activity API) | Yes (`_check_profiles`) |
 
 **The Three-Layer Strategy:**
+
+Think of it like a security system for your data:
 
 ```
 ┌─────────────────────────────────────────┐
@@ -54,32 +52,37 @@ Understanding the three data quality mechanisms:
 └─────────────────────────────────────────┘
 ```
 
+**Why this matters:** Audits are your bouncers—they stop bad data at the door. Checks are your security cameras—they watch for problems but don't interfere. Profiles are your data scientists—they observe patterns and help you understand what's normal.
+
 ## When to Use Checks
 
 ✅ **Use Quality Checks for:**
-- Monitoring data quality trends over time
-- Statistical anomaly detection
-- Cross-model validation (joins across models)
+- Monitoring data quality trends over time (is completeness getting worse?)
+- Statistical anomaly detection (did revenue suddenly spike?)
+- Cross-model validation (do orders match customers?)
 - Non-critical validation (warnings, not blockers)
 - Complex validation requiring historical context
 - Building data quality dashboards
 
 ❌ **Use Audits Instead for:**
-- Critical business rules that must pass
-- Model-specific validation (runs inline)
+- Critical business rules that must pass (revenue can't be negative)
+- Model-specific validation (runs inline with the model)
 - Simple SQL assertions
 - Blocking invalid data from flowing downstream
 
 ❌ **Use Profiles Instead for:**
-- Understanding data characteristics
+- Understanding data characteristics (what does this column look like?)
 - Discovering patterns (not validation)
-- Detecting data drift
+- Detecting data drift over time
 - Informing which checks/audits to add
 
 **Example: Revenue validation strategy**
 
+Here's how you'd layer all three for a revenue table:
+
 ```sql
 -- AUDIT (Critical - blocks if fails)
+-- This stops the pipeline if revenue is invalid
 MODEL (
   name analytics.revenue,
   assertions (
@@ -91,6 +94,7 @@ MODEL (
 
 ```yaml
 # CHECK (Monitoring - warns if unusual)
+# This watches for anomalies but doesn't block
 checks:
   analytics.revenue:
     accuracy:
@@ -102,6 +106,7 @@ checks:
 
 ```sql
 -- PROFILE (Observation - tracks over time)
+-- This just watches and records what it sees
 MODEL (
   name analytics.revenue,
   profiles (revenue, order_count, customer_tier)
@@ -112,7 +117,9 @@ MODEL (
 
 ### Your First Check
 
-Create `checks/customers.yml`:
+Let's create your first check. It's simpler than you might think!
+
+Create a file `checks/customers.yml`:
 
 ```yaml
 checks:
@@ -124,29 +131,9 @@ checks:
             description: "All customers must have an email address"
 ```
 
-<!-- **Run the check:**
+That's it! This check ensures that every customer has an email address. When you run your models, this check will run automatically and warn you if any emails are missing.
 
-```bash
-vulcan check
-```
-
-
-**Output:**
-
-```
-Running checks...
-
-✓ analytics.customers.no_missing_emails
-  Pass: missing_count(email) = 0 (actual: 0)
-
-----------------------------------------------------------------------
-Ran 1 check in 0.234s
-
-OK
-```
--->
-
-### Check and Profile Execution
+**What happens when it runs:**
 
 Checks and profiles run automatically when models are executed, either through a **plan** or **run** command. Here's what the execution output looks like:
 
@@ -161,12 +148,15 @@ Profiled 1 model (3 columns):
   ✓ warehouse.hello.subscriptions: 3 columns
 ```
 
+Pretty straightforward, right? Now let's look at some common patterns you'll want to use.
 
 ### Common Check Patterns
 
+Here are the patterns you'll use most often. Copy these, tweak them for your tables, and you're good to go!
+
 #### Pattern 1: Completeness Checks
 
-Ensure required data is present:
+Make sure required data is present:
 
 ```yaml
 checks:
@@ -181,6 +171,8 @@ checks:
       - row_count > 1000:
           name: sufficient_orders
 ```
+
+The first check ensures every order has a customer ID (zero tolerance). The second allows up to 5% missing emails (sometimes that's okay). The third makes sure you have enough data to work with.
 
 #### Pattern 2: Validity Checks
 
@@ -206,6 +198,8 @@ checks:
             WHERE age < 0 OR age > 120
 ```
 
+The `failed rows` check type is super flexible—you can write any SQL query. If it returns rows, the check fails and captures those rows as samples so you can see what went wrong.
+
 #### Pattern 3: Uniqueness Checks
 
 Ensure no duplicates:
@@ -221,9 +215,11 @@ checks:
           name: unique_customer_date_combination
 ```
 
+The second example shows composite keys—maybe a customer can have multiple orders, but only one per day.
+
 #### Pattern 4: Anomaly Detection
 
-Detect unusual patterns:
+Detect unusual patterns automatically:
 
 ```yaml
 checks:
@@ -235,6 +231,8 @@ checks:
       - anomaly detection for avg(revenue):
           name: revenue_anomaly
 ```
+
+This is where checks get really cool. Anomaly detection learns from historical data and flags when something looks unusual. It needs to run a few times first to build up a baseline, but after that it's pretty smart about spotting problems.
 
 #### Pattern 5: Change Monitoring
 
@@ -250,11 +248,13 @@ checks:
             description: "Alert if row count drops more than 50%"
 ```
 
+This compares the current value to the previous run and alerts you if it changes too much. Perfect for catching sudden drops or spikes.
+
 ## Check Configuration
 
 ### File Structure
 
-Checks are YAML files in the `checks/` directory:
+Checks live in YAML files in the `checks/` directory. You can organize them however makes sense for your project:
 
 ```
 project/
@@ -269,10 +269,12 @@ project/
 
 **File naming:**
 - Must end with `.yml` or `.yaml`
-- Name doesn't matter (Vulcan reads all files)
-- Organize by domain or table for clarity
+- The name doesn't matter (Vulcan reads all files in the directory)
+- Organize by domain or table for clarity—whatever helps you find things
 
 ### Basic Check Syntax
+
+Here's the basic structure of a check:
 
 ```yaml
 checks:
@@ -300,12 +302,15 @@ checks:
             tags: [critical, daily]
 ```
 
+The `name` field is required and should be descriptive. The `attributes` section is optional but super useful for documentation and filtering.
+
 ### Data Quality Dimensions
 
-Organize checks by **8 standard dimensions** (ODPS v3.1):
+Checks are organized by **8 standard dimensions** (based on ODPS v3.1). Each dimension focuses on a different aspect of data quality:
 
 #### 1. Completeness
-No missing required data
+
+No missing required data. This is probably the most common dimension you'll use.
 
 ```yaml
 completeness:
@@ -315,7 +320,8 @@ completeness:
 ```
 
 #### 2. Validity
-Data conforms to format/syntax
+
+Data conforms to format/syntax. Is that email actually an email? Is that date in the right format?
 
 ```yaml
 validity:
@@ -326,7 +332,8 @@ validity:
 ```
 
 #### 3. Accuracy
-Data matches reality
+
+Data matches reality. Is the average age reasonable? Is revenue in the expected range?
 
 ```yaml
 accuracy:
@@ -335,7 +342,8 @@ accuracy:
 ```
 
 #### 4. Consistency
-Data agrees across sources
+
+Data agrees across sources. Do orders match customers? Are totals consistent?
 
 ```yaml
 consistency:
@@ -348,7 +356,8 @@ consistency:
 ```
 
 #### 5. Uniqueness
-No duplicates
+
+No duplicates. Is that email really unique? Can customers have multiple orders per day?
 
 ```yaml
 uniqueness:
@@ -357,7 +366,8 @@ uniqueness:
 ```
 
 #### 6. Timeliness
-Data is current
+
+Data is current. Is the data fresh? Are updates happening on time?
 
 ```yaml
 timeliness:
@@ -370,7 +380,8 @@ timeliness:
 ```
 
 #### 7. Conformity
-Follows standards
+
+Follows standards. Does the zip code have the right format? Are codes valid?
 
 ```yaml
 conformity:
@@ -382,7 +393,8 @@ conformity:
 ```
 
 #### 8. Coverage
-All records are present
+
+All records are present. Did we get all the data we expected?
 
 ```yaml
 coverage:
@@ -391,7 +403,7 @@ coverage:
 
 ### Filtering Checks
 
-Apply checks to a subset of data:
+Sometimes you want to apply checks to a subset of your data. Maybe you only care about completed orders, or US customers. That's where filters come in:
 
 ```yaml
 checks:
@@ -404,6 +416,8 @@ checks:
 ```
 
 **Multiple filters:**
+
+You can define the same table multiple times with different filters:
 
 ```yaml
 checks:
@@ -418,9 +432,11 @@ checks:
       - row_count > 500
 ```
 
+This lets you have different expectations for different regions, which is pretty common in real-world scenarios.
+
 ### Check Attributes
 
-Add metadata to checks:
+Add metadata to your checks to make them easier to manage and understand:
 
 ```yaml
 checks:
@@ -438,19 +454,21 @@ checks:
 ```
 
 **Standard attributes:**
-- `description` - Human-readable explanation
-- `severity` - `error` (default) or `warning`
-- `tags` - List of tags for filtering/organization
-- `owner` - Team or person responsible
-- Custom attributes - Any key-value pairs
+- `description` - Human-readable explanation (super helpful for your teammates)
+- `severity` - `error` (default) or `warning` (warnings are less urgent)
+- `tags` - List of tags for filtering/organization (find all "critical" checks easily)
+- `owner` - Team or person responsible (who do I call when this fails?)
+- Custom attributes - Any key-value pairs (add whatever metadata you need)
 
 ## Built-in Check Types
+
+Vulcan provides several built-in check types that cover most common scenarios. Let's walk through them:
 
 ### Missing Data Checks
 
 #### `missing_count(column)`
 
-Count of NULL values:
+Count of NULL values. Simple and straightforward:
 
 ```yaml
 completeness:
@@ -461,9 +479,11 @@ completeness:
       name: phone_mostly_complete
 ```
 
+The first ensures zero missing emails (strict). The second allows up to 100 missing phone numbers (maybe phones are optional for some customers).
+
 #### `missing_percent(column)`
 
-Percentage of NULL values:
+Percentage of NULL values. Useful when you care about proportions rather than absolute counts:
 
 ```yaml
 completeness:
@@ -474,11 +494,13 @@ completeness:
       name: optional_field_half_complete
 ```
 
+This is handy when table sizes vary—5% missing might be fine for a million-row table but concerning for a hundred-row table.
+
 ### Row Count Checks
 
 #### `row_count`
 
-Total rows in table:
+Total rows in table. Great for ensuring you have enough data:
 
 ```yaml
 completeness:
@@ -489,7 +511,11 @@ completeness:
       name: expected_row_range
 ```
 
+The second example shows a range check—maybe you know your table should be between 1K and 100K rows, and anything outside that range is suspicious.
+
 #### `row_count` with filter
+
+You can also check row counts on filtered data:
 
 ```yaml
 completeness:
@@ -498,11 +524,13 @@ completeness:
       filter: "status = 'active'"
 ```
 
+This checks that you have at least 500 active users, regardless of how many total users you have.
+
 ### Duplicate Count Checks
 
 #### `duplicate_count(column)`
 
-Count of duplicate values:
+Count of duplicate values. Perfect for ensuring uniqueness:
 
 ```yaml
 uniqueness:
@@ -513,9 +541,11 @@ uniqueness:
       name: unique_customer_ids
 ```
 
+If this returns anything greater than zero, you've got duplicates. The check fails and you can investigate.
+
 #### `duplicate_count(column1, column2)`
 
-Composite key duplicates:
+Composite key duplicates. Check combinations of columns:
 
 ```yaml
 uniqueness:
@@ -525,11 +555,13 @@ uniqueness:
         description: "Each customer can have at most one order per day"
 ```
 
+Maybe customers can have multiple orders, but only one per day. This check enforces that business rule.
+
 ### Failed Rows Checks
 
 #### SQL-based validation with samples
 
-Most flexible check type - any SQL query:
+This is the most flexible check type—you can write any SQL query you want:
 
 ```yaml
 validity:
@@ -544,13 +576,15 @@ validity:
         description: "Revenue must be between 0 and 10M"
 ```
 
-**Key features:**
-- `fail query` - SELECT statement that returns invalid rows
-- `samples limit` - How many example rows to capture (default: 5)
-- Returns empty = check passes
-- Returns rows = check fails (captures samples)
+**How it works:**
+- `fail query` - A SELECT statement that returns invalid rows
+- `samples limit` - How many example rows to capture when the check fails (default: 5)
+- Returns empty = check passes (no invalid rows found)
+- Returns rows = check fails (captures samples so you can see what's wrong)
 
 **Complex validation:**
+
+You can get fancy with joins and CTEs:
 
 ```yaml
 validity:
@@ -564,9 +598,13 @@ validity:
       samples limit: 10
 ```
 
+This finds orders that reference customers that don't exist—a classic referential integrity check.
+
 ### Threshold Checks
 
 #### Numeric aggregations
+
+Check aggregated values against thresholds:
 
 ```yaml
 accuracy:
@@ -583,7 +621,11 @@ accuracy:
       name: non_negative_prices
 ```
 
+You can use any aggregation function: `avg`, `sum`, `min`, `max`, `count`, `distinct_count`, etc.
+
 #### Statistical checks
+
+Get fancy with statistical functions:
 
 ```yaml
 accuracy:
@@ -594,11 +636,13 @@ accuracy:
       name: revenue_95th_percentile_check
 ```
 
+These are great for detecting when your data distribution changes unexpectedly.
+
 ### Anomaly Detection
 
 #### ML-based anomaly detection
 
-Uses historical check results to detect anomalies:
+This is where checks get really powerful. Anomaly detection uses historical check results to learn what's normal and flag unusual patterns:
 
 ```yaml
 accuracy:
@@ -615,19 +659,23 @@ accuracy:
 ```
 
 **How it works:**
-1. Collects historical metric values over time
-2. Builds statistical model (mean, std dev, trends)
+1. Collects historical metric values over time (every time the check runs)
+2. Builds a statistical model (mean, standard deviation, trends)
 3. Compares current value to expected range
-4. Flags significant deviations (typically > 3 std devs)
+4. Flags significant deviations (typically > 3 standard deviations)
 
 **Requirements:**
-- Needs historical data (runs multiple times)
+- Needs historical data (runs multiple times to build a baseline)
 - Works best with regular schedules (daily, hourly)
-- More accurate after 30+ data points
+- More accurate after 30+ data points (the more history, the better)
+
+So if you're setting up anomaly detection, be patient—it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.
 
 ### Change Over Time Checks
 
 #### Monitor changes compared to previous run
+
+Track how metrics change between runs:
 
 ```yaml
 timeliness:
@@ -649,9 +697,11 @@ change = (current_value - previous_value) / previous_value * 100
 ```
 
 **Examples:**
-- `change >= -30%` - Alert if metric drops more than 30%
-- `change >= 10%` - Alert if metric grows more than 10%
+- `change >= -30%` - Alert if metric drops more than 30% (negative change)
+- `change >= 10%` - Alert if metric grows more than 10% (positive change)
 - `change between -10% and 10%` - Alert if metric changes more than 10% either way
+
+This is super useful for catching sudden changes that might indicate a problem (or an opportunity!).
 
 ## Data Profiling
 
@@ -659,7 +709,7 @@ change = (current_value - previous_value) / previous_value * 100
 
 **Profiles automatically collect statistical metrics about your data over time.**
 
-Unlike checks (which validate), profiles **observe and track** data characteristics:
+Unlike checks (which validate), profiles **observe and track** data characteristics. They're like a data scientist watching your tables and taking notes:
 
 ```sql
 MODEL (
@@ -690,9 +740,11 @@ MODEL (
 - Min, max, avg length
 - Most frequent values
 
+Think of profiles as your data's health records—they track how things change over time so you can spot trends and drift.
+
 ### Profile Configuration
 
-Enable profiling in MODEL:
+Enable profiling in your MODEL definition:
 
 ```sql
 MODEL (
@@ -709,9 +761,11 @@ MODEL (
 );
 ```
 
+Just list the columns you want to profile. Vulcan will automatically collect metrics for them every time the model runs.
+
 ### Profile Storage
 
-Profiles are stored in the `_check_profiles` table:
+Profiles are stored in the `_check_profiles` table, which you can query like any other table:
 
 | Column | Meaning |
 |--------|---------|
@@ -724,30 +778,36 @@ Profiles are stored in the `_check_profiles` table:
 | `value_text` | Used for text values (rare) |
 | `value_json` | JSON-encoded metric (for histograms, frequent values, etc.) |
 | `value_type` | Type of value stored (number, json, etc.) |
-| `profiled_at` | When the profiling was performed (epoch ms in your sample) |
+| `profiled_at` | When the profiling was performed (epoch ms) |
 | `created_ts` | When the row was inserted |
 
 ### Querying Profiles
 
 #### Track missing count over time
 
+See how null percentages change:
+
 ```sql
 SELECT
-to_timestamp(profiled_at/1000)::date AS date,
-value_number AS missing_count
+  to_timestamp(profiled_at/1000)::date AS date,
+  value_number AS missing_count
 FROM _check_profiles
 WHERE table_name = 'warehouse.hello.subscriptions'
-AND column_name = 'mrr'
-and profile_type = 'missing_count'
+  AND column_name = 'mrr'
+  AND profile_type = 'missing_count'
 ORDER BY profiled_at DESC
 LIMIT 30;  -- Last 30 days
 ```
 
+This shows you a time series of missing values, which is great for spotting trends.
+
 #### Monitor data drift
+
+Compare current values to historical averages:
 
 ```sql
 WITH latest_profile AS (
-  -- pick the most recent profiling timestamp for that table/column
+  -- Pick the most recent profiling timestamp for that table/column
   SELECT profiled_at
   FROM _check_profiles
   WHERE table_name = 'warehouse.hello.subscriptions'
@@ -757,7 +817,7 @@ WITH latest_profile AS (
 ),
 
 current AS (
-  -- get the most recent distinct count and average value from that profiling run
+  -- Get the most recent distinct count and average value from that profiling run
   SELECT
     MAX(CASE WHEN profile_type = 'distinct' THEN value_number END)     AS distinct_count,
     MAX(CASE WHEN profile_type IN ('avg', 'mean', 'average', 'avg_value') THEN value_number END) AS avg_value
@@ -792,17 +852,18 @@ SELECT
     ELSE (c.avg_value - h.avg_mrr) / NULLIF(h.avg_mrr, 0) * 100
   END AS mrr_change_pct
 FROM current c, historical h;
-
 ```
+
+This query compares current metrics to 30-day historical averages and calculates percentage changes. Perfect for detecting drift!
 
 ### Using Profiles to Inform Checks
 
 **Workflow:**
 
-1. **Enable profiling** on new models
-2. **Observe patterns** for 30+ days
-3. **Identify anomalies** in profile data
-4. **Create checks** based on observed patterns
+1. **Enable profiling** on new models (just add `profiles (...)` to your MODEL)
+2. **Observe patterns** for 30+ days (let profiles collect data)
+3. **Identify anomalies** in profile data (query `_check_profiles` and look for trends)
+4. **Create checks** based on observed patterns (now you know what's normal)
 
 **Example:**
 
@@ -827,7 +888,6 @@ WHERE table_name = 'warehouse.hello.subscriptions'
   AND profile_type IN ('avg', 'mean', 'average', 'avg_value')
   AND to_timestamp(profiled_at/1000) >= CURRENT_DATE - INTERVAL '30 days';
 
-
 -- Results:
 -- min_revenue: 45000
 -- max_revenue: 75000
@@ -849,40 +909,42 @@ checks:
           name: revenue_anomaly_detection
 ```
 
+Now your checks are informed by actual data patterns, not guesses. Much better!
+
 ### Profile Best Practices
 
 ✅ **DO:**
-- Profile high-value production tables
-- Profile columns used in downstream analysis
-- Use profiles to understand new data sources
-- Query profiles to detect data drift
-- Use profiles to inform check thresholds
+- Profile high-value production tables (the ones that matter)
+- Profile columns used in downstream analysis (if it's important, profile it)
+- Use profiles to understand new data sources (what does this data look like?)
+- Query profiles to detect data drift (is something changing?)
+- Use profiles to inform check thresholds (data-driven thresholds are better)
 
 ❌ **DON'T:**
-- Profile sensitive/PII columns (privacy risk)
-- Profile every column (performance overhead)
-- Profile temporary/experimental models
-- Use profiles as a replacement for checks
-- Profile very high-frequency models (storage cost)
+- Profile sensitive/PII columns (privacy risk—be careful!)
+- Profile every column (performance overhead—pick what matters)
+- Profile temporary/experimental models (waste of resources)
+- Use profiles as a replacement for checks (they serve different purposes)
+- Profile very high-frequency models (storage cost adds up)
 
 **When to use profiles:**
-- Building new models (understand the data)
-- Monitoring production tables
-- Detecting data drift
-- Informing audit/check strategy
-- Debugging data quality issues
+- Building new models (understand the data first)
+- Monitoring production tables (watch for changes)
+- Detecting data drift (is the data changing?)
+- Informing audit/check strategy (what should we check?)
+- Debugging data quality issues (what's normal vs abnormal?)
 
 **When to skip profiles:**
-- Temporary models
-- Models with sensitive data
-- Very high-frequency models (> 100 runs/day)
-- Models where you only need pass/fail validation
+- Temporary models (they won't be around long)
+- Models with sensitive data (privacy concerns)
+- Very high-frequency models (> 100 runs/day—storage costs)
+- Models where you only need pass/fail validation (profiles are overkill)
 
 ## Advanced Patterns
 
 ### Cross-Model Validation
 
-Validate relationships between models:
+Validate relationships between models. This is super useful for ensuring referential integrity:
 
 ```yaml
 # checks/cross_model.yml
@@ -912,9 +974,11 @@ checks:
             WHERE ABS(o.revenue - r.revenue) > 0.01
 ```
 
+The first check finds orders without valid customers (orphaned records). The second ensures revenue matches across tables (consistency check).
+
 ### Time-Based Validation
 
-Ensure data timeliness:
+Ensure data timeliness. Is your data fresh? Are updates happening on schedule?
 
 ```yaml
 checks:
@@ -938,9 +1002,11 @@ checks:
             WHERE order_date > CURRENT_DATE
 ```
 
+The first check finds stale pending orders (maybe something's stuck). The second catches future dates (data entry errors).
+
 ### Statistical Outlier Detection
 
-Custom outlier detection:
+Custom outlier detection using SQL. Sometimes you need more control than anomaly detection provides:
 
 ```yaml
 checks:
@@ -962,9 +1028,13 @@ checks:
           samples limit: 20
 ```
 
+This finds rows where revenue is more than 3 standard deviations from the mean (classic outlier detection). The z-score tells you how extreme each outlier is.
+
 ## Best Practices
 
 ### Check Organization
+
+Organize your checks in a way that makes sense for your team. Here are two common approaches:
 
 **By domain:**
 
@@ -991,19 +1061,21 @@ checks/
 └── experimental.yml  # Testing new checks
 ```
 
+Pick whatever works for your team. The important thing is consistency—if everyone knows where to find things, life is easier.
+
 ### Naming Conventions
 
 **Use descriptive names:**
 
 ```yaml
-# ❌ Bad
+# ❌ Bad - what does "check1" tell you?
 checks:
   analytics.customers:
     completeness:
       - missing_count(email) = 0:
           name: check1
 
-# ✅ Good
+# ✅ Good - clear and descriptive
 checks:
   analytics.customers:
     completeness:
@@ -1014,12 +1086,14 @@ checks:
 ```
 
 **Naming pattern:**
-- `<dimension>_<what>_<constraint>`
+- `<dimension>_<what>_<constraint>` or `<what>_<constraint>`
 - Examples:
-  - `completeness_email_required`
-  - `validity_email_format`
-  - `uniqueness_email_no_duplicates`
-  - `timeliness_order_within_24hrs`
+  - `completeness_email_required` or `no_missing_emails`
+  - `validity_email_format` or `valid_email_format`
+  - `uniqueness_email_no_duplicates` or `unique_emails`
+  - `timeliness_order_within_24hrs` or `orders_update_daily`
+
+The key is that someone reading the name should understand what it checks without looking at the code.
 
 ### Threshold Selection
 
@@ -1045,15 +1119,17 @@ checks:
             description: "Based on 30-day historical analysis"
 ```
 
+Don't set thresholds based on guesses—let the data tell you what's normal. Use profiles to understand your data first, then set checks based on what you learn.
+
 **Use profiles to inform thresholds:**
 
 ```sql
--- Query profiles
+-- Query profiles to understand your data
 SELECT
-  MIN(metric_value) as min_observed,
-  MAX(metric_value) as max_observed,
-  AVG(metric_value) as typical,
-  STDDEV(metric_value) as stddev
+  MIN(value_number) as min_observed,
+  MAX(value_number) as max_observed,
+  AVG(value_number) as typical,
+  STDDEV(value_number) as stddev
 FROM check_results
 WHERE check_name = 'row_count'
   AND executed_at >= CURRENT_DATE - INTERVAL '90 days';
@@ -1061,12 +1137,15 @@ WHERE check_name = 'row_count'
 -- Set threshold as: typical ± 3*stddev
 ```
 
+This gives you data-driven thresholds instead of wild guesses. Much better!
+
 ### Integration Strategy
 
 **Layer validation:**
 
 ```sql
 -- LAYER 1: Audits (critical - blocks)
+-- Stop bad data at the door
 MODEL (
   name analytics.orders,
   assertions (
@@ -1078,6 +1157,7 @@ MODEL (
 
 ```yaml
 # LAYER 2: Checks (monitoring - warns)
+# Watch for problems but don't block
 checks:
   analytics.orders:
     completeness:
@@ -1091,11 +1171,14 @@ checks:
 
 ```sql
 -- LAYER 3: Profiles (observe - tracks)
+-- Just watch and learn
 MODEL (
   name analytics.orders,
   profiles (order_count, revenue, customer_tier)
 );
 ```
+
+This three-layer approach gives you comprehensive data quality coverage: audits stop problems, checks warn about issues, and profiles help you understand what's normal.
 
 ## Troubleshooting
 
@@ -1103,12 +1186,18 @@ MODEL (
 
 #### Investigate failed check
 
+When a check fails, you'll want to dig into why:
+
 ```bash
 # Run specific check with verbose output
 vulcan check --select analytics.customers.invalid_emails --verbose
 ```
 
+This gives you more details about what went wrong.
+
 #### Query failed samples
+
+If your check captures samples (like `failed rows` checks do), you can query them:
 
 ```sql
 -- Get samples from last failed run
@@ -1119,6 +1208,8 @@ WHERE check_name = 'invalid_emails'
 ORDER BY executed_at DESC
 LIMIT 10;
 ```
+
+This shows you actual rows that failed, which is super helpful for debugging.
 
 ### Performance Issues
 
@@ -1149,6 +1240,8 @@ checks:
             WHERE email NOT LIKE '%@%'
 ```
 
+Filtering reduces the amount of data the check needs to scan, which makes it faster.
+
 **Solution 2: Add indexes**
 
 ```sql
@@ -1157,6 +1250,8 @@ CREATE INDEX idx_orders_email ON analytics.orders(email);
 CREATE INDEX idx_orders_order_date ON analytics.orders(order_date);
 ```
 
+Indexes help queries run faster, especially for `failed rows` checks that filter on specific columns.
+
 ### False Positives
 
 #### Threshold too strict
@@ -1164,20 +1259,24 @@ CREATE INDEX idx_orders_order_date ON analytics.orders(order_date);
 **Problem:** Check fails during normal variance
 
 ```yaml
-# ❌ Too strict
+# ❌ Too strict - exact match is unrealistic
 checks:
   analytics.orders:
     completeness:
       - row_count = 10000  # Exact match
 
-# ✅ Allow variance
+# ✅ Allow variance - more realistic
 checks:
   analytics.orders:
     completeness:
       - row_count between 9000 and 11000  # ±10% variance
 ```
 
+Real data has variance. Don't set thresholds that are too strict—you'll just get false positives.
+
 #### Use anomaly detection instead
+
+Sometimes strict thresholds aren't the right approach:
 
 ```yaml
 # Replace strict threshold with ML-based detection
@@ -1188,38 +1287,37 @@ checks:
           name: row_count_anomaly
 ```
 
+Anomaly detection learns what's normal and adapts to variance, which reduces false positives.
+
 ## Summary
 
-Quality checks provide a comprehensive way to monitor data quality over time:
+Quality checks provide a comprehensive way to monitor data quality over time without blocking your pipelines. Here's what we covered:
 
 ### Core Concepts
 
 **1. Quality Checks**
-
 - YAML-configured validation rules
 - Non-blocking (don't stop pipelines)
 - Track trends over time
 - Integrate with Activity API
 
 **2. Check Types**
-
 - Missing data checks (`missing_count`, `missing_percent`)
 - Row count checks (`row_count`)
 - Duplicate checks (`duplicate_count`)
-- Failed rows (SQL-based)
-- Anomaly detection (ML-based)
-- Change monitoring (compare to previous)
+- Failed rows (SQL-based, super flexible)
+- Anomaly detection (ML-based, learns from history)
+- Change monitoring (compare to previous runs)
 
 **3. Data Profiling**
-
 - Automatic statistical metric collection
 - Stored in `_check_profiles` table
 - Observe patterns without validation
 - Inform check threshold selection
 
 **4. Data Quality Strategy**
+- **Audits** - Critical, blocking (stop bad data)
+- **Checks** - Monitoring, non-blocking (watch for problems)
+- **Profiles** - Observation, tracking (understand what's normal)
 
-- **Audits** - Critical, blocking
-- **Checks** - Monitoring, non-blocking
-- **Profiles** - Observation, tracking
-
+Remember: start simple, use profiles to understand your data, then create checks based on what you learn. And don't forget—checks are there to help you, not stress you out. If a check is giving you too many false positives, adjust the threshold or switch to anomaly detection. The goal is better data quality, not perfect check scores.

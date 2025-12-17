@@ -1,19 +1,19 @@
 # Overview
 
-Models are made up of metadata and queries that create tables and views, which can be used by other models or even outside of Vulcan. They are defined in the `models/` directory of your Vulcan project and live in `.sql` files.
+Models are the heart of Vulcan—they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.
 
-Vulcan will automatically determine the relationships among and lineage of your models by parsing SQL, so you don't have to worry about manually configuring dependencies.
+Models live in `.sql` files in the `models/` directory of your project. The cool thing is that Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Just write your SQL, and Vulcan handles the lineage.
 
-A model consists of two core components:
+Every model has two parts:
 
-- **DDL (Data Definition Language)**: The `MODEL` block that defines the structure, metadata, and behavior of the model
-- **DML (Data Manipulation Language)**: The `SELECT` query that contains the transformation logic
+- **DDL (Data Definition Language)** - The `MODEL` block that tells Vulcan what this model is (name, schedule, how to materialize it, etc.)
+- **DML (Data Manipulation Language)** - The `SELECT` query that does the actual transformation work
 
----
+It's like filling out a form (DDL) and then writing the actual code (DML). Simple!
 
 ## Model Structure
 
-Models can be defined in SQL or Python. Both formats follow the same DDL/DML pattern.
+You can write models in SQL or Python. Both work the same way conceptually—they just look different. Let's see both:
 
 === "SQL Model"
 
@@ -35,10 +35,9 @@ Models can be defined in SQL or Python. Both formats follow the same DDL/DML pat
     ORDER BY order_date
     ```
 
-    | Component | Lines | Purpose |
-    | --------- | ----- | ------- |
-    | **DDL** (MODEL block) | 1-6 | Defines model name, kind, schedule, and grain |
-    | **DML** (SELECT query) | 8-17 | Contains the transformation logic |
+    **Breaking it down:**
+    - **Lines 1-6**: The DDL (`MODEL` block) - tells Vulcan this is a daily sales model that runs every day
+    - **Lines 8-17**: The DML (`SELECT` query) - the actual transformation that aggregates orders by date
 
 === "Python Model"
 
@@ -84,18 +83,19 @@ Models can be defined in SQL or Python. Both formats follow the same DDL/DML pat
       return context.fetchdf(query)
     ```
 
-    | Component | Lines | Purpose |
-    | --------- | ----- | ------- |
-    | **DDL** (`@model` decorator) | 7-20 | Defines model name, columns, kind, schedule, and dependencies |
-    | **DML** (function body) | 21-40 | Contains the transformation logic and returns a DataFrame |
+    **Breaking it down:**
+    - **Lines 7-20**: The DDL (`@model` decorator) - same metadata as SQL, just Python syntax
+    - **Lines 21-40**: The DML (function body) - runs the SQL and returns a DataFrame
 
----
+Both formats do the same thing—pick whichever you're more comfortable with!
 
 ## DDL: The MODEL Block
 
-The `MODEL` block is the DDL component that defines the structure and metadata of your model. It is the first non-comment statement in the file and uses a DDL-like syntax to declare model properties.
+The `MODEL` block is where you tell Vulcan about your model. It's the first thing in your file (after any comments) and uses a simple, declarative syntax.
 
-### DDL Syntax
+### Basic Syntax
+
+Here's what a `MODEL` block looks like:
 
 ```sql linenums="1"
 MODEL (
@@ -106,25 +106,31 @@ MODEL (
 );
 ```
 
-### Common DDL Properties
+This tells Vulcan:
+- **`name`** - What to call this model (schema.table format)
+- **`kind`** - How to materialize it (FULL rebuilds everything, INCREMENTAL only updates changes, etc.)
+- **`cron`** - When to run it (`@daily` means every day)
+- **`grain`** - What makes each row unique (in this case, `order_date`)
 
-| Property | Description | Example |
-| -------- | ----------- | ------- |
+### Common Properties
+
+Here are the properties you'll use most often:
+
+| Property | What It Does | Example |
+| -------- | ------------ | ------- |
 | `name` | Fully qualified model name (schema.table) | `sales.daily_sales` |
-| `kind` | Materialization strategy (FULL, INCREMENTAL, VIEW, etc.) | `FULL` |
-| `cron` | Scheduling expression | `'@daily'` |
-| `grain` | Column(s) that define row uniqueness | `order_date` |
-| `owner` | Model owner for governance | `analytics_team` |
+| `kind` | Materialization strategy | `FULL`, `INCREMENTAL`, `VIEW` |
+| `cron` | When to run (scheduling) | `'@daily'`, `'0 0 * * *'` |
+| `grain` | Column(s) that make rows unique | `order_date` or `(customer_id, order_date)` |
+| `owner` | Who owns this model (for governance) | `analytics_team` |
 | `description` | Human-readable description | `'Daily sales aggregates'` |
 
 !!! info "More DDL Properties"
-    For a complete list of all available model properties and their configurations, see the [Model Properties](./properties.md) reference .
+    There are more properties available beyond these common ones. Check out the [Model Properties](./properties.md) reference for the complete list of all available model properties and their configurations.
 
 ## DML: The SELECT Query
 
-The `SELECT` query is the DML component that contains the transformation logic. It defines what data is selected, how it's transformed, and what columns appear in the final output.
-
-### DML Syntax
+The `SELECT` query is where the magic happens. This is your transformation logic—the SQL that actually does the work.
 
 ```sql linenums="1"
 SELECT
@@ -137,17 +143,23 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
----
+This query:
+- Reads from `raw.raw_orders`
+- Groups by `order_date`
+- Counts orders, sums revenue, finds the latest order ID
+- Returns the results ordered by date
+
+Pretty standard SQL! Vulcan will automatically figure out that this model depends on `raw.raw_orders` and build the dependency graph for you.
 
 ## Conventions
 
-Vulcan attempts to infer as much as possible about your pipelines to reduce the cognitive overhead of switching to another format such as YAML. The DML portion of a model must follow certain conventions for Vulcan to detect the necessary metadata.
+Vulcan tries to be smart and infer as much as possible from your SQL. This means you don't have to write a bunch of YAML config files—just write SQL and Vulcan figures it out. But to do this, your SQL needs to follow some conventions.
 
 ### SQL Model Conventions
 
 #### Unique Column Names
 
-The final `SELECT` of a model's query must contain unique column names.
+Your final `SELECT` needs unique column names. No duplicates allowed!
 
 ```sql linenums="1"
 -- ✓ Good: Each column has a unique name
@@ -159,11 +171,11 @@ FROM raw.raw_orders
 GROUP BY order_date
 ```
 
+If you have duplicate column names, Vulcan won't know which one you mean, and that causes problems.
+
 #### Explicit Types
 
-Vulcan encourages explicit type casting in the final `SELECT` of a model's query. It is considered a best practice to prevent unexpected types in the schema of a model's table.
-
-Vulcan uses the postgres `x::int` syntax for casting; the casts are automatically transpiled to the appropriate format for the execution engine.
+Cast your types explicitly. This prevents surprises and ensures your schema is consistent:
 
 ```sql linenums="1"
 -- Explicit casting ensures consistent schema
@@ -176,26 +188,32 @@ FROM raw.raw_orders
 GROUP BY order_date
 ```
 
+Vulcan uses PostgreSQL-style casting (`x::int`), but don't worry—it automatically converts this to whatever your execution engine needs. So you write `::INTEGER` and Vulcan handles the rest.
+
+**Why this matters:** Without explicit types, you might get `FLOAT` when you expected `INTEGER`, or `VARCHAR` when you wanted `TIMESTAMP`. Explicit casting prevents these surprises.
+
 #### Inferrable Names
 
-The final `SELECT` of a model's query must have inferrable names or aliases.
-
-Explicit aliases are recommended, but not required. The Vulcan formatter will automatically add aliases to columns without them when the model SQL is rendered.
+Your columns need names that Vulcan can figure out. If Vulcan can't infer a name, you need to add an alias:
 
 ```sql linenums="1"
 SELECT
-  1,                              -- not inferrable
-  total_amount + 1,               -- not inferrable
-  SUM(total_amount),              -- not inferrable
-  order_date,                     -- inferrable as order_date
-  order_date::TIMESTAMP,          -- inferrable as order_date
-  total_amount + 1 AS adjusted,   -- explicitly adjusted
-  SUM(total_amount) AS revenue    -- explicitly revenue
+  1,                              -- ❌ not inferrable (what do you call this?)
+  total_amount + 1,               -- ❌ not inferrable (needs an alias)
+  SUM(total_amount),              -- ❌ not inferrable (needs an alias)
+  order_date,                     -- ✓ inferrable as order_date
+  order_date::TIMESTAMP,          -- ✓ inferrable as order_date
+  total_amount + 1 AS adjusted,   -- ✓ explicitly named
+  SUM(total_amount) AS revenue    -- ✓ explicitly named
 ```
+
+If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit—you'll know what the column is called!
 
 #### Column Descriptions
 
-You can explicitly define column descriptions in the DDL using the `column_descriptions` property. This is the recommended approach for comprehensive documentation.
+Document your columns! There are two ways to do this:
+
+**Option 1: In the DDL (Recommended)**
 
 ```sql linenums="1" hl_lines="7-12"
 MODEL (
@@ -213,12 +231,14 @@ MODEL (
 );
 ```
 
+This is the cleanest way—all your documentation is in one place, right in the MODEL block.
+
 !!! note "Priority"
-    If `column_descriptions` is present in the DDL, Vulcan will use these descriptions and **not** detect inline comments from the query.
+    If you use `column_descriptions` in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority—so if you define descriptions in both places, the DDL version wins.
 
-#### Inline Column Comments
+**Option 2: Inline Comments**
 
-If the `column_descriptions` key is not present in the DDL, Vulcan will automatically detect comments in a query's column selections and register each column's final comment in the underlying SQL engine.
+If you don't specify `column_descriptions` in the DDL, Vulcan will automatically pick up comments from your query:
 
 ```sql linenums="1" hl_lines="9-12"
 MODEL (
@@ -237,16 +257,17 @@ FROM raw.raw_orders
 GROUP BY order_date
 ```
 
-The physical table created would have:
+Vulcan will register these comments as column descriptions in your database. Pretty handy!
 
-1. Each inline comment registered as a column comment for the respective column
-2. If a comment exists before the `MODEL` block, it will be registered as the table comment
+**Table comments:** If you put a comment before the `MODEL` block, Vulcan will use it as the table description. But if you also specify `description` in the MODEL block, that takes priority.
 
 ### Python Model Conventions
 
+Python models work a bit differently because Python doesn't have the same type inference capabilities as SQL.
+
 #### Explicit Column Definitions
 
-Python models require explicit column definitions in the `@model` decorator since types cannot be inferred from the code.
+You **must** define your columns explicitly in the `@model` decorator:
 
 ```python linenums="1" hl_lines="3-8"
 @model(
@@ -261,9 +282,11 @@ Python models require explicit column definitions in the `@model` decorator sinc
 )
 ```
 
+Vulcan can't infer types from Python code the way it can from SQL, so you need to tell it explicitly.
+
 #### Explicit Dependencies
 
-Unlike SQL models where dependencies are automatically inferred, Python models must explicitly declare their dependencies using the `depends_on` parameter.
+Unlike SQL models (where Vulcan figures out dependencies automatically), Python models need you to list them:
 
 ```python linenums="1" hl_lines="4"
 @model(
@@ -273,9 +296,11 @@ Unlike SQL models where dependencies are automatically inferred, Python models m
 )
 ```
 
+This is because Vulcan can't parse your Python code to find `FROM` clauses and joins. You need to tell it what this model depends on.
+
 #### Column Descriptions
 
-Python models cannot use inline comments for column descriptions. Instead, specify them in the `@model` decorator's `column_descriptions` key.
+Python models can't use inline comments for column descriptions. Instead, specify them in the decorator:
 
 ```python linenums="1" hl_lines="8-13"
 @model(
@@ -294,11 +319,11 @@ Python models cannot use inline comments for column descriptions. Instead, speci
 ```
 
 !!! warning "Column name validation"
-    Vulcan will error if a column name in `column_descriptions` is not also present in the `columns` key.
+    Vulcan will error if you put a column name in `column_descriptions` that doesn't exist in `columns`. This prevents typos and keeps things consistent—if you describe a column, it better exist!
 
 #### Return Type
 
-The `execute` function must return a pandas DataFrame with columns matching the `columns` definition.
+Your `execute` function must return a pandas DataFrame, and the columns must match what you defined in `columns`:
 
 ```python linenums="1"
 def execute(
@@ -312,35 +337,41 @@ def execute(
     return context.fetchdf(query)
 ```
 
-!!! info "Learn more"
-    For detailed information about Python models, see [Python Models](./python_models.md).
+The DataFrame columns need to match your `columns` definition exactly—same names, compatible types.
 
----
+!!! info "Learn more"
+    Want to dive deeper into Python models? Check out the [Python Models](./python_models.md) documentation for detailed information, advanced patterns, and more examples.
 
 ## Comment Registration
 
-### Model Comment
+Vulcan can register comments (descriptions) in your database so they show up in your BI tools and data catalogs. This is super useful for documentation!
 
-Vulcan will register a comment specified before the `MODEL` DDL block as the table comment in the underlying SQL engine. If the DDL `description` field is also specified, Vulcan will register it with the engine instead.
+### How Comments Get Registered
 
-### Comment Registration by Object Type
+**Model-level comments:**
+- If you put a comment before the `MODEL` block, Vulcan uses it as the table comment
+- If you also specify `description` in the MODEL block, that takes priority
 
-Only some tables/views have comments registered:
+**Column-level comments:**
+- Use `column_descriptions` in the DDL (recommended)
+- Or use inline comments in your SELECT query (if `column_descriptions` isn't specified)
 
-- Temporary tables are not registered
-- Non-temporary tables and views in the physical layer (i.e., the schema named `vulcan__[project schema name]`) are registered
-- Views in non-prod environments are not registered
-- Views in the `prod` environment are registered
+### What Gets Registered
 
-Some engines automatically pass comments from physical tables through to views that select from them. In those engines, views may display comments even if Vulcan did not explicitly register them.
+Not everything gets comments registered:
 
-### Engine Comment Support
+- ✅ **Physical tables** - Comments are registered (tables in the `vulcan__[project schema]` schema)
+- ✅ **Production views** - Comments are registered
+- ❌ **Temporary tables** - No comments (they're temporary!)
+- ❌ **Non-production views** - No comments (keeps things clean)
 
-Engines vary in their support for comments and their method(s) of registering comments. Engines may support one or both registration methods: in the `CREATE` command that creates the object or with specific post-creation commands.
+**Note:** Some engines automatically pass comments from physical tables to views that select from them. So even if Vulcan didn't explicitly register a comment on a view, it might still show up if the engine does this automatically.
 
-In the former method, column comments are embedded in the `CREATE` schema definition - for example: `CREATE TABLE my_table (my_col INTEGER COMMENT 'comment on my_col') COMMENT 'comment on my_table'`. This means that all table and column comments can be registered in a single command.
+### Engine Support
 
-In the latter method, separate commands are required for every comment. This may result in many commands: one for the table comment and one for each column comment.
+Different databases support comments differently. Some can register comments in the `CREATE` statement (one command), others need separate commands for each comment.
+
+Here's what each engine supports:
 
 | Engine        | `TABLE` comments | `VIEW` comments |
 | ------------- | ---------------- | --------------- |
@@ -359,8 +390,12 @@ In the latter method, separate commands are required for every comment. This may
 | Spark         | Y                | Y               |
 | Trino         | Y                | Y               |
 
----
+If your engine doesn't support comments, Vulcan will skip registration (no errors, it just won't register them).
 
 ## Macros
 
-Macros can be used for passing in parameterized arguments such as dates, as well as for making SQL less repetitive. By default, Vulcan provides several predefined macro variables that can be used. Macros are used by prefixing with the `@` symbol. For more information, refer to [macros](../macros/overview.md).
+Macros are like variables for your SQL. They let you parameterize queries and avoid repetition. Vulcan provides several built-in macros (like `@start_ds` and `@end_ds` for incremental models), and you can define your own.
+
+Macros use the `@` prefix. For example, `@this_model` refers to the current model being processed, and `@start_ds` is the start date for incremental processing.
+
+Want to learn more? Check out the [macros documentation](../macros/overview.md) for all the details.

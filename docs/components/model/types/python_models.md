@@ -1,22 +1,30 @@
-# Python models
+# Python
 
-Although SQL is a powerful tool, some use cases are better handled by Python. For example, Python may be a better option in pipelines that involve machine learning, interacting with external APIs, or complex business logic that cannot be expressed in SQL.
+SQL is great, but sometimes you need Python. Maybe you're doing machine learning, calling external APIs, or implementing complex business logic that's painful to express in SQL.
 
-Vulcan has first-class support for models defined in Python; there are no restrictions on what can be done in the Python model as long as it returns a Pandas or Spark DataFrame instance.
+Vulcan has first-class support for Python models. As long as your function returns a Pandas, Spark, Bigframe, or Snowpark DataFrame, you can do whatever you want in Python. No restrictions!
+
+**When to use Python models:**
+- Machine learning pipelines
+- API integrations
+- Complex transformations that are easier in Python
+- Data processing that benefits from Python libraries
 
 
-!!! info "Unsupported model kinds"
+!!! info "Unsupported Model Kinds"
 
-    Python models do not support these [model kinds](./model_kinds.md) - use a SQL model instead.
-
-    * `VIEW`
-    * `SEED`
-    * `MANAGED`
-    * `EMBEDDED`
+    Python models don't support these [model kinds](./model_kinds.md). If you need one of these, use a SQL model instead:
+    
+    - `VIEW` - Views need to be SQL
+    - `SEED` - Seed models load CSV files (SQL only)
+    - `MANAGED` - Managed models require SQL
+    - `EMBEDDED` - Embedded models inject SQL subqueries
 
 ## Definition
 
-To create a Python model, add a new file with the `*.py` extension to the `models/` directory. Inside the file, define a function named `execute`. For example:
+Creating a Python model is straightforward: add a `.py` file to your `models/` directory and define an `execute` function. That's it!
+
+Here's what a basic Python model looks like:
 
 ```python linenums="1"
 import typing as t
@@ -64,21 +72,37 @@ def execute(
     return context.fetchdf(query)
 ```
 
-The `execute` function is wrapped with the `@model` [decorator](https://wiki.python.org/moin/PythonDecorators), which is used to capture the model's metadata (similar to the `MODEL` DDL statement in [SQL models](./sql_models.md)).
+**How it works:**
 
-Because Vulcan creates tables before evaluating models, the schema of the output DataFrame is a required argument. The `@model` argument `columns` contains a dictionary of column names to types.
+The `@model` decorator captures your model's metadata (just like the `MODEL` DDL in SQL models). You specify column names and types in the `columns` argument—this is required because Vulcan needs to create the table before your function runs.
 
-The function takes an `ExecutionContext` that is able to run queries and to retrieve the current time interval that is being processed, along with arbitrary key-value arguments passed in at runtime. The function can either return a Pandas, PySpark, Bigframe, or Snowpark Dataframe instance.
+**Function signature:** Your `execute` function receives:
+- `context: ExecutionContext` - For running queries and getting time intervals
+- `start`, `end` - Time range for incremental models
+- `execution_time` - When the model is running
+- `**kwargs` - Any other runtime variables
 
-If the function output is too large, it can also be returned in chunks using Python generators.
+**Return types:** You can return Pandas, PySpark, Bigframe, or Snowpark DataFrames. If your output is huge, you can also use Python generators to return data in chunks (great for memory management).
 
-## `@model` specification
+## `@model` Specification
 
-The arguments provided in the `@model` specification have the same names as those provided in a SQL model's `MODEL` DDL.
+The `@model` decorator accepts the same properties as SQL models—just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc.—they all work the same way.
 
-Python model `kind`s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the [models configuration reference page](../../reference/model_configuration.md#model-kind-properties).
+**Model kinds:** For Python models, `kind` is a dictionary with the kind name and its properties. You need to import `ModelKindName` and use it like this:
 
-The model `kind` dictionary must contain a `name` key whose value is a member of the [`ModelKindName` enum class](https://vulcan.readthedocs.io/en/stable/_readthedocs/html/vulcan/core/model/kind.html#ModelKindName). The `ModelKindName` class must be imported at the beginning of the model definition file before being used in the `@model` specification.
+```python
+from vulcan import ModelKindName
+
+@model(
+    "sales.daily_sales",
+    kind=dict(
+        name=ModelKindName.INCREMENTAL_BY_TIME_RANGE,
+        time_column="order_date",
+    ),
+)
+```
+
+All model kind properties are documented in the [model configuration reference](../../reference/model_configuration.md#model-kind-properties).
 
 Supported `kind` dictionary `name` values are:
 
@@ -95,25 +119,43 @@ Supported `kind` dictionary `name` values are:
 - `ModelKindName.MANAGED`
 - `ModelKindName.EXTERNAL`
 
-## Execution context
+## Execution Context
 
-Python models can do anything you want, but it is strongly recommended for all models to be [idempotent](../glossary.md#idempotency). Python models can fetch data from upstream models or even data outside of Vulcan.
+The `ExecutionContext` is your gateway to the database. You can run queries, resolve table names, and access runtime information.
 
-Given an execution `ExecutionContext` "context", you can fetch a DataFrame with the `fetchdf` method:
+**Fetching data:** Use `context.fetchdf()` to run SQL queries and get DataFrames:
+
+```python
+df = context.fetchdf("SELECT * FROM vulcan_demo.products")
+```
+
+**Resolving table names:** Use `context.resolve_table()` to get the correct table name for the current environment (handles dev/prod prefixes automatically):
+
+```python
+table = context.resolve_table("vulcan_demo.products")
+df = context.fetchdf(f"SELECT * FROM {table}")
+```
+
+**Best practice:** Make your models [idempotent](../glossary.md#idempotency)—running them multiple times should produce the same result. This makes debugging and restatements much easier.
 
 ```python linenums="1"
 df = context.fetchdf("SELECT * FROM vulcan_demo.products")
 ```
 
-## Optional pre/post-statements
+## Optional Pre/Post-Statements
 
-Optional pre/post-statements allow you to execute SQL commands before and after a model runs, respectively.
+You can run SQL commands before and after your Python model executes. This is useful for setting session parameters, creating indexes, or running data quality checks.
 
-For example, pre/post-statements might modify settings or create indexes. However, be careful not to run any statement that could conflict with the execution of another statement if models run concurrently, such as creating a physical table.
+**Pre-statements:** Run before your `execute` function
+**Post-statements:** Run after your `execute` function completes
 
-You can set the `pre_statements` and `post_statements` arguments to a list of SQL strings, SQLGlot expressions, or macro calls to define the model's pre/post-statements.
+You can pass SQL strings, SQLGlot expressions, or macro calls as lists to `pre_statements` and `post_statements`.
 
-**Project-level defaults:** You can also define pre/post-statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
+!!! warning "Concurrency"
+
+    Be careful with pre-statements that create or alter physical tables—if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.
+
+**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
 
 ``` python linenums="1" hl_lines="8-12"
 @model(
@@ -143,9 +185,7 @@ def execute(
 
 ```
 
-The previous example's `post_statements` called user-defined Vulcan macro `@CREATE_INDEX(@this_model, id)`.
-
-We could define the `CREATE_INDEX` macro in the project's `macros` directory like this. The macro creates a table index on a single column, conditional on the [runtime stage](../macros/macro_variables.md#runtime-variables) being `creating` (table creation time).
+The example above uses a custom macro `@CREATE_INDEX(@this_model, id)`. You can define macros like this in your project's `macros` directory. Here's how you might implement it:
 
 
 ``` python linenums="1"
@@ -160,9 +200,9 @@ def create_index(
     return None
 ```
 
-Alternatively, pre- and post-statements can be issued with the Vulcan [`fetchdf` method](../../reference/cli.md#fetchdf) [described above](#execution-context).
+**Alternative approach:** Instead of using the `@model` decorator's `pre_statements` and `post_statements`, you can execute SQL directly in your function using `context.engine_adapter.execute()`.
 
-Pre-statements may be specified anywhere in the function body before it `return`s or `yield`s. Post-statements must execute after the function completes, so instead of `return`ing a value the function must `yield` the value. The post-statement must be specified after the `yield`.
+**Important:** If you want post-statements to run after your function completes, you need to use `yield` instead of `return`. Post-statements specified after a `yield` will execute after the function finishes.
 
 This example function includes both pre- and post-statements:
 
@@ -187,15 +227,15 @@ def execute(
     context.engine_adapter.execute("CREATE INDEX idx ON vulcan_demo.model_with_statements (id);")
 ```
 
-## Optional on-virtual-update statements
+## Optional On-Virtual-Update Statements
 
-The optional on-virtual-update statements allow you to execute SQL commands after the completion of the [Virtual Update](../plans.md#virtual-update).
+On-virtual-update statements run when views are created or updated in the virtual layer. This happens after your model's physical table is created and the view pointing to it is set up.
 
-These can be used, for example, to grant privileges on views of the virtual layer.
+**Common use case:** Granting permissions on views so users can query them.
 
-Similar to pre/post-statements you can set the `on_virtual_update` argument in the `@model` decorator to a list of SQL strings, SQLGlot expressions, or macro calls.
+You can set `on_virtual_update` in the `@model` decorator to a list of SQL strings, SQLGlot expressions, or macro calls.
 
-**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
+**Project-level defaults:** Like pre/post-statements, you can define these in `model_defaults` for consistent behavior. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
 
 ``` python linenums="1" hl_lines="8"
 @model(
@@ -220,9 +260,9 @@ def execute(
     ])
 ```
 
-!!! note
+!!! note "Virtual Layer Resolution"
 
-    Table resolution for these statements occurs at the virtual layer. This means that table names, including `@this_model` macro, are resolved to their qualified view names. For instance, when running the plan in an environment named `dev`, `vulcan_demo.model_with_grants` and `@this_model` would resolve to `vulcan_demo__dev.model_with_grants` and not to the physical table name.
+    These statements run at the virtual layer, so table names resolve to view names, not physical table names. For example, in a `dev` environment, `vulcan_demo.model_with_grants` and `@this_model` resolve to `vulcan_demo__dev.model_with_grants` (the view), not the physical table.
 
 ## Dependencies
 
@@ -276,7 +316,7 @@ def execute(
     return context.fetchdf(query)
 ```
 
-User-defined [global variables](../../reference/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) can also be used in `resolve_table` calls, as shown in the following example (similarly for `blueprint_var()`):
+You can use [global variables](../../reference/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
 
 ```python linenums="1"
 @model(
@@ -290,11 +330,11 @@ def execute(context, **kwargs):
     return context.fetchdf(select_query)
 ```
 
-## Returning empty dataframes
+## Returning Empty DataFrames
 
-Python models may not return an empty dataframe.
+Python models can't return empty DataFrames directly. If your model might return empty data, use `yield` instead of `return`:
 
-If your model could possibly return an empty dataframe, conditionally `yield` the dataframe or an empty generator instead of `return`ing:
+**Why?** This allows Vulcan to handle the empty case properly. If you `return` an empty DataFrame, Vulcan will error. If you `yield` an empty generator or conditionally yield, it works fine.
 
 ```python linenums="1" hl_lines="10-13"
 @model(
@@ -358,11 +398,15 @@ Make sure the argument has a default value if it's possible for the variable to 
 
 Note that arguments must be specified explicitly - variables cannot be accessed using `kwargs`.
 
-## Python model blueprinting
+## Python Model Blueprinting
 
-A Python model can also serve as a template for creating multiple models, or _blueprints_, by specifying a list of key-value dicts in the `blueprints` property. In order to achieve this, the model's name must be parameterized with a variable that exists in this mapping.
+Python models can serve as templates for creating multiple models. This is called "blueprinting"—you define one model template, and Vulcan creates multiple models from it.
 
-For instance, the following model will result into two new models, each using the corresponding mapping in the `blueprints` property:
+**How it works:** You parameterize the model name with a variable (using `@{variable}` syntax) and provide a list of mappings in `blueprints`. Vulcan creates one model for each mapping.
+
+**Use case:** When you have similar models that differ only by a few parameters (like different schemas, regions, or customers).
+
+Here's an example that creates two models:
 
 ```python linenums="1"
 import typing as t
@@ -400,9 +444,17 @@ def entrypoint(
     )
 ```
 
-Note the use of curly brace syntax `@{customer}` in the model name above. It is used to ensure Vulcan can combine the macro variable into the model name identifier correctly - learn more [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
+**Important:** Notice the `@{customer}` syntax in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal). Learn more about this syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
 
-Blueprint variable mappings can also be constructed dynamically, e.g., by using a macro: `blueprints="@gen_blueprints()"`. This is useful in cases where the `blueprints` list needs to be sourced from external sources, such as CSV files.
+**Dynamic blueprints:** You can generate blueprints dynamically using macros. This is handy when your blueprint list comes from external sources (like CSV files or API calls):
+
+```python
+@model(
+    "@{customer}.some_table",
+    blueprints="@gen_blueprints()",  # Macro generates the list
+    ...
+)
+```
 
 For example, the definition of the `gen_blueprints` may look like this:
 
@@ -429,11 +481,13 @@ It's also possible to use the `@EACH` macro, combined with a global list variabl
 ...
 ```
 
-## Using macros in model properties
+## Using Macros in Model Properties
 
-Python models support macro variables in model properties. However, special care must be taken when the macro variable appears within a string.
+Python models support macro variables in model properties, but there's a gotcha when macros appear inside strings.
 
-For example when using macro variables inside cron expressions, you need to wrap the entire expression in quotes and prefix it with `@` to ensure proper parsing:
+**The issue:** Cron expressions often use `@` (like `@daily`, `@hourly`), which conflicts with Vulcan's macro syntax.
+
+**The solution:** Wrap the entire expression in quotes and prefix with `@`:
 
 ```python linenums="1"
 # Correct: Wrap the cron expression containing a macro variable
@@ -460,11 +514,11 @@ This is necessary because cron expressions often use `@` for aliases (like `@dai
 
 ## Examples
 
+Here are some practical examples showing different ways to use Python models.
+
 ### Basic
 
-The following is an example of a Python model returning a static Pandas DataFrame.
-
-**Note:** All of the [metadata](./overview.md#model-properties) field names are the same as those in the SQL `MODEL` DDL.
+A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](./overview.md#model-properties) work the same as SQL models—just use Python syntax.
 
 ```python linenums="1"
 import typing as t
@@ -505,7 +559,7 @@ def execute(
 
 ### SQL Query and Pandas
 
-The following is a more complex example that queries an upstream model and outputs a Pandas DataFrame:
+A more realistic example: query upstream models, do some pandas processing, and return the result. This shows how you'd typically use Python models in practice:
 
 ```python linenums="1"
 import typing as t
@@ -551,7 +605,9 @@ def execute(
 
 ### PySpark
 
-This example demonstrates using the PySpark DataFrame API. If you use Spark, the DataFrame API is preferred to Pandas since it allows you to compute in a distributed fashion.
+If you're using Spark, use the PySpark DataFrame API instead of Pandas. PySpark DataFrames compute in a distributed fashion (across your Spark cluster), which is much faster for large datasets.
+
+**Why PySpark over Pandas:** Pandas loads everything into memory on a single machine. PySpark distributes the work across your cluster, so you can handle much larger datasets.
 
 ```python linenums="1"
 import typing as t
@@ -590,7 +646,9 @@ def execute(
 
 ### Snowpark
 
-This example demonstrates using the Snowpark DataFrame API. If you use Snowflake, the DataFrame API is preferred to Pandas since it allows you to compute in a distributed fashion.
+If you're using Snowflake, use the Snowpark DataFrame API. Like PySpark, Snowpark DataFrames compute on Snowflake's servers (not locally), which is much more efficient.
+
+**Why Snowpark over Pandas:** All computation happens in Snowflake, so you're not moving data to your local machine. Faster, cheaper, and can handle huge datasets.
 
 ```python linenums="1"
 import typing as t
@@ -624,7 +682,9 @@ def execute(
 
 ### Bigframe
 
-This example demonstrates using the [Bigframe](https://cloud.google.com/bigquery/docs/use-bigquery-dataframes#pandas-examples) DataFrame API. If you use Bigquery, the Bigframe API is preferred to Pandas as all computation is done in Bigquery.
+If you're using BigQuery, use the [Bigframe](https://cloud.google.com/bigquery/docs/use-bigquery-dataframes#pandas-examples) DataFrame API. Bigframe looks like Pandas but runs everything in BigQuery.
+
+**Why Bigframe over Pandas:** All computation happens in BigQuery, so you get BigQuery's scale and performance. Plus, you can use BigQuery remote functions (like in the example below) for custom Python logic.
 
 ```python linenums="1"
 import typing as t
@@ -676,11 +736,13 @@ def execute(
 
 ### Batching
 
-If the output of a Python model is very large and you cannot use Spark, it may be helpful to split the output into multiple batches.
+If your Python model outputs a huge DataFrame and you can't use Spark/Bigframe/Snowpark, you can batch the output using Python generators.
 
-With Pandas or other single machine DataFrame libraries, all data is stored in memory. Instead of returning a single DataFrame instance, you can return multiple instances using the Python generator API. This minimizes the memory footprint by reducing the size of data loaded into memory at any given time.
+**The problem:** With Pandas, everything loads into memory. If your output is too large, you'll run out of memory.
 
-This examples uses the Python generator `yield` to batch the model output:
+**The solution:** Use `yield` to return DataFrames in chunks. Vulcan processes them one at a time, so you never have more than one chunk in memory at once.
+
+Here's how you'd do it:
 
 ```python linenums="1" hl_lines="20"
 @model(
@@ -707,4 +769,6 @@ def execute(
 
 ## Serialization
 
-Vulcan executes Python code locally where Vulcan is running by using our custom [serialization framework](../architecture/serialization.md).
+Vulcan executes Python models locally (wherever Vulcan is running) using a custom [serialization framework](../architecture/serialization.md). This means your Python code runs on your machine or CI/CD environment, not in the database.
+
+**Why this matters:** You have full access to Python libraries, can make API calls, do ML processing, etc. The database just receives the final DataFrame.

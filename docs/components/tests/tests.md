@@ -1,32 +1,36 @@
-# Testing
+# Tests
 
-Testing is a critical practice in data engineering that ensures your data transformations produce correct, reliable results. Just as software engineers write unit tests to verify code behavior, data practitioners use tests to validate that models transform data as expected—catching bugs before they reach production and preventing costly data quality issues.
+Tests are your safety net for data transformations. Just like software engineers write unit tests to catch bugs before they ship, you can write tests to verify that your models transform data correctly—catching problems before they reach production and cause headaches.
 
-## Why testing matters
+Think of tests as executable documentation. They show exactly how your model should behave with specific inputs, and they'll yell at you if something changes unexpectedly. Unlike [audits](../audits/audits.md) (which check data quality at runtime), tests verify the *logic* of your models against predefined inputs and expected outputs.
 
-Data pipelines are complex systems where small errors can cascade into significant business impacts. Testing provides several key benefits:
+## Why Testing Matters
 
-- **Regression prevention**: Catch breaking changes before they affect downstream consumers
-- **Confidence in changes**: Refactor models knowing that tests will flag unintended behavior changes
-- **Documentation**: Tests serve as executable specifications of expected model behavior
-- **Faster debugging**: When something breaks, tests help pinpoint the exact transformation that failed
-- **Data quality assurance**: Verify that aggregations, joins, and calculations produce correct results
+Data pipelines are tricky beasts. Small errors can snowball into significant business impacts. A small change in one model can cascade into big problems downstream. Here's why testing is worth your time:
 
-Unlike [audits](audits.md) which validate data quality at runtime, tests verify the *logic* of your models against predefined inputs and expected outputs. Tests run either on demand (e.g., in CI/CD pipelines) or automatically when creating a new [plan](plans.md).
+- **Catch breaking changes** - Refactor with confidence knowing tests will flag unintended behavior changes
+- **Document expected behavior** - Tests serve as executable specifications (better than comments that get outdated!)
+- **Faster debugging** - When something breaks, tests pinpoint exactly which transformation failed
+- **Data quality assurance** - Verify that aggregations, joins, and calculations produce correct results
+- **Confidence in changes** - Make updates knowing you'll catch regressions before they hit production
 
-## Creating tests
+Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new [plan](plans.md). Either way, they're there to help you sleep better at night.
 
-A test suite is a [YAML file](https://learnxinyminutes.com/docs/yaml/) in the `tests/` folder of your Vulcan project. The filename must begin with `test` and end with `.yaml` or `.yml`. Each file can contain multiple uniquely named unit tests.
+## Creating Tests
 
-At minimum, a unit test must specify:
+Tests live in YAML files in the `tests/` folder of your project. The filename must start with `test` and end with `.yaml` or `.yml`. You can put multiple tests in one file (organize them however makes sense).
 
-- **model**: The model being tested
-- **inputs**: Mock data for upstream dependencies
-- **outputs**: Expected results from the model's query
+At minimum, a test needs three things:
 
-### Basic example
+- **model** - Which model you're testing
+- **inputs** - Mock data for upstream dependencies (what goes in)
+- **outputs** - Expected results from the model's query (what should come out)
 
-Consider this `sales.daily_sales` model that aggregates orders by date:
+Let's start with a simple example.
+
+### Your First Test
+
+Here's a model that aggregates orders by date:
 
 ```sql linenums="1"
 MODEL (
@@ -46,7 +50,7 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
-Here's a test that verifies the aggregation logic:
+Now let's write a test to verify it works correctly:
 
 ```yaml linenums="1"
 test_daily_sales_aggregation:
@@ -86,16 +90,18 @@ test_daily_sales_aggregation:
           last_order_id: "O003"
 ```
 
-This test provides three input orders (two on March 15, one on March 16) and verifies that:
+This test gives the model three orders (two on March 15, one on March 16) and checks that:
 
 - Orders are correctly grouped by date
-- `total_orders` counts distinct orders per day
-- `total_revenue` sums the amounts correctly
-- `last_order_id` returns the maximum order ID per day
+- `total_orders` counts distinct orders per day (should be 2 for March 15, 1 for March 16)
+- `total_revenue` sums the amounts correctly (50 + 75 = 125 for March 15)
+- `last_order_id` returns the maximum order ID per day (O002 for March 15, O003 for March 16)
 
-### Testing models with multiple dependencies
+Pretty straightforward! If any of these expectations don't match, the test fails and tells you what went wrong.
 
-Real-world models often join multiple tables. Here's a test for a customer summary model that joins customers, orders, and order items:
+### Testing Models with Multiple Dependencies
+
+Real-world models often join multiple tables. Here's how you'd test a more complex model that joins customers, orders, and order items:
 
 ```yaml linenums="1"
 test_full_model_basic:
@@ -173,9 +179,17 @@ test_full_model_basic:
           avg_order_value: null  # Division by zero handled
 ```
 
-### Testing incremental models
+Notice how we're providing mock data for all three upstream tables. The test verifies that the model correctly:
+- Joins customers with orders and order items
+- Counts distinct orders per customer
+- Calculates total spent (quantity × unit_price summed across all items)
+- Handles division by zero (Charlie has no orders, so avg_order_value should be NULL)
 
-Incremental models require special attention because they filter data by time range. Use the `vars` attribute to set `start` and `end` dates:
+The comments in the YAML help explain the test data, which makes it easier to understand what's being tested.
+
+### Testing Incremental Models
+
+Incremental models are a bit special because they filter data by time range. You'll need to set `start` and `end` dates using the `vars` attribute:
 
 ```yaml linenums="1"
 test_incremental_by_time_range_basic:
@@ -259,9 +273,13 @@ test_incremental_by_time_range_basic:
           avg_unit_price: 40
 ```
 
+The `vars` section tells Vulcan what time range to use when running the model. This is important because incremental models filter by `@start_ds` and `@end_ds` macros, and you need to control those in your test.
+
 ### Testing CTEs
 
-Individual CTEs within the model's query can also be tested. Given a model with a CTE:
+You can also test individual CTEs (Common Table Expressions) within your model. This is super useful for debugging complex queries step by step.
+
+Say you have a model with a CTE:
 
 ```sql linenums="1"
 WITH filtered_orders_cte AS (
@@ -276,7 +294,7 @@ FROM filtered_orders_cte
 GROUP BY item_id
 ```
 
-Test both the CTE and final query:
+You can test both the CTE and the final query:
 
 ```yaml linenums="1"
 test_model_with_cte:
@@ -304,11 +322,19 @@ test_model_with_cte:
           num_orders: 2
 ```
 
-## Supported data formats
+This verifies that:
+1. The CTE correctly filters to `item_id = 1` (should return rows with id 1 and 2)
+2. The final query correctly counts distinct orders (should be 2)
 
-Vulcan supports multiple ways to define input and output data:
+Testing CTEs separately makes it easier to pinpoint where things go wrong in complex queries.
 
-### YAML dictionaries (default)
+## Supported Data Formats
+
+Vulcan gives you flexibility in how you define test data. Pick whatever format works best for your situation:
+
+### YAML Dictionaries (Default)
+
+The most common format—just list your rows as YAML dictionaries:
 
 ```yaml linenums="1"
 inputs:
@@ -319,7 +345,11 @@ inputs:
         order_date: '2025-01-01'
 ```
 
-### CSV format
+This is great for small datasets and when you want everything in one place.
+
+### CSV Format
+
+If you have lots of data, CSV might be easier to read and write:
 
 ```yaml linenums="1"
 inputs:
@@ -331,7 +361,11 @@ inputs:
       1002,2,2025-01-01
 ```
 
-### SQL queries
+You can also customize CSV parsing with `csv_settings` if you need different separators or other options.
+
+### SQL Queries
+
+Sometimes you want more control over how data is generated. Use a SQL query:
 
 ```yaml linenums="1"
 inputs:
@@ -342,7 +376,11 @@ inputs:
       SELECT 1002 AS order_id, 2 AS customer_id, '2025-01-01' AS order_date
 ```
 
-### External files
+This is useful when you need to generate test data programmatically or when the data structure is complex.
+
+### External Files
+
+For large test datasets, store them in separate files:
 
 ```yaml linenums="1"
 inputs:
@@ -351,9 +389,11 @@ inputs:
     path: fixtures/orders_test_data.csv
 ```
 
-## Omitting columns
+This keeps your test files clean and makes it easy to reuse test data across multiple tests.
 
-For wide tables, you can omit columns (treated as `NULL`) or use partial matching:
+## Omitting Columns
+
+For wide tables, you don't need to specify every column. You can omit columns (they'll be treated as `NULL`) or use partial matching to only test the columns you care about:
 
 ```yaml linenums="1"
 outputs:
@@ -364,7 +404,9 @@ outputs:
         total_spent: 325
 ```
 
-To apply partial matching to all outputs:
+This is super handy when you have a table with 50 columns but only care about testing a few of them.
+
+**Apply partial matching globally:**
 
 ```yaml linenums="1"
 outputs:
@@ -375,9 +417,11 @@ outputs:
         total_spent: 325
 ```
 
-## Freezing time
+This applies partial matching to all outputs in the test, which is convenient when you're only testing a subset of columns.
 
-For models using `CURRENT_TIMESTAMP` or similar functions, set `execution_time` to make tests deterministic:
+## Freezing Time
+
+If your model uses `CURRENT_TIMESTAMP` or similar functions, you'll want to freeze time in your tests to make them deterministic. Otherwise, your tests will fail every time you run them because the timestamp changes!
 
 ```yaml linenums="1"
 test_with_timestamp:
@@ -390,9 +434,13 @@ test_with_timestamp:
     execution_time: "2023-01-01 12:05:03"
 ```
 
-## Running tests
+Setting `execution_time` in `vars` makes `CURRENT_TIMESTAMP` and `CURRENT_DATE` return fixed values, so your tests are predictable and repeatable.
 
-### Command line
+## Running Tests
+
+### Command Line
+
+Run tests from the command line:
 
 ```bash
 # Run all tests
@@ -408,7 +456,11 @@ vulcan test tests/test_daily_sales.yaml::test_daily_sales_aggregation
 vulcan test tests/test_*
 ```
 
-### Example output
+The `::` syntax lets you run a specific test from a file, which is handy when you're debugging a single failing test.
+
+### Example Output
+
+When tests pass, you'll see something like:
 
 ```
 $ vulcan test
@@ -419,7 +471,9 @@ Ran 2 tests in 0.024s
 OK
 ```
 
-When tests fail:
+The dots (`.`) indicate passing tests. Simple and clean!
+
+**When tests fail:**
 
 ```
 $ vulcan test
@@ -439,61 +493,36 @@ Ran 1 test in 0.012s
 FAILED (failures=1)
 ```
 
-<!-- ### Notebook magic
+The output shows you exactly what didn't match. In this case, `total_orders` was expected to be 3.0 but was actually 2.0. This tells you exactly what to investigate.
 
-```python
-import vulcan
-%run_test
-``` -->
+## Automatic Test Generation
 
-## Automatic test generation
-
-Generate tests automatically using the `create_test` command:
+Writing tests can be tedious, especially when you're just getting started. Vulcan can help by generating tests automatically:
 
 ```bash
 vulcan create_test vulcan_demo.daily_sales \
   --query raw.raw_orders "SELECT * FROM raw.raw_orders WHERE order_date BETWEEN '2025-01-01' AND '2025-01-02' LIMIT 10" 
 ```
 
-This creates a test file with actual data from your warehouse, making it easy to bootstrap your test suite.
+This creates a test file with actual data from your warehouse, which makes it easy to bootstrap your test suite. You can then tweak the generated test to match your needs.
 
-<!-- ## Using a different testing connection
-
-Override the testing connection for specific tests:
-
-```yaml linenums="1"
-test_with_spark:
-  gateway: spark_testing
-  model: vulcan_demo.complex_model
-  # ... rest of test
-```
-
-Configure the gateway in `config.yaml`:
-
-```yaml linenums="1"
-gateways:
-  spark_testing:
-    test_connection:
-      type: spark
-      config:
-        "spark.master": "local"
-``` -->
+**Pro tip:** Start with generated tests, then refine them to test edge cases and specific scenarios. It's much faster than writing everything from scratch!
 
 ## Troubleshooting
 
-### Preserving fixtures
+### Preserving Fixtures
 
-Use `--preserve-fixtures` to keep test fixtures for debugging:
+When a test fails, you might want to inspect the actual data that was created. Use `--preserve-fixtures` to keep test fixtures around:
 
 ```bash
 vulcan test --preserve-fixtures
 ```
 
-Fixtures are created as views in a schema named `vulcan_test_<random_ID>`.
+Fixtures are created as views in a schema named `vulcan_test_<random_ID>`. You can query these views directly to see what data was actually produced, which is super helpful for debugging.
 
-### Type mismatches
+### Type Mismatches
 
-If Vulcan can't infer column types correctly, specify them explicitly:
+Sometimes Vulcan can't figure out the correct types for your test data. If you're seeing type errors, specify them explicitly:
 
 ```yaml linenums="1"
 inputs:
@@ -508,39 +537,61 @@ inputs:
         total_amount: 99.99
 ```
 
-## Unit test structure
+The `columns` section tells Vulcan exactly what types to use, which helps avoid type inference issues. You can also explicitly cast columns in your model's query to help Vulcan infer types more accurately.
+
+### Test Not Finding Model
+
+**Problem:** Test says it can't find the model.
+
+**Solution:** Make sure the model name in your test matches exactly what's in your `models/` folder. Model names are case-sensitive and must include the schema (like `sales.daily_sales`, not just `daily_sales`).
+
+### Output Order Matters
+
+**Problem:** Test fails even though the data looks correct.
+
+**Solution:** The columns in your expected output must appear in the same order as they're selected in the model's query. Check the `SELECT` statement order and make sure your test rows match.
+
+### Partial Matching Not Working
+
+**Problem:** Partial matching isn't ignoring extra columns.
+
+**Solution:** Make sure you set `partial: true` at the right level. It needs to be under `outputs.query` (or `outputs.ctes.<cte_name>`) for CTE-specific partial matching, or under `outputs` for global partial matching.
+
+## Test Structure Reference
+
+Here's a complete reference of all the fields you can use in a test. Most tests only need `model`, `inputs`, and `outputs`, but it's good to know what else is available.
 
 ### `<test_name>`
 
-The unique name of the test.
+The unique name of your test. Use descriptive names that explain what you're testing, like `test_daily_sales_aggregation` or `test_customer_revenue_calculation`.
 
 ### `<test_name>.model`
 
-The name of the model being tested. This model must be defined in the project's `models/` folder.
+The fully qualified name of the model being tested (like `sales.daily_sales`). This model must exist in your project's `models/` folder.
 
 ### `<test_name>.description`
 
-An optional description of the test, which can be used to provide additional context.
+An optional description that explains what the test validates. This is helpful for your teammates (and future you) to understand what the test is checking.
 
 ### `<test_name>.schema`
 
-The name of the schema that will contain the views that are necessary to run this unit test.
+The name of the schema that will contain the test fixtures (the views created for this test). If not specified, Vulcan creates a temporary schema.
 
 ### `<test_name>.gateway`
 
-The gateway whose `test_connection` will be used to run this test. If not specified, the default gateway is used.
+The gateway whose `test_connection` will be used to run this test. If not specified, the default gateway is used. Useful when you need to test against a specific database or engine.
 
 ### `<test_name>.inputs`
 
-The inputs that will be used to test the target model. If the model has no dependencies, this can be omitted.
+Mock data for upstream models that your target model depends on. If your model has no dependencies, you can omit this.
 
 ### `<test_name>.inputs.<upstream_model>`
 
-A model that the target model depends on.
+A model that your target model depends on. Provide mock data for each upstream model.
 
 ### `<test_name>.inputs.<upstream_model>.rows`
 
-The rows of the upstream model, defined as an array of dictionaries that map columns to their values:
+The rows of test data, defined as an array of dictionaries:
 
 ```yaml linenums="1"
     <upstream_model>:
@@ -549,7 +600,7 @@ The rows of the upstream model, defined as an array of dictionaries that map col
         ...
 ```
 
-If `rows` is the only key under `<upstream_model>`, then it can be omitted:
+**Shortcut:** If `rows` is the only key, you can omit it:
 
 ```yaml linenums="1"
     <upstream_model>:
@@ -557,30 +608,18 @@ If `rows` is the only key under `<upstream_model>`, then it can be omitted:
       ...
 ```
 
-When the input format is `csv`, the data can be specified inline under `rows` :
-
-```yaml linenums="1"
-    <upstream_model>:
-      rows: |
-        <column1_name>,<column2_name>
-        <row1_value>,<row1_value>
-        <row2_value>,<row2_value>
-```
-
 ### `<test_name>.inputs.<upstream_model>.format`
-  
-The optional `format` key allows for control over how the input data is loaded.
+
+The format of the input data. Options: `yaml` (default) or `csv`.
 
 ```yaml linenums="1"
     <upstream_model>:
       format: csv
 ```
 
-Currently, the following formats are supported: `yaml` (default), `csv`.
-
 ### `<test_name>.inputs.<upstream_model>.csv_settings`
-  
-When the`format` is CSV, you can control the behaviour of data loading under `csv_settings`:
+
+When using CSV format, customize how the CSV is parsed:
 
 ```yaml linenums="1"
     <upstream_model>:
@@ -591,15 +630,14 @@ When the`format` is CSV, you can control the behaviour of data loading under `cs
       rows: |
         <column1_name>#<column2_name>
         <row1_value>#<row1_value>
-        <row2_value>#<row2_value>
 ```
 
-Learn more about the [supported CSV settings](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html).
-  
+See [pandas read_csv documentation](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) for all supported settings.
+
 ### `<test_name>.inputs.<upstream_model>.path`
 
-The optional `path` key specifies the pathname of the data to be loaded.
-  
+Load data from an external file:
+
 ```yaml linenums="1"
     <upstream_model>:
       path: filepath/test_data.yaml
@@ -607,7 +645,7 @@ The optional `path` key specifies the pathname of the data to be loaded.
 
 ### `<test_name>.inputs.<upstream_model>.columns`
 
-An optional dictionary that maps columns to their types:
+Explicitly specify column types to help Vulcan interpret your data correctly:
 
 ```yaml linenums="1"
     <upstream_model>:
@@ -616,82 +654,68 @@ An optional dictionary that maps columns to their types:
         ...
 ```
 
-This can be used to help Vulcan interpret the row values correctly in the context of SQL.
-
-Any number of columns may be omitted from this mapping, in which case their types will be inferred on a best-effort basis. Explicitly casting the corresponding columns in the model's query will enable Vulcan to infer their types more accurately.
+This is especially useful when Vulcan can't infer types correctly (like with dates or decimals).
 
 ### `<test_name>.inputs.<upstream_model>.query`
 
-An optional SQL query that will be executed against the testing connection to generate the input rows:
+Generate input data using a SQL query:
 
 ```yaml linenums="1"
     <upstream_model>:
       query: <sql_query>
 ```
 
-This provides more control over how the input data must be interpreted.
-
-The `query` key can't be used together with the `rows` key.
+**Note:** You can't use `query` together with `rows`—pick one or the other.
 
 ### `<test_name>.outputs`
 
-The target model's expected outputs.
+The expected outputs from your model. This is what you're asserting should be true.
 
-Note: the columns in each row of an expected output must appear in the same relative order as they are selected in the corresponding query.
+**Important:** Column order matters! The columns in your expected rows must match the order they appear in the model's `SELECT` statement.
 
 ### `<test_name>.outputs.partial`
 
-A boolean flag that indicates whether only a subset of the output columns will be tested. When set to `true`, only the columns referenced in the corresponding expected rows will be tested.
-
-See also: [Omitting columns](#omitting-columns).
+When `true`, only test the columns you specify. Extra columns in the output are ignored. Useful for wide tables where you only care about a few columns.
 
 ### `<test_name>.outputs.query`
 
-The expected output of the target model's query. This is optional, as long as [`<test_name>.outputs.ctes`](#test_nameoutputsctes) is present.
+The expected output of the model's final query. This is optional if you're testing CTEs instead.
 
 ### `<test_name>.outputs.query.partial`
 
-Same as [`<test_name>.outputs.partial`](#test_nameoutputspartial), but applies only to the output of the target model's query.
+Same as `outputs.partial`, but applies only to the query output (not CTEs).
 
 ### `<test_name>.outputs.query.rows`
 
-The expected rows of the target model's query.
-
-See also: [`<test_name>.inputs.<upstream_model>.rows`](#test_nameinputsupstream_modelrows).
+The expected rows from the model's query. Same format as input rows.
 
 ### `<test_name>.outputs.query.query`
 
-An optional SQL query that will be executed against the testing connection to generate the expected rows for the target model's query.
-
-See also: [`<test_name>.inputs.<upstream_model>.query`](#test_nameinputsupstream_modelquery).
+Generate expected output using a SQL query. Useful when the expected output is complex or when you want to compute it dynamically.
 
 ### `<test_name>.outputs.ctes`
 
-The expected output per each individual top-level [Common Table Expression](glossary.md#cte) (CTE) defined in the target model's query. This is optional, as long as [`<test_name>.outputs.query`](#test_nameoutputsquery) is present.
+Test individual CTEs within your model. This is optional if you're testing the final query output.
 
 ### `<test_name>.outputs.ctes.<cte_name>`
 
-The expected output of the CTE with name `<cte_name>`.
+The expected output of a specific CTE. Use this to test intermediate steps in complex queries.
 
 ### `<test_name>.outputs.ctes.<cte_name>.partial`
 
-Same as [`<test_name>.outputs.partial`](#test_nameoutputspartial), but applies only to the output of the CTE with name `<cte_name>`.
+Partial matching for a specific CTE.
 
 ### `<test_name>.outputs.ctes.<cte_name>.rows`
 
-The expected rows of the CTE with name `<cte_name>`.
-
-See also: [`<test_name>.inputs.<upstream_model>.rows`](#test_nameinputsupstream_modelrows).
+Expected rows for a specific CTE.
 
 ### `<test_name>.outputs.ctes.<cte_name>.query`
 
-An optional SQL query that will be executed against the testing connection to generate the expected rows for the CTE with name `<cte_name>`.
-
-See also: [`<test_name>.inputs.<upstream_model>.query`](#test_nameinputsupstream_modelquery).
+Generate expected CTE output using a SQL query.
 
 ### `<test_name>.vars`
 
-An optional dictionary that assigns values to macro variables:
+Set values for macro variables used in your model:
 
 ```yaml linenums="1"
   vars:
@@ -701,6 +725,9 @@ An optional dictionary that assigns values to macro variables:
     <macro_variable_name>: <macro_variable_value>
 ```
 
-There are three special macro variables: `start`, `end`, and `execution_time`. If these are set, they will override the corresponding date macros of the target model. For example, `@execution_ds` will render to `2022-01-01` if `execution_time` is set to this value.
+**Special variables:**
+- `start` - Overrides `@start_ds` for incremental models
+- `end` - Overrides `@end_ds` for incremental models  
+- `execution_time` - Overrides `@execution_ds` and makes `CURRENT_TIMESTAMP`/`CURRENT_DATE` return fixed values
 
-Additionally, SQL expressions like `CURRENT_DATE` and `CURRENT_TIMESTAMP` will produce the same datetime value as `execution_time`, when it is set.
+These are super useful for testing incremental models and making time-dependent tests deterministic.

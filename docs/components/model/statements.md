@@ -1,20 +1,32 @@
 # Statements
 
-Statements are auxiliary SQL commands that extend a model's capabilities beyond its main query. They allow you to execute custom logic at specific points during model execution—before the query runs (pre-statements), after the query completes (post-statements), or when views are created/updated (on-virtual-update). Common use cases include setting session parameters, loading UDFs, creating indexes, enforcing data quality checks, logging anomalies, and granting access permissions. Statements can be defined at the model level for specific needs or at the project level via `model_defaults` for consistent behavior across all models.
+Statements let you run SQL commands at specific points during model execution. Think of them as hooks—you can run code before your query, after it completes, or when views are created.
+
+**Why use statements?** They're perfect for:
+- Setting session parameters (timeouts, memory limits)
+- Loading UDFs or creating temporary tables
+- Creating indexes or clustering
+- Running data quality checks
+- Logging anomalies or errors
+- Granting permissions on views
+
+You can define statements at the model level (for specific needs) or at the project level via `model_defaults` (for consistent behavior across all models).
 
 **Statement types:**
 
-- **Pre-statements**: Run before the main model query
-- **Post-statements**: Run after the main model query
-- **On-virtual-update statements**: Run when a virtual update occurs (view creation/update)
+- **Pre-statements**: Run before the main model query executes
+- **Post-statements**: Run after the main model query completes
+- **On-virtual-update statements**: Run when views are created or updated in the virtual layer
 
-!!! warning "Concurrency considerations"
+!!! warning "Concurrency Considerations"
 
-    Pre-statements should generally only be used for preparing the main query. Avoid creating or altering physical tables in pre-statements, as this could lead to unpredictable behavior if multiple models run concurrently.
+    Pre-statements should generally only prepare the main query. Avoid creating or altering physical tables in pre-statements—if multiple models run concurrently, you could get race conditions or unpredictable behavior. Stick to session settings, UDFs, and temporary objects.
 
-## Model defaults
+## Model Defaults
 
-You can define statements at the project level using `model_defaults` in your configuration. These default statements are merged with any model-specific statements, with **default statements executing first**, followed by model-specific statements.
+You can define statements at the project level using `model_defaults` in your configuration. This is great for setting up common behavior across all models—like session timeouts or default permissions.
+
+**How it works:** Default statements run first, then model-specific statements. So if you set a default timeout in `model_defaults` and a model-specific timeout in a model, the model-specific one runs after (and can override the default).
 
 === "YAML"
 
@@ -52,12 +64,15 @@ You can define statements at the project level using `model_defaults` in your co
 
 ## Pre-statements
 
-Pre-statements run before the main model query. They are useful for:
+Pre-statements run before your main model query executes. They're perfect for setting up the environment your query needs.
 
-- Loading JARs or UDFs
+**Common use cases:**
+- Loading JARs or UDFs that your query uses
 - Creating temporary tables or caching data
-- Setting session parameters
-- Initializing variables
+- Setting session parameters (timeouts, memory, etc.)
+- Initializing variables or settings
+
+**Think of it as:** The "setup" phase before your main query runs.
 
 === "SQL"
 
@@ -140,14 +155,17 @@ Pre-statements run before the main model query. They are useful for:
 
 ## Post-statements
 
-Post-statements run after each evaluation of the model query. The model query **must end with a semicolon** when post-statements are present in SQL models.
+Post-statements run after your model query completes. They're great for cleanup, optimization, or validation tasks.
 
-Post-statements are useful for:
+**Important:** When you use post-statements in SQL models, your main query **must end with a semicolon**. This tells Vulcan where the query ends and the statements begin.
 
-- Creating indexes or clustering
-- Running data quality checks
-- Inserting anomalies into tracking tables
-- Conditional table alterations
+**Common use cases:**
+- Creating indexes or clustering (for query performance)
+- Running data quality checks or validations
+- Logging anomalies or errors to tracking tables
+- Conditional table alterations (like setting retention policies)
+
+**Think of it as:** The "cleanup and optimization" phase after your data is loaded.
 
 === "SQL"
 
@@ -236,13 +254,19 @@ Post-statements are useful for:
         return context.fetchdf(query)
     ```
 
-## On-virtual-update statements
+## On-virtual-update Statements
 
-On-virtual-update statements run when a virtual update occurs (when views are created or updated). They are useful for:
+On-virtual-update statements run when views are created or updated in the virtual layer. This happens after your model's physical table is created and the view pointing to it is set up.
 
-- Granting permissions on views
-- Setting up access controls
+**Common use cases:**
+- Granting permissions on views (so users can query them)
+- Setting up access controls or row-level security
 - Applying column masking policies
+- Any view-level configuration
+
+**Think of it as:** The "access control" phase—setting up who can see what.
+
+**Note:** These statements run at the virtual layer, so table names (including `@this_model`) resolve to view names, not physical table names.
 
 === "SQL"
 
