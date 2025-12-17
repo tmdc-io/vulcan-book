@@ -1,4 +1,4 @@
-<!-- # Testing
+# Testing
 
 Testing is a critical practice in data engineering that ensures your data transformations produce correct, reliable results. Just as software engineers write unit tests to verify code behavior, data practitioners use tests to validate that models transform data as expected—catching bugs before they reach production and preventing costly data quality issues.
 
@@ -703,4 +703,4 @@ An optional dictionary that assigns values to macro variables:
 
 There are three special macro variables: `start`, `end`, and `execution_time`. If these are set, they will override the corresponding date macros of the target model. For example, `@execution_ds` will render to `2022-01-01` if `execution_time` is set to this value.
 
-Additionally, SQL expressions like `CURRENT_DATE` and `CURRENT_TIMESTAMP` will produce the same datetime value as `execution_time`, when it is set. -->
+Additionally, SQL expressions like `CURRENT_DATE` and `CURRENT_TIMESTAMP` will produce the same datetime value as `execution_time`, when it is set.
