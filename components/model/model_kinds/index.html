@@ -327,43 +327,17 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
-<span class="md-ellipsis">
-    
-  
-    CI/CD
-  
-
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
-    None
+    CI/CD
   
 
     
   </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1246,7 +1220,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../reference/cli.md">
+<a class="md-nav__link" href="../../../cli-command/cli/">
 <span class="md-ellipsis">
     
   
@@ -1257,9 +1231,8 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
-<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../cookbook/">
 <span class="md-ellipsis">
     
   
@@ -1268,36 +1241,10 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_6">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    Cookbook
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../cookbook/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
 </li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
-<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../faq/">
 <span class="md-ellipsis">
     
   
@@ -1306,32 +1253,7 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_7">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    FAQ
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../faq/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1720,7 +1642,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="kinds">Kinds<a class="headerlink" href="#kinds" title="Link to this section">¶</a></h1>
 <p>This page describes the kinds of <a href="../overview/">models</a> Vulcan supports, which determine how the data for a model is loaded.</p>
-<p>Find information about all model kind configuration parameters in the <a href="../../reference/model_configuration.md">model configuration reference page</a>.</p>
+<p>Find information about all model kind configuration parameters in the <a href="../../../references/model_configuration/">model configuration reference page</a>.</p>
 <h2 id="incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE<a class="headerlink" href="#incremental_by_time_range" title="Link to this section">¶</a></h2>
 <p>Models of the <code>INCREMENTAL_BY_TIME_RANGE</code> kind are computed incrementally based on a time range. This is an optimal choice for datasets in which records are captured over time and represent immutable facts such as events, logs, or transactions. Using this kind for appropriate datasets typically results in significant cost and time savings.</p>
 <p>Only missing time intervals are processed during each execution for <code>INCREMENTAL_BY_TIME_RANGE</code> models. This is in contrast to the <a href="#full">FULL</a> model kind, where the entire dataset is recomputed every time the model is executed.</p>
@@ -1739,7 +1661,7 @@
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p><a id="timezones"></a>
-In addition to specifying a time column in the <code>MODEL</code> DDL, the model's query must contain a <code>WHERE</code> clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: <code>@start_date</code> / <code>@end_date</code> and <code>@start_ds</code> / <code>@end_ds</code>. Refer to <a href="../macros/macro_variables.md">Macros</a> for more information.</p>
+In addition to specifying a time column in the <code>MODEL</code> DDL, the model's query must contain a <code>WHERE</code> clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: <code>@start_date</code> / <code>@end_date</code> and <code>@start_ds</code> / <code>@end_ds</code>. Refer to <a href="../../advanced-features/macros/variables/">Macros</a> for more information.</p>
 <details>
 <summary>Example SQL sequence when applying this model kind (ex: BigQuery)</summary>
 <p>This example demonstrates incremental by time range models.</p>
@@ -2145,7 +2067,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p class="admonition-title">Important</p>
 <p>The <code>time_column</code> variable should be in the UTC time zone - learn more <a href="#timezones">above</a>.</p>
 </div>
-<p>The time column is used to determine which records will be overwritten during data <a href="../plans.md#restatement-plans">restatement</a> and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the <code>MODEL</code> DDL <code>kind</code> specification:</p>
+<p>The time column is used to determine which records will be overwritten during data <a href="../../../guides/plan/#restatement-plans">restatement</a> and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the <code>MODEL</code> DDL <code>kind</code> specification:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
 <span class="normal"><a href="#__codelineno-9-2">2</a></span>
 <span class="normal"><a href="#__codelineno-9-3">3</a></span>
@@ -2248,7 +2170,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="idempotency">Idempotency<a class="headerlink" href="#idempotency" title="Link to this section">¶</a></h3>
-<p>We recommend making sure incremental by time range model queries are <a href="../glossary.md#idempotency">idempotent</a> to prevent unexpected results during data <a href="../plans.md#restatement-plans">restatement</a>.</p>
+<p>We recommend making sure incremental by time range model queries are <a href="../../../concepts-old/glossary/#idempotency">idempotent</a> to prevent unexpected results during data <a href="../../../guides/plan/#restatement-plans">restatement</a>.</p>
 <p>Note, however, that upstream models and tables can impact a model's idempotency. For example, referencing an upstream model of kind <a href="#full">FULL</a> in the model query automatically causes the model to be non-idempotent because its data could change on every model execution.</p>
 <h3 id="materialization-strategy">Materialization strategy<a class="headerlink" href="#materialization-strategy" title="Link to this section">¶</a></h3>
 <p>Depending on the target engine, models of the <code>INCREMENTAL_BY_TIME_RANGE</code> kind are materialized using the following strategies:</p>
@@ -2309,7 +2231,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <li>There is at most one record associated with each unique key.</li>
 <li>It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their keys match.</li>
 </ul>
-<p>A <a href="../glossary.md#slowly-changing-dimension-scd">Slowly Changing Dimension</a> (SCD) is one approach that fits this description well. See the <a href="#scd-type-2">SCD Type 2</a> model kind for a specific model kind for SCD Type 2 models.</p>
+<p>A <a href="../../../concepts-old/glossary/#slowly-changing-dimension-scd">Slowly Changing Dimension</a> (SCD) is one approach that fits this description well. See the <a href="#scd-type-2">SCD Type 2</a> model kind for a specific model kind for SCD Type 2 models.</p>
 <p>The name of the unique key column must be provided as part of the <code>MODEL</code> DDL, as in this example:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">SQL</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
@@ -2500,7 +2422,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">`</span><span class="n">vulcan</span><span class="o">-</span><span class="k">public</span><span class="o">-</span><span class="n">demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">vulcan__demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">demo__incremental_by_unique_key_example__1161945221</span><span class="o">`</span>
 </span></code></pre></div>
 </details>
-<p><strong>Note:</strong> Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are inherently <a href="../glossary.md#idempotency">non-idempotent</a>, which should be taken into consideration during data <a href="../plans.md#restatement-plans">restatement</a>. As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.</p>
+<p><strong>Note:</strong> Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are inherently <a href="../../../concepts-old/glossary/#idempotency">non-idempotent</a>, which should be taken into consideration during data <a href="../../../guides/plan/#restatement-plans">restatement</a>. As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.</p>
 <h3 id="unique-key-expressions">Unique Key Expressions<a class="headerlink" href="#unique-key-expressions" title="Link to this section">¶</a></h3>
 <p>The <code>unique_key</code> values can either be column names or SQL expressions. For example, if you wanted to create a key that is based on the coalesce of a value then you could do the following:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
@@ -2954,7 +2876,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10"></a><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">customers</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="seed">SEED<a class="headerlink" href="#seed" title="Link to this section">¶</a></h2>
-<p>The <code>SEED</code> model kind is used to specify <a href="./seed_models.md">seed models</a> for using static CSV datasets in your Vulcan project.</p>
+<p>The <code>SEED</code> model kind is used to specify <a href="types/seed_models.md">seed models</a> for using static CSV datasets in your Vulcan project.</p>
 <p><strong>Notes:</strong></p>
 <ul>
 <li>Seed models are loaded only once unless the SQL model and/or seed file is updated.</li>
@@ -3036,7 +2958,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p>SCD Type 2 is a model kind that supports <a href="https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row">slowly changing dimensions</a> (SCDs) in your Vulcan project. SCDs are a common pattern in data warehousing that allow you to track changes to records over time.</p>
 <p>Vulcan achieves this by adding a <code>valid_from</code> and <code>valid_to</code> column to your model. The <code>valid_from</code> column is the timestamp that the record became valid (inclusive) and the <code>valid_to</code> column is the timestamp that the record became invalid (exclusive). The <code>valid_to</code> column is set to <code>NULL</code> for the latest record.</p>
 <p>Therefore, you can use these models to not only tell you what the latest value is for a given record but also what the values were anytime in the past. Note that maintaining this history does come at a cost of increased storage and compute and this may not be a good fit for sources that change frequently since the history could get very large.</p>
-<p><strong>Note</strong>: Partial data <a href="../plans.md#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.</p>
+<p><strong>Note</strong>: Partial data <a href="../../../guides/plan/#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.</p>
 <p>There are two ways to tracking changes: By Time (Recommended) or By Column.</p>
 <h3 id="scd-type-2-by-time-recommended">SCD Type 2 By Time (Recommended)<a class="headerlink" href="#scd-type-2-by-time-recommended" title="Link to this section">¶</a></h3>
 <p>SCD Type 2 By Time supports sourcing from tables that have an "Updated At" timestamp defined in the table that tells you when a given record was last updated.
@@ -4289,7 +4211,7 @@ For this use use case you will want to start by setting <code>disable_restatemen
 </span><span id="__span-71-7"><a id="__codelineno-71-7" name="__codelineno-71-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Plan/apply this change to production.
-Then you will want to <a href="../plans.md#restatement-plans">restate the model</a>.</p>
+Then you will want to <a href="../../../guides/plan/#restatement-plans">restate the model</a>.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-72-1"><a href="#__codelineno-72-1" id="__codelineno-72-1" name="__codelineno-72-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>--restate-model<span class="w"> </span>db.menu_items
 </span></code></pre></div>
 <div class="admonition warning">
@@ -4311,7 +4233,7 @@ Then you will want to <a href="../plans.md#restatement-plans">restate the model<
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Plan/apply this change to production.</p>
 <h2 id="external">EXTERNAL<a class="headerlink" href="#external" title="Link to this section">¶</a></h2>
-<p>The EXTERNAL model kind is used to specify <a href="./external_models.md">external models</a> that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.</p>
+<p>The EXTERNAL model kind is used to specify <a href="../types/external_models/">external models</a> that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.</p>
 <h2 id="managed">MANAGED<a class="headerlink" href="#managed" title="Link to this section">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -4320,17 +4242,17 @@ Then you will want to <a href="../plans.md#restatement-plans">restate the model<
 <p><strong>Note:</strong> Python models do not support the <code>MANAGED</code> model kind - use a SQL model instead.</p>
 <p>The <code>MANAGED</code> model kind is used to create models where the underlying database engine manages the data lifecycle.</p>
 <p>These models don't get updated with new intervals or refreshed when <code>vulcan run</code> is called. Responsibility for keeping the <em>data</em> up to date falls on the engine.</p>
-<p>You can control how the engine creates the managed model by using the <a href="../models/overview.md#physical_properties"><code>physical_properties</code></a> to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.</p>
+<p>You can control how the engine creates the managed model by using the <a href="../properties/#physical_properties"><code>physical_properties</code></a> to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.</p>
 <p>Due to there being no standard, each vendor has a different implementation with different semantics and different configuration parameters. Therefore, <code>MANAGED</code> models are not as portable between database engines as other Vulcan model types. In addition, due to their black-box nature, Vulcan has limited visibility into the integrity and state of the model.</p>
-<p>We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in <a href="../overview.md#build-a-virtual-environment">virtual environments</a>.</p>
-<p>See <a href="./managed_models.md">Managed Models</a> for more information on which engines are supported and which properties are available.</p>
+<p>We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in <a href="../../../concepts-old/environments/">virtual environments</a>.</p>
+<p>See <a href="../types/managed_models/">Managed Models</a> for more information on which engines are supported and which properties are available.</p>
 <h2 id="incremental_by_partition">INCREMENTAL_BY_PARTITION<a class="headerlink" href="#incremental_by_partition" title="Link to this section">¶</a></h2>
 <p>Models of the <code>INCREMENTAL_BY_PARTITION</code> kind are computed incrementally based on partition. A set of columns defines the model's partitioning key, and a partition is the group of rows with the same partitioning key value.</p>
 <div class="admonition question">
 <p class="admonition-title">Should you use this model kind?</p>
-<p>Any model kind can use a partitioned <strong>table</strong> by specifying the <a href="../models/overview.md#partitioned_by"><code>partitioned_by</code> key</a> in the <code>MODEL</code> DDL.</p>
+<p>Any model kind can use a partitioned <strong>table</strong> by specifying the <a href="../properties/#partitioned_by"><code>partitioned_by</code> key</a> in the <code>MODEL</code> DDL.</p>
 <p>The "partition" in <code>INCREMENTAL_BY_PARTITION</code> is about how the data is <strong>loaded</strong> when the model runs.</p>
-<p><code>INCREMENTAL_BY_PARTITION</code> models are inherently <a href="../glossary.md#idempotency">non-idempotent</a>, so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.</p>
+<p><code>INCREMENTAL_BY_PARTITION</code> models are inherently <a href="../../../concepts-old/glossary/#idempotency">non-idempotent</a>, so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.</p>
 <p>In most scenarios, an <code>INCREMENTAL_BY_TIME_RANGE</code> model can meet your needs and will be easier to manage. The <code>INCREMENTAL_BY_PARTITION</code> model kind should only be used when the data must be loaded by partition (usually for performance reasons).</p>
 </div>
 <p>This model kind is designed for the scenario where data rows should be loaded and updated as a group based on their shared value for the partitioning key.</p>
@@ -4475,7 +4397,7 @@ Then you will want to <a href="../plans.md#restatement-plans">restate the model<
 </span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition warning">
 <p class="admonition-title">Only full restatements supported</p>
-<p>Partial data <a href="../plans.md#restatement-plans">restatements</a> are used to reprocess part of a table's data (usually a limited time range).</p>
+<p>Partial data <a href="../../../guides/plan/#restatement-plans">restatements</a> are used to reprocess part of a table's data (usually a limited time range).</p>
 <p>Partial data restatement is not supported for <code>INCREMENTAL_BY_PARTITION</code> models. If you restate an <code>INCREMENTAL_BY_PARTITION</code> model, its entire table will be recreated from scratch.</p>
 <p>Restating <code>INCREMENTAL_BY_PARTITION</code> models may lead to data loss and should be performed with care.</p>
 </div>
@@ -4565,7 +4487,7 @@ Then you will want to <a href="../plans.md#restatement-plans">restate the model<
 </span><span id="__span-78-41"><a id="__codelineno-78-41" name="__codelineno-78-41"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">user_type</span>
 </span><span id="__span-78-42"><a id="__codelineno-78-42" name="__codelineno-78-42"></a><span class="k">FROM</span><span class="w"> </span><span class="n">product_usage</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Note</strong>: Partial data <a href="../plans.md#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.</p>
+<p><strong>Note</strong>: Partial data <a href="../../../guides/plan/#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.</p>
 <h3 id="materialization-strategy_3">Materialization strategy<a class="headerlink" href="#materialization-strategy_3" title="Link to this section">¶</a></h3>
 <p>Depending on the target engine, models of the <code>INCREMENTAL_BY_PARTITION</code> kind are materialized using the following strategies:</p>
 <table>
@@ -4663,7 +4585,7 @@ Then you will want to <a href="../plans.md#restatement-plans">restate the model<
 <p>Since it's unmanaged, it doesnt support the <code>batch_size</code> and <code>batch_concurrency</code> properties to control how data is loaded like the other incremental model types do.</p>
 <div class="admonition warning">
 <p class="admonition-title">Only full restatements supported</p>
-<p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../plans.md#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>
+<p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../../../guides/plan/#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>
 <p>This is because an append-only table is inherently non-idempotent. Restating <code>INCREMENTAL_UNMANAGED</code> models may lead to data loss and should be performed with care.</p>
 </div>
 </article>

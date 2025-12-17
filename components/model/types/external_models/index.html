@@ -327,43 +327,17 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
-<span class="md-ellipsis">
-    
-  
-    CI/CD
-  
-
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="../../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
-    None
+    CI/CD
   
 
     
   </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -974,7 +948,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../reference/cli.md">
+<a class="md-nav__link" href="../../../../cli-command/cli/">
 <span class="md-ellipsis">
     
   
@@ -985,9 +959,8 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
-<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../cookbook/">
 <span class="md-ellipsis">
     
   
@@ -996,36 +969,10 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_6">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    Cookbook
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../cookbook/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
 </li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
-<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../faq/">
 <span class="md-ellipsis">
     
   
@@ -1034,32 +981,7 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_7">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    FAQ
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../faq/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1189,7 +1111,7 @@
 <p><code>EXTERNAL</code> models consist solely of an external table's column information, so there is no query for Vulcan to run.</p>
 <p>Vulcan has no information about the data contained in the table represented by an <code>EXTERNAL</code> model. The table could be altered or have all its data deleted, and Vulcan will not detect it. All Vulcan knows about the table is that it contains the columns specified in the <code>EXTERNAL</code> model's file (more information below).</p>
 <p>Vulcan will not take any actions based on an <code>EXTERNAL</code> model - its actions are solely determined by the model whose query selects from the <code>EXTERNAL</code> model.</p>
-<p>The querying model's <a href="./model_kinds.md"><code>kind</code></a>, <a href="./overview.md#cron"><code>cron</code></a>, and previously loaded time intervals determine when Vulcan will query the <code>EXTERNAL</code> model.</p>
+<p>The querying model's <a href="../../model_kinds/"><code>kind</code></a>, <a href="../../overview/#cron"><code>cron</code></a>, and previously loaded time intervals determine when Vulcan will query the <code>EXTERNAL</code> model.</p>
 <h2 id="generating-an-external-models-schema-file">Generating an external models schema file<a class="headerlink" href="#generating-an-external-models-schema-file" title="Link to this section">¶</a></h2>
 <p>External models can be defined in the <code>external_models.yaml</code> file in the Vulcan project's root folder. The alternative name for this file is <code>schema.yaml</code>.</p>
 <p>You can create this file by either writing the YAML by hand or allowing Vulcan to fetch information about external tables with the <code>create_external_models</code> CLI command.</p>
@@ -1216,12 +1138,12 @@
 <p>All of a Vulcan project's external models are defined in a single <code>external_models.yaml</code> file, so the files created below might also include column information for other external models.</p>
 <p>Alternatively, additional external models can also be defined in the <a href="#using-the-external_models-directory">external_models/</a> folder.</p>
 <h3 id="using-cli">Using CLI<a class="headerlink" href="#using-cli" title="Link to this section">¶</a></h3>
-<p>Instead of creating the <code>external_models.yaml</code> file manually, Vulcan can generate it for you with the <a href="../../reference/cli.md#create_external_models">create_external_models</a> CLI command.</p>
+<p>Instead of creating the <code>external_models.yaml</code> file manually, Vulcan can generate it for you with the <a href="../../../../cli-command/cli/#create_external_models">create_external_models</a> CLI command.</p>
 <p>The command identifies all external tables referenced in your Vulcan project, fetches their column information from the SQL engine's metadata, and then stores the information in the <code>external_models.yaml</code> file.</p>
 <p>If Vulcan does not have access to an external table's metadata, the table will be omitted from the file and Vulcan will issue a warning.</p>
 <p><code>create_external_models</code> solely queries SQL engine metadata and does not query external tables themselves.</p>
 <h3 id="gateway-specific-external-models">Gateway-specific external models<a class="headerlink" href="#gateway-specific-external-models" title="Link to this section">¶</a></h3>
-<p>In some use-cases such as <a href="../../guides/isolated_systems.md#multiple-gateways">isolated systems with multiple gateways</a>, there are external models that only exist on a certain gateway.</p>
+<p>In some use-cases such as <a href="../../guides-old/isolated_systems.md#multiple-gateways">isolated systems with multiple gateways</a>, there are external models that only exist on a certain gateway.</p>
 <p><strong>Gateway names are case-insensitive in external model configurations.</strong> You can specify the gateway name using any case (e.g., <code>gateway: dev</code>, <code>gateway: DEV</code>, <code>gateway: Dev</code>) and Vulcan will handle the matching correctly.</p>
 <p>Consider the following model that queries an external table with a dynamic database based on the current gateway:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>MODEL (
@@ -1234,7 +1156,7 @@
 </span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>FROM
 </span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>  @{gateway}_db.customers;
 </span></code></pre></div>
-<p>This table will be named differently depending on which <code>--gateway</code> Vulcan is run with (learn more about the curly brace <code>@{gateway}</code> syntax <a href="../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings">here</a>).</p>
+<p>This table will be named differently depending on which <code>--gateway</code> Vulcan is run with (learn more about the curly brace <code>@{gateway}</code> syntax <a href="../../../../concepts-old/macros/vulcan_macros/#embedding-variables-in-strings">here</a>).</p>
 <p>For example:</p>
 <ul>
 <li><code>vulcan --gateway dev plan</code> - Vulcan will try to query <code>dev_db.customers</code></li>
@@ -1280,7 +1202,7 @@
 <p>When Vulcan loads the definitions, it will first load the models defined in <code>external_models.yaml</code> (or <code>schema.yaml</code>) and  any models found in <code>external_models/*.yaml</code>.</p>
 <p>Therefore, you can use <code>vulcan create_external_models</code> to manage the <code>external_models.yaml</code> file and then put any models that need to be defined manually inside the <code>external_models/</code> directory.</p>
 <h3 id="external-assertions">External assertions<a class="headerlink" href="#external-assertions" title="Link to this section">¶</a></h3>
-<p>It is possible to define <a href="../assertions.md">assertions</a> on external models. This can be useful to check the data quality of upstream dependencies before your internal models evaluate.</p>
+<p>It is possible to define <a href="../../../audits/audits/">assertions</a> on external models. This can be useful to check the data quality of upstream dependencies before your internal models evaluate.</p>
 <p>This example shows an external model with assertions:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."customers"'</span>
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Table containing customer information</span>

@@ -327,43 +327,17 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
-<span class="md-ellipsis">
-    
-  
-    CI/CD
-  
-
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="../../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
-    None
+    CI/CD
   
 
     
   </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1073,7 +1047,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../reference/cli.md">
+<a class="md-nav__link" href="../../../../cli-command/cli/">
 <span class="md-ellipsis">
     
   
@@ -1084,9 +1058,8 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
-<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../cookbook/">
 <span class="md-ellipsis">
     
   
@@ -1095,36 +1068,10 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_6">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    Cookbook
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../cookbook/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
 </li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
-<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../faq/">
 <span class="md-ellipsis">
     
   
@@ -1133,32 +1080,7 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_7">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    FAQ
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../faq/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1384,7 +1306,7 @@
 <p>Vulcan has first-class support for models defined in Python; there are no restrictions on what can be done in the Python model as long as it returns a Pandas or Spark DataFrame instance.</p>
 <div class="admonition info">
 <p class="admonition-title">Unsupported model kinds</p>
-<p>Python models do not support these <a href="./model_kinds.md">model kinds</a> - use a SQL model instead.</p>
+<p>Python models do not support these <a href="../../model_kinds/">model kinds</a> - use a SQL model instead.</p>
 <ul>
 <li><code>VIEW</code></li>
 <li><code>SEED</code></li>
@@ -1486,7 +1408,7 @@
 <p>If the function output is too large, it can also be returned in chunks using Python generators.</p>
 <h2 id="model-specification"><code>@model</code> specification<a class="headerlink" href="#model-specification" title="Link to this section">¶</a></h2>
 <p>The arguments provided in the <code>@model</code> specification have the same names as those provided in a SQL model's <code>MODEL</code> DDL.</p>
-<p>Python model <code>kind</code>s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the <a href="../../reference/model_configuration.md#model-kind-properties">models configuration reference page</a>.</p>
+<p>Python model <code>kind</code>s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the <a href="../../../../references/model_configuration/#model-kind-properties">models configuration reference page</a>.</p>
 <p>The model <code>kind</code> dictionary must contain a <code>name</code> key whose value is a member of the <a href="https://vulcan.readthedocs.io/en/stable/_readthedocs/html/vulcan/core/model/kind.html#ModelKindName"><code>ModelKindName</code> enum class</a>. The <code>ModelKindName</code> class must be imported at the beginning of the model definition file before being used in the <code>@model</code> specification.</p>
 <p>Supported <code>kind</code> dictionary <code>name</code> values are:</p>
 <ul>
@@ -1504,7 +1426,7 @@
 <li><code>ModelKindName.EXTERNAL</code></li>
 </ul>
 <h2 id="execution-context">Execution context<a class="headerlink" href="#execution-context" title="Link to this section">¶</a></h2>
-<p>Python models can do anything you want, but it is strongly recommended for all models to be <a href="../glossary.md#idempotency">idempotent</a>. Python models can fetch data from upstream models or even data outside of Vulcan.</p>
+<p>Python models can do anything you want, but it is strongly recommended for all models to be <a href="../../../../references/glossary/#idempotency">idempotent</a>. Python models can fetch data from upstream models or even data outside of Vulcan.</p>
 <p>Given an execution <code>ExecutionContext</code> "context", you can fetch a DataFrame with the <code>fetchdf</code> method:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="s2">"SELECT * FROM vulcan_demo.products"</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
@@ -1512,7 +1434,7 @@
 <p>Optional pre/post-statements allow you to execute SQL commands before and after a model runs, respectively.</p>
 <p>For example, pre/post-statements might modify settings or create indexes. However, be careful not to run any statement that could conflict with the execution of another statement if models run concurrently, such as creating a physical table.</p>
 <p>You can set the <code>pre_statements</code> and <code>post_statements</code> arguments to a list of SQL strings, SQLGlot expressions, or macro calls to define the model's pre/post-statements.</p>
-<p><strong>Project-level defaults:</strong> You can also define pre/post-statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../reference/model_configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can also define pre/post-statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../../references/model_configuration/#model-defaults">model configuration reference</a>.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
@@ -1562,7 +1484,7 @@
 </span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24"></a>    <span class="p">])</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>The previous example's <code>post_statements</code> called user-defined Vulcan macro <code>@CREATE_INDEX(@this_model, id)</code>.</p>
-<p>We could define the <code>CREATE_INDEX</code> macro in the project's <code>macros</code> directory like this. The macro creates a table index on a single column, conditional on the <a href="../macros/macro_variables.md#runtime-variables">runtime stage</a> being <code>creating</code> (table creation time).</p>
+<p>We could define the <code>CREATE_INDEX</code> macro in the project's <code>macros</code> directory like this. The macro creates a table index on a single column, conditional on the <a href="../../../advanced-features/macros/variables/#runtime-variables">runtime stage</a> being <code>creating</code> (table creation time).</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
 <span class="normal"><a href="#__codelineno-3-3">3</a></span>
@@ -1581,7 +1503,7 @@
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">"CREATE INDEX idx ON </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">);"</span>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a>    <span class="k">return</span> <span class="kc">None</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Alternatively, pre- and post-statements can be issued with the Vulcan <a href="../../reference/cli.md#fetchdf"><code>fetchdf</code> method</a> <a href="#execution-context">described above</a>.</p>
+<p>Alternatively, pre- and post-statements can be issued with the Vulcan <a href="../../../../cli-command/cli/#fetchdf"><code>fetchdf</code> method</a> <a href="#execution-context">described above</a>.</p>
 <p>Pre-statements may be specified anywhere in the function body before it <code>return</code>s or <code>yield</code>s. Post-statements must execute after the function completes, so instead of <code>return</code>ing a value the function must <code>yield</code> the value. The post-statement must be specified after the <code>yield</code>.</p>
 <p>This example function includes both pre- and post-statements:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
@@ -1621,10 +1543,10 @@
 </span></span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="hll">    <span class="n">context</span><span class="o">.</span><span class="n">engine_adapter</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"CREATE INDEX idx ON vulcan_demo.model_with_statements (id);"</span><span class="p">)</span>
 </span></span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="optional-on-virtual-update-statements">Optional on-virtual-update statements<a class="headerlink" href="#optional-on-virtual-update-statements" title="Link to this section">¶</a></h2>
-<p>The optional on-virtual-update statements allow you to execute SQL commands after the completion of the <a href="../plans.md#virtual-update">Virtual Update</a>.</p>
+<p>The optional on-virtual-update statements allow you to execute SQL commands after the completion of the <a href="../../../../concepts-old/plans/#virtual-update">Virtual Update</a>.</p>
 <p>These can be used, for example, to grant privileges on views of the virtual layer.</p>
 <p>Similar to pre/post-statements you can set the <code>on_virtual_update</code> argument in the <code>@model</code> decorator to a list of SQL strings, SQLGlot expressions, or macro calls.</p>
-<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../reference/model_configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../../references/model_configuration/#model-defaults">model configuration reference</a>.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
@@ -1670,7 +1592,7 @@
 <p>Table resolution for these statements occurs at the virtual layer. This means that table names, including <code>@this_model</code> macro, are resolved to their qualified view names. For instance, when running the plan in an environment named <code>dev</code>, <code>vulcan_demo.model_with_grants</code> and <code>@this_model</code> would resolve to <code>vulcan_demo__dev.model_with_grants</code> and not to the physical table name.</p>
 </div>
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Link to this section">¶</a></h2>
-<p>In order to fetch data from an upstream model, you first get the table name using <code>context</code>'s <code>resolve_table</code> method. This returns the appropriate table name for the current runtime <a href="../environments.md">environment</a>:</p>
+<p>In order to fetch data from an upstream model, you first get the table name using <code>context</code>'s <code>resolve_table</code> method. This returns the appropriate table name for the current runtime <a href="../../../../concepts-old/environments/">environment</a>:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">resolve_table</span><span class="p">(</span><span class="s2">"vulcan_demo.products"</span><span class="p">)</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SELECT * FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -1749,7 +1671,7 @@
 </span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35"></a>
 </span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>User-defined <a href="../../reference/configuration.md#variables">global variables</a> or <a href="#python-model-blueprinting">blueprint variables</a> can also be used in <code>resolve_table</code> calls, as shown in the following example (similarly for <code>blueprint_var()</code>):</p>
+<p>User-defined <a href="../../../../references/configuration/#variables">global variables</a> or <a href="#python-model-blueprinting">blueprint variables</a> can also be used in <code>resolve_table</code> calls, as shown in the following example (similarly for <code>blueprint_var()</code>):</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
 <span class="normal"><a href="#__codelineno-8-2">2</a></span>
 <span class="normal"><a href="#__codelineno-8-3">3</a></span>
@@ -1798,7 +1720,7 @@
 </span></span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="hll">        <span class="k">yield</span> <span class="n">df</span>
 </span></span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="user-defined-variables">User-defined variables<a class="headerlink" href="#user-defined-variables" title="Link to this section">¶</a></h2>
-<p><a href="../../reference/configuration.md#variables">User-defined global variables</a> can be accessed from within the Python model with the <code>context.var</code> method.</p>
+<p><a href="../../../../references/configuration/#variables">User-defined global variables</a> can be accessed from within the Python model with the <code>context.var</code> method.</p>
 <p>For example, this model access the user-defined variables <code>var</code> and <code>var_with_default</code>. It specifies a default value of <code>default_value</code> if <code>variable_with_default</code> resolves to a missing value.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
@@ -1925,7 +1847,7 @@
 </span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32"></a>        <span class="p">}</span>
 </span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33"></a>    <span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Note the use of curly brace syntax <code>@{customer}</code> in the model name above. It is used to ensure Vulcan can combine the macro variable into the model name identifier correctly - learn more <a href="../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings">here</a>.</p>
+<p>Note the use of curly brace syntax <code>@{customer}</code> in the model name above. It is used to ensure Vulcan can combine the macro variable into the model name identifier correctly - learn more <a href="../../../advanced-features/macros/variables/#embedding-variables-in-strings">here</a>.</p>
 <p>Blueprint variable mappings can also be constructed dynamically, e.g., by using a macro: <code>blueprints="@gen_blueprints()"</code>. This is useful in cases where the <code>blueprints</code> list needs to be sourced from external sources, such as CSV files.</p>
 <p>For example, the definition of the <code>gen_blueprints</code> may look like this:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
@@ -1998,7 +1920,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Link to this section">¶</a></h2>
 <h3 id="basic">Basic<a class="headerlink" href="#basic" title="Link to this section">¶</a></h3>
 <p>The following is an example of a Python model returning a static Pandas DataFrame.</p>
-<p><strong>Note:</strong> All of the <a href="./overview.md#model-properties">metadata</a> field names are the same as those in the SQL <code>MODEL</code> DDL.</p>
+<p><strong>Note:</strong> All of the <a href="../../overview/#model-properties">metadata</a> field names are the same as those in the SQL <code>MODEL</code> DDL.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-16-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-16-3"> 3</a></span>
@@ -2404,7 +2326,7 @@
 </span><span id="__span-21-20"><a id="__codelineno-21-20" name="__codelineno-21-20"></a><span class="hll">        <span class="k">yield</span> <span class="n">df</span>
 </span></span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="serialization">Serialization<a class="headerlink" href="#serialization" title="Link to this section">¶</a></h2>
-<p>Vulcan executes Python code locally where Vulcan is running by using our custom <a href="../architecture/serialization.md">serialization framework</a>.</p>
+<p>Vulcan executes Python code locally where Vulcan is running by using our custom <a href="../../../../concepts-old/architecture/serialization/">serialization framework</a>.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

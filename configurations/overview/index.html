@@ -477,43 +477,17 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
-<span class="md-ellipsis">
-    
-  
-    CI/CD
-  
-
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
-    None
+    CI/CD
   
 
     
   </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1037,7 +1011,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../reference/cli.md">
+<a class="md-nav__link" href="../../cli-command/cli/">
 <span class="md-ellipsis">
     
   
@@ -1048,9 +1022,8 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
-<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cookbook/">
 <span class="md-ellipsis">
     
   
@@ -1059,36 +1032,10 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_6">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    Cookbook
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../cookbook/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
 </li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
-<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../faq/">
 <span class="md-ellipsis">
     
   
@@ -1097,32 +1044,7 @@
 
     
   </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="__nav_7">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    FAQ
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../faq/index.md">
-<span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
 </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1458,7 +1380,7 @@
 </tr>
 </tbody>
 </table>
-<p>→ See <a href="./configuration.md#gateways">Configuration Reference</a> for detailed gateway options.</p>
+<p>→ See <a href="../../references/configuration/#gateways">Configuration Reference</a> for detailed gateway options.</p>
 <h3 id="model-defaults-required">Model Defaults (Required)<a class="headerlink" href="#model-defaults-required" title="Link to this section">¶</a></h3>
 <p>The <code>model_defaults</code> section is <strong>required</strong> and must include at least the <code>dialect</code> key.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
@@ -1467,24 +1389,24 @@
 </span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
 </span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'@daily'</span>
 </span></code></pre></div>
-<p>→ See <a href="./model_defaults.md">Model Defaults</a> for all available options.</p>
+<p>→ See <a href="../options/model_defaults/">Model Defaults</a> for all available options.</p>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h3>
 <p>Configure environment variables, <code>.env</code> files, and configuration overrides.</p>
-<p>→ See <a href="./variables.md">Variables</a> for details.</p>
+<p>→ See <a href="../options/variables/">Variables</a> for details.</p>
 <h3 id="execution-hooks">Execution Hooks<a class="headerlink" href="#execution-hooks" title="Link to this section">¶</a></h3>
 <p>Execute SQL statements at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands using <code>before_all</code> and <code>after_all</code>.</p>
-<p>→ See <a href="./hooks.md">Execution Hooks</a> for detailed examples and use cases.</p>
+<p>→ See <a href="../options/execution_hooks/">Execution Hooks</a> for detailed examples and use cases.</p>
 <h3 id="linter">Linter<a class="headerlink" href="#linter" title="Link to this section">¶</a></h3>
 <p>Enable automatic code quality checks for your models.</p>
-<p>→ See <a href="./linter.md">Linter</a> for rules and custom linter configuration.</p>
+<p>→ See <a href="../options/linter/">Linter</a> for rules and custom linter configuration.</p>
 <h3 id="notifications">Notifications<a class="headerlink" href="#notifications" title="Link to this section">¶</a></h3>
 <p>Configure alerts via Slack or email for pipeline events.</p>
-<p>→ See <a href="./notifications.md">Notifications</a> for Slack webhooks, API, and email setup.</p>
+<p>→ See <a href="../options/notifications/">Notifications</a> for Slack webhooks, API, and email setup.</p>
 <h2 id="supported-engines">Supported Engines<a class="headerlink" href="#supported-engines" title="Link to this section">¶</a></h2>
 <p>Vulcan supports connecting to various data warehouses:</p>
 <ul>
-<li><strong><a href="./integrations/engines/postgres.md">PostgreSQL</a></strong> - Open-source relational database</li>
-<li><strong><a href="./integrations/engines/snowflake.md">Snowflake</a></strong> - Cloud data warehouse</li>
+<li><strong><a href="../engines/postgres/postgres/">PostgreSQL</a></strong> - Open-source relational database</li>
+<li><strong><a href="../engines/snowflake/snowflake/">Snowflake</a></strong> - Cloud data warehouse</li>
 </ul>
 <h2 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this section">¶</a></h2>
 <table>
@@ -1496,27 +1418,27 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="./configuration.md">Configuration Reference</a></td>
+<td><a href="../../references/configuration/">Configuration Reference</a></td>
 <td>Complete list of all configuration parameters</td>
 </tr>
 <tr>
-<td><a href="./variables.md">Variables</a></td>
+<td><a href="../options/variables/">Variables</a></td>
 <td>Environment variables and <code>.env</code> files</td>
 </tr>
 <tr>
-<td><a href="./model_defaults.md">Model Defaults</a></td>
+<td><a href="../options/model_defaults/">Model Defaults</a></td>
 <td>Default settings for all models</td>
 </tr>
 <tr>
-<td><a href="./hooks.md">Execution Hooks</a></td>
+<td><a href="../options/execution_hooks/">Execution Hooks</a></td>
 <td><code>before_all</code> and <code>after_all</code> statements</td>
 </tr>
 <tr>
-<td><a href="./linter.md">Linter</a></td>
+<td><a href="../options/linter/">Linter</a></td>
 <td>Code quality rules and custom linters</td>
 </tr>
 <tr>
-<td><a href="./notifications.md">Notifications</a></td>
+<td><a href="../options/notifications/">Notifications</a></td>
 <td>Slack and email notification setup</td>
 </tr>
 </tbody>
