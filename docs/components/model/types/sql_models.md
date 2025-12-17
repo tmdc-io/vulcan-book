@@ -44,9 +44,9 @@ ORDER BY order_date
 
 ### `MODEL` DDL
 
-The `MODEL` DDL is used to specify metadata about the model such as its name, [kind](./model_kinds.md), owner, cron, and others. This should be the first statement in your SQL-based model's file.
+The `MODEL` DDL is used to specify metadata about the model such as its name, [kind](../model_kinds.md), owner, cron, and others. This should be the first statement in your SQL-based model's file.
 
-Refer to `MODEL` [properties](./overview.md#model-properties) for the full list of allowed properties.
+Refer to `MODEL` [properties](../overview.md#model-properties) for the full list of allowed properties.
 
 ### Optional pre/post-statements
 
@@ -77,15 +77,15 @@ GROUP BY order_date;
 UNCACHE TABLE countries;
 ```
 
-**Project-level defaults:** You can also define pre/post-statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
+**Project-level defaults:** You can also define pre/post-statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
 
 !!! warning
 
-    Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can [conditionally execute](../macros/vulcan_macros.md#prepost-statements) them based on Vulcan's [runtime stage](../macros/macro_variables.md#runtime-variables).
+    Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can [conditionally execute](../../advanced-features/macros/vulcan_macros.md#prepost-statements) them based on Vulcan's [runtime stage](../../advanced-features/macros/variables.md#runtime-variables).
 
 The pre/post-statements in the example above will run twice because they are not conditioned on runtime stage.
 
-We can condition the post-statement to only run after the model query is evaluated using the [`@IF` macro operator](../macros/vulcan_macros.md#if) and [`@runtime_stage` macro variable](../macros/macro_variables.md#runtime-variables) like this:
+We can condition the post-statement to only run after the model query is evaluated using the [`@IF` macro operator](../../advanced-features/macros/vulcan_macros.md#if) and [`@runtime_stage` macro variable](../../advanced-features/macros/variables.md#runtime-variables) like this:
 
 ```sql linenums="1" hl_lines="14-17"
 MODEL (
@@ -111,11 +111,11 @@ Note that the SQL command `UNCACHE TABLE countries` inside the `@IF()` macro doe
 
 ### Optional on-virtual-update statements
 
-The optional on-virtual-update statements allow you to execute SQL commands after the completion of the [Virtual Update](../plans.md#virtual-update).
+The optional on-virtual-update statements allow you to execute SQL commands after the completion of the [Virtual Update](../../../guides/plan.md#virtual-update).
 
 These can be used, for example, to grant privileges on views of the virtual layer.
 
-**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../reference/model_configuration.md#model-defaults).
+**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
 
 These SQL statements must be enclosed within an `ON_VIRTUAL_UPDATE_BEGIN;` ...; `ON_VIRTUAL_UPDATE_END;` block like this:
 
@@ -139,7 +139,7 @@ JINJA_END;
 ON_VIRTUAL_UPDATE_END;
 ```
 
-[Jinja expressions](../macros/jinja_macros.md) can also be used within them, as demonstrated in the example above. These expressions must be properly nested within a `JINJA_STATEMENT_BEGIN;` and `JINJA_END;` block.
+[Jinja expressions](../../advanced-features/macros/jinja_macros.md) can also be used within them, as demonstrated in the example above. These expressions must be properly nested within a `JINJA_STATEMENT_BEGIN;` and `JINJA_END;` block.
 
 !!! note
 
@@ -205,7 +205,7 @@ WHERE
 
 Note the use of curly brace syntax `@{region}` in the model name above. It is used to tell Vulcan that the rendered variable value should be treated as a SQL identifier instead of a string literal.
 
-You can see the different behavior in the WHERE clause. `@region` (without braces) is resolved to the string literal `'north'` (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings).
+You can see the different behavior in the WHERE clause. `@region` (without braces) is resolved to the string literal `'north'` (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax [here](../../advanced-features/macros/vulcan_macros.md#embedding-variables-in-strings).
 
 Blueprint variable mappings can also be constructed dynamically, e.g., by using a macro: `blueprints @gen_blueprints()`. This is useful in cases where the `blueprints` list needs to be sourced from external sources, such as CSV files.
 
@@ -263,9 +263,9 @@ GROUP BY order_date
 
 Vulcan will detect that the model depends on `raw.raw_orders`. When executing this model, it will ensure that `raw.raw_orders` is executed first.
 
-External dependencies not defined in Vulcan are also supported. Vulcan can either depend on them implicitly through the order in which they are executed, or through [signals](../../guides/signals.md).
+External dependencies not defined in Vulcan are also supported. Vulcan can either depend on them implicitly through the order in which they are executed, or through [signals](../../../guides/signals.md).
 
-Although automatic dependency detection works most of the time, there may be specific cases for which you want to define dependencies manually. You can do so in the `MODEL` DDL with the [dependencies property](./overview.md#model-properties).
+Although automatic dependency detection works most of the time, there may be specific cases for which you want to define dependencies manually. You can do so in the `MODEL` DDL with the [dependencies property](../overview.md#model-properties).
 
 ## Conventions
 
@@ -273,9 +273,9 @@ Vulcan encourages explicitly specifying the data types of a model's columns thro
 
 ### Explicit SELECTs
 
-Although `SELECT *` is convenient, it is dangerous because a model's results can change due to external factors (e.g., an upstream source adding or removing a column). In general, we encourage listing out every column you need or using [`create_external_models`](../../reference/cli.md#create_external_models) to capture the schema of an external data source.
+Although `SELECT *` is convenient, it is dangerous because a model's results can change due to external factors (e.g., an upstream source adding or removing a column). In general, we encourage listing out every column you need or using [`create_external_models`](../../../cli-command/cli.md#create_external_models) to capture the schema of an external data source.
 
-If you select from an external source, `SELECT *` will prevent Vulcan from performing some optimization steps and from determining upstream column-level lineage. Use an [`external` model kind](./model_kinds.md#external) to enable optimizations and upstream column-level lineage for external sources.
+If you select from an external source, `SELECT *` will prevent Vulcan from performing some optimization steps and from determining upstream column-level lineage. Use an [`external` model kind](../model_kinds.md#external) to enable optimizations and upstream column-level lineage for external sources.
 
 ### Encoding
 
@@ -291,6 +291,6 @@ Additionally, you won't have to worry about minor formatting differences such as
 
 ## Macros
 
-Although standard SQL is very powerful, complex data systems often require running SQL queries with dynamic components such as date filters. For example, you may want to change the date ranges in a `between` statement so that you can get the latest batch of data. Vulcan provides these dates automatically through [macro variables](../macros/macro_variables.md).
+Although standard SQL is very powerful, complex data systems often require running SQL queries with dynamic components such as date filters. For example, you may want to change the date ranges in a `between` statement so that you can get the latest batch of data. Vulcan provides these dates automatically through [macro variables](../../advanced-features/macros/variables.md).
 
-Additionally, large queries can be difficult to read and maintain. In order to make queries more compact, Vulcan supports a powerful [macro syntax](../macros/overview.md) as well as [Jinja](https://jinja.palletsprojects.com/en/3.1.x/), allowing you to write macros that make your SQL queries easier to manage.
+Additionally, large queries can be difficult to read and maintain. In order to make queries more compact, Vulcan supports a powerful [macro syntax](../../advanced-features/macros/overview.md) as well as [Jinja](https://jinja.palletsprojects.com/en/3.1.x/), allowing you to write macros that make your SQL queries easier to manage.

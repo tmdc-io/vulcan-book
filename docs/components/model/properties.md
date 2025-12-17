@@ -502,7 +502,7 @@ Explicitly specifies column names and data types, disabling automatic inference.
     ```
 
 !!! note "Python Models"
-    Required for [Python models](./python_models.md) that return DataFrames.
+    Required for [Python models](types/python_models.md) that return DataFrames.
 
 ### dialect
 
@@ -550,7 +550,7 @@ Labels for organizing and filtering models.
 
 ### assertions
 
-Attaching [audits](../audits.md) to the model, declaring that these validations should pass after each model evaluation.
+Attaching [audits](../../audits/audits.md) to the model, declaring that these validations should pass after each model evaluation.
 
 === "SQL"
 
@@ -1078,10 +1078,10 @@ These properties apply to all incremental model kinds.
 
 | Property | Description | Type | Default |
 |----------|-------------|:----:|:-------:|
-| `forward_only` | All changes should be [forward-only](../plans.md#forward-only-plans) | `bool` | `false` |
+| `forward_only` | All changes should be [forward-only](../../guides/plan.md#forward-only-plans) | `bool` | `false` |
 | `on_destructive_change` | Behavior for destructive schema changes | `str` | `error` |
 | `on_additive_change` | Behavior for additive schema changes | `str` | `allow` |
-| `disable_restatement` | Disable [data restatement](../plans.md#restatement-plans) | `bool` | `false` |
+| `disable_restatement` | Disable [data restatement](../../guides/plan.md#restatement-plans) | `bool` | `false` |
 | `auto_restatement_cron` | Cron expression for automatic restatement | `str` | - |
 
 **Values for `on_destructive_change` / `on_additive_change`:** `allow`, `warn`, `error`, `ignore`
@@ -1516,4 +1516,4 @@ infer_names: true
 
 With `infer_names: true`, a model at `models/sales/daily_sales.sql` automatically gets the name `sales.daily_sales`.
 
-Learn more in the [configuration guide](../../guides/configuration.md#model-naming).
+<!-- Learn more in the [configuration guide](../../guides/configuration.md#model-naming). -->

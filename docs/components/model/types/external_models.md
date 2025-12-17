@@ -14,7 +14,7 @@ Vulcan has no information about the data contained in the table represented by a
 
 Vulcan will not take any actions based on an `EXTERNAL` model - its actions are solely determined by the model whose query selects from the `EXTERNAL` model.
 
-The querying model's [`kind`](./model_kinds.md), [`cron`](./overview.md#cron), and previously loaded time intervals determine when Vulcan will query the `EXTERNAL` model.
+The querying model's [`kind`](../model_kinds.md), [`cron`](../overview.md#cron), and previously loaded time intervals determine when Vulcan will query the `EXTERNAL` model.
 
 ## Generating an external models schema file
 
@@ -52,7 +52,7 @@ Alternatively, additional external models can also be defined in the [external_m
 
 ### Using CLI
 
-Instead of creating the `external_models.yaml` file manually, Vulcan can generate it for you with the [create_external_models](../../reference/cli.md#create_external_models) CLI command.
+Instead of creating the `external_models.yaml` file manually, Vulcan can generate it for you with the [create_external_models](../../../cli-command/cli.md#create_external_models) CLI command.
 
 The command identifies all external tables referenced in your Vulcan project, fetches their column information from the SQL engine's metadata, and then stores the information in the `external_models.yaml` file.
 
@@ -62,7 +62,7 @@ If Vulcan does not have access to an external table's metadata, the table will b
 
 ### Gateway-specific external models
 
-In some use-cases such as [isolated systems with multiple gateways](../../guides/isolated_systems.md#multiple-gateways), there are external models that only exist on a certain gateway.
+In some use-cases such as [isolated systems with multiple gateways](../../guides-old/isolated_systems.md#multiple-gateways), there are external models that only exist on a certain gateway.
 
 **Gateway names are case-insensitive in external model configurations.** You can specify the gateway name using any case (e.g., `gateway: dev`, `gateway: DEV`, `gateway: Dev`) and Vulcan will handle the matching correctly.
 
@@ -80,7 +80,7 @@ FROM
   @{gateway}_db.customers;
 ```
 
-This table will be named differently depending on which `--gateway` Vulcan is run with (learn more about the curly brace `@{gateway}` syntax [here](../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings)).
+This table will be named differently depending on which `--gateway` Vulcan is run with (learn more about the curly brace `@{gateway}` syntax [here](../../../concepts-old/macros/vulcan_macros.md#embedding-variables-in-strings)).
 
 For example:
 
@@ -144,7 +144,7 @@ Therefore, you can use `vulcan create_external_models` to manage the `external_m
 
 ### External assertions
 
-It is possible to define [assertions](../assertions.md) on external models. This can be useful to check the data quality of upstream dependencies before your internal models evaluate.
+It is possible to define [assertions](../../audits/audits.md) on external models. This can be useful to check the data quality of upstream dependencies before your internal models evaluate.
 
 This example shows an external model with assertions:
 

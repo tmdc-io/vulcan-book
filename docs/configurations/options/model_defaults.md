@@ -2,7 +2,7 @@
 
 The `model_defaults` key is **required** and must contain a value for the `dialect` key. All SQL dialects [supported by the SQLGlot library](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py) are allowed. Other values are set automatically unless explicitly overridden in the model definition.
 
-All supported `model_defaults` keys are listed in the [models configuration reference page](model_configuration.md#model-defaults).
+All supported `model_defaults` keys are listed in the [models configuration reference page](../../references/model_configuration.md#model-defaults).
 
 ## Basic configuration
 
@@ -31,7 +31,7 @@ Example configuration:
     )
     ```
 
-The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](../concepts/models/model_kinds.md).
+The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](../../components/model/model_kinds.md).
 
 ## Identifier resolution
 

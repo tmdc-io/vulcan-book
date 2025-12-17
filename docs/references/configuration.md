@@ -1,6 +1,8 @@
 # Vulcan configuration
 
-This page lists Vulcan configuration options and their parameters. Learn more about Vulcan configuration in the [configuration guide](../guides/configuration.md).
+This page lists Vulcan configuration options and their parameters. 
+
+<!-- Learn more about Vulcan configuration in the [configuration guide](../guides/configuration.md). -->
 
 Configuration options for model definitions are listed in the [model configuration reference page](./model_configuration.md).
 

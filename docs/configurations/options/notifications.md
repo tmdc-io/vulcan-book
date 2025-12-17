@@ -4,11 +4,11 @@ Vulcan can send notifications via Slack or email when certain events occur. This
 
 ## Notification targets
 
-Notifications are configured with `notification targets`. Targets are specified in a project's [configuration](https://vulcan.readthedocs.io/en/stable/reference/configuration/) file (`config.yml` or `config.py`), and multiple targets can be specified for a project.
+Notifications are configured with `notification targets`. Targets are specified in a project's [configuration](../../references/configuration.md) file (`config.yml` or `config.py`), and multiple targets can be specified for a project.
 
 A project may specify both global and user-specific notifications. Each target's notifications will be sent for all instances of each [event type](#vulcan-event-types) (e.g., notifications for `run` will be sent for *all* of the project's environments), with exceptions for audit failures and when an [override is configured for development](#notifications-during-development).
 
-[Audit](../concepts/audits.md) failure notifications can be sent for specific models if five conditions are met:
+[Audit](../../components/audits/audits.md) failure notifications can be sent for specific models if five conditions are met:
 
 1. A model's `owner` field is populated
 2. The model executes one or more audits
@@ -130,7 +130,7 @@ This example stops all notifications other than those for `User1`:
 
 Vulcan notifications are triggered by events. The events that should trigger a notification are specified in the notification target's `notify_on` field.
 
-Notifications are supported for [`plan` application](../concepts/plans.md) start/end/failure, [`run`](../reference/cli.md#run) start/end/failure, and [`audit`](../concepts/audits.md) failures.
+Notifications are supported for [`plan` application](../../concepts-old/plans.md) start/end/failure, [`run`](../../cli-command/cli.md#run) start/end/failure, and [`audit`](../../components/audits/audits.md) failures.
 
 For `plan` and `run` start/end, the target environment name is included in the notification message. For failures, the Python exception or error text is included in the notification message.
 

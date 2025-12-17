@@ -308,7 +308,7 @@ Vulcan automatically validates semantic model definitions during `plan` creation
 
 ## Next Steps
 
-- Learn about [Business Metrics](metrics.md) that combine measures with time and dimensions
+- Learn about [Business Metrics](business_metrics.md) that combine measures with time and dimensions
 - Explore semantic model examples in your project's `semantics/` directory
-- See the [Semantics Overview](index.md) for the complete picture
+- See the [Semantics Overview](overview.md) for the complete picture
 

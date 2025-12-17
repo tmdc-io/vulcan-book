@@ -239,6 +239,6 @@ The semantic layer provides the foundation, and metrics add the time-series anal
 ## Next Steps
 
 - Learn about [Semantic Models](models.md) that provide the foundation for metrics
-- See the [Semantics Overview](index.md) for the complete picture
+- See the [Semantics Overview](overview.md) for the complete picture
 - Explore metric definitions in your project's `semantics/` directory
 

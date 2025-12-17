@@ -313,7 +313,7 @@ def execute(
 ```
 
 !!! info "Learn more"
-    For detailed information about Python models, see [Python Models](./python_models.md).
+    For detailed information about Python models, see [Python Models](types/python_models.md).
 
 ---
 
@@ -363,4 +363,4 @@ In the latter method, separate commands are required for every comment. This may
 
 ## Macros
 
-Macros can be used for passing in parameterized arguments such as dates, as well as for making SQL less repetitive. By default, Vulcan provides several predefined macro variables that can be used. Macros are used by prefixing with the `@` symbol. For more information, refer to [macros](../macros/overview.md).
+Macros can be used for passing in parameterized arguments such as dates, as well as for making SQL less repetitive. By default, Vulcan provides several predefined macro variables that can be used. Macros are used by prefixing with the `@` symbol. For more information, refer to [macros](../advanced-features/macros/overview.md).

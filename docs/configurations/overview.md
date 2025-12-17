@@ -95,7 +95,7 @@ Gateways define connections to your data warehouse, state backend, and other ser
 | `scheduler` | Scheduler configuration | `builtin` |
 | `state_schema` | Schema name for state tables | `vulcan` |
 
-→ See [Configuration Reference](../configurations-old/configuration.md) for detailed gateway options.
+→ See [Configuration Reference](../references/configuration.md#gateways) for detailed gateway options.
 
 ### Model Defaults (Required)
 
@@ -109,49 +109,49 @@ model_defaults:
   cron: '@daily'
 ```
 
-→ See [Model Defaults](./model_defaults.md) for all available options.
+→ See [Model Defaults](options/model_defaults.md) for all available options.
 
 ### Variables
 
 Configure environment variables, `.env` files, and configuration overrides.
 
-→ See [Variables](./variables.md) for details.
+→ See [Variables](options/variables.md) for details.
 
 ### Execution Hooks
 
 Execute SQL statements at the start and end of `vulcan plan` and `vulcan run` commands using `before_all` and `after_all`.
 
-→ See [Execution Hooks](./hooks.md) for detailed examples and use cases.
+→ See [Execution Hooks](options/execution_hooks.md) for detailed examples and use cases.
 
 ### Linter
 
 Enable automatic code quality checks for your models.
 
-→ See [Linter](./linter.md) for rules and custom linter configuration.
+→ See [Linter](options/linter.md) for rules and custom linter configuration.
 
 ### Notifications
 
 Configure alerts via Slack or email for pipeline events.
 
-→ See [Notifications](./notifications.md) for Slack webhooks, API, and email setup.
+→ See [Notifications](options/notifications.md) for Slack webhooks, API, and email setup.
 
 ## Supported Engines
 
 Vulcan supports connecting to various data warehouses:
 
-- **[PostgreSQL](./integrations/engines/postgres.md)** - Open-source relational database
-- **[Snowflake](./integrations/engines/snowflake.md)** - Cloud data warehouse
+- **[PostgreSQL](engines/postgres/postgres.md)** - Open-source relational database
+- **[Snowflake](engines/snowflake/snowflake.md)** - Cloud data warehouse
 
 ## Configuration Reference
 
 | Topic | Description |
 |-------|-------------|
-| [Configuration Reference](./configuration.md) | Complete list of all configuration parameters |
-| [Variables](./variables.md) | Environment variables and `.env` files |
-| [Model Defaults](./model_defaults.md) | Default settings for all models |
-| [Execution Hooks](./hooks.md) | `before_all` and `after_all` statements |
-| [Linter](./linter.md) | Code quality rules and custom linters |
-| [Notifications](./notifications.md) | Slack and email notification setup |
+| [Configuration Reference](../references/configuration.md) | Complete list of all configuration parameters |
+| [Variables](options/variables.md) | Environment variables and `.env` files |
+| [Model Defaults](options/model_defaults.md) | Default settings for all models |
+| [Execution Hooks](options/execution_hooks.md) | `before_all` and `after_all` statements |
+| [Linter](options/linter.md) | Code quality rules and custom linters |
+| [Notifications](options/notifications.md) | Slack and email notification setup |
 
 ## Best Practices
 

@@ -53,7 +53,7 @@ models:
         expression: "COUNT(*)"
 ```
 
-### [Business Metrics](metrics.md)
+### [Business Metrics](business_metrics.md)
 
 Business metrics combine measures with dimensions and time to create complete analytical definitions:
 
@@ -122,6 +122,6 @@ FROM raw.customers;
 
 - Learn about [Semantic Models](models.md) - mapping physical models to business concepts
 - Explore [Business Metrics](metrics.md) - time-series analytical definitions
-- Learn about [Transpiling Semantic Queries](../../guides/transpiling.md) - converting semantic queries to SQL
+- Learn about [Transpiling Semantic Queries](../../guides/transpiling_semantics.md) - converting semantic queries to SQL
 - See examples in your Vulcan project's `semantics/` directory
 
