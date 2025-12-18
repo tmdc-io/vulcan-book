@@ -642,8 +642,4 @@ See [Connections Guide](guides-old/connections.md#state-connection) for configur
 
 ## Next Steps
 
-- Learn about [Plan Guide](guides/plan.md) for applying model changes
-- Check [Run Command](getting_started/cli.md#run) for complete CLI reference
-- Set up [Notifications](guides-old/notifications.md) to monitor run execution
-- Explore [Environments](concepts-old/environments.md) for managing multiple environments
-- Configure [Connections](guides-old/connections.md) for state database setup
+- Learn about [Plan Guide](../references/plans.md) for applying model changes
