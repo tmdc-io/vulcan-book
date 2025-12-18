@@ -1,221 +1,420 @@
 # Get Started
-Welcome to the Vulcan quickstart, which will get you up and running with an example project.
 
-The example project runs locally on your machine with a Postgres SQL engine, and Vulcan will generate all the necessary project files - no configuration necessary!
+Welcome to the Vulcan quickstart guide! This tutorial will walk you through setting up a complete Vulcan project on your local machine.
 
-All you need to do is download Vulcan on your machine - get started by ensuring your system meets the basic prerequisites for using Vulcan.
+The example project runs locally using a Postgres SQL engine. Vulcan will automatically generate all the necessary project files and configurations—no manual setup required!
+
+To get started, ensure your system meets the [prerequisites](#prerequisites) below, then follow the step-by-step instructions for your operating system.
 
 ## Prerequisites
 
+Before you begin, make sure you have Docker installed and configured on your system. Follow the instructions below for your operating system.
+
 === "Mac/Linux"
-    1. Docker Desktop is installed and running, at least with 4GB RAM, Verify that Docker is installed and running: 
+    
+    **1. Verify Docker Installation**
+    
+    First, check if Docker Desktop (Mac) or Docker Engine (Linux) is installed and running:
+    
     ```bash
     docker --version
     docker compose version
     ```
-    2. If not Download from [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/){:target="_blank"}
-
-    3. Install Docker Engine and Docker Compose from [Docker for Linux](https://docs.docker.com/engine/install/){:target="_blank"}
-
+    
+    If both commands return version numbers, Docker is installed. Make sure Docker Desktop is running (you should see the Docker icon in your menu bar or system tray).
+    
+    **2. Install Docker (if needed)**
+    
+    - **Mac**: Download and install [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/){:target="_blank"}
+    - **Linux**: Install Docker Engine and Docker Compose following the [official Docker installation guide](https://docs.docker.com/engine/install/){:target="_blank"}
+    
+    **3. Configure Resources**
+    
+    Ensure Docker Desktop has at least **4GB of RAM** allocated. You can adjust this in Docker Desktop settings under Resources → Advanced.
 
 === "Windows"
-    1. Docker Desktop for Windows installed and running, at least 4GB RAM, Verify that Docker is installed and running: 
+    
+    **1. Verify Docker Installation**
+    
+    Check if Docker Desktop for Windows is installed and running:
+    
     ```bash
     docker --version
     docker compose version
     ```
-
-    2. If not Download from [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/){:target="_blank"}
+    
+    If both commands return version numbers, Docker is installed. Make sure Docker Desktop is running (you should see the Docker icon in your system tray).
+    
+    **2. Install Docker (if needed)**
+    
+    If Docker is not installed, download and install [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/){:target="_blank"}
+    
+    **3. Configure Resources**
+    
+    Ensure Docker Desktop has at least **4GB of RAM** allocated. You can adjust this in Docker Desktop settings under Settings → Resources → Advanced.
 
 ## Vulcan Setup Locally
+
+Follow these steps to set up Vulcan on your local machine. The setup process will create all necessary infrastructure services and prepare your environment for development.
 
 === "Mac/Linux"
       
     [:material-download: Download for Mac/Linux](zip-mac/vulcan-project.zip){ .md-button .md-button--primary .download-button target="_blank" }
     
-    <small>Contains: Docker Compose files, Makefile, and README</small>
+    <small>The download includes: Docker Compose files, Makefile, and a comprehensive README</small>
         
-    1. **Extract the zip file and navigate to the directory:**
-       ```bash
-       cd vulcan-project
-       ```
+    **Step 1: Extract and Navigate**
     
-    2. **Run setup:**
-       ```bash
-       make setup
-       ```
-       This creates:
-        - **statestore** (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, & execution history, and Vulcan uses it to persist the semantic model, plans, and track materialization state
-        - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates, and 
-        Vulcan uses it to store query results and artifacts, enabling efficient data retrieval and caching
-        - **minio-init**: Initializes MinIO buckets and policies, and these services are essential for Vulcan's operation and must be running before you can use Vulcan
+    Extract the downloaded zip file and open the `vulcan-project` folder in VS Code or your preferred IDE:
     
-    3. **Access Vulcan:**
-       ```bash
-       alias vulcan="docker run -it --network=vulcan  --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev-02 vulcan"
-       ```
-        **Note**: This alias is temporary and will be lost when you close your shell session. To make it permanent, add it to your shell configuration file (~/.bashrc or ~/.zshrc).
-
-    4. **Start API Services:**
-       ```bash
-       make vulcan-up
-       ```
-       This starts **vulcan-api** for querying your semantic model by **REST API**(available at `http://localhost:8000`) &
-        **vulcan-transpiler** for transpiling semantic queries to SQL
+    ```bash
+    cd vulcan-project
+    ```
+    
+    **Step 2: Run Setup**
+    
+    **Important**: Before running setup, ensure Docker Desktop is running on your machine and that you are logged into RubikLabs.
+    
+    Execute the setup command:
+    
+    ```bash
+    make setup
+    ```
+    
+    This command creates and starts three essential services:
+    
+    - **statestore** (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, and execution history. This database persists your semantic model, plans, and tracks materialization state.
+    
+    - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service enables efficient data retrieval and caching for your workflows.
+    
+    - **minio-init**: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.
+    
+    **Note**: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.
+    
+    **Step 3: Configure Vulcan CLI Access**
+    
+    Create an alias to access the Vulcan CLI easily:
+    
+    ```bash
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev-02 vulcan"
+    ```
+    
+    **Note**: This alias is temporary and will be lost when you close your shell session. To make it permanent, add this line to your shell configuration file (`~/.bashrc` for Bash or `~/.zshrc` for Zsh), then restart your terminal or run `source ~/.zshrc` (or `source ~/.bashrc`).
+    
+    **Step 4: Start API Services**
+    
+    Start the Vulcan API services:
+    
+    ```bash
+    make vulcan-up
+    ```
+    
+    This command starts two services:
+    
+    - **vulcan-api**: A REST API server for querying your semantic model (available at `http://localhost:8000`)
+    - **vulcan-transpiler**: A service for transpiling semantic queries to SQL
+    
+    Once these services are running, you're ready to create your first project!
 
 === "Windows"
         
     [:material-download: Download for Windows](zip-window/vulcan-project.zip){ .md-button .md-button--primary .download-button target="_blank" }
     
-    <small>Contains: Docker Compose files, Windows batch scripts, and README</small>
+    <small>The download includes: Docker Compose files, Windows batch scripts, and a comprehensive README</small>
         
-    1. **Extract the zip file and navigate to the directory:**
-       ```cmd
-       cd vulcan-project
-       ```
+    **Step 1: Extract and Navigate**
     
-    2. **Run setup:**
-       ```cmd
-       setup.bat
-       ```
-       This creates:
-        - **statestore** (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, & execution history, and Vulcan uses it to persist the semantic model, plans, and track materialization state
-        - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates, and 
-        Vulcan uses it to store query results and artifacts, enabling efficient data retrieval and caching
-        - **minio-init**: Initializes MinIO buckets and policies, and these services are essential for Vulcan's operation and must be running before you can use Vulcan
+    Extract the downloaded zip file and navigate to the `vulcan-project` directory:
     
-    3. **Access Vulcan:**
-       ```cmd
-       vulcan.bat
-       ```
-
-    4. **Start API Services:**
-       ```cmd
-       start-vulcan-api.bat
-       ```
-       This starts:
-
-        **vulcan-api** for querying your semantic model by **REST API**(available at `http://localhost:8000`) &
-
-        **vulcan-transpiler** for transpiling semantic queries to SQL
+    ```cmd
+    cd vulcan-project
+    ```
+    
+    **Step 2: Run Setup**
+    
+    **Important**: Before running setup, ensure Docker Desktop for Windows is running and that you are logged into RubikLabs.
+    
+    Execute the setup script:
+    
+    ```cmd
+    setup.bat
+    ```
+    
+    This script creates and starts three essential services:
+    
+    - **statestore** (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, and execution history. This database persists your semantic model, plans, and tracks materialization state.
+    
+    - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service enables efficient data retrieval and caching for your workflows.
+    
+    - **minio-init**: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.
+    
+    **Note**: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.
+    
+    **Step 3: Access Vulcan CLI**
+    
+    Use the provided batch script to access the Vulcan CLI:
+    
+    ```cmd
+    vulcan.bat
+    ```
+    
+    This script runs Vulcan commands in a Docker container with the correct network and volume settings.
+    
+    **Step 4: Start API Services**
+    
+    Start the Vulcan API services:
+    
+    ```cmd
+    start-vulcan-api.bat
+    ```
+    
+    This command starts two services:
+    
+    - **vulcan-api**: A REST API server for querying your semantic model (available at `http://localhost:8000`)
+    - **vulcan-transpiler**: A service for transpiling semantic queries to SQL
+    
+    Once these services are running, you're ready to create your first project!
 
 ## Create Your First Project
 
+Now that your environment is set up, let's create your first Vulcan project. This section walks you through initializing a project, verifying the setup, running your first plan, and querying your data.
+
 === "Mac/Linux"
     
-    1. **Initialize project:** [*Click here*](../../cli-command/cli.md#init){:target="_blank"}
-       ```bash
-       vulcan init
-       ```
-       Choose `DEFAULT` project type and `Postgres` as SQL engine. 
-       
-        It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
+    **Step 1: Initialize Your Project**
+    
+    Initialize a new Vulcan project: [*Learn more about init*](../../cli-command/cli.md#init){:target="_blank"}
+    
+    ```bash
+    vulcan init
+    ```
+    
+    When prompted:
 
-    2. **Check connection and number of models, macros, and other project components:** [*Click here*](../../cli-command/cli.md#info){:target="_blank"}
-       ```bash
-       vulcan info
-       ```
-      It verifies that the setup is correct before running plans
+    - Choose `DEFAULT` as the project type
 
+    - Select `Postgres` as your SQL engine
+    
+    This command creates a complete project structure with 7 directories:
 
-    3. **Run the plan:** [*Click here*](../../cli-command/cli.md#plan){:target="_blank"}
-       ```bash
-       vulcan plan
-       ```
-      This will:
+    - `models/` - Contains `.sql` and `.py` files for your data models
+    - `seeds/` - CSV files for static datasets
+    - `audits/` - Write logic to assert data quality and block downstream models if checks fail
+    - `tests/` - Test files for validating your model logic
+    - `macros/` - Write custom macros for reusable SQL patterns
+    - `checks/` - Write data quality checks
+    - `semantics/` - Semantic layer definitions (measures, dimensions, etc.)
 
-        1. Validate and creates the necessary database objects (tables, views, etc.) based on your models
-        2. Backfills historical data according to your model's `start` date and `cron` schedule
-        3. Prompt you to apply the plan
+    **Step 2: Verify Your Setup**
+    
+    Check your project configuration and connection status: [*Learn more about info*](../../cli-command/cli.md#info){:target="_blank"}
+    
+    ```bash
+    vulcan info
+    ```
+    
+    This command displays:
 
-        Enter `y` when prompted to apply the plan and backfill your models.
+    - Connection status to your database
+    - Number of models, macros, and other project components
+    - Project configuration details
+    
+    **Important**: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.
+
+    **Step 3: Create and Apply Your First Plan**
+    
+    Generate a plan for your models: [*Learn more about plan*](../../cli-command/cli.md#plan){:target="_blank"}
+    
+    ```bash
+    vulcan plan
+    ```
+    
+    This command performs three key actions:
+    
+    1. **Validates** your models and creates the necessary database objects (tables, views, etc.)
+    2. **Calculates** which data intervals need to be backfilled based on your model's `start` date and `cron` schedule
+    3. **Prompts** you to apply the plan
+    
+    When prompted, enter `y` to apply the plan and backfill your models with historical data.
+    
+    **Note**: The backfill process may take a few minutes depending on the amount of historical data to process.
         
-    4. **Query the models:** [*Click here*](../../cli-command/cli.md#fetchdf){:target="_blank"}
-       ```bash
-       vulcan fetchdf "select * from schema.model_name"
-       ```
-       Executes a SQL query and returns results as a pandas DataFrame
+    **Step 4: Query Your Models**
+    
+    Execute SQL queries against your models: [*Learn more about fetchdf*](../../cli-command/cli.md#fetchdf){:target="_blank"}
+    
+    ```bash
+    vulcan fetchdf "select * from schema.model_name"
+    ```
+    
+    This command executes a SQL query and returns the results as a pandas DataFrame, which is perfect for data analysis and exploration.
 
-    5. **Query the Semantic:** [*Click here*](../../cli-command/cli.md#transpile){:target="_blank"}
-      ```bash
-       vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
-      ```
-      Returns the generated SQL that can be executed against your warehouse
+    **Step 5: Query Using Semantic Layer**
+    
+    Use Vulcan's semantic layer to query your data: [*Learn more about transpile*](../../cli-command/cli.md#transpile){:target="_blank"}
+    
+    ```bash
+    vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
+    ```
+    
+    This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.
 
 === "Windows"
     
-    1. **Initialize project:** [*Click here*](../../cli-command/cli.md#init){:target="_blank"}
-       ```cmd
-       vulcan init
-       ```
-       Choose `DEFAULT` project type and `Postgres` as SQL engine. 
-       
-        It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
+    **Step 1: Initialize Your Project**
+    
+    Initialize a new Vulcan project: [*Learn more about init*](../../cli-command/cli.md#init){:target="_blank"}
+    
+    ```cmd
+    vulcan init
+    ```
+    
+    When prompted:
 
-    2. **Check connection and number of models, macros, and other project components:** [*Click here*](../../cli-command/cli.md#info){:target="_blank"}
-       ```cmd
-       vulcan info
-       ```
-       It verifies that the setup is correct before running plans
+    - Choose `DEFAULT` as the project type
 
-    3. **Run the plan:** [*Click here*](../../cli-command/cli.md#plan){:target="_blank"}
-       ```cmd
-       vulcan plan
-       ```
-      This will:
+    - Select `Postgres` as your SQL engine
+    
+    This command creates a complete project structure with 7 directories:
 
-        1. Validate and creates the necessary database objects (tables, views, etc.) based on your models
-        2. Backfills historical data according to your model's `start` date and `cron` schedule
-        3. Prompt you to apply the plan
+    - `models/` - Contains `.sql` and `.py` files for your data models
+    - `seeds/` - CSV files for static datasets
+    - `audits/` - Write logic to assert data quality and block downstream models if checks fail
+    - `tests/` - Test files for validating your model logic
+    - `macros/` - Write custom macros for reusable SQL patterns
+    - `checks/` - Write data quality checks
+    - `semantics/` - Semantic layer definitions (measures, dimensions, etc.)
 
-        Enter `y` when prompted to apply the plan and backfill your models.
+    **Step 2: Verify Your Setup**
+    
+    Check your project configuration and connection status: [*Learn more about info*](../../cli-command/cli.md#info){:target="_blank"}
+    
+    ```cmd
+    vulcan info
+    ```
+    
+    This command displays:
+
+    - Connection status to your database
+    - Number of models, macros, and other project components
+    - Project configuration details
+    
+    **Important**: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.
+
+    **Step 3: Create and Apply Your First Plan**
+    
+    Generate a plan for your models: [*Learn more about plan*](../../cli-command/cli.md#plan){:target="_blank"}
+    
+    ```cmd
+    vulcan plan
+    ```
+    
+    This command performs three key actions:
+    
+    1. **Validates** your models and creates the necessary database objects (tables, views, etc.)
+    2. **Calculates** which data intervals need to be backfilled based on your model's `start` date and `cron` schedule
+    3. **Prompts** you to apply the plan
+    
+    When prompted, enter `y` to apply the plan and backfill your models with historical data.
+    
+    **Note**: The backfill process may take a few minutes depending on the amount of historical data to process.
         
-    4. **Query the models:** [*Click here*](../../cli-command/cli.md#fetchdf){:target="_blank"}
-       ```cmd
-       vulcan fetchdf "select * from schema.model_name"
-       ```
-       Executes a SQL query and returns results as a pandas DataFrame
+    **Step 4: Query Your Models**
+    
+    Execute SQL queries against your models: [*Learn more about fetchdf*](../../cli-command/cli.md#fetchdf){:target="_blank"}
+    
+    ```cmd
+    vulcan fetchdf "select * from schema.model_name"
+    ```
+    
+    This command executes a SQL query and returns the results as a pandas DataFrame, which is perfect for data analysis and exploration.
 
-    5. **Query the Semantic:** [*Click here*](../../cli-command/cli.md#transpile){:target="_blank"}
-      ```cmd
-       vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
-      ```
-      Returns the generated SQL that can be executed against your warehouse
+    **Step 5: Query Using Semantic Layer**
+    
+    Use Vulcan's semantic layer to query your data: [*Learn more about transpile*](../../cli-command/cli.md#transpile){:target="_blank"}
+    
+    ```cmd
+    vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
+    ```
+    
+    This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.
 
 ## Stopping Services
 
+When you're done working with Vulcan, you can stop the services to free up system resources. Use the commands below based on your operating system.
+
 === "Mac/Linux"
     
-    To stop all services:    
+    **Stop All Services**
+    
+    To stop all running services:
+    
     ```bash
     make all-down       # Stop all services
-    make all-clean      # Stop and remove volumes (this will delete all data)
-    make vulcan-down     # Stop only Vulcan services
     ```
-    To stop individual services:
+    
+    **Stop and Clean Up (Warning: This deletes all data)**
+    
+    To stop all services and remove volumes (this will delete all data):
+    
     ```bash
-    make vulcan-down     # Stop Vulcan services
-    make infra-down      # Stop infrastructure services
+    make all-clean      # Stop and remove volumes (this will delete all data)
+    ```
+    
+    **Stop Individual Service Groups**
+    
+    You can also stop specific service groups:
+    
+    ```bash
+    make vulcan-down     # Stop only Vulcan API services
+    make infra-down      # Stop infrastructure services (statestore, minio)
     make warehouse-down  # Stop warehouse services
     ```
 
 === "Windows"
     
-    To stop services, you can use batch scripts:
+    **Stop All Services**
+    
+    To stop all running services:
     
     ```cmd
     stop-all.bat           # Stop all services
+    ```
+    
+    **Stop and Clean Up (Warning: This deletes all data)**
+    
+    To stop all services and remove volumes (this will delete all data):
+    
+    ```cmd
     clean.bat              # Stop and remove volumes (this will delete all data)
+    ```
+    
+    **Stop Individual Services**
+    
+    To stop only the Vulcan API services:
+    
+    ```cmd
     vulcan-down.bat        # Stop only Vulcan API services
     ```
 
 ## Troubleshooting
 
-??? note "Troubleshooting"
-    **Services won't start:** Ensure Docker Desktop is running with at least 4GB RAM allocated.
+If you encounter any issues during setup or while using Vulcan, refer to the solutions below.
 
-    **Network errors:** Ensure the `vulcan` network exists:
+??? note "Common Issues and Solutions"
+    
+    **Services Won't Start**
+    
+    If services fail to start, ensure Docker Desktop is running with at least 4GB RAM allocated. You can check and adjust this in Docker Desktop settings:
+    - **Mac**: Docker Desktop → Settings → Resources → Advanced
+    - **Windows**: Docker Desktop → Settings → Resources → Advanced
+    
+    **Network Errors**
+    
+    If you encounter network-related errors, ensure the `vulcan` Docker network exists:
+    
     === "Mac/Linux"
+        Check if the network exists:
         ```bash
         docker network ls | grep vulcan
         ```
@@ -224,30 +423,51 @@ All you need to do is download Vulcan on your machine - get started by ensuring 
         docker network create vulcan
         ```
     === "Windows"
+        Check if the network exists:
         ```cmd
-         docker network ls | grep vulcan
+        docker network ls | grep vulcan
         ```
         If it doesn't exist, create it:
         ```cmd
         docker network create vulcan
         ```
 
-    **Port conflicts:** If ports 5431, 5433, 9000, 9001, or 8000 are already in use, you can modify the port mappings in the Docker Compose files.
+    **Port Conflicts**
+    
+    If you see errors about ports already being in use, one of the required ports (5431, 5433, 9000, 9001, or 8000) is likely occupied by another application. You have two options:
+    
+    1. **Stop the conflicting application** using that port
+    2. **Modify the port mappings** in the Docker Compose files (`docker/docker-compose.infra.yml` and `docker/docker-compose.warehouse.yml`)
 
-    **Can't connect to services:** Make sure all services are running:
+    **Can't Connect to Services**
+    
+    If you're unable to connect to Vulcan services, verify that all required services are running:
+    
     ```bash
     docker compose -f docker/docker-compose.infra.yml ps
     docker compose -f docker/docker-compose.warehouse.yml ps
     ```
+    
+    All services should show as "Up" or "running". If any service shows as "Exited" or "Stopped", check the logs:
+    
+    ```bash
+    docker compose -f docker/docker-compose.infra.yml logs
+    ```
 
-    **MinIO console:**
-    You can access the MinIO console at `http://localhost:9001` with:
-    - Username: `admin`
-    - Password: `password`
+    **Access MinIO Console**
+    
+    You can access the MinIO console to manage your object storage:
+    - **URL**: `http://localhost:9001`
+    - **Username**: `admin`
+    - **Password**: `password`
+    
+    The MinIO console allows you to browse buckets, upload files, and manage storage policies.
 
 
 ## Next Steps
 
-- [Learn more about Vulcan CLI commands](../../cli-command/cli.md){:target="_blank"}
-- [Explore Vulcan concepts](../../components/model/overview.md){:target="_blank"}
-<!-- - [Set up connections to different warehouses](../../configurations/engines){:target="_blank"} -->
+Congratulations! You've successfully set up Vulcan and created your first project. Here are some recommended next steps to continue your journey:
+
+- **[Learn more about Vulcan CLI commands](../../cli-command/cli.md){:target="_blank"}** - Explore all available commands and their options
+- **[Explore Vulcan concepts](../../components/model/overview.md){:target="_blank"}** - Deep dive into how models work and how to structure your data pipeline
+- **[Read the model kinds documentation](../../components/model/model_kinds.md){:target="_blank"}** - Understand different model types and when to use them

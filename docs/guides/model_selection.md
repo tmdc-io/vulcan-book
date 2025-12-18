@@ -2,13 +2,13 @@
 
 This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is useful when you only want to test or apply changes to a subset of your models.
 
-**Note:** The selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../concepts/plans.md#destructive-changes).
+**Note:** The selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../references/plans.md#destructive-changes).
 
 ---
 
 ## Background
 
-A Vulcan [plan](../concepts/plans.md) automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.
+A Vulcan [plan](../references/plans.md) automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.
 
 In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything.
 
@@ -620,7 +620,5 @@ flowchart LR
 
 ## Next Steps
 
-- Learn about [Plans](../concepts/plans.md) for understanding plan behavior
-- Read the [Plan Guide](./plan.md) for applying changes
-- Check [Model Configuration](../reference/model_configuration.md) for model properties
-- Explore [Orders360 Example](../examples/overview.md) for complete project reference
+- Learn about [Plans](../references/plans.md) for understanding plan behavior
+

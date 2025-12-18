@@ -577,8 +577,7 @@ vulcan plan dev
 
 ## Next Steps
 
-- Learn about [Built-in Audits](../concepts/audits.md#built-in-audits)
-- Explore [Check Dimensions](../concepts/checks.md#data-quality-dimensions)
-- Read about [Testing](../concepts/tests.md)
-- See [Orders360 Example](../examples/overview.md) for complete project
+- Learn about [Built-in Audits](../components/audits/audits.md#built-in-audits)
+- Explore [Check Dimensions](../components/checks/checks.md#data-quality-dimensions)
+- Read about [Testing](../components/tests/tests.md)
 

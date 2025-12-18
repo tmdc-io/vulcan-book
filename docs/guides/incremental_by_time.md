@@ -1152,8 +1152,5 @@ start '2025-01-01'  -- Start processing from this date
 
 ## Next Steps
 
-- Learn about [Model Kinds](../concepts/models/model_kinds.md) for all model types
-- Read the [Models Guide](./models.md) for working with models
-- Check the [Plan Guide](./plan.md) for applying changes
-- See [Run Guide](./run.md) for scheduled execution
-- Explore [Orders360 Example](../examples/overview.md) for complete project reference
+- Learn about [Model Kinds](../components/model/model_kinds.md) for all model types
+

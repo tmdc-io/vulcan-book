@@ -642,8 +642,4 @@ See [Connections Guide](./connections.md#state-connection) for configuring a sep
 
 ## Next Steps
 
-- Learn about [Plan Guide](./plan.md) for applying model changes
-- Check [Run Command](../reference/cli.md#run) for complete CLI reference
-- Set up [Notifications](./notifications.md) to monitor run execution
-- Explore [Environments](../concepts/environments.md) for managing multiple environments
-- Configure [Connections](./connections.md) for state database setup
+- Learn about [Plan Guide](../references/plans.md) for applying model changes

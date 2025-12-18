@@ -6,9 +6,9 @@ This guide walks you through working with models in Vulcan using the Orders360 e
 
 Before adding a model, ensure that you have:
 
-- [Created your project](../getting_started/docker.md) 
+- [Created your project](../guides/get-started/docker.md) 
 - [Applied your first plan](./plan.md#scenario-1-first-plan-initializing-production)
-- Working in a [dev environment](../concepts/environments.md) for testing changes
+- Working in a [dev environment](../references/environments.md) for testing changes
 
 ---
 
@@ -674,8 +674,6 @@ ORDER BY order_date
 
 ## Next Steps
 
-- Learn about [Model Kinds](../concepts/models/model_kinds.md) for different model types
-- Explore [Model Properties](../concepts/models/properties.md) for advanced configuration
+- Learn about [Model Kinds](../components/model/model_kinds.md) for different model types
+- Explore [Model Properties](../components/model/properties.md) for advanced configuration
 - Read about [Plan Guide](./plan.md) for applying model changes
-- Check [Testing Guide](./testing.md) for model validation strategies
-- See [Orders360 Example](../examples/overview.md) for complete project reference
