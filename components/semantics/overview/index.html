@@ -1141,7 +1141,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>The semantic layer is like a translator between your technical data models and your business users. It takes your SQL tables and makes them understandable to people who don't write SQL—turning <code>analytics.daily_revenue_metrics</code> into "Monthly Revenue by Customer Tier" that anyone can query.</p>
+<p>The semantic layer is like a translator between your technical data models and your business users. It takes your SQL tables and makes them understandable to people who don't write SQL, turning <code>analytics.daily_revenue_metrics</code> into "Monthly Revenue by Customer Tier" that anyone can query.</p>
 <p>Think of it this way: your models are the engine (they do the work), and the semantic layer is the dashboard (it makes things usable). It adds business context, consistent definitions, and a friendly interface so people can actually use your data.</p>
 <h2 id="what-is-the-semantic-layer">What is the Semantic Layer?<a class="headerlink" href="#what-is-the-semantic-layer" title="Link to this section">¶</a></h2>
 <p>The semantic layer bridges the gap between "here's a table with columns" and "here's what this means for the business." It provides a consistent, business-friendly interface to your data that enables self-service analytics while keeping a single source of truth for your business logic.</p>
@@ -1152,7 +1152,7 @@
 <ul>
 <li>✅ <strong>Define metrics once, use everywhere</strong> - Write the calculation once, use it in dashboards, APIs, and reports</li>
 <li>✅ <strong>Version-controlled business logic</strong> - Your metric definitions live in code, so changes are tracked and reviewable</li>
-<li>✅ <strong>Consistent calculations</strong> - No more "which revenue calculation should I use?"—there's one definition</li>
+<li>✅ <strong>Consistent calculations</strong> - No more "which revenue calculation should I use?", there's one definition</li>
 </ul>
 <p><strong>For Business Users:</strong></p>
 <ul>
@@ -1169,7 +1169,7 @@
 <li>✅ <strong>Better data governance</strong> - Centralized definitions make it easier to audit and maintain data quality</li>
 </ul>
 <h2 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Link to this section">¶</a></h2>
-<p>The semantic layer has two main pieces that work together. Think of them as building blocks—you start with semantic models, then build metrics on top.</p>
+<p>The semantic layer has two main pieces that work together. Think of them as building blocks, you start with semantic models, then build metrics on top.</p>
 <h3 id="semantic-models">Semantic Models<a class="headerlink" href="#semantic-models" title="Link to this section">¶</a></h3>
 <p>Semantic models are like wrappers around your Vulcan models. They take your technical tables and expose them in a business-friendly way. For detailed information, check out the <a href="../models/">Semantic Models</a> documentation.</p>
 <p>Here's what semantic models do:</p>
@@ -1222,7 +1222,7 @@
 <li><strong>Validate</strong> - Vulcan automatically validates your semantic definitions when you create a plan</li>
 <li><strong>Query</strong> - Use the semantic layer via APIs or export to BI tools</li>
 </ol>
-<p>The validation step is important—Vulcan checks that your measures reference real columns, joins are valid, and metrics make sense. It'll catch errors before you try to use them, which saves you from debugging issues later.</p>
+<p>The validation step is important, Vulcan checks that your measures reference real columns, joins are valid, and metrics make sense. It'll catch errors before you try to use them, which saves you from debugging issues later.</p>
 <h2 id="file-organization">File Organization<a class="headerlink" href="#file-organization" title="Link to this section">¶</a></h2>
 <p>Semantic layer definitions are YAML files in the <code>semantics/</code> directory. You can organize them however makes sense for your team:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>project/

@@ -1050,11 +1050,11 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h1>
-<p>Macro variables are placeholders that get replaced with actual values when Vulcan renders your SQL. They're what make your queries dynamic—instead of hardcoding values, you use variables that change based on context.</p>
+<p>Macro variables are placeholders that get replaced with actual values when Vulcan renders your SQL. They're what make your queries dynamic, instead of hardcoding values, you use variables that change based on context.</p>
 <p>Think of them like this: instead of writing <code>WHERE date &gt; '2023-01-01'</code> and manually updating it every day, you write <code>WHERE date &gt; @execution_ds</code> and it automatically uses today's date. Much better!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This page covers Vulcan's built-in macro variables—the ones that come pre-configured and ready to use. If you want to create your own custom variables, check out the <a href="../built_in/#user-defined-variables">Vulcan macros page</a> or <a href="../jinja/#user-defined-variables">Jinja macros page</a>.</p>
+<p>This page covers Vulcan's built-in macro variables, the ones that come pre-configured and ready to use. If you want to create your own custom variables, check out the <a href="../built_in/#user-defined-variables">Vulcan macros page</a> or <a href="../jinja/#user-defined-variables">Jinja macros page</a>.</p>
 </div>
 <h2 id="a-quick-example">A quick example<a class="headerlink" href="#a-quick-example" title="Link to this section">¶</a></h2>
 <p>Let's say you have a query that filters by date. Without macros, you'd write something like this:</p>
@@ -1072,7 +1072,7 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="k">FROM</span><span class="w"> </span><span class="k">table</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">execution_ds</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>The <code>@</code> symbol tells Vulcan "this is a macro variable—replace it with a value before executing." The <code>@execution_ds</code> variable is predefined, so Vulcan automatically sets it to the date when execution started.</p>
+<p>The <code>@</code> symbol tells Vulcan "this is a macro variable, replace it with a value before executing." The <code>@execution_ds</code> variable is predefined, so Vulcan automatically sets it to the date when execution started.</p>
 <p>If you run this model on February 1, 2023, Vulcan renders it as:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
@@ -1081,7 +1081,7 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">'2023-02-01'</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>The date updates automatically every time you run it. No manual editing needed!</p>
-<p>Vulcan comes with a bunch of predefined variables like this. You can also create your own custom variables if you need something specific—we'll cover those in the macro system pages.</p>
+<p>Vulcan comes with a bunch of predefined variables like this. You can also create your own custom variables if you need something specific, we'll cover those in the macro system pages.</p>
 <h2 id="predefined-variables">Predefined variables<a class="headerlink" href="#predefined-variables" title="Link to this section">¶</a></h2>
 <p>Vulcan provides a set of predefined variables that are automatically available in your models. Most of them are related to time (dates, timestamps, etc.), which makes sense since time-based logic is super common in data pipelines.</p>
 <p>The time variables follow a consistent naming pattern: they combine a prefix (like <code>start</code>, <code>end</code>, or <code>execution</code>) with a postfix (like <code>ds</code>, <code>ts</code>, or <code>epoch</code>) to create variables like <code>@start_ds</code> or <code>@execution_epoch</code>.</p>

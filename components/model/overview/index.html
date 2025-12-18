@@ -1221,7 +1221,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>Models are the heart of Vulcan—they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.</p>
+<p>Models are the heart of Vulcan, they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.</p>
 <p>Models live in <code>.sql</code> files in the <code>models/</code> directory of your project. The cool thing is that Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Just write your SQL, and Vulcan handles the lineage.</p>
 <p>Every model has two parts:</p>
 <ul>
@@ -1230,7 +1230,7 @@
 </ul>
 <p>It's like filling out a form (DDL) and then writing the actual code (DML). Simple!</p>
 <h2 id="model-structure">Model Structure<a class="headerlink" href="#model-structure" title="Link to this section">¶</a></h2>
-<p>You can write models in SQL or Python. Both work the same way conceptually—they just look different. Let's see both:</p>
+<p>You can write models in SQL or Python. Both work the same way conceptually, they just look different. Let's see both:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">SQL Model</label><label for="__tabbed_1_2">Python Model</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1353,7 +1353,7 @@
 </div>
 </div>
 </div>
-<p>Both formats do the same thing—pick whichever you're more comfortable with!</p>
+<p>Both formats do the same thing, pick whichever you're more comfortable with!</p>
 <h2 id="ddl-the-model-block">DDL: The MODEL Block<a class="headerlink" href="#ddl-the-model-block" title="Link to this section">¶</a></h2>
 <p>The <code>MODEL</code> block is where you tell Vulcan about your model. It's the first thing in your file (after any comments) and uses a simple, declarative syntax.</p>
 <h3 id="basic-syntax">Basic Syntax<a class="headerlink" href="#basic-syntax" title="Link to this section">¶</a></h3>
@@ -1423,7 +1423,7 @@
 <p>There are more properties available beyond these common ones. Check out the <a href="../properties/">Model Properties</a> reference for the complete list of all available model properties and their configurations.</p>
 </div>
 <h2 id="dml-the-select-query">DML: The SELECT Query<a class="headerlink" href="#dml-the-select-query" title="Link to this section">¶</a></h2>
-<p>The <code>SELECT</code> query is where the magic happens. This is your transformation logic—the SQL that actually does the work.</p>
+<p>The <code>SELECT</code> query is where the magic happens. This is your transformation logic, the SQL that actually does the work.</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
 <span class="normal"><a href="#__codelineno-3-3">3</a></span>
@@ -1447,7 +1447,7 @@
 - Returns the results ordered by date</p>
 <p>Pretty standard SQL! Vulcan will automatically figure out that this model depends on <code>raw.raw_orders</code> and build the dependency graph for you.</p>
 <h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Link to this section">¶</a></h2>
-<p>Vulcan tries to be smart and infer as much as possible from your SQL. This means you don't have to write a bunch of YAML config files—just write SQL and Vulcan figures it out. But to do this, your SQL needs to follow some conventions.</p>
+<p>Vulcan tries to be smart and infer as much as possible from your SQL. This means you don't have to write a bunch of YAML config files, just write SQL and Vulcan figures it out. But to do this, your SQL needs to follow some conventions.</p>
 <h3 id="sql-model-conventions">SQL Model Conventions<a class="headerlink" href="#sql-model-conventions" title="Link to this section">¶</a></h3>
 <h4 id="unique-column-names">Unique Column Names<a class="headerlink" href="#unique-column-names" title="Link to this section">¶</a></h4>
 <p>Your final <code>SELECT</code> needs unique column names. No duplicates allowed!</p>
@@ -1484,7 +1484,7 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">raw_orders</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Vulcan uses PostgreSQL-style casting (<code>x::int</code>), but don't worry—it automatically converts this to whatever your execution engine needs. So you write <code>::INTEGER</code> and Vulcan handles the rest.</p>
+<p>Vulcan uses PostgreSQL-style casting (<code>x::int</code>), but don't worry, it automatically converts this to whatever your execution engine needs. So you write <code>::INTEGER</code> and Vulcan handles the rest.</p>
 <p><strong>Why this matters:</strong> Without explicit types, you might get <code>FLOAT</code> when you expected <code>INTEGER</code>, or <code>VARCHAR</code> when you wanted <code>TIMESTAMP</code>. Explicit casting prevents these surprises.</p>
 <h4 id="inferrable-names">Inferrable Names<a class="headerlink" href="#inferrable-names" title="Link to this section">¶</a></h4>
 <p>Your columns need names that Vulcan can figure out. If Vulcan can't infer a name, you need to add an alias:</p>
@@ -1504,7 +1504,7 @@
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">  </span><span class="n">total_amount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">adjusted</span><span class="p">,</span><span class="w">   </span><span class="c1">-- ✓ explicitly named</span>
 </span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">total_amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">revenue</span><span class="w">    </span><span class="c1">-- ✓ explicitly named</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit—you'll know what the column is called!</p>
+<p>If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit, you'll know what the column is called!</p>
 <h4 id="column-descriptions">Column Descriptions<a class="headerlink" href="#column-descriptions" title="Link to this section">¶</a></h4>
 <p>Document your columns! There are two ways to do this:</p>
 <p><strong>Option 1: In the DDL (Recommended)</strong></p>
@@ -1534,10 +1534,10 @@
 </span></span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12"></a><span class="hll"><span class="w">  </span><span class="p">)</span>
 </span></span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This is the cleanest way—all your documentation is in one place, right in the MODEL block.</p>
+<p>This is the cleanest way, all your documentation is in one place, right in the MODEL block.</p>
 <div class="admonition note">
 <p class="admonition-title">Priority</p>
-<p>If you use <code>column_descriptions</code> in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority—so if you define descriptions in both places, the DDL version wins.</p>
+<p>If you use <code>column_descriptions</code> in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority, so if you define descriptions in both places, the DDL version wins.</p>
 </div>
 <p><strong>Option 2: Inline Comments</strong></p>
 <p>If you don't specify <code>column_descriptions</code> in the DDL, Vulcan will automatically pick up comments from your query:</p>
@@ -1639,7 +1639,7 @@
 </span></span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition warning">
 <p class="admonition-title">Column name validation</p>
-<p>Vulcan will error if you put a column name in <code>column_descriptions</code> that doesn't exist in <code>columns</code>. This prevents typos and keeps things consistent—if you describe a column, it better exist!</p>
+<p>Vulcan will error if you put a column name in <code>column_descriptions</code> that doesn't exist in <code>columns</code>. This prevents typos and keeps things consistent, if you describe a column, it better exist!</p>
 </div>
 <h4 id="return-type">Return Type<a class="headerlink" href="#return-type" title="Link to this section">¶</a></h4>
 <p>Your <code>execute</code> function must return a pandas DataFrame, and the columns must match what you defined in <code>columns</code>:</p>
@@ -1661,7 +1661,7 @@
 </span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a>    <span class="n">query</span> <span class="o">=</span> <span class="s2">"SELECT ..."</span>
 </span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>The DataFrame columns need to match your <code>columns</code> definition exactly—same names, compatible types.</p>
+<p>The DataFrame columns need to match your <code>columns</code> definition exactly, same names, compatible types.</p>
 <div class="admonition info">
 <p class="admonition-title">Learn more</p>
 <p>Want to dive deeper into Python models? Check out the <a href="components/model/python_models.md">Python Models</a> documentation for detailed information, advanced patterns, and more examples.</p>

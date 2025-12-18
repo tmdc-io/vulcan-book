@@ -1813,7 +1813,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="properties">Properties<a class="headerlink" href="#properties" title="Link to this section">¶</a></h1>
-<p>The <code>MODEL</code> DDL statement has a bunch of properties you can use to control how your model behaves. Think of them as knobs and switches—you can configure scheduling, storage, validation, and more.</p>
+<p>The <code>MODEL</code> DDL statement has a bunch of properties you can use to control how your model behaves. Think of them as knobs and switches, you can configure scheduling, storage, validation, and more.</p>
 <p>This page is your complete reference for all available properties. We'll cover what each one does, when to use it, and show you examples.</p>
 <hr/>
 <h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this section">¶</a></h2>
@@ -2318,7 +2318,7 @@
 </div>
 </div>
 <h3 id="grain-grains">grain / grains<a class="headerlink" href="#grain-grains" title="Link to this section">¶</a></h3>
-<p>Defines the column(s) that make each row unique. This is like a primary key—it tells Vulcan what identifies a single row in your table.</p>
+<p>Defines the column(s) that make each row unique. This is like a primary key, it tells Vulcan what identifies a single row in your table.</p>
 <p><strong>Why this matters:</strong> Tools like <code>table_diff</code> use grains to compare tables. It also helps Vulcan understand your data structure for better optimization and validation.</p>
 <p>You can specify a single grain (<code>grain order_id</code>) or multiple grains (<code>grains (order_id, (customer_id, order_date))</code>).</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">SQL</label><label for="__tabbed_9_2">Python</label></div>
@@ -2372,7 +2372,7 @@
 </div>
 </div>
 <h3 id="owner">owner<a class="headerlink" href="#owner" title="Link to this section">¶</a></h3>
-<p>Sets the owner of the model—usually a team name or individual. This is used for governance, notifications, and knowing who to contact when something breaks.</p>
+<p>Sets the owner of the model, usually a team name or individual. This is used for governance, notifications, and knowing who to contact when something breaks.</p>
 <p><strong>Example:</strong> <code>owner 'analytics_team'</code> or <code>owner 'data_engineers'</code></p>
 <div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio"/><input id="__tabbed_10_2" name="__tabbed_10" type="radio"/><div class="tabbed-labels"><label for="__tabbed_10_1">SQL</label><label for="__tabbed_10_2">Python</label></div>
 <div class="tabbed-content">
@@ -2452,7 +2452,7 @@
 <p>If <code>column_descriptions</code> is present, <a href="components/model/overview.md#inline-column-comments">inline column comments</a> will not be registered.</p>
 </div>
 <h3 id="columns">columns<a class="headerlink" href="#columns" title="Link to this section">¶</a></h3>
-<p>Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query—it'll use exactly what you specify.</p>
+<p>Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query, it'll use exactly what you specify.</p>
 <p><strong>When to use:</strong>
 - Python models (required—Vulcan can't infer types from Python code)
 - Seed models (you need to define the CSV schema)
@@ -2534,7 +2534,7 @@
 </div>
 <h3 id="assertions">assertions<a class="headerlink" href="#assertions" title="Link to this section">¶</a></h3>
 <p>Attach <a href="../../audits/audits/">audits</a> directly to your model. These validations run after each model evaluation and will block the pipeline if they fail.</p>
-<p><strong>Why use assertions?</strong> They're your safety net—they catch bad data before it flows downstream. If revenue can't be negative, assert it. If customer IDs must be unique, assert it. Fail fast, fix fast.</p>
+<p><strong>Why use assertions?</strong> They're your safety net, they catch bad data before it flows downstream. If revenue can't be negative, assert it. If customer IDs must be unique, assert it. Fail fast, fix fast.</p>
 <p>Think of assertions as "this data must be true" validations that run automatically.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="16:2"><input checked="checked" id="__tabbed_16_1" name="__tabbed_16" type="radio"/><input id="__tabbed_16_2" name="__tabbed_16" type="radio"/><div class="tabbed-labels"><label for="__tabbed_16_1">SQL</label><label for="__tabbed_16_2">Python</label></div>
 <div class="tabbed-content">
@@ -2565,14 +2565,14 @@
 </div>
 <h3 id="profiles">profiles<a class="headerlink" href="#profiles" title="Link to this section">¶</a></h3>
 <p>Enable automatic data profiling for specific columns. Profiles track statistical metrics over time (like null percentages, distinct counts, distributions) without blocking your pipeline.</p>
-<p><strong>How it works:</strong> Vulcan collects metrics each run and stores them in the <code>_check_profiles</code> table. You can query this to see how your data changes over time—detect data drift, understand patterns, and decide which checks or audits to add.</p>
+<p><strong>How it works:</strong> Vulcan collects metrics each run and stores them in the <code>_check_profiles</code> table. You can query this to see how your data changes over time, detect data drift, understand patterns, and decide which checks or audits to add.</p>
 <p><strong>Use cases:</strong>
 - Track null percentages over time
 - Monitor distinct value counts
 - Detect data drift
 - Understand column distributions
 - Inform which checks/audits to create</p>
-<p>Think of profiles as your data observability layer—they watch and learn, but don't block.</p>
+<p>Think of profiles as your data observability layer, they watch and learn, but don't block.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="17:2"><input checked="checked" id="__tabbed_17_1" name="__tabbed_17" type="radio"/><input id="__tabbed_17_2" name="__tabbed_17" type="radio"/><div class="tabbed-labels"><label for="__tabbed_17_1">SQL</label><label for="__tabbed_17_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2623,7 +2623,7 @@
 - Python models (required—Vulcan can't parse Python to find dependencies)
 - Hidden dependencies (like a macro that references another model)
 - External dependencies that aren't in your SQL</p>
-<p><strong>Note:</strong> Dependencies you declare here are added to the ones Vulcan infers—they don't replace them.</p>
+<p><strong>Note:</strong> Dependencies you declare here are added to the ones Vulcan infers, they don't replace them.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="18:2"><input checked="checked" id="__tabbed_18_1" name="__tabbed_18" type="radio"/><input id="__tabbed_18_2" name="__tabbed_18" type="radio"/><div class="tabbed-labels"><label for="__tabbed_18_1">SQL</label><label for="__tabbed_18_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2769,7 +2769,7 @@
 <h3 id="storage_format">storage_format<a class="headerlink" href="#storage_format" title="Link to this section">¶</a></h3>
 <p>Sets the physical file format for your table's data files. This affects compression, query performance, and storage costs.</p>
 <p><strong>Common formats:</strong> <code>parquet</code>, <code>orc</code></p>
-<p><strong>Parquet</strong> is usually the best choice—it's columnar (great for analytics), has good compression, and is widely supported. <strong>ORC</strong> is another option, especially if you're using Hive.</p>
+<p><strong>Parquet</strong> is usually the best choice, it's columnar (great for analytics), has good compression, and is widely supported. <strong>ORC</strong> is another option, especially if you're using Hive.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="23:2"><input checked="checked" id="__tabbed_23_1" name="__tabbed_23" type="radio"/><input id="__tabbed_23_2" name="__tabbed_23" type="radio"/><div class="tabbed-labels"><label for="__tabbed_23_1">SQL</label><label for="__tabbed_23_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2912,7 +2912,7 @@
 <h2 id="behavior-properties">Behavior Properties<a class="headerlink" href="#behavior-properties" title="Link to this section">¶</a></h2>
 <p>These properties control how Vulcan behaves when processing your model.</p>
 <h3 id="stamp">stamp<a class="headerlink" href="#stamp" title="Link to this section">¶</a></h3>
-<p>Force a new model version without changing the definition. This is like a version tag—useful for tracking deployments or forcing a refresh.</p>
+<p>Force a new model version without changing the definition. This is like a version tag, useful for tracking deployments or forcing a refresh.</p>
 <p><strong>When to use:</strong> When you want to create a new version for tracking purposes, or when you need to force downstream models to rebuild even though this model's definition hasn't changed.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="28:2"><input checked="checked" id="__tabbed_28_1" name="__tabbed_28" type="radio"/><input id="__tabbed_28_2" name="__tabbed_28" type="radio"/><div class="tabbed-labels"><label for="__tabbed_28_1">SQL</label><label for="__tabbed_28_2">Python</label></div>
 <div class="tabbed-content">
@@ -3053,7 +3053,7 @@
 </div>
 <hr/>
 <h2 id="incremental-model-properties">Incremental Model Properties<a class="headerlink" href="#incremental-model-properties" title="Link to this section">¶</a></h2>
-<p>These properties are specified inside the <code>kind</code> definition for incremental models. They control how incremental models behave—things like handling schema changes, restatements, and batch processing.</p>
+<p>These properties are specified inside the <code>kind</code> definition for incremental models. They control how incremental models behave, things like handling schema changes, restatements, and batch processing.</p>
 <p>For the full picture on incremental models, check out the <a href="../model_kinds/">Model Kinds</a> documentation.</p>
 <h3 id="common-incremental-properties">Common Incremental Properties<a class="headerlink" href="#common-incremental-properties" title="Link to this section">¶</a></h3>
 <p>These properties work with all incremental model kinds. They're your toolkit for controlling incremental behavior:</p>
@@ -3359,7 +3359,7 @@
 <hr/>
 <h3 id="incremental_by_partition">INCREMENTAL_BY_PARTITION<a class="headerlink" href="#incremental_by_partition" title="Link to this section">¶</a></h3>
 <p>Properties for models that update by partition. This kind uses the <code>partitioned_by</code> property (from the General Properties section) as its partition key.</p>
-<p><strong>Note:</strong> There are no additional kind-specific properties—just use <code>partitioned_by</code> to define your partition columns.</p>
+<p><strong>Note:</strong> There are no additional kind-specific properties, just use <code>partitioned_by</code> to define your partition columns.</p>
 <p>For details on <code>INCREMENTAL_BY_PARTITION</code> models, see the <a href="../model_kinds/#incremental_by_partition">Model Kinds documentation</a>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="36:2"><input checked="checked" id="__tabbed_36_1" name="__tabbed_36" type="radio"/><input id="__tabbed_36_2" name="__tabbed_36" type="radio"/><div class="tabbed-labels"><label for="__tabbed_36_1">SQL</label><label for="__tabbed_36_2">Python</label></div>
 <div class="tabbed-content">

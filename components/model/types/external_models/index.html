@@ -1122,7 +1122,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="external">External<a class="headerlink" href="#external" title="Link to this section">¶</a></h1>
-<p>Sometimes your models need to query tables that exist outside your Vulcan project—maybe a third-party data source, a table managed by another system, or a read-only database. These are "external" tables.</p>
+<p>Sometimes your models need to query tables that exist outside your Vulcan project, maybe a third-party data source, a table managed by another system, or a read-only database. These are "external" tables.</p>
 <p>Vulcan doesn't manage external tables (you can't create or update them), but it can use metadata about them to make your life easier. By defining external models, you give Vulcan information about column names and types, which enables better column-level lineage and query optimization.</p>
 <p><strong>Why define external models?</strong> Even though Vulcan can't manage them, knowing their schema helps with:
 - Column-level lineage (see how data flows through external tables)
@@ -1130,14 +1130,14 @@
 - Documentation (your data catalog knows what's in those tables)</p>
 <p>Vulcan stores this metadata as <code>EXTERNAL</code> models.</p>
 <h2 id="how-external-models-work">How External Models Work<a class="headerlink" href="#how-external-models-work" title="Link to this section">¶</a></h2>
-<p><code>EXTERNAL</code> models are metadata-only—they just describe a table's schema (column names and types). There's no query for Vulcan to run, and Vulcan doesn't manage the data.</p>
+<p><code>EXTERNAL</code> models are metadata-only, they just describe a table's schema (column names and types). There's no query for Vulcan to run, and Vulcan doesn't manage the data.</p>
 <p><strong>Important limitations:</strong>
 - Vulcan doesn't know what data is in the table (or if it even exists)
 - If someone alters the external table, Vulcan won't detect it
 - If all data is deleted, Vulcan won't know
 - Vulcan never modifies external tables</p>
 <p>The querying model's <a href="../../model_kinds/"><code>kind</code></a>, <a href="../../overview/#cron"><code>cron</code></a>, and previously loaded time intervals determine when Vulcan will query the <code>EXTERNAL</code> model.</p>
-<p><strong>When external tables get queried:</strong> Only when a Vulcan model references them. The querying model's <code>kind</code>, <code>cron</code>, and time intervals determine when the external table is actually queried. Vulcan doesn't proactively query external tables—it only queries them as part of executing your models.</p>
+<p><strong>When external tables get queried:</strong> Only when a Vulcan model references them. The querying model's <code>kind</code>, <code>cron</code>, and time intervals determine when the external table is actually queried. Vulcan doesn't proactively query external tables, it only queries them as part of executing your models.</p>
 <h2 id="creating-external-models">Creating External Models<a class="headerlink" href="#creating-external-models" title="Link to this section">¶</a></h2>
 <p>External models are defined in YAML files. You have two options:
 1. <strong>Let Vulcan generate it</strong> (easiest) - Use the <code>create_external_models</code> CLI command
@@ -1200,7 +1200,7 @@
 <p>Gateway names are case-insensitive in external model configs. <code>gateway: dev</code>, <code>gateway: DEV</code>, and <code>gateway: Dev</code> all work the same.</p>
 </div>
 <h3 id="writing-yaml-by-hand">Writing YAML by Hand<a class="headerlink" href="#writing-yaml-by-hand" title="Link to this section">¶</a></h3>
-<p>Sometimes you need to define external models manually—maybe Vulcan can't access the metadata, or you want more control. Here's the structure:</p>
+<p>Sometimes you need to define external models manually, maybe Vulcan can't access the metadata, or you want more control. Here's the structure:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."customers"'</span>
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Customer</span><span class="nv"> </span><span class="s">dimension</span><span class="nv"> </span><span class="s">table</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">external</span><span class="nv"> </span><span class="s">system"</span>
 </span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="nt">gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span><span class="w">  </span><span class="c1"># Optional: only load for this gateway</span>
@@ -1237,7 +1237,7 @@
 <p><strong>Best practice:</strong> Use <code>create_external_models</code> to manage the main file, and put any tables that need manual definitions in the <code>external_models/</code> directory. That way you can regenerate the main file without losing your manual work!</p>
 <h3 id="external-assertions">External Assertions<a class="headerlink" href="#external-assertions" title="Link to this section">¶</a></h3>
 <p>You can define <a href="components/model/audits.md">assertions</a> on external models! This is super useful for validating upstream data quality before your internal models run.</p>
-<p><strong>Why this matters:</strong> If your external data source has quality issues, you want to catch them early—before they flow into your models and cause bigger problems downstream.</p>
+<p><strong>Why this matters:</strong> If your external data source has quality issues, you want to catch them early, before they flow into your models and cause bigger problems downstream.</p>
 <p>Here's how you'd add assertions to an external model:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."customers"'</span>
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Table containing customer information</span>

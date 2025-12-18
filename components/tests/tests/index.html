@@ -2402,7 +2402,7 @@
 <h2 id="supported-data-formats">Supported Data Formats<a class="headerlink" href="#supported-data-formats" title="Link to this section">¶</a></h2>
 <p>Vulcan gives you flexibility in how you define test data. Pick whatever format works best for your situation:</p>
 <h3 id="yaml-dictionaries-default">YAML Dictionaries (Default)<a class="headerlink" href="#yaml-dictionaries-default" title="Link to this section">¶</a></h3>
-<p>The most common format—just list your rows as YAML dictionaries:</p>
+<p>The most common format, just list your rows as YAML dictionaries:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
 <span class="normal"><a href="#__codelineno-6-3">3</a></span>
@@ -2677,7 +2677,7 @@
 <span class="normal"><a href="#__codelineno-25-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="w">    </span><span class="nt">&lt;upstream_model&gt;</span><span class="p">:</span>
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="w">      </span><span class="nt">query</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;sql_query&gt;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Note:</strong> You can't use <code>query</code> together with <code>rows</code>—pick one or the other.</p>
+<p><strong>Note:</strong> You can't use <code>query</code> together with <code>rows</code>, pick one or the other.</p>
 <h3 id="test_nameoutputs"><code>&lt;test_name&gt;.outputs</code><a class="headerlink" href="#test_nameoutputs" title="Link to this section">¶</a></h3>
 <p>The expected outputs from your model. This is what you're asserting should be true.</p>
 <p><strong>Important:</strong> Column order matters! The columns in your expected rows must match the order they appear in the model's <code>SELECT</code> statement.</p>

@@ -1256,7 +1256,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="sql">SQL<a class="headerlink" href="#sql" title="Link to this section">¶</a></h1>
-<p>SQL models are Vulcan's bread and butter—they're the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.</p>
+<p>SQL models are Vulcan's bread and butter, they're the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.</p>
 <p><strong>Why SQL models?</strong> They're simple, powerful, and work with any SQL database. Most of your data transformations will probably be SQL models.</p>
 <h2 id="sql-based-definition">SQL-Based Definition<a class="headerlink" href="#sql-based-definition" title="Link to this section">¶</a></h2>
 <p>SQL-based models are the most common type. They're designed to feel like regular SQL, but with superpowers.</p>
@@ -1312,7 +1312,7 @@
 </span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="model-ddl"><code>MODEL</code> DDL<a class="headerlink" href="#model-ddl" title="Link to this section">¶</a></h3>
-<p>The <code>MODEL</code> DDL is where you define your model's metadata—name, kind, schedule, owner, and more. It must be the first statement in your SQL file.</p>
+<p>The <code>MODEL</code> DDL is where you define your model's metadata, name, kind, schedule, owner, and more. It must be the first statement in your SQL file.</p>
 <p>Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the <a href="components/model/types/overview.md#model-properties">Model Properties</a> documentation.</p>
 <h3 id="optional-prepost-statements">Optional Pre/Post-Statements<a class="headerlink" href="#optional-prepost-statements" title="Link to this section">¶</a></h3>
 <p>Pre-statements run before your query, post-statements run after. They're perfect for setup, cleanup, and optimization tasks.</p>
@@ -1322,7 +1322,7 @@
 <p><strong>Important:</strong> Pre/post-statements must end with semicolons. If you have post-statements, your main query must also end with a semicolon (so Vulcan knows where the query ends).</p>
 <div class="admonition warning">
 <p class="admonition-title">Concurrency</p>
-<p>Be careful with pre-statements that create or alter physical tables—if multiple models run concurrently, you could get conflicts. Stick to session settings and temporary objects.</p>
+<p>Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings and temporary objects.</p>
 </div>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
@@ -1453,7 +1453,7 @@
 - Multiple <code>SELECT</code> statements combined with <code>UNION</code>, <code>INTERSECT</code>, or <code>EXCEPT</code></p>
 <p>The result of this query becomes your model's table or view data. Pretty straightforward!</p>
 <h3 id="sql-model-blueprinting">SQL Model Blueprinting<a class="headerlink" href="#sql-model-blueprinting" title="Link to this section">¶</a></h3>
-<p>SQL models can serve as templates for creating multiple models. This is called "blueprinting"—define one template, get multiple models.</p>
+<p>SQL models can serve as templates for creating multiple models. This is called "blueprinting", define one template, get multiple models.</p>
 <p><strong>How it works:</strong> Parameterize your model name with a variable (using <code>@{variable}</code> syntax) and provide a list of mappings in <code>blueprints</code>. Vulcan creates one model for each mapping.</p>
 <p><strong>Use case:</strong> When you have similar models that differ only by parameters (like different regions, schemas, or customers).</p>
 <p>Here's an example that creates four models from one template:</p>
@@ -1600,7 +1600,7 @@
 <p><strong>How it works:</strong> You write Python code that generates SQL, and Vulcan executes it. You still get SQL models (they run SQL queries), but you write them in Python.</p>
 <p>For the complete guide on Python-based SQL models, including the <code>@model</code> decorator, execution context, and examples, see the <a href="components/model/types/python_models.md">Python Models</a> page.</p>
 <h2 id="automatic-dependencies">Automatic Dependencies<a class="headerlink" href="#automatic-dependencies" title="Link to this section">¶</a></h2>
-<p>One of Vulcan's superpowers: it parses your SQL and automatically figures out dependencies. No need to manually specify what your model depends on—Vulcan just knows!</p>
+<p>One of Vulcan's superpowers: it parses your SQL and automatically figures out dependencies. No need to manually specify what your model depends on, Vulcan just knows!</p>
 <p><strong>How it works:</strong> Vulcan analyzes your <code>FROM</code> and <code>JOIN</code> clauses and builds a dependency graph. When you run <code>vulcan plan</code>, it ensures upstream models run first.</p>
 <p><strong>Example:</strong> This query automatically depends on <code>raw.raw_orders</code>:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">order_date</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">order_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_orders</span>
@@ -1608,7 +1608,7 @@
 </span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div>
 <p>Vulcan will make sure <code>raw.raw_orders</code> runs before this model. Pretty neat!</p>
-<p><strong>External dependencies:</strong> If you reference tables that aren't Vulcan models, Vulcan can handle them too—either implicitly (through execution order) or via <a href="../../../advanced-features/signals.md">signals</a>.</p>
+<p><strong>External dependencies:</strong> If you reference tables that aren't Vulcan models, Vulcan can handle them too, either implicitly (through execution order) or via <a href="../../../advanced-features/signals.md">signals</a>.</p>
 <p><strong>Manual dependencies:</strong> Sometimes you need to add extra dependencies manually (maybe a hidden dependency or a macro that references another model). Use the <code>depends_on</code> property in your <code>MODEL</code> DDL for that.</p>
 <h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Link to this section">¶</a></h2>
 <p>Vulcan follows some conventions to keep things consistent and reliable. Here are the key ones:</p>
@@ -1631,7 +1631,7 @@
 <p>Vulcan uses <a href="https://github.com/tobymao/sqlglot">SQLGlot</a> to parse and transpile SQL. This gives you some superpowers:</p>
 <p><strong>Write in any dialect, run on any engine:</strong> Write PostgreSQL-style SQL, and Vulcan converts it to BigQuery. Or write Snowflake SQL and run it on Spark. Pretty cool!</p>
 <p><strong>Use advanced syntax:</strong> You can use features from one dialect even if your engine doesn't support them. For example, <code>x::int</code> (PostgreSQL syntax) works even on engines that only support <code>CAST(x AS INT)</code>. SQLGlot handles the conversion.</p>
-<p><strong>Formatting flexibility:</strong> Trailing commas, extra whitespace, minor formatting differences—SQLGlot normalizes them all. Write SQL however you like, and Vulcan makes it consistent.</p>
+<p><strong>Formatting flexibility:</strong> Trailing commas, extra whitespace, minor formatting differences, SQLGlot normalizes them all. Write SQL however you like, and Vulcan makes it consistent.</p>
 <h2 id="macros">Macros<a class="headerlink" href="#macros" title="Link to this section">¶</a></h2>
 <p>Standard SQL is powerful, but real-world data pipelines need dynamic components. Date filters that change each run, conditional logic, reusable query patterns—macros give you all of this.</p>
 <p><strong>Macro variables:</strong> Vulcan provides automatic date/time variables for incremental models. Use <code>@start_date</code>, <code>@end_date</code>, <code>@start_ds</code>, <code>@end_ds</code> and Vulcan fills them in with the current time range. No more hardcoding dates!</p>
