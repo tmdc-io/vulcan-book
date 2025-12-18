@@ -1,12 +1,12 @@
 # Kinds
 
-Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies—each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.
+Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies, each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.
 
 Find information about all model kind configuration parameters in the [model configuration reference page](../../reference/model_configuration.md).
 
 ## INCREMENTAL_BY_TIME_RANGE
 
-`INCREMENTAL_BY_TIME_RANGE` models are perfect for time-series data—things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.
+`INCREMENTAL_BY_TIME_RANGE` models are perfect for time-series data, things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.
 
 **Why this matters:** If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With `INCREMENTAL_BY_TIME_RANGE`, Vulcan only processes the new intervals, which saves you time and money. Pretty smart, right?
 
@@ -320,11 +320,11 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
 
     Your `time_column` should be in UTC timezone. This ensures Vulcan's scheduler and time macros work correctly.
 
-    **Why UTC?** It's a data engineering best practice—convert everything to UTC when it enters your system, then convert to local timezones only when data leaves for end users. This prevents timezone-related bugs as data flows between models.
+    **Why UTC?** It's a data engineering best practice, convert everything to UTC when it enters your system, then convert to local timezones only when data leaves for end users. This prevents timezone-related bugs as data flows between models.
 
-    **Important:** The `cron_tz` flag doesn't change this requirement—it only affects when your model runs, not how time intervals are calculated.
+    **Important:** The `cron_tz` flag doesn't change this requirement, it only affects when your model runs, not how time intervals are calculated.
 
-    If you absolutely must use a different timezone, you can try to work around it using `lookback`, `allow_partials`, or cron offsets, but UTC is strongly recommended. Trust us on this one—timezone bugs are no fun!
+    If you absolutely must use a different timezone, you can try to work around it using `lookback`, `allow_partials`, or cron offsets, but UTC is strongly recommended. Trust us on this one, timezone bugs are no fun!
 
 
 This example implements a complete `INCREMENTAL_BY_TIME_RANGE` model that specifies the time column name `order_date` in the `MODEL` DDL and includes a SQL `WHERE` clause to filter records by time range:
@@ -435,7 +435,7 @@ Here's how it works:
 - **Your WHERE clause** filters the **input** data as it's read from upstream tables (makes queries faster)
 - **Vulcan's automatic filter** filters the **output** data before it's stored (prevents data leakage)
 
-This is especially important when handling late-arriving data—you don't want to accidentally overwrite unrelated records!
+This is especially important when handling late-arriving data, you don't want to accidentally overwrite unrelated records!
 
 Here's a cool example: sometimes your upstream data uses a different time column than your model. In this case, you filter on the upstream column (`shipped_date`), but Vulcan still adds a filter on your model's time column (`order_date`):
 
@@ -477,7 +477,7 @@ By default, Vulcan automatically adds your `time_column` to the partition key. T
 
 **Why this matters:** If you're querying data from the last 7 days, the engine can skip scanning all the old partitions. That's a huge performance win!
 
-Sometimes you might not want this though—maybe you want to partition exclusively on another column, or you want to partition on `month(time_column)` but your engine doesn't support expression-based partitioning.
+Sometimes you might not want this though, maybe you want to partition exclusively on another column, or you want to partition on `month(time_column)` but your engine doesn't support expression-based partitioning.
 
 To disable automatic time column partitioning, set `partition_by_time_column false`:
 
@@ -514,14 +514,14 @@ Depending on the target engine, models of the `INCREMENTAL_BY_TIME_RANGE` kind a
 
 ## INCREMENTAL_BY_UNIQUE_KEY
 
-`INCREMENTAL_BY_UNIQUE_KEY` models update data based on a unique key. Think of it like an upsert operation—if a key exists, update it; if it doesn't, insert it.
+`INCREMENTAL_BY_UNIQUE_KEY` models update data based on a unique key. Think of it like an upsert operation, if a key exists, update it; if it doesn't, insert it.
 
 Here's how it works:
 - **New key?** → Insert the row
 - **Existing key?** → Update the row with new data
 - **Key missing from new data?** → Leave the existing row alone
 
-**Why use this?** Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list—you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.
+**Why use this?** Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list, you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.
 
 This kind is a good fit for datasets that have the following traits:
 
@@ -687,7 +687,7 @@ GROUP BY c.customer_id, c.name
 
 ### Unique Key Expressions
 
-You're not limited to just column names—you can use SQL expressions too! This is handy when you need to create a key from multiple columns or transform values. Here's an example using `COALESCE`:
+You're not limited to just column names, you can use SQL expressions too! This is handy when you need to create a key from multiple columns or transform values. Here's an example using `COALESCE`:
 
 ```sql linenums="1"
 MODEL (
@@ -700,7 +700,7 @@ MODEL (
 
 ### When Matched Expression
 
-By default, when a key matches (source and target have the same key), Vulcan updates all columns. But sometimes you want more control—maybe you want to preserve certain values, or only update specific columns.
+By default, when a key matches (source and target have the same key), Vulcan updates all columns. But sometimes you want more control, maybe you want to preserve certain values, or only update specific columns.
 
 You can customize this behavior with `when_matched` expressions:
 
@@ -793,7 +793,7 @@ Depending on the target engine, models of the `INCREMENTAL_BY_UNIQUE_KEY` kind a
 
 ## FULL
 
-`FULL` models are the simplest kind—they rebuild everything from scratch every time they run. No incremental logic, no time columns, no unique keys. Just run the query and replace the entire table.
+`FULL` models are the simplest kind, they rebuild everything from scratch every time they run. No incremental logic, no time columns, no unique keys. Just run the query and replace the entire table.
 
 **When to use FULL:**
 - Small datasets where rebuilding is fast and cheap
@@ -955,7 +955,7 @@ Unlike the other kinds, `VIEW` models don't store any data. Instead, they create
 **When NOT to use VIEW:**
 - Expensive queries that run frequently (you'll pay the compute cost every time)
 - Complex aggregations or joins (materialize these instead)
-- Python models (VIEW isn't supported for Python—use SQL)
+- Python models (VIEW isn't supported for Python, use SQL)
 
 !!! note "Default Kind"
 
@@ -1059,7 +1059,7 @@ MODEL (
 
 ## EMBEDDED
 
-`EMBEDDED` models are like reusable SQL snippets. They don't create tables or views—instead, their query gets injected directly into any downstream model that references them, as a subquery.
+`EMBEDDED` models are like reusable SQL snippets. They don't create tables or views, instead, their query gets injected directly into any downstream model that references them, as a subquery.
 
 **Why use this?** If you have common logic that multiple models need (like a CTE that filters active customers), you can define it once in an EMBEDDED model and reuse it everywhere. It's like a macro, but for SQL.
 
@@ -1070,7 +1070,7 @@ MODEL (
 
 !!! note "Python Models"
 
-    Python models don't support the `EMBEDDED` kind—use a SQL model instead.
+    Python models don't support the `EMBEDDED` kind, use a SQL model instead.
 
 This example specifies an `EMBEDDED` model kind:
 
@@ -1100,11 +1100,11 @@ The `SEED` model kind is used to specify [seed models](./seed_models.md) for usi
 
 !!! note "Python Models"
 
-    Python models don't support the `SEED` kind—use a SQL model instead.
+    Python models don't support the `SEED` kind, use a SQL model instead.
 
 !!! note "When Data Reloads"
 
-    Seed models are loaded once and stay loaded unless you update the model definition or change the CSV file. This keeps things efficient—no point reloading static data every run!
+    Seed models are loaded once and stay loaded unless you update the model definition or change the CSV file. This keeps things efficient, no point reloading static data every run!
 
 This example specifies a `SEED` model kind:
 
@@ -1509,7 +1509,7 @@ Target table will be updated with the following data:
 | 4  | Milkshake           | 3.99  | 2020-01-02 00:00:00 | 2020-01-02 00:00:00 | 2020-01-03 00:00:00 |
 | 4  | Chocolate Milkshake | 3.99  | 2020-01-03 00:00:00 | 2020-01-03 00:00:00 |        NULL         |
 
-**Notice:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 00:00:00`. If you query the table for that time range, you won't see it—which accurately reflects that it wasn't on the menu during that period.
+**Notice:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 00:00:00`. If you query the table for that time range, you won't see it, which accurately reflects that it wasn't on the menu during that period.
 
 This is the most accurate representation based on your source data. If `Cheeseburger` had been added back with its original `updated_at` timestamp (`2020-01-01`), Vulcan would have set the new record's `valid_from` to `2020-01-02 11:00:00` (when it was detected again), filling the gap. But since the timestamp didn't change, it's likely the item was removed in error, and the gap accurately represents that.
 
@@ -1586,7 +1586,7 @@ After running at `2020-01-03 11:00:00`, your final SCD Type 2 table:
 | 4  | Milkshake           | 3.99  | 2020-01-02 11:00:00 | 2020-01-03 11:00:00 |
 | 4  | Chocolate Milkshake | 3.99  | 2020-01-03 11:00:00 |        NULL         |
 
-**Notice:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 11:00:00`. Query the table for that time range, and you won't see it—which accurately reflects that it wasn't on the menu during that period.
+**Notice:** `Cheeseburger` was deleted from `2020-01-02 11:00:00` to `2020-01-03 11:00:00`. Query the table for that time range, and you won't see it, which accurately reflects that it wasn't on the menu during that period.
 
 ### Shared Configuration Options
 
@@ -1632,7 +1632,7 @@ After running at `2020-01-03 11:00:00`, your final SCD Type 2 table:
 
 ### Processing Source Table with Historical Data
 
-Most of the time, you're creating history for a table that doesn't have it. Like the restaurant menu—it just shows what's available now, but you want to track what was available over time. For this use case, leave `batch_size` as `None` (the default).
+Most of the time, you're creating history for a table that doesn't have it. Like the restaurant menu, it just shows what's available now, but you want to track what was available over time. For this use case, leave `batch_size` as `None` (the default).
 
 **But what if your source already has history?** Some systems create "daily snapshot" tables that contain historical records. If you're sourcing from one of these, set `batch_size` to `1` to process each interval sequentially (one day at a time if you're using `@daily` cron).
 
@@ -1784,7 +1784,7 @@ GROUP BY
 
 ### Reset SCD Type 2 Model (Clearing History)
 
-By default, SCD Type 2 models protect your history—once it's gone, you can't recreate it. But sometimes you need to start fresh (maybe you're fixing a bug, or the history got corrupted).
+By default, SCD Type 2 models protect your history, once it's gone, you can't recreate it. But sometimes you need to start fresh (maybe you're fixing a bug, or the history got corrupted).
 
 **Warning:** This will delete all historical data. Make sure you really want to do this!
 
@@ -2028,9 +2028,9 @@ Depending on the target engine, models of the `INCREMENTAL_BY_PARTITION` kind ar
 
 ## INCREMENTAL_UNMANAGED
 
-`INCREMENTAL_UNMANAGED` models are for append-only tables. They're "unmanaged" because Vulcan doesn't try to deduplicate or manage the data—it just runs your query and appends whatever it gets to the table.
+`INCREMENTAL_UNMANAGED` models are for append-only tables. They're "unmanaged" because Vulcan doesn't try to deduplicate or manage the data, it just runs your query and appends whatever it gets to the table.
 
-**How it works:** Every time the model runs, Vulcan executes your query and appends the results to the table. No deduplication, no updates, no deletes—just append, append, append.
+**How it works:** Every time the model runs, Vulcan executes your query and appends the results to the table. No deduplication, no updates, no deletes, just append, append, append.
 
 !!! question "Should You Use This?"
 
@@ -2072,7 +2072,7 @@ JOIN vulcan_demo.customers AS c ON o.customer_id = c.customer_id
 ORDER BY s.shipped_date DESC
 ```
 
-**Note:** Since it's unmanaged, `INCREMENTAL_UNMANAGED` doesn't support `batch_size` or `batch_concurrency` properties. Vulcan just runs your query and appends the results—no batching or concurrency control.
+**Note:** Since it's unmanaged, `INCREMENTAL_UNMANAGED` doesn't support `batch_size` or `batch_concurrency` properties. Vulcan just runs your query and appends the results, no batching or concurrency control.
 
 !!! warning "Only Full Restatements Supported"
 

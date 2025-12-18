@@ -1,10 +1,10 @@
 # Signals
 
-Vulcan's [built-in scheduler](./scheduling.md#built-in-scheduler) is pretty smart—it knows when to run your models based on their `cron` schedules. If you have a model set to run `@daily`, it checks whether a day has passed since the last run and evaluates the model if needed.
+Vulcan's [built-in scheduler](./scheduling.md#built-in-scheduler) is pretty smart, it knows when to run your models based on their `cron` schedules. If you have a model set to run `@daily`, it checks whether a day has passed since the last run and evaluates the model if needed.
 
-But here's the thing: real-world data doesn't always follow our schedules. Sometimes data arrives late—maybe your upstream system had an issue, or a batch job ran behind schedule. When that happens, your daily model might have already run for the day, and that late data won't get processed until tomorrow's scheduled run.
+But here's the thing: real-world data doesn't always follow our schedules. Sometimes data arrives late, maybe your upstream system had an issue, or a batch job ran behind schedule. When that happens, your daily model might have already run for the day, and that late data won't get processed until tomorrow's scheduled run.
 
-Signals solve this problem by letting you add custom conditions that must be met before a model runs. Think of them as extra gates that the scheduler checks—beyond just "has enough time passed?" and "are upstream dependencies done?"
+Signals solve this problem by letting you add custom conditions that must be met before a model runs. Think of them as extra gates that the scheduler checks, beyond just "has enough time passed?" and "are upstream dependencies done?"
 
 ## What is a signal?
 
@@ -15,7 +15,7 @@ By default, Vulcan's scheduler uses two criteria to decide if a model should run
 
 Signals let you add a third criterion: your own custom check. A signal is just a Python function that examines a batch of time intervals and decides whether they're ready for evaluation.
 
-Here's how it works under the hood: The scheduler doesn't actually evaluate "a model"—it evaluates a model over specific time intervals. For incremental models, this is obvious (you're processing a date range). But even non-temporal models like `FULL` and `VIEW` are evaluated based on time intervals—their `cron` frequency determines the interval.
+Here's how it works under the hood: The scheduler doesn't actually evaluate "a model", it evaluates a model over specific time intervals. For incremental models, this is obvious (you're processing a date range). But even non-temporal models like `FULL` and `VIEW` are evaluated based on time intervals, their `cron` frequency determines the interval.
 
 The scheduler looks at candidate intervals, groups them into batches (controlled by your model's `batch_size` parameter), and then checks signals to see if those batches are ready. Your signal function gets called with a batch of time intervals and can return:
 
@@ -24,7 +24,7 @@ The scheduler looks at candidate intervals, groups them into batches (controlled
 - A list of specific intervals if only some are ready
 
 !!! note "One model, multiple signals"
-    You can specify multiple signals for a single model. When you do, Vulcan requires that **all** signal functions agree an interval is ready before it gets evaluated. Think of it as an AND gate—every signal must give the green light.
+    You can specify multiple signals for a single model. When you do, Vulcan requires that **all** signal functions agree an interval is ready before it gets evaluated. Think of it as an AND gate, every signal must give the green light.
 
 ## Defining a signal
 
@@ -52,7 +52,7 @@ def random_signal(batch: DatetimeRanges, threshold: float) -> t.Union[bool, Date
     return random.random() > threshold
 ```
 
-This signal takes a `threshold` argument (you'll pass this from your model definition) and returns `True` if a random number exceeds that threshold. Notice how the function signature includes `threshold: float`—Vulcan will automatically extract this from your model definition and pass it to the function. The type inference works the same way as [Vulcan macros](../../advanced-features/macros/built_in.md#typed-macros).
+This signal takes a `threshold` argument (you'll pass this from your model definition) and returns `True` if a random number exceeds that threshold. Notice how the function signature includes `threshold: float`, Vulcan will automatically extract this from your model definition and pass it to the function. The type inference works the same way as [Vulcan macros](../../advanced-features/macros/built_in.md#typed-macros).
 
 To use this signal in a model, add it to the `signals` key in your `MODEL` block:
 
@@ -68,7 +68,7 @@ MODEL (
 SELECT 1
 ```
 
-The `signals` key accepts a list of signal calls, each with its own arguments. When you run `vulcan run`, this signal will essentially flip a coin—if the random number is greater than 0.5, the model runs; otherwise, it waits.
+The `signals` key accepts a list of signal calls, each with its own arguments. When you run `vulcan run`, this signal will essentially flip a coin, if the random number is greater than 0.5, the model runs; otherwise, it waits.
 
 ### Advanced example
 
@@ -112,7 +112,7 @@ MODEL (
 SELECT @start_ds AS ds
 ```
 
-This ensures that only data from at least a week ago gets processed—useful if you want to wait for late-arriving data to stabilize before processing it.
+This ensures that only data from at least a week ago gets processed, useful if you want to wait for late-arriving data to stabilize before processing it.
 
 ### Accessing execution context
 

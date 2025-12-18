@@ -2,11 +2,11 @@
 
 ## Macro systems: two approaches
 
-Vulcan macros work differently than templating systems like [Jinja](https://jinja.palletsprojects.com/en/3.1.x/). Here's the key difference: templating systems are all about string substitution—they scan your code, find special characters, and replace them with other text. That's their whole job.
+Vulcan macros work differently than templating systems like [Jinja](https://jinja.palletsprojects.com/en/3.1.x/). Here's the key difference: templating systems are all about string substitution, they scan your code, find special characters, and replace them with other text. That's their whole job.
 
 Templating systems are intentionally language-agnostic. They work for blog posts, HTML, SQL, or pretty much anything. They have control flow (if-then, loops) and other features, but those are just tools to help them substitute the right strings.
 
-Vulcan macros are different. They're built specifically for SQL, and they understand what your SQL actually means. Instead of just swapping strings, Vulcan macros analyze your SQL using the [sqlglot](https://github.com/tobymao/sqlglot) library to build a semantic representation of your query. Then they modify that representation. This means they can do things templating systems can't—like knowing whether something is a column name or a string literal, or understanding the structure of your query.
+Vulcan macros are different. They're built specifically for SQL, and they understand what your SQL actually means. Instead of just swapping strings, Vulcan macros analyze your SQL using the [sqlglot](https://github.com/tobymao/sqlglot) library to build a semantic representation of your query. Then they modify that representation. This means they can do things templating systems can't, like knowing whether something is a column name or a string literal, or understanding the structure of your query.
 
 Plus, you can write macro logic in Python, which gives you way more power than simple string substitution.
 
@@ -106,7 +106,7 @@ Global variables live in your project configuration file under the [`variables` 
 
 You can store numbers (`int`, `float`), booleans (`bool`), strings (`str`), or even lists and dictionaries containing these types.
 
-Access them in your models using either `@VAR_NAME` (the simple syntax) or `@VAR('var_name')` (the function syntax). The function syntax is handy because you can provide a default value as the second argument—useful if the variable might not be defined.
+Access them in your models using either `@VAR_NAME` (the simple syntax) or `@VAR('var_name')` (the function syntax). The function syntax is handy because you can provide a default value as the second argument, useful if the variable might not be defined.
 
 For example, this Vulcan configuration key defines six variables of different data types:
 
@@ -534,7 +534,7 @@ It has three parts:
 
 1. A condition that evaluates to `TRUE` or `FALSE` (written in SQL)
 2. What to return if the condition is `TRUE`
-3. What to return if the condition is `FALSE` (this is optional—if you omit it and the condition is false, nothing gets included)
+3. What to return if the condition is `FALSE` (this is optional, if you omit it and the condition is false, nothing gets included)
 
 These elements are specified as:
 
@@ -1473,7 +1473,7 @@ Macro functions let you write reusable logic that you can call from multiple mod
 Vulcan supports macro functions in two languages:
 
 - **SQL functions** use the [Jinja templating system](./jinja.md#user-defined-macro-functions)
-- **Python functions** use SQLGlot and give you way more power—you can do complex operations that go beyond what variables and operators can handle alone
+- **Python functions** use SQLGlot and give you way more power, you can do complex operations that go beyond what variables and operators can handle alone
 
 ### Python macro functions
 

@@ -1,10 +1,10 @@
 # Audits
 
-Audits are your data quality bouncers—they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your pipeline if something's wrong.
+Audits are your data quality bouncers, they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your pipeline if something's wrong.
 
 Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audits run automatically whenever you apply a [plan](../../guides/plan.md). They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.
 
-**Here's the key thing:** All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything—no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire pipeline and causing headaches later.
+**Here's the key thing:** All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything, no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire pipeline and causing headaches later.
 
 A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.
 
@@ -33,11 +33,11 @@ MODEL (
 );
 ```
 
-> **Note:** You might see older code using `audits` instead of `assertions` in MODEL definitions. Both work identically, but `assertions` is clearer—you're asserting that your model passes these audits. This documentation uses `assertions` throughout.
+> **Note:** You might see older code using `audits` instead of `assertions` in MODEL definitions. Both work identically, but `assertions` is clearer, you're asserting that your model passes these audits. This documentation uses `assertions` throughout.
 
 ## How Audits Work
 
-When an audit fails, Vulcan stops everything. No ifs, ands, or buts. This is by design—it's better to catch problems early than to let bad data flow downstream and cause bigger issues.
+When an audit fails, Vulcan stops everything. No ifs, ands, or buts. This is by design, it's better to catch problems early than to let bad data flow downstream and cause bigger issues.
 
 Here's what happens when you run a model:
 
@@ -61,7 +61,7 @@ The difference between `plan` and `run` matters a lot when it comes to audits:
 - Vulcan evaluates and audits models directly against the production environment
 - If an audit fails, the run stops, but the invalid data *is already in production*
 - The blocking prevents this bad data from being used to build downstream models
-- This is like deploying directly—faster, but riskier
+- This is like deploying directly, faster, but riskier
 
 **Which should you use?** For production changes, use `plan`. It's safer and gives you a chance to fix issues before they hit production. Use `run` when you're confident or doing quick iterations.
 
@@ -179,7 +179,7 @@ model_defaults:
 
 This applies these audits to all models by default. Useful for organization-wide rules!
 
-> **Note:** In `model_defaults`, you can use either `audits` or `assertions`—both work for backward compatibility.
+> **Note:** In `model_defaults`, you can use either `audits` or `assertions`, both work for backward compatibility.
 
 ### Naming
 
@@ -223,7 +223,7 @@ You can define multiple audits in the same file. Just make sure they're defined 
 
 ## Built-in Audits
 
-Vulcan comes with a whole suite of built-in audits that cover most common use cases. These are ready to use—no need to write SQL yourself for these scenarios.
+Vulcan comes with a whole suite of built-in audits that cover most common use cases. These are ready to use, no need to write SQL yourself for these scenarios.
 
 All built-in audits are blocking (they stop execution when they fail), and they're grouped by what they check. Let's walk through them:
 
@@ -245,7 +245,7 @@ MODEL (
 );
 ```
 
-This checks that all rows have a `price` greater than 0 AND a `name` with at least one character. You can add as many criteria as you want—they all need to pass.
+This checks that all rows have a `price` greater than 0 AND a `name` with at least one character. You can add as many criteria as you want, they all need to pass.
 
 ### Row Counts and NULL Value Audits
 
@@ -380,7 +380,7 @@ This ensures that `name` is one of the three allowed values. Anything else fails
 
 #### `not_accepted_values`
 
-The opposite—make sure certain values are NOT present:
+The opposite, make sure certain values are NOT present:
 
 ```sql linenums="1"
 MODEL (
@@ -604,7 +604,7 @@ This ensures all `todo` values match at least one pattern: either start with a d
 
 #### `not_match_regex_pattern_list`
 
-The opposite—make sure values don't match any pattern:
+The opposite, make sure values don't match any pattern:
 
 ```sql linenums="1"
 MODEL (
@@ -795,9 +795,9 @@ This is useful for testing audits before running a full plan, or for debugging w
 
 ### Automated Auditing
 
-When you apply a plan, Vulcan automatically runs all audits for models being evaluated. You don't need to do anything special—just run your plan and audits happen automatically.
+When you apply a plan, Vulcan automatically runs all audits for models being evaluated. You don't need to do anything special, just run your plan and audits happen automatically.
 
-If any audit fails, Vulcan halts the pipeline immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us—it's better than finding out later that bad data made it into production.
+If any audit fails, Vulcan halts the pipeline immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us, it's better than finding out later that bad data made it into production.
 
 ## Advanced Usage
 
@@ -835,7 +835,7 @@ This will show you the exact query and the rows that failed. Once you see what d
 
 **Problem:** Your audit is failing during normal operation, even though the data is actually fine.
 
-**Solution:** Review your thresholds. Maybe your `accepted_range` is too narrow, or your `number_of_rows` threshold is too high. Statistical audits especially need tuning—start with wide ranges and tighten them as you learn what's normal.
+**Solution:** Review your thresholds. Maybe your `accepted_range` is too narrow, or your `number_of_rows` threshold is too high. Statistical audits especially need tuning, start with wide ranges and tighten them as you learn what's normal.
 
 ### Performance Issues
 
@@ -844,7 +844,7 @@ This will show you the exact query and the rows that failed. Once you see what d
 **Solution:** 
 - Make sure your audit queries use indexes on the columns they're checking
 - For incremental models, audits only run on processed intervals (which helps), but you can also add date filters to your audit queries
-- Consider if you really need all those audits—sometimes less is more
+- Consider if you really need all those audits, sometimes less is more
 
 ### Understanding Audit Results
 

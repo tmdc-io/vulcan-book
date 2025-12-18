@@ -74,7 +74,7 @@ def execute(
 
 **How it works:**
 
-The `@model` decorator captures your model's metadata (just like the `MODEL` DDL in SQL models). You specify column names and types in the `columns` argument—this is required because Vulcan needs to create the table before your function runs.
+The `@model` decorator captures your model's metadata (just like the `MODEL` DDL in SQL models). You specify column names and types in the `columns` argument, this is required because Vulcan needs to create the table before your function runs.
 
 **Function signature:** Your `execute` function receives:
 - `context: ExecutionContext` - For running queries and getting time intervals
@@ -86,7 +86,7 @@ The `@model` decorator captures your model's metadata (just like the `MODEL` DDL
 
 ## `@model` Specification
 
-The `@model` decorator accepts the same properties as SQL models—just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc.—they all work the same way.
+The `@model` decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc.—they all work the same way.
 
 Python model `kind`s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the [models configuration reference page](../../../references/model_configuration.md#model-kind-properties).
 
@@ -136,7 +136,7 @@ table = context.resolve_table("vulcan_demo.products")
 df = context.fetchdf(f"SELECT * FROM {table}")
 ```
 
-**Best practice:** Make your models [idempotent](components/model/glossary.md#idempotency)—running them multiple times should produce the same result. This makes debugging and restatements much easier.
+**Best practice:** Make your models [idempotent](components/model/glossary.md#idempotency), running them multiple times should produce the same result. This makes debugging and restatements much easier.
 
 ```python linenums="1"
 df = context.fetchdf("SELECT * FROM vulcan_demo.products")
@@ -153,7 +153,7 @@ You can pass SQL strings, SQLGlot expressions, or macro calls as lists to `pre_s
 
 !!! warning "Concurrency"
 
-    Be careful with pre-statements that create or alter physical tables—if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.
+    Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.
 
 **Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](components/configurations-old/configuration.md#model-defaults).
 
@@ -402,7 +402,7 @@ Note that arguments must be specified explicitly - variables cannot be accessed 
 
 ## Python Model Blueprinting
 
-Python models can serve as templates for creating multiple models. This is called "blueprinting"—you define one model template, and Vulcan creates multiple models from it.
+Python models can serve as templates for creating multiple models. This is called "blueprinting", you define one model template, and Vulcan creates multiple models from it.
 
 **How it works:** You parameterize the model name with a variable (using `@{variable}` syntax) and provide a list of mappings in `blueprints`. Vulcan creates one model for each mapping.
 
@@ -520,7 +520,7 @@ Here are some practical examples showing different ways to use Python models.
 
 ### Basic
 
-A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](components/model/types/overview.md#model-properties) work the same as SQL models—just use Python syntax.
+A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](components/model/types/overview.md#model-properties) work the same as SQL models, just use Python syntax.
 
 ```python linenums="1"
 import typing as t

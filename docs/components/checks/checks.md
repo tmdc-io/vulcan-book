@@ -1,6 +1,6 @@
 # Checks
 
-Quality checks are validation rules that monitor your data quality over time without blocking your pipelines. Think of them as your data's health checkup—they'll warn you when something looks off, but they won't stop the show.
+Quality checks are validation rules that monitor your data quality over time without blocking your pipelines. Think of them as your data's health checkup, they'll warn you when something looks off, but they won't stop the show.
 
 Unlike [audits](../audits/audits.md) (which block pipeline execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.
 
@@ -52,7 +52,7 @@ Think of it like a security system for your data:
 └─────────────────────────────────────────┘
 ```
 
-**Why this matters:** Audits are your bouncers—they stop bad data at the door. Checks are your security cameras—they watch for problems but don't interfere. Profiles are your data scientists—they observe patterns and help you understand what's normal.
+**Why this matters:** Audits are your bouncers, they stop bad data at the door. Checks are your security cameras, they watch for problems but don't interfere. Profiles are your data scientists, they observe patterns and help you understand what's normal.
 
 ## When to Use Checks
 
@@ -198,7 +198,7 @@ checks:
             WHERE age < 0 OR age > 120
 ```
 
-The `failed rows` check type is super flexible—you can write any SQL query. If it returns rows, the check fails and captures those rows as samples so you can see what went wrong.
+The `failed rows` check type is super flexible, you can write any SQL query. If it returns rows, the check fails and captures those rows as samples so you can see what went wrong.
 
 #### Pattern 3: Uniqueness Checks
 
@@ -215,7 +215,7 @@ checks:
           name: unique_customer_date_combination
 ```
 
-The second example shows composite keys—maybe a customer can have multiple orders, but only one per day.
+The second example shows composite keys, maybe a customer can have multiple orders, but only one per day.
 
 #### Pattern 4: Anomaly Detection
 
@@ -270,7 +270,7 @@ project/
 **File naming:**
 - Must end with `.yml` or `.yaml`
 - The name doesn't matter (Vulcan reads all files in the directory)
-- Organize by domain or table for clarity—whatever helps you find things
+- Organize by domain or table for clarity, whatever helps you find things
 
 ### Basic Check Syntax
 
@@ -494,7 +494,7 @@ completeness:
       name: optional_field_half_complete
 ```
 
-This is handy when table sizes vary—5% missing might be fine for a million-row table but concerning for a hundred-row table.
+This is handy when table sizes vary, 5% missing might be fine for a million-row table but concerning for a hundred-row table.
 
 ### Row Count Checks
 
@@ -511,7 +511,7 @@ completeness:
       name: expected_row_range
 ```
 
-The second example shows a range check—maybe you know your table should be between 1K and 100K rows, and anything outside that range is suspicious.
+The second example shows a range check, maybe you know your table should be between 1K and 100K rows, and anything outside that range is suspicious.
 
 #### `row_count` with filter
 
@@ -561,7 +561,7 @@ Maybe customers can have multiple orders, but only one per day. This check enfor
 
 #### SQL-based validation with samples
 
-This is the most flexible check type—you can write any SQL query you want:
+This is the most flexible check type, you can write any SQL query you want:
 
 ```yaml
 validity:
@@ -598,7 +598,7 @@ validity:
       samples limit: 10
 ```
 
-This finds orders that reference customers that don't exist—a classic referential integrity check.
+This finds orders that reference customers that don't exist, a classic referential integrity check.
 
 ### Threshold Checks
 
@@ -669,7 +669,7 @@ accuracy:
 - Works best with regular schedules (daily, hourly)
 - More accurate after 30+ data points (the more history, the better)
 
-So if you're setting up anomaly detection, be patient—it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.
+So if you're setting up anomaly detection, be patient, it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.
 
 ### Change Over Time Checks
 
@@ -740,7 +740,7 @@ MODEL (
 - Min, max, avg length
 - Most frequent values
 
-Think of profiles as your data's health records—they track how things change over time so you can spot trends and drift.
+Think of profiles as your data's health records, they track how things change over time so you can spot trends and drift.
 
 ### Profile Configuration
 
@@ -921,8 +921,8 @@ Now your checks are informed by actual data patterns, not guesses. Much better!
 - Use profiles to inform check thresholds (data-driven thresholds are better)
 
 ❌ **DON'T:**
-- Profile sensitive/PII columns (privacy risk—be careful!)
-- Profile every column (performance overhead—pick what matters)
+- Profile sensitive/PII columns (privacy risk, be careful!)
+- Profile every column (performance overhead, pick what matters)
 - Profile temporary/experimental models (waste of resources)
 - Use profiles as a replacement for checks (they serve different purposes)
 - Profile very high-frequency models (storage cost adds up)
@@ -937,7 +937,7 @@ Now your checks are informed by actual data patterns, not guesses. Much better!
 **When to skip profiles:**
 - Temporary models (they won't be around long)
 - Models with sensitive data (privacy concerns)
-- Very high-frequency models (> 100 runs/day—storage costs)
+- Very high-frequency models (> 100 runs/day, storage costs)
 - Models where you only need pass/fail validation (profiles are overkill)
 
 ## Advanced Patterns
@@ -1061,7 +1061,7 @@ checks/
 └── experimental.yml  # Testing new checks
 ```
 
-Pick whatever works for your team. The important thing is consistency—if everyone knows where to find things, life is easier.
+Pick whatever works for your team. The important thing is consistency, if everyone knows where to find things, life is easier.
 
 ### Naming Conventions
 
@@ -1119,7 +1119,7 @@ checks:
             description: "Based on 30-day historical analysis"
 ```
 
-Don't set thresholds based on guesses—let the data tell you what's normal. Use profiles to understand your data first, then set checks based on what you learn.
+Don't set thresholds based on guesses, let the data tell you what's normal. Use profiles to understand your data first, then set checks based on what you learn.
 
 **Use profiles to inform thresholds:**
 
@@ -1272,7 +1272,7 @@ checks:
       - row_count between 9000 and 11000  # ±10% variance
 ```
 
-Real data has variance. Don't set thresholds that are too strict—you'll just get false positives.
+Real data has variance. Don't set thresholds that are too strict, you'll just get false positives.
 
 #### Use anomaly detection instead
 
@@ -1320,4 +1320,4 @@ Quality checks provide a comprehensive way to monitor data quality over time wit
 - **Checks** - Monitoring, non-blocking (watch for problems)
 - **Profiles** - Observation, tracking (understand what's normal)
 
-Remember: start simple, use profiles to understand your data, then create checks based on what you learn. And don't forget—checks are there to help you, not stress you out. If a check is giving you too many false positives, adjust the threshold or switch to anomaly detection. The goal is better data quality, not perfect check scores.
+Remember: start simple, use profiles to understand your data, then create checks based on what you learn. And don't forget, checks are there to help you, not stress you out. If a check is giving you too many false positives, adjust the threshold or switch to anomaly detection. The goal is better data quality, not perfect check scores.

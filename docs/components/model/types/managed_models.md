@@ -1,8 +1,8 @@
 # Managed
 
-Most Vulcan models manage their own data—you run `vulcan run`, and Vulcan updates the tables. Managed models are different: the database engine handles data updates automatically in the background.
+Most Vulcan models manage their own data, you run `vulcan run`, and Vulcan updates the tables. Managed models are different: the database engine handles data updates automatically in the background.
 
-**How it works:** You define a query, and the engine monitors upstream tables. When source data changes, the engine automatically refreshes your managed table. No manual `REFRESH` commands needed—it just happens.
+**How it works:** You define a query, and the engine monitors upstream tables. When source data changes, the engine automatically refreshes your managed table. No manual `REFRESH` commands needed, it just happens.
 
 **Why use this?** Perfect for scenarios where you need always-fresh data without managing refresh schedules yourself. The engine handles the complexity of incremental updates, change detection, and refresh timing.
 
@@ -18,7 +18,7 @@ You might be wondering: "What's the difference between a managed model and a mat
 
 Vulcan already supports [materialized views](components/model/types/model_kinds.md#materialized-views), but they have limitations:
 - Some engines only allow materialized views from a single base table
-- Materialized views aren't automatically refreshed—you need to run `REFRESH MATERIALIZED VIEW` manually
+- Materialized views aren't automatically refreshed, you need to run `REFRESH MATERIALIZED VIEW` manually
 - You're responsible for scheduling refreshes
 
 **Managed models are different:**
@@ -93,7 +93,7 @@ FROM raw_events
 
 !!! note "No Intervals"
 
-    Vulcan doesn't create intervals or run this model on a schedule. You don't need `WHERE` clauses with date filters like you would for incremental models. Snowflake handles all the refreshing automatically—you just define the query and let Snowflake do its thing.
+    Vulcan doesn't create intervals or run this model on a schedule. You don't need `WHERE` clauses with date filters like you would for incremental models. Snowflake handles all the refreshing automatically, you just define the query and let Snowflake do its thing.
 
 #### Table Properties
 

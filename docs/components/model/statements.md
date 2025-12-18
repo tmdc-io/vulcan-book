@@ -1,6 +1,6 @@
 # Statements
 
-Statements let you run SQL commands at specific points during model execution. Think of them as hooks—you can run code before your query, after it completes, or when views are created.
+Statements let you run SQL commands at specific points during model execution. Think of them as hooks, you can run code before your query, after it completes, or when views are created.
 
 **Why use statements?** They're perfect for:
 - Setting session parameters (timeouts, memory limits)
@@ -20,11 +20,11 @@ You can define statements at the model level (for specific needs) or at the proj
 
 !!! warning "Concurrency Considerations"
 
-    Pre-statements should generally only prepare the main query. Avoid creating or altering physical tables in pre-statements—if multiple models run concurrently, you could get race conditions or unpredictable behavior. Stick to session settings, UDFs, and temporary objects.
+    Pre-statements should generally only prepare the main query. Avoid creating or altering physical tables in pre-statements, if multiple models run concurrently, you could get race conditions or unpredictable behavior. Stick to session settings, UDFs, and temporary objects.
 
 ## Model Defaults
 
-You can define statements at the project level using `model_defaults` in your configuration. This is great for setting up common behavior across all models—like session timeouts or default permissions.
+You can define statements at the project level using `model_defaults` in your configuration. This is great for setting up common behavior across all models, like session timeouts or default permissions.
 
 **How it works:** Default statements run first, then model-specific statements. So if you set a default timeout in `model_defaults` and a model-specific timeout in a model, the model-specific one runs after (and can override the default).
 

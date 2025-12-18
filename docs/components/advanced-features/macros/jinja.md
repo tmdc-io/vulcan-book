@@ -2,7 +2,7 @@
 
 Vulcan supports macros from the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating system. If you're already familiar with Jinja (maybe from dbt or other tools), you'll feel right at home here.
 
-Jinja works differently than Vulcan's native macros. While Vulcan macros understand the semantic structure of your SQL, Jinja macros are pure string substitution—they assemble SQL text by replacing placeholders, without building a semantic representation of the query.
+Jinja works differently than Vulcan's native macros. While Vulcan macros understand the semantic structure of your SQL, Jinja macros are pure string substitution, they assemble SQL text by replacing placeholders, without building a semantic representation of the query.
 
 !!! note "dbt compatibility"
     Vulcan supports the standard Jinja function library, but **not** dbt-specific functions like `{{ ref() }}`. If you're working with a dbt project using the Vulcan adapter, dbt-specific functions will work there, but not in native Vulcan projects.
@@ -161,7 +161,7 @@ JINJA_END;
 
 The `{% set %}` statement goes after the `MODEL` block and before your SQL query.
 
-Jinja variables can be strings, numbers, or even complex data structures like lists, tuples, or dictionaries. They support Python methods too—so you can call `.upper()` on strings, iterate over lists, and so on.
+Jinja variables can be strings, numbers, or even complex data structures like lists, tuples, or dictionaries. They support Python methods too, so you can call `.upper()` on strings, iterate over lists, and so on.
 
 ## Control flow
 
@@ -189,7 +189,7 @@ A few things to notice:
 - The values in the list are quoted: `['car', 'truck', 'bus']`
 - When you use `{{ vehicle_type }}` in the `CASE WHEN`, you need quotes around it: `'{{ vehicle_type }}'`
 - When you use it in an identifier name like `vehicle_{{ vehicle_type }}`, no quotes needed
-- There's a trailing comma after the `CASE WHEN` line—Vulcan's semantic understanding will remove it automatically
+- There's a trailing comma after the `CASE WHEN` line, Vulcan's semantic understanding will remove it automatically
 
 This renders to:
 

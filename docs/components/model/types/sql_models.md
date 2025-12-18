@@ -1,6 +1,6 @@
 # SQL
 
-SQL models are Vulcan's bread and butter—they're the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.
+SQL models are Vulcan's bread and butter, they're the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.
 
 **Why SQL models?** They're simple, powerful, and work with any SQL database. Most of your data transformations will probably be SQL models.
 
@@ -47,7 +47,7 @@ ORDER BY order_date
 
 ### `MODEL` DDL
 
-The `MODEL` DDL is where you define your model's metadata—name, kind, schedule, owner, and more. It must be the first statement in your SQL file.
+The `MODEL` DDL is where you define your model's metadata, name, kind, schedule, owner, and more. It must be the first statement in your SQL file.
 
 Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the [Model Properties](components/model/types/overview.md#model-properties) documentation.
 
@@ -63,7 +63,7 @@ Pre-statements run before your query, post-statements run after. They're perfect
 
 !!! warning "Concurrency"
 
-    Be careful with pre-statements that create or alter physical tables—if multiple models run concurrently, you could get conflicts. Stick to session settings and temporary objects.
+    Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings and temporary objects.
 
 ```sql linenums="1"
 MODEL (
@@ -164,7 +164,7 @@ The result of this query becomes your model's table or view data. Pretty straigh
 
 ### SQL Model Blueprinting
 
-SQL models can serve as templates for creating multiple models. This is called "blueprinting"—define one template, get multiple models.
+SQL models can serve as templates for creating multiple models. This is called "blueprinting", define one template, get multiple models.
 
 **How it works:** Parameterize your model name with a variable (using `@{variable}` syntax) and provide a list of mappings in `blueprints`. Vulcan creates one model for each mapping.
 
@@ -280,7 +280,7 @@ For the complete guide on Python-based SQL models, including the `@model` decora
 
 ## Automatic Dependencies
 
-One of Vulcan's superpowers: it parses your SQL and automatically figures out dependencies. No need to manually specify what your model depends on—Vulcan just knows!
+One of Vulcan's superpowers: it parses your SQL and automatically figures out dependencies. No need to manually specify what your model depends on, Vulcan just knows!
 
 **How it works:** Vulcan analyzes your `FROM` and `JOIN` clauses and builds a dependency graph. When you run `vulcan plan`, it ensures upstream models run first.
 
@@ -294,7 +294,7 @@ GROUP BY order_date
 
 Vulcan will make sure `raw.raw_orders` runs before this model. Pretty neat!
 
-**External dependencies:** If you reference tables that aren't Vulcan models, Vulcan can handle them too—either implicitly (through execution order) or via [signals](../../../advanced-features/signals.md).
+**External dependencies:** If you reference tables that aren't Vulcan models, Vulcan can handle them too, either implicitly (through execution order) or via [signals](../../../advanced-features/signals.md).
 
 **Manual dependencies:** Sometimes you need to add extra dependencies manually (maybe a hidden dependency or a macro that references another model). Use the `depends_on` property in your `MODEL` DDL for that.
 
@@ -337,7 +337,7 @@ Vulcan uses [SQLGlot](https://github.com/tobymao/sqlglot) to parse and transpile
 
 **Use advanced syntax:** You can use features from one dialect even if your engine doesn't support them. For example, `x::int` (PostgreSQL syntax) works even on engines that only support `CAST(x AS INT)`. SQLGlot handles the conversion.
 
-**Formatting flexibility:** Trailing commas, extra whitespace, minor formatting differences—SQLGlot normalizes them all. Write SQL however you like, and Vulcan makes it consistent.
+**Formatting flexibility:** Trailing commas, extra whitespace, minor formatting differences, SQLGlot normalizes them all. Write SQL however you like, and Vulcan makes it consistent.
 
 ## Macros
 

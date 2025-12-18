@@ -1,11 +1,11 @@
 # Variables
 
-Macro variables are placeholders that get replaced with actual values when Vulcan renders your SQL. They're what make your queries dynamic—instead of hardcoding values, you use variables that change based on context.
+Macro variables are placeholders that get replaced with actual values when Vulcan renders your SQL. They're what make your queries dynamic, instead of hardcoding values, you use variables that change based on context.
 
 Think of them like this: instead of writing `WHERE date > '2023-01-01'` and manually updating it every day, you write `WHERE date > @execution_ds` and it automatically uses today's date. Much better!
 
 !!! note
-    This page covers Vulcan's built-in macro variables—the ones that come pre-configured and ready to use. If you want to create your own custom variables, check out the [Vulcan macros page](./built_in.md#user-defined-variables) or [Jinja macros page](./jinja.md#user-defined-variables).
+    This page covers Vulcan's built-in macro variables, the ones that come pre-configured and ready to use. If you want to create your own custom variables, check out the [Vulcan macros page](./built_in.md#user-defined-variables) or [Jinja macros page](./jinja.md#user-defined-variables).
 
 ## A quick example
 
@@ -27,7 +27,7 @@ FROM table
 WHERE my_date > @execution_ds
 ```
 
-The `@` symbol tells Vulcan "this is a macro variable—replace it with a value before executing." The `@execution_ds` variable is predefined, so Vulcan automatically sets it to the date when execution started.
+The `@` symbol tells Vulcan "this is a macro variable, replace it with a value before executing." The `@execution_ds` variable is predefined, so Vulcan automatically sets it to the date when execution started.
 
 If you run this model on February 1, 2023, Vulcan renders it as:
 
@@ -39,7 +39,7 @@ WHERE my_date > '2023-02-01'
 
 The date updates automatically every time you run it. No manual editing needed!
 
-Vulcan comes with a bunch of predefined variables like this. You can also create your own custom variables if you need something specific—we'll cover those in the macro system pages.
+Vulcan comes with a bunch of predefined variables like this. You can also create your own custom variables if you need something specific, we'll cover those in the macro system pages.
 
 ## Predefined variables
 

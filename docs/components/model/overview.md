@@ -1,6 +1,6 @@
 # Overview
 
-Models are the heart of Vulcan—they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.
+Models are the heart of Vulcan, they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.
 
 Models live in `.sql` files in the `models/` directory of your project. The cool thing is that Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Just write your SQL, and Vulcan handles the lineage.
 
@@ -13,7 +13,7 @@ It's like filling out a form (DDL) and then writing the actual code (DML). Simpl
 
 ## Model Structure
 
-You can write models in SQL or Python. Both work the same way conceptually—they just look different. Let's see both:
+You can write models in SQL or Python. Both work the same way conceptually, they just look different. Let's see both:
 
 === "SQL Model"
 
@@ -87,7 +87,7 @@ You can write models in SQL or Python. Both work the same way conceptually—the
     - **Lines 7-20**: The DDL (`@model` decorator) - same metadata as SQL, just Python syntax
     - **Lines 21-40**: The DML (function body) - runs the SQL and returns a DataFrame
 
-Both formats do the same thing—pick whichever you're more comfortable with!
+Both formats do the same thing, pick whichever you're more comfortable with!
 
 ## DDL: The MODEL Block
 
@@ -130,7 +130,7 @@ Here are the properties you'll use most often:
 
 ## DML: The SELECT Query
 
-The `SELECT` query is where the magic happens. This is your transformation logic—the SQL that actually does the work.
+The `SELECT` query is where the magic happens. This is your transformation logic, the SQL that actually does the work.
 
 ```sql linenums="1"
 SELECT
@@ -153,7 +153,7 @@ Pretty standard SQL! Vulcan will automatically figure out that this model depend
 
 ## Conventions
 
-Vulcan tries to be smart and infer as much as possible from your SQL. This means you don't have to write a bunch of YAML config files—just write SQL and Vulcan figures it out. But to do this, your SQL needs to follow some conventions.
+Vulcan tries to be smart and infer as much as possible from your SQL. This means you don't have to write a bunch of YAML config files, just write SQL and Vulcan figures it out. But to do this, your SQL needs to follow some conventions.
 
 ### SQL Model Conventions
 
@@ -188,7 +188,7 @@ FROM raw.raw_orders
 GROUP BY order_date
 ```
 
-Vulcan uses PostgreSQL-style casting (`x::int`), but don't worry—it automatically converts this to whatever your execution engine needs. So you write `::INTEGER` and Vulcan handles the rest.
+Vulcan uses PostgreSQL-style casting (`x::int`), but don't worry, it automatically converts this to whatever your execution engine needs. So you write `::INTEGER` and Vulcan handles the rest.
 
 **Why this matters:** Without explicit types, you might get `FLOAT` when you expected `INTEGER`, or `VARCHAR` when you wanted `TIMESTAMP`. Explicit casting prevents these surprises.
 
@@ -207,7 +207,7 @@ SELECT
   SUM(total_amount) AS revenue    -- ✓ explicitly named
 ```
 
-If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit—you'll know what the column is called!
+If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit, you'll know what the column is called!
 
 #### Column Descriptions
 
@@ -231,10 +231,10 @@ MODEL (
 );
 ```
 
-This is the cleanest way—all your documentation is in one place, right in the MODEL block.
+This is the cleanest way, all your documentation is in one place, right in the MODEL block.
 
 !!! note "Priority"
-    If you use `column_descriptions` in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority—so if you define descriptions in both places, the DDL version wins.
+    If you use `column_descriptions` in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority, so if you define descriptions in both places, the DDL version wins.
 
 **Option 2: Inline Comments**
 
@@ -319,7 +319,7 @@ Python models can't use inline comments for column descriptions. Instead, specif
 ```
 
 !!! warning "Column name validation"
-    Vulcan will error if you put a column name in `column_descriptions` that doesn't exist in `columns`. This prevents typos and keeps things consistent—if you describe a column, it better exist!
+    Vulcan will error if you put a column name in `column_descriptions` that doesn't exist in `columns`. This prevents typos and keeps things consistent, if you describe a column, it better exist!
 
 #### Return Type
 
@@ -337,7 +337,7 @@ def execute(
     return context.fetchdf(query)
 ```
 
-The DataFrame columns need to match your `columns` definition exactly—same names, compatible types.
+The DataFrame columns need to match your `columns` definition exactly, same names, compatible types.
 
 !!! info "Learn more"
     Want to dive deeper into Python models? Check out the [Python Models](components/model/python_models.md) documentation for detailed information, advanced patterns, and more examples.

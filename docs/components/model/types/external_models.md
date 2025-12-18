@@ -1,6 +1,6 @@
 # External
 
-Sometimes your models need to query tables that exist outside your Vulcan project—maybe a third-party data source, a table managed by another system, or a read-only database. These are "external" tables.
+Sometimes your models need to query tables that exist outside your Vulcan project, maybe a third-party data source, a table managed by another system, or a read-only database. These are "external" tables.
 
 Vulcan doesn't manage external tables (you can't create or update them), but it can use metadata about them to make your life easier. By defining external models, you give Vulcan information about column names and types, which enables better column-level lineage and query optimization.
 
@@ -13,7 +13,7 @@ Vulcan stores this metadata as `EXTERNAL` models.
 
 ## How External Models Work
 
-`EXTERNAL` models are metadata-only—they just describe a table's schema (column names and types). There's no query for Vulcan to run, and Vulcan doesn't manage the data.
+`EXTERNAL` models are metadata-only, they just describe a table's schema (column names and types). There's no query for Vulcan to run, and Vulcan doesn't manage the data.
 
 **Important limitations:**
 - Vulcan doesn't know what data is in the table (or if it even exists)
@@ -23,7 +23,7 @@ Vulcan stores this metadata as `EXTERNAL` models.
 
 The querying model's [`kind`](../model_kinds.md), [`cron`](../overview.md#cron), and previously loaded time intervals determine when Vulcan will query the `EXTERNAL` model.
 
-**When external tables get queried:** Only when a Vulcan model references them. The querying model's `kind`, `cron`, and time intervals determine when the external table is actually queried. Vulcan doesn't proactively query external tables—it only queries them as part of executing your models.
+**When external tables get queried:** Only when a Vulcan model references them. The querying model's `kind`, `cron`, and time intervals determine when the external table is actually queried. Vulcan doesn't proactively query external tables, it only queries them as part of executing your models.
 
 ## Creating External Models
 
@@ -119,7 +119,7 @@ This sets `gateway: dev` on the external model, so it only loads when that gatew
 
 ### Writing YAML by Hand
 
-Sometimes you need to define external models manually—maybe Vulcan can't access the metadata, or you want more control. Here's the structure:
+Sometimes you need to define external models manually, maybe Vulcan can't access the metadata, or you want more control. Here's the structure:
 
 ```yaml
 - name: '"warehouse"."vulcan_demo"."customers"'
@@ -171,7 +171,7 @@ external_models/legacy_tables.yaml # More manual definitions
 
 You can define [assertions](components/model/audits.md) on external models! This is super useful for validating upstream data quality before your internal models run.
 
-**Why this matters:** If your external data source has quality issues, you want to catch them early—before they flow into your models and cause bigger problems downstream.
+**Why this matters:** If your external data source has quality issues, you want to catch them early, before they flow into your models and cause bigger problems downstream.
 
 Here's how you'd add assertions to an external model:
 

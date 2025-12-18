@@ -2,7 +2,7 @@
 
 Vulcan comes with a variety of [model kinds](../../model/model_kinds.md) that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?
 
-Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in—they let you write your own Python code to control exactly how your models get materialized.
+Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in, they let you write your own Python code to control exactly how your models get materialized.
 
 !!! warning "Advanced Feature"
     Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If you're considering this path, we'd love to hear from you in our [community slack](https://tobikodata.com/community.html). If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.
@@ -11,7 +11,7 @@ Sometimes, your specific use case doesn't quite fit any of the built-in model ki
 
 Think of a materialization as the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to actually get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.
 
-Some materializations are straightforward. For example, a `FULL` model kind completely replaces the table each time it runs—so its materialization is essentially just `CREATE OR REPLACE TABLE [name] AS [your query]`. Simple!
+Some materializations are straightforward. For example, a `FULL` model kind completely replaces the table each time it runs, so its materialization is essentially just `CREATE OR REPLACE TABLE [name] AS [your query]`. Simple!
 
 Other materializations are more complex. An `INCREMENTAL_BY_TIME_RANGE` model needs to figure out which time intervals to process, query only that data, and then merge it into the existing table. That requires more logic.
 
@@ -102,10 +102,10 @@ Let's break down what's happening here:
 | `NAME` | The identifier you'll use in your model definition (like `simple_custom`) |
 | `table_name` | The target table where your data will be inserted |
 | `query_or_df` | Either a SQL query string or a DataFrame (works with Pandas, PySpark, Snowpark) |
-| `model` | The full model definition object—gives you access to all model properties |
+| `model` | The full model definition object, gives you access to all model properties |
 | `is_first_insert` | `True` if this is the first time inserting data for this model version |
 | `render_kwargs` | Dictionary of arguments used to render the model query |
-| `self.adapter` | The engine adapter—your interface to execute SQL and interact with the database |
+| `self.adapter` | The engine adapter, your interface to execute SQL and interact with the database |
 
 ### Minimal example
 
@@ -299,7 +299,7 @@ This lets you create flexible materializations that can adapt to different use c
 !!! warning
     This is advanced territory. You're working with Vulcan's internals here, so there's extra complexity involved. If the basic custom materialization approach works for you, stick with that. Only dive into this if you really need the extra control.
 
-Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals—maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.
+Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals, maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.
 
 In those cases, you can create a subclass of `CustomKind` that Vulcan will use instead of the default. When your project loads, Vulcan will detect your subclass and use it instead of the standard `CustomKind`.
 
@@ -389,7 +389,7 @@ Once you've built a custom materialization, you'll probably want to use it acros
 
 ### Copying files
 
-The simplest approach is to copy the materialization code into each project's `materializations/` directory. It works, but it's not the most maintainable approach—you'll need to manually update each copy when you make changes.
+The simplest approach is to copy the materialization code into each project's `materializations/` directory. It works, but it's not the most maintainable approach, you'll need to manually update each copy when you make changes.
 
 If you go this route, we strongly recommend keeping the materialization code in version control and setting up a reliable way to notify users when updates are available.
 

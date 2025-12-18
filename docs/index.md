@@ -1,6 +1,6 @@
 # About
 
-Vulcan is a complete stack for building data products. Think of it as your all-in-one toolkit for transforming data—whether you're working with SQL or Python, small datasets or massive pipelines.
+Vulcan is a complete stack for building data products. Think of it as your all-in-one toolkit for transforming data, whether you're working with SQL or Python, small datasets or massive pipelines.
 
 ## What is Vulcan?
 

@@ -1,6 +1,6 @@
 # Overview
 
-The semantic layer is like a translator between your technical data models and your business users. It takes your SQL tables and makes them understandable to people who don't write SQL—turning `analytics.daily_revenue_metrics` into "Monthly Revenue by Customer Tier" that anyone can query.
+The semantic layer is like a translator between your technical data models and your business users. It takes your SQL tables and makes them understandable to people who don't write SQL, turning `analytics.daily_revenue_metrics` into "Monthly Revenue by Customer Tier" that anyone can query.
 
 Think of it this way: your models are the engine (they do the work), and the semantic layer is the dashboard (it makes things usable). It adds business context, consistent definitions, and a friendly interface so people can actually use your data.
 
@@ -18,7 +18,7 @@ The semantic layer helps everyone in your organization work with data more effec
 
 - ✅ **Define metrics once, use everywhere** - Write the calculation once, use it in dashboards, APIs, and reports
 - ✅ **Version-controlled business logic** - Your metric definitions live in code, so changes are tracked and reviewable
-- ✅ **Consistent calculations** - No more "which revenue calculation should I use?"—there's one definition
+- ✅ **Consistent calculations** - No more "which revenue calculation should I use?", there's one definition
 
 **For Business Users:**
 
@@ -36,7 +36,7 @@ The semantic layer helps everyone in your organization work with data more effec
 
 ## Core Components
 
-The semantic layer has two main pieces that work together. Think of them as building blocks—you start with semantic models, then build metrics on top.
+The semantic layer has two main pieces that work together. Think of them as building blocks, you start with semantic models, then build metrics on top.
 
 ### Semantic Models
 
@@ -104,7 +104,7 @@ Setting up your semantic layer is straightforward. Here's the workflow:
 5. **Validate** - Vulcan automatically validates your semantic definitions when you create a plan
 6. **Query** - Use the semantic layer via APIs or export to BI tools
 
-The validation step is important—Vulcan checks that your measures reference real columns, joins are valid, and metrics make sense. It'll catch errors before you try to use them, which saves you from debugging issues later.
+The validation step is important, Vulcan checks that your measures reference real columns, joins are valid, and metrics make sense. It'll catch errors before you try to use them, which saves you from debugging issues later.
 
 ## File Organization
 

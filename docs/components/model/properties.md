@@ -1,6 +1,6 @@
 # Properties
 
-The `MODEL` DDL statement has a bunch of properties you can use to control how your model behaves. Think of them as knobs and switches—you can configure scheduling, storage, validation, and more.
+The `MODEL` DDL statement has a bunch of properties you can use to control how your model behaves. Think of them as knobs and switches, you can configure scheduling, storage, validation, and more.
 
 This page is your complete reference for all available properties. We'll cover what each one does, when to use it, and show you examples.
 
@@ -360,7 +360,7 @@ Sets the latest date/time your model should process. Uses the same format as `st
 
 ### grain / grains
 
-Defines the column(s) that make each row unique. This is like a primary key—it tells Vulcan what identifies a single row in your table.
+Defines the column(s) that make each row unique. This is like a primary key, it tells Vulcan what identifies a single row in your table.
 
 **Why this matters:** Tools like `table_diff` use grains to compare tables. It also helps Vulcan understand your data structure for better optimization and validation.
 
@@ -418,7 +418,7 @@ You can specify a single grain (`grain order_id`) or multiple grains (`grains (o
 
 ### owner
 
-Sets the owner of the model—usually a team name or individual. This is used for governance, notifications, and knowing who to contact when something breaks.
+Sets the owner of the model, usually a team name or individual. This is used for governance, notifications, and knowing who to contact when something breaks.
 
 **Example:** `owner 'analytics_team'` or `owner 'data_engineers'`
 
@@ -506,7 +506,7 @@ Document your columns! This property lets you add descriptions for each column, 
 
 ### columns
 
-Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query—it'll use exactly what you specify.
+Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query, it'll use exactly what you specify.
 
 **When to use:**
 - Python models (required—Vulcan can't infer types from Python code)
@@ -597,7 +597,7 @@ Labels for organizing and filtering models.
 
 Attach [audits](../audits/audits.md) directly to your model. These validations run after each model evaluation and will block the pipeline if they fail.
 
-**Why use assertions?** They're your safety net—they catch bad data before it flows downstream. If revenue can't be negative, assert it. If customer IDs must be unique, assert it. Fail fast, fix fast.
+**Why use assertions?** They're your safety net, they catch bad data before it flows downstream. If revenue can't be negative, assert it. If customer IDs must be unique, assert it. Fail fast, fix fast.
 
 Think of assertions as "this data must be true" validations that run automatically.
 
@@ -632,7 +632,7 @@ Think of assertions as "this data must be true" validations that run automatical
 
 Enable automatic data profiling for specific columns. Profiles track statistical metrics over time (like null percentages, distinct counts, distributions) without blocking your pipeline.
 
-**How it works:** Vulcan collects metrics each run and stores them in the `_check_profiles` table. You can query this to see how your data changes over time—detect data drift, understand patterns, and decide which checks or audits to add.
+**How it works:** Vulcan collects metrics each run and stores them in the `_check_profiles` table. You can query this to see how your data changes over time, detect data drift, understand patterns, and decide which checks or audits to add.
 
 **Use cases:**
 - Track null percentages over time
@@ -641,7 +641,7 @@ Enable automatic data profiling for specific columns. Profiles track statistical
 - Understand column distributions
 - Inform which checks/audits to create
 
-Think of profiles as your data observability layer—they watch and learn, but don't block.
+Think of profiles as your data observability layer, they watch and learn, but don't block.
 === "SQL"
 
     ```sql
@@ -696,7 +696,7 @@ Explicitly declare model dependencies. Vulcan automatically infers dependencies 
 - Hidden dependencies (like a macro that references another model)
 - External dependencies that aren't in your SQL
 
-**Note:** Dependencies you declare here are added to the ones Vulcan infers—they don't replace them.
+**Note:** Dependencies you declare here are added to the ones Vulcan infers, they don't replace them.
 
 === "SQL"
 
@@ -864,7 +864,7 @@ Sets the physical file format for your table's data files. This affects compress
 
 **Common formats:** `parquet`, `orc`
 
-**Parquet** is usually the best choice—it's columnar (great for analytics), has good compression, and is widely supported. **ORC** is another option, especially if you're using Hive.
+**Parquet** is usually the best choice, it's columnar (great for analytics), has good compression, and is widely supported. **ORC** is another option, especially if you're using Hive.
 
 === "SQL"
 
@@ -1028,7 +1028,7 @@ These properties control how Vulcan behaves when processing your model.
 
 ### stamp
 
-Force a new model version without changing the definition. This is like a version tag—useful for tracking deployments or forcing a refresh.
+Force a new model version without changing the definition. This is like a version tag, useful for tracking deployments or forcing a refresh.
 
 **When to use:** When you want to create a new version for tracking purposes, or when you need to force downstream models to rebuild even though this model's definition hasn't changed.
 
@@ -1194,7 +1194,7 @@ You can ignore specific rules (`['rule_name', 'another_rule']`) or all rules (`'
 
 ## Incremental Model Properties
 
-These properties are specified inside the `kind` definition for incremental models. They control how incremental models behave—things like handling schema changes, restatements, and batch processing.
+These properties are specified inside the `kind` definition for incremental models. They control how incremental models behave, things like handling schema changes, restatements, and batch processing.
 
 For the full picture on incremental models, check out the [Model Kinds](model_kinds.md) documentation.
 
@@ -1410,7 +1410,7 @@ For details on `INCREMENTAL_BY_UNIQUE_KEY` models, see the [Model Kinds document
 
 Properties for models that update by partition. This kind uses the `partitioned_by` property (from the General Properties section) as its partition key.
 
-**Note:** There are no additional kind-specific properties—just use `partitioned_by` to define your partition columns.
+**Note:** There are no additional kind-specific properties, just use `partitioned_by` to define your partition columns.
 
 For details on `INCREMENTAL_BY_PARTITION` models, see the [Model Kinds documentation](model_kinds.md#incremental_by_partition).
 

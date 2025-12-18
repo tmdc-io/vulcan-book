@@ -334,7 +334,7 @@ Vulcan gives you flexibility in how you define test data. Pick whatever format w
 
 ### YAML Dictionaries (Default)
 
-The most common format—just list your rows as YAML dictionaries:
+The most common format, just list your rows as YAML dictionaries:
 
 ```yaml linenums="1"
 inputs:
@@ -665,7 +665,7 @@ Generate input data using a SQL query:
       query: <sql_query>
 ```
 
-**Note:** You can't use `query` together with `rows`—pick one or the other.
+**Note:** You can't use `query` together with `rows`, pick one or the other.
 
 ### `<test_name>.outputs`
 

@@ -37,7 +37,7 @@ That's it! This metric is now ready to be queried at any time granularity you wa
 
 ## Simple metric
 
-Let's start with the basics—a metric that just has a measure and time:
+Let's start with the basics, a metric that just has a measure and time:
 
 ```yaml
 metrics:
@@ -108,7 +108,7 @@ measure: analytics.fact_orders.revenue
 time: order_date  # Missing alias
 ```
 
-The dot notation (`orders.total_revenue`) tells Vulcan which semantic model to look in and what to reference. Physical table names won't work here—you need the semantic aliases.
+The dot notation (`orders.total_revenue`) tells Vulcan which semantic model to look in and what to reference. Physical table names won't work here, you need the semantic aliases.
 
 ## Time granularity
 
@@ -129,7 +129,7 @@ The same metric can be queried with different granularities:
 - Quarterly: `granularity=quarter`
 - Yearly: `granularity=year`
 
-You don't need separate metric definitions for each granularity—just change the query parameter.
+You don't need separate metric definitions for each granularity, just change the query parameter.
 
 ## Complete example
 

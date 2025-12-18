@@ -12,7 +12,7 @@ Semantic models bridge the gap between technical table structures and business u
 - **Provide business aliases**: Hide technical naming (like `dim_customers` or `fact_orders`) behind consumer-friendly names
 - **Expose analytical capabilities**: Define dimensions, measures, segments, and joins for each model
 
-They're the foundation of your semantic layer—everything else (business metrics, semantic queries) builds on top of semantic models.
+They're the foundation of your semantic layer, everything else (business metrics, semantic queries) builds on top of semantic models.
 
 ## Basic structure
 
@@ -33,7 +33,7 @@ The physical model name (`analytics.customers`) is the key, and everything else 
 
 ## Dimensions
 
-Dimensions are attributes you use for grouping and filtering. They answer "by what?" questions—like "revenue by customer tier" or "orders by country."
+Dimensions are attributes you use for grouping and filtering. They answer "by what?" questions, like "revenue by customer tier" or "orders by country."
 
 **The good news:** All columns from your Vulcan model automatically become dimensions. You don't have to define them manually unless you want to control which ones are exposed or add enhancements.
 
@@ -64,7 +64,7 @@ dimensions:
           description: "Quarterly cohorts"
 ```
 
-Use `excludes` to hide sensitive or internal columns. Use `enhancements` to add time granularities for cohort analysis—super useful for subscription or signup dates.
+Use `excludes` to hide sensitive or internal columns. Use `enhancements` to add time granularities for cohort analysis, super useful for subscription or signup dates.
 
 ## Measures
 
@@ -119,11 +119,11 @@ segments:
     description: "Customers who signed up in last 30 days"
 ```
 
-Segments make your semantic layer more consistent—everyone uses the same definition of "active customers" or "high value," so there's no confusion about what those terms mean.
+Segments make your semantic layer more consistent, everyone uses the same definition of "active customers" or "high value," so there's no confusion about what those terms mean.
 
 ## Joins
 
-Joins define relationships between semantic models. They're what enable cross-model analysis—like combining order data with customer data or product data.
+Joins define relationships between semantic models. They're what enable cross-model analysis, like combining order data with customer data or product data.
 
 You define the relationship type (`one_to_one`, `one_to_many`, `many_to_one`) and the join expression:
 
@@ -144,7 +144,7 @@ The relationship type helps Vulcan understand the cardinality, which is importan
 
 ## Cross-model analysis
 
-Once you've defined joins, you can reference columns and measures from other models in your current model's definitions. This is where semantic models really shine—you can build complex analytical definitions that span multiple models.
+Once you've defined joins, you can reference columns and measures from other models in your current model's definitions. This is where semantic models really shine, you can build complex analytical definitions that span multiple models.
 
 ### Referencing joined model fields
 
@@ -181,7 +181,7 @@ dimensions:
 - The measure must exist on the target model
 - Use the format `model_alias.measure_name`
 
-Proxy dimensions are powerful—they let you analyze one model using aggregated values from another model, all without writing complex SQL.
+Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL.
 
 ## Complete example
 
