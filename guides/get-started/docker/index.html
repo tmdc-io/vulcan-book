@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -518,7 +518,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -530,7 +530,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1177,94 +1177,98 @@ Vulcan uses it to store query results and artifacts, enabling efficient data ret
 </div>
 </div>
 <h2 id="create-your-first-project">Create Your First Project<a class="headerlink" href="#create-your-first-project" title="Link to this section">¶</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Mac/Linux</label><label for="__tabbed_3_2">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Mac/Linux</label></div>
 <div class="tabbed-content">
-<div class="tabbed-block">
+<div class="tabbed-block"></div>
+</div>
+</div>
 <ol>
 <li>
-<p><strong>Initialize project:</strong> <a href="../../../cli-command/cli/#init" target="_blank"><em>Click here</em></a>
+<p><strong>Initialize project:</strong> <a href="guides/getting_started/cli.md#init" target="_blank"><em>Click here</em></a>
 </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>vulcan<span class="w"> </span>init
 </span></code></pre></div>
-   Choose <code>DEFAULT</code> project type and <code>Postgres</code> as SQL engine. <p></p>
-<p>It creates 7 <code>directories</code> containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files</p>
+       Choose <code>DEFAULT</code> project type and <code>Postgres</code> as SQL engine. <p></p>
+<div class="language-text highlight"><pre><span></span><code>It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
+</code></pre></div>
 </li>
 <li>
-<p><strong>Check connection and number of models, macros, and other project components:</strong> <a href="../../../cli-command/cli/#info" target="_blank"><em>Click here</em></a>
+<p><strong>Check connection and number of models, macros, and other project components:</strong> <a href="guides/getting_started/cli.md#info" target="_blank"><em>Click here</em></a>
 </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>vulcan<span class="w"> </span>info
 </span></code></pre></div>
-  It verifies that the setup is correct before running plans<p></p>
+      It verifies that the setup is correct before running plans<p></p>
 </li>
 <li>
-<p><strong>Run the plan:</strong> <a href="../../../cli-command/cli/#plan" target="_blank"><em>Click here</em></a>
+<p><strong>Run the plan:</strong> <a href="guides/getting_started/cli.md#plan" target="_blank"><em>Click here</em></a>
 </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>vulcan<span class="w"> </span>plan
 </span></code></pre></div>
-  This will:<p></p>
-<ol>
-<li>Validate and creates the necessary database objects (tables, views, etc.) based on your models</li>
-<li>Backfills historical data according to your model's <code>start</code> date and <code>cron</code> schedule</li>
-<li>Prompt you to apply the plan</li>
-</ol>
-<p>Enter <code>y</code> when prompted to apply the plan and backfill your models.</p>
+      This will:<p></p>
+<div class="language-text highlight"><pre><span></span><code>1. Validate and creates the necessary database objects (tables, views, etc.) based on your models
+2. Backfills historical data according to your model's `start` date and `cron` schedule
+3. Prompt you to apply the plan
+
+Enter `y` when prompted to apply the plan and backfill your models.
+</code></pre></div>
 </li>
 <li>
-<p><strong>Query the models:</strong> <a href="../../../cli-command/cli/#fetchdf" target="_blank"><em>Click here</em></a>
+<p><strong>Query the models:</strong> <a href="guides/getting_started/cli.md#fetchdf" target="_blank"><em>Click here</em></a>
 </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>vulcan<span class="w"> </span>fetchdf<span class="w"> </span><span class="s2">"select * from schema.model_name"</span>
 </span></code></pre></div>
-   Executes a SQL query and returns results as a pandas DataFrame<p></p>
+       Executes a SQL query and returns results as a pandas DataFrame<p></p>
 </li>
 <li>
-<p><strong>Query the Semantic:</strong> <a href="../../../cli-command/cli/#transpile" target="_blank"><em>Click here</em></a>
+<p><strong>Query the Semantic:</strong> <a href="guides/getting_started/cli.md#transpile" target="_blank"><em>Click here</em></a>
 </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="w"> </span>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(measure_name) FROM model"</span>
 </span></code></pre></div>
-  Returns the generated SQL that can be executed against your warehouse<p></p>
+      Returns the generated SQL that can be executed against your warehouse<p></p>
 </li>
 </ol>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
 </div>
-<div class="tabbed-block">
+</div>
 <ol>
 <li>
-<p><strong>Initialize project:</strong> <a href="../../../cli-command/cli/#init" target="_blank"><em>Click here</em></a>
+<p><strong>Initialize project:</strong> <a href="guides/getting_started/cli.md#init" target="_blank"><em>Click here</em></a>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan init
 </span></code></pre></div>
-   Choose <code>DEFAULT</code> project type and <code>Postgres</code> as SQL engine. <p></p>
-<p>It creates 7 <code>directories</code> containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files</p>
+       Choose <code>DEFAULT</code> project type and <code>Postgres</code> as SQL engine. <p></p>
+<div class="language-text highlight"><pre><span></span><code>It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
+</code></pre></div>
 </li>
 <li>
-<p><strong>Check connection and number of models, macros, and other project components:</strong> <a href="../../../cli-command/cli/#info" target="_blank"><em>Click here</em></a>
+<p><strong>Check connection and number of models, macros, and other project components:</strong> <a href="guides/getting_started/cli.md#info" target="_blank"><em>Click here</em></a>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>vulcan info
 </span></code></pre></div>
-   It verifies that the setup is correct before running plans<p></p>
+       It verifies that the setup is correct before running plans<p></p>
 </li>
 <li>
-<p><strong>Run the plan:</strong> <a href="../../../cli-command/cli/#plan" target="_blank"><em>Click here</em></a>
+<p><strong>Run the plan:</strong> <a href="guides/getting_started/cli.md#plan" target="_blank"><em>Click here</em></a>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>vulcan plan
 </span></code></pre></div>
-  This will:<p></p>
-<ol>
-<li>Validate and creates the necessary database objects (tables, views, etc.) based on your models</li>
-<li>Backfills historical data according to your model's <code>start</code> date and <code>cron</code> schedule</li>
-<li>Prompt you to apply the plan</li>
-</ol>
-<p>Enter <code>y</code> when prompted to apply the plan and backfill your models.</p>
+      This will:<p></p>
+<div class="language-text highlight"><pre><span></span><code>1. Validate and creates the necessary database objects (tables, views, etc.) based on your models
+2. Backfills historical data according to your model's `start` date and `cron` schedule
+3. Prompt you to apply the plan
+
+Enter `y` when prompted to apply the plan and backfill your models.
+</code></pre></div>
 </li>
 <li>
-<p><strong>Query the models:</strong> <a href="../../../cli-command/cli/#fetchdf" target="_blank"><em>Click here</em></a>
+<p><strong>Query the models:</strong> <a href="guides/getting_started/cli.md#fetchdf" target="_blank"><em>Click here</em></a>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>vulcan fetchdf "select * from schema.model_name"
 </span></code></pre></div>
-   Executes a SQL query and returns results as a pandas DataFrame<p></p>
+       Executes a SQL query and returns results as a pandas DataFrame<p></p>
 </li>
 <li>
-<p><strong>Query the Semantic:</strong> <a href="../../../cli-command/cli/#transpile" target="_blank"><em>Click here</em></a>
+<p><strong>Query the Semantic:</strong> <a href="guides/getting_started/cli.md#transpile" target="_blank"><em>Click here</em></a>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a> vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
 </span></code></pre></div>
-  Returns the generated SQL that can be executed against your warehouse<p></p>
+      Returns the generated SQL that can be executed against your warehouse<p></p>
 </li>
 </ol>
-</div>
-</div>
-</div>
 <h2 id="stopping-services">Stopping Services<a class="headerlink" href="#stopping-services" title="Link to this section">¶</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Mac/Linux</label><label for="__tabbed_4_2">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Mac/Linux</label><label for="__tabbed_5_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>To stop all services:  <br/>
@@ -1292,7 +1296,7 @@ To stop individual services:
 <summary>Troubleshooting</summary>
 <p><strong>Services won't start:</strong> Ensure Docker Desktop is running with at least 4GB RAM allocated.</p>
 <p><strong>Network errors:</strong> Ensure the <code>vulcan</code> network exists:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Mac/Linux</label><label for="__tabbed_5_2">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">Mac/Linux</label><label for="__tabbed_6_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>docker<span class="w"> </span>network<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan
@@ -1322,10 +1326,10 @@ You can access the MinIO console at <code>http://localhost:9001</code> with:
 </details>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li><a href="../../../cli-command/cli/" target="_blank">Learn more about Vulcan CLI commands</a></li>
-<li><a href="../../../components/model/overview/" target="_blank">Explore Vulcan concepts</a></li>
+<li><a href="guides/getting_started/cli.md" target="_blank">Learn more about Vulcan CLI commands</a></li>
+<li><a href="../concepts-old/overview.md" target="_blank">Explore Vulcan concepts</a></li>
+<li><a href="guides/guides-old/connections.md" target="_blank">Set up connections to different warehouses</a></li>
 </ul>
-<!-- - [Set up connections to different warehouses](../../configurations/engines){:target="_blank"} -->
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

@@ -487,7 +487,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -499,7 +499,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -511,7 +511,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -523,7 +523,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -565,7 +565,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -577,7 +577,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1055,7 +1055,7 @@
 </div>
 </div>
 </div>
-<p>The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="../../../components/model/model_kinds/">model concepts page</a>.</p>
+<p>The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="configurations/components/model/model_kinds.md">model concepts page</a>.</p>
 <h2 id="identifier-resolution">Identifier resolution<a class="headerlink" href="#identifier-resolution" title="Link to this section">¶</a></h2>
 <p>When a SQL engine receives a query such as <code>SELECT id FROM "some_table"</code>, it eventually needs to understand what database objects the identifiers <code>id</code> and <code>"some_table"</code> correspond to. This process is usually referred to as identifier (or name) resolution.</p>
 <p>Different SQL dialects implement different rules when resolving identifiers in queries. For example, certain identifiers may be treated as case-sensitive (e.g. if they're quoted), and a case-insensitive identifier is usually either lowercased or uppercased, before the engine actually looks up what object it corresponds to.</p>

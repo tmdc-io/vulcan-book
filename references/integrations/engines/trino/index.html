@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1007,7 +1007,7 @@
 <h1 id="trino">Trino<a class="headerlink" href="#trino" title="Link to this section">¶</a></h1>
 <h2 id="localbuilt-in-scheduler">Local/Built-in Scheduler<a class="headerlink" href="#localbuilt-in-scheduler" title="Link to this section">¶</a></h2>
 <p><strong>Engine Adapter Type</strong>: <code>trino</code></p>
-<p>NOTE: Trino may not be used for the Vulcan <a href="../../reference/configuration.md#connections">state connection</a>.</p>
+<p>NOTE: Trino may not be used for the Vulcan <a href="configurations-old/configurations-old/configuration.md#connections">state connection</a>.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Link to this section">¶</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>pip install "vulcan[trino]"
 </span></code></pre></div>
@@ -1212,12 +1212,12 @@ For more information on how to configure the Trino Iceberg connector for this, s
 <p class="admonition-title">Placeholders</p>
 <p>You may use the <code>@{catalog_name}</code> and <code>@{schema_name}</code> placeholders in the mapping value.</p>
 <p>If there is a match on one of the patterns then the catalog / schema that Vulcan is about to use in the <code>CREATE SCHEMA</code> statement will be substituted into these placeholders.</p>
-<p>Note the use of curly brace syntax <code>@{}</code> when referencing these placeholders - learn more <a href="../../concepts/macros/vulcan_macros.md#embedding-variables-in-strings">here</a>.</p>
+<p>Note the use of curly brace syntax <code>@{}</code> when referencing these placeholders - learn more <a href="configurations-old/components/advanced-features/macros/built_in.md#embedding-variables-in-strings">here</a>.</p>
 </div>
 <h4 id="tables">Tables<a class="headerlink" href="#tables" title="Link to this section">¶</a></h4>
 <p>Often, you don't need to configure an explicit table location because if you have configured explicit schema locations, table locations are automatically inferred by Trino to be a subdirectory under the schema location.</p>
 <p>However, if you need to, you can configure an explicit table location by adding a <code>location</code> property to the model <code>physical_properties</code>.</p>
-<p>Note that you need to use the <a href="../../concepts/macros/vulcan_macros.md#resolve_template">@resolve_template</a> macro to generate a unique table location for each model version. Otherwise, all model versions will be written to the same location and clobber each other.</p>
+<p>Note that you need to use the <a href="configurations-old/components/advanced-features/macros/built_in.md#resolve_template">@resolve_template</a> macro to generate a unique table location for each model version. Otherwise, all model versions will be written to the same location and clobber each other.</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">staging</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
 </span><span id="__span-10-3"><a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="k">FULL</span><span class="p">,</span>

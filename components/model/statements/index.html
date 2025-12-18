@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -531,7 +531,7 @@
 <a class="md-nav__link" href="#model-defaults">
 <span class="md-ellipsis">
       
-        Model defaults
+        Model Defaults
       
     </span>
 </a>
@@ -558,7 +558,7 @@
 <a class="md-nav__link" href="#on-virtual-update-statements">
 <span class="md-ellipsis">
       
-        On-virtual-update statements
+        On-virtual-update Statements
       
     </span>
 </a>
@@ -592,7 +592,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -604,7 +604,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -988,7 +988,7 @@
 <a class="md-nav__link" href="#model-defaults">
 <span class="md-ellipsis">
       
-        Model defaults
+        Model Defaults
       
     </span>
 </a>
@@ -1015,7 +1015,7 @@
 <a class="md-nav__link" href="#on-virtual-update-statements">
 <span class="md-ellipsis">
       
-        On-virtual-update statements
+        On-virtual-update Statements
       
     </span>
 </a>
@@ -1071,19 +1071,28 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="statements">Statements<a class="headerlink" href="#statements" title="Link to this section">¶</a></h1>
-<p>Statements are auxiliary SQL commands that extend a model's capabilities beyond its main query. They allow you to execute custom logic at specific points during model execution—before the query runs (pre-statements), after the query completes (post-statements), or when views are created/updated (on-virtual-update). Common use cases include setting session parameters, loading UDFs, creating indexes, enforcing data quality checks, logging anomalies, and granting access permissions. Statements can be defined at the model level for specific needs or at the project level via <code>model_defaults</code> for consistent behavior across all models.</p>
+<p>Statements let you run SQL commands at specific points during model execution. Think of them as hooks—you can run code before your query, after it completes, or when views are created.</p>
+<p><strong>Why use statements?</strong> They're perfect for:
+- Setting session parameters (timeouts, memory limits)
+- Loading UDFs or creating temporary tables
+- Creating indexes or clustering
+- Running data quality checks
+- Logging anomalies or errors
+- Granting permissions on views</p>
+<p>You can define statements at the model level (for specific needs) or at the project level via <code>model_defaults</code> (for consistent behavior across all models).</p>
 <p><strong>Statement types:</strong></p>
 <ul>
-<li><strong>Pre-statements</strong>: Run before the main model query</li>
-<li><strong>Post-statements</strong>: Run after the main model query</li>
-<li><strong>On-virtual-update statements</strong>: Run when a virtual update occurs (view creation/update)</li>
+<li><strong>Pre-statements</strong>: Run before the main model query executes</li>
+<li><strong>Post-statements</strong>: Run after the main model query completes</li>
+<li><strong>On-virtual-update statements</strong>: Run when views are created or updated in the virtual layer</li>
 </ul>
 <div class="admonition warning">
-<p class="admonition-title">Concurrency considerations</p>
-<p>Pre-statements should generally only be used for preparing the main query. Avoid creating or altering physical tables in pre-statements, as this could lead to unpredictable behavior if multiple models run concurrently.</p>
+<p class="admonition-title">Concurrency Considerations</p>
+<p>Pre-statements should generally only prepare the main query. Avoid creating or altering physical tables in pre-statements—if multiple models run concurrently, you could get race conditions or unpredictable behavior. Stick to session settings, UDFs, and temporary objects.</p>
 </div>
-<h2 id="model-defaults">Model defaults<a class="headerlink" href="#model-defaults" title="Link to this section">¶</a></h2>
-<p>You can define statements at the project level using <code>model_defaults</code> in your configuration. These default statements are merged with any model-specific statements, with <strong>default statements executing first</strong>, followed by model-specific statements.</p>
+<h2 id="model-defaults">Model Defaults<a class="headerlink" href="#model-defaults" title="Link to this section">¶</a></h2>
+<p>You can define statements at the project level using <code>model_defaults</code> in your configuration. This is great for setting up common behavior across all models—like session timeouts or default permissions.</p>
+<p><strong>How it works:</strong> Default statements run first, then model-specific statements. So if you set a default timeout in <code>model_defaults</code> and a model-specific timeout in a model, the model-specific one runs after (and can override the default).</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1141,13 +1150,13 @@
 </div>
 </div>
 <h2 id="pre-statements">Pre-statements<a class="headerlink" href="#pre-statements" title="Link to this section">¶</a></h2>
-<p>Pre-statements run before the main model query. They are useful for:</p>
-<ul>
-<li>Loading JARs or UDFs</li>
-<li>Creating temporary tables or caching data</li>
-<li>Setting session parameters</li>
-<li>Initializing variables</li>
-</ul>
+<p>Pre-statements run before your main model query executes. They're perfect for setting up the environment your query needs.</p>
+<p><strong>Common use cases:</strong>
+- Loading JARs or UDFs that your query uses
+- Creating temporary tables or caching data
+- Setting session parameters (timeouts, memory, etc.)
+- Initializing variables or settings</p>
+<p><strong>Think of it as:</strong> The "setup" phase before your main query runs.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">SQL</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1295,14 +1304,14 @@
 </div>
 </div>
 <h2 id="post-statements">Post-statements<a class="headerlink" href="#post-statements" title="Link to this section">¶</a></h2>
-<p>Post-statements run after each evaluation of the model query. The model query <strong>must end with a semicolon</strong> when post-statements are present in SQL models.</p>
-<p>Post-statements are useful for:</p>
-<ul>
-<li>Creating indexes or clustering</li>
-<li>Running data quality checks</li>
-<li>Inserting anomalies into tracking tables</li>
-<li>Conditional table alterations</li>
-</ul>
+<p>Post-statements run after your model query completes. They're great for cleanup, optimization, or validation tasks.</p>
+<p><strong>Important:</strong> When you use post-statements in SQL models, your main query <strong>must end with a semicolon</strong>. This tells Vulcan where the query ends and the statements begin.</p>
+<p><strong>Common use cases:</strong>
+- Creating indexes or clustering (for query performance)
+- Running data quality checks or validations
+- Logging anomalies or errors to tracking tables
+- Conditional table alterations (like setting retention policies)</p>
+<p><strong>Think of it as:</strong> The "cleanup and optimization" phase after your data is loaded.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">SQL</label><label for="__tabbed_3_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1465,13 +1474,15 @@
 </div>
 </div>
 </div>
-<h2 id="on-virtual-update-statements">On-virtual-update statements<a class="headerlink" href="#on-virtual-update-statements" title="Link to this section">¶</a></h2>
-<p>On-virtual-update statements run when a virtual update occurs (when views are created or updated). They are useful for:</p>
-<ul>
-<li>Granting permissions on views</li>
-<li>Setting up access controls</li>
-<li>Applying column masking policies</li>
-</ul>
+<h2 id="on-virtual-update-statements">On-virtual-update Statements<a class="headerlink" href="#on-virtual-update-statements" title="Link to this section">¶</a></h2>
+<p>On-virtual-update statements run when views are created or updated in the virtual layer. This happens after your model's physical table is created and the view pointing to it is set up.</p>
+<p><strong>Common use cases:</strong>
+- Granting permissions on views (so users can query them)
+- Setting up access controls or row-level security
+- Applying column masking policies
+- Any view-level configuration</p>
+<p><strong>Think of it as:</strong> The "access control" phase—setting up who can see what.</p>
+<p><strong>Note:</strong> These statements run at the virtual layer, so table names (including <code>@this_model</code>) resolve to view names, not physical table names.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">SQL</label><label for="__tabbed_4_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1939,13 +1950,13 @@
               </div>
 </div>
 </a>
-<a aria-label="Next: Testing" class="md-footer__link md-footer__link--next" href="../../tests/tests/">
+<a aria-label="Next: Tests" class="md-footer__link md-footer__link--next" href="../../tests/tests/">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 Next
               </span>
 <div class="md-ellipsis">
-                Testing
+                Tests
               </div>
 </div>
 <div class="md-footer__button md-icon">

@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -938,7 +938,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="serialization">Serialization<a class="headerlink" href="#serialization" title="Link to this section">¶</a></h1>
-<p>Vulcan executes Python code through <a href="../../macros/overview/">macros</a> and <a href="../../concepts/models/python_models.md">Python models</a>. Each Python model is stored as a standalone <a href="../snapshots/">snapshot</a>, which includes all of the Python code necessary to generate it.</p>
+<p>Vulcan executes Python code through <a href="../../../components/advanced-features/macros/overview/">macros</a> and <a href="components/model/types/python_models.md">Python models</a>. Each Python model is stored as a standalone <a href="../snapshots/">snapshot</a>, which includes all of the Python code necessary to generate it.</p>
 <h2 id="serialization-format">Serialization format<a class="headerlink" href="#serialization-format" title="Link to this section">¶</a></h2>
 <p>Rather than using Python's <code>pickle</code> format, Vulcan has its own serialization format. This is because <code>pickle</code> is not compatible across Python versions, and would, for example, prevent you from developing on Python 3.9 and then running Python 3.10 in production.</p>
 <p>Instead, Vulcan stores the string representation of your Python implementation and then re-evaluates it. Given a custom Python function or macro, Vulcan reads the Abstract Syntax Tree (AST) of the function and converts that into a string representation, along with all dependencies and global variables. For more information, refer to <a href="../snapshots/#fingerprinting">snapshot fingerprinting</a>.</p>

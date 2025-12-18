@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -959,7 +959,7 @@
 <p>Vulcan projects can read directly from tables not managed by Vulcan, but in some scenarios it may be useful to migrate an existing table into a Vulcan project.</p>
 <p>This guide describes two methods for migrating existing tables into a Vulcan project.</p>
 <h2 id="do-you-need-to-migrate">Do you need to migrate?<a class="headerlink" href="#do-you-need-to-migrate" title="Link to this section">¶</a></h2>
-<p>Vulcan does not assume it manages all data sources: SQL models can read from any data source accessible by the SQL engine, treating them as <a href="../concepts/models/model_kinds.md#external">external models</a> that include column-level lineage or as generic sources. This approach is preferred to migrating existing tables into a Vulcan project.</p>
+<p>Vulcan does not assume it manages all data sources: SQL models can read from any data source accessible by the SQL engine, treating them as <a href="components/model/model_kinds.md#external">external models</a> that include column-level lineage or as generic sources. This approach is preferred to migrating existing tables into a Vulcan project.</p>
 <p>You should only migrate a table if both of the following are true:</p>
 <ol>
 <li>The table is ingesting from an upstream source that will continue generating new data</li>
@@ -980,11 +980,11 @@
 <ol>
 <li>Ensure <code>my_schema.existing_table</code> is up to date (has ingested all available source data)</li>
 <li>Rename <code>my_schema.existing_table</code> to any other name, such as <code>my_schema.existing_table_historical</code><ul>
-<li>Optionally, enable column-level lineage for the table by making it an <a href="../concepts/models/model_kinds.md#external"><code>EXTERNAL</code> model</a> and adding it to the project's <code>external_models.yaml</code> file</li>
+<li>Optionally, enable column-level lineage for the table by making it an <a href="components/model/model_kinds.md#external"><code>EXTERNAL</code> model</a> and adding it to the project's <code>external_models.yaml</code> file</li>
 </ul>
 </li>
 <li>Create a new incremental staging model named <code>my_schema.existing_table_staging</code> (see below for code)</li>
-<li>Create a new <a href="../concepts/models/model_kinds.md#view"><code>VIEW</code> model</a> named <code>my_schema.existing_table</code> (see below for code)</li>
+<li>Create a new <a href="components/model/model_kinds.md#view"><code>VIEW</code> model</a> named <code>my_schema.existing_table</code> (see below for code)</li>
 <li>Run <code>vulcan plan</code> to create and backfill the models</li>
 </ol>
 <p>The staging model would contain code similar to the following for an <code>INCREMENTAL_BY_TIME_RANGE</code> model. An <code>INCREMENTAL_BY_UNIQUE_KEY</code> model would have a different <code>kind</code> specification in the <code>MODEL</code> DDL and might not include the query's <code>WHERE</code> clause.</p>
@@ -1077,7 +1077,7 @@
 <li>Rename <code>my_schema.existing_table</code> to any other name, such as <code>my_schema.existing_table_temp</code></li>
 <li>
 <p>Create and initialize an empty incremental model named <code>my_schema.existing_table</code>:</p>
-<p>a. Make the model <a href="./incremental_time.md#forward-only-models">forward only</a> by setting the <code>MODEL</code> DDL <code>kind</code>'s <code>forward_only</code> key to <code>true</code></p>
+<p>a. Make the model <a href="guides-old/incremental_time.md#forward-only-models">forward only</a> by setting the <code>MODEL</code> DDL <code>kind</code>'s <code>forward_only</code> key to <code>true</code></p>
 <p>b. Specify the start of the first time interval Vulcan should track in the <code>MODEL</code> DDL <code>start</code> key (example uses "2024-01-01")</p>
 <p>c. Create the model in the Vulcan project without backfilling any data by running <code>vulcan plan [environment name] --empty-backfill --start 2024-01-01</code>, replacing "[environment name]" with an environment name other than <code>prod</code> and using the same start date from the <code>MODEL</code> DDL in step 3b.</p>
 </li>

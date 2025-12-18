@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1019,12 +1019,12 @@
 <tr>
 <td><code>SQL models</code></td>
 <td>✅</td>
-<td><a href="concepts/models/overview.md">✅</a></td>
+<td><a href="../components/model/overview/">✅</a></td>
 </tr>
 <tr>
 <td><code>Python models</code></td>
 <td>✅</td>
-<td><a href="concepts/models/python_models.md">✅✅</a></td>
+<td><a href="../components/model/types/python_models/">✅✅</a></td>
 </tr>
 <tr>
 <td><code>Jinja support</code></td>
@@ -1034,12 +1034,12 @@
 <tr>
 <td><code>Jinja macros</code></td>
 <td>✅</td>
-<td><a href="concepts/macros/jinja_macros.md">✅</a></td>
+<td><a href="../components/advanced-features/macros/jinja/">✅</a></td>
 </tr>
 <tr>
 <td><code>Python macros</code></td>
 <td>❌</td>
-<td><a href="concepts/macros/vulcan_macros.md">✅</a></td>
+<td><a href="../components/advanced-features/macros/built_in/">✅</a></td>
 </tr>
 <tr>
 <td>Validation</td>
@@ -1049,12 +1049,12 @@
 <tr>
 <td><code>SQL semantic validation</code></td>
 <td>❌</td>
-<td><a href="concepts/glossary.md#semantic-understanding">✅</a></td>
+<td><a href="../concepts-old/glossary/#semantic-understanding">✅</a></td>
 </tr>
 <tr>
 <td><code>Unit tests</code></td>
 <td>❌</td>
-<td><a href="concepts/tests.md">✅</a></td>
+<td><a href="../components/tests/tests/">✅</a></td>
 </tr>
 <tr>
 <td><code>Table diff</code></td>
@@ -1064,17 +1064,17 @@
 <tr>
 <td><code>Data audits</code></td>
 <td>✅</td>
-<td><a href="concepts/audits.md">✅</a></td>
+<td><a href="../components/audits/audits/">✅</a></td>
 </tr>
 <tr>
 <td><code>Schema contracts</code></td>
 <td>✅</td>
-<td><a href="concepts/plans.md">✅</a></td>
+<td><a href="../guides/plan/">✅</a></td>
 </tr>
 <tr>
 <td><code>Data contracts</code></td>
 <td>❌</td>
-<td><a href="concepts/plans.md">✅</a></td>
+<td><a href="../guides/plan/">✅</a></td>
 </tr>
 <tr>
 <td>Deployment</td>
@@ -1084,7 +1084,7 @@
 <tr>
 <td><code>Virtual Data Environments</code></td>
 <td>❌</td>
-<td><a href="concepts/environments.md">✅</a></td>
+<td><a href="../concepts-old/environments/">✅</a></td>
 </tr>
 <tr>
 <td><code>Open-source CI/CD bot</code></td>
@@ -1104,7 +1104,7 @@
 <tr>
 <td><code>CLI</code></td>
 <td>✅</td>
-<td><a href="reference/cli.md">✅</a></td>
+<td><a href="../getting_started/cli/">✅</a></td>
 </tr>
 <tr>
 <td><code>Paid UI</code></td>
@@ -1154,7 +1154,7 @@
 <tr>
 <td><code>SQL transpilation</code></td>
 <td>❌</td>
-<td><a href="concepts/models/sql_models.md#transpilation">✅</a></td>
+<td><a href="../components/model/types/sql_models/#transpilation">✅</a></td>
 </tr>
 </tbody>
 </table>
@@ -1165,7 +1165,7 @@
 <p>These steps incur costs to organizations: compute costs to run the models and staff time spent waiting on them to run. Inefficiencies compound rapidly because the steps are repeated so frequently.
 dbt's default full refresh approach leads to the most costly version of this loop: recomputing every model every time.</p>
 <p>Vulcan takes another approach. It examines the code modifications and the dependency structure among the models to determine which models are affected -- and executes only those models. This results in the least costly version of the loop: computing only what is required every time through.</p>
-<p>This enables Vulcan to provide efficient isolated <a href="./concepts/plans.md#plan-application">Virtual Environments</a>. Environments in dbt cost compute and storage, but creating a development environment in Vulcan is free -- you can quickly access a full replica of any other environment with a single command.</p>
+<p>This enables Vulcan to provide efficient isolated <a href="../guides/plan/#plan-application">Virtual Environments</a>. Environments in dbt cost compute and storage, but creating a development environment in Vulcan is free -- you can quickly access a full replica of any other environment with a single command.</p>
 <p>Additionally, Vulcan ensures that promotion of staging environments to production is predictable and consistent. There is no concept of promotion in dbt, so queries are all rerun when it's time to deploy something. In Vulcan, promotions are simple pointer swaps so there is no wasted compute.</p>
 <h3 id="incremental-models">Incremental models<a class="headerlink" href="#incremental-models" title="Link to this section">¶</a></h3>
 <p>Implementing incremental models is difficult and error-prone in dbt because it does not keep track of state.</p>
@@ -1230,21 +1230,21 @@ dbt's default full refresh approach leads to the most costly version of this loo
 <h4 id="performance">Performance<a class="headerlink" href="#performance" title="Link to this section">¶</a></h4>
 <p>Subqueries that look for MAX(date) could have a performance impact on the primary query. Vulcan is able to avoid these extra subqueries.</p>
 <p>Additionally, dbt expects an incremental model to be able to fully refresh the first time it runs. For some large data sets, this is cost-prohibitive or infeasible.</p>
-<p>Vulcan is able to <a href="concepts/models/overview.md#batch_size">batch</a> up backfills into more manageable chunks.</p>
+<p>Vulcan is able to <a href="../components/model/overview/#batch_size">batch</a> up backfills into more manageable chunks.</p>
 <h3 id="sql-understanding">SQL understanding<a class="headerlink" href="#sql-understanding" title="Link to this section">¶</a></h3>
 <p>dbt heavily relies on <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a>. It has no understanding of SQL and treats all queries as raw strings without context. This means that simple syntax errors like trailing commas are difficult to debug and require a full run to detect.</p>
 <p>Vulcan supports Jinja, but it does not rely on it - instead, it parses/understands SQL through <a href="https://github.com/tobymao/sqlglot">SQLGlot</a>. Simple errors can be detected at compile time, so you no longer have to wait minutes or even longer to see that you've referenced a column incorrectly or missed a comma.</p>
 <p>Additionally, having a first-class understanding of SQL supercharges Vulcan with features such as transpilation, column-level lineage, and automatic change categorization.</p>
 <h3 id="testing">Testing<a class="headerlink" href="#testing" title="Link to this section">¶</a></h3>
 <p>Data quality checks such as detecting NULL values and duplicated rows are extremely valuable for detecting upstream data issues and large scale problems. However, they are not meant for testing edge cases or business logic, and they are not sufficient for creating robust data pipelines.</p>
-<p><a href="./concepts/tests.md">Unit and integration tests</a> are the tools to use to validate business logic. Vulcan encourages users to add unit tests to all of their models to ensure changes don't unexpectedly break assumptions. Unit tests are designed to be fast and self contained so that they can run in continuous integration (CI) frameworks.</p>
+<p><a href="../components/tests/tests/">Unit and integration tests</a> are the tools to use to validate business logic. Vulcan encourages users to add unit tests to all of their models to ensure changes don't unexpectedly break assumptions. Unit tests are designed to be fast and self contained so that they can run in continuous integration (CI) frameworks.</p>
 <h3 id="python-models">Python models<a class="headerlink" href="#python-models" title="Link to this section">¶</a></h3>
 <p>dbt's Python models only run remotely on adapters of data platforms that have a full Python runtime, limiting the number of users that can take advantage of them and making the models difficult to debug.</p>
-<p>Vulcan's <a href="concepts/models/python_models.md">Python models</a> run locally and can be used with any data warehouse. Breakpoints can be added to debug the model.</p>
+<p>Vulcan's <a href="../components/model/types/python_models/">Python models</a> run locally and can be used with any data warehouse. Breakpoints can be added to debug the model.</p>
 <h3 id="data-contracts">Data contracts<a class="headerlink" href="#data-contracts" title="Link to this section">¶</a></h3>
 <p>dbt offers manually configured schema contracts that will check the model's schema against the yaml schema at runtime. Models can be versioned to allow downstream teams time to migrate to the latest version, at the risk of a fragmented source of truth during the migration period.</p>
-<p>Vulcan provides automatic schema contracts and data contracts via <a href="concepts/plans.md"><code>vulcan plan</code></a>, which checks the model's schema and query logic for changes that affect downstream users. <code>vulcan plan</code> will show which models have breaking changes and which downstream models are affected.</p>
-<p>While breaking changes can be rolled out as separate models to allow for a migration period, Vulcan's <a href="concepts/glossary.md#virtual-preview">Virtual Preview</a> empowers teams to collaborate on migrations before the changes are deployed to prod, maintaining a single source of truth across the business.</p>
+<p>Vulcan provides automatic schema contracts and data contracts via <a href="../guides/plan/"><code>vulcan plan</code></a>, which checks the model's schema and query logic for changes that affect downstream users. <code>vulcan plan</code> will show which models have breaking changes and which downstream models are affected.</p>
+<p>While breaking changes can be rolled out as separate models to allow for a migration period, Vulcan's <a href="../concepts-old/glossary/#virtual-preview">Virtual Preview</a> empowers teams to collaborate on migrations before the changes are deployed to prod, maintaining a single source of truth across the business.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

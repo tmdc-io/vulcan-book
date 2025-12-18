@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1013,14 +1013,14 @@
 <h2 id="terminology">Terminology<a class="headerlink" href="#terminology" title="Link to this section">¶</a></h2>
 <p>Isolated systems are sometimes referred to as "isolated environments," but we avoid that term because "environments" has a specific meaning in Vulcan.</p>
 <p>Instead, we will refer to them as isolated systems - the "production system" and "non-production system."</p>
-<p>When we refer to "environments," we are always talking about <a href="../concepts/environments.md">Vulcan environments</a> - the isolated namespaces created and managed by Vulcan.</p>
+<p>When we refer to "environments," we are always talking about <a href="concepts-old/environments.md">Vulcan environments</a> - the isolated namespaces created and managed by Vulcan.</p>
 <h2 id="configuring-vulcan">Configuring Vulcan<a class="headerlink" href="#configuring-vulcan" title="Link to this section">¶</a></h2>
 <h3 id="separate-state-data">Separate state data<a class="headerlink" href="#separate-state-data" title="Link to this section">¶</a></h3>
 <p>Vulcan maintains a record of every model version so it can identify changes when models are updated. Those records are called "state" data, as in "the state of the model at that point in time."</p>
-<p>State data can be stored alongside other data in the primary data warehouse or in a <a href="../configuration/#state-connection">separate database</a>. We recommend using a separate transactional database for projects running on cloud SQL engines.</p>
+<p>State data can be stored alongside other data in the primary data warehouse or in a <a href="guides-old/configuration.md#state-connection">separate database</a>. We recommend using a separate transactional database for projects running on cloud SQL engines.</p>
 <p>Isolated systems must use a <strong>separate</strong> state database for each system. The state of models and other objects in the non-production system is not accurate for the production system, and sharing state data will prevent the project from running correctly.</p>
 <h3 id="multiple-gateways">Multiple gateways<a class="headerlink" href="#multiple-gateways" title="Link to this section">¶</a></h3>
-<p>Vulcan database connections are configured with <a href="../configuration/#gateways">gateways</a> that contain <a href="../connections/">connections</a> and other configuration parameters.</p>
+<p>Vulcan database connections are configured with <a href="guides-old/configuration.md#gateways">gateways</a> that contain <a href="guides-old/connections.md">connections</a> and other configuration parameters.</p>
 <p>A gateway must contain a connection to a SQL engine and may optionally contain a different connection to the database where Vulcan should store its state data.</p>
 <p>Isolated systems should configure two separate gateways: one for the production system and one for the non-production system.</p>
 <p>For example, this configuration creates gateways named <code>nonproduction</code> and <code>production</code>. You may omit the <code>state_connection</code> keys if state data will be stored in the gateway's primary connection.</p>
@@ -1050,8 +1050,8 @@
 <p>Commands can override the default gateway with the <code>--gateway</code> option, such as <code>vulcan --gateway production plan</code>.</p>
 <h3 id="gateway-specific-schemas">Gateway-specific schemas<a class="headerlink" href="#gateway-specific-schemas" title="Link to this section">¶</a></h3>
 <p>We recommend using identical schema and model names in both systems, but in some scenarios that is not possible.</p>
-<p>Schema and model names may be parameterized by gateway using the predefined <a href="../concepts/macros/macro_variables.md#runtime-variables"><code>@gateway</code> macro variable</a>.</p>
-<p>This example demonstrates conditioning the model schema name on the current gateway with the Vulcan <a href="../concepts/macros/vulcan_macros.md#if"><code>@IF</code> macro operator</a>. If the gateway is named <code>production</code>, <code>my_model</code>'s schema is <code>prod_schema</code>; otherwise, it is <code>dev_schema</code>.</p>
+<p>Schema and model names may be parameterized by gateway using the predefined <a href="components/advanced-features/macros/variables.md#runtime-variables"><code>@gateway</code> macro variable</a>.</p>
+<p>This example demonstrates conditioning the model schema name on the current gateway with the Vulcan <a href="components/advanced-features/macros/built_in.md#if"><code>@IF</code> macro operator</a>. If the gateway is named <code>production</code>, <code>my_model</code>'s schema is <code>prod_schema</code>; otherwise, it is <code>dev_schema</code>.</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
 <span class="normal"><a href="#__codelineno-1-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
@@ -1065,7 +1065,7 @@
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="o">@</span><span class="err">{</span><span class="n">gateway</span><span class="err">}</span><span class="n">_schema</span><span class="p">.</span><span class="n">my_model</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Learn more about the curly brace <code>@{}</code> syntax <a href="../concepts/macros/vulcan_macros.md#embedding-variables-in-strings">here</a>.</p>
+<p>Learn more about the curly brace <code>@{}</code> syntax <a href="components/advanced-features/macros/built_in.md#embedding-variables-in-strings">here</a>.</p>
 <h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Link to this section">¶</a></h2>
 <h3 id="linking-systems">Linking systems<a class="headerlink" href="#linking-systems" title="Link to this section">¶</a></h3>
 <p>The point of isolating systems is to prevent sharing of data by limiting network communications between the systems. Given this, how can a Vulcan project be shared between them at all?</p>

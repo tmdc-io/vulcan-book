@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -967,7 +967,7 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>pip install "vulcan[risingwave]"
 </span></code></pre></div>
 <h2 id="connection-options">Connection options<a class="headerlink" href="#connection-options" title="Link to this section">¶</a></h2>
-<p>RisingWave is based on Postgres and uses the same <code>psycopg2</code> connection library. Therefore, the connection parameters are very similar to <a href="../postgres/">Postgres</a>.</p>
+<p>RisingWave is based on Postgres and uses the same <code>psycopg2</code> connection library. Therefore, the connection parameters are very similar to <a href="../../configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">Postgres</a>.</p>
 <table>
 <thead>
 <tr>
@@ -1033,7 +1033,7 @@
 <p>Primarily, these are:
  - <a href="https://docs.risingwave.com/sql/commands/sql-create-source">Sources</a> which are used to stream records into RisingWave from streaming sources like Kafka
  - <a href="https://docs.risingwave.com/sql/commands/sql-create-sink">Sinks</a> which are used to write the results of data processed by RisingWave to an external target, such as an Apache Iceberg table in object storage.</p>
-<p>RisingWave exposes these features via normal SQL statements, namely <code>CREATE SOURCE</code> and <code>CREATE SINK</code>. To utilize these in Vulcan, you can use them in <a href="../../concepts/models/sql_models.md#optional-prepost-statements">pre / post statements</a>.</p>
+<p>RisingWave exposes these features via normal SQL statements, namely <code>CREATE SOURCE</code> and <code>CREATE SINK</code>. To utilize these in Vulcan, you can use them in <a href="configurations-old/components/model/types/sql_models.md#optional-prepost-statements">pre / post statements</a>.</p>
 <p>Here is an example of creating a Sink from a Vulcan model using a post statement:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_example</span><span class="p">.</span><span class="n">view_model</span><span class="p">,</span>
@@ -1063,7 +1063,7 @@
 </span></code></pre></div>
 <div class="admonition info">
 <p class="admonition-title"><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/this_model" title="GitHub User: this_model">@this_model</a></p>
-<p>The <code>@this_model</code> macro resolves to the physical table for the current version of the model. See <a href="../../concepts/macros/macro_variables.md#runtime-variables">here</a> for more information.</p>
+<p>The <code>@this_model</code> macro resolves to the physical table for the current version of the model. See <a href="configurations-old/components/advanced-features/macros/variables.md#runtime-variables">here</a> for more information.</p>
 </div>
 </article>
 </div>

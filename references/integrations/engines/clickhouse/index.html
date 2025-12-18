@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1128,7 +1128,7 @@
 <p>This page describes Vulcan support for the ClickHouse engine, including configuration options specific to ClickHouse.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>ClickHouse may not be used for the Vulcan <a href="../../reference/configuration.md#connections">state connection</a>.</p>
+<p>ClickHouse may not be used for the Vulcan <a href="configurations-old/configurations-old/configuration.md#connections">state connection</a>.</p>
 </div>
 <h2 id="background">Background<a class="headerlink" href="#background" title="Link to this section">¶</a></h2>
 <p><a href="https://clickhouse.com/">ClickHouse</a> is a distributed, column-oriented SQL engine designed to rapidly execute analytical workloads.</p>
@@ -1161,11 +1161,11 @@
 <p>In the default Vulcan configuration, users must have sufficient permissions to create new ClickHouse databases.</p>
 <p>Alternatively, you can configure specific databases where Vulcan should create table and view objects.</p>
 <h3 id="environment-views">Environment views<a class="headerlink" href="#environment-views" title="Link to this section">¶</a></h3>
-<p>Use the <a href="../../guides/configuration.md#disable-environment-specific-schemas"><code>environment_suffix_target</code> key in your project configuration</a> to specify that environment views should be created within the model's database instead of in a new database:</p>
+<p>Use the <a href="../../guides-old/configuration.md#disable-environment-specific-schemas"><code>environment_suffix_target</code> key in your project configuration</a> to specify that environment views should be created within the model's database instead of in a new database:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">environment_suffix_target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">table</span>
 </span></code></pre></div>
 <h3 id="physical-tables">Physical tables<a class="headerlink" href="#physical-tables" title="Link to this section">¶</a></h3>
-<p>Use the <a href="../../guides/configuration.md#physical-table-schemas"><code>physical_schema_mapping</code> key in your project configuration</a> to specify the databases where physical tables should be created.</p>
+<p>Use the <a href="../../guides-old/configuration.md#physical-table-schemas"><code>physical_schema_mapping</code> key in your project configuration</a> to specify the databases where physical tables should be created.</p>
 <p>The key accepts a dictionary of regular expressions that map model database names to the corresponding databases where physical tables should be created.</p>
 <p>Vulcan will compare a model's database name to each regular expression and use the first match to determine which database a physical table should be created in.</p>
 <p>For example, this configuration places every model's physical table in the <code>model_physical_tables</code> database because the regular expression <code>.*</code> matches any database name:</p>
@@ -1431,10 +1431,10 @@
 <h3 id="why-delete-or-replace">Why delete or replace?<a class="headerlink" href="#why-delete-or-replace" title="Link to this section">¶</a></h3>
 <p>Vulcan "materializes" model kinds in a number of ways, such as:</p>
 <ul>
-<li>Replacing an entire table (<a href="../../concepts/models/model_kinds.md#full"><code>FULL</code> models</a>)</li>
-<li>Replacing records in a specific time range (<a href="../../concepts/models/model_kinds.md#incremental_by_time_range"><code>INCREMENTAL_BY_TIME_RANGE</code> models</a>)</li>
-<li>Replacing records with specific key values (<a href="../../concepts/models/model_kinds.md#incremental_by_unique_key"><code>INCREMENTAL_BY_UNIQUE_KEY</code> models</a>)</li>
-<li>Replacing records in specific partitions (<a href="../../concepts/models/model_kinds.md#incremental_by_partition"><code>INCREMENTAL_BY_PARTITION</code> models</a>)</li>
+<li>Replacing an entire table (<a href="configurations-old/components/model/model_kinds.md#full"><code>FULL</code> models</a>)</li>
+<li>Replacing records in a specific time range (<a href="configurations-old/components/model/model_kinds.md#incremental_by_time_range"><code>INCREMENTAL_BY_TIME_RANGE</code> models</a>)</li>
+<li>Replacing records with specific key values (<a href="configurations-old/components/model/model_kinds.md#incremental_by_unique_key"><code>INCREMENTAL_BY_UNIQUE_KEY</code> models</a>)</li>
+<li>Replacing records in specific partitions (<a href="configurations-old/components/model/model_kinds.md#incremental_by_partition"><code>INCREMENTAL_BY_PARTITION</code> models</a>)</li>
 </ul>
 <p>Different SQL engines provide different methods for performing record replacement.</p>
 <p>Some engines natively support updating or inserting ("upserting") records. For example, in some engines you can <code>merge</code> a new table into an existing table based on a key. Records in the new table whose keys are already in the existing table will update/replace the existing records. Records in the new table without keys in the existing table will be inserted into the existing table.</p>
@@ -1452,7 +1452,7 @@
 </ol>
 <p>Figure 1 illustrates these four steps:
 <br/><br/></p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="clickhouse_table-swap-steps.png"><img alt="ClickHouse table swap steps" loading="lazy" src="clickhouse_table-swap-steps.png"/></a>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/clickhouse/clickhouse_table-swap-steps.png"><img alt="ClickHouse table swap steps" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/clickhouse/clickhouse_table-swap-steps.png"/></a>
 <em>Figure 1: steps to execute a temp table swap</em>
 <br/><br/></p>
 <p>The weakness of this method is that it requires copying all existing rows to keep (step three), which can be problematic for large tables.</p>
@@ -1463,7 +1463,7 @@
 <p>For example, consider a table containing each record's creation date in a datetime column. If we partition the table by month, all the records whose timestamp was in January will be stored in one partition, records from February in another partition, and so on.</p>
 <p>Table partitioning provides a major benefit for improving swap performance: records can be inserted, updated, or deleted in individual partitions.</p>
 <p>Vulcan leverages this to avoid copying large numbers of existing records into a temp table. Instead, it only copies the records that are in partitions affected by a load's newly ingested records.</p>
-<p>Vulcan automatically uses partition swapping for any incremental model that specifies the <a href="../../concepts/models/overview.md#partitioned_by"><code>partitioned_by</code></a> key.</p>
+<p>Vulcan automatically uses partition swapping for any incremental model that specifies the <a href="configurations-old/components/model/overview.md#partitioned_by"><code>partitioned_by</code></a> key.</p>
 <h4 id="choosing-a-partitioning-key">Choosing a partitioning key<a class="headerlink" href="#choosing-a-partitioning-key" title="Link to this section">¶</a></h4>
 <p>The first step of partitioning a table is choosing its partitioning key (columns or expression). The primary consideration for a key is the total number of partitions it will generate, which affects table performance.</p>
 <p>Too many partitions can drastically decrease performance because the overhead of handling partition files swamps the benefits of copying fewer records. Too few partitions decreases swap performance because many existing records must still be copied in each incremental load.</p>

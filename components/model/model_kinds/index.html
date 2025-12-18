@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -529,7 +529,7 @@
 <a class="md-nav__link" href="#time-column">
 <span class="md-ellipsis">
       
-        Time column
+        Time Column
       
     </span>
 </a>
@@ -788,7 +788,7 @@
 <a class="md-nav__link" href="#reset-scd-type-2-model-clearing-history">
 <span class="md-ellipsis">
       
-        Reset SCD Type 2 Model (clearing history)
+        Reset SCD Type 2 Model (Clearing History)
       
     </span>
 </a>
@@ -877,7 +877,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -889,7 +889,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1283,7 +1283,7 @@
 <a class="md-nav__link" href="#time-column">
 <span class="md-ellipsis">
       
-        Time column
+        Time Column
       
     </span>
 </a>
@@ -1542,7 +1542,7 @@
 <a class="md-nav__link" href="#reset-scd-type-2-model-clearing-history">
 <span class="md-ellipsis">
       
-        Reset SCD Type 2 Model (clearing history)
+        Reset SCD Type 2 Model (Clearing History)
       
     </span>
 </a>
@@ -1641,13 +1641,15 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="kinds">Kinds<a class="headerlink" href="#kinds" title="Link to this section">¶</a></h1>
-<p>This page describes the kinds of <a href="../overview/">models</a> Vulcan supports, which determine how the data for a model is loaded.</p>
-<p>Find information about all model kind configuration parameters in the <a href="../../../references/model_configuration/">model configuration reference page</a>.</p>
+<p>Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies—each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.</p>
+<p>Find information about all model kind configuration parameters in the <a href="../../reference/model_configuration.md">model configuration reference page</a>.</p>
 <h2 id="incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE<a class="headerlink" href="#incremental_by_time_range" title="Link to this section">¶</a></h2>
-<p>Models of the <code>INCREMENTAL_BY_TIME_RANGE</code> kind are computed incrementally based on a time range. This is an optimal choice for datasets in which records are captured over time and represent immutable facts such as events, logs, or transactions. Using this kind for appropriate datasets typically results in significant cost and time savings.</p>
-<p>Only missing time intervals are processed during each execution for <code>INCREMENTAL_BY_TIME_RANGE</code> models. This is in contrast to the <a href="#full">FULL</a> model kind, where the entire dataset is recomputed every time the model is executed.</p>
-<p>An <code>INCREMENTAL_BY_TIME_RANGE</code> model has two requirements that other models do not: it must know which column contains the time data it will use to filter the data by time range, and it must contain a <code>WHERE</code> clause that filters the upstream data by time.</p>
-<p>The name of the column containing time data is specified in the model's <code>MODEL</code> DDL. It is specified in the DDL <code>kind</code> specification's <code>time_column</code> key. This example shows the <code>MODEL</code> DDL for an <code>INCREMENTAL_BY_TIME_RANGE</code> model that stores time data in the "order_date" column:</p>
+<p><code>INCREMENTAL_BY_TIME_RANGE</code> models are perfect for time-series data—things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.</p>
+<p><strong>Why this matters:</strong> If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With <code>INCREMENTAL_BY_TIME_RANGE</code>, Vulcan only processes the new intervals, which saves you time and money. Pretty smart, right?</p>
+<p>To use this kind, you need to tell Vulcan two things:
+1. <strong>Which column has your time data</strong> - So Vulcan knows how to partition and filter
+2. <strong>A WHERE clause</strong> - That filters your upstream data by time range using Vulcan's time macros</p>
+<p>You specify the time column in your <code>MODEL</code> DDL using the <code>time_column</code> key. Here's a simple example:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
 <span class="normal"><a href="#__codelineno-0-3">3</a></span>
@@ -1661,7 +1663,7 @@
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p><a id="timezones"></a>
-In addition to specifying a time column in the <code>MODEL</code> DDL, the model's query must contain a <code>WHERE</code> clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: <code>@start_date</code> / <code>@end_date</code> and <code>@start_ds</code> / <code>@end_ds</code>. Refer to <a href="../../advanced-features/macros/variables/">Macros</a> for more information.</p>
+In addition to specifying a time column in the <code>MODEL</code> DDL, the model's query must contain a <code>WHERE</code> clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: <code>@start_date</code> / <code>@end_date</code> and <code>@start_ds</code> / <code>@end_ds</code>. Refer to <a href="../macros/macro_variables.md">Macros</a> for more information.</p>
 <details>
 <summary>Example SQL sequence when applying this model kind (ex: BigQuery)</summary>
 <p>This example demonstrates incremental by time range models.</p>
@@ -1934,11 +1936,11 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span></code></pre></div>
 </details>
 <div class="admonition info">
-<p class="admonition-title">Important</p>
-<p>A model's <code>time_column</code> should be in the <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC time zone</a> to ensure correct interaction with Vulcan's scheduler and predefined macro variables.</p>
-<p>This requirement aligns with the data engineering best practice of converting datetime/timestamp columns to UTC as soon as they are ingested into the data system and only converting them to local timezones when they exit the system for downstream uses. The <code>cron_tz</code> flag <strong>does not</strong> change this requirement.</p>
-<p>Placing all timezone conversion code in the system's first/last transformation models prevents inadvertent timezone-related errors as data flows between models.</p>
-<p>If a model must use a different timezone, parameters like <a href="../overview/#lookback">lookback</a>, <a href="../overview/#allow_partials">allow_partials</a>, and <a href="../overview/#cron">cron</a> with offset time can be used to try to account for misalignment between the model's timezone and the UTC timezone used by Vulcan.</p>
+<p class="admonition-title">Important: Timezone Requirements</p>
+<p>Your <code>time_column</code> should be in UTC timezone. This ensures Vulcan's scheduler and time macros work correctly.</p>
+<p><strong>Why UTC?</strong> It's a data engineering best practice—convert everything to UTC when it enters your system, then convert to local timezones only when data leaves for end users. This prevents timezone-related bugs as data flows between models.</p>
+<p><strong>Important:</strong> The <code>cron_tz</code> flag doesn't change this requirement—it only affects when your model runs, not how time intervals are calculated.</p>
+<p>If you absolutely must use a different timezone, you can try to work around it using <code>lookback</code>, <code>allow_partials</code>, or cron offsets, but UTC is strongly recommended. Trust us on this one—timezone bugs are no fun!</p>
 </div>
 <p>This example implements a complete <code>INCREMENTAL_BY_TIME_RANGE</code> model that specifies the time column name <code>order_date</code> in the <code>MODEL</code> DDL and includes a SQL <code>WHERE</code> clause to filter records by time range:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">SQL</label><label for="__tabbed_1_2">Python</label></div>
@@ -2061,13 +2063,13 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </div>
 </div>
 </div>
-<h3 id="time-column">Time column<a class="headerlink" href="#time-column" title="Link to this section">¶</a></h3>
-<p>Vulcan needs to know which column in the model's output represents the timestamp or date associated with each record.</p>
+<h3 id="time-column">Time Column<a class="headerlink" href="#time-column" title="Link to this section">¶</a></h3>
+<p>Vulcan needs to know which column in your model's output represents the timestamp or date for each record. This is your <code>time_column</code>.</p>
 <div class="admonition info">
-<p class="admonition-title">Important</p>
-<p>The <code>time_column</code> variable should be in the UTC time zone - learn more <a href="#timezones">above</a>.</p>
+<p class="admonition-title">Remember: UTC Timezone</p>
+<p>Your <code>time_column</code> should be in UTC timezone. Learn more about why this matters <a href="#timezones">above</a>.</p>
 </div>
-<p>The time column is used to determine which records will be overwritten during data <a href="../../../guides/plan/#restatement-plans">restatement</a> and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the <code>MODEL</code> DDL <code>kind</code> specification:</p>
+<p>The time column is used to determine which records will be overwritten during data <a href="../plans.md#restatement-plans">restatement</a> and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the <code>MODEL</code> DDL <code>kind</code> specification:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
 <span class="normal"><a href="#__codelineno-9-2">2</a></span>
 <span class="normal"><a href="#__codelineno-9-3">3</a></span>
@@ -2080,7 +2082,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>By default, Vulcan assumes the time column is in the <code>%Y-%m-%d</code> format. For other formats, the default can be overridden with a formatting string:</p>
+<p>By default, Vulcan assumes your time column is in <code>%Y-%m-%d</code> format (like <code>2025-01-15</code>). If your dates are in a different format, you can specify it:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
 <span class="normal"><a href="#__codelineno-10-2">2</a></span>
 <span class="normal"><a href="#__codelineno-10-3">3</a></span>
@@ -2094,12 +2096,15 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The time format should be defined using the same SQL dialect as the one used to define the model's query.</p>
+<p class="admonition-title">Format String Dialect</p>
+<p>Use the same SQL dialect for your format string as the one used in your model's query.</p>
 </div>
-<p>Vulcan also uses the time column to automatically append a time range filter to the model's query at runtime, which prevents records that are not part of the target interval from being stored. This is a safety mechanism that prevents unintentionally overwriting unrelated records when handling late-arriving data.</p>
-<p>The required filter you write in the model query's <code>WHERE</code> clause filters the <strong>input</strong> data as it is read from upstream tables, reducing the amount of data processed by the model. The automatically appended time range filter is applied to the model query's <strong>output</strong> data to prevent data leakage.</p>
-<p>Consider the following model definition, which specifies a <code>WHERE</code> clause filter with the <code>shipped_date</code> column. The model's <code>time_column</code> is a different column <code>order_date</code>, whose filter is automatically added to the model query. This approach is useful when an upstream model's time column is different from the model's time column:</p>
+<p><strong>Safety feature:</strong> Vulcan automatically adds a time range filter to your query's output to prevent data leakage. This means even if your <code>WHERE</code> clause has a bug, Vulcan won't accidentally store records outside the target interval.</p>
+<p>Here's how it works:
+- <strong>Your WHERE clause</strong> filters the <strong>input</strong> data as it's read from upstream tables (makes queries faster)
+- <strong>Vulcan's automatic filter</strong> filters the <strong>output</strong> data before it's stored (prevents data leakage)</p>
+<p>This is especially important when handling late-arriving data—you don't want to accidentally overwrite unrelated records!</p>
+<p>Here's a cool example: sometimes your upstream data uses a different time column than your model. In this case, you filter on the upstream column (<code>shipped_date</code>), but Vulcan still adds a filter on your model's time column (<code>order_date</code>):</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
@@ -2150,9 +2155,10 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span><span class="p">;</span><span class="w"> </span><span class="c1">-- `order_date` time column filter automatically added by Vulcan</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="partitioning">Partitioning<a class="headerlink" href="#partitioning" title="Link to this section">¶</a></h3>
-<p>By default, we ensure that the <code>time_column</code> is part of the <a href="../overview/#partitioned_by">partitioned_by</a> property of the model so that it forms part of the partition key and allows the database engine to do partition pruning. If it is not explicitly listed in the Model definition, we will automatically add it.</p>
-<p>However, this may be undesirable if you want to exclusively partition on another column or you want to partition on something like <code>month(time_column)</code> but the engine you're using doesnt support partitioning based on expressions.</p>
-<p>To opt out of this behaviour, you can set <code>partition_by_time_column false</code> like so:</p>
+<p>By default, Vulcan automatically adds your <code>time_column</code> to the partition key. This lets database engines do partition pruning (skipping partitions that don't match your query), which makes queries faster.</p>
+<p><strong>Why this matters:</strong> If you're querying data from the last 7 days, the engine can skip scanning all the old partitions. That's a huge performance win!</p>
+<p>Sometimes you might not want this though—maybe you want to partition exclusively on another column, or you want to partition on <code>month(time_column)</code> but your engine doesn't support expression-based partitioning.</p>
+<p>To disable automatic time column partitioning, set <code>partition_by_time_column false</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
 <span class="normal"><a href="#__codelineno-13-2">2</a></span>
 <span class="normal"><a href="#__codelineno-13-3">3</a></span>
@@ -2170,8 +2176,9 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="idempotency">Idempotency<a class="headerlink" href="#idempotency" title="Link to this section">¶</a></h3>
-<p>We recommend making sure incremental by time range model queries are <a href="../../../concepts-old/glossary/#idempotency">idempotent</a> to prevent unexpected results during data <a href="../../../guides/plan/#restatement-plans">restatement</a>.</p>
-<p>Note, however, that upstream models and tables can impact a model's idempotency. For example, referencing an upstream model of kind <a href="#full">FULL</a> in the model query automatically causes the model to be non-idempotent because its data could change on every model execution.</p>
+<p>We recommend making sure incremental by time range model queries are <a href="../glossary.md#idempotency">idempotent</a> to prevent unexpected results during data <a href="../plans.md#restatement-plans">restatement</a>.</p>
+<p>We recommend making your incremental by time range queries <a href="../glossary.md#idempotency">idempotent</a>. This means running the same query multiple times produces the same result, which prevents surprises during data restatement.</p>
+<p><strong>Watch out:</strong> Your upstream models can affect idempotency. If you reference a FULL model (which rebuilds everything each run), your incremental model becomes non-idempotent because that upstream data changes every time. This is usually fine, but it's good to be aware of.</p>
 <h3 id="materialization-strategy">Materialization strategy<a class="headerlink" href="#materialization-strategy" title="Link to this section">¶</a></h3>
 <p>Depending on the target engine, models of the <code>INCREMENTAL_BY_TIME_RANGE</code> kind are materialized using the following strategies:</p>
 <table>
@@ -2213,25 +2220,19 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tbody>
 </table>
 <h2 id="incremental_by_unique_key">INCREMENTAL_BY_UNIQUE_KEY<a class="headerlink" href="#incremental_by_unique_key" title="Link to this section">¶</a></h2>
-<p>Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are computed incrementally based on a key.</p>
-<p>They insert or update rows based on these rules:</p>
-<ul>
-<li>If a key in newly loaded data is not present in the model table, the new data row is inserted.</li>
-<li>If a key in newly loaded data is already present in the model table, the existing row is updated with the new data.</li>
-<li>If a key is present in the model table but not present in the newly loaded data, its row is not modified and remains in the model table.</li>
-</ul>
-<div class="admonition important">
-<p class="admonition-title">Prevent duplicated keys</p>
-<p>If you do not want duplicated keys in the model table, you must ensure the model query does not return rows with duplicate keys.</p>
-<p>Vulcan does not automatically detect or prevent duplicates.</p>
-</div>
+<p><code>INCREMENTAL_BY_UNIQUE_KEY</code> models update data based on a unique key. Think of it like an upsert operation—if a key exists, update it; if it doesn't, insert it.</p>
+<p>Here's how it works:
+- <strong>New key?</strong> → Insert the row
+- <strong>Existing key?</strong> → Update the row with new data
+- <strong>Key missing from new data?</strong> → Leave the existing row alone</p>
+<p><strong>Why use this?</strong> Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list—you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.</p>
 <p>This kind is a good fit for datasets that have the following traits:</p>
 <ul>
 <li>Each record has a unique key associated with it.</li>
 <li>There is at most one record associated with each unique key.</li>
 <li>It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their keys match.</li>
 </ul>
-<p>A <a href="../../../concepts-old/glossary/#slowly-changing-dimension-scd">Slowly Changing Dimension</a> (SCD) is one approach that fits this description well. See the <a href="#scd-type-2">SCD Type 2</a> model kind for a specific model kind for SCD Type 2 models.</p>
+<p>A <a href="../glossary.md#slowly-changing-dimension-scd">Slowly Changing Dimension</a> (SCD) is one approach that fits this description well. See the <a href="#scd-type-2">SCD Type 2</a> model kind for a specific model kind for SCD Type 2 models.</p>
 <p>The name of the unique key column must be provided as part of the <code>MODEL</code> DDL, as in this example:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">SQL</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
@@ -2347,7 +2348,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </div>
 </div>
 </div>
-<p>Composite keys are also supported:</p>
+<p>You can use composite keys (multiple columns) too:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
 <span class="normal"><a href="#__codelineno-16-2">2</a></span>
 <span class="normal"><a href="#__codelineno-16-3">3</a></span>
@@ -2360,7 +2361,8 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><code>INCREMENTAL_BY_UNIQUE_KEY</code> model kinds can also filter upstream records by time range using a SQL <code>WHERE</code> clause and the <code>@start_date</code>, <code>@end_date</code> or other macro variables (similar to the <a href="#incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE</a> kind). Note that Vulcan macro time variables are in the UTC time zone.</p>
+<p>You can also filter upstream records by time range using <code>@start_date</code>, <code>@end_date</code>, or other time macros (just like <code>INCREMENTAL_BY_TIME_RANGE</code>). This is useful when you only want to process records from a specific time period.</p>
+<p><strong>Note:</strong> Vulcan's time macros are always in UTC timezone.</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
 <span class="normal"><a href="#__codelineno-17-2">2</a></span>
 <span class="normal"><a href="#__codelineno-17-3">3</a></span>
@@ -2422,9 +2424,9 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">`</span><span class="n">vulcan</span><span class="o">-</span><span class="k">public</span><span class="o">-</span><span class="n">demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">vulcan__demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">demo__incremental_by_unique_key_example__1161945221</span><span class="o">`</span>
 </span></code></pre></div>
 </details>
-<p><strong>Note:</strong> Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are inherently <a href="../../../concepts-old/glossary/#idempotency">non-idempotent</a>, which should be taken into consideration during data <a href="../../../guides/plan/#restatement-plans">restatement</a>. As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.</p>
+<p><strong>Note:</strong> Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are inherently <a href="../glossary.md#idempotency">non-idempotent</a>, which should be taken into consideration during data <a href="../plans.md#restatement-plans">restatement</a>. As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.</p>
 <h3 id="unique-key-expressions">Unique Key Expressions<a class="headerlink" href="#unique-key-expressions" title="Link to this section">¶</a></h3>
-<p>The <code>unique_key</code> values can either be column names or SQL expressions. For example, if you wanted to create a key that is based on the coalesce of a value then you could do the following:</p>
+<p>You're not limited to just column names—you can use SQL expressions too! This is handy when you need to create a key from multiple columns or transform values. Here's an example using <code>COALESCE</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
 <span class="normal"><a href="#__codelineno-24-2">2</a></span>
 <span class="normal"><a href="#__codelineno-24-3">3</a></span>
@@ -2438,7 +2440,8 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="when-matched-expression">When Matched Expression<a class="headerlink" href="#when-matched-expression" title="Link to this section">¶</a></h3>
-<p>The logic to use when updating columns when a match occurs (the source and target match on the given keys) by default updates all the columns. This can be overriden with custom logic like below:</p>
+<p>By default, when a key matches (source and target have the same key), Vulcan updates all columns. But sometimes you want more control—maybe you want to preserve certain values, or only update specific columns.</p>
+<p>You can customize this behavior with <code>when_matched</code> expressions:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
 <span class="normal"><a href="#__codelineno-25-2">2</a></span>
 <span class="normal"><a href="#__codelineno-25-3">3</a></span>
@@ -2457,8 +2460,8 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>The <code>source</code> and <code>target</code> aliases are required when using the <code>when_matched</code> expression in order to distinguish between the source and target columns.</p>
-<p>Multiple <code>WHEN MATCHED</code> expressions can also be provided. Ex:</p>
+<p><strong>Important:</strong> You must use <code>source</code> and <code>target</code> aliases to distinguish between the source (new data) and target (existing table) columns.</p>
+<p>You can also provide multiple <code>WHEN MATCHED</code> expressions for more complex logic:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-26-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-26-3"> 3</a></span>
@@ -2479,16 +2482,19 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Note</strong>: <code>when_matched</code> is only available on engines that support the <code>MERGE</code> statement. Currently supported engines include:</p>
+<div class="admonition note">
+<p class="admonition-title">Engine Support</p>
+<p><code>when_matched</code> only works on engines that support the <code>MERGE</code> statement. Supported engines include:</p>
 <ul>
 <li>BigQuery</li>
 <li>Databricks</li>
 <li>Postgres</li>
-<li>Redshift</li>
+<li>Redshift (requires <code>enable_merge: true</code> in connection config)</li>
 <li>Snowflake</li>
 <li>Spark</li>
 </ul>
-<p>In Redshift's case, to enable the use of the native <code>MERGE</code> statement, you need to pass the <code>enable_merge</code> flag in the connection and set it to <code>true</code>. It is disabled by default.</p>
+<p><strong>Redshift users:</strong> You need to enable MERGE support by setting <code>enable_merge: true</code> in your connection config. It's disabled by default.</p>
+</div>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span>
 <span class="normal"><a href="#__codelineno-27-2">2</a></span>
 <span class="normal"><a href="#__codelineno-27-3">3</a></span>
@@ -2501,9 +2507,9 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Redshift supports only the <code>UPDATE</code> or <code>DELETE</code> actions for the <code>WHEN MATCHED</code> clause and does not allow multiple <code>WHEN MATCHED</code> expressions. For further information, refer to the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_MERGE.html#r_MERGE-parameters">Redshift documentation</a>.</p>
 <h3 id="merge-filter-expression">Merge Filter Expression<a class="headerlink" href="#merge-filter-expression" title="Link to this section">¶</a></h3>
-<p>The <code>MERGE</code> statement typically induces a full table scan of the existing table, which can be problematic with large data volumes.</p>
-<p>Prevent a full table scan by passing filtering conditions to the <code>merge_filter</code> parameter.</p>
-<p>The <code>merge_filter</code> accepts a single or a conjunction of predicates to be used in the <code>ON</code> clause of the <code>MERGE</code> operation:</p>
+<p>MERGE operations can be slow on large tables because they typically scan the entire existing table. If you're only updating a small subset of records, this is wasteful.</p>
+<p><strong>Solution:</strong> Use <code>merge_filter</code> to add conditions to the MERGE's <code>ON</code> clause. This limits the scan to only the rows that might match, making things much faster.</p>
+<p>The <code>merge_filter</code> accepts predicates (single or combined with AND) that get added to the MERGE operation:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-28-1">1</a></span>
 <span class="normal"><a href="#__codelineno-28-2">2</a></span>
 <span class="normal"><a href="#__codelineno-28-3">3</a></span>
@@ -2518,8 +2524,8 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Similar to <code>when_matched</code>, the <code>source</code> and <code>target</code> aliases are used to distinguish between the source and target tables.</p>
-<p>If an existing dbt project uses the <a href="https://docs.getdbt.com/docs/build/incremental-strategy#about-incremental_predicates">incremental_predicates</a> functionality, Vulcan will automatically convert them into the equivalent <code>merge_filter</code> specification.</p>
+<p>Just like <code>when_matched</code>, use <code>source</code> and <code>target</code> aliases to reference the source and target tables.</p>
+<p><strong>Coming from dbt?</strong> If your dbt project uses <code>incremental_predicates</code>, Vulcan will automatically convert them to <code>merge_filter</code> for you. Pretty convenient!</p>
 <h3 id="materialization-strategy_1">Materialization strategy<a class="headerlink" href="#materialization-strategy_1" title="Link to this section">¶</a></h3>
 <p>Depending on the target engine, models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are materialized using the following strategies:</p>
 <table>
@@ -2561,9 +2567,17 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tbody>
 </table>
 <h2 id="full">FULL<a class="headerlink" href="#full" title="Link to this section">¶</a></h2>
-<p>Models of the <code>FULL</code> kind cause the dataset associated with a model to be fully refreshed (rewritten) upon each model evaluation.</p>
-<p>The <code>FULL</code> model kind is somewhat easier to use than incremental kinds due to the lack of special settings or additional query considerations. This makes it suitable for smaller datasets, where recomputing data from scratch is relatively cheap and doesn't require preservation of processing history. However, using this kind with datasets containing a large volume of records will result in significant runtime and compute costs.</p>
-<p>This kind can be a good fit for aggregate tables that lack a temporal dimension. For aggregate tables with a temporal dimension, consider the <a href="#incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE</a> kind instead.</p>
+<p><code>FULL</code> models are the simplest kind—they rebuild everything from scratch every time they run. No incremental logic, no time columns, no unique keys. Just run the query and replace the entire table.</p>
+<p><strong>When to use FULL:</strong>
+- Small datasets where rebuilding is fast and cheap
+- Aggregate tables without a time dimension
+- Tables that change completely each run (like a "current state" snapshot)
+- Development and testing (simpler is better when you're iterating)</p>
+<p><strong>When NOT to use FULL:</strong>
+- Large datasets (you'll wait forever and pay a lot)
+- Time-series data (use <code>INCREMENTAL_BY_TIME_RANGE</code> instead)
+- Tables that only change partially (use incremental kinds)</p>
+<p>The trade-off is simplicity vs. performance. For small tables, FULL is perfect. For large tables, incremental kinds will save you time and money.</p>
 <p>This example specifies a <code>FULL</code> model kind:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">SQL</label><label for="__tabbed_3_2">Python</label></div>
 <div class="tabbed-content">
@@ -2753,11 +2767,25 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tbody>
 </table>
 <h2 id="view">VIEW<a class="headerlink" href="#view" title="Link to this section">¶</a></h2>
-<p>The model kinds described so far cause the output of a model query to be materialized and stored in a physical table.</p>
-<p>The <code>VIEW</code> kind is different, because no data is actually written during model execution. Instead, a non-materialized view (or "virtual table") is created or replaced based on the model's query.</p>
-<p><strong>Note:</strong> <code>VIEW</code> is the default model kind if kind is not specified.</p>
-<p><strong>Note:</strong> Python models do not support the <code>VIEW</code> model kind - use a SQL model instead.</p>
-<p><strong>Note:</strong> With this kind, the model's query is evaluated every time the model is referenced in a downstream query. This may incur undesirable compute cost and time in cases where the model's query is compute-intensive, or when the model is referenced in many downstream queries.</p>
+<p>Unlike the other kinds, <code>VIEW</code> models don't store any data. Instead, they create a virtual table (a view) that runs your query every time someone queries it.</p>
+<p><strong>How it works:</strong> When a downstream model or user queries your VIEW model, the database executes your query on-the-fly. No data is pre-computed or stored.</p>
+<p><strong>When to use VIEW:</strong>
+- Simple transformations that are fast to compute
+- When you want always-fresh data (no caching)
+- When storage is expensive but compute is cheap
+- For lightweight transformations that don't need materialization</p>
+<p><strong>When NOT to use VIEW:</strong>
+- Expensive queries that run frequently (you'll pay the compute cost every time)
+- Complex aggregations or joins (materialize these instead)
+- Python models (VIEW isn't supported for Python—use SQL)</p>
+<div class="admonition note">
+<p class="admonition-title">Default Kind</p>
+<p><code>VIEW</code> is the default model kind if you don't specify one. So if you write a model without a <code>kind</code>, it becomes a VIEW automatically.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Performance Consideration</p>
+<p>Since VIEW queries run every time they're referenced, expensive queries can get costly fast. If your view is referenced by many downstream models, you might be running that expensive query dozens of times. Consider materializing expensive views as FULL or incremental models instead.</p>
+</div>
 <p>This example specifies a <code>VIEW</code> model kind:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-37-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-37-2"> 2</a></span>
@@ -2830,7 +2858,8 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span></code></pre></div>
 </details>
 <h3 id="materialized-views">Materialized Views<a class="headerlink" href="#materialized-views" title="Link to this section">¶</a></h3>
-<p>The <code>VIEW</code> model kind can be configured to represent a materialized view by setting the <code>materialized</code> flag to <code>true</code>:</p>
+<p>Want the best of both worlds? You can turn a VIEW into a materialized view by setting <code>materialized: true</code>. Materialized views store the query results (like a table) but automatically refresh when the underlying data changes (like a view).</p>
+<p>Set it up like this:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-42-1">1</a></span>
 <span class="normal"><a href="#__codelineno-42-2">2</a></span>
 <span class="normal"><a href="#__codelineno-42-3">3</a></span>
@@ -2843,17 +2872,28 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Note:</strong> This flag only applies to engines that support materialized views and is ignored by other engines. Supported engines include:</p>
+<div class="admonition note">
+<p class="admonition-title">Engine Support</p>
+<p>Materialized views are only supported on:</p>
 <ul>
 <li>BigQuery</li>
 <li>Databricks</li>
 <li>Snowflake</li>
 </ul>
-<p>During the evaluation of a model of this kind, the view will be replaced or recreated only if the model's query rendered during evaluation does not match the query used during the previous view creation for this model, or if the target view does not exist. Thus, views are recreated only when necessary in order to realize all the benefits provided by materialized views.</p>
+<p>On other engines, this flag is ignored and you'll get a regular VIEW.</p>
+</div>
+<p><strong>Smart refresh:</strong> Vulcan only recreates the materialized view when your query changes or the view doesn't exist. This means you get all the performance benefits of materialized views without unnecessary refreshes. Pretty efficient!</p>
 <h2 id="embedded">EMBEDDED<a class="headerlink" href="#embedded" title="Link to this section">¶</a></h2>
-<p>Embedded models are a way to share common logic between different models of other kinds.</p>
-<p>There are no data assets (tables or views) associated with <code>EMBEDDED</code> models in the data warehouse. Instead, an <code>EMBEDDED</code> model's query is injected directly into the query of each downstream model that references it, as a subquery.</p>
-<p><strong>Note:</strong> Python models do not support the <code>EMBEDDED</code> model kind - use a SQL model instead.</p>
+<p><code>EMBEDDED</code> models are like reusable SQL snippets. They don't create tables or views—instead, their query gets injected directly into any downstream model that references them, as a subquery.</p>
+<p><strong>Why use this?</strong> If you have common logic that multiple models need (like a CTE that filters active customers), you can define it once in an EMBEDDED model and reuse it everywhere. It's like a macro, but for SQL.</p>
+<p><strong>Perfect for:</strong>
+- Common CTEs used across multiple models
+- Reusable business logic (like "active customers" or "valid orders")
+- Avoiding code duplication</p>
+<div class="admonition note">
+<p class="admonition-title">Python Models</p>
+<p>Python models don't support the <code>EMBEDDED</code> kind—use a SQL model instead.</p>
+</div>
 <p>This example specifies an <code>EMBEDDED</code> model kind:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-43-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-43-2"> 2</a></span>
@@ -2876,12 +2916,21 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10"></a><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">customers</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="seed">SEED<a class="headerlink" href="#seed" title="Link to this section">¶</a></h2>
-<p>The <code>SEED</code> model kind is used to specify <a href="types/seed_models.md">seed models</a> for using static CSV datasets in your Vulcan project.</p>
-<p><strong>Notes:</strong></p>
-<ul>
-<li>Seed models are loaded only once unless the SQL model and/or seed file is updated.</li>
-<li>Python models do not support the <code>SEED</code> model kind - use a SQL model instead.</li>
-</ul>
+<p>The <code>SEED</code> model kind is used to specify <a href="./seed_models.md">seed models</a> for using static CSV datasets in your Vulcan project.</p>
+<p><strong>How it works:</strong> You point to a CSV file, define the schema, and Vulcan loads it into a table. The data only gets reloaded if you change the model definition or update the CSV file.</p>
+<p><strong>Use cases:</strong>
+- Reference data (countries, states, categories)
+- Lookup tables
+- Static configuration data
+- Test data</p>
+<div class="admonition note">
+<p class="admonition-title">Python Models</p>
+<p>Python models don't support the <code>SEED</code> kind—use a SQL model instead.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">When Data Reloads</p>
+<p>Seed models are loaded once and stay loaded unless you update the model definition or change the CSV file. This keeps things efficient—no point reloading static data every run!</p>
+</div>
 <p>This example specifies a <code>SEED</code> model kind:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-44-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-44-2"> 2</a></span>
@@ -2958,11 +3007,12 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p>SCD Type 2 is a model kind that supports <a href="https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row">slowly changing dimensions</a> (SCDs) in your Vulcan project. SCDs are a common pattern in data warehousing that allow you to track changes to records over time.</p>
 <p>Vulcan achieves this by adding a <code>valid_from</code> and <code>valid_to</code> column to your model. The <code>valid_from</code> column is the timestamp that the record became valid (inclusive) and the <code>valid_to</code> column is the timestamp that the record became invalid (exclusive). The <code>valid_to</code> column is set to <code>NULL</code> for the latest record.</p>
 <p>Therefore, you can use these models to not only tell you what the latest value is for a given record but also what the values were anytime in the past. Note that maintaining this history does come at a cost of increased storage and compute and this may not be a good fit for sources that change frequently since the history could get very large.</p>
-<p><strong>Note</strong>: Partial data <a href="../../../guides/plan/#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.</p>
-<p>There are two ways to tracking changes: By Time (Recommended) or By Column.</p>
+<p><strong>Note</strong>: Partial data <a href="../plans.md#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.</p>
+<p>Vulcan supports two ways to detect changes: <strong>By Time</strong> (recommended) or <strong>By Column</strong>. Let's look at both:</p>
 <h3 id="scd-type-2-by-time-recommended">SCD Type 2 By Time (Recommended)<a class="headerlink" href="#scd-type-2-by-time-recommended" title="Link to this section">¶</a></h3>
-<p>SCD Type 2 By Time supports sourcing from tables that have an "Updated At" timestamp defined in the table that tells you when a given record was last updated.
-This is the recommended way since this "Updated At" gives you a precise time when the record was last updated and therefore improves the accuracy of the SCD Type 2 table that is produced.</p>
+<p><strong>By Time</strong> is the recommended approach. It works with source tables that have an "Updated At" timestamp column (like <code>updated_at</code>, <code>modified_at</code>, <code>last_changed</code>).</p>
+<p><strong>Why it's recommended:</strong> The timestamp tells you exactly when a record changed, which makes your SCD Type 2 table more accurate. You get precise <code>valid_from</code> times based on when the source system actually updated the record.</p>
+<p>If your source table has an <code>updated_at</code> column, use this approach!</p>
 <p>This example specifies a <code>SCD_TYPE_2_BY_TIME</code> model kind:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">SQL</label><label for="__tabbed_4_2">Python</label></div>
 <div class="tabbed-content">
@@ -3134,8 +3184,9 @@ This is the recommended way since this "Updated At" gives you a precise time whe
 </span><span id="__span-56-8"><a id="__codelineno-56-8" name="__codelineno-56-8"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div><p></p>
 <h3 id="scd-type-2-by-column">SCD Type 2 By Column<a class="headerlink" href="#scd-type-2-by-column" title="Link to this section">¶</a></h3>
-<p>SCD Type 2 By Column supports sourcing from tables that do not have an "Updated At" timestamp defined in the table.
-Instead, it will check the columns defined in the <code>columns</code> field to see if their value has changed and if so it will record the <code>valid_from</code> time as the execution time when the change was detected.</p>
+<p><strong>By Column</strong> works when your source table doesn't have an "Updated At" timestamp. Instead, Vulcan compares the values in specific columns between runs and detects changes.</p>
+<p><strong>How it works:</strong> You specify which columns to watch (or use <code>*</code> to watch all columns). When Vulcan detects a change in any of those columns, it records <code>valid_from</code> as the execution time when the change was detected.</p>
+<p><strong>Use this when:</strong> Your source system doesn't track update timestamps, but you still want to maintain history. The trade-off is that <code>valid_from</code> times are based on when Vulcan detected the change, not when the source system actually changed it.</p>
 <p>This example specifies a <code>SCD_TYPE_2_BY_COLUMN</code> model kind:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">SQL</label><label for="__tabbed_5_2">Python</label></div>
 <div class="tabbed-content">
@@ -3253,8 +3304,7 @@ Instead, it will check the columns defined in the <code>columns</code> field to 
 </span><span id="__span-59-7"><a id="__codelineno-59-7" name="__codelineno-59-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div><p></p>
 <h3 id="change-column-names">Change Column Names<a class="headerlink" href="#change-column-names" title="Link to this section">¶</a></h3>
-<p>Vulcan will automatically add the <code>valid_from</code> and <code>valid_to</code> columns to your table.
-If you would like to specify the names of these columns you can do so by adding the following to your model definition:
+<p>Vulcan automatically adds <code>valid_from</code> and <code>valid_to</code> columns to your table. If you want different names (maybe to match your existing schema conventions), you can customize them:
 </p><div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-60-1">1</a></span>
 <span class="normal"><a href="#__codelineno-60-2">2</a></span>
 <span class="normal"><a href="#__codelineno-60-3">3</a></span>
@@ -3289,8 +3339,8 @@ If you would like to specify the names of these columns you can do so by adding 
 </span><span id="__span-61-8"><a id="__codelineno-61-8" name="__codelineno-61-8"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div><p></p>
 <h3 id="deletes">Deletes<a class="headerlink" href="#deletes" title="Link to this section">¶</a></h3>
-<p>A hard delete is when a record no longer exists in the source table. When this happens,</p>
-<p>If <code>invalidate_hard_deletes</code> is set to <code>false</code> (default):</p>
+<p>A "hard delete" is when a record disappears from your source table entirely. How should SCD Type 2 handle this?</p>
+<p><strong>Default behavior (<code>invalidate_hard_deletes: false</code>):</strong></p>
 <ul>
 <li><code>valid_to</code> column will continue to be set to <code>NULL</code> (therefore still considered "valid")</li>
 <li>If the record is added back, then the <code>valid_to</code> column will be set to the <code>valid_from</code> of the new record.</li>
@@ -3300,16 +3350,23 @@ If you would like to specify the names of these columns you can do so by adding 
 <li>SCD_TYPE_2_BY_TIME: the largest of either the <code>updated_at</code> timestamp of the new record or the <code>valid_from</code> timestamp of the deleted record in the SCD Type 2 table</li>
 <li>SCD_TYPE_2_BY_COLUMN: the <code>execution_time</code> when the record was detected again</li>
 </ul>
-<p>If <code>invalidate_hard_deletes</code> is set to <code>true</code>:</p>
+<p><strong>With <code>invalidate_hard_deletes: true</code>:</strong></p>
 <ul>
-<li><code>valid_to</code> column will be set to the time when the Vulcan run started that detected the missing record (called <code>execution_time</code>).</li>
-<li>If the record is added back, then the <code>valid_to</code> column will remain unchanged.</li>
+<li><code>valid_to</code> is set to the execution time when Vulcan detected the missing record</li>
+<li>If the record comes back later, <code>valid_to</code> stays unchanged (you'll have a gap in history)</li>
 </ul>
-<p>One way to think about <code>invalidate_hard_deletes</code> is that, if <code>invalidate_hard_deletes</code> is set to <code>true</code>, deletes are most accurately tracked in the SCD Type 2 table since it records when the delete occurred.
-As a result though, you can have gaps between records if the there is a gap of time between when it was deleted and added back.
-If you would prefer to not have gaps, and a result consider missing records in source as still "valid", then you can leave the default value or set <code>invalidate_hard_deletes</code> to <code>false</code>.</p>
+<p><strong>Which should you use?</strong></p>
+<ul>
+<li>
+<p><strong><code>false</code> (default):</strong> Missing records are still considered "valid" (no gaps in history). Use this if you think missing records might be temporary or if you prefer continuous history.</p>
+</li>
+<li>
+<p><strong><code>true</code>:</strong> Deletes are accurately tracked with precise timestamps. Use this if you want to know exactly when records were deleted, even if it creates gaps in history.</p>
+</li>
+</ul>
+<p>Think of it this way: <code>false</code> assumes "missing = still valid", while <code>true</code> assumes "missing = deleted at this time".</p>
 <h3 id="example-of-scd-type-2-by-time-in-action">Example of SCD Type 2 By Time in Action<a class="headerlink" href="#example-of-scd-type-2-by-time-in-action" title="Link to this section">¶</a></h3>
-<p>Lets say that you started with the following data in your source table and <code>invalidate_hard_deletes</code> is set to <code>true</code>:</p>
+<p>Let's walk through a real example. Say you're tracking a restaurant menu, and you start with this source data (with <code>invalidate_hard_deletes: true</code>):</p>
 <table>
 <thead>
 <tr>
@@ -3593,12 +3650,11 @@ If you would prefer to not have gaps, and a result consider missing records in s
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 00:00:00</code> meaning if you queried the table during that time range then you would not see <code>Cheeseburger</code> in the menu.
-This is the most accurate representation of the menu based on the source data provided.
-If <code>Cheeseburger</code> were added back to the menu with it's original updated at timestamp of <code>2020-01-01 00:00:00</code> then the <code>valid_from</code> timestamp of the new record would have been <code>2020-01-02 11:00:00</code> resulting in no period of time where the item was deleted.
-Since in this case the updated at timestamp did not change it is likely the item was removed in error and this again most accurately represents the menu based on the source data.</p>
+<p><strong>Notice:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 00:00:00</code>. If you query the table for that time range, you won't see it—which accurately reflects that it wasn't on the menu during that period.</p>
+<p>This is the most accurate representation based on your source data. If <code>Cheeseburger</code> had been added back with its original <code>updated_at</code> timestamp (<code>2020-01-01</code>), Vulcan would have set the new record's <code>valid_from</code> to <code>2020-01-02 11:00:00</code> (when it was detected again), filling the gap. But since the timestamp didn't change, it's likely the item was removed in error, and the gap accurately represents that.</p>
 <h3 id="example-of-scd-type-2-by-column-in-action">Example of SCD Type 2 By Column in Action<a class="headerlink" href="#example-of-scd-type-2-by-column-in-action" title="Link to this section">¶</a></h3>
-<p>Lets say that you started with the following data in your source table and <code>invalidate_hard_deletes</code> is set to <code>true</code>:</p>
+<p>Now let's see how <strong>By Column</strong> works. Same restaurant menu example, but this time the source table doesn't have an <code>updated_at</code> column. We'll configure the model to watch <code>Name</code> and <code>Price</code> for changes.</p>
+<p>Starting data:</p>
 <table>
 <thead>
 <tr>
@@ -3625,8 +3681,7 @@ Since in this case the updated at timestamp did not change it is likely the item
 </tr>
 </tbody>
 </table>
-<p>We configure the SCD Type 2 By Column model to check the columns <code>Name</code> and <code>Price</code> for changes</p>
-<p>The target table, which is currently empty, will be materialized with the following data:</p>
+<p>After the first run, your SCD Type 2 table looks like this:</p>
 <table>
 <thead>
 <tr>
@@ -3781,7 +3836,7 @@ Since in this case the updated at timestamp did not change it is likely the item
 <li>Cheeseburger was added back to the menu with original name and price.</li>
 <li>Milkshake name was updated to be "Chocolate Milkshake".</li>
 </ul>
-<p>Assuming your pipeline ran at <code>2020-01-03 11:00:00</code>, Target table will be updated with the following data:</p>
+<p>After running at <code>2020-01-03 11:00:00</code>, your final SCD Type 2 table:</p>
 <table>
 <thead>
 <tr>
@@ -3851,8 +3906,7 @@ Since in this case the updated at timestamp did not change it is likely the item
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 11:00:00</code> meaning if you queried the table during that time range then you would not see <code>Cheeseburger</code> in the menu.
-This is the most accurate representation of the menu based on the source data provided.</p>
+<p><strong>Notice:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 11:00:00</code>. Query the table for that time range, and you won't see it—which accurately reflects that it wasn't on the menu during that period.</p>
 <h3 id="shared-configuration-options">Shared Configuration Options<a class="headerlink" href="#shared-configuration-options" title="Link to this section">¶</a></h3>
 <table>
 <thead>
@@ -3891,8 +3945,8 @@ This is the most accurate representation of the menu based on the source data pr
 </tbody>
 </table>
 <div class="admonition info">
-<p class="admonition-title">Important</p>
-<p>If using BigQuery, the default data type of the valid_from/valid_to columns is DATETIME. If you want to use TIMESTAMP, you can specify the data type in the model definition.</p>
+<p class="admonition-title">BigQuery Data Types</p>
+<p>On BigQuery, <code>valid_from</code> and <code>valid_to</code> columns default to <code>DATETIME</code>. If you want <code>TIMESTAMP</code> instead, specify it in your model definition:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-62-1">1</a></span>
 <span class="normal"><a href="#__codelineno-62-2">2</a></span>
 <span class="normal"><a href="#__codelineno-62-3">3</a></span>
@@ -3907,7 +3961,7 @@ This is the most accurate representation of the menu based on the source data pr
 </span></span><span id="__span-62-6"><a id="__codelineno-62-6" name="__codelineno-62-6"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-62-7"><a id="__codelineno-62-7" name="__codelineno-62-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This could likely be used on other engines to change the expected data type but has only been tested on BigQuery.</p>
+<p>This might work on other engines too, but it's only been tested on BigQuery.</p>
 </div>
 <h3 id="scd-type-2-by-time-configuration-options">SCD Type 2 By Time Configuration Options<a class="headerlink" href="#scd-type-2-by-time-configuration-options" title="Link to this section">¶</a></h3>
 <table>
@@ -3959,13 +4013,9 @@ This is the most accurate representation of the menu based on the source data pr
 </tbody>
 </table>
 <h3 id="processing-source-table-with-historical-data">Processing Source Table with Historical Data<a class="headerlink" href="#processing-source-table-with-historical-data" title="Link to this section">¶</a></h3>
-<p>The most common case for SCD Type 2 is creating history for a table that it doesn't have it already. 
-In the example of the restaurant menu, the menu just tells you what is offered right now, but you want to know what was offered over time.
-In this case, the default setting of <code>None</code> for <code>batch_size</code> is the best option.</p>
-<p>Another use case though is processing a source table that already has history in it. 
-A common example of this is a "daily snapshot" table that is created by a source system that takes a snapshot of the data at the end of each day.
-If your source table has historical records, like a "daily snapshot" table, then set <code>batch_size</code> to <code>1</code> to process each interval (each day if a <code>@daily</code> cron) in sequential order.
-That way the historical records will be properly captured in the SCD Type 2 table.</p>
+<p>Most of the time, you're creating history for a table that doesn't have it. Like the restaurant menu—it just shows what's available now, but you want to track what was available over time. For this use case, leave <code>batch_size</code> as <code>None</code> (the default).</p>
+<p><strong>But what if your source already has history?</strong> Some systems create "daily snapshot" tables that contain historical records. If you're sourcing from one of these, set <code>batch_size</code> to <code>1</code> to process each interval sequentially (one day at a time if you're using <code>@daily</code> cron).</p>
+<p><strong>Why sequential?</strong> SCD Type 2 needs to compare each day's snapshot to the previous day to detect changes. Processing them in order ensures the history is captured correctly.</p>
 <h4 id="example-source-from-daily-snapshot-table">Example - Source from Daily Snapshot Table<a class="headerlink" href="#example-source-from-daily-snapshot-table" title="Link to this section">¶</a></h4>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-63-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-63-2"> 2</a></span>
@@ -4005,7 +4055,7 @@ That way the historical records will be properly captured in the SCD Type 2 tabl
 </span><span id="__span-63-18"><a id="__codelineno-63-18" name="__codelineno-63-18"></a><span class="k">WHERE</span>
 </span><span id="__span-63-19"><a id="__codelineno-63-19" name="__codelineno-63-19"></a><span class="w">    </span><span class="n">ds</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This will process each day of the source table in sequential order (if more than one day to process), checking <code>some_value</code> column to see if it changed. If it did change, <code>valid_from</code> will be set to match the <code>ds</code> column (except for first value which would be <code>1970-01-01 00:00:00</code>).</p>
+<p>This processes each day sequentially, checking if <code>some_value</code> changed. When a change is detected, <code>valid_from</code> is set to match the <code>ds</code> column value (except for the very first record, which gets <code>1970-01-01 00:00:00</code>).</p>
 <p>If the source data was the following:</p>
 <table>
 <thead>
@@ -4074,9 +4124,9 @@ That way the historical records will be properly captured in the SCD Type 2 tabl
 </tbody>
 </table>
 <h3 id="querying-scd-type-2-models">Querying SCD Type 2 Models<a class="headerlink" href="#querying-scd-type-2-models" title="Link to this section">¶</a></h3>
-<h4 id="querying-the-current-version-of-a-record">Querying the current version of a record<a class="headerlink" href="#querying-the-current-version-of-a-record" title="Link to this section">¶</a></h4>
-<p>Although SCD Type 2 models support history, it is still very easy to query for just the latest version of a record. Simply query the model as you would any other table.
-For example, if you wanted to query the latest version of the <code>menu_items</code> table you would simply run:</p>
+<p>Even though SCD Type 2 models track history, querying the current version is still simple. Here are some common patterns:</p>
+<h4 id="querying-the-current-version">Querying the Current Version<a class="headerlink" href="#querying-the-current-version" title="Link to this section">¶</a></h4>
+<p>Want just the latest version of each record? Filter for <code>valid_to IS NULL</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-64-1">1</a></span>
 <span class="normal"><a href="#__codelineno-64-2">2</a></span>
 <span class="normal"><a href="#__codelineno-64-3">3</a></span>
@@ -4089,7 +4139,7 @@ For example, if you wanted to query the latest version of the <code>menu_items</
 </span><span id="__span-64-5"><a id="__codelineno-64-5" name="__codelineno-64-5"></a><span class="k">WHERE</span>
 </span><span id="__span-64-6"><a id="__codelineno-64-6" name="__codelineno-64-6"></a><span class="w">  </span><span class="n">valid_to</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>One could also create a view on top of the SCD Type 2 model that creates a new <code>is_current</code> column to make it easy for consumers to identify the current record.</p>
+<p>You can also create a view that adds an <code>is_current</code> flag to make it even easier for downstream consumers:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-65-1">1</a></span>
 <span class="normal"><a href="#__codelineno-65-2">2</a></span>
 <span class="normal"><a href="#__codelineno-65-3">3</a></span>
@@ -4100,8 +4150,8 @@ For example, if you wanted to query the latest version of the <code>menu_items</
 </span><span id="__span-65-4"><a id="__codelineno-65-4" name="__codelineno-65-4"></a><span class="k">FROM</span>
 </span><span id="__span-65-5"><a id="__codelineno-65-5" name="__codelineno-65-5"></a><span class="w">  </span><span class="n">menu_items</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="querying-for-a-specific-version-of-a-record-at-a-give-point-in-time">Querying for a specific version of a record at a give point in time<a class="headerlink" href="#querying-for-a-specific-version-of-a-record-at-a-give-point-in-time" title="Link to this section">¶</a></h4>
-<p>If you wanted to query the <code>menu_items</code> table as it was on <code>2020-01-02 01:00:00</code> you would simply run:</p>
+<h4 id="querying-for-a-specific-point-in-time">Querying for a Specific Point in Time<a class="headerlink" href="#querying-for-a-specific-point-in-time" title="Link to this section">¶</a></h4>
+<p>Want to see what the menu looked like on a specific date? Filter by <code>valid_from</code> and <code>valid_to</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-66-1">1</a></span>
 <span class="normal"><a href="#__codelineno-66-2">2</a></span>
 <span class="normal"><a href="#__codelineno-66-3">3</a></span>
@@ -4118,7 +4168,7 @@ For example, if you wanted to query the latest version of the <code>menu_items</
 </span><span id="__span-66-7"><a id="__codelineno-66-7" name="__codelineno-66-7"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="s1">'2020-01-02 01:00:00'</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">valid_from</span>
 </span><span id="__span-66-8"><a id="__codelineno-66-8" name="__codelineno-66-8"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="s1">'2020-01-02 01:00:00'</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">valid_to</span><span class="p">,</span><span class="w"> </span><span class="k">CAST</span><span class="p">(</span><span class="s1">'2199-12-31 23:59:59+00:00'</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">));</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Example in a join:</p>
+<p>Here's how you'd use it in a join (to get the menu item price that was valid when an order was placed):</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-67-1">1</a></span>
 <span class="normal"><a href="#__codelineno-67-2">2</a></span>
 <span class="normal"><a href="#__codelineno-67-3">3</a></span>
@@ -4137,7 +4187,7 @@ For example, if you wanted to query the latest version of the <code>menu_items</
 </span><span id="__span-67-8"><a id="__codelineno-67-8" name="__codelineno-67-8"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">created_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">menu_items</span><span class="p">.</span><span class="n">valid_from</span>
 </span><span id="__span-67-9"><a id="__codelineno-67-9" name="__codelineno-67-9"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">created_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">menu_items</span><span class="p">.</span><span class="n">valid_to</span><span class="p">,</span><span class="w"> </span><span class="k">CAST</span><span class="p">(</span><span class="s1">'2199-12-31 23:59:59+00:00'</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">));</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>A view can be created to do the <code>COALESCE</code> automatically. This, combined with the <code>is_current</code> flag, makes it easier to query for a specific version of a record.</p>
+<p>You can create a view that handles the <code>COALESCE</code> automatically, making point-in-time queries even easier:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-68-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-68-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-68-3"> 3</a></span>
@@ -4158,7 +4208,7 @@ For example, if you wanted to query the latest version of the <code>menu_items</
 </span><span id="__span-68-9"><a id="__codelineno-68-9" name="__codelineno-68-9"></a><span class="k">FROM</span>
 </span><span id="__span-68-10"><a id="__codelineno-68-10" name="__codelineno-68-10"></a><span class="w">  </span><span class="n">menu_items</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Furthermore if you want to make it so users can use <code>BETWEEN</code> when querying by making <code>valid_to</code> inclusive you can do the following:
+<p>Want to make <code>valid_to</code> inclusive so users can use <code>BETWEEN</code>? Adjust it like this:
 </p><div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-69-1">1</a></span>
 <span class="normal"><a href="#__codelineno-69-2">2</a></span>
 <span class="normal"><a href="#__codelineno-69-3">3</a></span>
@@ -4175,9 +4225,12 @@ For example, if you wanted to query the latest version of the <code>menu_items</
 </span><span id="__span-69-7"><a id="__codelineno-69-7" name="__codelineno-69-7"></a><span class="w">  </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">valid_to</span><span class="p">,</span><span class="w"> </span><span class="k">CAST</span><span class="p">(</span><span class="s1">'2200-01-01 00:00:00+00:00'</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">SECOND</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">valid_to</span>
 </span><span id="__span-69-8"><a id="__codelineno-69-8" name="__codelineno-69-8"></a><span class="w">  </span><span class="n">valid_to</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">is_current</span><span class="p">,</span>
 </span></code></pre></div></td></tr></tbody></table></div><p></p>
-<p>Note: The precision of the timestamps in this example is second so I subtract 1 second. Make sure to subtract a value equal to the precision of your timestamps.</p>
-<h4 id="querying-for-deleted-records">Querying for deleted records<a class="headerlink" href="#querying-for-deleted-records" title="Link to this section">¶</a></h4>
-<p>One way to identify deleted records is to query for records that do not have a <code>valid_to</code> record of <code>NULL</code>. For example, if you wanted to query for all deleted ids in the <code>menu_items</code> table you would simply run:</p>
+<div class="admonition note">
+<p class="admonition-title">Timestamp Precision</p>
+<p>This example uses second precision, so we subtract 1 second. Adjust the subtraction based on your timestamp precision (milliseconds, microseconds, etc.).</p>
+</div>
+<h4 id="querying-for-deleted-records">Querying for Deleted Records<a class="headerlink" href="#querying-for-deleted-records" title="Link to this section">¶</a></h4>
+<p>To find records that were deleted, query for IDs that don't have a current version (<code>valid_to IS NULL</code>). Here's how:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-70-1">1</a></span>
 <span class="normal"><a href="#__codelineno-70-2">2</a></span>
 <span class="normal"><a href="#__codelineno-70-3">3</a></span>
@@ -4192,10 +4245,10 @@ For example, if you wanted to query the latest version of the <code>menu_items</
 </span><span id="__span-70-6"><a id="__codelineno-70-6" name="__codelineno-70-6"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span>
 </span><span id="__span-70-7"><a id="__codelineno-70-7" name="__codelineno-70-7"></a><span class="w">  </span><span class="n">id</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="reset-scd-type-2-model-clearing-history">Reset SCD Type 2 Model (clearing history)<a class="headerlink" href="#reset-scd-type-2-model-clearing-history" title="Link to this section">¶</a></h3>
-<p>SCD Type 2 models are designed by default to protect the data that has been captured because it is not possible to recreate the history once it has been lost.
-However, there are cases where you may want to clear the history and start fresh.
-For this use use case you will want to start by setting <code>disable_restatement</code> to <code>false</code> in the model definition.</p>
+<h3 id="reset-scd-type-2-model-clearing-history">Reset SCD Type 2 Model (Clearing History)<a class="headerlink" href="#reset-scd-type-2-model-clearing-history" title="Link to this section">¶</a></h3>
+<p>By default, SCD Type 2 models protect your history—once it's gone, you can't recreate it. But sometimes you need to start fresh (maybe you're fixing a bug, or the history got corrupted).</p>
+<p><strong>Warning:</strong> This will delete all historical data. Make sure you really want to do this!</p>
+<p>To reset history, follow these steps:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-71-1">1</a></span>
 <span class="normal"><a href="#__codelineno-71-2">2</a></span>
 <span class="normal"><a href="#__codelineno-71-3">3</a></span>
@@ -4211,29 +4264,31 @@ For this use use case you will want to start by setting <code>disable_restatemen
 </span><span id="__span-71-7"><a id="__codelineno-71-7" name="__codelineno-71-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Plan/apply this change to production.
-Then you will want to <a href="../../../guides/plan/#restatement-plans">restate the model</a>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-72-1"><a href="#__codelineno-72-1" id="__codelineno-72-1" name="__codelineno-72-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>--restate-model<span class="w"> </span>db.menu_items
-</span></code></pre></div>
+Then you will want to <a href="../plans.md#restatement-plans">restate the model</a>.</p>
 <div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This will remove the historical data on the model which in most situations cannot be recovered.</p>
+<p class="admonition-title">Data Loss Warning</p>
+<p>This will permanently remove all historical data. In most cases, you cannot recover it. Make absolutely sure this is what you want!</p>
 </div>
-<p>Once complete you will want to remove <code>disable_restatement</code> on the model definition which will set it back to <code>true</code> and prevent accidental data loss.</p>
-<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-73-1">1</a></span>
-<span class="normal"><a href="#__codelineno-73-2">2</a></span>
-<span class="normal"><a href="#__codelineno-73-3">3</a></span>
-<span class="normal"><a href="#__codelineno-73-4">4</a></span>
-<span class="normal"><a href="#__codelineno-73-5">5</a></span>
-<span class="normal"><a href="#__codelineno-73-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-73-2"><a id="__codelineno-73-2" name="__codelineno-73-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">menu_items</span><span class="p">,</span>
-</span><span id="__span-73-3"><a id="__codelineno-73-3" name="__codelineno-73-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_TIME</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-73-4"><a id="__codelineno-73-4" name="__codelineno-73-4"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
-</span><span id="__span-73-5"><a id="__codelineno-73-5" name="__codelineno-73-5"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-73-6"><a id="__codelineno-73-6" name="__codelineno-73-6"></a><span class="p">);</span>
+<ol start="4">
+<li>Once complete, remove <code>disable_restatement</code> from your model definition (sets it back to <code>true</code>) to prevent accidental data loss in the future</li>
+</ol>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-72-1">1</a></span>
+<span class="normal"><a href="#__codelineno-72-2">2</a></span>
+<span class="normal"><a href="#__codelineno-72-3">3</a></span>
+<span class="normal"><a href="#__codelineno-72-4">4</a></span>
+<span class="normal"><a href="#__codelineno-72-5">5</a></span>
+<span class="normal"><a href="#__codelineno-72-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-72-2"><a id="__codelineno-72-2" name="__codelineno-72-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">menu_items</span><span class="p">,</span>
+</span><span id="__span-72-3"><a id="__codelineno-72-3" name="__codelineno-72-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_TIME</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-72-4"><a id="__codelineno-72-4" name="__codelineno-72-4"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-72-5"><a id="__codelineno-72-5" name="__codelineno-72-5"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-72-6"><a id="__codelineno-72-6" name="__codelineno-72-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Plan/apply this change to production.</p>
+<ol start="5">
+<li>Plan and apply this change to production</li>
+</ol>
 <h2 id="external">EXTERNAL<a class="headerlink" href="#external" title="Link to this section">¶</a></h2>
-<p>The EXTERNAL model kind is used to specify <a href="../types/external_models/">external models</a> that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.</p>
+<p>The EXTERNAL model kind is used to specify <a href="./external_models.md">external models</a> that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.</p>
 <h2 id="managed">MANAGED<a class="headerlink" href="#managed" title="Link to this section">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -4242,17 +4297,17 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 <p><strong>Note:</strong> Python models do not support the <code>MANAGED</code> model kind - use a SQL model instead.</p>
 <p>The <code>MANAGED</code> model kind is used to create models where the underlying database engine manages the data lifecycle.</p>
 <p>These models don't get updated with new intervals or refreshed when <code>vulcan run</code> is called. Responsibility for keeping the <em>data</em> up to date falls on the engine.</p>
-<p>You can control how the engine creates the managed model by using the <a href="../properties/#physical_properties"><code>physical_properties</code></a> to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.</p>
+<p>You can control how the engine creates the managed model by using the <a href="../models/overview.md#physical_properties"><code>physical_properties</code></a> to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.</p>
 <p>Due to there being no standard, each vendor has a different implementation with different semantics and different configuration parameters. Therefore, <code>MANAGED</code> models are not as portable between database engines as other Vulcan model types. In addition, due to their black-box nature, Vulcan has limited visibility into the integrity and state of the model.</p>
-<p>We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in <a href="../../../concepts-old/environments/">virtual environments</a>.</p>
-<p>See <a href="../types/managed_models/">Managed Models</a> for more information on which engines are supported and which properties are available.</p>
+<p>We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in <a href="../overview.md#build-a-virtual-environment">virtual environments</a>.</p>
+<p>See <a href="./managed_models.md">Managed Models</a> for more information on which engines are supported and which properties are available.</p>
 <h2 id="incremental_by_partition">INCREMENTAL_BY_PARTITION<a class="headerlink" href="#incremental_by_partition" title="Link to this section">¶</a></h2>
 <p>Models of the <code>INCREMENTAL_BY_PARTITION</code> kind are computed incrementally based on partition. A set of columns defines the model's partitioning key, and a partition is the group of rows with the same partitioning key value.</p>
 <div class="admonition question">
 <p class="admonition-title">Should you use this model kind?</p>
-<p>Any model kind can use a partitioned <strong>table</strong> by specifying the <a href="../properties/#partitioned_by"><code>partitioned_by</code> key</a> in the <code>MODEL</code> DDL.</p>
+<p>Any model kind can use a partitioned <strong>table</strong> by specifying the <a href="../models/overview.md#partitioned_by"><code>partitioned_by</code> key</a> in the <code>MODEL</code> DDL.</p>
 <p>The "partition" in <code>INCREMENTAL_BY_PARTITION</code> is about how the data is <strong>loaded</strong> when the model runs.</p>
-<p><code>INCREMENTAL_BY_PARTITION</code> models are inherently <a href="../../../concepts-old/glossary/#idempotency">non-idempotent</a>, so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.</p>
+<p><code>INCREMENTAL_BY_PARTITION</code> models are inherently <a href="../glossary.md#idempotency">non-idempotent</a>, so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.</p>
 <p>In most scenarios, an <code>INCREMENTAL_BY_TIME_RANGE</code> model can meet your needs and will be easier to manage. The <code>INCREMENTAL_BY_PARTITION</code> model kind should only be used when the data must be loaded by partition (usually for performance reasons).</p>
 </div>
 <p>This model kind is designed for the scenario where data rows should be loaded and updated as a group based on their shared value for the partitioning key.</p>
@@ -4274,7 +4329,51 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 <div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">SQL</label><label for="__tabbed_6_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-74-1"> 1</a></span>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-73-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-73-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-73-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-73-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-73-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-73-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-73-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-73-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-73-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-73-10">10</a></span>
+<span class="normal"><a href="#__codelineno-73-11">11</a></span>
+<span class="normal"><a href="#__codelineno-73-12">12</a></span>
+<span class="normal"><a href="#__codelineno-73-13">13</a></span>
+<span class="normal"><a href="#__codelineno-73-14">14</a></span>
+<span class="normal"><a href="#__codelineno-73-15">15</a></span>
+<span class="normal"><a href="#__codelineno-73-16">16</a></span>
+<span class="normal"><a href="#__codelineno-73-17">17</a></span>
+<span class="normal"><a href="#__codelineno-73-18">18</a></span>
+<span class="normal"><a href="#__codelineno-73-19">19</a></span>
+<span class="normal"><a href="#__codelineno-73-20">20</a></span>
+<span class="normal"><a href="#__codelineno-73-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-73-2"><a id="__codelineno-73-2" name="__codelineno-73-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">partition</span><span class="p">,</span>
+</span><span id="__span-73-3"><a id="__codelineno-73-3" name="__codelineno-73-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
+</span><span id="__span-73-4"><a id="__codelineno-73-4" name="__codelineno-73-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="nb">ARRAY</span><span class="p">[</span><span class="n">warehouse_id</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">],</span>
+</span><span id="__span-73-5"><a id="__codelineno-73-5" name="__codelineno-73-5"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">partitioned_analysis_key</span><span class="p">)</span>
+</span><span id="__span-73-6"><a id="__codelineno-73-6" name="__codelineno-73-6"></a><span class="p">);</span>
+</span><span id="__span-73-7"><a id="__codelineno-73-7" name="__codelineno-73-7"></a>
+</span><span id="__span-73-8"><a id="__codelineno-73-8" name="__codelineno-73-8"></a><span class="k">SELECT</span>
+</span><span id="__span-73-9"><a id="__codelineno-73-9" name="__codelineno-73-9"></a><span class="w">  </span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span><span class="p">,</span>
+</span><span id="__span-73-10"><a id="__codelineno-73-10" name="__codelineno-73-10"></a><span class="w">  </span><span class="n">w</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">warehouse_name</span><span class="p">,</span>
+</span><span id="__span-73-11"><a id="__codelineno-73-11" name="__codelineno-73-11"></a><span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">category</span><span class="p">,</span>
+</span><span id="__span-73-12"><a id="__codelineno-73-12" name="__codelineno-73-12"></a><span class="w">  </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span>
+</span><span id="__span-73-13"><a id="__codelineno-73-13" name="__codelineno-73-13"></a><span class="w">  </span><span class="n">CONCAT</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span><span class="p">::</span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">::</span><span class="nb">TEXT</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">partitioned_analysis_key</span><span class="p">,</span>
+</span><span id="__span-73-14"><a id="__codelineno-73-14" name="__codelineno-73-14"></a><span class="w">  </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_transactions</span><span class="p">,</span>
+</span><span id="__span-73-15"><a id="__codelineno-73-15" name="__codelineno-73-15"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">oi</span><span class="p">.</span><span class="n">quantity</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">oi</span><span class="p">.</span><span class="n">unit_price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_sales_amount</span><span class="p">,</span>
+</span><span id="__span-73-16"><a id="__codelineno-73-16" name="__codelineno-73-16"></a><span class="w">  </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">unique_customers</span>
+</span><span id="__span-73-17"><a id="__codelineno-73-17" name="__codelineno-73-17"></a><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">orders</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">o</span>
+</span><span id="__span-73-18"><a id="__codelineno-73-18" name="__codelineno-73-18"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">order_items</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oi</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oi</span><span class="p">.</span><span class="n">order_id</span>
+</span><span id="__span-73-19"><a id="__codelineno-73-19" name="__codelineno-73-19"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">products</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">oi</span><span class="p">.</span><span class="n">product_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span>
+</span><span id="__span-73-20"><a id="__codelineno-73-20" name="__codelineno-73-20"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">warehouses</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span>
+</span><span id="__span-73-21"><a id="__codelineno-73-21" name="__codelineno-73-21"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span>
+</span></code></pre></div></td></tr></tbody></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-74-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-74-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-74-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-74-4"> 4</a></span>
@@ -4294,86 +4393,53 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 <span class="normal"><a href="#__codelineno-74-18">18</a></span>
 <span class="normal"><a href="#__codelineno-74-19">19</a></span>
 <span class="normal"><a href="#__codelineno-74-20">20</a></span>
-<span class="normal"><a href="#__codelineno-74-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-74-1"><a id="__codelineno-74-1" name="__codelineno-74-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-74-2"><a id="__codelineno-74-2" name="__codelineno-74-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">partition</span><span class="p">,</span>
-</span><span id="__span-74-3"><a id="__codelineno-74-3" name="__codelineno-74-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
-</span><span id="__span-74-4"><a id="__codelineno-74-4" name="__codelineno-74-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="nb">ARRAY</span><span class="p">[</span><span class="n">warehouse_id</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">],</span>
-</span><span id="__span-74-5"><a id="__codelineno-74-5" name="__codelineno-74-5"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">partitioned_analysis_key</span><span class="p">)</span>
-</span><span id="__span-74-6"><a id="__codelineno-74-6" name="__codelineno-74-6"></a><span class="p">);</span>
-</span><span id="__span-74-7"><a id="__codelineno-74-7" name="__codelineno-74-7"></a>
-</span><span id="__span-74-8"><a id="__codelineno-74-8" name="__codelineno-74-8"></a><span class="k">SELECT</span>
-</span><span id="__span-74-9"><a id="__codelineno-74-9" name="__codelineno-74-9"></a><span class="w">  </span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span><span class="p">,</span>
-</span><span id="__span-74-10"><a id="__codelineno-74-10" name="__codelineno-74-10"></a><span class="w">  </span><span class="n">w</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">warehouse_name</span><span class="p">,</span>
-</span><span id="__span-74-11"><a id="__codelineno-74-11" name="__codelineno-74-11"></a><span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">category</span><span class="p">,</span>
-</span><span id="__span-74-12"><a id="__codelineno-74-12" name="__codelineno-74-12"></a><span class="w">  </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span>
-</span><span id="__span-74-13"><a id="__codelineno-74-13" name="__codelineno-74-13"></a><span class="w">  </span><span class="n">CONCAT</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span><span class="p">::</span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">::</span><span class="nb">TEXT</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">partitioned_analysis_key</span><span class="p">,</span>
-</span><span id="__span-74-14"><a id="__codelineno-74-14" name="__codelineno-74-14"></a><span class="w">  </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_transactions</span><span class="p">,</span>
-</span><span id="__span-74-15"><a id="__codelineno-74-15" name="__codelineno-74-15"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">oi</span><span class="p">.</span><span class="n">quantity</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">oi</span><span class="p">.</span><span class="n">unit_price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_sales_amount</span><span class="p">,</span>
-</span><span id="__span-74-16"><a id="__codelineno-74-16" name="__codelineno-74-16"></a><span class="w">  </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">unique_customers</span>
-</span><span id="__span-74-17"><a id="__codelineno-74-17" name="__codelineno-74-17"></a><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">orders</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">o</span>
-</span><span id="__span-74-18"><a id="__codelineno-74-18" name="__codelineno-74-18"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">order_items</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oi</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oi</span><span class="p">.</span><span class="n">order_id</span>
-</span><span id="__span-74-19"><a id="__codelineno-74-19" name="__codelineno-74-19"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">products</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">oi</span><span class="p">.</span><span class="n">product_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span>
-</span><span id="__span-74-20"><a id="__codelineno-74-20" name="__codelineno-74-20"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">warehouses</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">warehouse_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span>
-</span><span id="__span-74-21"><a id="__codelineno-74-21" name="__codelineno-74-21"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">warehouse_id</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span>
-</span></code></pre></div></td></tr></tbody></table></div>
-</div>
-<div class="tabbed-block">
-<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-75-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-75-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-75-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-75-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-75-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-75-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-75-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-75-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-75-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-75-10">10</a></span>
-<span class="normal"><a href="#__codelineno-75-11">11</a></span>
-<span class="normal"><a href="#__codelineno-75-12">12</a></span>
-<span class="normal"><a href="#__codelineno-75-13">13</a></span>
-<span class="normal"><a href="#__codelineno-75-14">14</a></span>
-<span class="normal"><a href="#__codelineno-75-15">15</a></span>
-<span class="normal"><a href="#__codelineno-75-16">16</a></span>
-<span class="normal"><a href="#__codelineno-75-17">17</a></span>
-<span class="normal"><a href="#__codelineno-75-18">18</a></span>
-<span class="normal"><a href="#__codelineno-75-19">19</a></span>
-<span class="normal"><a href="#__codelineno-75-20">20</a></span>
-<span class="normal"><a href="#__codelineno-75-21">21</a></span>
-<span class="normal"><a href="#__codelineno-75-22">22</a></span>
-<span class="normal"><a href="#__codelineno-75-23">23</a></span>
-<span class="normal"><a href="#__codelineno-75-24">24</a></span>
-<span class="normal"><a href="#__codelineno-75-25">25</a></span>
-<span class="normal"><a href="#__codelineno-75-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExecutionContext</span><span class="p">,</span> <span class="n">model</span>
-</span><span id="__span-75-2"><a id="__codelineno-75-2" name="__codelineno-75-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelKindName</span>
-</span><span id="__span-75-3"><a id="__codelineno-75-3" name="__codelineno-75-3"></a>
-</span><span id="__span-75-4"><a id="__codelineno-75-4" name="__codelineno-75-4"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-75-5"><a id="__codelineno-75-5" name="__codelineno-75-5"></a>    <span class="s2">"vulcan_demo.partition_py"</span><span class="p">,</span>
-</span><span id="__span-75-6"><a id="__codelineno-75-6" name="__codelineno-75-6"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
-</span><span id="__span-75-7"><a id="__codelineno-75-7" name="__codelineno-75-7"></a>        <span class="s2">"warehouse_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
-</span><span id="__span-75-8"><a id="__codelineno-75-8" name="__codelineno-75-8"></a>        <span class="s2">"order_date"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">,</span>
-</span><span id="__span-75-9"><a id="__codelineno-75-9" name="__codelineno-75-9"></a>        <span class="s2">"daily_revenue"</span><span class="p">:</span> <span class="s2">"decimal(10,2)"</span><span class="p">,</span>
-</span><span id="__span-75-10"><a id="__codelineno-75-10" name="__codelineno-75-10"></a>    <span class="p">},</span>
-</span><span id="__span-75-11"><a id="__codelineno-75-11" name="__codelineno-75-11"></a>    <span class="n">partitioned_by</span><span class="o">=</span><span class="p">[</span><span class="s2">"warehouse_id"</span><span class="p">],</span>
-</span><span id="__span-75-12"><a id="__codelineno-75-12" name="__codelineno-75-12"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-75-13"><a id="__codelineno-75-13" name="__codelineno-75-13"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
-</span><span id="__span-75-14"><a id="__codelineno-75-14" name="__codelineno-75-14"></a>    <span class="p">),</span>
-</span><span id="__span-75-15"><a id="__codelineno-75-15" name="__codelineno-75-15"></a>    <span class="n">grains</span><span class="o">=</span><span class="p">[</span><span class="s2">"warehouse_id"</span><span class="p">,</span> <span class="s2">"order_date"</span><span class="p">],</span>
-</span><span id="__span-75-16"><a id="__codelineno-75-16" name="__codelineno-75-16"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"vulcan_demo.orders"</span><span class="p">,</span> <span class="s2">"vulcan_demo.order_items"</span><span class="p">],</span>
-</span><span id="__span-75-17"><a id="__codelineno-75-17" name="__codelineno-75-17"></a><span class="p">)</span>
-</span><span id="__span-75-18"><a id="__codelineno-75-18" name="__codelineno-75-18"></a><span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">ExecutionContext</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="__span-75-19"><a id="__codelineno-75-19" name="__codelineno-75-19"></a>    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
-</span><span id="__span-75-20"><a id="__codelineno-75-20" name="__codelineno-75-20"></a><span class="s2">    SELECT o.warehouse_id, o.order_date,</span>
-</span><span id="__span-75-21"><a id="__codelineno-75-21" name="__codelineno-75-21"></a><span class="s2">           SUM(oi.quantity * oi.unit_price) as daily_revenue</span>
-</span><span id="__span-75-22"><a id="__codelineno-75-22" name="__codelineno-75-22"></a><span class="s2">    FROM vulcan_demo.orders o</span>
-</span><span id="__span-75-23"><a id="__codelineno-75-23" name="__codelineno-75-23"></a><span class="s2">    JOIN vulcan_demo.order_items oi ON o.order_id = oi.order_id</span>
-</span><span id="__span-75-24"><a id="__codelineno-75-24" name="__codelineno-75-24"></a><span class="s2">    GROUP BY o.warehouse_id, o.order_date</span>
-</span><span id="__span-75-25"><a id="__codelineno-75-25" name="__codelineno-75-25"></a><span class="s2">    """</span>
-</span><span id="__span-75-26"><a id="__codelineno-75-26" name="__codelineno-75-26"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-74-21">21</a></span>
+<span class="normal"><a href="#__codelineno-74-22">22</a></span>
+<span class="normal"><a href="#__codelineno-74-23">23</a></span>
+<span class="normal"><a href="#__codelineno-74-24">24</a></span>
+<span class="normal"><a href="#__codelineno-74-25">25</a></span>
+<span class="normal"><a href="#__codelineno-74-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-74-1"><a id="__codelineno-74-1" name="__codelineno-74-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExecutionContext</span><span class="p">,</span> <span class="n">model</span>
+</span><span id="__span-74-2"><a id="__codelineno-74-2" name="__codelineno-74-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelKindName</span>
+</span><span id="__span-74-3"><a id="__codelineno-74-3" name="__codelineno-74-3"></a>
+</span><span id="__span-74-4"><a id="__codelineno-74-4" name="__codelineno-74-4"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-74-5"><a id="__codelineno-74-5" name="__codelineno-74-5"></a>    <span class="s2">"vulcan_demo.partition_py"</span><span class="p">,</span>
+</span><span id="__span-74-6"><a id="__codelineno-74-6" name="__codelineno-74-6"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-74-7"><a id="__codelineno-74-7" name="__codelineno-74-7"></a>        <span class="s2">"warehouse_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
+</span><span id="__span-74-8"><a id="__codelineno-74-8" name="__codelineno-74-8"></a>        <span class="s2">"order_date"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">,</span>
+</span><span id="__span-74-9"><a id="__codelineno-74-9" name="__codelineno-74-9"></a>        <span class="s2">"daily_revenue"</span><span class="p">:</span> <span class="s2">"decimal(10,2)"</span><span class="p">,</span>
+</span><span id="__span-74-10"><a id="__codelineno-74-10" name="__codelineno-74-10"></a>    <span class="p">},</span>
+</span><span id="__span-74-11"><a id="__codelineno-74-11" name="__codelineno-74-11"></a>    <span class="n">partitioned_by</span><span class="o">=</span><span class="p">[</span><span class="s2">"warehouse_id"</span><span class="p">],</span>
+</span><span id="__span-74-12"><a id="__codelineno-74-12" name="__codelineno-74-12"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-74-13"><a id="__codelineno-74-13" name="__codelineno-74-13"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
+</span><span id="__span-74-14"><a id="__codelineno-74-14" name="__codelineno-74-14"></a>    <span class="p">),</span>
+</span><span id="__span-74-15"><a id="__codelineno-74-15" name="__codelineno-74-15"></a>    <span class="n">grains</span><span class="o">=</span><span class="p">[</span><span class="s2">"warehouse_id"</span><span class="p">,</span> <span class="s2">"order_date"</span><span class="p">],</span>
+</span><span id="__span-74-16"><a id="__codelineno-74-16" name="__codelineno-74-16"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"vulcan_demo.orders"</span><span class="p">,</span> <span class="s2">"vulcan_demo.order_items"</span><span class="p">],</span>
+</span><span id="__span-74-17"><a id="__codelineno-74-17" name="__codelineno-74-17"></a><span class="p">)</span>
+</span><span id="__span-74-18"><a id="__codelineno-74-18" name="__codelineno-74-18"></a><span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">ExecutionContext</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="__span-74-19"><a id="__codelineno-74-19" name="__codelineno-74-19"></a>    <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+</span><span id="__span-74-20"><a id="__codelineno-74-20" name="__codelineno-74-20"></a><span class="s2">    SELECT o.warehouse_id, o.order_date,</span>
+</span><span id="__span-74-21"><a id="__codelineno-74-21" name="__codelineno-74-21"></a><span class="s2">           SUM(oi.quantity * oi.unit_price) as daily_revenue</span>
+</span><span id="__span-74-22"><a id="__codelineno-74-22" name="__codelineno-74-22"></a><span class="s2">    FROM vulcan_demo.orders o</span>
+</span><span id="__span-74-23"><a id="__codelineno-74-23" name="__codelineno-74-23"></a><span class="s2">    JOIN vulcan_demo.order_items oi ON o.order_id = oi.order_id</span>
+</span><span id="__span-74-24"><a id="__codelineno-74-24" name="__codelineno-74-24"></a><span class="s2">    GROUP BY o.warehouse_id, o.order_date</span>
+</span><span id="__span-74-25"><a id="__codelineno-74-25" name="__codelineno-74-25"></a><span class="s2">    """</span>
+</span><span id="__span-74-26"><a id="__codelineno-74-26" name="__codelineno-74-26"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 </div>
 </div>
 </div>
-<p>Compound partition keys are also supported:</p>
+<p>You can use multiple columns for composite partition keys:</p>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-75-1">1</a></span>
+<span class="normal"><a href="#__codelineno-75-2">2</a></span>
+<span class="normal"><a href="#__codelineno-75-3">3</a></span>
+<span class="normal"><a href="#__codelineno-75-4">4</a></span>
+<span class="normal"><a href="#__codelineno-75-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-75-2"><a id="__codelineno-75-2" name="__codelineno-75-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
+</span><span id="__span-75-3"><a id="__codelineno-75-3" name="__codelineno-75-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
+</span><span id="__span-75-4"><a id="__codelineno-75-4" name="__codelineno-75-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="p">(</span><span class="n">warehouse_id</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">)</span>
+</span><span id="__span-75-5"><a id="__codelineno-75-5" name="__codelineno-75-5"></a><span class="p">);</span>
+</span></code></pre></div></td></tr></tbody></table></div>
+<p>Some engines support expression-based partitioning. Here's a BigQuery example that partitions by month:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-76-1">1</a></span>
 <span class="normal"><a href="#__codelineno-76-2">2</a></span>
 <span class="normal"><a href="#__codelineno-76-3">3</a></span>
@@ -4381,113 +4447,102 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 <span class="normal"><a href="#__codelineno-76-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-76-2"><a id="__codelineno-76-2" name="__codelineno-76-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
 </span><span id="__span-76-3"><a id="__codelineno-76-3" name="__codelineno-76-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
-</span><span id="__span-76-4"><a id="__codelineno-76-4" name="__codelineno-76-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="p">(</span><span class="n">warehouse_id</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">)</span>
+</span><span id="__span-76-4"><a id="__codelineno-76-4" name="__codelineno-76-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="n">DATETIME_TRUNC</span><span class="p">(</span><span class="n">order_date</span><span class="p">,</span><span class="w"> </span><span class="k">MONTH</span><span class="p">)</span>
 </span><span id="__span-76-5"><a id="__codelineno-76-5" name="__codelineno-76-5"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Date and/or timestamp column expressions are also supported (varies by SQL engine). This BigQuery example's partition key is based on the month each row's <code>order_date</code> occurred:</p>
-<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-77-1">1</a></span>
-<span class="normal"><a href="#__codelineno-77-2">2</a></span>
-<span class="normal"><a href="#__codelineno-77-3">3</a></span>
-<span class="normal"><a href="#__codelineno-77-4">4</a></span>
-<span class="normal"><a href="#__codelineno-77-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-77-2"><a id="__codelineno-77-2" name="__codelineno-77-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
-</span><span id="__span-77-3"><a id="__codelineno-77-3" name="__codelineno-77-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
-</span><span id="__span-77-4"><a id="__codelineno-77-4" name="__codelineno-77-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="n">DATETIME_TRUNC</span><span class="p">(</span><span class="n">order_date</span><span class="p">,</span><span class="w"> </span><span class="k">MONTH</span><span class="p">)</span>
-</span><span id="__span-77-5"><a id="__codelineno-77-5" name="__codelineno-77-5"></a><span class="p">);</span>
-</span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition warning">
-<p class="admonition-title">Only full restatements supported</p>
-<p>Partial data <a href="../../../guides/plan/#restatement-plans">restatements</a> are used to reprocess part of a table's data (usually a limited time range).</p>
+<p class="admonition-title">Only Full Restatements Supported</p>
+<p>Partial data <a href="../plans.md#restatement-plans">restatements</a> are used to reprocess part of a table's data (usually a limited time range).</p>
 <p>Partial data restatement is not supported for <code>INCREMENTAL_BY_PARTITION</code> models. If you restate an <code>INCREMENTAL_BY_PARTITION</code> model, its entire table will be recreated from scratch.</p>
 <p>Restating <code>INCREMENTAL_BY_PARTITION</code> models may lead to data loss and should be performed with care.</p>
 </div>
 <h3 id="example">Example<a class="headerlink" href="#example" title="Link to this section">¶</a></h3>
-<p>This is a fuller example of how you would use this model kind in practice. It limits the number of partitions to backfill based on time range in the <code>partitions_to_update</code> CTE.</p>
-<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-78-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-78-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-78-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-78-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-78-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-78-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-78-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-78-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-78-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-78-10">10</a></span>
-<span class="normal"><a href="#__codelineno-78-11">11</a></span>
-<span class="normal"><a href="#__codelineno-78-12">12</a></span>
-<span class="normal"><a href="#__codelineno-78-13">13</a></span>
-<span class="normal"><a href="#__codelineno-78-14">14</a></span>
-<span class="normal"><a href="#__codelineno-78-15">15</a></span>
-<span class="normal"><a href="#__codelineno-78-16">16</a></span>
-<span class="normal"><a href="#__codelineno-78-17">17</a></span>
-<span class="normal"><a href="#__codelineno-78-18">18</a></span>
-<span class="normal"><a href="#__codelineno-78-19">19</a></span>
-<span class="normal"><a href="#__codelineno-78-20">20</a></span>
-<span class="normal"><a href="#__codelineno-78-21">21</a></span>
-<span class="normal"><a href="#__codelineno-78-22">22</a></span>
-<span class="normal"><a href="#__codelineno-78-23">23</a></span>
-<span class="normal"><a href="#__codelineno-78-24">24</a></span>
-<span class="normal"><a href="#__codelineno-78-25">25</a></span>
-<span class="normal"><a href="#__codelineno-78-26">26</a></span>
-<span class="normal"><a href="#__codelineno-78-27">27</a></span>
-<span class="normal"><a href="#__codelineno-78-28">28</a></span>
-<span class="normal"><a href="#__codelineno-78-29">29</a></span>
-<span class="normal"><a href="#__codelineno-78-30">30</a></span>
-<span class="normal"><a href="#__codelineno-78-31">31</a></span>
-<span class="normal"><a href="#__codelineno-78-32">32</a></span>
-<span class="normal"><a href="#__codelineno-78-33">33</a></span>
-<span class="normal"><a href="#__codelineno-78-34">34</a></span>
-<span class="normal"><a href="#__codelineno-78-35">35</a></span>
-<span class="normal"><a href="#__codelineno-78-36">36</a></span>
-<span class="normal"><a href="#__codelineno-78-37">37</a></span>
-<span class="normal"><a href="#__codelineno-78-38">38</a></span>
-<span class="normal"><a href="#__codelineno-78-39">39</a></span>
-<span class="normal"><a href="#__codelineno-78-40">40</a></span>
-<span class="normal"><a href="#__codelineno-78-41">41</a></span>
-<span class="normal"><a href="#__codelineno-78-42">42</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-78-2"><a id="__codelineno-78-2" name="__codelineno-78-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">demo</span><span class="p">.</span><span class="n">incremental_by_partition_demo</span><span class="p">,</span>
-</span><span id="__span-78-3"><a id="__codelineno-78-3" name="__codelineno-78-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
-</span><span id="__span-78-4"><a id="__codelineno-78-4" name="__codelineno-78-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="n">user_segment</span><span class="p">,</span>
-</span><span id="__span-78-5"><a id="__codelineno-78-5" name="__codelineno-78-5"></a><span class="p">);</span>
-</span><span id="__span-78-6"><a id="__codelineno-78-6" name="__codelineno-78-6"></a>
-</span><span id="__span-78-7"><a id="__codelineno-78-7" name="__codelineno-78-7"></a><span class="c1">-- This is the source of truth for what partitions need to be updated and will join to the product usage data</span>
-</span><span id="__span-78-8"><a id="__codelineno-78-8" name="__codelineno-78-8"></a><span class="c1">-- This could be an INCREMENTAL_BY_TIME_RANGE model that reads in the user_segment values last updated in the past 30 days to reduce scope</span>
-</span><span id="__span-78-9"><a id="__codelineno-78-9" name="__codelineno-78-9"></a><span class="c1">-- Use this strategy to reduce full restatements</span>
-</span><span id="__span-78-10"><a id="__codelineno-78-10" name="__codelineno-78-10"></a><span class="k">WITH</span><span class="w"> </span><span class="n">partitions_to_update</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-78-11"><a id="__codelineno-78-11" name="__codelineno-78-11"></a><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
-</span><span id="__span-78-12"><a id="__codelineno-78-12" name="__codelineno-78-12"></a><span class="w">    </span><span class="n">user_segment</span>
-</span><span id="__span-78-13"><a id="__codelineno-78-13" name="__codelineno-78-13"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">demo</span><span class="p">.</span><span class="n">incremental_by_time_range_demo</span><span class="w">  </span><span class="c1">-- upstream table tracking which user segments to update</span>
-</span><span id="__span-78-14"><a id="__codelineno-78-14" name="__codelineno-78-14"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">last_updated_at</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="n">DATE_SUB</span><span class="p">(</span><span class="o">@</span><span class="n">start_dt</span><span class="p">,</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_dt</span>
-</span><span id="__span-78-15"><a id="__codelineno-78-15" name="__codelineno-78-15"></a><span class="p">),</span>
-</span><span id="__span-78-16"><a id="__codelineno-78-16" name="__codelineno-78-16"></a>
-</span><span id="__span-78-17"><a id="__codelineno-78-17" name="__codelineno-78-17"></a><span class="n">product_usage</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-78-18"><a id="__codelineno-78-18" name="__codelineno-78-18"></a><span class="w">  </span><span class="k">SELECT</span>
-</span><span id="__span-78-19"><a id="__codelineno-78-19" name="__codelineno-78-19"></a><span class="w">    </span><span class="n">product_id</span><span class="p">,</span>
-</span><span id="__span-78-20"><a id="__codelineno-78-20" name="__codelineno-78-20"></a><span class="w">    </span><span class="n">customer_id</span><span class="p">,</span>
-</span><span id="__span-78-21"><a id="__codelineno-78-21" name="__codelineno-78-21"></a><span class="w">    </span><span class="n">last_usage_date</span><span class="p">,</span>
-</span><span id="__span-78-22"><a id="__codelineno-78-22" name="__codelineno-78-22"></a><span class="w">    </span><span class="n">usage_count</span><span class="p">,</span>
-</span><span id="__span-78-23"><a id="__codelineno-78-23" name="__codelineno-78-23"></a><span class="w">    </span><span class="n">feature_utilization_score</span><span class="p">,</span>
-</span><span id="__span-78-24"><a id="__codelineno-78-24" name="__codelineno-78-24"></a><span class="w">    </span><span class="n">user_segment</span>
-</span><span id="__span-78-25"><a id="__codelineno-78-25" name="__codelineno-78-25"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan</span><span class="o">-</span><span class="k">public</span><span class="o">-</span><span class="n">demo</span><span class="p">.</span><span class="n">tcloud_raw_data</span><span class="p">.</span><span class="n">product_usage</span>
-</span><span id="__span-78-26"><a id="__codelineno-78-26" name="__codelineno-78-26"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_segment</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">user_segment</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">partitions_to_update</span><span class="p">)</span><span class="w"> </span><span class="c1">-- partition filter applied here</span>
-</span><span id="__span-78-27"><a id="__codelineno-78-27" name="__codelineno-78-27"></a><span class="p">)</span>
-</span><span id="__span-78-28"><a id="__codelineno-78-28" name="__codelineno-78-28"></a>
-</span><span id="__span-78-29"><a id="__codelineno-78-29" name="__codelineno-78-29"></a><span class="k">SELECT</span>
-</span><span id="__span-78-30"><a id="__codelineno-78-30" name="__codelineno-78-30"></a><span class="w">  </span><span class="n">product_id</span><span class="p">,</span>
-</span><span id="__span-78-31"><a id="__codelineno-78-31" name="__codelineno-78-31"></a><span class="w">  </span><span class="n">customer_id</span><span class="p">,</span>
-</span><span id="__span-78-32"><a id="__codelineno-78-32" name="__codelineno-78-32"></a><span class="w">  </span><span class="n">last_usage_date</span><span class="p">,</span>
-</span><span id="__span-78-33"><a id="__codelineno-78-33" name="__codelineno-78-33"></a><span class="w">  </span><span class="n">usage_count</span><span class="p">,</span>
-</span><span id="__span-78-34"><a id="__codelineno-78-34" name="__codelineno-78-34"></a><span class="w">  </span><span class="n">feature_utilization_score</span><span class="p">,</span>
-</span><span id="__span-78-35"><a id="__codelineno-78-35" name="__codelineno-78-35"></a><span class="w">  </span><span class="n">user_segment</span><span class="p">,</span>
-</span><span id="__span-78-36"><a id="__codelineno-78-36" name="__codelineno-78-36"></a><span class="w">  </span><span class="k">CASE</span>
-</span><span id="__span-78-37"><a id="__codelineno-78-37" name="__codelineno-78-37"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">usage_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">feature_utilization_score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">7</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'Power User'</span>
-</span><span id="__span-78-38"><a id="__codelineno-78-38" name="__codelineno-78-38"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">usage_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'Regular User'</span>
-</span><span id="__span-78-39"><a id="__codelineno-78-39" name="__codelineno-78-39"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">usage_count</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'New User'</span>
-</span><span id="__span-78-40"><a id="__codelineno-78-40" name="__codelineno-78-40"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">'Light User'</span>
-</span><span id="__span-78-41"><a id="__codelineno-78-41" name="__codelineno-78-41"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">user_type</span>
-</span><span id="__span-78-42"><a id="__codelineno-78-42" name="__codelineno-78-42"></a><span class="k">FROM</span><span class="w"> </span><span class="n">product_usage</span>
+<p>Here's a practical example that shows how to limit which partitions get updated using a CTE. This is a common pattern to avoid full restatements:</p>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-77-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-77-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-77-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-77-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-77-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-77-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-77-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-77-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-77-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-77-10">10</a></span>
+<span class="normal"><a href="#__codelineno-77-11">11</a></span>
+<span class="normal"><a href="#__codelineno-77-12">12</a></span>
+<span class="normal"><a href="#__codelineno-77-13">13</a></span>
+<span class="normal"><a href="#__codelineno-77-14">14</a></span>
+<span class="normal"><a href="#__codelineno-77-15">15</a></span>
+<span class="normal"><a href="#__codelineno-77-16">16</a></span>
+<span class="normal"><a href="#__codelineno-77-17">17</a></span>
+<span class="normal"><a href="#__codelineno-77-18">18</a></span>
+<span class="normal"><a href="#__codelineno-77-19">19</a></span>
+<span class="normal"><a href="#__codelineno-77-20">20</a></span>
+<span class="normal"><a href="#__codelineno-77-21">21</a></span>
+<span class="normal"><a href="#__codelineno-77-22">22</a></span>
+<span class="normal"><a href="#__codelineno-77-23">23</a></span>
+<span class="normal"><a href="#__codelineno-77-24">24</a></span>
+<span class="normal"><a href="#__codelineno-77-25">25</a></span>
+<span class="normal"><a href="#__codelineno-77-26">26</a></span>
+<span class="normal"><a href="#__codelineno-77-27">27</a></span>
+<span class="normal"><a href="#__codelineno-77-28">28</a></span>
+<span class="normal"><a href="#__codelineno-77-29">29</a></span>
+<span class="normal"><a href="#__codelineno-77-30">30</a></span>
+<span class="normal"><a href="#__codelineno-77-31">31</a></span>
+<span class="normal"><a href="#__codelineno-77-32">32</a></span>
+<span class="normal"><a href="#__codelineno-77-33">33</a></span>
+<span class="normal"><a href="#__codelineno-77-34">34</a></span>
+<span class="normal"><a href="#__codelineno-77-35">35</a></span>
+<span class="normal"><a href="#__codelineno-77-36">36</a></span>
+<span class="normal"><a href="#__codelineno-77-37">37</a></span>
+<span class="normal"><a href="#__codelineno-77-38">38</a></span>
+<span class="normal"><a href="#__codelineno-77-39">39</a></span>
+<span class="normal"><a href="#__codelineno-77-40">40</a></span>
+<span class="normal"><a href="#__codelineno-77-41">41</a></span>
+<span class="normal"><a href="#__codelineno-77-42">42</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-77-2"><a id="__codelineno-77-2" name="__codelineno-77-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">demo</span><span class="p">.</span><span class="n">incremental_by_partition_demo</span><span class="p">,</span>
+</span><span id="__span-77-3"><a id="__codelineno-77-3" name="__codelineno-77-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
+</span><span id="__span-77-4"><a id="__codelineno-77-4" name="__codelineno-77-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="n">user_segment</span><span class="p">,</span>
+</span><span id="__span-77-5"><a id="__codelineno-77-5" name="__codelineno-77-5"></a><span class="p">);</span>
+</span><span id="__span-77-6"><a id="__codelineno-77-6" name="__codelineno-77-6"></a>
+</span><span id="__span-77-7"><a id="__codelineno-77-7" name="__codelineno-77-7"></a><span class="c1">-- This is the source of truth for what partitions need to be updated and will join to the product usage data</span>
+</span><span id="__span-77-8"><a id="__codelineno-77-8" name="__codelineno-77-8"></a><span class="c1">-- This could be an INCREMENTAL_BY_TIME_RANGE model that reads in the user_segment values last updated in the past 30 days to reduce scope</span>
+</span><span id="__span-77-9"><a id="__codelineno-77-9" name="__codelineno-77-9"></a><span class="c1">-- Use this strategy to reduce full restatements</span>
+</span><span id="__span-77-10"><a id="__codelineno-77-10" name="__codelineno-77-10"></a><span class="k">WITH</span><span class="w"> </span><span class="n">partitions_to_update</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-77-11"><a id="__codelineno-77-11" name="__codelineno-77-11"></a><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+</span><span id="__span-77-12"><a id="__codelineno-77-12" name="__codelineno-77-12"></a><span class="w">    </span><span class="n">user_segment</span>
+</span><span id="__span-77-13"><a id="__codelineno-77-13" name="__codelineno-77-13"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">demo</span><span class="p">.</span><span class="n">incremental_by_time_range_demo</span><span class="w">  </span><span class="c1">-- upstream table tracking which user segments to update</span>
+</span><span id="__span-77-14"><a id="__codelineno-77-14" name="__codelineno-77-14"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">last_updated_at</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="n">DATE_SUB</span><span class="p">(</span><span class="o">@</span><span class="n">start_dt</span><span class="p">,</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="k">DAY</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_dt</span>
+</span><span id="__span-77-15"><a id="__codelineno-77-15" name="__codelineno-77-15"></a><span class="p">),</span>
+</span><span id="__span-77-16"><a id="__codelineno-77-16" name="__codelineno-77-16"></a>
+</span><span id="__span-77-17"><a id="__codelineno-77-17" name="__codelineno-77-17"></a><span class="n">product_usage</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-77-18"><a id="__codelineno-77-18" name="__codelineno-77-18"></a><span class="w">  </span><span class="k">SELECT</span>
+</span><span id="__span-77-19"><a id="__codelineno-77-19" name="__codelineno-77-19"></a><span class="w">    </span><span class="n">product_id</span><span class="p">,</span>
+</span><span id="__span-77-20"><a id="__codelineno-77-20" name="__codelineno-77-20"></a><span class="w">    </span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-77-21"><a id="__codelineno-77-21" name="__codelineno-77-21"></a><span class="w">    </span><span class="n">last_usage_date</span><span class="p">,</span>
+</span><span id="__span-77-22"><a id="__codelineno-77-22" name="__codelineno-77-22"></a><span class="w">    </span><span class="n">usage_count</span><span class="p">,</span>
+</span><span id="__span-77-23"><a id="__codelineno-77-23" name="__codelineno-77-23"></a><span class="w">    </span><span class="n">feature_utilization_score</span><span class="p">,</span>
+</span><span id="__span-77-24"><a id="__codelineno-77-24" name="__codelineno-77-24"></a><span class="w">    </span><span class="n">user_segment</span>
+</span><span id="__span-77-25"><a id="__codelineno-77-25" name="__codelineno-77-25"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan</span><span class="o">-</span><span class="k">public</span><span class="o">-</span><span class="n">demo</span><span class="p">.</span><span class="n">tcloud_raw_data</span><span class="p">.</span><span class="n">product_usage</span>
+</span><span id="__span-77-26"><a id="__codelineno-77-26" name="__codelineno-77-26"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_segment</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">user_segment</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">partitions_to_update</span><span class="p">)</span><span class="w"> </span><span class="c1">-- partition filter applied here</span>
+</span><span id="__span-77-27"><a id="__codelineno-77-27" name="__codelineno-77-27"></a><span class="p">)</span>
+</span><span id="__span-77-28"><a id="__codelineno-77-28" name="__codelineno-77-28"></a>
+</span><span id="__span-77-29"><a id="__codelineno-77-29" name="__codelineno-77-29"></a><span class="k">SELECT</span>
+</span><span id="__span-77-30"><a id="__codelineno-77-30" name="__codelineno-77-30"></a><span class="w">  </span><span class="n">product_id</span><span class="p">,</span>
+</span><span id="__span-77-31"><a id="__codelineno-77-31" name="__codelineno-77-31"></a><span class="w">  </span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-77-32"><a id="__codelineno-77-32" name="__codelineno-77-32"></a><span class="w">  </span><span class="n">last_usage_date</span><span class="p">,</span>
+</span><span id="__span-77-33"><a id="__codelineno-77-33" name="__codelineno-77-33"></a><span class="w">  </span><span class="n">usage_count</span><span class="p">,</span>
+</span><span id="__span-77-34"><a id="__codelineno-77-34" name="__codelineno-77-34"></a><span class="w">  </span><span class="n">feature_utilization_score</span><span class="p">,</span>
+</span><span id="__span-77-35"><a id="__codelineno-77-35" name="__codelineno-77-35"></a><span class="w">  </span><span class="n">user_segment</span><span class="p">,</span>
+</span><span id="__span-77-36"><a id="__codelineno-77-36" name="__codelineno-77-36"></a><span class="w">  </span><span class="k">CASE</span>
+</span><span id="__span-77-37"><a id="__codelineno-77-37" name="__codelineno-77-37"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">usage_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">feature_utilization_score</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">7</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'Power User'</span>
+</span><span id="__span-77-38"><a id="__codelineno-77-38" name="__codelineno-77-38"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">usage_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'Regular User'</span>
+</span><span id="__span-77-39"><a id="__codelineno-77-39" name="__codelineno-77-39"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">usage_count</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'New User'</span>
+</span><span id="__span-77-40"><a id="__codelineno-77-40" name="__codelineno-77-40"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">'Light User'</span>
+</span><span id="__span-77-41"><a id="__codelineno-77-41" name="__codelineno-77-41"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">user_type</span>
+</span><span id="__span-77-42"><a id="__codelineno-77-42" name="__codelineno-77-42"></a><span class="k">FROM</span><span class="w"> </span><span class="n">product_usage</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Note</strong>: Partial data <a href="../../../guides/plan/#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.</p>
+<p><strong>Note</strong>: Partial data <a href="../plans.md#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.</p>
 <h3 id="materialization-strategy_3">Materialization strategy<a class="headerlink" href="#materialization-strategy_3" title="Link to this section">¶</a></h3>
 <p>Depending on the target engine, models of the <code>INCREMENTAL_BY_PARTITION</code> kind are materialized using the following strategies:</p>
 <table>
@@ -4529,64 +4584,70 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 </tbody>
 </table>
 <h2 id="incremental_unmanaged">INCREMENTAL_UNMANAGED<a class="headerlink" href="#incremental_unmanaged" title="Link to this section">¶</a></h2>
-<p>The <code>INCREMENTAL_UNMANAGED</code> model kind exists to support append-only tables. It's "unmanaged" in the sense that Vulcan doesnt try to manage how the data is loaded. Vulcan will just run your query on the configured cadence and append whatever it gets into the table.</p>
+<p><code>INCREMENTAL_UNMANAGED</code> models are for append-only tables. They're "unmanaged" because Vulcan doesn't try to deduplicate or manage the data—it just runs your query and appends whatever it gets to the table.</p>
+<p><strong>How it works:</strong> Every time the model runs, Vulcan executes your query and appends the results to the table. No deduplication, no updates, no deletes—just append, append, append.</p>
 <div class="admonition question">
-<p class="admonition-title">Should you use this model kind?</p>
-<p>Some patterns for data management, such as Data Vault, may rely on append-only tables. In this situation, <code>INCREMENTAL_UNMANAGED</code> is the correct type to use.</p>
-<p>In most other situations, you probably want <code>INCREMENTAL_BY_TIME_RANGE</code> or <code>INCREMENTAL_BY_UNIQUE_KEY</code> because they give you much more control over how the data is loaded.</p>
+<p class="admonition-title">Should You Use This?</p>
+<p><strong>Use it for:</strong> Data Vault patterns, event logs, audit trails, or any scenario where you need true append-only behavior.</p>
+<p><strong>Don't use it for:</strong> Most other cases. <code>INCREMENTAL_BY_TIME_RANGE</code> or <code>INCREMENTAL_BY_UNIQUE_KEY</code> give you much more control and are usually better choices.</p>
 </div>
-<p>Usage of the <code>INCREMENTAL_UNMANAGED</code> model kind is straightforward:</p>
-<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-79-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-79-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-79-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-79-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-79-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-79-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-79-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-79-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-79-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-79-10">10</a></span>
-<span class="normal"><a href="#__codelineno-79-11">11</a></span>
-<span class="normal"><a href="#__codelineno-79-12">12</a></span>
-<span class="normal"><a href="#__codelineno-79-13">13</a></span>
-<span class="normal"><a href="#__codelineno-79-14">14</a></span>
-<span class="normal"><a href="#__codelineno-79-15">15</a></span>
-<span class="normal"><a href="#__codelineno-79-16">16</a></span>
-<span class="normal"><a href="#__codelineno-79-17">17</a></span>
-<span class="normal"><a href="#__codelineno-79-18">18</a></span>
-<span class="normal"><a href="#__codelineno-79-19">19</a></span>
-<span class="normal"><a href="#__codelineno-79-20">20</a></span>
-<span class="normal"><a href="#__codelineno-79-21">21</a></span>
-<span class="normal"><a href="#__codelineno-79-22">22</a></span>
-<span class="normal"><a href="#__codelineno-79-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-79-1"><a id="__codelineno-79-1" name="__codelineno-79-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-79-2"><a id="__codelineno-79-2" name="__codelineno-79-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">incremental_unmanaged</span><span class="p">,</span>
-</span><span id="__span-79-3"><a id="__codelineno-79-3" name="__codelineno-79-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_UNMANAGED</span><span class="p">,</span>
-</span><span id="__span-79-4"><a id="__codelineno-79-4" name="__codelineno-79-4"></a><span class="w">  </span><span class="n">cron</span><span class="w"> </span><span class="s1">'@daily'</span><span class="p">,</span>
-</span><span id="__span-79-5"><a id="__codelineno-79-5" name="__codelineno-79-5"></a><span class="w">  </span><span class="k">start</span><span class="w"> </span><span class="s1">'2025-01-01'</span><span class="p">,</span>
-</span><span id="__span-79-6"><a id="__codelineno-79-6" name="__codelineno-79-6"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">shipment_id</span><span class="p">)</span>
-</span><span id="__span-79-7"><a id="__codelineno-79-7" name="__codelineno-79-7"></a><span class="p">);</span>
-</span><span id="__span-79-8"><a id="__codelineno-79-8" name="__codelineno-79-8"></a>
-</span><span id="__span-79-9"><a id="__codelineno-79-9" name="__codelineno-79-9"></a><span class="cm">/* Append-only shipment event log */</span>
-</span><span id="__span-79-10"><a id="__codelineno-79-10" name="__codelineno-79-10"></a><span class="k">SELECT</span>
-</span><span id="__span-79-11"><a id="__codelineno-79-11" name="__codelineno-79-11"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">shipment_id</span><span class="p">,</span>
-</span><span id="__span-79-12"><a id="__codelineno-79-12" name="__codelineno-79-12"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">order_id</span><span class="p">,</span>
-</span><span id="__span-79-13"><a id="__codelineno-79-13" name="__codelineno-79-13"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">shipped_date</span><span class="p">,</span>
-</span><span id="__span-79-14"><a id="__codelineno-79-14" name="__codelineno-79-14"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">carrier</span><span class="p">,</span>
-</span><span id="__span-79-15"><a id="__codelineno-79-15" name="__codelineno-79-15"></a><span class="w">  </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="p">,</span>
-</span><span id="__span-79-16"><a id="__codelineno-79-16" name="__codelineno-79-16"></a><span class="w">  </span><span class="k">c</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">customer_name</span><span class="p">,</span>
-</span><span id="__span-79-17"><a id="__codelineno-79-17" name="__codelineno-79-17"></a><span class="w">  </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span>
-</span><span id="__span-79-18"><a id="__codelineno-79-18" name="__codelineno-79-18"></a><span class="w">  </span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">shipped_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">::</span><span class="nb">DATE</span><span class="p">)::</span><span class="nb">INT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">days_to_ship</span><span class="p">,</span>
-</span><span id="__span-79-19"><a id="__codelineno-79-19" name="__codelineno-79-19"></a><span class="w">  </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">shipment_event_timestamp</span>
-</span><span id="__span-79-20"><a id="__codelineno-79-20" name="__codelineno-79-20"></a><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">shipments</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">s</span>
-</span><span id="__span-79-21"><a id="__codelineno-79-21" name="__codelineno-79-21"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">orders</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span>
-</span><span id="__span-79-22"><a id="__codelineno-79-22" name="__codelineno-79-22"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">customers</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">customer_id</span>
-</span><span id="__span-79-23"><a id="__codelineno-79-23" name="__codelineno-79-23"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">shipped_date</span><span class="w"> </span><span class="k">DESC</span>
+<p><strong>When to use:</strong>
+- Data Vault hubs, links, or satellites
+- Event logs where every event should be preserved
+- Audit trails
+- Any pattern that requires true append-only semantics</p>
+<p>Here's how you'd set one up:</p>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-78-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-78-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-78-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-78-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-78-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-78-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-78-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-78-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-78-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-78-10">10</a></span>
+<span class="normal"><a href="#__codelineno-78-11">11</a></span>
+<span class="normal"><a href="#__codelineno-78-12">12</a></span>
+<span class="normal"><a href="#__codelineno-78-13">13</a></span>
+<span class="normal"><a href="#__codelineno-78-14">14</a></span>
+<span class="normal"><a href="#__codelineno-78-15">15</a></span>
+<span class="normal"><a href="#__codelineno-78-16">16</a></span>
+<span class="normal"><a href="#__codelineno-78-17">17</a></span>
+<span class="normal"><a href="#__codelineno-78-18">18</a></span>
+<span class="normal"><a href="#__codelineno-78-19">19</a></span>
+<span class="normal"><a href="#__codelineno-78-20">20</a></span>
+<span class="normal"><a href="#__codelineno-78-21">21</a></span>
+<span class="normal"><a href="#__codelineno-78-22">22</a></span>
+<span class="normal"><a href="#__codelineno-78-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-78-2"><a id="__codelineno-78-2" name="__codelineno-78-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">incremental_unmanaged</span><span class="p">,</span>
+</span><span id="__span-78-3"><a id="__codelineno-78-3" name="__codelineno-78-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_UNMANAGED</span><span class="p">,</span>
+</span><span id="__span-78-4"><a id="__codelineno-78-4" name="__codelineno-78-4"></a><span class="w">  </span><span class="n">cron</span><span class="w"> </span><span class="s1">'@daily'</span><span class="p">,</span>
+</span><span id="__span-78-5"><a id="__codelineno-78-5" name="__codelineno-78-5"></a><span class="w">  </span><span class="k">start</span><span class="w"> </span><span class="s1">'2025-01-01'</span><span class="p">,</span>
+</span><span id="__span-78-6"><a id="__codelineno-78-6" name="__codelineno-78-6"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">shipment_id</span><span class="p">)</span>
+</span><span id="__span-78-7"><a id="__codelineno-78-7" name="__codelineno-78-7"></a><span class="p">);</span>
+</span><span id="__span-78-8"><a id="__codelineno-78-8" name="__codelineno-78-8"></a>
+</span><span id="__span-78-9"><a id="__codelineno-78-9" name="__codelineno-78-9"></a><span class="cm">/* Append-only shipment event log */</span>
+</span><span id="__span-78-10"><a id="__codelineno-78-10" name="__codelineno-78-10"></a><span class="k">SELECT</span>
+</span><span id="__span-78-11"><a id="__codelineno-78-11" name="__codelineno-78-11"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">shipment_id</span><span class="p">,</span>
+</span><span id="__span-78-12"><a id="__codelineno-78-12" name="__codelineno-78-12"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">order_id</span><span class="p">,</span>
+</span><span id="__span-78-13"><a id="__codelineno-78-13" name="__codelineno-78-13"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">shipped_date</span><span class="p">,</span>
+</span><span id="__span-78-14"><a id="__codelineno-78-14" name="__codelineno-78-14"></a><span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">carrier</span><span class="p">,</span>
+</span><span id="__span-78-15"><a id="__codelineno-78-15" name="__codelineno-78-15"></a><span class="w">  </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-78-16"><a id="__codelineno-78-16" name="__codelineno-78-16"></a><span class="w">  </span><span class="k">c</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">customer_name</span><span class="p">,</span>
+</span><span id="__span-78-17"><a id="__codelineno-78-17" name="__codelineno-78-17"></a><span class="w">  </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span>
+</span><span id="__span-78-18"><a id="__codelineno-78-18" name="__codelineno-78-18"></a><span class="w">  </span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">shipped_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">::</span><span class="nb">DATE</span><span class="p">)::</span><span class="nb">INT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">days_to_ship</span><span class="p">,</span>
+</span><span id="__span-78-19"><a id="__codelineno-78-19" name="__codelineno-78-19"></a><span class="w">  </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">shipment_event_timestamp</span>
+</span><span id="__span-78-20"><a id="__codelineno-78-20" name="__codelineno-78-20"></a><span class="k">FROM</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">shipments</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">s</span>
+</span><span id="__span-78-21"><a id="__codelineno-78-21" name="__codelineno-78-21"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">orders</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span>
+</span><span id="__span-78-22"><a id="__codelineno-78-22" name="__codelineno-78-22"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">customers</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">customer_id</span>
+</span><span id="__span-78-23"><a id="__codelineno-78-23" name="__codelineno-78-23"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">shipped_date</span><span class="w"> </span><span class="k">DESC</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Since it's unmanaged, it doesnt support the <code>batch_size</code> and <code>batch_concurrency</code> properties to control how data is loaded like the other incremental model types do.</p>
+<p><strong>Note:</strong> Since it's unmanaged, <code>INCREMENTAL_UNMANAGED</code> doesn't support <code>batch_size</code> or <code>batch_concurrency</code> properties. Vulcan just runs your query and appends the results—no batching or concurrency control.</p>
 <div class="admonition warning">
-<p class="admonition-title">Only full restatements supported</p>
-<p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../../../guides/plan/#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>
-<p>This is because an append-only table is inherently non-idempotent. Restating <code>INCREMENTAL_UNMANAGED</code> models may lead to data loss and should be performed with care.</p>
+<p class="admonition-title">Only Full Restatements Supported</p>
+<p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../plans.md#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>
+<p>Be very careful when restating these models!</p>
 </div>
 </article>
 </div>
@@ -4600,7 +4661,7 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: Managed models" class="md-footer__link md-footer__link--prev" href="../types/managed_models/">
+<a aria-label="Previous: Managed" class="md-footer__link md-footer__link--prev" href="../types/managed_models/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -4609,7 +4670,7 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
                 Previous
               </span>
 <div class="md-ellipsis">
-                Managed models
+                Managed
               </div>
 </div>
 </a>

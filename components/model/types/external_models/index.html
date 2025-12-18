@@ -9,7 +9,7 @@
 <link href="../managed_models/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
-<title>External models - DataOS Vulcan</title>
+<title>External - DataOS Vulcan</title>
 <link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -33,7 +33,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#external-models">
+<a class="md-skip" href="#external">
           Skip to content
         </a>
 </div>
@@ -57,7 +57,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              External models
+              External
             
           </span>
 </div>
@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -465,7 +465,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -492,20 +492,20 @@
 <a class="md-nav__link" href="#how-external-models-work">
 <span class="md-ellipsis">
       
-        How external models work
+        How External Models Work
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#generating-an-external-models-schema-file">
+<a class="md-nav__link" href="#creating-external-models">
 <span class="md-ellipsis">
       
-        Generating an external models schema file
+        Creating External Models
       
     </span>
 </a>
-<nav aria-label="Generating an external models schema file" class="md-nav">
+<nav aria-label="Creating External Models" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#using-cli">
@@ -526,10 +526,19 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#gateway-specific-external-models_1">
+<span class="md-ellipsis">
+      
+        Gateway-Specific External Models
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#writing-yaml-by-hand">
 <span class="md-ellipsis">
       
-        Writing YAML by hand
+        Writing YAML by Hand
       
     </span>
 </a>
@@ -538,7 +547,7 @@
 <a class="md-nav__link" href="#using-the-external_models-directory">
 <span class="md-ellipsis">
       
-        Using the external_models directory
+        Using the external_models Directory
       
     </span>
 </a>
@@ -547,7 +556,7 @@
 <a class="md-nav__link" href="#external-assertions">
 <span class="md-ellipsis">
       
-        External assertions
+        External Assertions
       
     </span>
 </a>
@@ -563,7 +572,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -605,7 +614,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -617,7 +626,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1001,20 +1010,20 @@
 <a class="md-nav__link" href="#how-external-models-work">
 <span class="md-ellipsis">
       
-        How external models work
+        How External Models Work
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#generating-an-external-models-schema-file">
+<a class="md-nav__link" href="#creating-external-models">
 <span class="md-ellipsis">
       
-        Generating an external models schema file
+        Creating External Models
       
     </span>
 </a>
-<nav aria-label="Generating an external models schema file" class="md-nav">
+<nav aria-label="Creating External Models" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#using-cli">
@@ -1035,10 +1044,19 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#gateway-specific-external-models_1">
+<span class="md-ellipsis">
+      
+        Gateway-Specific External Models
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#writing-yaml-by-hand">
 <span class="md-ellipsis">
       
-        Writing YAML by hand
+        Writing YAML by Hand
       
     </span>
 </a>
@@ -1047,7 +1065,7 @@
 <a class="md-nav__link" href="#using-the-external_models-directory">
 <span class="md-ellipsis">
       
-        Using the external_models directory
+        Using the external_models Directory
       
     </span>
 </a>
@@ -1056,7 +1074,7 @@
 <a class="md-nav__link" href="#external-assertions">
 <span class="md-ellipsis">
       
-        External assertions
+        External Assertions
       
     </span>
 </a>
@@ -1103,19 +1121,29 @@
 </ol>
 </nav>
 <article class="md-content__inner md-typeset">
-<h1 id="external-models">External models<a class="headerlink" href="#external-models" title="Link to this section">¶</a></h1>
-<p>Vulcan model queries may reference "external" tables that are created and managed outside the Vulcan project. For example, a model might ingest data from a third party's read-only data system.</p>
-<p>Vulcan does not manage external tables, but it can use information about the tables' columns and data types to make features more useful. For example, column information allows column-level lineage to include external tables' columns.</p>
-<p>Vulcan stores external tables' column information as <code>EXTERNAL</code> models.</p>
-<h2 id="how-external-models-work">How external models work<a class="headerlink" href="#how-external-models-work" title="Link to this section">¶</a></h2>
-<p><code>EXTERNAL</code> models consist solely of an external table's column information, so there is no query for Vulcan to run.</p>
-<p>Vulcan has no information about the data contained in the table represented by an <code>EXTERNAL</code> model. The table could be altered or have all its data deleted, and Vulcan will not detect it. All Vulcan knows about the table is that it contains the columns specified in the <code>EXTERNAL</code> model's file (more information below).</p>
-<p>Vulcan will not take any actions based on an <code>EXTERNAL</code> model - its actions are solely determined by the model whose query selects from the <code>EXTERNAL</code> model.</p>
+<h1 id="external">External<a class="headerlink" href="#external" title="Link to this section">¶</a></h1>
+<p>Sometimes your models need to query tables that exist outside your Vulcan project—maybe a third-party data source, a table managed by another system, or a read-only database. These are "external" tables.</p>
+<p>Vulcan doesn't manage external tables (you can't create or update them), but it can use metadata about them to make your life easier. By defining external models, you give Vulcan information about column names and types, which enables better column-level lineage and query optimization.</p>
+<p><strong>Why define external models?</strong> Even though Vulcan can't manage them, knowing their schema helps with:
+- Column-level lineage (see how data flows through external tables)
+- Query optimization (Vulcan can make better decisions)
+- Documentation (your data catalog knows what's in those tables)</p>
+<p>Vulcan stores this metadata as <code>EXTERNAL</code> models.</p>
+<h2 id="how-external-models-work">How External Models Work<a class="headerlink" href="#how-external-models-work" title="Link to this section">¶</a></h2>
+<p><code>EXTERNAL</code> models are metadata-only—they just describe a table's schema (column names and types). There's no query for Vulcan to run, and Vulcan doesn't manage the data.</p>
+<p><strong>Important limitations:</strong>
+- Vulcan doesn't know what data is in the table (or if it even exists)
+- If someone alters the external table, Vulcan won't detect it
+- If all data is deleted, Vulcan won't know
+- Vulcan never modifies external tables</p>
 <p>The querying model's <a href="../../model_kinds/"><code>kind</code></a>, <a href="../../overview/#cron"><code>cron</code></a>, and previously loaded time intervals determine when Vulcan will query the <code>EXTERNAL</code> model.</p>
-<h2 id="generating-an-external-models-schema-file">Generating an external models schema file<a class="headerlink" href="#generating-an-external-models-schema-file" title="Link to this section">¶</a></h2>
-<p>External models can be defined in the <code>external_models.yaml</code> file in the Vulcan project's root folder. The alternative name for this file is <code>schema.yaml</code>.</p>
-<p>You can create this file by either writing the YAML by hand or allowing Vulcan to fetch information about external tables with the <code>create_external_models</code> CLI command.</p>
-<p>Consider this example model that queries external tables <code>vulcan_demo.customers</code>, <code>vulcan_demo.orders</code>, and <code>vulcan_demo.order_items</code>:</p>
+<p><strong>When external tables get queried:</strong> Only when a Vulcan model references them. The querying model's <code>kind</code>, <code>cron</code>, and time intervals determine when the external table is actually queried. Vulcan doesn't proactively query external tables—it only queries them as part of executing your models.</p>
+<h2 id="creating-external-models">Creating External Models<a class="headerlink" href="#creating-external-models" title="Link to this section">¶</a></h2>
+<p>External models are defined in YAML files. You have two options:
+1. <strong>Let Vulcan generate it</strong> (easiest) - Use the <code>create_external_models</code> CLI command
+2. <strong>Write it yourself</strong> - Hand-craft the YAML if you need more control</p>
+<p>The main file is <code>external_models.yaml</code> (or <code>schema.yaml</code>) in your project root. You can also add more files in the <code>external_models/</code> directory.</p>
+<p>Let's say you have a model that queries external tables. Here's an example:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">full_model</span><span class="p">,</span>
 </span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="k">FULL</span>
@@ -1134,9 +1162,7 @@
 </span><span id="__span-0-16"><a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oi</span><span class="p">.</span><span class="n">order_id</span>
 </span><span id="__span-0-17"><a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">email</span>
 </span></code></pre></div>
-<p>The following sections demonstrate how to create external models containing the column information for these tables.</p>
-<p>All of a Vulcan project's external models are defined in a single <code>external_models.yaml</code> file, so the files created below might also include column information for other external models.</p>
-<p>Alternatively, additional external models can also be defined in the <a href="#using-the-external_models-directory">external_models/</a> folder.</p>
+<p>The following sections show you how to create external models for these tables. You can define all external models in <code>external_models.yaml</code>, or split them across multiple files in the <code>external_models/</code> directory (useful for organization or when Vulcan regenerates the main file).</p>
 <h3 id="using-cli">Using CLI<a class="headerlink" href="#using-cli" title="Link to this section">¶</a></h3>
 <p>Instead of creating the <code>external_models.yaml</code> file manually, Vulcan can generate it for you with the <a href="../../../../cli-command/cli/#create_external_models">create_external_models</a> CLI command.</p>
 <p>The command identifies all external tables referenced in your Vulcan project, fetches their column information from the SQL engine's metadata, and then stores the information in the <code>external_models.yaml</code> file.</p>
@@ -1146,89 +1172,98 @@
 <p>In some use-cases such as <a href="../../guides-old/isolated_systems.md#multiple-gateways">isolated systems with multiple gateways</a>, there are external models that only exist on a certain gateway.</p>
 <p><strong>Gateway names are case-insensitive in external model configurations.</strong> You can specify the gateway name using any case (e.g., <code>gateway: dev</code>, <code>gateway: DEV</code>, <code>gateway: Dev</code>) and Vulcan will handle the matching correctly.</p>
 <p>Consider the following model that queries an external table with a dynamic database based on the current gateway:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>MODEL (
-</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>  name vulcan_demo.customer_summary,
-</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>  kind FULL
-</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>);
-</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>SELECT
-</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>  *
-</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>FROM
-</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>  @{gateway}_db.customers;
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan<span class="w"> </span>create_external_models
 </span></code></pre></div>
-<p>This table will be named differently depending on which <code>--gateway</code> Vulcan is run with (learn more about the curly brace <code>@{gateway}</code> syntax <a href="../../../../concepts-old/macros/vulcan_macros/#embedding-variables-in-strings">here</a>).</p>
-<p>For example:</p>
-<ul>
-<li><code>vulcan --gateway dev plan</code> - Vulcan will try to query <code>dev_db.customers</code></li>
-<li><code>vulcan --gateway prod plan</code> - Vulcan will try to query <code>prod_db.customers</code></li>
-</ul>
-<p>To ensure Vulcan can look up the correct schema when the relevant gateway is set, run <code>create_external_models</code> with the <code>--gateway</code> argument. For example:</p>
-<ul>
-<li><code>vulcan --gateway dev create_external_models</code></li>
-</ul>
-<p>This will set <code>gateway: dev</code> on the external model and ensure that it is only loaded when the current gateway is set to <code>dev</code>.</p>
-<h3 id="writing-yaml-by-hand">Writing YAML by hand<a class="headerlink" href="#writing-yaml-by-hand" title="Link to this section">¶</a></h3>
-<p>This example demonstrates the structure of a <code>external_models.yaml</code> file based on a typical e-commerce data model:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."customers"'</span>
-</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
-</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">    </span><span class="nt">region_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
-</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">    </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
-</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."orders"'</span>
-</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
-</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">    </span><span class="nt">order_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">    </span><span class="nt">order_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIMESTAMP</span>
-</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">    </span><span class="nt">warehouse_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-2-13"><a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."shipments"'</span>
-</span><span id="__span-2-14"><a href="#__codelineno-2-14" id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
-</span><span id="__span-2-15"><a href="#__codelineno-2-15" id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="w">    </span><span class="nt">shipment_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-2-16"><a href="#__codelineno-2-16" id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="w">    </span><span class="nt">order_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-2-17"><a href="#__codelineno-2-17" id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="w">    </span><span class="nt">shipped_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span>
-</span><span id="__span-2-18"><a href="#__codelineno-2-18" id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="w">    </span><span class="nt">carrier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
+<p><strong>What it does:</strong>
+- Scans your project for references to external tables
+- Fetches column information from your SQL engine's metadata
+- Writes everything to <code>external_models.yaml</code></p>
+<p><strong>Important:</strong> This command only queries metadata (table schemas), not the actual data. It's fast and safe.</p>
+<p><strong>If Vulcan can't access a table's metadata:</strong> That table gets skipped and Vulcan warns you. You'll need to define it manually (see the "Writing YAML by hand" section below).</p>
+<h3 id="gateway-specific-external-models_1">Gateway-Specific External Models<a class="headerlink" href="#gateway-specific-external-models_1" title="Link to this section">¶</a></h3>
+<p>If you're using <a href="../../guides/isolated_systems.md#multiple-gateways">isolated systems with multiple gateways</a>, you might have external tables that only exist on specific gateways.</p>
+<p><strong>Example:</strong> Your model uses a gateway variable to select different databases:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">customer_summary</span><span class="p">,</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="k">FULL</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="p">);</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">@</span><span class="err">{</span><span class="n">gateway</span><span class="err">}</span><span class="n">_db</span><span class="p">.</span><span class="n">customers</span><span class="p">;</span>
 </span></code></pre></div>
-<p>It contains each <code>EXTERNAL</code> model's name and each of the external table's columns' name and data type. An optional description and gateway can also be specified.</p>
-<p>The file can be constructed by hand using a standard text editor or IDE.</p>
-<h3 id="using-the-external_models-directory">Using the <code>external_models</code> directory<a class="headerlink" href="#using-the-external_models-directory" title="Link to this section">¶</a></h3>
-<p>Sometimes, Vulcan cannot infer the structure of a model and you need to add it manually.</p>
-<p>However, since <code>vulcan create_external_models</code> replaces the <code>external_models.yaml</code> file, any manual changes you made to that file will be overwritten.</p>
-<p>The solution is to create the manual model definition files in the <code>external_models/</code> directory, like so:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>external_models.yaml
-</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>external_models/more_external_models.yaml
-</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>external_models/even_more_external_models.yaml
+<p>When you run with <code>--gateway dev</code>, it queries <code>dev_db.customers</code>. When you run with <code>--gateway prod</code>, it queries <code>prod_db.customers</code>. These are different tables with potentially different schemas!</p>
+<p><strong>Solution:</strong> Run <code>create_external_models</code> with the <code>--gateway</code> flag:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>vulcan<span class="w"> </span>--gateway<span class="w"> </span>dev<span class="w"> </span>create_external_models
 </span></code></pre></div>
-<p>Files in the <code>external_models</code> directory must be <code>.yaml</code> files that follow the same structure as the <code>external_models.yaml</code> file.</p>
-<p>When Vulcan loads the definitions, it will first load the models defined in <code>external_models.yaml</code> (or <code>schema.yaml</code>) and  any models found in <code>external_models/*.yaml</code>.</p>
-<p>Therefore, you can use <code>vulcan create_external_models</code> to manage the <code>external_models.yaml</code> file and then put any models that need to be defined manually inside the <code>external_models/</code> directory.</p>
-<h3 id="external-assertions">External assertions<a class="headerlink" href="#external-assertions" title="Link to this section">¶</a></h3>
-<p>It is possible to define <a href="../../../audits/audits/">assertions</a> on external models. This can be useful to check the data quality of upstream dependencies before your internal models evaluate.</p>
-<p>This example shows an external model with assertions:</p>
+<p>This sets <code>gateway: dev</code> on the external model, so it only loads when that gateway is active. Do this for each gateway that has different external tables.</p>
+<div class="admonition note">
+<p class="admonition-title">Case-Insensitive Gateway Names</p>
+<p>Gateway names are case-insensitive in external model configs. <code>gateway: dev</code>, <code>gateway: DEV</code>, and <code>gateway: Dev</code> all work the same.</p>
+</div>
+<h3 id="writing-yaml-by-hand">Writing YAML by Hand<a class="headerlink" href="#writing-yaml-by-hand" title="Link to this section">¶</a></h3>
+<p>Sometimes you need to define external models manually—maybe Vulcan can't access the metadata, or you want more control. Here's the structure:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."customers"'</span>
-</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Table containing customer information</span>
-</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="nt">assertions</span><span class="p">:</span>
-</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">not_null</span>
-</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">      </span><span class="nt">columns</span><span class="p">:</span><span class="w"> </span><span class="s">"[customer_id,</span><span class="nv"> </span><span class="s">email]"</span>
-</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unique_values</span>
-</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">      </span><span class="nt">columns</span><span class="p">:</span><span class="w"> </span><span class="s">"[customer_id]"</span>
-</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
-</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="w">    </span><span class="nt">region_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
-</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="w">    </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
-</span><span id="__span-4-13"><a href="#__codelineno-4-13" id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."orders"'</span>
-</span><span id="__span-4-14"><a href="#__codelineno-4-14" id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Table containing order transactions</span>
-</span><span id="__span-4-15"><a href="#__codelineno-4-15" id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">  </span><span class="nt">assertions</span><span class="p">:</span>
-</span><span id="__span-4-16"><a href="#__codelineno-4-16" id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">not_null</span>
-</span><span id="__span-4-17"><a href="#__codelineno-4-17" id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="w">      </span><span class="nt">columns</span><span class="p">:</span><span class="w"> </span><span class="s">"[order_id,</span><span class="nv"> </span><span class="s">customer_id,</span><span class="nv"> </span><span class="s">order_date]"</span>
-</span><span id="__span-4-18"><a href="#__codelineno-4-18" id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">accepted_range</span>
-</span><span id="__span-4-19"><a href="#__codelineno-4-19" id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
-</span><span id="__span-4-20"><a href="#__codelineno-4-20" id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="w">      </span><span class="nt">min_v</span><span class="p">:</span><span class="w"> </span><span class="s">"1"</span>
-</span><span id="__span-4-21"><a href="#__codelineno-4-21" id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
-</span><span id="__span-4-22"><a href="#__codelineno-4-22" id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="w">    </span><span class="nt">order_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-4-23"><a href="#__codelineno-4-23" id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
-</span><span id="__span-4-24"><a href="#__codelineno-4-24" id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="w">    </span><span class="nt">order_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIMESTAMP</span>
-</span><span id="__span-4-25"><a href="#__codelineno-4-25" id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="w">    </span><span class="nt">warehouse_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Customer</span><span class="nv"> </span><span class="s">dimension</span><span class="nv"> </span><span class="s">table</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">external</span><span class="nv"> </span><span class="s">system"</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="nt">gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span><span class="w">  </span><span class="c1"># Optional: only load for this gateway</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">    </span><span class="nt">region_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">    </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."orders"'</span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="w">    </span><span class="nt">order_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-4-13"><a href="#__codelineno-4-13" id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="w">    </span><span class="nt">order_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIMESTAMP</span>
+</span><span id="__span-4-14"><a href="#__codelineno-4-14" id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">    </span><span class="nt">warehouse_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span></code></pre></div>
+<p><strong>What you need:</strong>
+- <code>name</code>: Fully qualified table name (with quotes if needed for case sensitivity)
+- <code>columns</code>: Dictionary of column names to data types</p>
+<p><strong>Optional fields:</strong>
+- <code>description</code>: Human-readable description
+- <code>gateway</code>: Gateway name (for gateway-specific tables)</p>
+<p><strong>Pro tip:</strong> Use triple-quoted names if your table names have special characters or need case sensitivity. The exact format depends on your SQL engine.</p>
+<h3 id="using-the-external_models-directory">Using the <code>external_models</code> Directory<a class="headerlink" href="#using-the-external_models-directory" title="Link to this section">¶</a></h3>
+<p>Here's a common problem: You run <code>vulcan create_external_models</code> and it generates <code>external_models.yaml</code>. But some tables need manual definitions (maybe Vulcan can't access their metadata). If you add them to <code>external_models.yaml</code> and run the command again, your manual changes get overwritten!</p>
+<p><strong>Solution:</strong> Put manual definitions in the <code>external_models/</code> directory:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>external_models.yaml              # Auto-generated by Vulcan
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>external_models/manual_tables.yaml # Your manual definitions
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>external_models/legacy_tables.yaml # More manual definitions
+</span></code></pre></div>
+<p><strong>How it works:</strong>
+- Vulcan loads <code>external_models.yaml</code> first (or <code>schema.yaml</code>)
+- Then it loads all <code>.yaml</code> files from <code>external_models/</code>
+- Everything gets merged together</p>
+<p><strong>Best practice:</strong> Use <code>create_external_models</code> to manage the main file, and put any tables that need manual definitions in the <code>external_models/</code> directory. That way you can regenerate the main file without losing your manual work!</p>
+<h3 id="external-assertions">External Assertions<a class="headerlink" href="#external-assertions" title="Link to this section">¶</a></h3>
+<p>You can define <a href="components/model/audits.md">assertions</a> on external models! This is super useful for validating upstream data quality before your internal models run.</p>
+<p><strong>Why this matters:</strong> If your external data source has quality issues, you want to catch them early—before they flow into your models and cause bigger problems downstream.</p>
+<p>Here's how you'd add assertions to an external model:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."customers"'</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Table containing customer information</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">  </span><span class="nt">assertions</span><span class="p">:</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">not_null</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">      </span><span class="nt">columns</span><span class="p">:</span><span class="w"> </span><span class="s">"[customer_id,</span><span class="nv"> </span><span class="s">email]"</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unique_values</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">      </span><span class="nt">columns</span><span class="p">:</span><span class="w"> </span><span class="s">"[customer_id]"</span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">    </span><span class="nt">region_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
+</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">    </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TEXT</span>
+</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'"warehouse"."vulcan_demo"."orders"'</span>
+</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Table containing order transactions</span>
+</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">  </span><span class="nt">assertions</span><span class="p">:</span>
+</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">not_null</span>
+</span><span id="__span-6-17"><a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">      </span><span class="nt">columns</span><span class="p">:</span><span class="w"> </span><span class="s">"[order_id,</span><span class="nv"> </span><span class="s">customer_id,</span><span class="nv"> </span><span class="s">order_date]"</span>
+</span><span id="__span-6-18"><a href="#__codelineno-6-18" id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">accepted_range</span>
+</span><span id="__span-6-19"><a href="#__codelineno-6-19" id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
+</span><span id="__span-6-20"><a href="#__codelineno-6-20" id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="w">      </span><span class="nt">min_v</span><span class="p">:</span><span class="w"> </span><span class="s">"1"</span>
+</span><span id="__span-6-21"><a href="#__codelineno-6-21" id="__codelineno-6-21" name="__codelineno-6-21"></a><span class="w">  </span><span class="nt">columns</span><span class="p">:</span>
+</span><span id="__span-6-22"><a href="#__codelineno-6-22" id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="w">    </span><span class="nt">order_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-6-23"><a href="#__codelineno-6-23" id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="w">    </span><span class="nt">customer_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
+</span><span id="__span-6-24"><a href="#__codelineno-6-24" id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="w">    </span><span class="nt">order_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIMESTAMP</span>
+</span><span id="__span-6-25"><a href="#__codelineno-6-25" id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="w">    </span><span class="nt">warehouse_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INT</span>
 </span></code></pre></div>
 </article>
 </div>
@@ -1242,7 +1277,7 @@
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: Python models" class="md-footer__link md-footer__link--prev" href="../python_models/">
+<a aria-label="Previous: Python" class="md-footer__link md-footer__link--prev" href="../python_models/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -1251,17 +1286,17 @@
                 Previous
               </span>
 <div class="md-ellipsis">
-                Python models
+                Python
               </div>
 </div>
 </a>
-<a aria-label="Next: Managed models" class="md-footer__link md-footer__link--next" href="../managed_models/">
+<a aria-label="Next: Managed" class="md-footer__link md-footer__link--next" href="../managed_models/">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 Next
               </span>
 <div class="md-ellipsis">
-                Managed models
+                Managed
               </div>
 </div>
 <div class="md-footer__button md-icon">

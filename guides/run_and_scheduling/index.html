@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -518,7 +518,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -530,7 +530,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1972,7 +1972,7 @@
 - Your SQL engine is BigQuery (not optimized for frequent transactions)
 - You observe performance degradation
 - You need better isolation</p>
-<p>See <a href="./connections.md#state-connection">Connections Guide</a> for configuring a separate state database.</p>
+<p>See <a href="guides-old/connections.md#state-connection">Connections Guide</a> for configuring a separate state database.</p>
 <hr/>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <ol>
@@ -1981,7 +1981,7 @@
 <li><strong>Monitor execution</strong> - Check logs to ensure intervals are processing correctly</li>
 <li><strong>Use <code>--ignore-cron</code> sparingly</strong> - Only when catching up on missed intervals</li>
 <li><strong>Separate state database</strong> - Consider PostgreSQL for state storage in production</li>
-<li><strong>Handle errors gracefully</strong> - Set up <a href="./notifications.md">notifications</a> for run failures</li>
+<li><strong>Handle errors gracefully</strong> - Set up <a href="guides-old/notifications.md">notifications</a> for run failures</li>
 </ol>
 <hr/>
 <h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this section">¶</a></h2>
@@ -2024,11 +2024,11 @@
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../plan/">Plan Guide</a> for applying model changes</li>
-<li>Check <a href="../reference/cli.md#run">Run Command</a> for complete CLI reference</li>
-<li>Set up <a href="./notifications.md">Notifications</a> to monitor run execution</li>
-<li>Explore <a href="../concepts/environments.md">Environments</a> for managing multiple environments</li>
-<li>Configure <a href="./connections.md">Connections</a> for state database setup</li>
+<li>Learn about <a href="guides/plan.md">Plan Guide</a> for applying model changes</li>
+<li>Check <a href="getting_started/cli.md#run">Run Command</a> for complete CLI reference</li>
+<li>Set up <a href="guides-old/notifications.md">Notifications</a> to monitor run execution</li>
+<li>Explore <a href="concepts-old/environments.md">Environments</a> for managing multiple environments</li>
+<li>Configure <a href="guides-old/connections.md">Connections</a> for state database setup</li>
 </ul>
 </article>
 </div>

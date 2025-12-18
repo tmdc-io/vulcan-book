@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -960,7 +960,7 @@
 <p>They enable dynamic macro behavior - for example, a date parameter's value might be based on when the macro was run.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This page discusses Vulcan's built-in macro variables. Learn more about custom, user-defined macro variables on the <a href="../vulcan_macros/#user-defined-variables">Vulcan macros page</a>.</p>
+<p>This page discusses Vulcan's built-in macro variables. Learn more about custom, user-defined macro variables on the <a href="../../../components/advanced-features/macros/built_in/#user-defined-variables">Vulcan macros page</a>.</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Link to this section">¶</a></h2>
 <p>Consider a SQL query that filters by date in the <code>WHERE</code> clause.</p>
@@ -988,7 +988,7 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">'2023-02-01'</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This example used one of Vulcan's predefined variables, but you can also define your own macro variables.</p>
-<p>We describe Vulcan's predefined variables below; user-defined macro variables are discussed in the <a href="../vulcan_macros/#user-defined-variables">Vulcan macros</a> and <a href="../jinja_macros/#user-defined-variables">Jinja macros</a> pages.</p>
+<p>We describe Vulcan's predefined variables below; user-defined macro variables are discussed in the <a href="../../../components/advanced-features/macros/built_in/#user-defined-variables">Vulcan macros</a> and <a href="../../../components/advanced-features/macros/jinja/#user-defined-variables">Jinja macros</a> pages.</p>
 <h2 id="predefined-variables">Predefined variables<a class="headerlink" href="#predefined-variables" title="Link to this section">¶</a></h2>
 <p>Vulcan comes with predefined variables that can be used in your queries. They are automatically set by the Vulcan runtime.</p>
 <p>Most predefined variables are related to time and use a combination of prefixes (start, end, etc.) and postfixes (date, ds, ts, etc.). They are described in the next section; <a href="#runtime-variables">other predefined variables</a> are discussed in the following section.</p>
@@ -997,7 +997,7 @@
 <div class="admonition tip">
 <p class="admonition-title">Important</p>
 <p>Predefined variables with a time component always use the <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC time zone</a>.</p>
-<p>Learn more about timezones and incremental models <a href="../models/model_kinds.md#timezones">here</a>.</p>
+<p>Learn more about timezones and incremental models <a href="../../../components/model/model_kinds/#timezones">here</a>.</p>
 </div>
 <p>Prefixes:</p>
 <ul>
@@ -1095,7 +1095,7 @@
 <h3 id="runtime-variables">Runtime variables<a class="headerlink" href="#runtime-variables" title="Link to this section">¶</a></h3>
 <p>Vulcan provides additional predefined variables used to modify model behavior based on information available at runtime.</p>
 <ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/runtime_stage" title="GitHub User: runtime_stage">@runtime_stage</a> - A string value denoting the current stage of the Vulcan runtime. Typically used in models to conditionally execute pre/post-statements (learn more <a href="../models/sql_models.md#optional-prepost-statements">here</a>). It returns one of these values:<ul>
+<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/runtime_stage" title="GitHub User: runtime_stage">@runtime_stage</a> - A string value denoting the current stage of the Vulcan runtime. Typically used in models to conditionally execute pre/post-statements (learn more <a href="../../../components/model/types/sql_models/#optional-prepost-statements">here</a>). It returns one of these values:<ul>
 <li>'loading' - The project is being loaded into Vulcan's runtime context.</li>
 <li>'creating' - The model tables are being created for the first time. The data may be inserted during table creation.</li>
 <li>'evaluating' - The model query logic is evaluated, and the data is inserted into the existing model table.</li>
@@ -1105,9 +1105,9 @@
 <li>'testing' - The model query logic is being evaluated in the context of a unit test.</li>
 </ul>
 </li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/gateway" title="GitHub User: gateway">@gateway</a> - A string value containing the name of the current <a href="../../guides/connections.md">gateway</a>.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/this_model" title="GitHub User: this_model">@this_model</a> - The physical table name that the model's view selects from. Typically used to create <a href="../audits.md#generic-audits">generic audits</a>. When used in <a href="../models/sql_models.md#optional-on-virtual-update-statements">on_virtual_update statements</a>, it contains the qualified view name instead.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/model_kind_name" title="GitHub User: model_kind_name">@model_kind_name</a> - A string value containing the name of the current model kind. Intended to be used in scenarios where you need to control the <a href="../../reference/model_configuration.md#model-defaults">physical properties in model defaults</a>.</li>
+<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/gateway" title="GitHub User: gateway">@gateway</a> - A string value containing the name of the current <a href="guides-old/connections.md">gateway</a>.</li>
+<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/this_model" title="GitHub User: this_model">@this_model</a> - The physical table name that the model's view selects from. Typically used to create <a href="../../../components/audits/audits/#generic-audits">generic audits</a>. When used in <a href="../../../components/model/types/sql_models/#optional-on-virtual-update-statements">on_virtual_update statements</a>, it contains the qualified view name instead.</li>
+<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/model_kind_name" title="GitHub User: model_kind_name">@model_kind_name</a> - A string value containing the name of the current model kind. Intended to be used in scenarios where you need to control the <a href="../../configurations-old/configuration.md#model-defaults">physical properties in model defaults</a>.</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Embedding variables in strings</p>
@@ -1115,14 +1115,14 @@
 <p>The curly brace syntax tells Vulcan that the rendered string should be treated as an identifier, instead of simply replacing the macro variable value.</p>
 <p>For example, if <code>variable</code> is defined as <code>@DEF(</code>variable<code>, foo.bar)</code>, then <code>@variable</code> produces <code>foo.bar</code>, while <code>@{variable}</code> produces <code>"foo.bar"</code>. This is because Vulcan converts <code>foo.bar</code> into an identifier, using double quotes to correctly include the <code>.</code> character in the identifier name.</p>
 <p>In practice, <code>@{variable}</code> is most commonly used to interpolate a value within an identifier, e.g., <code>@{variable}_suffix</code>, whereas <code>@variable</code> is used to do plain substitutions for string literals.</p>
-<p>Learn more in the <a href="../vulcan_macros/#embedding-variables-in-strings">Vulcan macros documentation</a>.</p>
+<p>Learn more in the <a href="../../../components/advanced-features/macros/built_in/#embedding-variables-in-strings">Vulcan macros documentation</a>.</p>
 </div>
 <h4 id="before-all-and-after-all-variables">Before all and after all variables<a class="headerlink" href="#before-all-and-after-all-variables" title="Link to this section">¶</a></h4>
-<p>The following variables are also available in <a href="../../guides/configuration.md#before_all-and-after_all-statements"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in macros invoked within them.</p>
+<p>The following variables are also available in <a href="guides-old/configuration.md#before_all-and-after_all-statements"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in macros invoked within them.</p>
 <ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/this_env" title="GitHub User: this_env">@this_env</a> - A string value containing the name of the current <a href="../../environments/">environment</a>.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/schemas" title="GitHub User: schemas">@schemas</a> - A list of the schema names of the <a href="../../concepts/glossary.md#virtual-layer">virtual layer</a> of the current environment.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/views" title="GitHub User: views">@views</a> - A list of the view names of the <a href="../../concepts/glossary.md#virtual-layer">virtual layer</a> of the current environment.</li>
+<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/this_env" title="GitHub User: this_env">@this_env</a> - A string value containing the name of the current <a href="concepts-old/environments.md">environment</a>.</li>
+<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/schemas" title="GitHub User: schemas">@schemas</a> - A list of the schema names of the <a href="concepts-old/glossary.md#virtual-layer">virtual layer</a> of the current environment.</li>
+<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/views" title="GitHub User: views">@views</a> - A list of the view names of the <a href="concepts-old/glossary.md#virtual-layer">virtual layer</a> of the current environment.</li>
 </ul>
 </article>
 </div>

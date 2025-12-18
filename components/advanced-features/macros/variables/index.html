@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -518,7 +518,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -530,7 +530,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -699,10 +699,10 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#example">
+<a class="md-nav__link" href="#a-quick-example">
 <span class="md-ellipsis">
       
-        Example
+        A quick example
       
     </span>
 </a>
@@ -971,10 +971,10 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#example">
+<a class="md-nav__link" href="#a-quick-example">
 <span class="md-ellipsis">
       
-        Example
+        A quick example
       
     </span>
 </a>
@@ -1050,174 +1050,144 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h1>
-<p>Macro variables are placeholders whose values are substituted in when the macro is rendered.</p>
-<p>They enable dynamic macro behavior - for example, a date parameter's value might be based on when the macro was run.</p>
+<p>Macro variables are placeholders that get replaced with actual values when Vulcan renders your SQL. They're what make your queries dynamic—instead of hardcoding values, you use variables that change based on context.</p>
+<p>Think of them like this: instead of writing <code>WHERE date &gt; '2023-01-01'</code> and manually updating it every day, you write <code>WHERE date &gt; @execution_ds</code> and it automatically uses today's date. Much better!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This page discusses Vulcan's built-in macro variables. Learn more about custom, user-defined macro variables on the <a href="./vulcan_macros.md#user-defined-variables">Vulcan macros page</a>.</p>
+<p>This page covers Vulcan's built-in macro variables—the ones that come pre-configured and ready to use. If you want to create your own custom variables, check out the <a href="../built_in/#user-defined-variables">Vulcan macros page</a> or <a href="../jinja/#user-defined-variables">Jinja macros page</a>.</p>
 </div>
-<h2 id="example">Example<a class="headerlink" href="#example" title="Link to this section">¶</a></h2>
-<p>Consider a SQL query that filters by date in the <code>WHERE</code> clause.</p>
-<p>Instead of manually changing the date each time the model is run, you can use a macro variable to make the date dynamic. With the dynamic approach, the date changes automatically based on when the query is run.</p>
-<p>This query filters for rows where column <code>my_date</code> is after '2023-01-01':</p>
+<h2 id="a-quick-example">A quick example<a class="headerlink" href="#a-quick-example" title="Link to this section">¶</a></h2>
+<p>Let's say you have a query that filters by date. Without macros, you'd write something like this:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
 <span class="normal"><a href="#__codelineno-0-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">FROM</span><span class="w"> </span><span class="k">table</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">'2023-01-01'</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>To make this query's date dynamic you could use the predefined Vulcan macro variable <code>@execution_ds</code>:</p>
+<p>Every time you want to change the date, you have to edit the query. That's tedious and error-prone.</p>
+<p>With a macro variable, you can make it dynamic:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
 <span class="normal"><a href="#__codelineno-1-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="k">FROM</span><span class="w"> </span><span class="k">table</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">execution_ds</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>The <code>@</code> symbol tells Vulcan that <code>@execution_ds</code> is a macro variable that requires substitution before the SQL is executed.</p>
-<p>The macro variable <code>@execution_ds</code> is predefined, so its value will be automatically set by Vulcan based on when the execution started. If the model was executed on February 1, 2023 the rendered query would be:</p>
+<p>The <code>@</code> symbol tells Vulcan "this is a macro variable—replace it with a value before executing." The <code>@execution_ds</code> variable is predefined, so Vulcan automatically sets it to the date when execution started.</p>
+<p>If you run this model on February 1, 2023, Vulcan renders it as:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
 <span class="normal"><a href="#__codelineno-2-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="k">FROM</span><span class="w"> </span><span class="k">table</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">'2023-02-01'</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This example used one of Vulcan's predefined variables, but you can also define your own macro variables.</p>
-<p>We describe Vulcan's predefined variables below; user-defined macro variables are discussed in the <a href="./vulcan_macros.md#user-defined-variables">Vulcan macros</a> and <a href="./jinja_macros.md#user-defined-variables">Jinja macros</a> pages.</p>
+<p>The date updates automatically every time you run it. No manual editing needed!</p>
+<p>Vulcan comes with a bunch of predefined variables like this. You can also create your own custom variables if you need something specific—we'll cover those in the macro system pages.</p>
 <h2 id="predefined-variables">Predefined variables<a class="headerlink" href="#predefined-variables" title="Link to this section">¶</a></h2>
-<p>Vulcan comes with predefined variables that can be used in your queries. They are automatically set by the Vulcan runtime.</p>
-<p>Most predefined variables are related to time and use a combination of prefixes (start, end, etc.) and postfixes (date, ds, ts, etc.). They are described in the next section; <a href="#runtime-variables">other predefined variables</a> are discussed in the following section.</p>
+<p>Vulcan provides a set of predefined variables that are automatically available in your models. Most of them are related to time (dates, timestamps, etc.), which makes sense since time-based logic is super common in data pipelines.</p>
+<p>The time variables follow a consistent naming pattern: they combine a prefix (like <code>start</code>, <code>end</code>, or <code>execution</code>) with a postfix (like <code>ds</code>, <code>ts</code>, or <code>epoch</code>) to create variables like <code>@start_ds</code> or <code>@execution_epoch</code>.</p>
 <h3 id="temporal-variables">Temporal variables<a class="headerlink" href="#temporal-variables" title="Link to this section">¶</a></h3>
-<p>Vulcan uses the python <a href="https://docs.python.org/3/library/datetime.html">datetime module</a> for handling dates and times. It uses the standard <a href="https://en.wikipedia.org/wiki/Unix_time">Unix epoch</a> start of 1970-01-01.</p>
+<p>Vulcan uses Python's <a href="https://docs.python.org/3/library/datetime.html">datetime module</a> under the hood and follows the standard <a href="https://en.wikipedia.org/wiki/Unix_time">Unix epoch</a> (starting January 1, 1970).</p>
 <div class="admonition tip">
 <p class="admonition-title">Important</p>
-<p>Predefined variables with a time component always use the <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC time zone</a>.</p>
-<p>Learn more about timezones and incremental models <a href="../models/model_kinds.md#timezones">here</a>.</p>
+<p>All time-related predefined variables use <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC time zone</a>. If you need to work with other timezones, you'll handle that in your query logic.</p>
+<p>Learn more about timezones and incremental models <a href="components/advanced-features/model/model_kinds.md#timezones">here</a>.</p>
 </div>
-<p>Prefixes:</p>
+<p><strong>Prefixes</strong> tell you what time period the variable represents:</p>
 <ul>
-<li>start - The inclusive starting interval of a model run</li>
-<li>end - The inclusive end interval of a model run</li>
-<li>execution - The timestamp of when the execution started</li>
+<li><code>start</code> - The beginning of the time interval for this model run (inclusive)</li>
+<li><code>end</code> - The end of the time interval for this model run (inclusive)</li>
+<li><code>execution</code> - The exact timestamp when the execution started</li>
 </ul>
-<p>Postfixes:</p>
+<p><strong>Postfixes</strong> tell you what format the value is in:</p>
 <ul>
-<li>dt - A python datetime object that converts into a native SQL <code>TIMESTAMP</code> (or SQL engine equivalent)</li>
-<li>dtntz - A python datetime object that converts into a native SQL <code>TIMESTAMP WITHOUT TIME ZONE</code> (or SQL engine equivalent)</li>
-<li>date - A python date object that converts into a native SQL <code>DATE</code></li>
-<li>ds - A date string with the format: '%Y-%m-%d'</li>
-<li>ts - An ISO 8601 datetime formatted string: '%Y-%m-%d %H:%M:%S'</li>
-<li>tstz - An ISO 8601 datetime formatted string with timezone: '%Y-%m-%d %H:%M:%S%z'</li>
-<li>hour - An integer representing the hour of the day, with values 0-23</li>
-<li>epoch - An integer representing seconds since Unix epoch</li>
-<li>millis - An integer representing milliseconds since Unix epoch</li>
+<li><code>dt</code> - A Python datetime object that becomes a SQL <code>TIMESTAMP</code></li>
+<li><code>dtntz</code> - A Python datetime object that becomes a SQL <code>TIMESTAMP WITHOUT TIME ZONE</code></li>
+<li><code>date</code> - A Python date object that becomes a SQL <code>DATE</code></li>
+<li><code>ds</code> - A date string formatted as <code>'YYYY-MM-DD'</code> (like <code>'2023-02-01'</code>)</li>
+<li><code>ts</code> - An ISO 8601 datetime string: <code>'YYYY-MM-DD HH:MM:SS'</code></li>
+<li><code>tstz</code> - An ISO 8601 datetime string with timezone: <code>'YYYY-MM-DD HH:MM:SS+00:00'</code></li>
+<li><code>hour</code> - An integer from 0-23 representing the hour of the day</li>
+<li><code>epoch</code> - An integer representing seconds since Unix epoch</li>
+<li><code>millis</code> - An integer representing milliseconds since Unix epoch</li>
 </ul>
-<p>All predefined temporal macro variables:</p>
-<ul>
-<li>
-<p>dt</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_dt" title="GitHub User: start_dt">@start_dt</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_dt" title="GitHub User: end_dt">@end_dt</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_dt" title="GitHub User: execution_dt">@execution_dt</a></li>
-</ul>
-</li>
-<li>
-<p>dtntz</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_dtntz" title="GitHub User: start_dtntz">@start_dtntz</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_dtntz" title="GitHub User: end_dtntz">@end_dtntz</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_dtntz" title="GitHub User: execution_dtntz">@execution_dtntz</a></li>
-</ul>
-</li>
-<li>
-<p>date</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_date" title="GitHub User: start_date">@start_date</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_date" title="GitHub User: end_date">@end_date</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_date" title="GitHub User: execution_date">@execution_date</a></li>
-</ul>
-</li>
-<li>
-<p>ds</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_ds" title="GitHub User: start_ds">@start_ds</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_ds" title="GitHub User: end_ds">@end_ds</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_ds" title="GitHub User: execution_ds">@execution_ds</a></li>
-</ul>
-</li>
-<li>
-<p>ts</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_ts" title="GitHub User: start_ts">@start_ts</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_ts" title="GitHub User: end_ts">@end_ts</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_ts" title="GitHub User: execution_ts">@execution_ts</a></li>
-</ul>
-</li>
-<li>
-<p>tstz</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_tstz" title="GitHub User: start_tstz">@start_tstz</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_tstz" title="GitHub User: end_tstz">@end_tstz</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_tstz" title="GitHub User: execution_tstz">@execution_tstz</a></li>
-</ul>
-</li>
-<li>
-<p>hour</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_hour" title="GitHub User: start_hour">@start_hour</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_hour" title="GitHub User: end_hour">@end_hour</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_hour" title="GitHub User: execution_hour">@execution_hour</a></li>
-</ul>
-</li>
-<li>
-<p>epoch</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_epoch" title="GitHub User: start_epoch">@start_epoch</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_epoch" title="GitHub User: end_epoch">@end_epoch</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_epoch" title="GitHub User: execution_epoch">@execution_epoch</a></li>
-</ul>
-</li>
-<li>
-<p>millis</p>
-<ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/start_millis" title="GitHub User: start_millis">@start_millis</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/end_millis" title="GitHub User: end_millis">@end_millis</a></li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/execution_millis" title="GitHub User: execution_millis">@execution_millis</a></li>
-</ul>
-</li>
-</ul>
+<p>Here are all the temporal variables you can use:</p>
+<p><strong>dt (datetime objects):</strong>
+- <code>@start_dt</code>
+- <code>@end_dt</code>
+- <code>@execution_dt</code></p>
+<p><strong>dtntz (datetime without timezone):</strong>
+- <code>@start_dtntz</code>
+- <code>@end_dtntz</code>
+- <code>@execution_dtntz</code></p>
+<p><strong>date (date objects):</strong>
+- <code>@start_date</code>
+- <code>@end_date</code>
+- <code>@execution_date</code></p>
+<p><strong>ds (date strings):</strong>
+- <code>@start_ds</code>
+- <code>@end_ds</code>
+- <code>@execution_ds</code></p>
+<p><strong>ts (timestamp strings):</strong>
+- <code>@start_ts</code>
+- <code>@end_ts</code>
+- <code>@execution_ts</code></p>
+<p><strong>tstz (timestamp strings with timezone):</strong>
+- <code>@start_tstz</code>
+- <code>@end_tstz</code>
+- <code>@execution_tstz</code></p>
+<p><strong>hour (hour integers):</strong>
+- <code>@start_hour</code>
+- <code>@end_hour</code>
+- <code>@execution_hour</code></p>
+<p><strong>epoch (Unix epoch seconds):</strong>
+- <code>@start_epoch</code>
+- <code>@end_epoch</code>
+- <code>@execution_epoch</code></p>
+<p><strong>millis (Unix epoch milliseconds):</strong>
+- <code>@start_millis</code>
+- <code>@end_millis</code>
+- <code>@execution_millis</code></p>
 <h3 id="runtime-variables">Runtime variables<a class="headerlink" href="#runtime-variables" title="Link to this section">¶</a></h3>
-<p>Vulcan provides additional predefined variables used to modify model behavior based on information available at runtime.</p>
+<p>Beyond time, Vulcan provides variables that give you information about the current execution context:</p>
 <ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/runtime_stage" title="GitHub User: runtime_stage">@runtime_stage</a> - A string value denoting the current stage of the Vulcan runtime. Typically used in models to conditionally execute pre/post-statements (learn more <a href="../models/sql_models.md#optional-prepost-statements">here</a>). It returns one of these values:<ul>
-<li>'loading' - The project is being loaded into Vulcan's runtime context.</li>
-<li>'creating' - The model tables are being created for the first time. The data may be inserted during table creation.</li>
-<li>'evaluating' - The model query logic is evaluated, and the data is inserted into the existing model table.</li>
-<li>'promoting' - The model is being promoted in the target environment (view created during virtual layer update).</li>
-<li>'demoting' - The model is being demoted in the target environment (view dropped during virtual layer update).</li>
-<li>'auditing' - The audit is being run.</li>
-<li>'testing' - The model query logic is being evaluated in the context of a unit test.</li>
+<li><strong><code>@runtime_stage</code></strong> - A string telling you what stage Vulcan is currently in. Useful for conditionally running code based on whether you're creating tables, evaluating queries, or promoting views. Possible values:</li>
+<li><code>'loading'</code> - Project is being loaded into Vulcan's runtime</li>
+<li><code>'creating'</code> - Model tables are being created for the first time</li>
+<li><code>'evaluating'</code> - Model query is being evaluated and data inserted</li>
+<li><code>'promoting'</code> - Model is being promoted (view created in virtual layer)</li>
+<li><code>'demoting'</code> - Model is being demoted (view dropped from virtual layer)</li>
+<li><code>'auditing'</code> - Audit is being run</li>
+<li><code>'testing'</code> - Model is being evaluated in a unit test context</li>
 </ul>
+<p>Learn more about using this in <a href="components/advanced-features/model/sql_models.md#optional-prepost-statements">pre/post-statements</a>.</p>
+<ul>
+<li>
+<p><strong><code>@gateway</code></strong> - The name of the current <a href="components/guides-old/connections.md">gateway</a> (your database connection)</p>
 </li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/gateway" title="GitHub User: gateway">@gateway</a> - A string value containing the name of the current <a href="../../guides/connections.md">gateway</a>.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/this_model" title="GitHub User: this_model">@this_model</a> - The physical table name that the model's view selects from. Typically used to create <a href="../audits.md#generic-audits">generic audits</a>. When used in <a href="../models/sql_models.md#optional-on-virtual-update-statements">on_virtual_update statements</a>, it contains the qualified view name instead.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/model_kind_name" title="GitHub User: model_kind_name">@model_kind_name</a> - A string value containing the name of the current model kind. Intended to be used in scenarios where you need to control the <a href="../../reference/model_configuration.md#model-defaults">physical properties in model defaults</a>.</li>
+<li>
+<p><strong><code>@this_model</code></strong> - The physical table name that the model's view selects from. Handy for creating <a href="../../../../../audits/audits.md#generic-audits">generic audits</a>. When used in <a href="components/advanced-features/model/sql_models.md#optional-on-virtual-update-statements">on_virtual_update statements</a>, it contains the qualified view name instead.</p>
+</li>
+<li>
+<p><strong><code>@model_kind_name</code></strong> - The name of the current model kind (like <code>'FULL'</code> or <code>'INCREMENTAL_BY_TIME_RANGE'</code>). Useful when you need to control <a href="components/configurations-old/configuration.md#model-defaults">physical properties in model defaults</a> based on the model kind.</p>
+</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Embedding variables in strings</p>
-<p>Macro variable references sometimes use the curly brace syntax <code>@{variable}</code>, which serves a different purpose than the regular <code>@variable</code> syntax.</p>
-<p>The curly brace syntax tells Vulcan that the rendered string should be treated as an identifier, instead of simply replacing the macro variable value.</p>
-<p>For example, if <code>variable</code> is defined as <code>@DEF(</code>variable<code>, foo.bar)</code>, then <code>@variable</code> produces <code>foo.bar</code>, while <code>@{variable}</code> produces <code>"foo.bar"</code>. This is because Vulcan converts <code>foo.bar</code> into an identifier, using double quotes to correctly include the <code>.</code> character in the identifier name.</p>
-<p>In practice, <code>@{variable}</code> is most commonly used to interpolate a value within an identifier, e.g., <code>@{variable}_suffix</code>, whereas <code>@variable</code> is used to do plain substitutions for string literals.</p>
-<p>Learn more in the <a href="./vulcan_macros.md#embedding-variables-in-strings">Vulcan macros documentation</a>.</p>
+<p>Sometimes you'll see variables written with curly braces like <code>@{variable}</code> instead of just <code>@variable</code>. They do different things!</p>
+<p>The curly brace syntax tells Vulcan to treat the rendered value as a SQL identifier (like a table or column name), not a string literal. So if <code>variable</code> contains <code>foo.bar</code>, then:
+- <code>@variable</code> produces <code>foo.bar</code> (as a literal value)
+- <code>@{variable}</code> produces <code>"foo.bar"</code> (as an identifier, with quotes)</p>
+<p>You'll most often use <code>@{variable}</code> when you want to interpolate a value into an identifier name, like <code>@{schema}_table</code>. The regular <code>@variable</code> syntax is for plain value substitution.</p>
+<p>Learn more in the <a href="../built_in/#embedding-variables-in-strings">Vulcan macros documentation</a>.</p>
 </div>
 <h4 id="before-all-and-after-all-variables">Before all and after all variables<a class="headerlink" href="#before-all-and-after-all-variables" title="Link to this section">¶</a></h4>
-<p>The following variables are also available in <a href="../../guides/configuration.md#before_all-and-after_all-statements"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in macros invoked within them.</p>
+<p>These variables are available in <a href="../../guides-old/configuration.md#before_all-and-after_all-statements"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in any macros called within those statements:</p>
 <ul>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/this_env" title="GitHub User: this_env">@this_env</a> - A string value containing the name of the current <a href="../environments.md">environment</a>.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/schemas" title="GitHub User: schemas">@schemas</a> - A list of the schema names of the <a href="../../concepts/glossary.md#virtual-layer">virtual layer</a> of the current environment.</li>
-<li><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/views" title="GitHub User: views">@views</a> - A list of the view names of the <a href="../../concepts/glossary.md#virtual-layer">virtual layer</a> of the current environment.</li>
+<li><strong><code>@this_env</code></strong> - The name of the current <a href="components/advanced-features/environments.md">environment</a></li>
+<li><strong><code>@schemas</code></strong> - A list of schema names in the <a href="components/concepts-old/glossary.md#virtual-layer">virtual layer</a> for the current environment</li>
+<li><strong><code>@views</code></strong> - A list of view names in the <a href="components/concepts-old/glossary.md#virtual-layer">virtual layer</a> for the current environment</li>
 </ul>
+<p>These are handy when you need to perform setup or cleanup operations that depend on the environment context.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1258,7 +1258,7 @@
 <p>Examine the placeholder values to classify them as one of the following types:</p>
 <ul>
 <li>Creation of user-defined macro variables with the <code>@DEF</code> operator (see more about <a href="#user-defined-variables">user-defined macro variables</a>)</li>
-<li>Macro variables: <a href="../macro_variables/">Vulcan pre-defined</a>, <a href="#local-variables">user-defined local</a>, and <a href="#global-variables">user-defined global</a></li>
+<li>Macro variables: <a href="../../../components/advanced-features/macros/variables/">Vulcan pre-defined</a>, <a href="#local-variables">user-defined local</a>, and <a href="#global-variables">user-defined global</a></li>
 <li>Macro functions, both <a href="#macro-operators">Vulcan's</a> and <a href="#user-defined-macro-functions">user-defined</a></li>
 </ul>
 </li>
@@ -1311,7 +1311,7 @@
 <p>Global and gateway macro variables are defined in the project configuration file and can be accessed in any project model. Blueprint and macro variables are defined in a model definition and can only be accessed in that model.</p>
 <p>Macro variables with the same name may be specified at any or all of the global, gateway, blueprint and local levels. When variables are specified at multiple levels, the value of the most specific level takes precedence. For example, the value of a local variable takes precedence over the value of a blueprint or gateway variable with the same name, and the value of a gateway variable takes precedence over the value of a global variable.</p>
 <h3 id="global-variables">Global variables<a class="headerlink" href="#global-variables" title="Link to this section">¶</a></h3>
-<p>Global variables are defined in the project configuration file <a href="../../reference/configuration.md#variables"><code>variables</code> key</a>.</p>
+<p>Global variables are defined in the project configuration file <a href="../../configurations-old/configuration.md#variables"><code>variables</code> key</a>.</p>
 <p>Global variable values may be any of the following data types or lists or dictionaries containing these types: <code>int</code>, <code>float</code>, <code>bool</code>, <code>str</code>.</p>
 <p>Access global variable values in a model definition using the <code>@&lt;VAR_NAME&gt;</code> macro or the <code>@VAR()</code> macro function. The latter function requires the name of the variable <em>in single quotes</em> as the first argument and an optional default value as the second argument. The default value is a safety mechanism used if the variable name is not found in the project configuration file.</p>
 <p>For example, this Vulcan configuration key defines six variables of different data types:</p>
@@ -1389,7 +1389,7 @@
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="k">FROM</span><span class="w"> </span><span class="k">table</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">some_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">@</span><span class="n">VAR</span><span class="p">(</span><span class="s1">'missing_var'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>A similar API is available for <a href="#accessing-global-variable-values">Python macro functions</a> via the <code>evaluator.var</code> method and <a href="../models/python_models.md#user-defined-variables">Python models</a> via the <code>context.var</code> method.</p>
+<p>A similar API is available for <a href="#accessing-global-variable-values">Python macro functions</a> via the <code>evaluator.var</code> method and <a href="../../../components/model/types/python_models/#user-defined-variables">Python models</a> via the <code>context.var</code> method.</p>
 <h3 id="gateway-variables">Gateway variables<a class="headerlink" href="#gateway-variables" title="Link to this section">¶</a></h3>
 <p>Like global variables, gateway variables are defined in the project configuration file. However, they are specified in a specific gateway's <code>variables</code> key:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">YAML</label><label for="__tabbed_2_2">Python</label></div>
@@ -1438,7 +1438,7 @@
 <p>Gateway-specific variable values take precedence over variables with the same name specified in the root <code>variables</code> key.</p>
 <h3 id="blueprint-variables">Blueprint variables<a class="headerlink" href="#blueprint-variables" title="Link to this section">¶</a></h3>
 <p>Blueprint macro variables are defined in a model. Blueprint variable values take precedence over <a href="#global-variables">global</a> or <a href="#gateway-variables">gateway-specific</a> variables with the same name.</p>
-<p>Blueprint variables are defined as a property of the <code>MODEL</code> statement, and serve as a mechanism for <a href="../models/sql_models.md">creating model templates</a>:</p>
+<p>Blueprint variables are defined as a property of the <code>MODEL</code> statement, and serve as a mechanism for <a href="../../../components/model/types/sql_models/">creating model templates</a>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
@@ -1512,7 +1512,7 @@
 <li>All <code>@DEF</code> uses must come after the <code>MODEL</code> statement and before the SQL query</li>
 <li>Each <code>@DEF</code> use must end with a semi-colon <code>;</code></li>
 </ol>
-<p>For example, consider the following model <code>vulcan_example.full_model</code> from the <a href="../../getting_started/docker.md">Vulcan quickstart guide</a>:</p>
+<p>For example, consider the following model <code>vulcan_example.full_model</code> from the <a href="guides/get-started/docker.md">Vulcan quickstart guide</a>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
@@ -1873,7 +1873,7 @@
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-36-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1"></a><span class="o">@</span><span class="k">IF</span><span class="p">([</span><span class="n">logical</span><span class="w"> </span><span class="n">condition</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="k">statement</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">execute</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">TRUE</span><span class="p">]);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>The <code>@IF</code> statement itself must end with a semi-colon, but the inner statement argument must not.</p>
-<p>This example conditionally executes a pre/post-statement depending on the model's <a href="../macro_variables/#predefined-variables">runtime stage</a>, accessed via the pre-defined macro variable <code>@runtime_stage</code>. The <code>@IF</code> post-statement will only be executed at model evaluation time:</p>
+<p>This example conditionally executes a pre/post-statement depending on the model's <a href="../../../components/advanced-features/macros/variables/#predefined-variables">runtime stage</a>, accessed via the pre-defined macro variable <code>@runtime_stage</code>. The <code>@IF</code> post-statement will only be executed at model evaluation time:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-37-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-37-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-37-3"> 3</a></span>
@@ -2413,7 +2413,7 @@ would be rendered as:<p></p>
 <li>Providing explicit control over table locations on a per-model basis for engines that decouple storage and compute (such as Athena, Trino, Spark etc)</li>
 <li>Generating references to engine-specific metadata tables that are derived from the physical table name, such as the <a href="https://trino.io/docs/current/connector/iceberg.html#metadata-tables"><code>&lt;table&gt;$properties</code></a> metadata table in Trino.</li>
 </ul>
-<p>Under the hood, it uses the <code>@this_model</code> variable so it can only be used during the <code>creating</code> and <code>evaluation</code> <a href="../macro_variables/#runtime-variables">runtime stages</a>. Attempting to use it at the <code>loading</code> runtime stage will result in a no-op.</p>
+<p>Under the hood, it uses the <code>@this_model</code> variable so it can only be used during the <code>creating</code> and <code>evaluation</code> <a href="../../../components/advanced-features/macros/variables/#runtime-variables">runtime stages</a>. Attempting to use it at the <code>loading</code> runtime stage will result in a no-op.</p>
 <p>The <code>@resolve_template</code> macro supports the following arguments:</p>
 <ul>
 <li><code>template</code> - The string template to render into an AST node</li>
@@ -2731,7 +2731,7 @@ would be rendered as:<p></p>
 <p>User-defined macro functions allow the same macro code to be used in multiple models.</p>
 <p>Vulcan supports user-defined macro functions written in two languages - SQL and Python:</p>
 <ul>
-<li>SQL macro functions must use the <a href="../jinja_macros/#user-defined-macro-functions">Jinja templating system</a>.</li>
+<li>SQL macro functions must use the <a href="../../../components/advanced-features/macros/jinja/#user-defined-macro-functions">Jinja templating system</a>.</li>
 <li>Python macro functions use the SQLGlot library to allow more complex operations than macro variables and operators provide alone.</li>
 </ul>
 <h3 id="python-macro-functions">Python macro functions<a class="headerlink" href="#python-macro-functions" title="Link to this section">¶</a></h3>
@@ -2930,7 +2930,7 @@ would be rendered as:<p></p>
 <p>Note that in the call <code>@make_indicators(vehicle, [truck, bus])</code> none of the three values is quoted.</p>
 <p>Because they are unquoted, SQLGlot will parse them all as <code>Column</code> expressions. In the places we used single quotes when building the string (<code>'{value}'</code>), they will be single-quoted in the output. In the places we did not quote them (<code>{string_column} =</code> and <code>{string_column}_{value}</code>), they will not.</p>
 <h4 id="accessing-predefined-and-local-variable-values">Accessing predefined and local variable values<a class="headerlink" href="#accessing-predefined-and-local-variable-values" title="Link to this section">¶</a></h4>
-<p><a href="../macro_variables/#predefined-variables">Pre-defined variables</a> and <a href="#local-variables">user-defined local variables</a> can be accessed within the macro's body via the <code>evaluator.locals</code> attribute.</p>
+<p><a href="../../../components/advanced-features/macros/variables/#predefined-variables">Pre-defined variables</a> and <a href="#local-variables">user-defined local variables</a> can be accessed within the macro's body via the <code>evaluator.locals</code> attribute.</p>
 <p>The first argument to every macro function, the macro evaluation context <code>evaluator</code>, contains macro variable values in its <code>locals</code> attribute. <code>evaluator.locals</code> is a dictionary whose key:value pairs are macro variables names and the associated values.</p>
 <p>For example, a function could access the predefined <code>execution_epoch</code> variable containing the epoch timestamp of when the execution started.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-110-1">1</a></span>
@@ -3095,7 +3095,7 @@ would be rendered as:<p></p>
 </span><span id="__span-117-11"><a id="__codelineno-117-11" name="__codelineno-117-11"></a>    <span class="o">...</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h4 id="accessing-model-schemas">Accessing model schemas<a class="headerlink" href="#accessing-model-schemas" title="Link to this section">¶</a></h4>
-<p>Model schemas can be accessed within a Python macro function through its evaluation context's <code>column_to_types()</code> method, if the column types can be statically determined. For instance, a schema of an <a href="../models/external_models.md">external model</a> can be accessed only after the <code>vulcan create_external_models</code> command has been executed.</p>
+<p>Model schemas can be accessed within a Python macro function through its evaluation context's <code>column_to_types()</code> method, if the column types can be statically determined. For instance, a schema of an <a href="../../../components/model/types/external_models/">external model</a> can be accessed only after the <code>vulcan create_external_models</code> command has been executed.</p>
 <p>This macro function renames the columns of an upstream model by adding a prefix to them:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-118-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-118-2"> 2</a></span>
@@ -3388,7 +3388,7 @@ would be rendered as:<p></p>
 <h4 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Link to this section">¶</a></h4>
 <p>Typed macros in Vulcan not only enhance the development experience by making macros more readable and easier to use but also contribute to more robust and maintainable code. By leveraging Python's type hinting system, developers can create powerful and intuitive macros for their SQL queries, further bridging the gap between SQL and Python.</p>
 <h2 id="mixing-macro-systems">Mixing macro systems<a class="headerlink" href="#mixing-macro-systems" title="Link to this section">¶</a></h2>
-<p>Vulcan supports both Vulcan and <a href="../jinja_macros/">Jinja</a> macro systems. We strongly recommend using only one system in a model - if both are present, they may fail or behave in unintuitive ways.</p>
+<p>Vulcan supports both Vulcan and <a href="../../../components/advanced-features/macros/jinja/">Jinja</a> macro systems. We strongly recommend using only one system in a model - if both are present, they may fail or behave in unintuitive ways.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

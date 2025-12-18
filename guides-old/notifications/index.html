@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1013,7 +1013,7 @@
 <h2 id="notification-targets">Notification targets<a class="headerlink" href="#notification-targets" title="Link to this section">¶</a></h2>
 <p>Notifications are configured with <code>notification targets</code>. Targets are specified in a project's <a href="https://vulcan.readthedocs.io/en/stable/reference/configuration/">configuration</a> file (<code>config.yml</code> or <code>config.py</code>), and multiple targets can be specified for a project.</p>
 <p>A project may specify both global and user-specific notifications. Each target's notifications will be sent for all instances of each <a href="#vulcan-event-types">event type</a> (e.g., notifications for <code>run</code> will be sent for <em>all</em> of the project's environments), with exceptions for audit failures and when an <a href="#notifications-during-development">override is configured for development</a>.</p>
-<p><a href="../concepts/audits.md">Audit</a> failure notifications can be sent for specific models if five conditions are met:</p>
+<p><a href="components/audits/audits.md">Audit</a> failure notifications can be sent for specific models if five conditions are met:</p>
 <ol>
 <li>A model's <code>owner</code> field is populated</li>
 <li>The model executes one or more audits</li>
@@ -1198,7 +1198,7 @@
 </div>
 <h2 id="vulcan-event-types">Vulcan Event Types<a class="headerlink" href="#vulcan-event-types" title="Link to this section">¶</a></h2>
 <p>Vulcan notifications are triggered by events. The events that should trigger a notification are specified in the notification target's <code>notify_on</code> field.</p>
-<p>Notifications are supported for <a href="../concepts/plans.md"><code>plan</code> application</a> start/end/failure, <a href="../reference/cli.md#run"><code>run</code></a> start/end/failure, and <a href="../concepts/audits.md"><code>audit</code></a> failures.</p>
+<p>Notifications are supported for <a href="guides/plan.md"><code>plan</code> application</a> start/end/failure, <a href="getting_started/cli.md#run"><code>run</code></a> start/end/failure, and <a href="components/audits/audits.md"><code>audit</code></a> failures.</p>
 <p>For <code>plan</code> and <code>run</code> start/end, the target environment name is included in the notification message. For failures, the Python exception or error text is included in the notification message.</p>
 <p>This table lists each event, its associated <code>notify_on</code> value, and its notification message:</p>
 <table>

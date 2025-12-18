@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -518,7 +518,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -530,7 +530,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1431,10 +1431,10 @@
 <article class="md-content__inner md-typeset">
 <h1 id="model-selection">Model Selection<a class="headerlink" href="#model-selection" title="Link to this section">¶</a></h1>
 <p>This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is useful when you only want to test or apply changes to a subset of your models.</p>
-<p><strong>Note:</strong> The selector syntax described below is also used for the Vulcan <code>plan</code> <a href="../concepts/plans.md#destructive-changes"><code>--allow-destructive-model</code> and <code>--allow-additive-model</code> selectors</a>.</p>
+<p><strong>Note:</strong> The selector syntax described below is also used for the Vulcan <code>plan</code> <a href="guides/plan.md#destructive-changes"><code>--allow-destructive-model</code> and <code>--allow-additive-model</code> selectors</a>.</p>
 <hr/>
 <h2 id="background">Background<a class="headerlink" href="#background" title="Link to this section">¶</a></h2>
-<p>A Vulcan <a href="../concepts/plans.md">plan</a> automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.</p>
+<p>A Vulcan <a href="guides/plan.md">plan</a> automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.</p>
 <p>In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything.</p>
 <p><strong>Key Concept:</strong>
 - <strong>Directly Modified</strong>: Models you changed in your code
@@ -1880,10 +1880,10 @@
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../concepts/plans.md">Plans</a> for understanding plan behavior</li>
-<li>Read the <a href="../plan/">Plan Guide</a> for applying changes</li>
-<li>Check <a href="../reference/model_configuration.md">Model Configuration</a> for model properties</li>
-<li>Explore <a href="../../examples/overview/">Orders360 Example</a> for complete project reference</li>
+<li>Learn about <a href="guides/plan.md">Plans</a> for understanding plan behavior</li>
+<li>Read the <a href="guides/plan.md">Plan Guide</a> for applying changes</li>
+<li>Check <a href="../configurations-old/configuration.md">Model Configuration</a> for model properties</li>
+<li>Explore <a href="examples/overview.md">Orders360 Example</a> for complete project reference</li>
 </ul>
 </article>
 </div>

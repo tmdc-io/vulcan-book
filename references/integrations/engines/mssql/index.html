@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -986,10 +986,10 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>pip install "vulcan[mssql-odbc]"
 </span></code></pre></div>
 <h2 id="incremental-by-unique-key-merge">Incremental by unique key <code>MERGE</code><a class="headerlink" href="#incremental-by-unique-key-merge" title="Link to this section">¶</a></h2>
-<p>Vulcan executes a <code>MERGE</code> statement to insert rows for <a href="../../concepts/models/model_kinds.md#incremental_by_unique_key">incremental by unique key</a> model kinds.</p>
+<p>Vulcan executes a <code>MERGE</code> statement to insert rows for <a href="configurations-old/components/model/model_kinds.md#incremental_by_unique_key">incremental by unique key</a> model kinds.</p>
 <p>By default, the <code>MERGE</code> statement updates all non-key columns of an existing row when a new row with the same key values is inserted. If all column values match between the two rows, those updates are unnecessary.</p>
 <p>Vulcan provides an optional performance optimization that skips unnecessary updates by comparing column values with the <code>EXISTS</code> and <code>EXCEPT</code> operators.</p>
-<p>Enable the optimization by setting the <code>mssql_merge_exists</code> key to <code>true</code> in the <a href="../../concepts/models/overview.md#physical_properties"><code>physical_properties</code></a> section of the <code>MODEL</code> statement.</p>
+<p>Enable the optimization by setting the <code>mssql_merge_exists</code> key to <code>true</code> in the <a href="configurations-old/components/model/overview.md#physical_properties"><code>physical_properties</code></a> section of the <code>MODEL</code> statement.</p>
 <p>For example:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>

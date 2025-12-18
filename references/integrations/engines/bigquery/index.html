@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1069,7 +1069,7 @@
 <h1 id="bigquery">BigQuery<a class="headerlink" href="#bigquery" title="Link to this section">¶</a></h1>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this section">¶</a></h2>
 <p>This guide provides step-by-step instructions on how to connect Vulcan to the BigQuery SQL engine.</p>
-<p>It will walk you through the steps of installing Vulcan and BigQuery connection libraries locally, configuring the connection in Vulcan, and running the <a href="../../getting_started/docker.md">quickstart project</a>.</p>
+<p>It will walk you through the steps of installing Vulcan and BigQuery connection libraries locally, configuring the connection in Vulcan, and running the <a href="configurations-old/guides/get-started/docker.md">quickstart project</a>.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
 <p>This guide assumes the following about the BigQuery project being used with Vulcan:</p>
 <ul>
@@ -1079,7 +1079,7 @@
 <li>Vulcan can authenticate using an account with permissions to execute commands against the project</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Link to this section">¶</a></h2>
-<p>Follow the <a href="../../getting_started/docker.md">quickstart guide</a> to set up Vulcan, then install the necessary BigQuery libraries.</p>
+<p>Follow the <a href="configurations-old/guides/get-started/docker.md">quickstart guide</a> to set up Vulcan, then install the necessary BigQuery libraries.</p>
 <p>Instead of installing just Vulcan core, we will also include the BigQuery engine libraries:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>&gt;<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"vulcan[bigquery]"</span>
 </span></code></pre></div>
@@ -1120,9 +1120,9 @@
 <p>This creates a gateway named <code>bigquery</code> and makes it your project's default gateway.</p>
 <p>It uses the <a href="#authentication-methods"><code>oauth</code> authentication method</a>, which does not specify a username or other information directly in the connection configuration. Other authentication methods are <a href="#authentication-methods">described below</a>.</p>
 <p>In BigQuery, navigate to the dashboard and select the BigQuery project your Vulcan project will use. From the Google Cloud dashboard, use the arrow to open the pop-up menu:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="bigquery-1.png"><img alt="BigQuery Dashboard" src="bigquery-1.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-1.png"><img alt="BigQuery Dashboard" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-1.png"/></a></p>
 <p>Now we can identify the project ID needed in the <code>config.yaml</code> gateway specification above. Select the project that you want to work with, the project ID that you need to add to your yaml file is the ID label from the pop-up menu.</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="bigquery-2.png"><img alt="BigQuery Dashboard: selecting your project" src="bigquery-2.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-2.png"><img alt="BigQuery Dashboard: selecting your project" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-2.png"/></a></p>
 <p>For this guide, the Docs-Demo is the one we will use, thus the project ID for this example is <code>healthy-life-440919-s0</code>.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Link to this section">¶</a></h2>
 <h3 id="test-the-connection">Test the connection<a class="headerlink" href="#test-the-connection" title="Link to this section">¶</a></h3>
@@ -1130,12 +1130,12 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>&gt;<span class="w"> </span>vulcan<span class="w"> </span>info
 </span></code></pre></div>
 <p>The output will look something like this:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="bigquery-3.png"><img alt="Terminal Output" src="bigquery-3.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-3.png"><img alt="Terminal Output" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-3.png"/></a></p>
 <ul>
 <li>
 <p><strong>Set quota project (optional)</strong></p>
 <p>You may see warnings like this when you run <code>vulcan info</code>:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="bigquery-4.png"><img alt="Terminal Output with warnings" src="bigquery-4.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-4.png"><img alt="Terminal Output with warnings" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-4.png"/></a></p>
 <p>You can avoid these warnings about quota projects by running:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>&gt;<span class="w"> </span>gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<span class="w"> </span>set-quota-project<span class="w"> </span>&lt;your_project_id&gt;
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>&gt;<span class="w"> </span>gcloud<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>project<span class="w"> </span>&lt;your_project_id&gt;
@@ -1149,9 +1149,9 @@
 <h3 id="view-results-in-bigquery-console">View results in BigQuery Console<a class="headerlink" href="#view-results-in-bigquery-console" title="Link to this section">¶</a></h3>
 <p>Let's confirm that our project models are as expected.</p>
 <p>First, navigate to the BigQuery Studio Console:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="bigquery-5.png"><img alt="Steps to the Studio" src="bigquery-5.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-5.png"><img alt="Steps to the Studio" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-5.png"/></a></p>
 <p>Then use the left sidebar to find your project and the newly created models:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="bigquery-6.png"><img alt="New Models" src="bigquery-6.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-6.png"><img alt="New Models" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/bigquery/bigquery-6.png"/></a></p>
 <p>We have confirmed that our Vulcan project is running properly in BigQuery!</p>
 <h2 id="localbuilt-in-scheduler">Local/Built-in Scheduler<a class="headerlink" href="#localbuilt-in-scheduler" title="Link to this section">¶</a></h2>
 <p><strong>Engine Adapter Type</strong>: <code>bigquery</code></p>

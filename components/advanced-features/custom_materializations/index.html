@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -518,7 +518,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -530,7 +530,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -750,19 +750,19 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#background">
+<a class="md-nav__link" href="#what-is-a-materialization">
 <span class="md-ellipsis">
       
-        Background
+        What is a materialization?
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#overview">
+<a class="md-nav__link" href="#how-custom-materializations-work">
 <span class="md-ellipsis">
       
-        Overview
+        How custom materializations work
       
     </span>
 </a>
@@ -1082,19 +1082,19 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#background">
+<a class="md-nav__link" href="#what-is-a-materialization">
 <span class="md-ellipsis">
       
-        Background
+        What is a materialization?
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#overview">
+<a class="md-nav__link" href="#how-custom-materializations-work">
 <span class="md-ellipsis">
       
-        Overview
+        How custom materializations work
       
     </span>
 </a>
@@ -1265,39 +1265,38 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="custom-materializations">Custom materializations<a class="headerlink" href="#custom-materializations" title="Link to this section">¶</a></h1>
-<p>Vulcan supports a variety of <a href="../concepts/models/model_kinds.md">model kinds</a> that reflect the most common approaches to evaluating and materializing data transformations.</p>
-<p>Sometimes, however, a specific use case cannot be addressed with an existing model kind. For scenarios like this, Vulcan allows users to create their own materialization implementation using Python.</p>
+<p>Vulcan comes with a variety of <a href="../../model/model_kinds.md">model kinds</a> that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?</p>
+<p>Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in—they let you write your own Python code to control exactly how your models get materialized.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advanced Feature</p>
-<p>This is an advanced feature and should only be considered if all other approaches have been exhausted. If you're at this decision point, we recommend you reach out to our team in the <a href="https://tobikodata.com/community.html">community slack</a> before investing time building a custom materialization. If an existing model kind can solve your problem, we want to clarify the Vulcan documentation; if an existing kind can <em>almost</em> solve your problem, we want to consider modifying the kind so all Vulcan users can benefit.</p>
+<p>Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If you're considering this path, we'd love to hear from you in our <a href="https://tobikodata.com/community.html">community slack</a>. If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.</p>
 </div>
-<h2 id="background">Background<a class="headerlink" href="#background" title="Link to this section">¶</a></h2>
-<p>A Vulcan model kind consists of methods for executing and managing the outputs of data transformations - collectively, these are the kind's "materialization."</p>
-<p>Some materializations are relatively simple. For example, the SQL <a href="../concepts/models/model_kinds.md#full">FULL model kind</a> completely replaces existing data each time it is run, so its materialization boils down to executing <code>CREATE OR REPLACE [table name] AS [your model query]</code>.</p>
-<p>The materializations for other kinds, such as <a href="../concepts/models/model_kinds.md#incremental_by_time_range">INCREMENTAL BY TIME RANGE</a>, require additional logic to process the correct time intervals and replace/insert their results into an existing table.</p>
-<p>A model kind's materialization may differ based on the SQL engine executing the model. For example, PostgreSQL does not support <code>CREATE OR REPLACE TABLE</code>, so <code>FULL</code> model kinds instead <code>DROP</code> the existing table then <code>CREATE</code> a new table. Vulcan already contains the logic needed to materialize existing model kinds on all supported engines.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h2>
-<p>Custom materializations are analogous to new model kinds. Users <a href="#using-a-custom-materialization">specify them by name</a> in a model definition's <code>MODEL</code> block, and they may accept user-specified arguments.</p>
-<p>A custom materialization must:</p>
+<h2 id="what-is-a-materialization">What is a materialization?<a class="headerlink" href="#what-is-a-materialization" title="Link to this section">¶</a></h2>
+<p>Think of a materialization as the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to actually get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.</p>
+<p>Some materializations are straightforward. For example, a <code>FULL</code> model kind completely replaces the table each time it runs—so its materialization is essentially just <code>CREATE OR REPLACE TABLE [name] AS [your query]</code>. Simple!</p>
+<p>Other materializations are more complex. An <code>INCREMENTAL_BY_TIME_RANGE</code> model needs to figure out which time intervals to process, query only that data, and then merge it into the existing table. That requires more logic.</p>
+<p>The materialization logic can also vary by SQL engine. PostgreSQL doesn't support <code>CREATE OR REPLACE TABLE</code>, so <code>FULL</code> models on Postgres use <code>DROP</code> then <code>CREATE</code> instead. Vulcan handles all these engine-specific details for built-in model kinds, but with custom materializations, you're in control.</p>
+<h2 id="how-custom-materializations-work">How custom materializations work<a class="headerlink" href="#how-custom-materializations-work" title="Link to this section">¶</a></h2>
+<p>Custom materializations are like creating your own model kind. You define them in Python, give them a name, and then reference that name in your model's <code>MODEL</code> block. They can even accept configuration arguments that you pass in from your model definition.</p>
+<p>Here's what every custom materialization needs:</p>
 <ul>
-<li>Be written in Python code</li>
-<li>Be a Python class that inherits the Vulcan <code>CustomMaterialization</code> base class</li>
-<li>Use or override the <code>insert</code> method from the Vulcan <a href="https://github.com/TobikoData/vulcan/blob/034476e7f64d261860fd630c3ac56d8a9c9f3e3a/vulcan/core/snapshot/evaluator.py#L1146"><code>MaterializableStrategy</code></a> class/subclasses</li>
-<li>Be loaded or imported by Vulcan at runtime</li>
+<li><strong>Python code</strong>: Written as a Python class</li>
+<li><strong>Base class</strong>: Must inherit from Vulcan's <code>CustomMaterialization</code> class</li>
+<li><strong>Insert method</strong>: At minimum, you need to implement the <code>insert</code> method</li>
+<li><strong>Auto-loading</strong>: Vulcan automatically discovers materializations in your <code>materializations/</code> directory</li>
 </ul>
-<p>A custom materialization may:</p>
+<p>You can also:</p>
 <ul>
-<li>Use or override methods from the Vulcan <a href="https://github.com/TobikoData/vulcan/blob/034476e7f64d261860fd630c3ac56d8a9c9f3e3a/vulcan/core/snapshot/evaluator.py#L1146"><code>MaterializableStrategy</code></a> class/subclasses</li>
-<li>Use or override methods from the Vulcan <a href="https://github.com/TobikoData/vulcan/blob/034476e7f64d261860fd630c3ac56d8a9c9f3e3a/vulcan/core/engine_adapter/base.py#L67"><code>EngineAdapter</code></a> class/subclasses</li>
-<li>Execute arbitrary SQL code and fetch results with the engine adapter <code>execute</code> and related methods</li>
+<li>Override other methods from <code>MaterializableStrategy</code> or <code>EngineAdapter</code> classes</li>
+<li>Execute arbitrary SQL using the engine adapter</li>
+<li>Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a <a href="../../model/types/python_models.md">Python model</a> instead)</li>
 </ul>
-<p>A custom materialization may perform arbitrary Python processing with Pandas or other libraries, but in most cases that logic should reside in a <a href="../concepts/models/python_models.md">Python model</a> instead of the materialization.</p>
-<p>A Vulcan project will automatically load any custom materializations present in its <code>materializations/</code> directory. Alternatively, the materialization may be bundled into a <a href="#python-packaging">Python package</a> and installed with standard methods.</p>
+<p>Vulcan will automatically load any Python files in your project's <code>materializations/</code> directory. Or, if you prefer, you can package your materialization as a <a href="#python-packaging">Python package</a> and install it like any other dependency.</p>
 <h2 id="creating-a-custom-materialization">Creating a custom materialization<a class="headerlink" href="#creating-a-custom-materialization" title="Link to this section">¶</a></h2>
-<p>Create a new custom materialization by adding a <code>.py</code> file containing the implementation to the <code>materializations/</code> folder in the project directory. Vulcan will automatically import all Python modules in this folder at project load time and register the custom materializations.</p>
-<p>A custom materialization must be a class that inherits the <code>CustomMaterialization</code> base class and provides an implementation for the <code>insert</code> method.</p>
+<p>To create a custom materialization, just add a <code>.py</code> file to your project's <code>materializations/</code> folder. Vulcan will automatically import all Python modules in this folder when your project loads, so your materializations will be ready to use.</p>
+<p>Your materialization class needs to inherit from <code>CustomMaterialization</code> and implement at least the <code>insert</code> method. Let's look at some examples to see how this works.</p>
 <h3 id="simple-example">Simple example<a class="headerlink" href="#simple-example" title="Link to this section">¶</a></h3>
-<p>Here's a complete example of a custom materialization that demonstrates custom insert logic:</p>
+<p>Here's a complete example that shows custom insert logic with some helpful logging:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
@@ -1390,34 +1389,34 @@
 </span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a>
 </span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Custom materialization completed for </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Let's break down this materialization:</p>
+<p>Let's break down what's happening here:</p>
 <table>
 <thead>
 <tr>
 <th>Component</th>
-<th>Description</th>
+<th>What It Does</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>NAME</code></td>
-<td>The name used to reference this materialization in model definitions (<code>simple_custom</code>)</td>
+<td>The identifier you'll use in your model definition (like <code>simple_custom</code>)</td>
 </tr>
 <tr>
 <td><code>table_name</code></td>
-<td>The target table name where data will be inserted</td>
+<td>The target table where your data will be inserted</td>
 </tr>
 <tr>
 <td><code>query_or_df</code></td>
-<td>Either a SQL query string or a DataFrame (Pandas, PySpark, Snowpark)</td>
+<td>Either a SQL query string or a DataFrame (works with Pandas, PySpark, Snowpark)</td>
 </tr>
 <tr>
 <td><code>model</code></td>
-<td>The model definition object with access to all model properties</td>
+<td>The full model definition object—gives you access to all model properties</td>
 </tr>
 <tr>
 <td><code>is_first_insert</code></td>
-<td><code>True</code> if this is the first insert for the current model version</td>
+<td><code>True</code> if this is the first time inserting data for this model version</td>
 </tr>
 <tr>
 <td><code>render_kwargs</code></td>
@@ -1425,12 +1424,12 @@
 </tr>
 <tr>
 <td><code>self.adapter</code></td>
-<td>The engine adapter for executing SQL and interacting with the database</td>
+<td>The engine adapter—your interface to execute SQL and interact with the database</td>
 </tr>
 </tbody>
 </table>
 <h3 id="minimal-example">Minimal example<a class="headerlink" href="#minimal-example" title="Link to this section">¶</a></h3>
-<p>For a simpler full-refresh materialization:</p>
+<p>If you just want a simple full-refresh materialization, here's the minimal version:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
@@ -1465,8 +1464,9 @@
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span><span class="o">.</span><span class="n">replace_query</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">query_or_df</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>That's it! This will completely replace the table contents each time the model runs, just like a <code>FULL</code> model kind.</p>
 <h3 id="controlling-table-creation-and-deletion">Controlling table creation and deletion<a class="headerlink" href="#controlling-table-creation-and-deletion" title="Link to this section">¶</a></h3>
-<p>You can control how data objects (tables, views, etc.) are created and deleted by overriding the <code>create</code> and <code>delete</code> methods:</p>
+<p>You can also customize how tables and views are created and deleted by overriding the <code>create</code> and <code>delete</code> methods:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
@@ -1527,8 +1527,9 @@
 </span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29"></a>        <span class="c1"># Custom table/view deletion logic</span>
 </span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span><span class="o">.</span><span class="n">drop_table</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>This gives you full control over the lifecycle of your data objects.</p>
 <h2 id="using-a-custom-materialization">Using a custom materialization<a class="headerlink" href="#using-a-custom-materialization" title="Link to this section">¶</a></h2>
-<p>Specify the model kind <code>CUSTOM</code> in a model definition to use a custom materialization. Set the <code>materialization</code> attribute to the <code>NAME</code> from your custom materialization:</p>
+<p>Once you've created your materialization, using it is straightforward. In your model definition, set the <code>kind</code> to <code>CUSTOM</code> and specify the <code>materialization</code> name (the <code>NAME</code> from your Python class):</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">SQL</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1666,7 +1667,7 @@
 </div>
 </div>
 <h3 id="passing-properties-to-the-materialization">Passing properties to the materialization<a class="headerlink" href="#passing-properties-to-the-materialization" title="Link to this section">¶</a></h3>
-<p>A custom materialization can accept configuration through <code>materialization_properties</code>:</p>
+<p>You can pass configuration to your materialization using <code>materialization_properties</code>. This is useful when you want to customize behavior per model:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
@@ -1687,7 +1688,7 @@
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Access these properties in your materialization via <code>model.custom_materialization_properties</code>:</p>
+<p>Then access these properties in your materialization code via <code>model.custom_materialization_properties</code>:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
@@ -1728,19 +1729,16 @@
 </span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19"></a>        <span class="c1"># Proceed with insert logic</span>
 </span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span><span class="o">.</span><span class="n">replace_query</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">query_or_df</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>This lets you create flexible materializations that can adapt to different use cases.</p>
 <h2 id="extending-customkind">Extending <code>CustomKind</code><a class="headerlink" href="#extending-customkind" title="Link to this section">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This is even lower level usage that contains extra complexity and relies on knowledge of Vulcan internals.
-If you don't need this level of complexity, stick with the method described above.</p>
+<p>This is advanced territory. You're working with Vulcan's internals here, so there's extra complexity involved. If the basic custom materialization approach works for you, stick with that. Only dive into this if you really need the extra control.</p>
 </div>
-<p>In many cases, the above usage of a custom materialization will suffice. However, you may want tighter integration with Vulcan's internals:</p>
-<ul>
-<li>Validate custom properties before any database connections are made</li>
-<li>Leverage existing functionality that relies on specific properties being present</li>
-</ul>
-<p>In this case, you can provide a subclass of <code>CustomKind</code> for Vulcan to use instead of <code>CustomKind</code> itself. During project load, Vulcan will instantiate your <em>subclass</em> instead of <code>CustomKind</code>.</p>
+<p>Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals—maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.</p>
+<p>In those cases, you can create a subclass of <code>CustomKind</code> that Vulcan will use instead of the default. When your project loads, Vulcan will detect your subclass and use it instead of the standard <code>CustomKind</code>.</p>
 <h3 id="creating-a-custom-kind">Creating a custom kind<a class="headerlink" href="#creating-a-custom-kind" title="Link to this section">¶</a></h3>
+<p>Here's how you'd create a custom kind that validates a <code>primary_key</code> property:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
@@ -1792,6 +1790,7 @@ If you don't need this level of complexity, stick with the method described abov
 </span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_primary_key</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="using-the-custom-kind-in-a-model">Using the custom kind in a model<a class="headerlink" href="#using-the-custom-kind-in-a-model" title="Link to this section">¶</a></h3>
+<p>Use it in your model like this:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
 <span class="normal"><a href="#__codelineno-8-2">2</a></span>
 <span class="normal"><a href="#__codelineno-8-3">3</a></span>
@@ -1811,7 +1810,7 @@ If you don't need this level of complexity, stick with the method described abov
 </span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="linking-to-your-materialization">Linking to your materialization<a class="headerlink" href="#linking-to-your-materialization" title="Link to this section">¶</a></h3>
-<p>Specify the custom kind as a generic type parameter on your materialization class:</p>
+<p>To connect your custom kind to your materialization, specify it as a generic type parameter:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
@@ -1848,20 +1847,20 @@ If you don't need this level of complexity, stick with the method described abov
 </span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17"></a>            <span class="n">unique_key</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">primary_key</span>
 </span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18"></a>        <span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>When Vulcan loads your custom materialization, it will inspect the Python type signature for generic parameters that are subclasses of <code>CustomKind</code>. If found, it will instantiate your subclass when building <code>model.kind</code> instead of using the default <code>CustomKind</code> class.</p>
-<p>Benefits of this approach:</p>
+<p>When Vulcan loads your materialization, it inspects the type signature for generic parameters that are subclasses of <code>CustomKind</code>. If it finds one, it uses your subclass when building <code>model.kind</code> instead of the default.</p>
+<p>Why would you want this? Two main benefits:</p>
 <ul>
-<li><strong>Early validation</strong>: Validation for <code>primary_key</code> happens at load time instead of evaluation time, so issues are caught before applying a plan</li>
-<li><strong>Type safety</strong>: <code>model.kind</code> resolves to your custom kind object, giving access to extra properties without additional validation</li>
+<li><strong>Early validation</strong>: Your <code>primary_key</code> validation happens at load time, not evaluation time. Issues get caught before you even create a plan.</li>
+<li><strong>Type safety</strong>: <code>model.kind</code> resolves to your custom kind object, so you get access to extra properties without additional validation.</li>
 </ul>
 <h2 id="sharing-custom-materializations">Sharing custom materializations<a class="headerlink" href="#sharing-custom-materializations" title="Link to this section">¶</a></h2>
+<p>Once you've built a custom materialization, you'll probably want to use it across multiple projects. You have a couple of options.</p>
 <h3 id="copying-files">Copying files<a class="headerlink" href="#copying-files" title="Link to this section">¶</a></h3>
-<p>The simplest (but least robust) way to use a custom materialization in multiple Vulcan projects is for each project to place a copy of the materialization's Python code in its <code>materializations/</code> directory.</p>
-<p>If you use this approach, we strongly recommend storing the materialization code in a version-controlled repository and creating a reliable method of notifying users when it is updated.</p>
+<p>The simplest approach is to copy the materialization code into each project's <code>materializations/</code> directory. It works, but it's not the most maintainable approach—you'll need to manually update each copy when you make changes.</p>
+<p>If you go this route, we strongly recommend keeping the materialization code in version control and setting up a reliable way to notify users when updates are available.</p>
 <h3 id="python-packaging">Python packaging<a class="headerlink" href="#python-packaging" title="Link to this section">¶</a></h3>
-<p>A more robust way to share custom materializations is to create and publish a Python package containing the implementation.</p>
-<p>This is required when a Vulcan project uses Airflow or other external schedulers where the scheduler cluster doesn't have the <code>materializations/</code> folder available.</p>
-<p>Package and expose custom materializations with the <a href="https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata">setuptools entrypoints</a> mechanism:</p>
+<p>A more robust approach is to package your materialization as a Python package. This is especially useful if you're using Airflow or other external schedulers where the scheduler cluster doesn't have direct access to your project's <code>materializations/</code> folder.</p>
+<p>Package your materialization using <a href="https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata">setuptools entrypoints</a>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">pyproject.toml</label><label for="__tabbed_2_2">setup.py</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1882,8 +1881,8 @@ If you don't need this level of complexity, stick with the method described abov
 </div>
 </div>
 </div>
-<p>Once the package is installed, Vulcan will automatically load custom materializations from the entrypoint list.</p>
-<p>Refer to the Vulcan Github <a href="https://github.com/TobikoData/vulcan/tree/main/examples/custom_materializations">custom_materializations</a> example for more details on Python packaging.</p>
+<p>Once the package is installed, Vulcan automatically discovers and loads your materialization from the entrypoint list. No manual configuration needed!</p>
+<p>For more details on Python packaging, check out the Vulcan GitHub <a href="https://github.com/TobikoData/vulcan/tree/main/examples/custom_materializations">custom_materializations</a> example.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

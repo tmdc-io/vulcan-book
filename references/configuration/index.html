@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1108,9 +1108,8 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="vulcan-configuration">Vulcan configuration<a class="headerlink" href="#vulcan-configuration" title="Link to this section">¶</a></h1>
-<p>This page lists Vulcan configuration options and their parameters. </p>
-<!-- Learn more about Vulcan configuration in the [configuration guide](../guides/configuration.md). -->
-<p>Configuration options for model definitions are listed in the <a href="../model_configuration/">model configuration reference page</a>.</p>
+<p>This page lists Vulcan configuration options and their parameters. Learn more about Vulcan configuration in the <a href="../../guides-old/configuration/">configuration guide</a>.</p>
+<p>Configuration options for model definitions are listed in the <a href="configurations-old/model_configuration.md">model configuration reference page</a>.</p>
 <h2 id="root-configurations">Root configurations<a class="headerlink" href="#root-configurations" title="Link to this section">¶</a></h2>
 <p>A Vulcan project configuration consists of root level parameters within which other parameters are defined.</p>
 <p>Two important root level parameters are <a href="#gateways"><code>gateways</code></a> and <a href="#gatewayconnection-defaults">gateway/connection defaults</a>, which have their own sections below.</p>
@@ -1154,7 +1153,7 @@
 </tbody>
 </table>
 <h3 id="database-physical-layer">Database (Physical Layer)<a class="headerlink" href="#database-physical-layer" title="Link to this section">¶</a></h3>
-<p>Configuration options for how Vulcan manages database objects in the <a href="../concepts/glossary.md#physical-layer">physical layer</a>.</p>
+<p>Configuration options for how Vulcan manages database objects in the <a href="concepts-old/glossary.md#physical-layer">physical layer</a>.</p>
 <table>
 <thead>
 <tr>
@@ -1179,20 +1178,20 @@
 </tr>
 <tr>
 <td><code>physical_schema_mapping</code></td>
-<td>A mapping from regular expressions to names of schemas in which physical tables for the corresponding models <a href="../guides/configuration.md#physical-table-schemas">will be placed</a>. (Default physical schema name: <code>vulcan__[model schema]</code>)</td>
+<td>A mapping from regular expressions to names of schemas in which physical tables for the corresponding models <a href="guides-old/configuration.md#physical-table-schemas">will be placed</a>. (Default physical schema name: <code>vulcan__[model schema]</code>)</td>
 <td style="text-align: center;">dict[string, string]</td>
 <td style="text-align: center;">N</td>
 </tr>
 <tr>
 <td><code>physical_table_naming_convention</code></td>
-<td>Sets which parts of the model name are included in the physical table names. Options are <code>schema_and_table</code>, <code>table_only</code> or <code>hash_md5</code> - <a href="../guides/configuration.md#physical-table-naming-convention">additional details</a>. (Default: <code>schema_and_table</code>)</td>
+<td>Sets which parts of the model name are included in the physical table names. Options are <code>schema_and_table</code>, <code>table_only</code> or <code>hash_md5</code> - <a href="guides-old/configuration.md#physical-table-naming-convention">additional details</a>. (Default: <code>schema_and_table</code>)</td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;">N</td>
 </tr>
 </tbody>
 </table>
 <h3 id="environments-virtual-layer">Environments (Virtual Layer)<a class="headerlink" href="#environments-virtual-layer" title="Link to this section">¶</a></h3>
-<p>Configuration options for how Vulcan manages environment creation and promotion in the <a href="../concepts/glossary.md#virtual-layer">virtual layer</a>.</p>
+<p>Configuration options for how Vulcan manages environment creation and promotion in the <a href="concepts-old/glossary.md#virtual-layer">virtual layer</a>.</p>
 <table>
 <thead>
 <tr>
@@ -1223,7 +1222,7 @@
 </tr>
 <tr>
 <td><code>environment_suffix_target</code></td>
-<td>Whether Vulcan views should append their environment name to the <code>schema</code>, <code>table</code> or <code>catalog</code> - <a href="../guides/configuration.md#disable-environment-specific-schemas">additional details</a>. (Default: <code>schema</code>)</td>
+<td>Whether Vulcan views should append their environment name to the <code>schema</code>, <code>table</code> or <code>catalog</code> - <a href="guides-old/configuration.md#disable-environment-specific-schemas">additional details</a>. (Default: <code>schema</code>)</td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;">N</td>
 </tr>
@@ -1272,17 +1271,17 @@
 </tr>
 <tr>
 <td><code>model_defaults</code></td>
-<td>Default <a href="../model_configuration/#model-defaults">properties</a> to set on each model. At a minimum, <code>dialect</code> must be set.</td>
+<td>Default <a href="configurations-old/model_configuration.md#model-defaults">properties</a> to set on each model. At a minimum, <code>dialect</code> must be set.</td>
 <td style="text-align: center;">dict[string, any]</td>
 <td style="text-align: center;">Y</td>
 </tr>
 </tbody>
 </table>
 <p>The <code>model_defaults</code> key is <strong>required</strong> and must contain a value for the <code>dialect</code> key.</p>
-<p>See all the keys allowed in <code>model_defaults</code> at the <a href="../model_configuration/#model-defaults">model configuration reference page</a>.</p>
+<p>See all the keys allowed in <code>model_defaults</code> at the <a href="configurations-old/model_configuration.md#model-defaults">model configuration reference page</a>.</p>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h3>
-<p>The <code>variables</code> key can be used to provide values for user-defined variables, accessed using the <a href="../concepts/macros/vulcan_macros.md#global-variables"><code>@VAR</code> macro function</a> in SQL model definitions, <a href="../concepts/models/python_models.md#user-defined-variables"><code>context.var</code> method</a> in Python model definitions, and <a href="../concepts/macros/vulcan_macros.md#accessing-global-variable-values"><code>evaluator.var</code> method</a> in Python macro functions.</p>
-<p>The <code>variables</code> key consists of a mapping of variable names to their values - see an example on the <a href="../concepts/macros/vulcan_macros.md#global-variables">Vulcan macros concepts page</a>. Note that keys are case insensitive.</p>
+<p>The <code>variables</code> key can be used to provide values for user-defined variables, accessed using the <a href="components/advanced-features/macros/built_in.md#global-variables"><code>@VAR</code> macro function</a> in SQL model definitions, <a href="components/model/types/python_models.md#user-defined-variables"><code>context.var</code> method</a> in Python model definitions, and <a href="components/advanced-features/macros/built_in.md#accessing-global-variable-values"><code>evaluator.var</code> method</a> in Python macro functions.</p>
+<p>The <code>variables</code> key consists of a mapping of variable names to their values - see an example on the <a href="components/advanced-features/macros/built_in.md#global-variables">Vulcan macros concepts page</a>. Note that keys are case insensitive.</p>
 <p>Global variable values may be any of the data types in the table below or lists or dictionaries containing those types.</p>
 <table>
 <thead>
@@ -1303,7 +1302,7 @@
 </tbody>
 </table>
 <h3 id="before_all-after_all">Before_all / after_all<a class="headerlink" href="#before_all-after_all" title="Link to this section">¶</a></h3>
-<p>The <code>before_all</code> and <code>after_all</code> keys can be used to specify lists of SQL statements and/or Vulcan macros that are executed at the start and end, respectively, of the <code>vulcan plan</code> and <code>vulcan run</code> commands. For more information and examples, see <a href="../guides/configuration.md#before_all-and-after_all-statements">the configuration guide</a>.</p>
+<p>The <code>before_all</code> and <code>after_all</code> keys can be used to specify lists of SQL statements and/or Vulcan macros that are executed at the start and end, respectively, of the <code>vulcan plan</code> and <code>vulcan run</code> commands. For more information and examples, see <a href="guides-old/configuration.md#before_all-and-after_all-statements">the configuration guide</a>.</p>
 <table>
 <thead>
 <tr>
@@ -1342,7 +1341,7 @@
 <tbody>
 <tr>
 <td><code>auto_categorize_changes</code></td>
-<td>Indicates whether Vulcan should attempt to automatically <a href="../concepts/plans.md#change-categories">categorize</a> model changes during plan creation per each model source type (<a href="../guides/configuration.md#auto-categorize-model-changes">additional details</a>)</td>
+<td>Indicates whether Vulcan should attempt to automatically <a href="guides/plan.md#change-categories">categorize</a> model changes during plan creation per each model source type (<a href="guides-old/configuration.md#auto-categorize-model-changes">additional details</a>)</td>
 <td style="text-align: center;">dict[string, string]</td>
 <td style="text-align: center;">N</td>
 </tr>
@@ -1360,13 +1359,13 @@
 </tr>
 <tr>
 <td><code>forward_only</code></td>
-<td>Indicates whether the plan should be <a href="../concepts/plans.md#forward-only-plans">forward-only</a> (Default: False)</td>
+<td>Indicates whether the plan should be <a href="guides/plan.md#forward-only-plans">forward-only</a> (Default: False)</td>
 <td style="text-align: center;">boolean</td>
 <td style="text-align: center;">N</td>
 </tr>
 <tr>
 <td><code>enable_preview</code></td>
-<td>Indicates whether to enable <a href="../concepts/plans.md#data-preview-for-forward-only-changes">data preview</a> for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)</td>
+<td>Indicates whether to enable <a href="guides/plan.md#data-preview-for-forward-only-changes">data preview</a> for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)</td>
 <td style="text-align: center;">Boolean</td>
 <td style="text-align: center;">N</td>
 </tr>
@@ -1534,7 +1533,7 @@
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Find additional information about gateways in the configuration guide <a href="../guides/configuration.md#gateways">gateways section</a>.</p>
+<p>Find additional information about gateways in the configuration guide <a href="guides-old/configuration.md#gateways">gateways section</a>.</p>
 <h3 id="gateway">Gateway<a class="headerlink" href="#gateway" title="Link to this section">¶</a></h3>
 <p>Configuration for each named gateway.</p>
 <h4 id="connections">Connections<a class="headerlink" href="#connections" title="Link to this section">¶</a></h4>
@@ -1643,18 +1642,18 @@
 <h4 id="engine-specific">Engine-specific<a class="headerlink" href="#engine-specific" title="Link to this section">¶</a></h4>
 <p>These pages describe the connection configuration options for each execution engine.</p>
 <ul>
-<li><a href="../integrations/engines/postgres/">Postgres</a></li>
-<li><a href="../integrations/engines/snowflake/">Snowflake</a></li>
+<li><a href="./configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">Postgres</a></li>
+<li><a href="./configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md">Snowflake</a></li>
 </ul>
 <h3 id="scheduler">Scheduler<a class="headerlink" href="#scheduler" title="Link to this section">¶</a></h3>
-<p>Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing <a href="../concepts/plans.md">plans</a>.</p>
+<p>Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing <a href="guides/plan.md">plans</a>.</p>
 <p>By default, the scheduler type is set to <code>builtin</code> and uses the gateway's connection to store metadata.</p>
-<p>Below is the list of configuration options specific to each corresponding scheduler type. Find additional details in the <a href="../guides/configuration.md#scheduler">configuration overview scheduler section</a>.</p>
+<p>Below is the list of configuration options specific to each corresponding scheduler type. Find additional details in the <a href="guides-old/configuration.md#scheduler">configuration overview scheduler section</a>.</p>
 <h4 id="builtin">Builtin<a class="headerlink" href="#builtin" title="Link to this section">¶</a></h4>
 <p><strong>Type:</strong> <code>builtin</code></p>
 <p>No configuration options are supported by this scheduler type.</p>
 <h2 id="gatewayconnection-defaults">Gateway/connection defaults<a class="headerlink" href="#gatewayconnection-defaults" title="Link to this section">¶</a></h2>
-<p>The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. Find additional details in the configuration overview page <a href="../guides/configuration.md#gatewayconnection-defaults">gateway/connection defaults section</a>.</p>
+<p>The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. Find additional details in the configuration overview page <a href="guides-old/configuration.md#gatewayconnection-defaults">gateway/connection defaults section</a>.</p>
 <h3 id="default-gateway">Default gateway<a class="headerlink" href="#default-gateway" title="Link to this section">¶</a></h3>
 <p>If a configuration contains multiple gateways, Vulcan will use the first one in the <code>gateways</code> dictionary by default. The <code>default_gateway</code> key is used to specify a different gateway name as the Vulcan default.</p>
 <table>

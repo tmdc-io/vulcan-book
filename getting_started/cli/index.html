@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1042,7 +1042,7 @@ or
 <p>Alternatively, you can create a temporary alias:
 </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker compose -f docker/docker-compose.vulcan.yml run --rm vulcan-shell vulcan"</span>
 </span></code></pre></div><p></p>
-<p>For a complete Docker setup guide, see the <a href="./docker.md">Docker Quickstart</a>.</p>
+<p>For a complete Docker setup guide, see the <a href="guides/get-started/docker.md">Docker Quickstart</a>.</p>
 </div>
 <details class="info">
 <summary>Learn more about the quickstart project structure</summary>
@@ -1074,7 +1074,7 @@ or
 </span></code></pre></div><p></p>
 <div class="admonition note">
 <p class="admonition-title">Docker Users</p>
-<p>If you're using Docker, make sure your Docker infrastructure is set up and running. See the <a href="./docker.md">Docker Quickstart</a> for setup instructions. Then access the Vulcan shell before running the commands below.</p>
+<p>If you're using Docker, make sure your Docker infrastructure is set up and running. See the <a href="guides/get-started/docker.md">Docker Quickstart</a> for setup instructions. Then access the Vulcan shell before running the commands below.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Python Library Users (Coming Soon)</p>
@@ -1089,7 +1089,7 @@ or
 </span></code></pre></div>
 <details class="info">
 <summary>Skip the questions</summary>
-<p>If you don't want to use the interactive scaffold generator, you can initialize your project with arguments to the <a href="../reference/cli.md#init"><code>vulcan init</code> command</a>.</p>
+<p>If you don't want to use the interactive scaffold generator, you can initialize your project with arguments to the <a href="getting_started/cli.md#init"><code>vulcan init</code> command</a>.</p>
 <p>The only required argument is <code>engine</code>, which specifies the SQL engine your project will use. Specify one of the engine <code>type</code>s from the supported execution engines.</p>
 <p>In this example, we specify the <code>duckdb</code> engine:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>vulcan<span class="w"> </span>init<span class="w"> </span>duckdb
@@ -1249,7 +1249,7 @@ or
 </span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ambiguousorinvalidcolumn</span>
 </span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidselectstarexpansion</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Learn more about Vulcan project configuration <a href="../reference/configuration.md">here</a>.</p>
+<p>Learn more about Vulcan project configuration <a href="../configurations-old/configuration.md">here</a>.</p>
 </details>
 <p>The scaffold generator creates multiple directories where Vulcan project files are stored and multiple files that constitute the example project (e.g., SQL models).</p>
 <details class="info">
@@ -1258,27 +1258,27 @@ or
 <p>The scaffold generator will create the following configuration file and directories:</p>
 <ul>
 <li>config.yaml<ul>
-<li>The file for project configuration. More info about configuration <a href="../guides/configuration.md">here</a>.</li>
+<li>The file for project configuration. More info about configuration <a href="guides-old/configuration.md">here</a>.</li>
 </ul>
 </li>
 <li>./models<ul>
-<li>SQL and Python models. More info about models <a href="../concepts/models/overview.md">here</a>.</li>
+<li>SQL and Python models. More info about models <a href="components/model/overview.md">here</a>.</li>
 </ul>
 </li>
 <li>./seeds<ul>
-<li>Seed files. More info about seeds <a href="../concepts/models/seed_models.md">here</a>.</li>
+<li>Seed files. More info about seeds <a href="components/model/model_kinds.md#seed">here</a>.</li>
 </ul>
 </li>
 <li>./audits<ul>
-<li>Shared audit files. More info about audits <a href="../concepts/audits.md">here</a>.</li>
+<li>Shared audit files. More info about audits <a href="components/audits/audits.md">here</a>.</li>
 </ul>
 </li>
 <li>./tests<ul>
-<li>Unit test files. More info about tests <a href="../concepts/tests.md">here</a>.</li>
+<li>Unit test files. More info about tests <a href="components/tests/tests.md">here</a>.</li>
 </ul>
 </li>
 <li>./macros<ul>
-<li>Macro files. More info about macros <a href="../concepts/macros/overview.md">here</a>.</li>
+<li>Macro files. More info about macros <a href="../../components/advanced-features/macros/overview/">here</a>.</li>
 </ul>
 </li>
 </ul>
@@ -1362,9 +1362,9 @@ or
 <details class="info">
 <summary>Learn more about Vulcan plans and environments</summary>
 <p>Vulcan's key actions are creating and applying <em>plans</em> to <em>environments</em>.</p>
-<p>A <a href="../concepts/environments.md">Vulcan environment</a> is an isolated namespace containing models and the data they generated.</p>
+<p>A <a href="concepts-old/environments.md">Vulcan environment</a> is an isolated namespace containing models and the data they generated.</p>
 <p>The most important environment is <code>prod</code> ("production"), which consists of the databases behind the applications your business uses to operate each day. Environments other than <code>prod</code> provide a place where you can test and preview changes to model code before they go live and affect business operations.</p>
-<p>A <a href="../concepts/plans.md">Vulcan plan</a> contains a comparison of one environment to another and the set of changes needed to bring them into alignment.</p>
+<p>A <a href="guides/plan.md">Vulcan plan</a> contains a comparison of one environment to another and the set of changes needed to bring them into alignment.</p>
 <p>For example, if a new SQL model was added, tested, and run in the <code>dev</code> environment, it would need to be added and run in the <code>prod</code> environment to bring them into alignment. Vulcan identifies all such changes and classifies them as either breaking or non-breaking.</p>
 <p>Breaking changes are those that invalidate data already existing in an environment. For example, if a <code>WHERE</code> clause was added to a model in the <code>dev</code> environment, existing data created by that model in the <code>prod</code> environment are now invalid because they may contain rows that would be filtered out by the new <code>WHERE</code> clause.</p>
 <p>Other changes, like adding a new column to a model in <code>dev</code>, are non-breaking because all the existing data in <code>prod</code> are still valid to use - only new data must be added to align the environments.</p>
@@ -1466,11 +1466,11 @@ or
 <p>Lines 13-16 list each model that will be executed by the plan, along with the date intervals or refresh types. For both <code>full_model</code> and <code>seed_model</code>, it shows <code>[full refresh]</code>, while for <code>incremental_model</code> it shows a specific date range <code>[2020-01-01 - 2025-06-22]</code>. The incremental model date range begins from 2020-01-01 because its definition specifies a model start date of <code>2020-01-01</code>.</p>
 <details class="info">
 <summary>Learn more about the project's models</summary>
-<p>A plan's actions are determined by the <a href="../concepts/models/model_kinds.md">kinds</a> of models the project uses. This example project uses three model kinds:</p>
+<p>A plan's actions are determined by the <a href="components/model/model_kinds.md">kinds</a> of models the project uses. This example project uses three model kinds:</p>
 <ol>
-<li><a href="../concepts/models/model_kinds.md#seed"><code>SEED</code> models</a> read data from CSV files stored in the Vulcan project directory.</li>
-<li><a href="../concepts/models/model_kinds.md#full"><code>FULL</code> models</a> fully refresh (rewrite) the data associated with the model every time the model is run.</li>
-<li><a href="../concepts/models/model_kinds.md#incremental_by_time_range"><code>INCREMENTAL_BY_TIME_RANGE</code> models</a> use a date/time data column to track which time intervals are affected by a plan and process only the affected intervals when a model is run.</li>
+<li><a href="components/model/model_kinds.md#seed"><code>SEED</code> models</a> read data from CSV files stored in the Vulcan project directory.</li>
+<li><a href="components/model/model_kinds.md#full"><code>FULL</code> models</a> fully refresh (rewrite) the data associated with the model every time the model is run.</li>
+<li><a href="components/model/model_kinds.md#incremental_by_time_range"><code>INCREMENTAL_BY_TIME_RANGE</code> models</a> use a date/time data column to track which time intervals are affected by a plan and process only the affected intervals when a model is run.</li>
 </ol>
 <p>We now briefly review each model in the project.</p>
 <p>The first model is a <code>SEED</code> model that imports <code>seed_data.csv</code>. This model consists of only a <code>MODEL</code> statement because <code>SEED</code> models do not query a database.</p>
@@ -1538,7 +1538,7 @@ or
 </span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17"></a><span class="k">WHERE</span>
 </span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18"></a><span class="w">  </span><span class="n">event_date</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="o">@</span><span class="n">start_date</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="o">@</span><span class="n">end_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>The final model in the project is a <code>FULL</code> model. In addition to properties used in the other models, its <code>MODEL</code> statement includes the <a href="../concepts/audits.md"><code>audits</code></a> property. The project includes a custom <code>assert_positive_order_ids</code> audit in the project <code>audits</code> directory; it verifies that all <code>item_id</code> values are positive numbers. It will be run every time the model is executed.</p>
+<p>The final model in the project is a <code>FULL</code> model. In addition to properties used in the other models, its <code>MODEL</code> statement includes the <a href="components/audits/audits.md"><code>audits</code></a> property. The project includes a custom <code>assert_positive_order_ids</code> audit in the project <code>audits</code> directory; it verifies that all <code>item_id</code> values are positive numbers. It will be run every time the model is executed.</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-21-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-21-3"> 3</a></span>
@@ -1863,9 +1863,9 @@ or
 <p>Congratulations, you've now conquered the basics of using Vulcan!</p>
 <p>From here, you can:</p>
 <ul>
-<li><a href="../reference/cli.md">Learn more about Vulcan CLI commands</a></li>
-<li><a href="../guides/connections.md">Set up a connection to a database or SQL engine</a></li>
-<li><a href="../concepts/overview.md">Learn more about Vulcan concepts</a></li>
+<li><a href="getting_started/cli.md">Learn more about Vulcan CLI commands</a></li>
+<li><a href="guides-old/connections.md">Set up a connection to a database or SQL engine</a></li>
+<li><a href="concepts-old/overview.md">Learn more about Vulcan concepts</a></li>
 <li><a href="https://tobikodata.com/slack">Join our Slack community</a></li>
 </ul>
 </article>

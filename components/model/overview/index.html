@@ -437,19 +437,19 @@
 <nav aria-label="DDL: The MODEL Block" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#ddl-syntax">
+<a class="md-nav__link" href="#basic-syntax">
 <span class="md-ellipsis">
       
-        DDL Syntax
+        Basic Syntax
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#common-ddl-properties">
+<a class="md-nav__link" href="#common-properties">
 <span class="md-ellipsis">
       
-        Common DDL Properties
+        Common Properties
       
     </span>
 </a>
@@ -465,19 +465,6 @@
       
     </span>
 </a>
-<nav aria-label="DML: The SELECT Query" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#dml-syntax">
-<span class="md-ellipsis">
-      
-        DML Syntax
-      
-    </span>
-</a>
-</li>
-</ul>
-</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#conventions">
@@ -521,28 +508,28 @@
 <nav aria-label="Comment Registration" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#model-comment">
+<a class="md-nav__link" href="#how-comments-get-registered">
 <span class="md-ellipsis">
       
-        Model Comment
+        How Comments Get Registered
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#comment-registration-by-object-type">
+<a class="md-nav__link" href="#what-gets-registered">
 <span class="md-ellipsis">
       
-        Comment Registration by Object Type
+        What Gets Registered
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#engine-comment-support">
+<a class="md-nav__link" href="#engine-support">
 <span class="md-ellipsis">
       
-        Engine Comment Support
+        Engine Support
       
     </span>
 </a>
@@ -602,7 +589,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -614,7 +601,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -626,7 +613,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -638,7 +625,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -680,7 +667,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -692,7 +679,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1092,19 +1079,19 @@
 <nav aria-label="DDL: The MODEL Block" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#ddl-syntax">
+<a class="md-nav__link" href="#basic-syntax">
 <span class="md-ellipsis">
       
-        DDL Syntax
+        Basic Syntax
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#common-ddl-properties">
+<a class="md-nav__link" href="#common-properties">
 <span class="md-ellipsis">
       
-        Common DDL Properties
+        Common Properties
       
     </span>
 </a>
@@ -1120,19 +1107,6 @@
       
     </span>
 </a>
-<nav aria-label="DML: The SELECT Query" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#dml-syntax">
-<span class="md-ellipsis">
-      
-        DML Syntax
-      
-    </span>
-</a>
-</li>
-</ul>
-</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#conventions">
@@ -1176,28 +1150,28 @@
 <nav aria-label="Comment Registration" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#model-comment">
+<a class="md-nav__link" href="#how-comments-get-registered">
 <span class="md-ellipsis">
       
-        Model Comment
+        How Comments Get Registered
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#comment-registration-by-object-type">
+<a class="md-nav__link" href="#what-gets-registered">
 <span class="md-ellipsis">
       
-        Comment Registration by Object Type
+        What Gets Registered
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#engine-comment-support">
+<a class="md-nav__link" href="#engine-support">
 <span class="md-ellipsis">
       
-        Engine Comment Support
+        Engine Support
       
     </span>
 </a>
@@ -1247,16 +1221,16 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>Models are made up of metadata and queries that create tables and views, which can be used by other models or even outside of Vulcan. They are defined in the <code>models/</code> directory of your Vulcan project and live in <code>.sql</code> files.</p>
-<p>Vulcan will automatically determine the relationships among and lineage of your models by parsing SQL, so you don't have to worry about manually configuring dependencies.</p>
-<p>A model consists of two core components:</p>
+<p>Models are the heart of Vulcan—they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.</p>
+<p>Models live in <code>.sql</code> files in the <code>models/</code> directory of your project. The cool thing is that Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Just write your SQL, and Vulcan handles the lineage.</p>
+<p>Every model has two parts:</p>
 <ul>
-<li><strong>DDL (Data Definition Language)</strong>: The <code>MODEL</code> block that defines the structure, metadata, and behavior of the model</li>
-<li><strong>DML (Data Manipulation Language)</strong>: The <code>SELECT</code> query that contains the transformation logic</li>
+<li><strong>DDL (Data Definition Language)</strong> - The <code>MODEL</code> block that tells Vulcan what this model is (name, schedule, how to materialize it, etc.)</li>
+<li><strong>DML (Data Manipulation Language)</strong> - The <code>SELECT</code> query that does the actual transformation work</li>
 </ul>
-<hr/>
+<p>It's like filling out a form (DDL) and then writing the actual code (DML). Simple!</p>
 <h2 id="model-structure">Model Structure<a class="headerlink" href="#model-structure" title="Link to this section">¶</a></h2>
-<p>Models can be defined in SQL or Python. Both formats follow the same DDL/DML pattern.</p>
+<p>You can write models in SQL or Python. Both work the same way conceptually—they just look different. Let's see both:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">SQL Model</label><label for="__tabbed_1_2">Python Model</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1290,27 +1264,9 @@
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Lines</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>DDL</strong> (MODEL block)</td>
-<td>1-6</td>
-<td>Defines model name, kind, schedule, and grain</td>
-</tr>
-<tr>
-<td><strong>DML</strong> (SELECT query)</td>
-<td>8-17</td>
-<td>Contains the transformation logic</td>
-</tr>
-</tbody>
-</table>
+<p><strong>Breaking it down:</strong>
+- <strong>Lines 1-6</strong>: The DDL (<code>MODEL</code> block) - tells Vulcan this is a daily sales model that runs every day
+- <strong>Lines 8-17</strong>: The DML (<code>SELECT</code> query) - the actual transformation that aggregates orders by date</p>
 </div>
 <div class="tabbed-block">
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
@@ -1391,34 +1347,17 @@
 </span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a>
 </span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a>  <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Lines</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>DDL</strong> (<code>@model</code> decorator)</td>
-<td>7-20</td>
-<td>Defines model name, columns, kind, schedule, and dependencies</td>
-</tr>
-<tr>
-<td><strong>DML</strong> (function body)</td>
-<td>21-40</td>
-<td>Contains the transformation logic and returns a DataFrame</td>
-</tr>
-</tbody>
-</table>
+<p><strong>Breaking it down:</strong>
+- <strong>Lines 7-20</strong>: The DDL (<code>@model</code> decorator) - same metadata as SQL, just Python syntax
+- <strong>Lines 21-40</strong>: The DML (function body) - runs the SQL and returns a DataFrame</p>
 </div>
 </div>
 </div>
-<hr/>
+<p>Both formats do the same thing—pick whichever you're more comfortable with!</p>
 <h2 id="ddl-the-model-block">DDL: The MODEL Block<a class="headerlink" href="#ddl-the-model-block" title="Link to this section">¶</a></h2>
-<p>The <code>MODEL</code> block is the DDL component that defines the structure and metadata of your model. It is the first non-comment statement in the file and uses a DDL-like syntax to declare model properties.</p>
-<h3 id="ddl-syntax">DDL Syntax<a class="headerlink" href="#ddl-syntax" title="Link to this section">¶</a></h3>
+<p>The <code>MODEL</code> block is where you tell Vulcan about your model. It's the first thing in your file (after any comments) and uses a simple, declarative syntax.</p>
+<h3 id="basic-syntax">Basic Syntax<a class="headerlink" href="#basic-syntax" title="Link to this section">¶</a></h3>
+<p>Here's what a <code>MODEL</code> block looks like:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
 <span class="normal"><a href="#__codelineno-2-3">3</a></span>
@@ -1431,12 +1370,18 @@
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">  </span><span class="n">grain</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="common-ddl-properties">Common DDL Properties<a class="headerlink" href="#common-ddl-properties" title="Link to this section">¶</a></h3>
+<p>This tells Vulcan:
+- <strong><code>name</code></strong> - What to call this model (schema.table format)
+- <strong><code>kind</code></strong> - How to materialize it (FULL rebuilds everything, INCREMENTAL only updates changes, etc.)
+- <strong><code>cron</code></strong> - When to run it (<code>@daily</code> means every day)
+- <strong><code>grain</code></strong> - What makes each row unique (in this case, <code>order_date</code>)</p>
+<h3 id="common-properties">Common Properties<a class="headerlink" href="#common-properties" title="Link to this section">¶</a></h3>
+<p>Here are the properties you'll use most often:</p>
 <table>
 <thead>
 <tr>
 <th>Property</th>
-<th>Description</th>
+<th>What It Does</th>
 <th>Example</th>
 </tr>
 </thead>
@@ -1448,22 +1393,22 @@
 </tr>
 <tr>
 <td><code>kind</code></td>
-<td>Materialization strategy (FULL, INCREMENTAL, VIEW, etc.)</td>
-<td><code>FULL</code></td>
+<td>Materialization strategy</td>
+<td><code>FULL</code>, <code>INCREMENTAL</code>, <code>VIEW</code></td>
 </tr>
 <tr>
 <td><code>cron</code></td>
-<td>Scheduling expression</td>
-<td><code>'@daily'</code></td>
+<td>When to run (scheduling)</td>
+<td><code>'@daily'</code>, <code>'0 0 * * *'</code></td>
 </tr>
 <tr>
 <td><code>grain</code></td>
-<td>Column(s) that define row uniqueness</td>
-<td><code>order_date</code></td>
+<td>Column(s) that make rows unique</td>
+<td><code>order_date</code> or <code>(customer_id, order_date)</code></td>
 </tr>
 <tr>
 <td><code>owner</code></td>
-<td>Model owner for governance</td>
+<td>Who owns this model (for governance)</td>
 <td><code>analytics_team</code></td>
 </tr>
 <tr>
@@ -1475,11 +1420,10 @@
 </table>
 <div class="admonition info">
 <p class="admonition-title">More DDL Properties</p>
-<p>For a complete list of all available model properties and their configurations, see the <a href="../properties/">Model Properties</a> reference .</p>
+<p>There are more properties available beyond these common ones. Check out the <a href="../properties/">Model Properties</a> reference for the complete list of all available model properties and their configurations.</p>
 </div>
 <h2 id="dml-the-select-query">DML: The SELECT Query<a class="headerlink" href="#dml-the-select-query" title="Link to this section">¶</a></h2>
-<p>The <code>SELECT</code> query is the DML component that contains the transformation logic. It defines what data is selected, how it's transformed, and what columns appear in the final output.</p>
-<h3 id="dml-syntax">DML Syntax<a class="headerlink" href="#dml-syntax" title="Link to this section">¶</a></h3>
+<p>The <code>SELECT</code> query is where the magic happens. This is your transformation logic—the SQL that actually does the work.</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
 <span class="normal"><a href="#__codelineno-3-3">3</a></span>
@@ -1496,12 +1440,17 @@
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<hr/>
+<p>This query:
+- Reads from <code>raw.raw_orders</code>
+- Groups by <code>order_date</code>
+- Counts orders, sums revenue, finds the latest order ID
+- Returns the results ordered by date</p>
+<p>Pretty standard SQL! Vulcan will automatically figure out that this model depends on <code>raw.raw_orders</code> and build the dependency graph for you.</p>
 <h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Link to this section">¶</a></h2>
-<p>Vulcan attempts to infer as much as possible about your pipelines to reduce the cognitive overhead of switching to another format such as YAML. The DML portion of a model must follow certain conventions for Vulcan to detect the necessary metadata.</p>
+<p>Vulcan tries to be smart and infer as much as possible from your SQL. This means you don't have to write a bunch of YAML config files—just write SQL and Vulcan figures it out. But to do this, your SQL needs to follow some conventions.</p>
 <h3 id="sql-model-conventions">SQL Model Conventions<a class="headerlink" href="#sql-model-conventions" title="Link to this section">¶</a></h3>
 <h4 id="unique-column-names">Unique Column Names<a class="headerlink" href="#unique-column-names" title="Link to this section">¶</a></h4>
-<p>The final <code>SELECT</code> of a model's query must contain unique column names.</p>
+<p>Your final <code>SELECT</code> needs unique column names. No duplicates allowed!</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
 <span class="normal"><a href="#__codelineno-4-3">3</a></span>
@@ -1516,9 +1465,9 @@
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">raw_orders</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>If you have duplicate column names, Vulcan won't know which one you mean, and that causes problems.</p>
 <h4 id="explicit-types">Explicit Types<a class="headerlink" href="#explicit-types" title="Link to this section">¶</a></h4>
-<p>Vulcan encourages explicit type casting in the final <code>SELECT</code> of a model's query. It is considered a best practice to prevent unexpected types in the schema of a model's table.</p>
-<p>Vulcan uses the postgres <code>x::int</code> syntax for casting; the casts are automatically transpiled to the appropriate format for the execution engine.</p>
+<p>Cast your types explicitly. This prevents surprises and ensures your schema is consistent:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
 <span class="normal"><a href="#__codelineno-5-2">2</a></span>
 <span class="normal"><a href="#__codelineno-5-3">3</a></span>
@@ -1535,9 +1484,10 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">raw_orders</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>Vulcan uses PostgreSQL-style casting (<code>x::int</code>), but don't worry—it automatically converts this to whatever your execution engine needs. So you write <code>::INTEGER</code> and Vulcan handles the rest.</p>
+<p><strong>Why this matters:</strong> Without explicit types, you might get <code>FLOAT</code> when you expected <code>INTEGER</code>, or <code>VARCHAR</code> when you wanted <code>TIMESTAMP</code>. Explicit casting prevents these surprises.</p>
 <h4 id="inferrable-names">Inferrable Names<a class="headerlink" href="#inferrable-names" title="Link to this section">¶</a></h4>
-<p>The final <code>SELECT</code> of a model's query must have inferrable names or aliases.</p>
-<p>Explicit aliases are recommended, but not required. The Vulcan formatter will automatically add aliases to columns without them when the model SQL is rendered.</p>
+<p>Your columns need names that Vulcan can figure out. If Vulcan can't infer a name, you need to add an alias:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
 <span class="normal"><a href="#__codelineno-6-3">3</a></span>
@@ -1546,16 +1496,18 @@
 <span class="normal"><a href="#__codelineno-6-6">6</a></span>
 <span class="normal"><a href="#__codelineno-6-7">7</a></span>
 <span class="normal"><a href="#__codelineno-6-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">SELECT</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="mi">1</span><span class="p">,</span><span class="w">                              </span><span class="c1">-- not inferrable</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">  </span><span class="n">total_amount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">               </span><span class="c1">-- not inferrable</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">total_amount</span><span class="p">),</span><span class="w">              </span><span class="c1">-- not inferrable</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">  </span><span class="n">order_date</span><span class="p">,</span><span class="w">                     </span><span class="c1">-- inferrable as order_date</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">  </span><span class="n">order_date</span><span class="p">::</span><span class="k">TIMESTAMP</span><span class="p">,</span><span class="w">          </span><span class="c1">-- inferrable as order_date</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">  </span><span class="n">total_amount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">adjusted</span><span class="p">,</span><span class="w">   </span><span class="c1">-- explicitly adjusted</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">total_amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">revenue</span><span class="w">    </span><span class="c1">-- explicitly revenue</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="mi">1</span><span class="p">,</span><span class="w">                              </span><span class="c1">-- ❌ not inferrable (what do you call this?)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">  </span><span class="n">total_amount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">               </span><span class="c1">-- ❌ not inferrable (needs an alias)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">total_amount</span><span class="p">),</span><span class="w">              </span><span class="c1">-- ❌ not inferrable (needs an alias)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">  </span><span class="n">order_date</span><span class="p">,</span><span class="w">                     </span><span class="c1">-- ✓ inferrable as order_date</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">  </span><span class="n">order_date</span><span class="p">::</span><span class="k">TIMESTAMP</span><span class="p">,</span><span class="w">          </span><span class="c1">-- ✓ inferrable as order_date</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">  </span><span class="n">total_amount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">adjusted</span><span class="p">,</span><span class="w">   </span><span class="c1">-- ✓ explicitly named</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">total_amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">revenue</span><span class="w">    </span><span class="c1">-- ✓ explicitly named</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit—you'll know what the column is called!</p>
 <h4 id="column-descriptions">Column Descriptions<a class="headerlink" href="#column-descriptions" title="Link to this section">¶</a></h4>
-<p>You can explicitly define column descriptions in the DDL using the <code>column_descriptions</code> property. This is the recommended approach for comprehensive documentation.</p>
+<p>Document your columns! There are two ways to do this:</p>
+<p><strong>Option 1: In the DDL (Recommended)</strong></p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
@@ -1582,12 +1534,13 @@
 </span></span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12"></a><span class="hll"><span class="w">  </span><span class="p">)</span>
 </span></span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>This is the cleanest way—all your documentation is in one place, right in the MODEL block.</p>
 <div class="admonition note">
 <p class="admonition-title">Priority</p>
-<p>If <code>column_descriptions</code> is present in the DDL, Vulcan will use these descriptions and <strong>not</strong> detect inline comments from the query.</p>
+<p>If you use <code>column_descriptions</code> in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority—so if you define descriptions in both places, the DDL version wins.</p>
 </div>
-<h4 id="inline-column-comments">Inline Column Comments<a class="headerlink" href="#inline-column-comments" title="Link to this section">¶</a></h4>
-<p>If the <code>column_descriptions</code> key is not present in the DDL, Vulcan will automatically detect comments in a query's column selections and register each column's final comment in the underlying SQL engine.</p>
+<p><strong>Option 2: Inline Comments</strong></p>
+<p>If you don't specify <code>column_descriptions</code> in the DDL, Vulcan will automatically pick up comments from your query:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
@@ -1616,14 +1569,12 @@
 </span></span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">raw_orders</span>
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>The physical table created would have:</p>
-<ol>
-<li>Each inline comment registered as a column comment for the respective column</li>
-<li>If a comment exists before the <code>MODEL</code> block, it will be registered as the table comment</li>
-</ol>
+<p>Vulcan will register these comments as column descriptions in your database. Pretty handy!</p>
+<p><strong>Table comments:</strong> If you put a comment before the <code>MODEL</code> block, Vulcan will use it as the table description. But if you also specify <code>description</code> in the MODEL block, that takes priority.</p>
 <h3 id="python-model-conventions">Python Model Conventions<a class="headerlink" href="#python-model-conventions" title="Link to this section">¶</a></h3>
+<p>Python models work a bit differently because Python doesn't have the same type inference capabilities as SQL.</p>
 <h4 id="explicit-column-definitions">Explicit Column Definitions<a class="headerlink" href="#explicit-column-definitions" title="Link to this section">¶</a></h4>
-<p>Python models require explicit column definitions in the <code>@model</code> decorator since types cannot be inferred from the code.</p>
+<p>You <strong>must</strong> define your columns explicitly in the <code>@model</code> decorator:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
@@ -1644,8 +1595,9 @@
 </span></span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">FULL</span><span class="p">),</span>
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>Vulcan can't infer types from Python code the way it can from SQL, so you need to tell it explicitly.</p>
 <h4 id="explicit-dependencies">Explicit Dependencies<a class="headerlink" href="#explicit-dependencies" title="Link to this section">¶</a></h4>
-<p>Unlike SQL models where dependencies are automatically inferred, Python models must explicitly declare their dependencies using the <code>depends_on</code> parameter.</p>
+<p>Unlike SQL models (where Vulcan figures out dependencies automatically), Python models need you to list them:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
 <span class="normal"><a href="#__codelineno-10-2">2</a></span>
 <span class="normal"><a href="#__codelineno-10-3">3</a></span>
@@ -1656,8 +1608,9 @@
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="hll">    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.raw_orders"</span><span class="p">],</span>  <span class="c1"># Must explicitly list upstream models</span>
 </span></span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>This is because Vulcan can't parse your Python code to find <code>FROM</code> clauses and joins. You need to tell it what this model depends on.</p>
 <h4 id="column-descriptions_1">Column Descriptions<a class="headerlink" href="#column-descriptions_1" title="Link to this section">¶</a></h4>
-<p>Python models cannot use inline comments for column descriptions. Instead, specify them in the <code>@model</code> decorator's <code>column_descriptions</code> key.</p>
+<p>Python models can't use inline comments for column descriptions. Instead, specify them in the decorator:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
@@ -1686,10 +1639,10 @@
 </span></span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition warning">
 <p class="admonition-title">Column name validation</p>
-<p>Vulcan will error if a column name in <code>column_descriptions</code> is not also present in the <code>columns</code> key.</p>
+<p>Vulcan will error if you put a column name in <code>column_descriptions</code> that doesn't exist in <code>columns</code>. This prevents typos and keeps things consistent—if you describe a column, it better exist!</p>
 </div>
 <h4 id="return-type">Return Type<a class="headerlink" href="#return-type" title="Link to this section">¶</a></h4>
-<p>The <code>execute</code> function must return a pandas DataFrame with columns matching the <code>columns</code> definition.</p>
+<p>Your <code>execute</code> function must return a pandas DataFrame, and the columns must match what you defined in <code>columns</code>:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
 <span class="normal"><a href="#__codelineno-12-2">2</a></span>
 <span class="normal"><a href="#__codelineno-12-3">3</a></span>
@@ -1708,27 +1661,32 @@
 </span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a>    <span class="n">query</span> <span class="o">=</span> <span class="s2">"SELECT ..."</span>
 </span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>The DataFrame columns need to match your <code>columns</code> definition exactly—same names, compatible types.</p>
 <div class="admonition info">
 <p class="admonition-title">Learn more</p>
-<p>For detailed information about Python models, see <a href="../types/python_models/">Python Models</a>.</p>
+<p>Want to dive deeper into Python models? Check out the <a href="components/model/python_models.md">Python Models</a> documentation for detailed information, advanced patterns, and more examples.</p>
 </div>
-<hr/>
 <h2 id="comment-registration">Comment Registration<a class="headerlink" href="#comment-registration" title="Link to this section">¶</a></h2>
-<h3 id="model-comment">Model Comment<a class="headerlink" href="#model-comment" title="Link to this section">¶</a></h3>
-<p>Vulcan will register a comment specified before the <code>MODEL</code> DDL block as the table comment in the underlying SQL engine. If the DDL <code>description</code> field is also specified, Vulcan will register it with the engine instead.</p>
-<h3 id="comment-registration-by-object-type">Comment Registration by Object Type<a class="headerlink" href="#comment-registration-by-object-type" title="Link to this section">¶</a></h3>
-<p>Only some tables/views have comments registered:</p>
+<p>Vulcan can register comments (descriptions) in your database so they show up in your BI tools and data catalogs. This is super useful for documentation!</p>
+<h3 id="how-comments-get-registered">How Comments Get Registered<a class="headerlink" href="#how-comments-get-registered" title="Link to this section">¶</a></h3>
+<p><strong>Model-level comments:</strong>
+- If you put a comment before the <code>MODEL</code> block, Vulcan uses it as the table comment
+- If you also specify <code>description</code> in the MODEL block, that takes priority</p>
+<p><strong>Column-level comments:</strong>
+- Use <code>column_descriptions</code> in the DDL (recommended)
+- Or use inline comments in your SELECT query (if <code>column_descriptions</code> isn't specified)</p>
+<h3 id="what-gets-registered">What Gets Registered<a class="headerlink" href="#what-gets-registered" title="Link to this section">¶</a></h3>
+<p>Not everything gets comments registered:</p>
 <ul>
-<li>Temporary tables are not registered</li>
-<li>Non-temporary tables and views in the physical layer (i.e., the schema named <code>vulcan__[project schema name]</code>) are registered</li>
-<li>Views in non-prod environments are not registered</li>
-<li>Views in the <code>prod</code> environment are registered</li>
+<li>✅ <strong>Physical tables</strong> - Comments are registered (tables in the <code>vulcan__[project schema]</code> schema)</li>
+<li>✅ <strong>Production views</strong> - Comments are registered</li>
+<li>❌ <strong>Temporary tables</strong> - No comments (they're temporary!)</li>
+<li>❌ <strong>Non-production views</strong> - No comments (keeps things clean)</li>
 </ul>
-<p>Some engines automatically pass comments from physical tables through to views that select from them. In those engines, views may display comments even if Vulcan did not explicitly register them.</p>
-<h3 id="engine-comment-support">Engine Comment Support<a class="headerlink" href="#engine-comment-support" title="Link to this section">¶</a></h3>
-<p>Engines vary in their support for comments and their method(s) of registering comments. Engines may support one or both registration methods: in the <code>CREATE</code> command that creates the object or with specific post-creation commands.</p>
-<p>In the former method, column comments are embedded in the <code>CREATE</code> schema definition - for example: <code>CREATE TABLE my_table (my_col INTEGER COMMENT 'comment on my_col') COMMENT 'comment on my_table'</code>. This means that all table and column comments can be registered in a single command.</p>
-<p>In the latter method, separate commands are required for every comment. This may result in many commands: one for the table comment and one for each column comment.</p>
+<p><strong>Note:</strong> Some engines automatically pass comments from physical tables to views that select from them. So even if Vulcan didn't explicitly register a comment on a view, it might still show up if the engine does this automatically.</p>
+<h3 id="engine-support">Engine Support<a class="headerlink" href="#engine-support" title="Link to this section">¶</a></h3>
+<p>Different databases support comments differently. Some can register comments in the <code>CREATE</code> statement (one command), others need separate commands for each comment.</p>
+<p>Here's what each engine supports:</p>
 <table>
 <thead>
 <tr>
@@ -1810,9 +1768,11 @@
 </tr>
 </tbody>
 </table>
-<hr/>
+<p>If your engine doesn't support comments, Vulcan will skip registration (no errors, it just won't register them).</p>
 <h2 id="macros">Macros<a class="headerlink" href="#macros" title="Link to this section">¶</a></h2>
-<p>Macros can be used for passing in parameterized arguments such as dates, as well as for making SQL less repetitive. By default, Vulcan provides several predefined macro variables that can be used. Macros are used by prefixing with the <code>@</code> symbol. For more information, refer to <a href="../../advanced-features/macros/overview/">macros</a>.</p>
+<p>Macros are like variables for your SQL. They let you parameterize queries and avoid repetition. Vulcan provides several built-in macros (like <code>@start_ds</code> and <code>@end_ds</code> for incremental models), and you can define your own.</p>
+<p>Macros use the <code>@</code> prefix. For example, <code>@this_model</code> refers to the current model being processed, and <code>@start_ds</code> is the start date for incremental processing.</p>
+<p>Want to learn more? Check out the <a href="../../advanced-features/macros/overview/">macros documentation</a> for all the details.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

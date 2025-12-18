@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -981,19 +981,19 @@
 <p>Vulcan stores information about your project in a state database that is usually separate from your main warehouse.</p>
 <p>The Vulcan state database contains:</p>
 <ul>
-<li>Information about every <a href="./models/overview.md">Model Version</a> in your project (query, loaded intervals, dependencies)</li>
-<li>A list of every <a href="../environments/">Virtual Data Environment</a> in the project</li>
-<li>Which model versions are <a href="../plans/#plan-application">promoted</a> into each <a href="../environments/">Virtual Data Environment</a></li>
-<li>Information about any <a href="./models/overview.md#auto_restatement_cron">auto restatements</a> present in your project</li>
+<li>Information about every <a href="../../components/model/overview/">Model Version</a> in your project (query, loaded intervals, dependencies)</li>
+<li>A list of every <a href="concepts-old/environments.md">Virtual Data Environment</a> in the project</li>
+<li>Which model versions are <a href="../../guides/plan/#plan-application">promoted</a> into each <a href="concepts-old/environments.md">Virtual Data Environment</a></li>
+<li>Information about any <a href="../../components/model/overview/#auto_restatement_cron">auto restatements</a> present in your project</li>
 <li>Other metadata about your project such as current Vulcan / SQLGlot version</li>
 </ul>
-<p>The state database is how Vulcan "remembers" what it's done before so it can compute a minimum set of operations to apply changes instead of rebuilding everything every time. It's also how Vulcan tracks what historical data has already been backfilled for <a href="./models/model_kinds.md#incremental_by_time_range">incremental models</a> so you dont need to add branching logic into the model query to handle this.</p>
+<p>The state database is how Vulcan "remembers" what it's done before so it can compute a minimum set of operations to apply changes instead of rebuilding everything every time. It's also how Vulcan tracks what historical data has already been backfilled for <a href="../../components/model/model_kinds/#incremental_by_time_range">incremental models</a> so you dont need to add branching logic into the model query to handle this.</p>
 <div class="admonition info">
 <p class="admonition-title">State database performance</p>
 <p>The workload against the state database is an OLTP workload that requires transaction support in order to work correctly.</p>
-<p>For the best experience, we recommend databases designed for OLTP workloads such as <a href="../integrations/engines/postgres.md">PostgreSQL</a>.</p>
+<p>For the best experience, we recommend databases designed for OLTP workloads such as <a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">PostgreSQL</a>.</p>
 <p>Using your warehouse OLAP database to store state is supported for proof-of-concept projects but is not suitable for production and <strong>will</strong> lead to poor performance and consistency.</p>
-<p>For more information on engines suitable for the Vulcan state database, see the <a href="../guides/configuration.md#state-connection">configuration guide</a>.</p>
+<p>For more information on engines suitable for the Vulcan state database, see the <a href="guides-old/configuration.md#state-connection">configuration guide</a>.</p>
 </div>
 <h2 id="exporting-importing-state">Exporting / Importing State<a class="headerlink" href="#exporting-importing-state" title="Link to this section">¶</a></h2>
 <p>Vulcan supports exporting the state database to a <code>.json</code> file. From there, you can inspect the file with any tool that can read text files. You can also pass the file around and import it back in to a Vulcan project running elsewhere.</p>
@@ -1111,7 +1111,7 @@ a import error has the potential to leave the state database in an inconsistent 
 </span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a>State<span class="w"> </span>imported<span class="w"> </span>successfully<span class="w"> </span>from<span class="w"> </span><span class="s1">'state.json'</span>
 </span></code></pre></div>
 <h3 id="specific-gateways">Specific gateways<a class="headerlink" href="#specific-gateways" title="Link to this section">¶</a></h3>
-<p>If your project has <a href="../guides/configuration.md#gateways">multiple gateways</a> with different state connections per gateway, you can target the <a href="../guides/configuration.md#state-connection">state_connection</a> of a specific gateway like so:</p>
+<p>If your project has <a href="guides-old/configuration.md#gateways">multiple gateways</a> with different state connections per gateway, you can target the <a href="guides-old/configuration.md#state-connection">state_connection</a> of a specific gateway like so:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1"># state export</span>
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>$<span class="w"> </span>vulcan<span class="w"> </span>--gateway<span class="w"> </span>&lt;gateway&gt;<span class="w"> </span>state<span class="w"> </span><span class="nb">export</span><span class="w"> </span>-o<span class="w"> </span>state.json
 </span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>

@@ -1,0 +1,113 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#c92a2a','lineColor':'#495057','secondaryColor':'#4dabf7','tertiaryColor':'#51cf66'}}}%%
+
+%% Checks System Flow Diagram
+%% This diagram shows the complete flow of how checks work in Vulcan
+
+flowchart TB
+    subgraph "Configuration Layer"
+        YAML[checks/*.yml files]
+        YAML --> |Parse| Config[Check Configuration]
+        Config --> |Extract| Checks[Individual Checks]
+    end
+
+    subgraph "Data Quality Dimensions"
+        Checks --> D1[Completeness]
+        Checks --> D2[Validity]
+        Checks --> D3[Accuracy]
+        Checks --> D4[Consistency]
+        Checks --> D5[Uniqueness]
+        Checks --> D6[Timeliness]
+        Checks --> D7[Conformity]
+        Checks --> D8[Coverage]
+    end
+
+    subgraph "Check Types"
+        D1 --> CT1[missing_count]
+        D1 --> CT2[missing_percent]
+        D1 --> CT3[row_count]
+        D2 --> CT4[failed rows SQL]
+        D3 --> CT5[threshold checks]
+        D3 --> CT6[anomaly detection]
+        D5 --> CT7[duplicate_count]
+        D6 --> CT8[change monitoring]
+    end
+
+    subgraph "Model Execution"
+        ModelRun[vulcan plan/run]
+        ModelRun --> |Execute| Models[Models Run]
+        Models --> |After| CheckExec[Check Execution]
+    end
+
+    subgraph "Check Execution Flow"
+        CheckExec --> |Load Checks| LoadChecks[Load Check Configs]
+        LoadChecks --> |Apply Filters| ApplyFilter{Apply Filters?}
+        ApplyFilter -->|Yes| FilterData[Filter Table Data]
+        ApplyFilter -->|No| RunCheck[Run Check Query]
+        FilterData --> RunCheck
+        
+        RunCheck --> CheckType{Check Type?}
+        
+        CheckType -->|Simple| SimpleCheck[Execute Simple Check<br/>missing_count, row_count, etc.]
+        CheckType -->|SQL| SQLCheck[Execute SQL Query<br/>failed rows]
+        CheckType -->|Anomaly| AnomalyCheck[Anomaly Detection<br/>Compare to History]
+        CheckType -->|Change| ChangeCheck[Change Monitoring<br/>Compare to Previous]
+        
+        SimpleCheck --> Evaluate[Evaluate Result]
+        SQLCheck --> Evaluate
+        AnomalyCheck --> |Query History| HistoryDB[(Activity API<br/>Historical Data)]
+        HistoryDB --> AnomalyCheck
+        AnomalyCheck --> Evaluate
+        ChangeCheck --> |Query Previous| PreviousDB[(Previous Run<br/>Results)]
+        PreviousDB --> ChangeCheck
+        ChangeCheck --> Evaluate
+    end
+
+    subgraph "Results Processing"
+        Evaluate --> Result{Pass/Fail?}
+        Result -->|Pass| PassResult[✓ Check Passed]
+        Result -->|Fail| FailResult[✗ Check Failed]
+        
+        FailResult --> |Capture| Samples[Capture Samples<br/>if configured]
+        Samples --> StoreResults[Store Results]
+        PassResult --> StoreResults
+    end
+
+    subgraph "Storage & Integration"
+        StoreResults --> ActivityAPI[Activity API<br/>Historical Tracking]
+        StoreResults --> CheckResults[(Check Results<br/>Database)]
+        Samples --> SampleDB[(Sample Data<br/>Database)]
+        
+        ActivityAPI --> |Query| Dashboards[Data Quality<br/>Dashboards]
+        CheckResults --> |Query| Dashboards
+        SampleDB --> |Query| Debugging[Debug Failed<br/>Checks]
+    end
+
+    subgraph "Profiling Flow"
+        Models --> |Enable Profiles| ProfileConfig[Profile Configuration<br/>in MODEL DDL]
+        ProfileConfig --> ProfileExec[Profile Execution]
+        ProfileExec --> ProfileMetrics[Collect Metrics<br/>row_count, nulls, distinct, etc.]
+        ProfileMetrics --> ProfileStore[( _check_profiles<br/>Table)]
+        ProfileStore --> |Query| ProfileAnalysis[Profile Analysis<br/>Data Drift Detection]
+        ProfileAnalysis --> |Inform| CheckCreation[Create Checks<br/>Based on Patterns]
+        CheckCreation --> YAML
+    end
+
+    subgraph "Three-Layer Strategy"
+        Audits[Audits<br/>Critical - Blocks Pipeline]
+        ChecksLayer[Checks<br/>Monitoring - Non-Blocking]
+        ProfilesLayer[Profiles<br/>Observation - Tracking]
+        
+        Audits --> |Pass| ChecksLayer
+        ChecksLayer --> |Monitor| ProfilesLayer
+    end
+
+    style YAML fill:#4dabf7
+    style Config fill:#4dabf7
+    style CheckExec fill:#51cf66
+    style PassResult fill:#51cf66
+    style FailResult fill:#ff6b6b
+    style ActivityAPI fill:#ffd43b
+    style ProfileStore fill:#ffd43b
+    style Audits fill:#ff6b6b
+    style ChecksLayer fill:#4dabf7
+    style ProfilesLayer fill:#51cf66

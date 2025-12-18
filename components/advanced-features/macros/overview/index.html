@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -518,7 +518,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -530,7 +530,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -945,14 +945,20 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>SQL is a <a href="https://en.wikipedia.org/wiki/Declarative_programming">declarative language</a>. It does not natively have features like variables or control flow logic (if-then, for loops) that allow SQL commands to behave differently in different situations.</p>
-<p>However, data pipelines are dynamic and need different behavior depending on context. SQL is made dynamic with <em>macros</em>.</p>
-<p>Vulcan supports two macro systems: Vulcan macros and the <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a> templating system.</p>
-<p>Learn more about macros in Vulcan:</p>
+<p>SQL is a <a href="https://en.wikipedia.org/wiki/Declarative_programming">declarative language</a>, which means you describe what you want, not how to get it. That's great for clarity, but it also means SQL doesn't have built-in features like variables or control flow (if-then statements, loops) that let your queries adapt to different situations.</p>
+<p>The problem? Data pipelines are dynamic. You need different behavior depending on context—maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.</p>
+<p>Macros let you make your SQL dynamic. Instead of hardcoding values, you can use variables that get substituted at runtime. Instead of writing repetitive code, you can use functions that generate SQL for you.</p>
+<p>Vulcan supports two macro systems, each with its own strengths:</p>
 <ul>
-<li><a href="./macro_variables.md">Pre-defined macro variables</a> available in both macro systems</li>
-<li><a href="./vulcan_macros.md">Vulcan macros</a></li>
-<li><a href="./jinja_macros.md">Jinja macros</a></li>
+<li><strong>Vulcan macros</strong>: Built specifically for SQL, with semantic understanding of your queries</li>
+<li><strong>Jinja macros</strong>: The popular templating system, great if you're already familiar with it</li>
+</ul>
+<p>Both systems can use the same <a href="../variables/">pre-defined variables</a> that Vulcan provides, like <code>@execution_ds</code> for the current execution date or <code>@this_model</code> for the current model name.</p>
+<p>Ready to dive in? Here's where to go next:</p>
+<ul>
+<li><a href="../variables/">Pre-defined macro variables</a> - Built-in variables available in both systems</li>
+<li><a href="../built_in/">Vulcan macros</a> - Vulcan's native macro system with SQL-aware features</li>
+<li><a href="../jinja/">Jinja macros</a> - The Jinja templating system for SQL</li>
 </ul>
 </article>
 </div>

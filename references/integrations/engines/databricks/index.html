@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1085,7 +1085,7 @@
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>This quickstart assumes you are familiar with basic Vulcan commands and functionality.</p>
-<p>If you're not, work through the <a href="../../getting_started/docker.md">Vulcan Quickstart</a> before continuing!</p>
+<p>If you're not, work through the <a href="configurations-old/guides/get-started/docker.md">Vulcan Quickstart</a> before continuing!</p>
 </div>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h3>
 <p>Before working through this connection quickstart, ensure that:</p>
@@ -1115,26 +1115,26 @@
 <h4 id="create-compute">Create Compute<a class="headerlink" href="#create-compute" title="Link to this section">¶</a></h4>
 <p>We must have something to connect to, so we first create and activate a Databricks compute instance. If you already have one running, skip to the <a href="#get-jdbcodbc-info">next section</a>.</p>
 <p>We begin in the default view for our Databricks Workspace. Access the Compute view by clicking the <code>Compute</code> entry in the left-hand menu:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_workspace.png"><img alt="Databricks Workspace default view" loading="lazy" src="db-guide_workspace.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_workspace.png"><img alt="Databricks Workspace default view" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_workspace.png"/></a></p>
 <p>In the Compute view, click the <code>Create compute</code> button:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_compute.png"><img alt="Databricks Compute default view" loading="lazy" src="db-guide_compute.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute.png"><img alt="Databricks Compute default view" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute.png"/></a></p>
 <p>Modify compute cluster options if desired and click the <code>Create compute</code> button:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_compute-create.png"><img alt="Databricks Create Compute view" loading="lazy" src="db-guide_compute-create.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute-create.png"><img alt="Databricks Create Compute view" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute-create.png"/></a></p>
 <h4 id="get-jdbcodbc-info">Get JDBC/ODBC info<a class="headerlink" href="#get-jdbcodbc-info" title="Link to this section">¶</a></h4>
 <p>Scroll to the bottom of the view and click the open the <code>Advanced Options</code> view:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_compute-advanced-options-link.png"><img alt="Databricks Compute Advanced Options link" loading="lazy" src="db-guide_compute-advanced-options-link.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute-advanced-options-link.png"><img alt="Databricks Compute Advanced Options link" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_compute-advanced-options-link.png"/></a></p>
 <p>Click the <code>JDBC/ODBC</code> tab:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_advanced-options.png"><img alt="Databricks Compute Advanced Options JDBC/ODBC tab" loading="lazy" src="db-guide_advanced-options.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_advanced-options.png"><img alt="Databricks Compute Advanced Options JDBC/ODBC tab" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_advanced-options.png"/></a></p>
 <p>Open your project's <code>config.yaml</code> configuration file in a text editor and add a new gateway named <code>databricks</code> below the existing <code>local</code> gateway:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_config-yaml.png"><img alt="Project config.yaml databricks gateway" loading="lazy" src="db-guide_config-yaml.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_config-yaml.png"><img alt="Project config.yaml databricks gateway" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_config-yaml.png"/></a></p>
 <p>Copy the <code>server_hostname</code> and <code>http_path</code> connection values from the Databricks JDBC/ODBC tab to the <code>config.yaml</code> file:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_copy-server-http.png"><img alt="Copy server_hostname and http_path to config.yaml" loading="lazy" src="db-guide_copy-server-http.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_copy-server-http.png"><img alt="Copy server_hostname and http_path to config.yaml" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_copy-server-http.png"/></a></p>
 <h4 id="get-personal-access-token">Get personal access token<a class="headerlink" href="#get-personal-access-token" title="Link to this section">¶</a></h4>
 <p>The final piece of information we need for the <code>config.yaml</code> file is your personal access token.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><strong>Do not share your personal access token with anyone.</strong></p>
-<p>Best practice for storing secrets like access tokens is placing them in <a href="../../guides/configuration.md#environment-variables">environment variables that the configuration file loads dynamically</a>. For simplicity, this guide instead places the value directly in the configuration file.</p>
+<p>Best practice for storing secrets like access tokens is placing them in <a href="../../guides-old/configuration.md#environment-variables">environment variables that the configuration file loads dynamically</a>. For simplicity, this guide instead places the value directly in the configuration file.</p>
 <p>This code demonstrates how to use the environment variable <code>DATABRICKS_ACCESS_TOKEN</code> for the configuration's <code>access_token</code> parameter:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
@@ -1149,21 +1149,21 @@
 </div>
 <p><br/><br/>
 To create a personal access token, click on your profile logo and go to your profile's <code>Settings</code> page:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_profile-settings-link.png"><img alt="Navigate to profile Settings page" loading="lazy" src="db-guide_profile-settings-link.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_profile-settings-link.png"><img alt="Navigate to profile Settings page" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_profile-settings-link.png"/></a></p>
 <p>Go to the <code>Developer</code> view in the User menu. Depending on your account's role, your page may not display the Workspace Admin section of the page.</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_profile-settings-developer.png"><img alt="Navigate to User Developer view" loading="lazy" src="db-guide_profile-settings-developer.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_profile-settings-developer.png"><img alt="Navigate to User Developer view" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_profile-settings-developer.png"/></a></p>
 <p>Click the <code>Manage</code> button in the Access Tokens section:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_access-tokens-link.png"><img alt="Navigate to Access Tokens management" loading="lazy" src="db-guide_access-tokens-link.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-link.png"><img alt="Navigate to Access Tokens management" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-link.png"/></a></p>
 <p>Click the <code>Generate new token</code> button:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_access-tokens-generate-button.png"><img alt="Open the token generation menu" loading="lazy" src="db-guide_access-tokens-generate-button.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-generate-button.png"><img alt="Open the token generation menu" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-generate-button.png"/></a></p>
 <p>Name your token in the <code>Comment</code> field, and click the <code>Generate</code> button:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_access-tokens-generate.png"><img alt="Generate a new token" loading="lazy" src="db-guide_access-tokens-generate.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-generate.png"><img alt="Generate a new token" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_access-tokens-generate.png"/></a></p>
 <p>Click the copy button and paste the token into the <code>access_token</code> key:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_copy-token.png"><img alt="Copy token to config.yaml access_token key" loading="lazy" src="db-guide_copy-token.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_copy-token.png"><img alt="Copy token to config.yaml access_token key" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_copy-token.png"/></a></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><strong>Do not share your personal access token with anyone.</strong></p>
-<p>Best practice for storing secrets like access tokens is placing them in <a href="../../guides/configuration.md#environment-variables">environment variables that the configuration file loads dynamically</a>. For simplicity, this guide instead places the value directly in the configuration file.</p>
+<p>Best practice for storing secrets like access tokens is placing them in <a href="../../guides-old/configuration.md#environment-variables">environment variables that the configuration file loads dynamically</a>. For simplicity, this guide instead places the value directly in the configuration file.</p>
 <p>This code demonstrates how to use the environment variable <code>DATABRICKS_ACCESS_TOKEN</code> for the configuration's <code>access_token</code> parameter:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
@@ -1180,29 +1180,29 @@ To create a personal access token, click on your profile logo and go to your pro
 <p>We have now specified the <code>databricks</code> gateway connection information, so we can confirm that Vulcan is able to successfully connect to Databricks. We will test the connection with the <code>vulcan info</code> command.</p>
 <p>First, open a command line terminal. Now enter the command <code>vulcan --gateway databricks info</code>.</p>
 <p>We manually specify the <code>databricks</code> gateway because it is not our project's default gateway:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_sqlmesh-info.png"><img alt="Run vulcan info command in CLI" loading="lazy" src="db-guide_sqlmesh-info.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info.png"><img alt="Run vulcan info command in CLI" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info.png"/></a></p>
 <p>The output shows that our data warehouse connection succeeded:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_sqlmesh-info-succeeded.png"><img alt="Successful data warehouse connection" loading="lazy" src="db-guide_sqlmesh-info-succeeded.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-succeeded.png"><img alt="Successful data warehouse connection" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-succeeded.png"/></a></p>
 <p>However, the output includes a <code>WARNING</code> about using the Databricks SQL engine for storing Vulcan state:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_sqlmesh-info-warning.png"><img alt="Databricks state connection warning" loading="lazy" src="db-guide_sqlmesh-info-warning.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-warning.png"><img alt="Databricks state connection warning" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-warning.png"/></a></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Databricks is not designed for transactional workloads and should not be used to store Vulcan state even in testing deployments.</p>
-<p>Learn more about storing Vulcan state <a href="../../guides/configuration.md#state-connection">here</a>.</p>
+<p>Learn more about storing Vulcan state <a href="../../guides-old/configuration.md#state-connection">here</a>.</p>
 </div>
 <h3 id="specify-state-connection">Specify state connection<a class="headerlink" href="#specify-state-connection" title="Link to this section">¶</a></h3>
 <p>We can store Vulcan state in a different SQL engine by specifying a <code>state_connection</code> in our <code>databricks</code> gateway.</p>
 <p>This example uses the DuckDB engine to store state in the local <code>databricks_state.db</code> file:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_state-connection.png"><img alt="Specify DuckDB state connection" loading="lazy" src="db-guide_state-connection.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_state-connection.png"><img alt="Specify DuckDB state connection" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_state-connection.png"/></a></p>
 <p>Now we no longer see the warning when running <code>vulcan --gateway databricks info</code>, and we see a new entry <code>State backend connection succeeded</code>:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_sqlmesh-info-no-warning.png"><img alt="No state connection warning" loading="lazy" src="db-guide_sqlmesh-info-no-warning.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-no-warning.png"><img alt="No state connection warning" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-info-no-warning.png"/></a></p>
 <h3 id="run-a-vulcan-plan">Run a <code>vulcan plan</code><a class="headerlink" href="#run-a-vulcan-plan" title="Link to this section">¶</a></h3>
 <p>For convenience, we can omit the <code>--gateway</code> option from our CLI commands by specifying <code>databricks</code> as our project's <code>default_gateway</code>:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_default-gateway.png"><img alt="Specify databricks as default gateway" loading="lazy" src="db-guide_default-gateway.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_default-gateway.png"><img alt="Specify databricks as default gateway" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_default-gateway.png"/></a></p>
 <p>And run a <code>vulcan plan</code> in Databricks:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_sqlmesh-plan.png"><img alt="Run vulcan plan in databricks" loading="lazy" src="db-guide_sqlmesh-plan.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-plan.png"><img alt="Run vulcan plan in databricks" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-plan.png"/></a></p>
 <p>And confirm that our schemas and objects exist in the Databricks catalog:</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="db-guide_sqlmesh-plan-objects.png"><img alt="Vulcan plan objects in databricks" loading="lazy" src="db-guide_sqlmesh-plan-objects.png"/></a></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-plan-objects.png"><img alt="Vulcan plan objects in databricks" loading="lazy" src="../../configurations-old/configurations-old/configurations-old/integrations/engines/databricks/db-guide_sqlmesh-plan-objects.png"/></a></p>
 <p>Congratulations - your Vulcan project is up and running on Databricks!</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1346,7 +1346,7 @@ To create a personal access token, click on your profile logo and go to your pro
 </tbody>
 </table>
 <h2 id="model-table-properties-to-support-altering-tables">Model table properties to support altering tables<a class="headerlink" href="#model-table-properties-to-support-altering-tables" title="Link to this section">¶</a></h2>
-<p>If you are making a change to the structure of a table that is <a href="../../guides/incremental_time.md#forward-only-models">forward only</a>, then you may need to add the following to your model's <code>physical_properties</code>:</p>
+<p>If you are making a change to the structure of a table that is <a href="configurations-old/guides/incremental_by_time.md#forward-only-models">forward only</a>, then you may need to add the following to your model's <code>physical_properties</code>:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_example</span><span class="p">.</span><span class="n">new_model</span><span class="p">,</span>
 </span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">    </span><span class="p">...</span>

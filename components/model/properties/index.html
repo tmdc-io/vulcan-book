@@ -885,7 +885,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -897,7 +897,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -909,7 +909,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -921,7 +921,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -963,7 +963,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -975,7 +975,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1813,7 +1813,8 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="properties">Properties<a class="headerlink" href="#properties" title="Link to this section">¶</a></h1>
-<p>The <code>MODEL</code> DDL statement accepts various properties that control model metadata and behavior. This page provides a complete reference for all available model properties.</p>
+<p>The <code>MODEL</code> DDL statement has a bunch of properties you can use to control how your model behaves. Think of them as knobs and switches—you can configure scheduling, storage, validation, and more.</p>
+<p>This page is your complete reference for all available properties. We'll cover what each one does, when to use it, and show you examples.</p>
 <hr/>
 <h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this section">¶</a></h2>
 <table>
@@ -2036,7 +2037,9 @@
 <hr/>
 <h2 id="general-properties">General Properties<a class="headerlink" href="#general-properties" title="Link to this section">¶</a></h2>
 <h3 id="name">name<a class="headerlink" href="#name" title="Link to this section">¶</a></h3>
-<p>The model name, representing the production view/table name. Must include at least a qualifying schema (<code>schema.model</code>) and may include a catalog (<code>catalog.schema.model</code>).</p>
+<p>Your model's name is how it's identified in the data warehouse. It needs at least a schema (<code>schema.model</code>), and you can optionally include a catalog (<code>catalog.schema.model</code>).</p>
+<p><strong>Format:</strong> <code>schema.model</code> or <code>catalog.schema.model</code></p>
+<p>This becomes the production table/view name that other models and users will reference.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">SQL</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2067,10 +2070,10 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Environment Prefixing</p>
-<p>In non-production environments, Vulcan automatically prefixes names. For example, <code>sales.daily_sales</code> becomes <code>sales__dev.daily_sales</code> in dev.</p>
+<p>In non-production environments, Vulcan automatically prefixes your model names. So <code>sales.daily_sales</code> becomes <code>sales__dev.daily_sales</code> in the dev environment. This keeps your dev and prod data separate without you having to think about it.</p>
 </div>
 <h3 id="project">project<a class="headerlink" href="#project" title="Link to this section">¶</a></h3>
-<p>Specifies the project name for multi-repo Vulcan deployments.</p>
+<p>If you're running multiple Vulcan projects in the same repository (multi-repo setup), use <code>project</code> to specify which project this model belongs to. This helps Vulcan organize and isolate models from different projects.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">SQL</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2090,7 +2093,8 @@
 </div>
 </div>
 <h3 id="kind">kind<a class="headerlink" href="#kind" title="Link to this section">¶</a></h3>
-<p>Determines how the model is computed and stored. See <a href="../model_kinds/">Model Kinds</a> for details.</p>
+<p>The <code>kind</code> property determines how your model is computed and stored. Do you want to rebuild everything each run? Update incrementally? Create a view? This is where you decide.</p>
+<p>For all the details on each kind and when to use them, check out the <a href="../model_kinds/">Model Kinds</a> documentation.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">SQL</label><label for="__tabbed_3_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2154,7 +2158,8 @@
 </div>
 </div>
 <h3 id="cron">cron<a class="headerlink" href="#cron" title="Link to this section">¶</a></h3>
-<p>Schedules when the model processes or refreshes data. Accepts <a href="https://en.wikipedia.org/wiki/Cron">cron expressions</a> or shortcuts.</p>
+<p>Controls when your model runs. You can use standard cron expressions or Vulcan's shortcuts for common schedules.</p>
+<p><strong>Why this matters:</strong> Without a schedule, your model only runs when you manually trigger it. Set a cron, and Vulcan will automatically process new data on schedule.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">SQL</label><label for="__tabbed_4_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2193,9 +2198,15 @@
 </div>
 </div>
 </div>
-<p><strong>Cron shortcuts:</strong> <code>@hourly</code>, <code>@daily</code>, <code>@weekly</code>, <code>@monthly</code></p>
+<p><strong>Cron shortcuts:</strong> Vulcan provides convenient shortcuts:
+- <code>@hourly</code> - Every hour
+- <code>@daily</code> - Every day at midnight UTC
+- <code>@weekly</code> - Once per week
+- <code>@monthly</code> - Once per month</p>
+<p>These are much easier than writing <code>0 * * * *</code>!</p>
 <h3 id="cron_tz">cron_tz<a class="headerlink" href="#cron_tz" title="Link to this section">¶</a></h3>
-<p>Specifies the timezone for the cron schedule. Only affects scheduling, not the interval boundaries passed to incremental models.</p>
+<p>Sets the timezone for your cron schedule. This only affects <strong>when</strong> the model runs, not how time intervals are calculated (those are always UTC).</p>
+<p><strong>Example:</strong> If you set <code>cron '@daily'</code> and <code>cron_tz 'America/Los_Angeles'</code>, your model runs at midnight Pacific time, but the time intervals it processes are still in UTC.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">SQL</label><label for="__tabbed_5_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2217,8 +2228,9 @@
 </div>
 </div>
 <h3 id="interval_unit">interval_unit<a class="headerlink" href="#interval_unit" title="Link to this section">¶</a></h3>
-<p>Determines the temporal granularity for calculating time intervals. By default, inferred from the <code>cron</code> expression.</p>
+<p>Controls the granularity of time intervals for incremental models. By default, Vulcan figures this out from your <code>cron</code> expression, but you can override it if needed.</p>
 <p><strong>Supported values:</strong> <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, <code>half_hour</code>, <code>quarter_hour</code>, <code>five_minute</code></p>
+<p><strong>When to override:</strong> If your cron runs daily but you want to process hourly intervals, set <code>interval_unit 'hour'</code>. This is useful when you want finer-grained control over incremental processing.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">SQL</label><label for="__tabbed_6_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2242,7 +2254,11 @@
 </div>
 </div>
 <h3 id="start">start<a class="headerlink" href="#start" title="Link to this section">¶</a></h3>
-<p>The earliest date/time for processing. Accepts absolute dates, epoch milliseconds, or relative expressions.</p>
+<p>Sets the earliest date/time your model should process. This is useful for limiting backfills or defining when your model's data begins.</p>
+<p>You can use:
+- <strong>Absolute dates:</strong> <code>'2024-01-01'</code>
+- <strong>Relative expressions:</strong> <code>'1 year ago'</code>
+- <strong>Epoch milliseconds:</strong> <code>1704067200000</code></p>
 <div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">SQL</label><label for="__tabbed_7_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2280,7 +2296,7 @@
 </div>
 </div>
 <h3 id="end">end<a class="headerlink" href="#end" title="Link to this section">¶</a></h3>
-<p>The latest date/time for processing. Same format as <code>start</code>.</p>
+<p>Sets the latest date/time your model should process. Uses the same format as <code>start</code>. This is handy for historical models or limiting processing to a specific time range.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio"/><input id="__tabbed_8_2" name="__tabbed_8" type="radio"/><div class="tabbed-labels"><label for="__tabbed_8_1">SQL</label><label for="__tabbed_8_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2302,7 +2318,9 @@
 </div>
 </div>
 <h3 id="grain-grains">grain / grains<a class="headerlink" href="#grain-grains" title="Link to this section">¶</a></h3>
-<p>Defines the column(s) that uniquely identify each row. Used by tools like <code>table_diff</code>.</p>
+<p>Defines the column(s) that make each row unique. This is like a primary key—it tells Vulcan what identifies a single row in your table.</p>
+<p><strong>Why this matters:</strong> Tools like <code>table_diff</code> use grains to compare tables. It also helps Vulcan understand your data structure for better optimization and validation.</p>
+<p>You can specify a single grain (<code>grain order_id</code>) or multiple grains (<code>grains (order_id, (customer_id, order_date))</code>).</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">SQL</label><label for="__tabbed_9_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2354,7 +2372,8 @@
 </div>
 </div>
 <h3 id="owner">owner<a class="headerlink" href="#owner" title="Link to this section">¶</a></h3>
-<p>Specifies the main point of contact for governance and notifications.</p>
+<p>Sets the owner of the model—usually a team name or individual. This is used for governance, notifications, and knowing who to contact when something breaks.</p>
+<p><strong>Example:</strong> <code>owner 'analytics_team'</code> or <code>owner 'data_engineers'</code></p>
 <div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio"/><input id="__tabbed_10_2" name="__tabbed_10" type="radio"/><div class="tabbed-labels"><label for="__tabbed_10_1">SQL</label><label for="__tabbed_10_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2374,7 +2393,8 @@
 </div>
 </div>
 <h3 id="description">description<a class="headerlink" href="#description" title="Link to this section">¶</a></h3>
-<p>Model description automatically registered as a table comment in the SQL engine (if supported).</p>
+<p>A human-readable description of what your model does. Vulcan automatically registers this as a table comment in your SQL engine (if it supports comments), so it shows up in your BI tools and data catalogs.</p>
+<p><strong>Pro tip:</strong> Write descriptions that explain the business purpose, not just the technical details. Future you (and your teammates) will thank you!</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio"/><input id="__tabbed_11_2" name="__tabbed_11" type="radio"/><div class="tabbed-labels"><label for="__tabbed_11_1">SQL</label><label for="__tabbed_11_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2394,7 +2414,8 @@
 </div>
 </div>
 <h3 id="column_descriptions">column_descriptions<a class="headerlink" href="#column_descriptions" title="Link to this section">¶</a></h3>
-<p>Explicit column descriptions registered as column comments.</p>
+<p>Document your columns! This property lets you add descriptions for each column, which get registered as column comments in your database.</p>
+<p><strong>Why document columns?</strong> When someone queries your table in a BI tool, they'll see what each column means. It's like inline documentation that travels with your data.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio"/><input id="__tabbed_12_2" name="__tabbed_12" type="radio"/><div class="tabbed-labels"><label for="__tabbed_12_1">SQL</label><label for="__tabbed_12_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2428,10 +2449,14 @@
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Priority</p>
-<p>If <code>column_descriptions</code> is present, <a href="../overview/#inline-column-comments">inline column comments</a> will not be registered.</p>
+<p>If <code>column_descriptions</code> is present, <a href="components/model/overview.md#inline-column-comments">inline column comments</a> will not be registered.</p>
 </div>
 <h3 id="columns">columns<a class="headerlink" href="#columns" title="Link to this section">¶</a></h3>
-<p>Explicitly specifies column names and data types, disabling automatic inference.</p>
+<p>Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query—it'll use exactly what you specify.</p>
+<p><strong>When to use:</strong>
+- Python models (required—Vulcan can't infer types from Python code)
+- Seed models (you need to define the CSV schema)
+- When you want strict type control</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio"/><input id="__tabbed_13_2" name="__tabbed_13" type="radio"/><div class="tabbed-labels"><label for="__tabbed_13_1">SQL</label><label for="__tabbed_13_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2463,10 +2488,12 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Python Models</p>
-<p>Required for <a href="../types/python_models/">Python models</a> that return DataFrames.</p>
 </div>
+<p>This is required for <a href="components/model/python_models.md">Python models</a> since Vulcan can't infer column types from Python code. You must explicitly define your schema.</p>
 <h3 id="dialect">dialect<a class="headerlink" href="#dialect" title="Link to this section">¶</a></h3>
-<p>The SQL dialect of the model. Defaults to the project's <code>model_defaults</code> dialect. Supports all <a href="https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/__init__.py">SQLGlot dialects</a>.</p>
+<p>Specifies the SQL dialect your model uses. Defaults to whatever you set in <code>model_defaults</code>, but you can override it per-model if needed.</p>
+<p><strong>Why this matters:</strong> Vulcan uses SQLGlot to parse and transpile SQL. You can write in one dialect (like PostgreSQL) and Vulcan will convert it to whatever your engine needs (like BigQuery). Pretty neat!</p>
+<p>Supports all <a href="https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/__init__.py">SQLGlot dialects</a>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="14:2"><input checked="checked" id="__tabbed_14_1" name="__tabbed_14" type="radio"/><input id="__tabbed_14_2" name="__tabbed_14" type="radio"/><div class="tabbed-labels"><label for="__tabbed_14_1">SQL</label><label for="__tabbed_14_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2506,7 +2533,9 @@
 </div>
 </div>
 <h3 id="assertions">assertions<a class="headerlink" href="#assertions" title="Link to this section">¶</a></h3>
-<p>Attaching <a href="../../audits/audits.md">audits</a> to the model, declaring that these validations should pass after each model evaluation.</p>
+<p>Attach <a href="../../audits/audits/">audits</a> directly to your model. These validations run after each model evaluation and will block the pipeline if they fail.</p>
+<p><strong>Why use assertions?</strong> They're your safety net—they catch bad data before it flows downstream. If revenue can't be negative, assert it. If customer IDs must be unique, assert it. Fail fast, fix fast.</p>
+<p>Think of assertions as "this data must be true" validations that run automatically.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="16:2"><input checked="checked" id="__tabbed_16_1" name="__tabbed_16" type="radio"/><input id="__tabbed_16_2" name="__tabbed_16" type="radio"/><div class="tabbed-labels"><label for="__tabbed_16_1">SQL</label><label for="__tabbed_16_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2535,7 +2564,15 @@
 </div>
 </div>
 <h3 id="profiles">profiles<a class="headerlink" href="#profiles" title="Link to this section">¶</a></h3>
-<p>Specifies columns for which statistical metrics should be tracked over time. Profiles provide observational data about your columns—tracking distributions, null percentages, and patterns—without blocking pipeline execution.</p>
+<p>Enable automatic data profiling for specific columns. Profiles track statistical metrics over time (like null percentages, distinct counts, distributions) without blocking your pipeline.</p>
+<p><strong>How it works:</strong> Vulcan collects metrics each run and stores them in the <code>_check_profiles</code> table. You can query this to see how your data changes over time—detect data drift, understand patterns, and decide which checks or audits to add.</p>
+<p><strong>Use cases:</strong>
+- Track null percentages over time
+- Monitor distinct value counts
+- Detect data drift
+- Understand column distributions
+- Inform which checks/audits to create</p>
+<p>Think of profiles as your data observability layer—they watch and learn, but don't block.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="17:2"><input checked="checked" id="__tabbed_17_1" name="__tabbed_17" type="radio"/><input id="__tabbed_17_2" name="__tabbed_17" type="radio"/><div class="tabbed-labels"><label for="__tabbed_17_1">SQL</label><label for="__tabbed_17_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2580,15 +2617,13 @@
 </div>
 </div>
 </div>
-<p>Profile results are stored in the <code>_check_profiles</code> table and can be used to:</p>
-<ul>
-<li>Detect data drift over time</li>
-<li>Understand column distributions</li>
-<li>Inform which audits or checks to add</li>
-<li>Build data quality dashboards</li>
-</ul>
 <h3 id="depends_on">depends_on<a class="headerlink" href="#depends_on" title="Link to this section">¶</a></h3>
-<p>Explicitly declares dependencies in addition to those inferred from the query.</p>
+<p>Explicitly declare model dependencies. Vulcan automatically infers dependencies from SQL queries, but sometimes you need to add extra ones.</p>
+<p><strong>When to use:</strong>
+- Python models (required—Vulcan can't parse Python to find dependencies)
+- Hidden dependencies (like a macro that references another model)
+- External dependencies that aren't in your SQL</p>
+<p><strong>Note:</strong> Dependencies you declare here are added to the ones Vulcan infers—they don't replace them.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="18:2"><input checked="checked" id="__tabbed_18_1" name="__tabbed_18" type="radio"/><input id="__tabbed_18_2" name="__tabbed_18" type="radio"/><div class="tabbed-labels"><label for="__tabbed_18_1">SQL</label><label for="__tabbed_18_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2609,10 +2644,11 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Python Models</p>
-<p>Python models <strong>require</strong> <code>depends_on</code> since dependencies cannot be automatically inferred from the code.</p>
+<p>Python models <strong>require</strong> <code>depends_on</code> since Vulcan can't automatically infer dependencies from Python code. You need to tell it explicitly what your model depends on.</p>
 </div>
 <h3 id="references">references<a class="headerlink" href="#references" title="Link to this section">¶</a></h3>
-<p>Non-unique columns that define join relationships to other models.</p>
+<p>Declare non-unique join relationships to other models. These help Vulcan understand how models relate to each other for better lineage and optimization.</p>
+<p><strong>Example:</strong> If your <code>orders</code> table has a <code>customer_id</code> that joins to <code>customers.customer_id</code>, you'd add <code>customer_id</code> to references. This tells Vulcan about the relationship even though <code>customer_id</code> isn't unique in the orders table.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="19:2"><input checked="checked" id="__tabbed_19_1" name="__tabbed_19" type="radio"/><input id="__tabbed_19_2" name="__tabbed_19" type="radio"/><div class="tabbed-labels"><label for="__tabbed_19_1">SQL</label><label for="__tabbed_19_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2639,8 +2675,11 @@
 </div>
 <hr/>
 <h2 id="storage-properties">Storage Properties<a class="headerlink" href="#storage-properties" title="Link to this section">¶</a></h2>
+<p>These properties control how your data is physically stored in the database. They're engine-specific, so check your engine's documentation for what's supported.</p>
 <h3 id="partitioned_by">partitioned_by<a class="headerlink" href="#partitioned_by" title="Link to this section">¶</a></h3>
-<p>Defines partition key for engines supporting table partitioning (Spark, BigQuery, etc.).</p>
+<p>Defines the partition key for your table. Partitioning splits your table into chunks based on column values, which makes queries faster (the engine can skip irrelevant partitions).</p>
+<p><strong>Supported engines:</strong> Spark, BigQuery, Databricks, and others that support table partitioning.</p>
+<p><strong>Why partition?</strong> If you're querying data from the last 7 days and your table is partitioned by date, the engine only scans 7 partitions instead of scanning the entire table. That's a huge performance win!</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="20:2"><input checked="checked" id="__tabbed_20_1" name="__tabbed_20" type="radio"/><input id="__tabbed_20_2" name="__tabbed_20" type="radio"/><div class="tabbed-labels"><label for="__tabbed_20_1">SQL</label><label for="__tabbed_20_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2679,7 +2718,9 @@
 </div>
 </div>
 <h3 id="clustered_by">clustered_by<a class="headerlink" href="#clustered_by" title="Link to this section">¶</a></h3>
-<p>Clustering column(s) for engines supporting clustering (BigQuery, etc.).</p>
+<p>Sets clustering columns for engines that support it (like BigQuery). Clustering organizes data within partitions based on column values, which makes range queries and filters faster.</p>
+<p><strong>How it works:</strong> Data is physically stored sorted by the clustering columns. When you filter on those columns, the engine can skip reading irrelevant data blocks.</p>
+<p><strong>Example:</strong> If you cluster by <code>customer_id</code>, queries filtering by customer will be faster because related data is stored together.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="21:2"><input checked="checked" id="__tabbed_21_1" name="__tabbed_21" type="radio"/><input id="__tabbed_21_2" name="__tabbed_21" type="radio"/><div class="tabbed-labels"><label for="__tabbed_21_1">SQL</label><label for="__tabbed_21_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2701,7 +2742,12 @@
 </div>
 </div>
 <h3 id="table_format">table_format<a class="headerlink" href="#table_format" title="Link to this section">¶</a></h3>
-<p>Table format for engines supporting multiple formats: <code>iceberg</code>, <code>hive</code>, <code>delta</code>.</p>
+<p>Specifies the table format for engines that support multiple formats. Different formats have different features and performance characteristics.</p>
+<p><strong>Supported formats:</strong> <code>iceberg</code>, <code>hive</code>, <code>delta</code></p>
+<p><strong>When to use:</strong> If your engine supports multiple formats, choose based on your needs:
+- <strong>Iceberg:</strong> Great for time travel and schema evolution
+- <strong>Delta:</strong> Good for ACID transactions and time travel
+- <strong>Hive:</strong> Traditional format, widely supported</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="22:2"><input checked="checked" id="__tabbed_22_1" name="__tabbed_22" type="radio"/><input id="__tabbed_22_2" name="__tabbed_22" type="radio"/><div class="tabbed-labels"><label for="__tabbed_22_1">SQL</label><label for="__tabbed_22_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2721,7 +2767,9 @@
 </div>
 </div>
 <h3 id="storage_format">storage_format<a class="headerlink" href="#storage_format" title="Link to this section">¶</a></h3>
-<p>Physical file format: <code>parquet</code>, <code>orc</code>, etc.</p>
+<p>Sets the physical file format for your table's data files. This affects compression, query performance, and storage costs.</p>
+<p><strong>Common formats:</strong> <code>parquet</code>, <code>orc</code></p>
+<p><strong>Parquet</strong> is usually the best choice—it's columnar (great for analytics), has good compression, and is widely supported. <strong>ORC</strong> is another option, especially if you're using Hive.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="23:2"><input checked="checked" id="__tabbed_23_1" name="__tabbed_23" type="radio"/><input id="__tabbed_23_2" name="__tabbed_23" type="radio"/><div class="tabbed-labels"><label for="__tabbed_23_1">SQL</label><label for="__tabbed_23_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2742,8 +2790,14 @@
 </div>
 <hr/>
 <h2 id="engine-properties">Engine Properties<a class="headerlink" href="#engine-properties" title="Link to this section">¶</a></h2>
+<p>These properties let you pass engine-specific settings to Vulcan. Each engine has different capabilities, so these properties vary by engine.</p>
 <h3 id="physical_properties">physical_properties<a class="headerlink" href="#physical_properties" title="Link to this section">¶</a></h3>
-<p>Engine-specific properties applied to the physical table/view.</p>
+<p>Pass engine-specific properties directly to the physical table/view creation. This is where you set things like retention policies, labels, or other engine-specific features.</p>
+<p><strong>Use cases:</strong>
+- Set table retention (BigQuery: <code>partition_expiration_days</code>)
+- Add labels or tags (BigQuery, Snowflake)
+- Configure table type (Snowflake: <code>TRANSIENT</code> tables)
+- Any other engine-specific table settings</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="24:2"><input checked="checked" id="__tabbed_24_1" name="__tabbed_24" type="radio"/><input id="__tabbed_24_2" name="__tabbed_24" type="radio"/><div class="tabbed-labels"><label for="__tabbed_24_1">SQL</label><label for="__tabbed_24_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2771,7 +2825,12 @@
 </div>
 </div>
 <h3 id="virtual_properties">virtual_properties<a class="headerlink" href="#virtual_properties" title="Link to this section">¶</a></h3>
-<p>Engine-specific properties applied to the virtual layer view.</p>
+<p>Pass engine-specific properties to the virtual layer view. This is useful for things like view-level security, labels, or other view-specific settings.</p>
+<p><strong>Use cases:</strong>
+- Create secure views (Snowflake: <code>SECURE</code> views)
+- Add labels to views
+- Set view-level permissions
+- Configure view-specific engine features</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="25:2"><input checked="checked" id="__tabbed_25_1" name="__tabbed_25" type="radio"/><input id="__tabbed_25_2" name="__tabbed_25" type="radio"/><div class="tabbed-labels"><label for="__tabbed_25_1">SQL</label><label for="__tabbed_25_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2797,7 +2856,13 @@
 </div>
 </div>
 <h3 id="session_properties">session_properties<a class="headerlink" href="#session_properties" title="Link to this section">¶</a></h3>
-<p>Engine-specific session properties applied during execution.</p>
+<p>Set session-level properties that apply when Vulcan executes your model. These affect how queries run but don't change the table structure.</p>
+<p><strong>Use cases:</strong>
+- Set query timeouts
+- Configure parallelism
+- Adjust memory limits
+- Set engine-specific session variables</p>
+<p><strong>Example:</strong> If you have a large query that needs more time, set <code>query_timeout: 3600</code> to give it an hour instead of the default timeout.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="26:2"><input checked="checked" id="__tabbed_26_1" name="__tabbed_26" type="radio"/><input id="__tabbed_26_2" name="__tabbed_26" type="radio"/><div class="tabbed-labels"><label for="__tabbed_26_1">SQL</label><label for="__tabbed_26_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2823,7 +2888,8 @@
 </div>
 </div>
 <h3 id="gateway">gateway<a class="headerlink" href="#gateway" title="Link to this section">¶</a></h3>
-<p>Specifies a specific gateway for model execution (when not using the default).</p>
+<p>Specifies which gateway to use for executing this model. Useful when you have multiple database connections and want to route specific models to specific databases.</p>
+<p><strong>When to use:</strong> Multi-warehouse setups, isolated environments, or when you need to run certain models on a different database than the default.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="27:2"><input checked="checked" id="__tabbed_27_1" name="__tabbed_27" type="radio"/><input id="__tabbed_27_2" name="__tabbed_27" type="radio"/><div class="tabbed-labels"><label for="__tabbed_27_1">SQL</label><label for="__tabbed_27_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2844,8 +2910,10 @@
 </div>
 <hr/>
 <h2 id="behavior-properties">Behavior Properties<a class="headerlink" href="#behavior-properties" title="Link to this section">¶</a></h2>
+<p>These properties control how Vulcan behaves when processing your model.</p>
 <h3 id="stamp">stamp<a class="headerlink" href="#stamp" title="Link to this section">¶</a></h3>
-<p>Arbitrary string to create a new model version without changing the definition.</p>
+<p>Force a new model version without changing the definition. This is like a version tag—useful for tracking deployments or forcing a refresh.</p>
+<p><strong>When to use:</strong> When you want to create a new version for tracking purposes, or when you need to force downstream models to rebuild even though this model's definition hasn't changed.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="28:2"><input checked="checked" id="__tabbed_28_1" name="__tabbed_28" type="radio"/><input id="__tabbed_28_2" name="__tabbed_28" type="radio"/><div class="tabbed-labels"><label for="__tabbed_28_1">SQL</label><label for="__tabbed_28_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2865,7 +2933,12 @@
 </div>
 </div>
 <h3 id="enabled">enabled<a class="headerlink" href="#enabled" title="Link to this section">¶</a></h3>
-<p>Whether the model is active. Set to <code>false</code> to ignore during project loading. (Default: <code>true</code>)</p>
+<p>Control whether the model is active. Set to <code>false</code> to disable a model without deleting it.</p>
+<p><strong>When to use:</strong>
+- Temporarily disable a model while debugging
+- Deprecate a model but keep it for reference
+- Skip models during development</p>
+<p><strong>Default:</strong> <code>true</code> (models are enabled by default)</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="29:2"><input checked="checked" id="__tabbed_29_1" name="__tabbed_29" type="radio"/><input id="__tabbed_29_2" name="__tabbed_29" type="radio"/><div class="tabbed-labels"><label for="__tabbed_29_1">SQL</label><label for="__tabbed_29_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2885,110 +2958,105 @@
 </div>
 </div>
 <h3 id="allow_partials">allow_partials<a class="headerlink" href="#allow_partials" title="Link to this section">¶</a></h3>
-<p>Allows processing of incomplete data intervals. (Default: <code>false</code>)</p>
+<p>Allow processing of incomplete data intervals. By default, Vulcan waits for complete intervals before processing (keeps data quality high). Set this to <code>true</code> if you need to process partial intervals.</p>
+<p><strong>When to use:</strong>
+- Real-time or near-real-time pipelines
+- When you need data ASAP, even if it's incomplete
+- Streaming data scenarios</p>
+<p><strong>Trade-off:</strong> You lose the ability to distinguish between "missing data" (pipeline issue) and "partial interval" (expected). Use with caution!</p>
+<p><strong>Default:</strong> <code>false</code> (wait for complete intervals)</p>
+<h3 id="optimize_query">optimize_query<a class="headerlink" href="#optimize_query" title="Link to this section">¶</a></h3>
+<p>Enable or disable query optimization. Vulcan optimizes queries by default (rewrites them for better performance), but sometimes you want to disable this.</p>
+<p><strong>When to disable:</strong>
+- The optimizer is breaking your query
+- You have engine-specific optimizations you want to preserve
+- Debugging query issues</p>
+<p><strong>Default:</strong> <code>true</code> (optimize queries)</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="30:2"><input checked="checked" id="__tabbed_30_1" name="__tabbed_30" type="radio"/><input id="__tabbed_30_2" name="__tabbed_30" type="radio"/><div class="tabbed-labels"><label for="__tabbed_30_1">SQL</label><label for="__tabbed_30_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-58-1"><a href="#__codelineno-58-1" id="__codelineno-58-1" name="__codelineno-58-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-58-2"><a href="#__codelineno-58-2" id="__codelineno-58-2" name="__codelineno-58-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">realtime_events</span><span class="p">,</span>
-</span><span id="__span-58-3"><a href="#__codelineno-58-3" id="__codelineno-58-3" name="__codelineno-58-3"></a><span class="w">  </span><span class="n">cron</span><span class="w"> </span><span class="s1">'@hourly'</span><span class="p">,</span>
-</span><span id="__span-58-4"><a href="#__codelineno-58-4" id="__codelineno-58-4" name="__codelineno-58-4"></a><span class="w">  </span><span class="n">allow_partials</span><span class="w"> </span><span class="k">true</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Process incomplete intervals</span>
-</span><span id="__span-58-5"><a href="#__codelineno-58-5" id="__codelineno-58-5" name="__codelineno-58-5"></a><span class="p">);</span>
+</span><span id="__span-58-2"><a href="#__codelineno-58-2" id="__codelineno-58-2" name="__codelineno-58-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">complex_query</span><span class="p">,</span>
+</span><span id="__span-58-3"><a href="#__codelineno-58-3" id="__codelineno-58-3" name="__codelineno-58-3"></a><span class="w">  </span><span class="n">optimize_query</span><span class="w"> </span><span class="k">false</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Disable optimization</span>
+</span><span id="__span-58-4"><a href="#__codelineno-58-4" id="__codelineno-58-4" name="__codelineno-58-4"></a><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="language-python highlight"><pre><span></span><code><span id="__span-59-1"><a href="#__codelineno-59-1" id="__codelineno-59-1" name="__codelineno-59-1"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-59-2"><a href="#__codelineno-59-2" id="__codelineno-59-2" name="__codelineno-59-2"></a>    <span class="s2">"sales.realtime_events"</span><span class="p">,</span>
-</span><span id="__span-59-3"><a href="#__codelineno-59-3" id="__codelineno-59-3" name="__codelineno-59-3"></a>    <span class="n">cron</span><span class="o">=</span><span class="s2">"@hourly"</span><span class="p">,</span>
-</span><span id="__span-59-4"><a href="#__codelineno-59-4" id="__codelineno-59-4" name="__codelineno-59-4"></a>    <span class="n">allow_partials</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-59-5"><a href="#__codelineno-59-5" id="__codelineno-59-5" name="__codelineno-59-5"></a><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Use with caution</p>
-<p>When enabled, you cannot distinguish between missing data due to pipeline issues vs. partial backfills.</p>
-</div>
-<h3 id="optimize_query">optimize_query<a class="headerlink" href="#optimize_query" title="Link to this section">¶</a></h3>
-<p>Whether to optimize the model's query. (Default: <code>true</code>)</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="31:2"><input checked="checked" id="__tabbed_31_1" name="__tabbed_31" type="radio"/><input id="__tabbed_31_2" name="__tabbed_31" type="radio"/><div class="tabbed-labels"><label for="__tabbed_31_1">SQL</label><label for="__tabbed_31_2">Python</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-60-1"><a href="#__codelineno-60-1" id="__codelineno-60-1" name="__codelineno-60-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-60-2"><a href="#__codelineno-60-2" id="__codelineno-60-2" name="__codelineno-60-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">complex_query</span><span class="p">,</span>
-</span><span id="__span-60-3"><a href="#__codelineno-60-3" id="__codelineno-60-3" name="__codelineno-60-3"></a><span class="w">  </span><span class="n">optimize_query</span><span class="w"> </span><span class="k">false</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Disable optimization</span>
-</span><span id="__span-60-4"><a href="#__codelineno-60-4" id="__codelineno-60-4" name="__codelineno-60-4"></a><span class="p">);</span>
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-61-1"><a href="#__codelineno-61-1" id="__codelineno-61-1" name="__codelineno-61-1"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-61-2"><a href="#__codelineno-61-2" id="__codelineno-61-2" name="__codelineno-61-2"></a>    <span class="s2">"sales.complex_query"</span><span class="p">,</span>
-</span><span id="__span-61-3"><a href="#__codelineno-61-3" id="__codelineno-61-3" name="__codelineno-61-3"></a>    <span class="n">optimize_query</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-61-4"><a href="#__codelineno-61-4" id="__codelineno-61-4" name="__codelineno-61-4"></a><span class="p">)</span>
+</span><span id="__span-59-2"><a href="#__codelineno-59-2" id="__codelineno-59-2" name="__codelineno-59-2"></a>    <span class="s2">"sales.complex_query"</span><span class="p">,</span>
+</span><span id="__span-59-3"><a href="#__codelineno-59-3" id="__codelineno-59-3" name="__codelineno-59-3"></a>    <span class="n">optimize_query</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-59-4"><a href="#__codelineno-59-4" id="__codelineno-59-4" name="__codelineno-59-4"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <h3 id="formatting">formatting<a class="headerlink" href="#formatting" title="Link to this section">¶</a></h3>
-<p>Whether the model is formatted during <code>vulcan format</code>. (Default: <code>true</code>)</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="32:2"><input checked="checked" id="__tabbed_32_1" name="__tabbed_32" type="radio"/><input id="__tabbed_32_2" name="__tabbed_32" type="radio"/><div class="tabbed-labels"><label for="__tabbed_32_1">SQL</label><label for="__tabbed_32_2">Python</label></div>
+<p>Control whether Vulcan formats this model when you run <code>vulcan format</code>. Set to <code>false</code> if you want to preserve custom formatting.</p>
+<p><strong>When to disable:</strong>
+- Legacy models with specific formatting requirements
+- Models where formatting breaks something
+- When you prefer manual formatting control</p>
+<p><strong>Default:</strong> <code>true</code> (format models automatically)</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="31:2"><input checked="checked" id="__tabbed_31_1" name="__tabbed_31" type="radio"/><input id="__tabbed_31_2" name="__tabbed_31" type="radio"/><div class="tabbed-labels"><label for="__tabbed_31_1">SQL</label><label for="__tabbed_31_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-62-1"><a href="#__codelineno-62-1" id="__codelineno-62-1" name="__codelineno-62-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-62-2"><a href="#__codelineno-62-2" id="__codelineno-62-2" name="__codelineno-62-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">legacy_model</span><span class="p">,</span>
-</span><span id="__span-62-3"><a href="#__codelineno-62-3" id="__codelineno-62-3" name="__codelineno-62-3"></a><span class="w">  </span><span class="n">formatting</span><span class="w"> </span><span class="k">false</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Skip formatting</span>
-</span><span id="__span-62-4"><a href="#__codelineno-62-4" id="__codelineno-62-4" name="__codelineno-62-4"></a><span class="p">);</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-60-1"><a href="#__codelineno-60-1" id="__codelineno-60-1" name="__codelineno-60-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-60-2"><a href="#__codelineno-60-2" id="__codelineno-60-2" name="__codelineno-60-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">legacy_model</span><span class="p">,</span>
+</span><span id="__span-60-3"><a href="#__codelineno-60-3" id="__codelineno-60-3" name="__codelineno-60-3"></a><span class="w">  </span><span class="n">formatting</span><span class="w"> </span><span class="k">false</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Skip formatting</span>
+</span><span id="__span-60-4"><a href="#__codelineno-60-4" id="__codelineno-60-4" name="__codelineno-60-4"></a><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-63-1"><a href="#__codelineno-63-1" id="__codelineno-63-1" name="__codelineno-63-1"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-63-2"><a href="#__codelineno-63-2" id="__codelineno-63-2" name="__codelineno-63-2"></a>    <span class="s2">"sales.legacy_model"</span><span class="p">,</span>
-</span><span id="__span-63-3"><a href="#__codelineno-63-3" id="__codelineno-63-3" name="__codelineno-63-3"></a>    <span class="n">formatting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-63-4"><a href="#__codelineno-63-4" id="__codelineno-63-4" name="__codelineno-63-4"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-61-1"><a href="#__codelineno-61-1" id="__codelineno-61-1" name="__codelineno-61-1"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-61-2"><a href="#__codelineno-61-2" id="__codelineno-61-2" name="__codelineno-61-2"></a>    <span class="s2">"sales.legacy_model"</span><span class="p">,</span>
+</span><span id="__span-61-3"><a href="#__codelineno-61-3" id="__codelineno-61-3" name="__codelineno-61-3"></a>    <span class="n">formatting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-61-4"><a href="#__codelineno-61-4" id="__codelineno-61-4" name="__codelineno-61-4"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <h3 id="ignored_rules">ignored_rules<a class="headerlink" href="#ignored_rules" title="Link to this section">¶</a></h3>
-<p>Linter rules to ignore for this model.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="33:2"><input checked="checked" id="__tabbed_33_1" name="__tabbed_33" type="radio"/><input id="__tabbed_33_2" name="__tabbed_33" type="radio"/><div class="tabbed-labels"><label for="__tabbed_33_1">SQL</label><label for="__tabbed_33_2">Python</label></div>
+<p>Tell Vulcan's linter to ignore specific rules for this model. Useful when you have a legitimate reason to break a rule, or when a rule doesn't apply to your use case.</p>
+<p>You can ignore specific rules (<code>['rule_name', 'another_rule']</code>) or all rules (<code>'ALL'</code>).</p>
+<p><strong>Use sparingly:</strong> If you're ignoring lots of rules, maybe the rules need updating, or maybe the model needs refactoring.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="32:2"><input checked="checked" id="__tabbed_32_1" name="__tabbed_32" type="radio"/><input id="__tabbed_32_2" name="__tabbed_32" type="radio"/><div class="tabbed-labels"><label for="__tabbed_32_1">SQL</label><label for="__tabbed_32_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-64-1"><a href="#__codelineno-64-1" id="__codelineno-64-1" name="__codelineno-64-1"></a><span class="c1">-- Ignore specific rules</span>
-</span><span id="__span-64-2"><a href="#__codelineno-64-2" id="__codelineno-64-2" name="__codelineno-64-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-64-3"><a href="#__codelineno-64-3" id="__codelineno-64-3" name="__codelineno-64-3"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">legacy_model</span><span class="p">,</span>
-</span><span id="__span-64-4"><a href="#__codelineno-64-4" id="__codelineno-64-4" name="__codelineno-64-4"></a><span class="w">  </span><span class="n">ignored_rules</span><span class="w"> </span><span class="p">[</span><span class="s1">'rule_name'</span><span class="p">,</span><span class="w"> </span><span class="s1">'another_rule'</span><span class="p">],</span>
-</span><span id="__span-64-5"><a href="#__codelineno-64-5" id="__codelineno-64-5" name="__codelineno-64-5"></a><span class="p">);</span>
-</span><span id="__span-64-6"><a href="#__codelineno-64-6" id="__codelineno-64-6" name="__codelineno-64-6"></a>
-</span><span id="__span-64-7"><a href="#__codelineno-64-7" id="__codelineno-64-7" name="__codelineno-64-7"></a><span class="c1">-- Ignore all rules</span>
-</span><span id="__span-64-8"><a href="#__codelineno-64-8" id="__codelineno-64-8" name="__codelineno-64-8"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-64-9"><a href="#__codelineno-64-9" id="__codelineno-64-9" name="__codelineno-64-9"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">legacy_model</span><span class="p">,</span>
-</span><span id="__span-64-10"><a href="#__codelineno-64-10" id="__codelineno-64-10" name="__codelineno-64-10"></a><span class="w">  </span><span class="n">ignored_rules</span><span class="w"> </span><span class="s1">'ALL'</span><span class="p">,</span>
-</span><span id="__span-64-11"><a href="#__codelineno-64-11" id="__codelineno-64-11" name="__codelineno-64-11"></a><span class="p">);</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-62-1"><a href="#__codelineno-62-1" id="__codelineno-62-1" name="__codelineno-62-1"></a><span class="c1">-- Ignore specific rules</span>
+</span><span id="__span-62-2"><a href="#__codelineno-62-2" id="__codelineno-62-2" name="__codelineno-62-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-62-3"><a href="#__codelineno-62-3" id="__codelineno-62-3" name="__codelineno-62-3"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">legacy_model</span><span class="p">,</span>
+</span><span id="__span-62-4"><a href="#__codelineno-62-4" id="__codelineno-62-4" name="__codelineno-62-4"></a><span class="w">  </span><span class="n">ignored_rules</span><span class="w"> </span><span class="p">[</span><span class="s1">'rule_name'</span><span class="p">,</span><span class="w"> </span><span class="s1">'another_rule'</span><span class="p">],</span>
+</span><span id="__span-62-5"><a href="#__codelineno-62-5" id="__codelineno-62-5" name="__codelineno-62-5"></a><span class="p">);</span>
+</span><span id="__span-62-6"><a href="#__codelineno-62-6" id="__codelineno-62-6" name="__codelineno-62-6"></a>
+</span><span id="__span-62-7"><a href="#__codelineno-62-7" id="__codelineno-62-7" name="__codelineno-62-7"></a><span class="c1">-- Ignore all rules</span>
+</span><span id="__span-62-8"><a href="#__codelineno-62-8" id="__codelineno-62-8" name="__codelineno-62-8"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-62-9"><a href="#__codelineno-62-9" id="__codelineno-62-9" name="__codelineno-62-9"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">legacy_model</span><span class="p">,</span>
+</span><span id="__span-62-10"><a href="#__codelineno-62-10" id="__codelineno-62-10" name="__codelineno-62-10"></a><span class="w">  </span><span class="n">ignored_rules</span><span class="w"> </span><span class="s1">'ALL'</span><span class="p">,</span>
+</span><span id="__span-62-11"><a href="#__codelineno-62-11" id="__codelineno-62-11" name="__codelineno-62-11"></a><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-65-1"><a href="#__codelineno-65-1" id="__codelineno-65-1" name="__codelineno-65-1"></a><span class="c1"># Ignore specific rules</span>
-</span><span id="__span-65-2"><a href="#__codelineno-65-2" id="__codelineno-65-2" name="__codelineno-65-2"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-65-3"><a href="#__codelineno-65-3" id="__codelineno-65-3" name="__codelineno-65-3"></a>    <span class="s2">"sales.legacy_model"</span><span class="p">,</span>
-</span><span id="__span-65-4"><a href="#__codelineno-65-4" id="__codelineno-65-4" name="__codelineno-65-4"></a>    <span class="n">ignored_rules</span><span class="o">=</span><span class="p">[</span><span class="s2">"rule_name"</span><span class="p">,</span> <span class="s2">"another_rule"</span><span class="p">],</span>
-</span><span id="__span-65-5"><a href="#__codelineno-65-5" id="__codelineno-65-5" name="__codelineno-65-5"></a><span class="p">)</span>
-</span><span id="__span-65-6"><a href="#__codelineno-65-6" id="__codelineno-65-6" name="__codelineno-65-6"></a>
-</span><span id="__span-65-7"><a href="#__codelineno-65-7" id="__codelineno-65-7" name="__codelineno-65-7"></a><span class="c1"># Ignore all rules</span>
-</span><span id="__span-65-8"><a href="#__codelineno-65-8" id="__codelineno-65-8" name="__codelineno-65-8"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-65-9"><a href="#__codelineno-65-9" id="__codelineno-65-9" name="__codelineno-65-9"></a>    <span class="s2">"sales.legacy_model"</span><span class="p">,</span>
-</span><span id="__span-65-10"><a href="#__codelineno-65-10" id="__codelineno-65-10" name="__codelineno-65-10"></a>    <span class="n">ignored_rules</span><span class="o">=</span><span class="s2">"ALL"</span><span class="p">,</span>
-</span><span id="__span-65-11"><a href="#__codelineno-65-11" id="__codelineno-65-11" name="__codelineno-65-11"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-63-1"><a href="#__codelineno-63-1" id="__codelineno-63-1" name="__codelineno-63-1"></a><span class="c1"># Ignore specific rules</span>
+</span><span id="__span-63-2"><a href="#__codelineno-63-2" id="__codelineno-63-2" name="__codelineno-63-2"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-63-3"><a href="#__codelineno-63-3" id="__codelineno-63-3" name="__codelineno-63-3"></a>    <span class="s2">"sales.legacy_model"</span><span class="p">,</span>
+</span><span id="__span-63-4"><a href="#__codelineno-63-4" id="__codelineno-63-4" name="__codelineno-63-4"></a>    <span class="n">ignored_rules</span><span class="o">=</span><span class="p">[</span><span class="s2">"rule_name"</span><span class="p">,</span> <span class="s2">"another_rule"</span><span class="p">],</span>
+</span><span id="__span-63-5"><a href="#__codelineno-63-5" id="__codelineno-63-5" name="__codelineno-63-5"></a><span class="p">)</span>
+</span><span id="__span-63-6"><a href="#__codelineno-63-6" id="__codelineno-63-6" name="__codelineno-63-6"></a>
+</span><span id="__span-63-7"><a href="#__codelineno-63-7" id="__codelineno-63-7" name="__codelineno-63-7"></a><span class="c1"># Ignore all rules</span>
+</span><span id="__span-63-8"><a href="#__codelineno-63-8" id="__codelineno-63-8" name="__codelineno-63-8"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-63-9"><a href="#__codelineno-63-9" id="__codelineno-63-9" name="__codelineno-63-9"></a>    <span class="s2">"sales.legacy_model"</span><span class="p">,</span>
+</span><span id="__span-63-10"><a href="#__codelineno-63-10" id="__codelineno-63-10" name="__codelineno-63-10"></a>    <span class="n">ignored_rules</span><span class="o">=</span><span class="s2">"ALL"</span><span class="p">,</span>
+</span><span id="__span-63-11"><a href="#__codelineno-63-11" id="__codelineno-63-11" name="__codelineno-63-11"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <hr/>
 <h2 id="incremental-model-properties">Incremental Model Properties<a class="headerlink" href="#incremental-model-properties" title="Link to this section">¶</a></h2>
-<p>Properties specified within the <code>kind</code> definition for incremental models. See <a href="../model_kinds/">Model Kinds</a> for detailed documentation.</p>
+<p>These properties are specified inside the <code>kind</code> definition for incremental models. They control how incremental models behave—things like handling schema changes, restatements, and batch processing.</p>
+<p>For the full picture on incremental models, check out the <a href="../model_kinds/">Model Kinds</a> documentation.</p>
 <h3 id="common-incremental-properties">Common Incremental Properties<a class="headerlink" href="#common-incremental-properties" title="Link to this section">¶</a></h3>
-<p>These properties apply to all incremental model kinds.</p>
+<p>These properties work with all incremental model kinds. They're your toolkit for controlling incremental behavior:</p>
 <table>
 <thead>
 <tr>
@@ -3001,7 +3069,7 @@
 <tbody>
 <tr>
 <td><code>forward_only</code></td>
-<td>All changes should be <a href="../../../guides/plan/#forward-only-plans">forward-only</a></td>
+<td>All changes should be <a href="../guides/plan.md#forward-only-plans">forward-only</a></td>
 <td style="text-align: center;"><code>bool</code></td>
 <td style="text-align: center;"><code>false</code></td>
 </tr>
@@ -3019,7 +3087,7 @@
 </tr>
 <tr>
 <td><code>disable_restatement</code></td>
-<td>Disable <a href="../../../guides/plan/#restatement-plans">data restatement</a></td>
+<td>Disable <a href="../guides/plan.md#restatement-plans">data restatement</a></td>
 <td style="text-align: center;"><code>bool</code></td>
 <td style="text-align: center;"><code>false</code></td>
 </tr>
@@ -3031,41 +3099,47 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Values for <code>on_destructive_change</code> / <code>on_additive_change</code>:</strong> <code>allow</code>, <code>warn</code>, <code>error</code>, <code>ignore</code></p>
-<div class="tabbed-set tabbed-alternate" data-tabs="34:2"><input checked="checked" id="__tabbed_34_1" name="__tabbed_34" type="radio"/><input id="__tabbed_34_2" name="__tabbed_34" type="radio"/><div class="tabbed-labels"><label for="__tabbed_34_1">SQL</label><label for="__tabbed_34_2">Python</label></div>
+<p><strong>Values for <code>on_destructive_change</code> / <code>on_additive_change</code>:</strong>
+- <code>allow</code> - Let the change happen (default for additive)
+- <code>warn</code> - Allow but warn about it
+- <code>error</code> - Block the change (default for destructive)
+- <code>ignore</code> - Pretend it didn't happen</p>
+<p><strong>Why this matters:</strong> Schema changes can break downstream models. These settings let you control how strict Vulcan should be when your schema evolves.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="33:2"><input checked="checked" id="__tabbed_33_1" name="__tabbed_33" type="radio"/><input id="__tabbed_33_2" name="__tabbed_33" type="radio"/><div class="tabbed-labels"><label for="__tabbed_33_1">SQL</label><label for="__tabbed_33_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-66-1"><a href="#__codelineno-66-1" id="__codelineno-66-1" name="__codelineno-66-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-66-2"><a href="#__codelineno-66-2" id="__codelineno-66-2" name="__codelineno-66-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
-</span><span id="__span-66-3"><a href="#__codelineno-66-3" id="__codelineno-66-3" name="__codelineno-66-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-66-4"><a href="#__codelineno-66-4" id="__codelineno-66-4" name="__codelineno-66-4"></a><span class="w">    </span><span class="n">time_column</span><span class="w"> </span><span class="n">event_ts</span><span class="p">,</span>
-</span><span id="__span-66-5"><a href="#__codelineno-66-5" id="__codelineno-66-5" name="__codelineno-66-5"></a><span class="w">    </span><span class="n">forward_only</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
-</span><span id="__span-66-6"><a href="#__codelineno-66-6" id="__codelineno-66-6" name="__codelineno-66-6"></a><span class="w">    </span><span class="n">on_destructive_change</span><span class="w"> </span><span class="s1">'warn'</span><span class="p">,</span>
-</span><span id="__span-66-7"><a href="#__codelineno-66-7" id="__codelineno-66-7" name="__codelineno-66-7"></a><span class="w">    </span><span class="n">on_additive_change</span><span class="w"> </span><span class="s1">'allow'</span><span class="p">,</span>
-</span><span id="__span-66-8"><a href="#__codelineno-66-8" id="__codelineno-66-8" name="__codelineno-66-8"></a><span class="w">    </span><span class="n">disable_restatement</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
-</span><span id="__span-66-9"><a href="#__codelineno-66-9" id="__codelineno-66-9" name="__codelineno-66-9"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-66-10"><a href="#__codelineno-66-10" id="__codelineno-66-10" name="__codelineno-66-10"></a><span class="p">);</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-64-1"><a href="#__codelineno-64-1" id="__codelineno-64-1" name="__codelineno-64-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-64-2"><a href="#__codelineno-64-2" id="__codelineno-64-2" name="__codelineno-64-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
+</span><span id="__span-64-3"><a href="#__codelineno-64-3" id="__codelineno-64-3" name="__codelineno-64-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-64-4"><a href="#__codelineno-64-4" id="__codelineno-64-4" name="__codelineno-64-4"></a><span class="w">    </span><span class="n">time_column</span><span class="w"> </span><span class="n">event_ts</span><span class="p">,</span>
+</span><span id="__span-64-5"><a href="#__codelineno-64-5" id="__codelineno-64-5" name="__codelineno-64-5"></a><span class="w">    </span><span class="n">forward_only</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
+</span><span id="__span-64-6"><a href="#__codelineno-64-6" id="__codelineno-64-6" name="__codelineno-64-6"></a><span class="w">    </span><span class="n">on_destructive_change</span><span class="w"> </span><span class="s1">'warn'</span><span class="p">,</span>
+</span><span id="__span-64-7"><a href="#__codelineno-64-7" id="__codelineno-64-7" name="__codelineno-64-7"></a><span class="w">    </span><span class="n">on_additive_change</span><span class="w"> </span><span class="s1">'allow'</span><span class="p">,</span>
+</span><span id="__span-64-8"><a href="#__codelineno-64-8" id="__codelineno-64-8" name="__codelineno-64-8"></a><span class="w">    </span><span class="n">disable_restatement</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+</span><span id="__span-64-9"><a href="#__codelineno-64-9" id="__codelineno-64-9" name="__codelineno-64-9"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-64-10"><a href="#__codelineno-64-10" id="__codelineno-64-10" name="__codelineno-64-10"></a><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-67-1"><a href="#__codelineno-67-1" id="__codelineno-67-1" name="__codelineno-67-1"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-67-2"><a href="#__codelineno-67-2" id="__codelineno-67-2" name="__codelineno-67-2"></a>    <span class="s2">"sales.events"</span><span class="p">,</span>
-</span><span id="__span-67-3"><a href="#__codelineno-67-3" id="__codelineno-67-3" name="__codelineno-67-3"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-67-4"><a href="#__codelineno-67-4" id="__codelineno-67-4" name="__codelineno-67-4"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="p">,</span>
-</span><span id="__span-67-5"><a href="#__codelineno-67-5" id="__codelineno-67-5" name="__codelineno-67-5"></a>        <span class="n">time_column</span><span class="o">=</span><span class="s2">"event_ts"</span><span class="p">,</span>
-</span><span id="__span-67-6"><a href="#__codelineno-67-6" id="__codelineno-67-6" name="__codelineno-67-6"></a>        <span class="n">forward_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-67-7"><a href="#__codelineno-67-7" id="__codelineno-67-7" name="__codelineno-67-7"></a>        <span class="n">on_destructive_change</span><span class="o">=</span><span class="s2">"warn"</span><span class="p">,</span>
-</span><span id="__span-67-8"><a href="#__codelineno-67-8" id="__codelineno-67-8" name="__codelineno-67-8"></a>        <span class="n">on_additive_change</span><span class="o">=</span><span class="s2">"allow"</span><span class="p">,</span>
-</span><span id="__span-67-9"><a href="#__codelineno-67-9" id="__codelineno-67-9" name="__codelineno-67-9"></a>        <span class="n">disable_restatement</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-67-10"><a href="#__codelineno-67-10" id="__codelineno-67-10" name="__codelineno-67-10"></a>    <span class="p">),</span>
-</span><span id="__span-67-11"><a href="#__codelineno-67-11" id="__codelineno-67-11" name="__codelineno-67-11"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-65-1"><a href="#__codelineno-65-1" id="__codelineno-65-1" name="__codelineno-65-1"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-65-2"><a href="#__codelineno-65-2" id="__codelineno-65-2" name="__codelineno-65-2"></a>    <span class="s2">"sales.events"</span><span class="p">,</span>
+</span><span id="__span-65-3"><a href="#__codelineno-65-3" id="__codelineno-65-3" name="__codelineno-65-3"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-65-4"><a href="#__codelineno-65-4" id="__codelineno-65-4" name="__codelineno-65-4"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="p">,</span>
+</span><span id="__span-65-5"><a href="#__codelineno-65-5" id="__codelineno-65-5" name="__codelineno-65-5"></a>        <span class="n">time_column</span><span class="o">=</span><span class="s2">"event_ts"</span><span class="p">,</span>
+</span><span id="__span-65-6"><a href="#__codelineno-65-6" id="__codelineno-65-6" name="__codelineno-65-6"></a>        <span class="n">forward_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-65-7"><a href="#__codelineno-65-7" id="__codelineno-65-7" name="__codelineno-65-7"></a>        <span class="n">on_destructive_change</span><span class="o">=</span><span class="s2">"warn"</span><span class="p">,</span>
+</span><span id="__span-65-8"><a href="#__codelineno-65-8" id="__codelineno-65-8" name="__codelineno-65-8"></a>        <span class="n">on_additive_change</span><span class="o">=</span><span class="s2">"allow"</span><span class="p">,</span>
+</span><span id="__span-65-9"><a href="#__codelineno-65-9" id="__codelineno-65-9" name="__codelineno-65-9"></a>        <span class="n">disable_restatement</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-65-10"><a href="#__codelineno-65-10" id="__codelineno-65-10" name="__codelineno-65-10"></a>    <span class="p">),</span>
+</span><span id="__span-65-11"><a href="#__codelineno-65-11" id="__codelineno-65-11" name="__codelineno-65-11"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <hr/>
 <h3 id="incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE<a class="headerlink" href="#incremental_by_time_range" title="Link to this section">¶</a></h3>
-<p>Incrementally updates data based on a time column. See <a href="../model_kinds/#incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE</a>.</p>
+<p>Properties for models that update incrementally based on a time column. These control how time-based incremental processing works.</p>
+<p>For the full guide on <code>INCREMENTAL_BY_TIME_RANGE</code> models, see the <a href="../model_kinds/#incremental_by_time_range">Model Kinds documentation</a>.</p>
 <table>
 <thead>
 <tr>
@@ -3114,67 +3188,68 @@
 </tr>
 </tbody>
 </table>
-<div class="tabbed-set tabbed-alternate" data-tabs="35:2"><input checked="checked" id="__tabbed_35_1" name="__tabbed_35" type="radio"/><input id="__tabbed_35_2" name="__tabbed_35" type="radio"/><div class="tabbed-labels"><label for="__tabbed_35_1">SQL</label><label for="__tabbed_35_2">Python</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="34:2"><input checked="checked" id="__tabbed_34_1" name="__tabbed_34" type="radio"/><input id="__tabbed_34_2" name="__tabbed_34" type="radio"/><div class="tabbed-labels"><label for="__tabbed_34_1">SQL</label><label for="__tabbed_34_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-68-1"><a href="#__codelineno-68-1" id="__codelineno-68-1" name="__codelineno-68-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-68-2"><a href="#__codelineno-68-2" id="__codelineno-68-2" name="__codelineno-68-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
-</span><span id="__span-68-3"><a href="#__codelineno-68-3" id="__codelineno-68-3" name="__codelineno-68-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-68-4"><a href="#__codelineno-68-4" id="__codelineno-68-4" name="__codelineno-68-4"></a><span class="w">    </span><span class="n">time_column</span><span class="w"> </span><span class="n">event_ts</span><span class="p">,</span>
-</span><span id="__span-68-5"><a href="#__codelineno-68-5" id="__codelineno-68-5" name="__codelineno-68-5"></a><span class="w">    </span><span class="n">time_column</span><span class="w"> </span><span class="p">(</span><span class="n">event_ts</span><span class="p">,</span><span class="w"> </span><span class="s1">'%Y-%m-%d'</span><span class="p">),</span><span class="w">  </span><span class="c1">-- With format</span>
-</span><span id="__span-68-6"><a href="#__codelineno-68-6" id="__codelineno-68-6" name="__codelineno-68-6"></a><span class="w">    </span><span class="n">batch_size</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
-</span><span id="__span-68-7"><a href="#__codelineno-68-7" id="__codelineno-68-7" name="__codelineno-68-7"></a><span class="w">    </span><span class="n">batch_concurrency</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
-</span><span id="__span-68-8"><a href="#__codelineno-68-8" id="__codelineno-68-8" name="__codelineno-68-8"></a><span class="w">    </span><span class="n">lookback</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
-</span><span id="__span-68-9"><a href="#__codelineno-68-9" id="__codelineno-68-9" name="__codelineno-68-9"></a><span class="w">    </span><span class="n">auto_restatement_cron</span><span class="w"> </span><span class="s1">'@weekly'</span><span class="p">,</span>
-</span><span id="__span-68-10"><a href="#__codelineno-68-10" id="__codelineno-68-10" name="__codelineno-68-10"></a><span class="w">    </span><span class="n">auto_restatement_intervals</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
-</span><span id="__span-68-11"><a href="#__codelineno-68-11" id="__codelineno-68-11" name="__codelineno-68-11"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-68-12"><a href="#__codelineno-68-12" id="__codelineno-68-12" name="__codelineno-68-12"></a><span class="p">);</span>
-</span><span id="__span-68-13"><a href="#__codelineno-68-13" id="__codelineno-68-13" name="__codelineno-68-13"></a>
-</span><span id="__span-68-14"><a href="#__codelineno-68-14" id="__codelineno-68-14" name="__codelineno-68-14"></a><span class="k">SELECT</span>
-</span><span id="__span-68-15"><a href="#__codelineno-68-15" id="__codelineno-68-15" name="__codelineno-68-15"></a><span class="w">  </span><span class="n">event_ts</span><span class="p">::</span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_ts</span><span class="p">,</span>
-</span><span id="__span-68-16"><a href="#__codelineno-68-16" id="__codelineno-68-16" name="__codelineno-68-16"></a><span class="w">  </span><span class="n">event_type</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_type</span><span class="p">,</span>
-</span><span id="__span-68-17"><a href="#__codelineno-68-17" id="__codelineno-68-17" name="__codelineno-68-17"></a><span class="w">  </span><span class="n">user_id</span><span class="p">::</span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">user_id</span>
-</span><span id="__span-68-18"><a href="#__codelineno-68-18" id="__codelineno-68-18" name="__codelineno-68-18"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">events</span>
-</span><span id="__span-68-19"><a href="#__codelineno-68-19" id="__codelineno-68-19" name="__codelineno-68-19"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">event_ts</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ts</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ts</span><span class="p">;</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-66-1"><a href="#__codelineno-66-1" id="__codelineno-66-1" name="__codelineno-66-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-66-2"><a href="#__codelineno-66-2" id="__codelineno-66-2" name="__codelineno-66-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
+</span><span id="__span-66-3"><a href="#__codelineno-66-3" id="__codelineno-66-3" name="__codelineno-66-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-66-4"><a href="#__codelineno-66-4" id="__codelineno-66-4" name="__codelineno-66-4"></a><span class="w">    </span><span class="n">time_column</span><span class="w"> </span><span class="n">event_ts</span><span class="p">,</span>
+</span><span id="__span-66-5"><a href="#__codelineno-66-5" id="__codelineno-66-5" name="__codelineno-66-5"></a><span class="w">    </span><span class="n">time_column</span><span class="w"> </span><span class="p">(</span><span class="n">event_ts</span><span class="p">,</span><span class="w"> </span><span class="s1">'%Y-%m-%d'</span><span class="p">),</span><span class="w">  </span><span class="c1">-- With format</span>
+</span><span id="__span-66-6"><a href="#__codelineno-66-6" id="__codelineno-66-6" name="__codelineno-66-6"></a><span class="w">    </span><span class="n">batch_size</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+</span><span id="__span-66-7"><a href="#__codelineno-66-7" id="__codelineno-66-7" name="__codelineno-66-7"></a><span class="w">    </span><span class="n">batch_concurrency</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+</span><span id="__span-66-8"><a href="#__codelineno-66-8" id="__codelineno-66-8" name="__codelineno-66-8"></a><span class="w">    </span><span class="n">lookback</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+</span><span id="__span-66-9"><a href="#__codelineno-66-9" id="__codelineno-66-9" name="__codelineno-66-9"></a><span class="w">    </span><span class="n">auto_restatement_cron</span><span class="w"> </span><span class="s1">'@weekly'</span><span class="p">,</span>
+</span><span id="__span-66-10"><a href="#__codelineno-66-10" id="__codelineno-66-10" name="__codelineno-66-10"></a><span class="w">    </span><span class="n">auto_restatement_intervals</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+</span><span id="__span-66-11"><a href="#__codelineno-66-11" id="__codelineno-66-11" name="__codelineno-66-11"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-66-12"><a href="#__codelineno-66-12" id="__codelineno-66-12" name="__codelineno-66-12"></a><span class="p">);</span>
+</span><span id="__span-66-13"><a href="#__codelineno-66-13" id="__codelineno-66-13" name="__codelineno-66-13"></a>
+</span><span id="__span-66-14"><a href="#__codelineno-66-14" id="__codelineno-66-14" name="__codelineno-66-14"></a><span class="k">SELECT</span>
+</span><span id="__span-66-15"><a href="#__codelineno-66-15" id="__codelineno-66-15" name="__codelineno-66-15"></a><span class="w">  </span><span class="n">event_ts</span><span class="p">::</span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_ts</span><span class="p">,</span>
+</span><span id="__span-66-16"><a href="#__codelineno-66-16" id="__codelineno-66-16" name="__codelineno-66-16"></a><span class="w">  </span><span class="n">event_type</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_type</span><span class="p">,</span>
+</span><span id="__span-66-17"><a href="#__codelineno-66-17" id="__codelineno-66-17" name="__codelineno-66-17"></a><span class="w">  </span><span class="n">user_id</span><span class="p">::</span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">user_id</span>
+</span><span id="__span-66-18"><a href="#__codelineno-66-18" id="__codelineno-66-18" name="__codelineno-66-18"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">events</span>
+</span><span id="__span-66-19"><a href="#__codelineno-66-19" id="__codelineno-66-19" name="__codelineno-66-19"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">event_ts</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ts</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ts</span><span class="p">;</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-69-1"><a href="#__codelineno-69-1" id="__codelineno-69-1" name="__codelineno-69-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelKindName</span>
-</span><span id="__span-69-2"><a href="#__codelineno-69-2" id="__codelineno-69-2" name="__codelineno-69-2"></a>
-</span><span id="__span-69-3"><a href="#__codelineno-69-3" id="__codelineno-69-3" name="__codelineno-69-3"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-69-4"><a href="#__codelineno-69-4" id="__codelineno-69-4" name="__codelineno-69-4"></a>    <span class="s2">"sales.events"</span><span class="p">,</span>
-</span><span id="__span-69-5"><a href="#__codelineno-69-5" id="__codelineno-69-5" name="__codelineno-69-5"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
-</span><span id="__span-69-6"><a href="#__codelineno-69-6" id="__codelineno-69-6" name="__codelineno-69-6"></a>        <span class="s2">"event_ts"</span><span class="p">:</span> <span class="s2">"timestamp"</span><span class="p">,</span>
-</span><span id="__span-69-7"><a href="#__codelineno-69-7" id="__codelineno-69-7" name="__codelineno-69-7"></a>        <span class="s2">"event_type"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-69-8"><a href="#__codelineno-69-8" id="__codelineno-69-8" name="__codelineno-69-8"></a>        <span class="s2">"user_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
-</span><span id="__span-69-9"><a href="#__codelineno-69-9" id="__codelineno-69-9" name="__codelineno-69-9"></a>    <span class="p">},</span>
-</span><span id="__span-69-10"><a href="#__codelineno-69-10" id="__codelineno-69-10" name="__codelineno-69-10"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-69-11"><a href="#__codelineno-69-11" id="__codelineno-69-11" name="__codelineno-69-11"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="p">,</span>
-</span><span id="__span-69-12"><a href="#__codelineno-69-12" id="__codelineno-69-12" name="__codelineno-69-12"></a>        <span class="n">time_column</span><span class="o">=</span><span class="s2">"event_ts"</span><span class="p">,</span>
-</span><span id="__span-69-13"><a href="#__codelineno-69-13" id="__codelineno-69-13" name="__codelineno-69-13"></a>        <span class="n">batch_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-</span><span id="__span-69-14"><a href="#__codelineno-69-14" id="__codelineno-69-14" name="__codelineno-69-14"></a>        <span class="n">batch_concurrency</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-</span><span id="__span-69-15"><a href="#__codelineno-69-15" id="__codelineno-69-15" name="__codelineno-69-15"></a>        <span class="n">lookback</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-</span><span id="__span-69-16"><a href="#__codelineno-69-16" id="__codelineno-69-16" name="__codelineno-69-16"></a>    <span class="p">),</span>
-</span><span id="__span-69-17"><a href="#__codelineno-69-17" id="__codelineno-69-17" name="__codelineno-69-17"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.events"</span><span class="p">],</span>
-</span><span id="__span-69-18"><a href="#__codelineno-69-18" id="__codelineno-69-18" name="__codelineno-69-18"></a><span class="p">)</span>
-</span><span id="__span-69-19"><a href="#__codelineno-69-19" id="__codelineno-69-19" name="__codelineno-69-19"></a><span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-</span><span id="__span-69-20"><a href="#__codelineno-69-20" id="__codelineno-69-20" name="__codelineno-69-20"></a>    <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
-</span><span id="__span-69-21"><a href="#__codelineno-69-21" id="__codelineno-69-21" name="__codelineno-69-21"></a><span class="s2">    SELECT event_ts, event_type, user_id</span>
-</span><span id="__span-69-22"><a href="#__codelineno-69-22" id="__codelineno-69-22" name="__codelineno-69-22"></a><span class="s2">    FROM raw.events</span>
-</span><span id="__span-69-23"><a href="#__codelineno-69-23" id="__codelineno-69-23" name="__codelineno-69-23"></a><span class="s2">    WHERE event_ts BETWEEN '</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">' AND '</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">'</span>
-</span><span id="__span-69-24"><a href="#__codelineno-69-24" id="__codelineno-69-24" name="__codelineno-69-24"></a><span class="s2">    """</span>
-</span><span id="__span-69-25"><a href="#__codelineno-69-25" id="__codelineno-69-25" name="__codelineno-69-25"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-67-1"><a href="#__codelineno-67-1" id="__codelineno-67-1" name="__codelineno-67-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelKindName</span>
+</span><span id="__span-67-2"><a href="#__codelineno-67-2" id="__codelineno-67-2" name="__codelineno-67-2"></a>
+</span><span id="__span-67-3"><a href="#__codelineno-67-3" id="__codelineno-67-3" name="__codelineno-67-3"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-67-4"><a href="#__codelineno-67-4" id="__codelineno-67-4" name="__codelineno-67-4"></a>    <span class="s2">"sales.events"</span><span class="p">,</span>
+</span><span id="__span-67-5"><a href="#__codelineno-67-5" id="__codelineno-67-5" name="__codelineno-67-5"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-67-6"><a href="#__codelineno-67-6" id="__codelineno-67-6" name="__codelineno-67-6"></a>        <span class="s2">"event_ts"</span><span class="p">:</span> <span class="s2">"timestamp"</span><span class="p">,</span>
+</span><span id="__span-67-7"><a href="#__codelineno-67-7" id="__codelineno-67-7" name="__codelineno-67-7"></a>        <span class="s2">"event_type"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-67-8"><a href="#__codelineno-67-8" id="__codelineno-67-8" name="__codelineno-67-8"></a>        <span class="s2">"user_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
+</span><span id="__span-67-9"><a href="#__codelineno-67-9" id="__codelineno-67-9" name="__codelineno-67-9"></a>    <span class="p">},</span>
+</span><span id="__span-67-10"><a href="#__codelineno-67-10" id="__codelineno-67-10" name="__codelineno-67-10"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-67-11"><a href="#__codelineno-67-11" id="__codelineno-67-11" name="__codelineno-67-11"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_TIME_RANGE</span><span class="p">,</span>
+</span><span id="__span-67-12"><a href="#__codelineno-67-12" id="__codelineno-67-12" name="__codelineno-67-12"></a>        <span class="n">time_column</span><span class="o">=</span><span class="s2">"event_ts"</span><span class="p">,</span>
+</span><span id="__span-67-13"><a href="#__codelineno-67-13" id="__codelineno-67-13" name="__codelineno-67-13"></a>        <span class="n">batch_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+</span><span id="__span-67-14"><a href="#__codelineno-67-14" id="__codelineno-67-14" name="__codelineno-67-14"></a>        <span class="n">batch_concurrency</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+</span><span id="__span-67-15"><a href="#__codelineno-67-15" id="__codelineno-67-15" name="__codelineno-67-15"></a>        <span class="n">lookback</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+</span><span id="__span-67-16"><a href="#__codelineno-67-16" id="__codelineno-67-16" name="__codelineno-67-16"></a>    <span class="p">),</span>
+</span><span id="__span-67-17"><a href="#__codelineno-67-17" id="__codelineno-67-17" name="__codelineno-67-17"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.events"</span><span class="p">],</span>
+</span><span id="__span-67-18"><a href="#__codelineno-67-18" id="__codelineno-67-18" name="__codelineno-67-18"></a><span class="p">)</span>
+</span><span id="__span-67-19"><a href="#__codelineno-67-19" id="__codelineno-67-19" name="__codelineno-67-19"></a><span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+</span><span id="__span-67-20"><a href="#__codelineno-67-20" id="__codelineno-67-20" name="__codelineno-67-20"></a>    <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
+</span><span id="__span-67-21"><a href="#__codelineno-67-21" id="__codelineno-67-21" name="__codelineno-67-21"></a><span class="s2">    SELECT event_ts, event_type, user_id</span>
+</span><span id="__span-67-22"><a href="#__codelineno-67-22" id="__codelineno-67-22" name="__codelineno-67-22"></a><span class="s2">    FROM raw.events</span>
+</span><span id="__span-67-23"><a href="#__codelineno-67-23" id="__codelineno-67-23" name="__codelineno-67-23"></a><span class="s2">    WHERE event_ts BETWEEN '</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">' AND '</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">'</span>
+</span><span id="__span-67-24"><a href="#__codelineno-67-24" id="__codelineno-67-24" name="__codelineno-67-24"></a><span class="s2">    """</span>
+</span><span id="__span-67-25"><a href="#__codelineno-67-25" id="__codelineno-67-25" name="__codelineno-67-25"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <div class="admonition info">
-<p class="admonition-title">Important</p>
-<p>The <code>time_column</code> should be in UTC timezone.</p>
+<p class="admonition-title">Important: UTC Timezone</p>
+<p>Your <code>time_column</code> should be in UTC timezone. This ensures Vulcan's scheduler and time macros work correctly.</p>
 </div>
 <hr/>
 <h3 id="incremental_by_unique_key">INCREMENTAL_BY_UNIQUE_KEY<a class="headerlink" href="#incremental_by_unique_key" title="Link to this section">¶</a></h3>
-<p>Incrementally updates data based on a unique key using MERGE operations. See <a href="../model_kinds/#incremental_by_unique_key">INCREMENTAL_BY_UNIQUE_KEY</a>.</p>
+<p>Properties for models that update based on unique keys (upsert operations). These control MERGE behavior and key handling.</p>
+<p>For details on <code>INCREMENTAL_BY_UNIQUE_KEY</code> models, see the <a href="../model_kinds/#incremental_by_unique_key">Model Kinds documentation</a>.</p>
 <table>
 <thead>
 <tr>
@@ -3217,110 +3292,112 @@
 </tr>
 </tbody>
 </table>
-<div class="tabbed-set tabbed-alternate" data-tabs="36:2"><input checked="checked" id="__tabbed_36_1" name="__tabbed_36" type="radio"/><input id="__tabbed_36_2" name="__tabbed_36" type="radio"/><div class="tabbed-labels"><label for="__tabbed_36_1">SQL</label><label for="__tabbed_36_2">Python</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="35:2"><input checked="checked" id="__tabbed_35_1" name="__tabbed_35" type="radio"/><input id="__tabbed_35_2" name="__tabbed_35" type="radio"/><div class="tabbed-labels"><label for="__tabbed_35_1">SQL</label><label for="__tabbed_35_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-70-1"><a href="#__codelineno-70-1" id="__codelineno-70-1" name="__codelineno-70-1"></a><span class="c1">-- Single unique key</span>
-</span><span id="__span-70-2"><a href="#__codelineno-70-2" id="__codelineno-70-2" name="__codelineno-70-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-70-3"><a href="#__codelineno-70-3" id="__codelineno-70-3" name="__codelineno-70-3"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
-</span><span id="__span-70-4"><a href="#__codelineno-70-4" id="__codelineno-70-4" name="__codelineno-70-4"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-70-5"><a href="#__codelineno-70-5" id="__codelineno-70-5" name="__codelineno-70-5"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
-</span><span id="__span-70-6"><a href="#__codelineno-70-6" id="__codelineno-70-6" name="__codelineno-70-6"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-70-7"><a href="#__codelineno-70-7" id="__codelineno-70-7" name="__codelineno-70-7"></a><span class="p">);</span>
-</span><span id="__span-70-8"><a href="#__codelineno-70-8" id="__codelineno-70-8" name="__codelineno-70-8"></a>
-</span><span id="__span-70-9"><a href="#__codelineno-70-9" id="__codelineno-70-9" name="__codelineno-70-9"></a><span class="c1">-- Composite unique key</span>
-</span><span id="__span-70-10"><a href="#__codelineno-70-10" id="__codelineno-70-10" name="__codelineno-70-10"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-70-11"><a href="#__codelineno-70-11" id="__codelineno-70-11" name="__codelineno-70-11"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">order_items</span><span class="p">,</span>
-</span><span id="__span-70-12"><a href="#__codelineno-70-12" id="__codelineno-70-12" name="__codelineno-70-12"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-70-13"><a href="#__codelineno-70-13" id="__codelineno-70-13" name="__codelineno-70-13"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">item_id</span><span class="p">),</span>
-</span><span id="__span-70-14"><a href="#__codelineno-70-14" id="__codelineno-70-14" name="__codelineno-70-14"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-70-15"><a href="#__codelineno-70-15" id="__codelineno-70-15" name="__codelineno-70-15"></a><span class="p">);</span>
-</span><span id="__span-70-16"><a href="#__codelineno-70-16" id="__codelineno-70-16" name="__codelineno-70-16"></a>
-</span><span id="__span-70-17"><a href="#__codelineno-70-17" id="__codelineno-70-17" name="__codelineno-70-17"></a><span class="c1">-- With MERGE options</span>
-</span><span id="__span-70-18"><a href="#__codelineno-70-18" id="__codelineno-70-18" name="__codelineno-70-18"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-70-19"><a href="#__codelineno-70-19" id="__codelineno-70-19" name="__codelineno-70-19"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
-</span><span id="__span-70-20"><a href="#__codelineno-70-20" id="__codelineno-70-20" name="__codelineno-70-20"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-70-21"><a href="#__codelineno-70-21" id="__codelineno-70-21" name="__codelineno-70-21"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
-</span><span id="__span-70-22"><a href="#__codelineno-70-22" id="__codelineno-70-22" name="__codelineno-70-22"></a><span class="w">    </span><span class="n">when_matched</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
-</span><span id="__span-70-23"><a href="#__codelineno-70-23" id="__codelineno-70-23" name="__codelineno-70-23"></a><span class="w">      </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">source</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
-</span><span id="__span-70-24"><a href="#__codelineno-70-24" id="__codelineno-70-24" name="__codelineno-70-24"></a><span class="w">      </span><span class="n">updated_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">source</span><span class="p">.</span><span class="n">updated_at</span><span class="p">,</span>
-</span><span id="__span-70-25"><a href="#__codelineno-70-25" id="__codelineno-70-25" name="__codelineno-70-25"></a><span class="w">    </span><span class="n">auto_restatement_cron</span><span class="w"> </span><span class="s1">'@weekly'</span><span class="p">,</span>
-</span><span id="__span-70-26"><a href="#__codelineno-70-26" id="__codelineno-70-26" name="__codelineno-70-26"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-70-27"><a href="#__codelineno-70-27" id="__codelineno-70-27" name="__codelineno-70-27"></a><span class="p">);</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-68-1"><a href="#__codelineno-68-1" id="__codelineno-68-1" name="__codelineno-68-1"></a><span class="c1">-- Single unique key</span>
+</span><span id="__span-68-2"><a href="#__codelineno-68-2" id="__codelineno-68-2" name="__codelineno-68-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-68-3"><a href="#__codelineno-68-3" id="__codelineno-68-3" name="__codelineno-68-3"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
+</span><span id="__span-68-4"><a href="#__codelineno-68-4" id="__codelineno-68-4" name="__codelineno-68-4"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-68-5"><a href="#__codelineno-68-5" id="__codelineno-68-5" name="__codelineno-68-5"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-68-6"><a href="#__codelineno-68-6" id="__codelineno-68-6" name="__codelineno-68-6"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-68-7"><a href="#__codelineno-68-7" id="__codelineno-68-7" name="__codelineno-68-7"></a><span class="p">);</span>
+</span><span id="__span-68-8"><a href="#__codelineno-68-8" id="__codelineno-68-8" name="__codelineno-68-8"></a>
+</span><span id="__span-68-9"><a href="#__codelineno-68-9" id="__codelineno-68-9" name="__codelineno-68-9"></a><span class="c1">-- Composite unique key</span>
+</span><span id="__span-68-10"><a href="#__codelineno-68-10" id="__codelineno-68-10" name="__codelineno-68-10"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-68-11"><a href="#__codelineno-68-11" id="__codelineno-68-11" name="__codelineno-68-11"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">order_items</span><span class="p">,</span>
+</span><span id="__span-68-12"><a href="#__codelineno-68-12" id="__codelineno-68-12" name="__codelineno-68-12"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-68-13"><a href="#__codelineno-68-13" id="__codelineno-68-13" name="__codelineno-68-13"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">item_id</span><span class="p">),</span>
+</span><span id="__span-68-14"><a href="#__codelineno-68-14" id="__codelineno-68-14" name="__codelineno-68-14"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-68-15"><a href="#__codelineno-68-15" id="__codelineno-68-15" name="__codelineno-68-15"></a><span class="p">);</span>
+</span><span id="__span-68-16"><a href="#__codelineno-68-16" id="__codelineno-68-16" name="__codelineno-68-16"></a>
+</span><span id="__span-68-17"><a href="#__codelineno-68-17" id="__codelineno-68-17" name="__codelineno-68-17"></a><span class="c1">-- With MERGE options</span>
+</span><span id="__span-68-18"><a href="#__codelineno-68-18" id="__codelineno-68-18" name="__codelineno-68-18"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-68-19"><a href="#__codelineno-68-19" id="__codelineno-68-19" name="__codelineno-68-19"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
+</span><span id="__span-68-20"><a href="#__codelineno-68-20" id="__codelineno-68-20" name="__codelineno-68-20"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-68-21"><a href="#__codelineno-68-21" id="__codelineno-68-21" name="__codelineno-68-21"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-68-22"><a href="#__codelineno-68-22" id="__codelineno-68-22" name="__codelineno-68-22"></a><span class="w">    </span><span class="n">when_matched</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-68-23"><a href="#__codelineno-68-23" id="__codelineno-68-23" name="__codelineno-68-23"></a><span class="w">      </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">source</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="__span-68-24"><a href="#__codelineno-68-24" id="__codelineno-68-24" name="__codelineno-68-24"></a><span class="w">      </span><span class="n">updated_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">source</span><span class="p">.</span><span class="n">updated_at</span><span class="p">,</span>
+</span><span id="__span-68-25"><a href="#__codelineno-68-25" id="__codelineno-68-25" name="__codelineno-68-25"></a><span class="w">    </span><span class="n">auto_restatement_cron</span><span class="w"> </span><span class="s1">'@weekly'</span><span class="p">,</span>
+</span><span id="__span-68-26"><a href="#__codelineno-68-26" id="__codelineno-68-26" name="__codelineno-68-26"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-68-27"><a href="#__codelineno-68-27" id="__codelineno-68-27" name="__codelineno-68-27"></a><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-71-1"><a href="#__codelineno-71-1" id="__codelineno-71-1" name="__codelineno-71-1"></a><span class="c1"># Single unique key</span>
-</span><span id="__span-71-2"><a href="#__codelineno-71-2" id="__codelineno-71-2" name="__codelineno-71-2"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-71-3"><a href="#__codelineno-71-3" id="__codelineno-71-3" name="__codelineno-71-3"></a>    <span class="s2">"sales.customers"</span><span class="p">,</span>
-</span><span id="__span-71-4"><a href="#__codelineno-71-4" id="__codelineno-71-4" name="__codelineno-71-4"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
-</span><span id="__span-71-5"><a href="#__codelineno-71-5" id="__codelineno-71-5" name="__codelineno-71-5"></a>        <span class="s2">"customer_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
-</span><span id="__span-71-6"><a href="#__codelineno-71-6" id="__codelineno-71-6" name="__codelineno-71-6"></a>        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-71-7"><a href="#__codelineno-71-7" id="__codelineno-71-7" name="__codelineno-71-7"></a>        <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-71-8"><a href="#__codelineno-71-8" id="__codelineno-71-8" name="__codelineno-71-8"></a>    <span class="p">},</span>
-</span><span id="__span-71-9"><a href="#__codelineno-71-9" id="__codelineno-71-9" name="__codelineno-71-9"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-71-10"><a href="#__codelineno-71-10" id="__codelineno-71-10" name="__codelineno-71-10"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="p">,</span>
-</span><span id="__span-71-11"><a href="#__codelineno-71-11" id="__codelineno-71-11" name="__codelineno-71-11"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="s2">"customer_id"</span><span class="p">,</span>
-</span><span id="__span-71-12"><a href="#__codelineno-71-12" id="__codelineno-71-12" name="__codelineno-71-12"></a>    <span class="p">),</span>
-</span><span id="__span-71-13"><a href="#__codelineno-71-13" id="__codelineno-71-13" name="__codelineno-71-13"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.customers"</span><span class="p">],</span>
-</span><span id="__span-71-14"><a href="#__codelineno-71-14" id="__codelineno-71-14" name="__codelineno-71-14"></a><span class="p">)</span>
-</span><span id="__span-71-15"><a href="#__codelineno-71-15" id="__codelineno-71-15" name="__codelineno-71-15"></a>
-</span><span id="__span-71-16"><a href="#__codelineno-71-16" id="__codelineno-71-16" name="__codelineno-71-16"></a><span class="c1"># Composite unique key</span>
-</span><span id="__span-71-17"><a href="#__codelineno-71-17" id="__codelineno-71-17" name="__codelineno-71-17"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-71-18"><a href="#__codelineno-71-18" id="__codelineno-71-18" name="__codelineno-71-18"></a>    <span class="s2">"sales.order_items"</span><span class="p">,</span>
-</span><span id="__span-71-19"><a href="#__codelineno-71-19" id="__codelineno-71-19" name="__codelineno-71-19"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-71-20"><a href="#__codelineno-71-20" id="__codelineno-71-20" name="__codelineno-71-20"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="p">,</span>
-</span><span id="__span-71-21"><a href="#__codelineno-71-21" id="__codelineno-71-21" name="__codelineno-71-21"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"order_id"</span><span class="p">,</span> <span class="s2">"item_id"</span><span class="p">],</span>
-</span><span id="__span-71-22"><a href="#__codelineno-71-22" id="__codelineno-71-22" name="__codelineno-71-22"></a>    <span class="p">),</span>
-</span><span id="__span-71-23"><a href="#__codelineno-71-23" id="__codelineno-71-23" name="__codelineno-71-23"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-69-1"><a href="#__codelineno-69-1" id="__codelineno-69-1" name="__codelineno-69-1"></a><span class="c1"># Single unique key</span>
+</span><span id="__span-69-2"><a href="#__codelineno-69-2" id="__codelineno-69-2" name="__codelineno-69-2"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-69-3"><a href="#__codelineno-69-3" id="__codelineno-69-3" name="__codelineno-69-3"></a>    <span class="s2">"sales.customers"</span><span class="p">,</span>
+</span><span id="__span-69-4"><a href="#__codelineno-69-4" id="__codelineno-69-4" name="__codelineno-69-4"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-69-5"><a href="#__codelineno-69-5" id="__codelineno-69-5" name="__codelineno-69-5"></a>        <span class="s2">"customer_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
+</span><span id="__span-69-6"><a href="#__codelineno-69-6" id="__codelineno-69-6" name="__codelineno-69-6"></a>        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-69-7"><a href="#__codelineno-69-7" id="__codelineno-69-7" name="__codelineno-69-7"></a>        <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-69-8"><a href="#__codelineno-69-8" id="__codelineno-69-8" name="__codelineno-69-8"></a>    <span class="p">},</span>
+</span><span id="__span-69-9"><a href="#__codelineno-69-9" id="__codelineno-69-9" name="__codelineno-69-9"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-69-10"><a href="#__codelineno-69-10" id="__codelineno-69-10" name="__codelineno-69-10"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="p">,</span>
+</span><span id="__span-69-11"><a href="#__codelineno-69-11" id="__codelineno-69-11" name="__codelineno-69-11"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="s2">"customer_id"</span><span class="p">,</span>
+</span><span id="__span-69-12"><a href="#__codelineno-69-12" id="__codelineno-69-12" name="__codelineno-69-12"></a>    <span class="p">),</span>
+</span><span id="__span-69-13"><a href="#__codelineno-69-13" id="__codelineno-69-13" name="__codelineno-69-13"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.customers"</span><span class="p">],</span>
+</span><span id="__span-69-14"><a href="#__codelineno-69-14" id="__codelineno-69-14" name="__codelineno-69-14"></a><span class="p">)</span>
+</span><span id="__span-69-15"><a href="#__codelineno-69-15" id="__codelineno-69-15" name="__codelineno-69-15"></a>
+</span><span id="__span-69-16"><a href="#__codelineno-69-16" id="__codelineno-69-16" name="__codelineno-69-16"></a><span class="c1"># Composite unique key</span>
+</span><span id="__span-69-17"><a href="#__codelineno-69-17" id="__codelineno-69-17" name="__codelineno-69-17"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-69-18"><a href="#__codelineno-69-18" id="__codelineno-69-18" name="__codelineno-69-18"></a>    <span class="s2">"sales.order_items"</span><span class="p">,</span>
+</span><span id="__span-69-19"><a href="#__codelineno-69-19" id="__codelineno-69-19" name="__codelineno-69-19"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-69-20"><a href="#__codelineno-69-20" id="__codelineno-69-20" name="__codelineno-69-20"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_UNIQUE_KEY</span><span class="p">,</span>
+</span><span id="__span-69-21"><a href="#__codelineno-69-21" id="__codelineno-69-21" name="__codelineno-69-21"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"order_id"</span><span class="p">,</span> <span class="s2">"item_id"</span><span class="p">],</span>
+</span><span id="__span-69-22"><a href="#__codelineno-69-22" id="__codelineno-69-22" name="__codelineno-69-22"></a>    <span class="p">),</span>
+</span><span id="__span-69-23"><a href="#__codelineno-69-23" id="__codelineno-69-23" name="__codelineno-69-23"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Batch Concurrency</p>
-<p><code>batch_concurrency</code> cannot be set for this kind because these models cannot safely run in parallel.</p>
+<p><code>batch_concurrency</code> isn't supported for this kind because MERGE operations can't safely run in parallel. Vulcan processes these models sequentially to avoid conflicts.</p>
 </div>
 <hr/>
 <h3 id="incremental_by_partition">INCREMENTAL_BY_PARTITION<a class="headerlink" href="#incremental_by_partition" title="Link to this section">¶</a></h3>
-<p>Incrementally updates data based on partition key. See <a href="../model_kinds/#incremental_by_partition">INCREMENTAL_BY_PARTITION</a>.</p>
-<p>This kind uses the <code>partitioned_by</code> general property as its partition key and does not have additional kind-specific properties.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="37:2"><input checked="checked" id="__tabbed_37_1" name="__tabbed_37" type="radio"/><input id="__tabbed_37_2" name="__tabbed_37" type="radio"/><div class="tabbed-labels"><label for="__tabbed_37_1">SQL</label><label for="__tabbed_37_2">Python</label></div>
+<p>Properties for models that update by partition. This kind uses the <code>partitioned_by</code> property (from the General Properties section) as its partition key.</p>
+<p><strong>Note:</strong> There are no additional kind-specific properties—just use <code>partitioned_by</code> to define your partition columns.</p>
+<p>For details on <code>INCREMENTAL_BY_PARTITION</code> models, see the <a href="../model_kinds/#incremental_by_partition">Model Kinds documentation</a>.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="36:2"><input checked="checked" id="__tabbed_36_1" name="__tabbed_36" type="radio"/><input id="__tabbed_36_2" name="__tabbed_36" type="radio"/><div class="tabbed-labels"><label for="__tabbed_36_1">SQL</label><label for="__tabbed_36_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-72-1"><a href="#__codelineno-72-1" id="__codelineno-72-1" name="__codelineno-72-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-72-2"><a href="#__codelineno-72-2" id="__codelineno-72-2" name="__codelineno-72-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
-</span><span id="__span-72-3"><a href="#__codelineno-72-3" id="__codelineno-72-3" name="__codelineno-72-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
-</span><span id="__span-72-4"><a href="#__codelineno-72-4" id="__codelineno-72-4" name="__codelineno-72-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span>
-</span><span id="__span-72-5"><a href="#__codelineno-72-5" id="__codelineno-72-5" name="__codelineno-72-5"></a><span class="p">);</span>
-</span><span id="__span-72-6"><a href="#__codelineno-72-6" id="__codelineno-72-6" name="__codelineno-72-6"></a>
-</span><span id="__span-72-7"><a href="#__codelineno-72-7" id="__codelineno-72-7" name="__codelineno-72-7"></a><span class="k">SELECT</span>
-</span><span id="__span-72-8"><a href="#__codelineno-72-8" id="__codelineno-72-8" name="__codelineno-72-8"></a><span class="w">  </span><span class="n">event_date</span><span class="p">::</span><span class="nb">DATE</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span>
-</span><span id="__span-72-9"><a href="#__codelineno-72-9" id="__codelineno-72-9" name="__codelineno-72-9"></a><span class="w">  </span><span class="n">event_type</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_type</span><span class="p">,</span>
-</span><span id="__span-72-10"><a href="#__codelineno-72-10" id="__codelineno-72-10" name="__codelineno-72-10"></a><span class="w">  </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)::</span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_count</span>
-</span><span id="__span-72-11"><a href="#__codelineno-72-11" id="__codelineno-72-11" name="__codelineno-72-11"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">events</span>
-</span><span id="__span-72-12"><a href="#__codelineno-72-12" id="__codelineno-72-12" name="__codelineno-72-12"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span><span class="w"> </span><span class="n">event_type</span><span class="p">;</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-70-1"><a href="#__codelineno-70-1" id="__codelineno-70-1" name="__codelineno-70-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-70-2"><a href="#__codelineno-70-2" id="__codelineno-70-2" name="__codelineno-70-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">events</span><span class="p">,</span>
+</span><span id="__span-70-3"><a href="#__codelineno-70-3" id="__codelineno-70-3" name="__codelineno-70-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">,</span>
+</span><span id="__span-70-4"><a href="#__codelineno-70-4" id="__codelineno-70-4" name="__codelineno-70-4"></a><span class="w">  </span><span class="n">partitioned_by</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span>
+</span><span id="__span-70-5"><a href="#__codelineno-70-5" id="__codelineno-70-5" name="__codelineno-70-5"></a><span class="p">);</span>
+</span><span id="__span-70-6"><a href="#__codelineno-70-6" id="__codelineno-70-6" name="__codelineno-70-6"></a>
+</span><span id="__span-70-7"><a href="#__codelineno-70-7" id="__codelineno-70-7" name="__codelineno-70-7"></a><span class="k">SELECT</span>
+</span><span id="__span-70-8"><a href="#__codelineno-70-8" id="__codelineno-70-8" name="__codelineno-70-8"></a><span class="w">  </span><span class="n">event_date</span><span class="p">::</span><span class="nb">DATE</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span>
+</span><span id="__span-70-9"><a href="#__codelineno-70-9" id="__codelineno-70-9" name="__codelineno-70-9"></a><span class="w">  </span><span class="n">event_type</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_type</span><span class="p">,</span>
+</span><span id="__span-70-10"><a href="#__codelineno-70-10" id="__codelineno-70-10" name="__codelineno-70-10"></a><span class="w">  </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)::</span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">event_count</span>
+</span><span id="__span-70-11"><a href="#__codelineno-70-11" id="__codelineno-70-11" name="__codelineno-70-11"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">events</span>
+</span><span id="__span-70-12"><a href="#__codelineno-70-12" id="__codelineno-70-12" name="__codelineno-70-12"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">event_date</span><span class="p">,</span><span class="w"> </span><span class="n">event_type</span><span class="p">;</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-73-1"><a href="#__codelineno-73-1" id="__codelineno-73-1" name="__codelineno-73-1"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-73-2"><a href="#__codelineno-73-2" id="__codelineno-73-2" name="__codelineno-73-2"></a>    <span class="s2">"sales.events"</span><span class="p">,</span>
-</span><span id="__span-73-3"><a href="#__codelineno-73-3" id="__codelineno-73-3" name="__codelineno-73-3"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
-</span><span id="__span-73-4"><a href="#__codelineno-73-4" id="__codelineno-73-4" name="__codelineno-73-4"></a>        <span class="s2">"event_date"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">,</span>
-</span><span id="__span-73-5"><a href="#__codelineno-73-5" id="__codelineno-73-5" name="__codelineno-73-5"></a>        <span class="s2">"event_type"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-73-6"><a href="#__codelineno-73-6" id="__codelineno-73-6" name="__codelineno-73-6"></a>        <span class="s2">"event_count"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
-</span><span id="__span-73-7"><a href="#__codelineno-73-7" id="__codelineno-73-7" name="__codelineno-73-7"></a>    <span class="p">},</span>
-</span><span id="__span-73-8"><a href="#__codelineno-73-8" id="__codelineno-73-8" name="__codelineno-73-8"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">),</span>
-</span><span id="__span-73-9"><a href="#__codelineno-73-9" id="__codelineno-73-9" name="__codelineno-73-9"></a>    <span class="n">partitioned_by</span><span class="o">=</span><span class="p">[</span><span class="s2">"event_date"</span><span class="p">],</span>
-</span><span id="__span-73-10"><a href="#__codelineno-73-10" id="__codelineno-73-10" name="__codelineno-73-10"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.events"</span><span class="p">],</span>
-</span><span id="__span-73-11"><a href="#__codelineno-73-11" id="__codelineno-73-11" name="__codelineno-73-11"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-71-1"><a href="#__codelineno-71-1" id="__codelineno-71-1" name="__codelineno-71-1"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-71-2"><a href="#__codelineno-71-2" id="__codelineno-71-2" name="__codelineno-71-2"></a>    <span class="s2">"sales.events"</span><span class="p">,</span>
+</span><span id="__span-71-3"><a href="#__codelineno-71-3" id="__codelineno-71-3" name="__codelineno-71-3"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-71-4"><a href="#__codelineno-71-4" id="__codelineno-71-4" name="__codelineno-71-4"></a>        <span class="s2">"event_date"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">,</span>
+</span><span id="__span-71-5"><a href="#__codelineno-71-5" id="__codelineno-71-5" name="__codelineno-71-5"></a>        <span class="s2">"event_type"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-71-6"><a href="#__codelineno-71-6" id="__codelineno-71-6" name="__codelineno-71-6"></a>        <span class="s2">"event_count"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
+</span><span id="__span-71-7"><a href="#__codelineno-71-7" id="__codelineno-71-7" name="__codelineno-71-7"></a>    <span class="p">},</span>
+</span><span id="__span-71-8"><a href="#__codelineno-71-8" id="__codelineno-71-8" name="__codelineno-71-8"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">INCREMENTAL_BY_PARTITION</span><span class="p">),</span>
+</span><span id="__span-71-9"><a href="#__codelineno-71-9" id="__codelineno-71-9" name="__codelineno-71-9"></a>    <span class="n">partitioned_by</span><span class="o">=</span><span class="p">[</span><span class="s2">"event_date"</span><span class="p">],</span>
+</span><span id="__span-71-10"><a href="#__codelineno-71-10" id="__codelineno-71-10" name="__codelineno-71-10"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.events"</span><span class="p">],</span>
+</span><span id="__span-71-11"><a href="#__codelineno-71-11" id="__codelineno-71-11" name="__codelineno-71-11"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <hr/>
 <h3 id="scd_type_2">SCD_TYPE_2<a class="headerlink" href="#scd_type_2" title="Link to this section">¶</a></h3>
-<p>Slowly Changing Dimension Type 2 models track historical changes. See <a href="../model_kinds/#scd-type-2">SCD_TYPE_2</a>.</p>
+<p>Properties for Slowly Changing Dimension Type 2 models, which track historical changes to your data.</p>
+<p>For the complete guide on SCD Type 2 models, see the <a href="../model_kinds/#scd-type-2">Model Kinds documentation</a>.</p>
 <h4 id="common-scd-type-2-properties">Common SCD Type 2 Properties<a class="headerlink" href="#common-scd-type-2-properties" title="Link to this section">¶</a></h4>
 <table>
 <thead>
@@ -3359,7 +3436,7 @@
 </tbody>
 </table>
 <h4 id="scd_type_2_by_time">SCD_TYPE_2_BY_TIME<a class="headerlink" href="#scd_type_2_by_time" title="Link to this section">¶</a></h4>
-<p>Tracks changes based on an <code>updated_at</code> timestamp column.</p>
+<p>Properties for SCD Type 2 models that detect changes using an <code>updated_at</code> timestamp column. This is the recommended approach when your source table has update timestamps.</p>
 <table>
 <thead>
 <tr>
@@ -3384,54 +3461,54 @@
 </tr>
 </tbody>
 </table>
-<div class="tabbed-set tabbed-alternate" data-tabs="38:2"><input checked="checked" id="__tabbed_38_1" name="__tabbed_38" type="radio"/><input id="__tabbed_38_2" name="__tabbed_38" type="radio"/><div class="tabbed-labels"><label for="__tabbed_38_1">SQL</label><label for="__tabbed_38_2">Python</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="37:2"><input checked="checked" id="__tabbed_37_1" name="__tabbed_37" type="radio"/><input id="__tabbed_37_2" name="__tabbed_37" type="radio"/><div class="tabbed-labels"><label for="__tabbed_37_1">SQL</label><label for="__tabbed_37_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-74-1"><a href="#__codelineno-74-1" id="__codelineno-74-1" name="__codelineno-74-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-74-2"><a href="#__codelineno-74-2" id="__codelineno-74-2" name="__codelineno-74-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">dim</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
-</span><span id="__span-74-3"><a href="#__codelineno-74-3" id="__codelineno-74-3" name="__codelineno-74-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_TIME</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-74-4"><a href="#__codelineno-74-4" id="__codelineno-74-4" name="__codelineno-74-4"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
-</span><span id="__span-74-5"><a href="#__codelineno-74-5" id="__codelineno-74-5" name="__codelineno-74-5"></a><span class="w">    </span><span class="n">updated_at_name</span><span class="w"> </span><span class="n">last_modified</span><span class="p">,</span>
-</span><span id="__span-74-6"><a href="#__codelineno-74-6" id="__codelineno-74-6" name="__codelineno-74-6"></a><span class="w">    </span><span class="n">valid_from_name</span><span class="w"> </span><span class="n">effective_from</span><span class="p">,</span>
-</span><span id="__span-74-7"><a href="#__codelineno-74-7" id="__codelineno-74-7" name="__codelineno-74-7"></a><span class="w">    </span><span class="n">valid_to_name</span><span class="w"> </span><span class="n">effective_to</span><span class="p">,</span>
-</span><span id="__span-74-8"><a href="#__codelineno-74-8" id="__codelineno-74-8" name="__codelineno-74-8"></a><span class="w">    </span><span class="n">invalidate_hard_deletes</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
-</span><span id="__span-74-9"><a href="#__codelineno-74-9" id="__codelineno-74-9" name="__codelineno-74-9"></a><span class="w">    </span><span class="n">updated_at_as_valid_from</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
-</span><span id="__span-74-10"><a href="#__codelineno-74-10" id="__codelineno-74-10" name="__codelineno-74-10"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-74-11"><a href="#__codelineno-74-11" id="__codelineno-74-11" name="__codelineno-74-11"></a><span class="p">);</span>
-</span><span id="__span-74-12"><a href="#__codelineno-74-12" id="__codelineno-74-12" name="__codelineno-74-12"></a>
-</span><span id="__span-74-13"><a href="#__codelineno-74-13" id="__codelineno-74-13" name="__codelineno-74-13"></a><span class="k">SELECT</span>
-</span><span id="__span-74-14"><a href="#__codelineno-74-14" id="__codelineno-74-14" name="__codelineno-74-14"></a><span class="w">  </span><span class="n">customer_id</span><span class="p">::</span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
-</span><span id="__span-74-15"><a href="#__codelineno-74-15" id="__codelineno-74-15" name="__codelineno-74-15"></a><span class="w">  </span><span class="n">name</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">name</span><span class="p">,</span>
-</span><span id="__span-74-16"><a href="#__codelineno-74-16" id="__codelineno-74-16" name="__codelineno-74-16"></a><span class="w">  </span><span class="n">email</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">email</span><span class="p">,</span>
-</span><span id="__span-74-17"><a href="#__codelineno-74-17" id="__codelineno-74-17" name="__codelineno-74-17"></a><span class="w">  </span><span class="n">last_modified</span><span class="p">::</span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">last_modified</span>
-</span><span id="__span-74-18"><a href="#__codelineno-74-18" id="__codelineno-74-18" name="__codelineno-74-18"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">customers</span><span class="p">;</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-72-1"><a href="#__codelineno-72-1" id="__codelineno-72-1" name="__codelineno-72-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-72-2"><a href="#__codelineno-72-2" id="__codelineno-72-2" name="__codelineno-72-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">dim</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
+</span><span id="__span-72-3"><a href="#__codelineno-72-3" id="__codelineno-72-3" name="__codelineno-72-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_TIME</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-72-4"><a href="#__codelineno-72-4" id="__codelineno-72-4" name="__codelineno-72-4"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-72-5"><a href="#__codelineno-72-5" id="__codelineno-72-5" name="__codelineno-72-5"></a><span class="w">    </span><span class="n">updated_at_name</span><span class="w"> </span><span class="n">last_modified</span><span class="p">,</span>
+</span><span id="__span-72-6"><a href="#__codelineno-72-6" id="__codelineno-72-6" name="__codelineno-72-6"></a><span class="w">    </span><span class="n">valid_from_name</span><span class="w"> </span><span class="n">effective_from</span><span class="p">,</span>
+</span><span id="__span-72-7"><a href="#__codelineno-72-7" id="__codelineno-72-7" name="__codelineno-72-7"></a><span class="w">    </span><span class="n">valid_to_name</span><span class="w"> </span><span class="n">effective_to</span><span class="p">,</span>
+</span><span id="__span-72-8"><a href="#__codelineno-72-8" id="__codelineno-72-8" name="__codelineno-72-8"></a><span class="w">    </span><span class="n">invalidate_hard_deletes</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
+</span><span id="__span-72-9"><a href="#__codelineno-72-9" id="__codelineno-72-9" name="__codelineno-72-9"></a><span class="w">    </span><span class="n">updated_at_as_valid_from</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
+</span><span id="__span-72-10"><a href="#__codelineno-72-10" id="__codelineno-72-10" name="__codelineno-72-10"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-72-11"><a href="#__codelineno-72-11" id="__codelineno-72-11" name="__codelineno-72-11"></a><span class="p">);</span>
+</span><span id="__span-72-12"><a href="#__codelineno-72-12" id="__codelineno-72-12" name="__codelineno-72-12"></a>
+</span><span id="__span-72-13"><a href="#__codelineno-72-13" id="__codelineno-72-13" name="__codelineno-72-13"></a><span class="k">SELECT</span>
+</span><span id="__span-72-14"><a href="#__codelineno-72-14" id="__codelineno-72-14" name="__codelineno-72-14"></a><span class="w">  </span><span class="n">customer_id</span><span class="p">::</span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span>
+</span><span id="__span-72-15"><a href="#__codelineno-72-15" id="__codelineno-72-15" name="__codelineno-72-15"></a><span class="w">  </span><span class="n">name</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">name</span><span class="p">,</span>
+</span><span id="__span-72-16"><a href="#__codelineno-72-16" id="__codelineno-72-16" name="__codelineno-72-16"></a><span class="w">  </span><span class="n">email</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">email</span><span class="p">,</span>
+</span><span id="__span-72-17"><a href="#__codelineno-72-17" id="__codelineno-72-17" name="__codelineno-72-17"></a><span class="w">  </span><span class="n">last_modified</span><span class="p">::</span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">last_modified</span>
+</span><span id="__span-72-18"><a href="#__codelineno-72-18" id="__codelineno-72-18" name="__codelineno-72-18"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">customers</span><span class="p">;</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-75-1"><a href="#__codelineno-75-1" id="__codelineno-75-1" name="__codelineno-75-1"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-75-2"><a href="#__codelineno-75-2" id="__codelineno-75-2" name="__codelineno-75-2"></a>    <span class="s2">"dim.customers"</span><span class="p">,</span>
-</span><span id="__span-75-3"><a href="#__codelineno-75-3" id="__codelineno-75-3" name="__codelineno-75-3"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
-</span><span id="__span-75-4"><a href="#__codelineno-75-4" id="__codelineno-75-4" name="__codelineno-75-4"></a>        <span class="s2">"customer_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
-</span><span id="__span-75-5"><a href="#__codelineno-75-5" id="__codelineno-75-5" name="__codelineno-75-5"></a>        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-75-6"><a href="#__codelineno-75-6" id="__codelineno-75-6" name="__codelineno-75-6"></a>        <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-75-7"><a href="#__codelineno-75-7" id="__codelineno-75-7" name="__codelineno-75-7"></a>        <span class="s2">"last_modified"</span><span class="p">:</span> <span class="s2">"timestamp"</span><span class="p">,</span>
-</span><span id="__span-75-8"><a href="#__codelineno-75-8" id="__codelineno-75-8" name="__codelineno-75-8"></a>    <span class="p">},</span>
-</span><span id="__span-75-9"><a href="#__codelineno-75-9" id="__codelineno-75-9" name="__codelineno-75-9"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-75-10"><a href="#__codelineno-75-10" id="__codelineno-75-10" name="__codelineno-75-10"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">SCD_TYPE_2_BY_TIME</span><span class="p">,</span>
-</span><span id="__span-75-11"><a href="#__codelineno-75-11" id="__codelineno-75-11" name="__codelineno-75-11"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"customer_id"</span><span class="p">],</span>
-</span><span id="__span-75-12"><a href="#__codelineno-75-12" id="__codelineno-75-12" name="__codelineno-75-12"></a>        <span class="n">updated_at_name</span><span class="o">=</span><span class="s2">"last_modified"</span><span class="p">,</span>
-</span><span id="__span-75-13"><a href="#__codelineno-75-13" id="__codelineno-75-13" name="__codelineno-75-13"></a>        <span class="n">valid_from_name</span><span class="o">=</span><span class="s2">"effective_from"</span><span class="p">,</span>
-</span><span id="__span-75-14"><a href="#__codelineno-75-14" id="__codelineno-75-14" name="__codelineno-75-14"></a>        <span class="n">valid_to_name</span><span class="o">=</span><span class="s2">"effective_to"</span><span class="p">,</span>
-</span><span id="__span-75-15"><a href="#__codelineno-75-15" id="__codelineno-75-15" name="__codelineno-75-15"></a>        <span class="n">invalidate_hard_deletes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-75-16"><a href="#__codelineno-75-16" id="__codelineno-75-16" name="__codelineno-75-16"></a>    <span class="p">),</span>
-</span><span id="__span-75-17"><a href="#__codelineno-75-17" id="__codelineno-75-17" name="__codelineno-75-17"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.customers"</span><span class="p">],</span>
-</span><span id="__span-75-18"><a href="#__codelineno-75-18" id="__codelineno-75-18" name="__codelineno-75-18"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-73-1"><a href="#__codelineno-73-1" id="__codelineno-73-1" name="__codelineno-73-1"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-73-2"><a href="#__codelineno-73-2" id="__codelineno-73-2" name="__codelineno-73-2"></a>    <span class="s2">"dim.customers"</span><span class="p">,</span>
+</span><span id="__span-73-3"><a href="#__codelineno-73-3" id="__codelineno-73-3" name="__codelineno-73-3"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-73-4"><a href="#__codelineno-73-4" id="__codelineno-73-4" name="__codelineno-73-4"></a>        <span class="s2">"customer_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
+</span><span id="__span-73-5"><a href="#__codelineno-73-5" id="__codelineno-73-5" name="__codelineno-73-5"></a>        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-73-6"><a href="#__codelineno-73-6" id="__codelineno-73-6" name="__codelineno-73-6"></a>        <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-73-7"><a href="#__codelineno-73-7" id="__codelineno-73-7" name="__codelineno-73-7"></a>        <span class="s2">"last_modified"</span><span class="p">:</span> <span class="s2">"timestamp"</span><span class="p">,</span>
+</span><span id="__span-73-8"><a href="#__codelineno-73-8" id="__codelineno-73-8" name="__codelineno-73-8"></a>    <span class="p">},</span>
+</span><span id="__span-73-9"><a href="#__codelineno-73-9" id="__codelineno-73-9" name="__codelineno-73-9"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-73-10"><a href="#__codelineno-73-10" id="__codelineno-73-10" name="__codelineno-73-10"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">SCD_TYPE_2_BY_TIME</span><span class="p">,</span>
+</span><span id="__span-73-11"><a href="#__codelineno-73-11" id="__codelineno-73-11" name="__codelineno-73-11"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"customer_id"</span><span class="p">],</span>
+</span><span id="__span-73-12"><a href="#__codelineno-73-12" id="__codelineno-73-12" name="__codelineno-73-12"></a>        <span class="n">updated_at_name</span><span class="o">=</span><span class="s2">"last_modified"</span><span class="p">,</span>
+</span><span id="__span-73-13"><a href="#__codelineno-73-13" id="__codelineno-73-13" name="__codelineno-73-13"></a>        <span class="n">valid_from_name</span><span class="o">=</span><span class="s2">"effective_from"</span><span class="p">,</span>
+</span><span id="__span-73-14"><a href="#__codelineno-73-14" id="__codelineno-73-14" name="__codelineno-73-14"></a>        <span class="n">valid_to_name</span><span class="o">=</span><span class="s2">"effective_to"</span><span class="p">,</span>
+</span><span id="__span-73-15"><a href="#__codelineno-73-15" id="__codelineno-73-15" name="__codelineno-73-15"></a>        <span class="n">invalidate_hard_deletes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-73-16"><a href="#__codelineno-73-16" id="__codelineno-73-16" name="__codelineno-73-16"></a>    <span class="p">),</span>
+</span><span id="__span-73-17"><a href="#__codelineno-73-17" id="__codelineno-73-17" name="__codelineno-73-17"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.customers"</span><span class="p">],</span>
+</span><span id="__span-73-18"><a href="#__codelineno-73-18" id="__codelineno-73-18" name="__codelineno-73-18"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <h4 id="scd_type_2_by_column">SCD_TYPE_2_BY_COLUMN<a class="headerlink" href="#scd_type_2_by_column" title="Link to this section">¶</a></h4>
-<p>Tracks changes by comparing column values (no <code>updated_at</code> column needed).</p>
+<p>Properties for SCD Type 2 models that detect changes by comparing column values. Use this when your source table doesn't have an <code>updated_at</code> column.</p>
 <table>
 <thead>
 <tr>
@@ -3456,57 +3533,57 @@
 </tr>
 </tbody>
 </table>
-<div class="tabbed-set tabbed-alternate" data-tabs="39:2"><input checked="checked" id="__tabbed_39_1" name="__tabbed_39" type="radio"/><input id="__tabbed_39_2" name="__tabbed_39" type="radio"/><div class="tabbed-labels"><label for="__tabbed_39_1">SQL</label><label for="__tabbed_39_2">Python</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="38:2"><input checked="checked" id="__tabbed_38_1" name="__tabbed_38" type="radio"/><input id="__tabbed_38_2" name="__tabbed_38" type="radio"/><div class="tabbed-labels"><label for="__tabbed_38_1">SQL</label><label for="__tabbed_38_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-76-1"><a href="#__codelineno-76-1" id="__codelineno-76-1" name="__codelineno-76-1"></a><span class="c1">-- Track specific columns</span>
-</span><span id="__span-76-2"><a href="#__codelineno-76-2" id="__codelineno-76-2" name="__codelineno-76-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-76-3"><a href="#__codelineno-76-3" id="__codelineno-76-3" name="__codelineno-76-3"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">dim</span><span class="p">.</span><span class="n">products</span><span class="p">,</span>
-</span><span id="__span-76-4"><a href="#__codelineno-76-4" id="__codelineno-76-4" name="__codelineno-76-4"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-76-5"><a href="#__codelineno-76-5" id="__codelineno-76-5" name="__codelineno-76-5"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">product_id</span><span class="p">,</span>
-</span><span id="__span-76-6"><a href="#__codelineno-76-6" id="__codelineno-76-6" name="__codelineno-76-6"></a><span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">),</span>
-</span><span id="__span-76-7"><a href="#__codelineno-76-7" id="__codelineno-76-7" name="__codelineno-76-7"></a><span class="w">    </span><span class="n">execution_time_as_valid_from</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
-</span><span id="__span-76-8"><a href="#__codelineno-76-8" id="__codelineno-76-8" name="__codelineno-76-8"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-76-9"><a href="#__codelineno-76-9" id="__codelineno-76-9" name="__codelineno-76-9"></a><span class="p">);</span>
-</span><span id="__span-76-10"><a href="#__codelineno-76-10" id="__codelineno-76-10" name="__codelineno-76-10"></a>
-</span><span id="__span-76-11"><a href="#__codelineno-76-11" id="__codelineno-76-11" name="__codelineno-76-11"></a><span class="c1">-- Track all columns</span>
-</span><span id="__span-76-12"><a href="#__codelineno-76-12" id="__codelineno-76-12" name="__codelineno-76-12"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-76-13"><a href="#__codelineno-76-13" id="__codelineno-76-13" name="__codelineno-76-13"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">dim</span><span class="p">.</span><span class="n">products</span><span class="p">,</span>
-</span><span id="__span-76-14"><a href="#__codelineno-76-14" id="__codelineno-76-14" name="__codelineno-76-14"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-76-15"><a href="#__codelineno-76-15" id="__codelineno-76-15" name="__codelineno-76-15"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">product_id</span><span class="p">,</span>
-</span><span id="__span-76-16"><a href="#__codelineno-76-16" id="__codelineno-76-16" name="__codelineno-76-16"></a><span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="s1">'*'</span><span class="p">,</span>
-</span><span id="__span-76-17"><a href="#__codelineno-76-17" id="__codelineno-76-17" name="__codelineno-76-17"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-76-18"><a href="#__codelineno-76-18" id="__codelineno-76-18" name="__codelineno-76-18"></a><span class="p">);</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-74-1"><a href="#__codelineno-74-1" id="__codelineno-74-1" name="__codelineno-74-1"></a><span class="c1">-- Track specific columns</span>
+</span><span id="__span-74-2"><a href="#__codelineno-74-2" id="__codelineno-74-2" name="__codelineno-74-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-74-3"><a href="#__codelineno-74-3" id="__codelineno-74-3" name="__codelineno-74-3"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">dim</span><span class="p">.</span><span class="n">products</span><span class="p">,</span>
+</span><span id="__span-74-4"><a href="#__codelineno-74-4" id="__codelineno-74-4" name="__codelineno-74-4"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-74-5"><a href="#__codelineno-74-5" id="__codelineno-74-5" name="__codelineno-74-5"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">product_id</span><span class="p">,</span>
+</span><span id="__span-74-6"><a href="#__codelineno-74-6" id="__codelineno-74-6" name="__codelineno-74-6"></a><span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">),</span>
+</span><span id="__span-74-7"><a href="#__codelineno-74-7" id="__codelineno-74-7" name="__codelineno-74-7"></a><span class="w">    </span><span class="n">execution_time_as_valid_from</span><span class="w"> </span><span class="k">true</span><span class="p">,</span>
+</span><span id="__span-74-8"><a href="#__codelineno-74-8" id="__codelineno-74-8" name="__codelineno-74-8"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-74-9"><a href="#__codelineno-74-9" id="__codelineno-74-9" name="__codelineno-74-9"></a><span class="p">);</span>
+</span><span id="__span-74-10"><a href="#__codelineno-74-10" id="__codelineno-74-10" name="__codelineno-74-10"></a>
+</span><span id="__span-74-11"><a href="#__codelineno-74-11" id="__codelineno-74-11" name="__codelineno-74-11"></a><span class="c1">-- Track all columns</span>
+</span><span id="__span-74-12"><a href="#__codelineno-74-12" id="__codelineno-74-12" name="__codelineno-74-12"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-74-13"><a href="#__codelineno-74-13" id="__codelineno-74-13" name="__codelineno-74-13"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">dim</span><span class="p">.</span><span class="n">products</span><span class="p">,</span>
+</span><span id="__span-74-14"><a href="#__codelineno-74-14" id="__codelineno-74-14" name="__codelineno-74-14"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-74-15"><a href="#__codelineno-74-15" id="__codelineno-74-15" name="__codelineno-74-15"></a><span class="w">    </span><span class="n">unique_key</span><span class="w"> </span><span class="n">product_id</span><span class="p">,</span>
+</span><span id="__span-74-16"><a href="#__codelineno-74-16" id="__codelineno-74-16" name="__codelineno-74-16"></a><span class="w">    </span><span class="n">columns</span><span class="w"> </span><span class="s1">'*'</span><span class="p">,</span>
+</span><span id="__span-74-17"><a href="#__codelineno-74-17" id="__codelineno-74-17" name="__codelineno-74-17"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-74-18"><a href="#__codelineno-74-18" id="__codelineno-74-18" name="__codelineno-74-18"></a><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-77-1"><a href="#__codelineno-77-1" id="__codelineno-77-1" name="__codelineno-77-1"></a><span class="c1"># Track specific columns</span>
-</span><span id="__span-77-2"><a href="#__codelineno-77-2" id="__codelineno-77-2" name="__codelineno-77-2"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-77-3"><a href="#__codelineno-77-3" id="__codelineno-77-3" name="__codelineno-77-3"></a>    <span class="s2">"dim.products"</span><span class="p">,</span>
-</span><span id="__span-77-4"><a href="#__codelineno-77-4" id="__codelineno-77-4" name="__codelineno-77-4"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
-</span><span id="__span-77-5"><a href="#__codelineno-77-5" id="__codelineno-77-5" name="__codelineno-77-5"></a>        <span class="s2">"product_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
-</span><span id="__span-77-6"><a href="#__codelineno-77-6" id="__codelineno-77-6" name="__codelineno-77-6"></a>        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-77-7"><a href="#__codelineno-77-7" id="__codelineno-77-7" name="__codelineno-77-7"></a>        <span class="s2">"price"</span><span class="p">:</span> <span class="s2">"decimal(10,2)"</span><span class="p">,</span>
-</span><span id="__span-77-8"><a href="#__codelineno-77-8" id="__codelineno-77-8" name="__codelineno-77-8"></a>        <span class="s2">"category"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
-</span><span id="__span-77-9"><a href="#__codelineno-77-9" id="__codelineno-77-9" name="__codelineno-77-9"></a>    <span class="p">},</span>
-</span><span id="__span-77-10"><a href="#__codelineno-77-10" id="__codelineno-77-10" name="__codelineno-77-10"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-77-11"><a href="#__codelineno-77-11" id="__codelineno-77-11" name="__codelineno-77-11"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="p">,</span>
-</span><span id="__span-77-12"><a href="#__codelineno-77-12" id="__codelineno-77-12" name="__codelineno-77-12"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"product_id"</span><span class="p">],</span>
-</span><span id="__span-77-13"><a href="#__codelineno-77-13" id="__codelineno-77-13" name="__codelineno-77-13"></a>        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">],</span>
-</span><span id="__span-77-14"><a href="#__codelineno-77-14" id="__codelineno-77-14" name="__codelineno-77-14"></a>        <span class="n">execution_time_as_valid_from</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-77-15"><a href="#__codelineno-77-15" id="__codelineno-77-15" name="__codelineno-77-15"></a>    <span class="p">),</span>
-</span><span id="__span-77-16"><a href="#__codelineno-77-16" id="__codelineno-77-16" name="__codelineno-77-16"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.products"</span><span class="p">],</span>
-</span><span id="__span-77-17"><a href="#__codelineno-77-17" id="__codelineno-77-17" name="__codelineno-77-17"></a><span class="p">)</span>
-</span><span id="__span-77-18"><a href="#__codelineno-77-18" id="__codelineno-77-18" name="__codelineno-77-18"></a>
-</span><span id="__span-77-19"><a href="#__codelineno-77-19" id="__codelineno-77-19" name="__codelineno-77-19"></a><span class="c1"># Track all columns</span>
-</span><span id="__span-77-20"><a href="#__codelineno-77-20" id="__codelineno-77-20" name="__codelineno-77-20"></a><span class="nd">@model</span><span class="p">(</span>
-</span><span id="__span-77-21"><a href="#__codelineno-77-21" id="__codelineno-77-21" name="__codelineno-77-21"></a>    <span class="s2">"dim.products"</span><span class="p">,</span>
-</span><span id="__span-77-22"><a href="#__codelineno-77-22" id="__codelineno-77-22" name="__codelineno-77-22"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-</span><span id="__span-77-23"><a href="#__codelineno-77-23" id="__codelineno-77-23" name="__codelineno-77-23"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="p">,</span>
-</span><span id="__span-77-24"><a href="#__codelineno-77-24" id="__codelineno-77-24" name="__codelineno-77-24"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"product_id"</span><span class="p">],</span>
-</span><span id="__span-77-25"><a href="#__codelineno-77-25" id="__codelineno-77-25" name="__codelineno-77-25"></a>        <span class="n">columns</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
-</span><span id="__span-77-26"><a href="#__codelineno-77-26" id="__codelineno-77-26" name="__codelineno-77-26"></a>    <span class="p">),</span>
-</span><span id="__span-77-27"><a href="#__codelineno-77-27" id="__codelineno-77-27" name="__codelineno-77-27"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-75-1"><a href="#__codelineno-75-1" id="__codelineno-75-1" name="__codelineno-75-1"></a><span class="c1"># Track specific columns</span>
+</span><span id="__span-75-2"><a href="#__codelineno-75-2" id="__codelineno-75-2" name="__codelineno-75-2"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-75-3"><a href="#__codelineno-75-3" id="__codelineno-75-3" name="__codelineno-75-3"></a>    <span class="s2">"dim.products"</span><span class="p">,</span>
+</span><span id="__span-75-4"><a href="#__codelineno-75-4" id="__codelineno-75-4" name="__codelineno-75-4"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-75-5"><a href="#__codelineno-75-5" id="__codelineno-75-5" name="__codelineno-75-5"></a>        <span class="s2">"product_id"</span><span class="p">:</span> <span class="s2">"int"</span><span class="p">,</span>
+</span><span id="__span-75-6"><a href="#__codelineno-75-6" id="__codelineno-75-6" name="__codelineno-75-6"></a>        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-75-7"><a href="#__codelineno-75-7" id="__codelineno-75-7" name="__codelineno-75-7"></a>        <span class="s2">"price"</span><span class="p">:</span> <span class="s2">"decimal(10,2)"</span><span class="p">,</span>
+</span><span id="__span-75-8"><a href="#__codelineno-75-8" id="__codelineno-75-8" name="__codelineno-75-8"></a>        <span class="s2">"category"</span><span class="p">:</span> <span class="s2">"varchar"</span><span class="p">,</span>
+</span><span id="__span-75-9"><a href="#__codelineno-75-9" id="__codelineno-75-9" name="__codelineno-75-9"></a>    <span class="p">},</span>
+</span><span id="__span-75-10"><a href="#__codelineno-75-10" id="__codelineno-75-10" name="__codelineno-75-10"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-75-11"><a href="#__codelineno-75-11" id="__codelineno-75-11" name="__codelineno-75-11"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="p">,</span>
+</span><span id="__span-75-12"><a href="#__codelineno-75-12" id="__codelineno-75-12" name="__codelineno-75-12"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"product_id"</span><span class="p">],</span>
+</span><span id="__span-75-13"><a href="#__codelineno-75-13" id="__codelineno-75-13" name="__codelineno-75-13"></a>        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">],</span>
+</span><span id="__span-75-14"><a href="#__codelineno-75-14" id="__codelineno-75-14" name="__codelineno-75-14"></a>        <span class="n">execution_time_as_valid_from</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-75-15"><a href="#__codelineno-75-15" id="__codelineno-75-15" name="__codelineno-75-15"></a>    <span class="p">),</span>
+</span><span id="__span-75-16"><a href="#__codelineno-75-16" id="__codelineno-75-16" name="__codelineno-75-16"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"raw.products"</span><span class="p">],</span>
+</span><span id="__span-75-17"><a href="#__codelineno-75-17" id="__codelineno-75-17" name="__codelineno-75-17"></a><span class="p">)</span>
+</span><span id="__span-75-18"><a href="#__codelineno-75-18" id="__codelineno-75-18" name="__codelineno-75-18"></a>
+</span><span id="__span-75-19"><a href="#__codelineno-75-19" id="__codelineno-75-19" name="__codelineno-75-19"></a><span class="c1"># Track all columns</span>
+</span><span id="__span-75-20"><a href="#__codelineno-75-20" id="__codelineno-75-20" name="__codelineno-75-20"></a><span class="nd">@model</span><span class="p">(</span>
+</span><span id="__span-75-21"><a href="#__codelineno-75-21" id="__codelineno-75-21" name="__codelineno-75-21"></a>    <span class="s2">"dim.products"</span><span class="p">,</span>
+</span><span id="__span-75-22"><a href="#__codelineno-75-22" id="__codelineno-75-22" name="__codelineno-75-22"></a>    <span class="n">kind</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-75-23"><a href="#__codelineno-75-23" id="__codelineno-75-23" name="__codelineno-75-23"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">SCD_TYPE_2_BY_COLUMN</span><span class="p">,</span>
+</span><span id="__span-75-24"><a href="#__codelineno-75-24" id="__codelineno-75-24" name="__codelineno-75-24"></a>        <span class="n">unique_key</span><span class="o">=</span><span class="p">[</span><span class="s2">"product_id"</span><span class="p">],</span>
+</span><span id="__span-75-25"><a href="#__codelineno-75-25" id="__codelineno-75-25" name="__codelineno-75-25"></a>        <span class="n">columns</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
+</span><span id="__span-75-26"><a href="#__codelineno-75-26" id="__codelineno-75-26" name="__codelineno-75-26"></a>    <span class="p">),</span>
+</span><span id="__span-75-27"><a href="#__codelineno-75-27" id="__codelineno-75-27" name="__codelineno-75-27"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
@@ -3519,48 +3596,48 @@ Configure default values for all models in your project's `config.yaml`:
 
 === "YAML"
 
-    <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-78-1">1</a></span>
-<span class="normal"><a href="#__codelineno-78-2">2</a></span>
-<span class="normal"><a href="#__codelineno-78-3">3</a></span>
-<span class="normal"><a href="#__codelineno-78-4">4</a></span>
-<span class="normal"><a href="#__codelineno-78-5">5</a></span>
-<span class="normal"><a href="#__codelineno-78-6">6</a></span>
-<span class="normal"><a href="#__codelineno-78-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
-</span><span id="__span-78-2"><a id="__codelineno-78-2" name="__codelineno-78-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snowflake</span>
-</span><span id="__span-78-3"><a id="__codelineno-78-3" name="__codelineno-78-3"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
-</span><span id="__span-78-4"><a id="__codelineno-78-4" name="__codelineno-78-4"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@daily&#39;</span>
-</span><span id="__span-78-5"><a id="__codelineno-78-5" name="__codelineno-78-5"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data_team</span>
-</span><span id="__span-78-6"><a id="__codelineno-78-6" name="__codelineno-78-6"></a><span class="w">  </span><span class="nt">physical_properties</span><span class="p">:</span>
-</span><span id="__span-78-7"><a id="__codelineno-78-7" name="__codelineno-78-7"></a><span class="w">    </span><span class="nt">partition_expiration_days</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+    <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-76-1">1</a></span>
+<span class="normal"><a href="#__codelineno-76-2">2</a></span>
+<span class="normal"><a href="#__codelineno-76-3">3</a></span>
+<span class="normal"><a href="#__codelineno-76-4">4</a></span>
+<span class="normal"><a href="#__codelineno-76-5">5</a></span>
+<span class="normal"><a href="#__codelineno-76-6">6</a></span>
+<span class="normal"><a href="#__codelineno-76-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-76-2"><a id="__codelineno-76-2" name="__codelineno-76-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snowflake</span>
+</span><span id="__span-76-3"><a id="__codelineno-76-3" name="__codelineno-76-3"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
+</span><span id="__span-76-4"><a id="__codelineno-76-4" name="__codelineno-76-4"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@daily&#39;</span>
+</span><span id="__span-76-5"><a id="__codelineno-76-5" name="__codelineno-76-5"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data_team</span>
+</span><span id="__span-76-6"><a id="__codelineno-76-6" name="__codelineno-76-6"></a><span class="w">  </span><span class="nt">physical_properties</span><span class="p">:</span>
+</span><span id="__span-76-7"><a id="__codelineno-76-7" name="__codelineno-76-7"></a><span class="w">    </span><span class="nt">partition_expiration_days</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
 </span></code></pre></div></td></tr></table></div>
 
 === "Python"
 
-    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-79-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-79-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-79-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-79-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-79-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-79-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-79-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-79-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-79-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-79-10">10</a></span>
-<span class="normal"><a href="#__codelineno-79-11">11</a></span>
-<span class="normal"><a href="#__codelineno-79-12">12</a></span>
-<span class="normal"><a href="#__codelineno-79-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-79-1"><a id="__codelineno-79-1" name="__codelineno-79-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ModelDefaultsConfig</span>
-</span><span id="__span-79-2"><a id="__codelineno-79-2" name="__codelineno-79-2"></a>
-</span><span id="__span-79-3"><a id="__codelineno-79-3" name="__codelineno-79-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
-</span><span id="__span-79-4"><a id="__codelineno-79-4" name="__codelineno-79-4"></a>  <span class="n">model_defaults</span><span class="o">=</span><span class="n">ModelDefaultsConfig</span><span class="p">(</span>
-</span><span id="__span-79-5"><a id="__codelineno-79-5" name="__codelineno-79-5"></a>    <span class="n">dialect</span><span class="o">=</span><span class="s2">&quot;snowflake&quot;</span><span class="p">,</span>
-</span><span id="__span-79-6"><a id="__codelineno-79-6" name="__codelineno-79-6"></a>    <span class="n">start</span><span class="o">=</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span>
-</span><span id="__span-79-7"><a id="__codelineno-79-7" name="__codelineno-79-7"></a>    <span class="n">cron</span><span class="o">=</span><span class="s2">&quot;@daily&quot;</span><span class="p">,</span>
-</span><span id="__span-79-8"><a id="__codelineno-79-8" name="__codelineno-79-8"></a>    <span class="n">owner</span><span class="o">=</span><span class="s2">&quot;data_team&quot;</span><span class="p">,</span>
-</span><span id="__span-79-9"><a id="__codelineno-79-9" name="__codelineno-79-9"></a>    <span class="n">physical_properties</span><span class="o">=</span><span class="p">{</span>
-</span><span id="__span-79-10"><a id="__codelineno-79-10" name="__codelineno-79-10"></a>      <span class="s2">&quot;partition_expiration_days&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-</span><span id="__span-79-11"><a id="__codelineno-79-11" name="__codelineno-79-11"></a>    <span class="p">},</span>
-</span><span id="__span-79-12"><a id="__codelineno-79-12" name="__codelineno-79-12"></a>  <span class="p">),</span>
-</span><span id="__span-79-13"><a id="__codelineno-79-13" name="__codelineno-79-13"></a><span class="p">)</span>
+    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-77-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-77-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-77-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-77-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-77-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-77-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-77-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-77-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-77-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-77-10">10</a></span>
+<span class="normal"><a href="#__codelineno-77-11">11</a></span>
+<span class="normal"><a href="#__codelineno-77-12">12</a></span>
+<span class="normal"><a href="#__codelineno-77-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ModelDefaultsConfig</span>
+</span><span id="__span-77-2"><a id="__codelineno-77-2" name="__codelineno-77-2"></a>
+</span><span id="__span-77-3"><a id="__codelineno-77-3" name="__codelineno-77-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+</span><span id="__span-77-4"><a id="__codelineno-77-4" name="__codelineno-77-4"></a>  <span class="n">model_defaults</span><span class="o">=</span><span class="n">ModelDefaultsConfig</span><span class="p">(</span>
+</span><span id="__span-77-5"><a id="__codelineno-77-5" name="__codelineno-77-5"></a>    <span class="n">dialect</span><span class="o">=</span><span class="s2">&quot;snowflake&quot;</span><span class="p">,</span>
+</span><span id="__span-77-6"><a id="__codelineno-77-6" name="__codelineno-77-6"></a>    <span class="n">start</span><span class="o">=</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span>
+</span><span id="__span-77-7"><a id="__codelineno-77-7" name="__codelineno-77-7"></a>    <span class="n">cron</span><span class="o">=</span><span class="s2">&quot;@daily&quot;</span><span class="p">,</span>
+</span><span id="__span-77-8"><a id="__codelineno-77-8" name="__codelineno-77-8"></a>    <span class="n">owner</span><span class="o">=</span><span class="s2">&quot;data_team&quot;</span><span class="p">,</span>
+</span><span id="__span-77-9"><a id="__codelineno-77-9" name="__codelineno-77-9"></a>    <span class="n">physical_properties</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-77-10"><a id="__codelineno-77-10" name="__codelineno-77-10"></a>      <span class="s2">&quot;partition_expiration_days&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+</span><span id="__span-77-11"><a id="__codelineno-77-11" name="__codelineno-77-11"></a>    <span class="p">},</span>
+</span><span id="__span-77-12"><a id="__codelineno-77-12" name="__codelineno-77-12"></a>  <span class="p">),</span>
+</span><span id="__span-77-13"><a id="__codelineno-77-13" name="__codelineno-77-13"></a><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
 
 **Supported default properties:**
@@ -3576,26 +3653,28 @@ Configure default values for all models in your project's `config.yaml`:
 
 Model-specific properties override defaults. To unset a default, use `None`:
 
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-80-1"><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-80-2"><a id="__codelineno-80-2" name="__codelineno-80-2" href="#__codelineno-80-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">daily_sales</span><span class="p">,</span>
-</span><span id="__span-80-3"><a id="__codelineno-80-3" name="__codelineno-80-3" href="#__codelineno-80-3"></a><span class="w">  </span><span class="n">physical_properties</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-80-4"><a id="__codelineno-80-4" name="__codelineno-80-4" href="#__codelineno-80-4"></a><span class="w">    </span><span class="n">partition_expiration_days</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">      </span><span class="c1">-- Override</span>
-</span><span id="__span-80-5"><a id="__codelineno-80-5" name="__codelineno-80-5" href="#__codelineno-80-5"></a><span class="w">    </span><span class="n">project_level_property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="p">,</span><span class="w">       </span><span class="c1">-- Unset</span>
-</span><span id="__span-80-6"><a id="__codelineno-80-6" name="__codelineno-80-6" href="#__codelineno-80-6"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-80-7"><a id="__codelineno-80-7" name="__codelineno-80-7" href="#__codelineno-80-7"></a><span class="p">);</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-78-2"><a id="__codelineno-78-2" name="__codelineno-78-2" href="#__codelineno-78-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">daily_sales</span><span class="p">,</span>
+</span><span id="__span-78-3"><a id="__codelineno-78-3" name="__codelineno-78-3" href="#__codelineno-78-3"></a><span class="w">  </span><span class="n">physical_properties</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-78-4"><a id="__codelineno-78-4" name="__codelineno-78-4" href="#__codelineno-78-4"></a><span class="w">    </span><span class="n">partition_expiration_days</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">      </span><span class="c1">-- Override</span>
+</span><span id="__span-78-5"><a id="__codelineno-78-5" name="__codelineno-78-5" href="#__codelineno-78-5"></a><span class="w">    </span><span class="n">project_level_property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="p">,</span><span class="w">       </span><span class="c1">-- Unset</span>
+</span><span id="__span-78-6"><a id="__codelineno-78-6" name="__codelineno-78-6" href="#__codelineno-78-6"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-78-7"><a id="__codelineno-78-7" name="__codelineno-78-7" href="#__codelineno-78-7"></a><span class="p">);</span>
 </span></code></pre></div>
 
 --- -->
 <h2 id="model-naming">Model Naming<a class="headerlink" href="#model-naming" title="Link to this section">¶</a></h2>
-<p>Enable automatic name inference from directory structure:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-81-1"><a href="#__codelineno-81-1" id="__codelineno-81-1" name="__codelineno-81-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
-</span><span id="__span-81-2"><a href="#__codelineno-81-2" id="__codelineno-81-2" name="__codelineno-81-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snowflake</span>
-</span><span id="__span-81-3"><a href="#__codelineno-81-3" id="__codelineno-81-3" name="__codelineno-81-3"></a>
-</span><span id="__span-81-4"><a href="#__codelineno-81-4" id="__codelineno-81-4" name="__codelineno-81-4"></a><span class="c1"># Enable name inference</span>
-</span><span id="__span-81-5"><a href="#__codelineno-81-5" id="__codelineno-81-5" name="__codelineno-81-5"></a><span class="nt">infer_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<p>By default, you need to specify the <code>name</code> property in every model. But if you organize your models in a directory structure that matches your schema names, you can enable automatic name inference.</p>
+<p><strong>How it works:</strong> With <code>infer_names: true</code>, a model at <code>models/sales/daily_sales.sql</code> automatically gets the name <code>sales.daily_sales</code>. The directory structure becomes your schema, and the filename becomes your model name.</p>
+<p>Enable it in your config:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-79-1"><a href="#__codelineno-79-1" id="__codelineno-79-1" name="__codelineno-79-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-79-2"><a href="#__codelineno-79-2" id="__codelineno-79-2" name="__codelineno-79-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snowflake</span>
+</span><span id="__span-79-3"><a href="#__codelineno-79-3" id="__codelineno-79-3" name="__codelineno-79-3"></a>
+</span><span id="__span-79-4"><a href="#__codelineno-79-4" id="__codelineno-79-4" name="__codelineno-79-4"></a><span class="c1"># Enable name inference</span>
+</span><span id="__span-79-5"><a href="#__codelineno-79-5" id="__codelineno-79-5" name="__codelineno-79-5"></a><span class="nt">infer_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
-<p>With <code>infer_names: true</code>, a model at <code>models/sales/daily_sales.sql</code> automatically gets the name <code>sales.daily_sales</code>.</p>
-<!-- Learn more in the [configuration guide](../../guides/configuration.md#model-naming). -->
+<p><strong>When to use:</strong> If your project structure matches your schema structure, this saves you from typing <code>name</code> in every model. Pretty convenient!</p>
+<p>Learn more in the <a href="../guides-old/configuration.md#model-naming">configuration guide</a>.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -3621,13 +3700,13 @@ Model-specific properties override defaults. To unset a default, use `None`:
               </div>
 </div>
 </a>
-<a aria-label="Next: SQL models" class="md-footer__link md-footer__link--next" href="../types/sql_models/">
+<a aria-label="Next: SQL" class="md-footer__link md-footer__link--next" href="../types/sql_models/">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 Next
               </span>
 <div class="md-ellipsis">
-                SQL models
+                SQL
               </div>
 </div>
 <div class="md-footer__button md-icon">

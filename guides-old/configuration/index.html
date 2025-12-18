@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1119,7 +1119,7 @@
 <h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Link to this section">¶</a></h1>
 <p>Vulcan's behavior is determined by three things: a project's files (e.g., models), user actions (e.g., creating a <code>plan</code>), and how Vulcan is configured.</p>
 <p>This page describes how Vulcan configuration works and discusses the aspects of Vulcan behavior that can be modified via configuration.</p>
-<p>The <a href="../reference/configuration.md">configuration reference page</a> contains concise lists of all configuration parameters and their default values.</p>
+<p>The <a href="../configurations-old/configuration.md">configuration reference page</a> contains concise lists of all configuration parameters and their default values.</p>
 <h2 id="configuration-files">Configuration files<a class="headerlink" href="#configuration-files" title="Link to this section">¶</a></h2>
 <p><strong>NOTE:</strong> Vulcan project configurations have the following two requirements:</p>
 <ol>
@@ -1196,7 +1196,7 @@
 <li><a href="https://vulcan.readthedocs.io/en/latest/_readthedocs/html/vulcan/core/user.html#User">User configuration</a>: <code>User()</code></li>
 <li><a href="https://vulcan.readthedocs.io/en/latest/_readthedocs/html/vulcan/core/notification_target.html">Notification configuration</a> (separate classes for each notification target)</li>
 </ul>
-<p>See the <a href="../guides/notifications.md">notifications guide</a> for more information about user and notification specification.</p>
+<p>See the <a href="guides-old/notifications.md">notifications guide</a> for more information about user and notification specification.</p>
 <h2 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Link to this section">¶</a></h2>
 <p>All software runs within a system environment that stores information as "environment variables."</p>
 <p>Vulcan can access environment variables during configuration, which enables approaches like storing passwords/secrets outside the configuration file and changing configuration parameters dynamically based on which user is running Vulcan.</p>
@@ -1381,17 +1381,17 @@
 <p>After the initial string <code>VULCAN__</code>, the environment variable name components move down the key hierarchy in the YAML specification: <code>GATEWAYS</code> → <code>MY_GATEWAY</code> → <code>CONNECTION</code> → <code>PASSWORD</code>.</p>
 <h2 id="configuration-types">Configuration types<a class="headerlink" href="#configuration-types" title="Link to this section">¶</a></h2>
 <p>A Vulcan project configuration is hierarchical and consists of root level parameters within which other parameters are defined.</p>
-<p>Conceptually, we can group the root level parameters into the following types. Each type links to its table of parameters in the <a href="../reference/configuration.md">Vulcan configuration reference page</a>:</p>
+<p>Conceptually, we can group the root level parameters into the following types. Each type links to its table of parameters in the <a href="../configurations-old/configuration.md">Vulcan configuration reference page</a>:</p>
 <ol>
-<li><a href="../reference/configuration.md#projects">Project</a> - configuration options for Vulcan project directories.</li>
-<li><a href="../reference/configuration.md#environments-virtual-layer">Environment</a> - configuration options for Vulcan environment creation/promotion, physical table schemas, and view schemas.</li>
-<li><a href="../reference/configuration.md#gateways">Gateways</a> - configuration options for how Vulcan should connect to the data warehouse, state backend, and scheduler.</li>
-<li><a href="../reference/configuration.md#gatewayconnection-defaults">Gateway/connection defaults</a> - configuration options for what should happen when gateways or connections are not all explicitly specified.</li>
-<li><a href="../reference/model_configuration.md">Model defaults</a> - configuration options for what should happen when model-specific configurations are not explicitly specified in a model's file.</li>
-<li><a href="../reference/configuration.md#debug-mode">Debug mode</a> - configuration option for Vulcan to print and log actions and full backtraces.</li>
+<li><a href="../configurations-old/configuration.md#projects">Project</a> - configuration options for Vulcan project directories.</li>
+<li><a href="../configurations-old/configuration.md#environments-virtual-layer">Environment</a> - configuration options for Vulcan environment creation/promotion, physical table schemas, and view schemas.</li>
+<li><a href="../configurations-old/configuration.md#gateways">Gateways</a> - configuration options for how Vulcan should connect to the data warehouse, state backend, and scheduler.</li>
+<li><a href="../configurations-old/configuration.md#gatewayconnection-defaults">Gateway/connection defaults</a> - configuration options for what should happen when gateways or connections are not all explicitly specified.</li>
+<li><a href="../configurations-old/configuration.md">Model defaults</a> - configuration options for what should happen when model-specific configurations are not explicitly specified in a model's file.</li>
+<li><a href="../configurations-old/configuration.md#debug-mode">Debug mode</a> - configuration option for Vulcan to print and log actions and full backtraces.</li>
 </ol>
 <h2 id="configuration-details">Configuration details<a class="headerlink" href="#configuration-details" title="Link to this section">¶</a></h2>
-<p>The rest of this page provides additional detail for some of the configuration options and provides brief examples. Comprehensive lists of configuration options are at the <a href="../reference/configuration.md">configuration reference page</a>.</p>
+<p>The rest of this page provides additional detail for some of the configuration options and provides brief examples. Comprehensive lists of configuration options are at the <a href="../configurations-old/configuration.md">configuration reference page</a>.</p>
 <h3 id="cache-directory">Cache directory<a class="headerlink" href="#cache-directory" title="Link to this section">¶</a></h3>
 <p>By default, the Vulcan cache is stored in a <code>.cache</code> directory within your project folder. You can customize the cache location using the <code>cache_dir</code> configuration option:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">YAML</label><label for="__tabbed_3_2">Python</label></div>
@@ -1428,7 +1428,7 @@
 <h3 id="tableview-storage-locations">Table/view storage locations<a class="headerlink" href="#tableview-storage-locations" title="Link to this section">¶</a></h3>
 <p>Vulcan creates schemas, physical tables, and views in the data warehouse/engine. You can override <em>where</em> Vulcan creates physical tables and views with the <code>physical_schema_mapping</code>, <code>environment_suffix_target</code>, and <code>environment_catalog_mapping</code> configuration options.</p>
 <p>You can also override <em>what</em> the physical tables are called by using the <code>physical_table_naming_convention</code> option.</p>
-<p>These options are in the <a href="../reference/configuration.md#environments-virtual-layer">environments</a> section of the configuration reference page.</p>
+<p>These options are in the <a href="../configurations-old/configuration.md#environments-virtual-layer">environments</a> section of the configuration reference page.</p>
 <h4 id="physical-table-schemas">Physical table schemas<a class="headerlink" href="#physical-table-schemas" title="Link to this section">¶</a></h4>
 <p>By default, Vulcan creates physical schemas for a model with a naming convention of <code>vulcan__[model schema]</code>.</p>
 <p>This can be overridden on a per-schema basis using the <code>physical_schema_mapping</code> option, which removes the <code>vulcan__</code> prefix and uses the <a href="https://docs.python.org/3/library/re.html#regular-expression-syntax">regex pattern</a> you provide to map the schemas defined in your model to their corresponding physical schemas.</p>
@@ -1530,7 +1530,7 @@
 <h5 id="show-at-the-catalog-level-instead">Show at the catalog level instead<a class="headerlink" href="#show-at-the-catalog-level-instead" title="Link to this section">¶</a></h5>
 <p>If neither the schema (default) nor the table level are sufficient for your use case, you can indicate the environment at the catalog level instead.</p>
 <p>This can be useful if you have downstream BI reporting tools and you would like to point them at a development environment to test something out without renaming all the table / schema references within the report query.</p>
-<p>In order to achieve this, you can configure <a href="../reference/configuration.md#environments-virtual-layer">environment_suffix_target</a> like so:</p>
+<p>In order to achieve this, you can configure <a href="../configurations-old/configuration.md#environments-virtual-layer">environment_suffix_target</a> like so:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">YAML</label><label for="__tabbed_6_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1683,7 +1683,7 @@
 <p>'dev-only' mode means that VDE is applied only in development environments. While in production, model tables and views are updated directly and bypass the virtual layer. This also means that physical tables in production will be created using the original, <strong>unversioned</strong> model names. Users will still benefit from VDE and data reuse across development environments.</p>
 <p>Please note the following tradeoffs when enabling this mode:</p>
 <ul>
-<li>All data inserted in development environments is used only for <a href="../concepts/plans.md#data-preview-for-forward-only-changes">preview</a> and will <strong>not</strong> be reused in production</li>
+<li>All data inserted in development environments is used only for <a href="guides/plan.md#data-preview-for-forward-only-changes">preview</a> and will <strong>not</strong> be reused in production</li>
 <li>Reverting a model to a previous version will be applied going forward and may require an explicit data restatement</li>
 </ul>
 <div class="admonition warning">
@@ -1691,12 +1691,12 @@
 <p>Switching the mode for an existing project will result in a <strong>complete rebuild</strong> of all models in the project. Refer to the <a href="../table_migration/">Table Migration Guide</a> to migrate existing tables without rebuilding them from scratch.</p>
 </div>
 <h4 id="environment-view-catalogs">Environment view catalogs<a class="headerlink" href="#environment-view-catalogs" title="Link to this section">¶</a></h4>
-<p>By default, Vulcan creates an environment view in the same <a href="../concepts/glossary.md#catalog">catalog</a> as the physical table the view points to. The physical table's catalog is determined by either the catalog specified in the model name or the default catalog defined in the connection.</p>
+<p>By default, Vulcan creates an environment view in the same <a href="concepts-old/glossary.md#catalog">catalog</a> as the physical table the view points to. The physical table's catalog is determined by either the catalog specified in the model name or the default catalog defined in the connection.</p>
 <p>It can be desirable to create <code>prod</code> and non-prod virtual layer objects in separate catalogs instead. For example, there might be a "prod" catalog that contains all <code>prod</code> environment views and a separate "dev" catalog that contains all <code>dev</code> environment views.</p>
 <p>Separate prod and non-prod catalogs can also be useful if you have a CI/CD pipeline that creates environments, like the Vulcan Github Actions CI/CD Bot. You might want to store the CI/CD environment objects in a dedicated catalog since there can be many of them.</p>
 <div class="admonition info">
 <p class="admonition-title">Virtual layer only</p>
-<p>Note that the following setting only affects the <a href="../concepts/glossary.md#virtual-layer">virtual layer</a>. If you need full segregation by catalog between environments in the <a href="../concepts/glossary.md#physical-layer">physical layer</a> as well, see the <a href="../guides/isolated_systems.md">Isolated Systems Guide</a>.</p>
+<p>Note that the following setting only affects the <a href="concepts-old/glossary.md#virtual-layer">virtual layer</a>. If you need full segregation by catalog between environments in the <a href="concepts-old/glossary.md#physical-layer">physical layer</a> as well, see the <a href="../guides/isolated_systems.md">Isolated Systems Guide</a>.</p>
 </div>
 <p>To configure separate catalogs, provide a mapping from <a href="https://en.wikipedia.org/wiki/Regular_expression">regex patterns</a> to catalog names. Vulcan will compare the name of an environment to the regex patterns; when it finds a match it will store the environment's objects in the corresponding catalog.</p>
 <p>Vulcan evaluates the regex patterns in the order defined in the configuration; it uses the catalog for the first matching pattern. If no match is found, the catalog defined in the model or the default catalog defined on the connection will be used.</p>
@@ -1749,9 +1749,9 @@
 </div>
 <p><em>Note:</em> This feature is only available for engines that support querying across catalogs. At the time of writing, the following engines are <strong>NOT</strong> supported:</p>
 <ul>
-<li><a href="../integrations/engines/mysql.md">MySQL</a></li>
-<li><a href="../integrations/engines/postgres.md">Postgres</a></li>
-<li><a href="../integrations/engines/gcp-postgres.md">GCP Postgres</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/mysql.md">MySQL</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">Postgres</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/gcp-postgres.md">GCP Postgres</a></li>
 </ul>
 <h5 id="regex-tips">Regex Tips<a class="headerlink" href="#regex-tips" title="Link to this section">¶</a></h5>
 <ul>
@@ -1764,10 +1764,10 @@
 </ul>
 <h3 id="auto-categorize-model-changes">Auto-categorize model changes<a class="headerlink" href="#auto-categorize-model-changes" title="Link to this section">¶</a></h3>
 <p>Vulcan compares the current state of project files to an environment when <code>vulcan plan</code> is run. It detects changes to models, which can be classified as breaking or non-breaking.</p>
-<p>Vulcan can  attempt to automatically <a href="../concepts/plans.md#change-categories">categorize</a> the changes it detects. The <code>plan.auto_categorize_changes</code> option determines whether Vulcan should attempt automatic change categorization. This option is in the <a href="../reference/configuration.md#plan">plan</a> section of the configuration reference page.</p>
+<p>Vulcan can  attempt to automatically <a href="guides/plan.md#change-categories">categorize</a> the changes it detects. The <code>plan.auto_categorize_changes</code> option determines whether Vulcan should attempt automatic change categorization. This option is in the <a href="../configurations-old/configuration.md#plan">plan</a> section of the configuration reference page.</p>
 <p>Supported values:</p>
 <ul>
-<li><code>full</code>: Never prompt the user for input, instead fall back to the most conservative category (<a href="../concepts/plans.md#breaking-change">breaking</a>) if the category can't be determined automatically.</li>
+<li><code>full</code>: Never prompt the user for input, instead fall back to the most conservative category (<a href="guides/plan.md#breaking-change">breaking</a>) if the category can't be determined automatically.</li>
 <li><code>semi</code>: Prompt the user for input only if the change category can't be determined automatically.</li>
 <li><code>off</code>: Always prompt the user for input; automatic categorization will not be attempted.</li>
 </ul>
@@ -1946,7 +1946,7 @@
 </details>
 <p>Even though the second change should have been a metadata change (thus not requiring a backfill), it will still be classified as a breaking change because the comparison is against production instead of the previous development state. This is intentional and may cause additional backfills as more changes are accumulated.</p>
 <h3 id="gateways">Gateways<a class="headerlink" href="#gateways" title="Link to this section">¶</a></h3>
-<p>The <code>gateways</code> configuration defines how Vulcan should connect to the data warehouse, state backend, and scheduler. These options are in the <a href="../reference/configuration.md#gateway">gateway</a> section of the configuration reference page.</p>
+<p>The <code>gateways</code> configuration defines how Vulcan should connect to the data warehouse, state backend, and scheduler. These options are in the <a href="../configurations-old/configuration.md#gateway">gateway</a> section of the configuration reference page.</p>
 <p>Each gateway key represents a unique gateway name and configures its connections. <strong>Gateway names are case-insensitive</strong> - Vulcan automatically normalizes gateway names to lowercase during configuration validation. This means you can use any case in your configuration files (e.g., <code>MyGateway</code>, <code>mygateway</code>, <code>MYGATEWAY</code>) and they will all work correctly.</p>
 <p>For example, this configures the <code>my_gateway</code> gateway:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio"/><input id="__tabbed_13_2" name="__tabbed_13" type="radio"/><div class="tabbed-labels"><label for="__tabbed_13_1">YAML</label><label for="__tabbed_13_2">Python</label></div>
@@ -2016,7 +2016,7 @@
 </div>
 <p>Gateways do not need to specify all four components in the example above. The gateway defaults options control what happens if they are not all specified - find more information on <a href="#gatewayconnection-defaults">gateway defaults below</a>.</p>
 <h3 id="connections">Connections<a class="headerlink" href="#connections" title="Link to this section">¶</a></h3>
-<p>The <code>connection</code> configuration controls the data warehouse connection. These options are in the <a href="../reference/configuration.md#connection">connection</a> section of the configuration reference page.</p>
+<p>The <code>connection</code> configuration controls the data warehouse connection. These options are in the <a href="../configurations-old/configuration.md#connection">connection</a> section of the configuration reference page.</p>
 <p>The allowed keys include:</p>
 <ul>
 <li>The optional <code>concurrent_tasks</code> key specifies the maximum number of concurrent tasks Vulcan will run. Default value is 4 for engines that support concurrent tasks.</li>
@@ -2087,20 +2087,20 @@
 <h4 id="engine-connection-configuration">Engine connection configuration<a class="headerlink" href="#engine-connection-configuration" title="Link to this section">¶</a></h4>
 <p>These pages describe the connection configuration options for each execution engine.</p>
 <ul>
-<li><a href="../integrations/engines/athena.md">Athena</a></li>
-<li><a href="../integrations/engines/bigquery.md">BigQuery</a></li>
-<li><a href="../integrations/engines/databricks.md">Databricks</a></li>
-<li><a href="../integrations/engines/duckdb.md">DuckDB</a></li>
-<li><a href="../integrations/engines/fabric.md">Fabric</a></li>
-<li><a href="../integrations/engines/motherduck.md">MotherDuck</a></li>
-<li><a href="../integrations/engines/mysql.md">MySQL</a></li>
-<li><a href="../integrations/engines/mssql.md">MSSQL</a></li>
-<li><a href="../integrations/engines/postgres.md">Postgres</a></li>
-<li><a href="../integrations/engines/gcp-postgres.md">GCP Postgres</a></li>
-<li><a href="../integrations/engines/redshift.md">Redshift</a></li>
-<li><a href="../integrations/engines/snowflake.md">Snowflake</a></li>
-<li><a href="../integrations/engines/spark.md">Spark</a></li>
-<li><a href="../integrations/engines/trino.md">Trino</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/athena.md">Athena</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/bigquery.md">BigQuery</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/databricks.md">Databricks</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/duckdb.md">DuckDB</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/fabric.md">Fabric</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/motherduck.md">MotherDuck</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/mysql.md">MySQL</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/mssql.md">MSSQL</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">Postgres</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/gcp-postgres.md">GCP Postgres</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/redshift.md">Redshift</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md">Snowflake</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/spark.md">Spark</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/trino.md">Trino</a></li>
 </ul>
 <h4 id="state-connection">State connection<a class="headerlink" href="#state-connection" title="Link to this section">¶</a></h4>
 <p>Configuration for the state backend connection if different from the data warehouse connection.</p>
@@ -2113,23 +2113,23 @@
 <p>The easiest and most reliable way to manage your state connection is for <a href="https://tobikodata.com/product.html">Tobiko Cloud</a> to do it for you. If you'd rather handle it yourself, we list recommended and unsupported state engines below.</p>
 <p>Recommended state engines for production deployments:</p>
 <ul>
-<li><a href="../integrations/engines/postgres.md">Postgres</a></li>
-<li><a href="../integrations/engines/gcp-postgres.md">GCP Postgres</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">Postgres</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/gcp-postgres.md">GCP Postgres</a></li>
 </ul>
 <p>Other state engines with fast and reliable database transactions (less tested than the recommended engines):</p>
 <ul>
-<li><a href="../integrations/engines/duckdb.md">DuckDB</a><ul>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/duckdb.md">DuckDB</a><ul>
 <li>With the caveat that it's a <a href="https://duckdb.org/docs/connect/concurrency.html#writing-to-duckdb-from-multiple-processes">single user</a> database so will not scale to production usage</li>
 </ul>
 </li>
-<li><a href="../integrations/engines/mysql.md">MySQL</a></li>
-<li><a href="../integrations/engines/mssql.md">MSSQL</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/mysql.md">MySQL</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/mssql.md">MSSQL</a></li>
 </ul>
 <p>Unsupported state engines, even for development:</p>
 <ul>
-<li><a href="../integrations/engines/clickhouse.md">ClickHouse</a></li>
-<li><a href="../integrations/engines/spark.md">Spark</a></li>
-<li><a href="../integrations/engines/trino.md">Trino</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/clickhouse.md">ClickHouse</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/spark.md">Spark</a></li>
+<li><a href="../references/configurations-old/configurations-old/configurations-old/integrations/engines/trino.md">Trino</a></li>
 </ul>
 <p>This example gateway configuration uses Snowflake for the data warehouse connection and Postgres for the state backend connection:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="15:2"><input checked="checked" id="__tabbed_15_1" name="__tabbed_15" type="radio"/><input id="__tabbed_15_2" name="__tabbed_15" type="radio"/><div class="tabbed-labels"><label for="__tabbed_15_1">YAML</label><label for="__tabbed_15_2">Python</label></div>
@@ -2357,8 +2357,8 @@
 </div>
 </div>
 <h3 id="scheduler">Scheduler<a class="headerlink" href="#scheduler" title="Link to this section">¶</a></h3>
-<p>Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing <a href="../concepts/plans.md">plans</a>. By default, the scheduler type is set to <code>builtin</code>, which uses the existing SQL engine to store metadata.</p>
-<p>These options are in the <a href="../reference/configuration.md#scheduler">scheduler</a> section of the configuration reference page.</p>
+<p>Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing <a href="guides/plan.md">plans</a>. By default, the scheduler type is set to <code>builtin</code>, which uses the existing SQL engine to store metadata.</p>
+<p>These options are in the <a href="../configurations-old/configuration.md#scheduler">scheduler</a> section of the configuration reference page.</p>
 <h4 id="builtin">Builtin<a class="headerlink" href="#builtin" title="Link to this section">¶</a></h4>
 <p>Example configuration:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="18:2"><input checked="checked" id="__tabbed_18_1" name="__tabbed_18" type="radio"/><input id="__tabbed_18_2" name="__tabbed_18" type="radio"/><div class="tabbed-labels"><label for="__tabbed_18_1">YAML</label><label for="__tabbed_18_2">Python</label></div>
@@ -2410,8 +2410,8 @@
 </div>
 <p>No additional configuration options are supported by this scheduler type.</p>
 <h3 id="gatewayconnection-defaults">Gateway/connection defaults<a class="headerlink" href="#gatewayconnection-defaults" title="Link to this section">¶</a></h3>
-<p>The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. These options are in the <a href="../reference/configuration.md#gatewayconnection-defaults">gateway/connection defaults</a> section of the configuration reference page.</p>
-<p>The gateway specified in <code>default_gateway</code> is used when a <code>vulcan</code> command does not explicitly specify a gateway. All Vulcan CLI commands <a href="../reference/cli.md#cli">accept a gateway option</a> after <code>vulcan</code> and before the command name; for example, <code>vulcan --gateway my_gateway plan</code>. If the option is not specified in a command call, the <code>default_gateway</code> is used.</p>
+<p>The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. These options are in the <a href="../configurations-old/configuration.md#gatewayconnection-defaults">gateway/connection defaults</a> section of the configuration reference page.</p>
+<p>The gateway specified in <code>default_gateway</code> is used when a <code>vulcan</code> command does not explicitly specify a gateway. All Vulcan CLI commands <a href="getting_started/cli.md#cli">accept a gateway option</a> after <code>vulcan</code> and before the command name; for example, <code>vulcan --gateway my_gateway plan</code>. If the option is not specified in a command call, the <code>default_gateway</code> is used.</p>
 <p>The three default connection types are used when some gateways in the <code>gateways</code> configuration dictionaries do not specify every connection type.</p>
 <h4 id="default-gateway">Default gateway<a class="headerlink" href="#default-gateway" title="Link to this section">¶</a></h4>
 <p>If a configuration contains multiple gateways, Vulcan will use the first one in the <code>gateways</code> dictionary by default. The <code>default_gateway</code> key is used to specify a different gateway name as the Vulcan default.</p>
@@ -2539,7 +2539,7 @@
 <h3 id="models">Models<a class="headerlink" href="#models" title="Link to this section">¶</a></h3>
 <h4 id="model-defaults">Model defaults<a class="headerlink" href="#model-defaults" title="Link to this section">¶</a></h4>
 <p>The <code>model_defaults</code> key is <strong>required</strong> and must contain a value for the <code>dialect</code> key. All SQL dialects <a href="https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py">supported by the SQLGlot library</a> are allowed. Other values are set automatically unless explicitly overridden in the model definition.</p>
-<p>All supported <code>model_defaults</code> keys are listed in the <a href="../reference/model_configuration.md#model-defaults">models configuration reference page</a>.</p>
+<p>All supported <code>model_defaults</code> keys are listed in the <a href="../configurations-old/configuration.md#model-defaults">models configuration reference page</a>.</p>
 <p>Example configuration:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="21:2"><input checked="checked" id="__tabbed_21_1" name="__tabbed_21" type="radio"/><input id="__tabbed_21_2" name="__tabbed_21" type="radio"/><div class="tabbed-labels"><label for="__tabbed_21_1">YAML</label><label for="__tabbed_21_2">Python</label></div>
 <div class="tabbed-content">
@@ -2575,7 +2575,7 @@
 </div>
 </div>
 </div>
-<p>The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="../concepts/models/model_kinds.md">model concepts page</a>.</p>
+<p>The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="components/model/model_kinds.md">model concepts page</a>.</p>
 <h5 id="identifier-resolution">Identifier resolution<a class="headerlink" href="#identifier-resolution" title="Link to this section">¶</a></h5>
 <p>When a SQL engine receives a query such as <code>SELECT id FROM "some_table"</code>, it eventually needs to understand what database objects the identifiers <code>id</code> and <code>"some_table"</code> correspond to. This process is usually referred to as identifier (or name) resolution.</p>
 <p>Different SQL dialects implement different rules when resolving identifiers in queries. For example, certain identifiers may be treated as case-sensitive (e.g. if they're quoted), and a case-insensitive identifier is usually either lowercased or uppercased, before the engine actually looks up what object it corresponds to.</p>
@@ -2632,7 +2632,7 @@
 <p>That value tells Vulcan that the <code>redshift</code> gateway's models will be written in the Snowflake SQL dialect (so need to be transpiled from Snowflake to Redshift), but that the resulting Redshift SQL should treat identifiers as case-insensitive to match Snowflake's behavior.</p>
 <h4 id="model-kinds">Model Kinds<a class="headerlink" href="#model-kinds" title="Link to this section">¶</a></h4>
 <p>Model kinds are required in each model file's <code>MODEL</code> DDL statement. They may optionally be used to specify a default kind in the model defaults configuration key.</p>
-<p>All model kind specification keys are listed in the <a href="../reference/model_configuration.md#model-kind-properties">models configuration reference page</a>.</p>
+<p>All model kind specification keys are listed in the <a href="../configurations-old/configuration.md#model-kind-properties">models configuration reference page</a>.</p>
 <p>The <code>VIEW</code>, <code>FULL</code>, and <code>EMBEDDED</code> model kinds are specified by name only, while other models kinds require additional parameters and are provided with an array of parameters:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="23:1"><input checked="checked" id="__tabbed_23_1" name="__tabbed_23" type="radio"/><div class="tabbed-labels"><label for="__tabbed_23_1">YAML</label></div>
 <div class="tabbed-content">
@@ -2662,7 +2662,7 @@
 </div>
 </div>
 </div>
-<p>Python model kinds are specified with model kind objects. Python model kind objects have the same arguments as their SQL counterparts, listed in the <a href="../reference/model_configuration.md#model-kind-properties">models configuration reference page</a>.</p>
+<p>Python model kinds are specified with model kind objects. Python model kind objects have the same arguments as their SQL counterparts, listed in the <a href="../configurations-old/configuration.md#model-kind-properties">models configuration reference page</a>.</p>
 <p>This example demonstrates how to specify an incremental by time range model kind in Python:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="24:1"><input checked="checked" id="__tabbed_24_1" name="__tabbed_24" type="radio"/><div class="tabbed-labels"><label for="__tabbed_24_1">Python</label></div>
 <div class="tabbed-content">
@@ -2690,7 +2690,7 @@
 </div>
 </div>
 </div>
-<p>Learn more about specifying Python models at the <a href="../concepts/models/python_models.md#model-specification">Python models concepts page</a>.</p>
+<p>Learn more about specifying Python models at the <a href="components/model/types/python_models.md#model-specification">Python models concepts page</a>.</p>
 <h4 id="model-naming">Model Naming<a class="headerlink" href="#model-naming" title="Link to this section">¶</a></h4>
 <p>The <code>model_naming</code> configuration controls if model names are inferred based on the project's directory structure. If <code>model_naming</code> is not defined or <code>infer_names</code> is set to false, the model names must be provided explicitly.</p>
 <p>With <code>infer_names</code> set to true, model names are inferred based on their path. For example, a model located at <code>models/catalog/schema/model.sql</code> would be named <code>catalog.schema.model</code>. However, if a name is provided in the model definition, it will take precedence over the inferred name.</p>

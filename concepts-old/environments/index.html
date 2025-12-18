@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -977,13 +977,13 @@
 <h2 id="environments">Environments<a class="headerlink" href="#environments" title="Link to this section">¶</a></h2>
 <p>Environments are isolated namespaces that allow you to test and preview your changes.</p>
 <p>Vulcan differentiates between production and development environments. Currently, only the environment with the name <code>prod</code> is treated by Vulcan as the production one. Environments with other names are considered to be development ones.</p>
-<p><a href="models/overview.md">Models</a> in development environments get a special suffix appended to the schema portion of their names. For example, to access data for a model with name <code>db.model_a</code> in the target environment <code>my_dev</code>, the <code>db__my_dev.model_a</code> table name should be used in a query. Models in the production environment are referred to by their original names.</p>
+<p><a href="components/model/overview.md">Models</a> in development environments get a special suffix appended to the schema portion of their names. For example, to access data for a model with name <code>db.model_a</code> in the target environment <code>my_dev</code>, the <code>db__my_dev.model_a</code> table name should be used in a query. Models in the production environment are referred to by their original names.</p>
 <h2 id="why-use-environments">Why use environments<a class="headerlink" href="#why-use-environments" title="Link to this section">¶</a></h2>
 <p>Data pipelines and their dependencies tend to grow in complexity over time, and so assessing the impact of local changes can become quite challenging. Pipeline owners may not be aware of all downstream consumers of their pipelines, or may drastically underestimate the impact a change would have. That's why it is so important to be able to iterate and test model changes using production dependencies and data, while simultaneously avoiding any impact to existing datasets or pipelines that are currently used in production. Recreating the entire data warehouse with given changes would be an ideal solution to fully understand their impact, but this process is usually excessively expensive and time consuming.</p>
 <p>Vulcan environments allow you to easily spin up shallow 'clones' of the data warehouse quickly and efficiently. Vulcan understands which models have changed compared to the target environment, and only computes data gaps that have been directly caused by the changes. Any changes or backfills within the target environment <strong>do not impact</strong> other environments. At the same time, any computation that was done in this environment <strong>can be safely reused</strong> in other environments.</p>
 <h2 id="how-to-use-environments">How to use environments<a class="headerlink" href="#how-to-use-environments" title="Link to this section">¶</a></h2>
-<p>When running the <a href="../plans/">plan</a> command, the environment name can be supplied in the first argument. An arbitrary string can be used as an environment name. The only special environment name by default is <code>prod</code>, which refers to the production environment. Environment with names other than <code>prod</code> are considered to be development environments.</p>
-<p>By default, the <a href="../plans/"><code>vulcan plan</code></a> command targets the production (<code>prod</code>) environment.</p>
+<p>When running the <a href="guides/plan.md">plan</a> command, the environment name can be supplied in the first argument. An arbitrary string can be used as an environment name. The only special environment name by default is <code>prod</code>, which refers to the production environment. Environment with names other than <code>prod</code> are considered to be development environments.</p>
+<p>By default, the <a href="guides/plan.md"><code>vulcan plan</code></a> command targets the production (<code>prod</code>) environment.</p>
 <h3 id="example">Example<a class="headerlink" href="#example" title="Link to this section">¶</a></h3>
 <p>A custom name can be provided as an argument to create or update a development environment. For example, to target an environment with name <code>my_dev</code>, run:</p>
 <p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>my_dev
@@ -991,9 +991,9 @@
 A new environment is created automatically the first time a plan is applied to it.<p></p>
 <h2 id="how-environments-work">How environments work<a class="headerlink" href="#how-environments-work" title="Link to this section">¶</a></h2>
 <p>Whenever a model definition changes, a new model snapshot is created with a unique <a href="../architecture/snapshots/#fingerprinting">fingerprint</a>. This fingerprint allows Vulcan to detect if a given model variant exists in other environments or if it's a brand new variant. Because models may depend on other models, the fingerprint of a target model variant also includes fingerprints of its upstream dependencies. If a fingerprint already exists in Vulcan, it is safe to reuse the existing physical table associated with that model variant, since we're confident that the logic that populates that table is exactly the same. This makes an environment a collection of references to model <a href="../architecture/snapshots/">snapshots</a>.</p>
-<p>Refer to <a href="../plans/#plan-application">plans</a> for additional details.</p>
+<p>Refer to <a href="guides/plan.md#plan-application">plans</a> for additional details.</p>
 <h2 id="date-range">Date range<a class="headerlink" href="#date-range" title="Link to this section">¶</a></h2>
-<p>A development environment includes a start date and end date. When creating a development environment, the intent is usually to test changes on a subset of data. The size of such a subset is determined by a time range defined through the start and end date of the environment. Both start and end date are provided during the <a href="../plans/">plan</a> creation.</p>
+<p>A development environment includes a start date and end date. When creating a development environment, the intent is usually to test changes on a subset of data. The size of such a subset is determined by a time range defined through the start and end date of the environment. Both start and end date are provided during the <a href="guides/plan.md">plan</a> creation.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

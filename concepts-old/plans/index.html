@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1201,7 +1201,7 @@
 <p>During plan creation:</p>
 <ul>
 <li>The local state of the Vulcan project is compared to the state of a target environment. The difference between the two and the actions needed to synchronize the environment with the local state are what constitutes a plan.</li>
-<li>Users may be prompted to <a href="#change-categories">categorize changes</a> to existing models so Vulcan can determine what actions to take for indirectly affected models (the downstream models that depend on the updated models). By default, Vulcan attempts to categorize changes automatically, but this behavior can be changed through <a href="../reference/configuration.md#plan">configuration</a>.</li>
+<li>Users may be prompted to <a href="#change-categories">categorize changes</a> to existing models so Vulcan can determine what actions to take for indirectly affected models (the downstream models that depend on the updated models). By default, Vulcan attempts to categorize changes automatically, but this behavior can be changed through <a href="../configurations-old/configuration.md#plan">configuration</a>.</li>
 <li>Each plan requires a date range to which it will be applied. If not specified, the date range is derived automatically based on model definitions and the target environment.</li>
 </ul>
 <p>The benefit of plans is that all changes can be reviewed and verified before they are applied to the data warehouse and any computations are performed. A typical plan contains a combination of the following:</p>
@@ -1393,7 +1393,7 @@
 <p>If during plan creation no data gaps have been detected and only references to new model versions need to be updated, then the update is referred to as a Virtual Update. Virtual Updates impose no additional runtime overhead or cost.</p>
 <h3 id="start-and-end-dates">Start and end dates<a class="headerlink" href="#start-and-end-dates" title="Link to this section">¶</a></h3>
 <p>The <code>plan</code> command provides two temporal options: <code>--start</code> and <code>--end</code>. These options are only applicable to plans for non-prod environments.</p>
-<p>For context, every model has a start date. The start can be specified in <a href="./models/overview.md#start">the model definition</a>, in the <a href="../guides/configuration.md#model-defaults">project configuration's <code>model_defaults</code></a>, or by Vulcan's default value of yesterday.</p>
+<p>For context, every model has a start date. The start can be specified in <a href="../../components/model/overview/#start">the model definition</a>, in the <a href="guides-old/configuration.md#model-defaults">project configuration's <code>model_defaults</code></a>, or by Vulcan's default value of yesterday.</p>
 <p>Because the prod environment supports business operations, prod plans ensure every model is backfilled from its start date until the most recent completed time interval. Due to that restriction, the <code>plan</code> command's <code>--start</code> and <code>--end</code> options are not supported for regular plans against prod. The options are supported for <a href="#restatement-plans">restatement plans</a> against prod to allow re-processing a subset of existing data.</p>
 <p>Non-prod plans are typically used for development, so their models can optionally be backfilled for any date range with the <code>--start</code> and <code>--end</code> options. Limiting the date range makes backfills faster and development more efficient, especially for incremental models using large tables.</p>
 <h4 id="model-kind-limitations">Model kind limitations<a class="headerlink" href="#model-kind-limitations" title="Link to this section">¶</a></h4>
@@ -1401,10 +1401,10 @@
 <p>For context, Vulcan strives to make models <em>idempotent</em>, meaning that if we ran them multiple times we would get the same correct result every time.</p>
 <p>However, some model kinds are inherently non-idempotent:</p>
 <ul>
-<li><a href="models/model_kinds.md#incremental_by_unique_key">INCREMENTAL_BY_UNIQUE_KEY</a></li>
-<li><a href="models/model_kinds.md#incremental_by_partition">INCREMENTAL_BY_PARTITION</a></li>
-<li><a href="models/model_kinds.md#scd-type-2-by-time-recommended">SCD_TYPE_2_BY_TIME</a></li>
-<li><a href="models/model_kinds.md#scd-type-2-by-column">SCD_TYPE_2_BY_COLUMN</a></li>
+<li><a href="components/model/model_kinds.md#incremental_by_unique_key">INCREMENTAL_BY_UNIQUE_KEY</a></li>
+<li><a href="components/model/model_kinds.md#incremental_by_partition">INCREMENTAL_BY_PARTITION</a></li>
+<li><a href="components/model/model_kinds.md#scd-type-2-by-time-recommended">SCD_TYPE_2_BY_TIME</a></li>
+<li><a href="components/model/model_kinds.md#scd-type-2-by-column">SCD_TYPE_2_BY_COLUMN</a></li>
 <li>Any model whose query is self-referential (i.e., the contents of new data rows are affected by the data rows already present in the table)</li>
 </ul>
 <p>Those model kinds will behave as follows in a non-prod plan that specifies a limited date range:</p>
@@ -1678,16 +1678,16 @@
 </span></code></pre></div><p></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code>--forward-only</code> flag is not required when applying changes to models that have been explicitly configured as <a href="models/overview.md#forward_only">forward-only</a>.</p>
+<p>The <code>--forward-only</code> flag is not required when applying changes to models that have been explicitly configured as <a href="components/model/overview.md#forward_only">forward-only</a>.</p>
 <p>Use it only if you need to provide a time range for the preview window or the <a href="#effective-date">effective date</a>.</p>
 </div>
 <h3 id="destructive-changes">Destructive changes<a class="headerlink" href="#destructive-changes" title="Link to this section">¶</a></h3>
-<p>Some model changes destroy existing data in a table. Vulcan automatically detects and optionally prevents destructive changes to <a href="../guides/incremental_time.md#forward-only-models">forward-only models</a> - learn more <a href="../guides/incremental_time.md#destructive-changes">here</a>.</p>
+<p>Some model changes destroy existing data in a table. Vulcan automatically detects and optionally prevents destructive changes to <a href="guides/incremental_by_time.md#forward-only-models">forward-only models</a> - learn more <a href="guides/incremental_by_time.md#destructive-changes">here</a>.</p>
 <p>Forward-only plans treats all of the plan's model changes as forward-only. In these plans, Vulcan will check all modified incremental models for destructive schema changes, not just forward-only models.</p>
 <p>Vulcan determines what to do for each model based on this setting hierarchy: </p>
 <ul>
-<li><strong>For destructive changes</strong>: the <a href="../guides/incremental_time.md#schema-changes">model's <code>on_destructive_change</code> value</a> (if present), the <code>on_destructive_change</code> <a href="../reference/model_configuration.md#model-defaults">model defaults</a> value (if present), and the Vulcan global default of <code>error</code></li>
-<li><strong>For additive changes</strong>: the <a href="../guides/incremental_time.md#schema-changes">model's <code>on_additive_change</code> value</a> (if present), the <code>on_additive_change</code> <a href="../reference/model_configuration.md#model-defaults">model defaults</a> value (if present), and the Vulcan global default of <code>allow</code></li>
+<li><strong>For destructive changes</strong>: the <a href="guides/incremental_by_time.md#schema-changes">model's <code>on_destructive_change</code> value</a> (if present), the <code>on_destructive_change</code> <a href="../configurations-old/configuration.md#model-defaults">model defaults</a> value (if present), and the Vulcan global default of <code>error</code></li>
+<li><strong>For additive changes</strong>: the <a href="guides/incremental_by_time.md#schema-changes">model's <code>on_additive_change</code> value</a> (if present), the <code>on_additive_change</code> <a href="../configurations-old/configuration.md#model-defaults">model defaults</a> value (if present), and the Vulcan global default of <code>allow</code></li>
 </ul>
 <p>If you want to temporarily allow destructive changes to models that don't allow them, use the <code>plan</code> command's <code>--allow-destructive-model</code> selector to specify which models. 
 Similarly, if you want to temporarily allow additive changes to models configured with <code>on_additive_change=error</code>, use the <code>--allow-additive-model</code> selector. </p>
@@ -1719,14 +1719,14 @@ Similarly, if you want to temporarily allow additive changes to models configure
 <p>You cannot restate a new model - it must already be present in the target environment. If it's not, add it first by running <code>vulcan plan</code> without the <code>--restate-model</code> option.</p>
 </div>
 <p>Applying a restatement plan will trigger a cascading backfill for all selected models, as well as all models downstream from them. Models with restatement disabled will be skipped and not backfilled.</p>
-<p>You may restate external models. An <a href="./models/external_models.md">external model</a> is just metadata about an external table, so the model does not actually reprocess anything. Instead, it triggers a cascading backfill of all downstream models.</p>
+<p>You may restate external models. An <a href="../../components/model/types/external_models/">external model</a> is just metadata about an external table, so the model does not actually reprocess anything. Instead, it triggers a cascading backfill of all downstream models.</p>
 <p>The plan's <code>--start</code> and <code>--end</code> date options determine which data intervals will be reprocessed. Some model kinds cannot be backfilled for limited date ranges, though - learn more <a href="#model-kind-limitations">below</a>.</p>
 <div class="admonition info">
 <p class="admonition-title">Just catching up</p>
 <p>Restatement plans "catch models up" to the latest time interval already processed in the environment. They cannot process additional intervals because the required data has not yet been processed upstream.</p>
 <p>If you pass an <code>--end</code> date later than the environment's most recent time interval, Vulcan will just catch up to the environment and will ignore any additional intervals.</p>
 </div>
-<p>To prevent models from ever being restated, set the <a href="models/overview.md#disable_restatement">disable_restatement</a> attribute to <code>true</code>.</p>
+<p>To prevent models from ever being restated, set the <a href="components/model/overview.md#disable_restatement">disable_restatement</a> attribute to <code>true</code>.</p>
 <p><a name="restatement-examples"></a>
 These examples demonstrate how to select which models to restate based on model names or model tags.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><input id="__tabbed_1_4" name="__tabbed_1" type="radio"/><input id="__tabbed_1_5" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">Names Only</label><label for="__tabbed_1_2">Upstream</label><label for="__tabbed_1_3">Wildcards</label><label for="__tabbed_1_4">Upstream + Wildcards</label><label for="__tabbed_1_5">Specific Date Range</label></div>
@@ -1755,7 +1755,7 @@ These examples demonstrate how to select which models to restate based on model 
 </div>
 </div>
 <h3 id="restating-production-vs-development">Restating production vs development<a class="headerlink" href="#restating-production-vs-development" title="Link to this section">¶</a></h3>
-<p>Restatement plans behave differently depending on if you're targeting the <code>prod</code> environment or a <a href="../environments/#how-to-use-environments">development environment</a>.</p>
+<p>Restatement plans behave differently depending on if you're targeting the <code>prod</code> environment or a <a href="concepts-old/environments.md#how-to-use-environments">development environment</a>.</p>
 <p>If you target a development environment by including an environment name like <code>dev</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--restate-model<span class="w"> </span><span class="s2">"db.model_a"</span><span class="w"> </span>--start<span class="w"> </span><span class="s2">"2024-01-01"</span><span class="w"> </span>--end<span class="w"> </span><span class="s2">"2024-01-10"</span>
 </span></code></pre></div>

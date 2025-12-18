@@ -9,7 +9,7 @@
 <link href="../../checks/checks/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
-<title>Auditing - DataOS Vulcan</title>
+<title>Audits - DataOS Vulcan</title>
 <link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -33,7 +33,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#auditing">
+<a class="md-skip" href="#audits">
           Skip to content
         </a>
 </div>
@@ -57,7 +57,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Auditing
+              Audits
             
           </span>
 </div>
@@ -440,7 +440,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -452,7 +452,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -464,7 +464,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -476,7 +476,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -518,7 +518,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -531,7 +531,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -542,7 +542,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -605,10 +605,19 @@
 <nav aria-label="User-Defined Audits" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#your-first-audit">
+<span class="md-ellipsis">
+      
+        Your First Audit
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#generic-audits">
 <span class="md-ellipsis">
       
-        Generic audits
+        Generic Audits
       
     </span>
 </a>
@@ -626,7 +635,7 @@
 <a class="md-nav__link" href="#inline-audits">
 <span class="md-ellipsis">
       
-        Inline audits
+        Inline Audits
       
     </span>
 </a>
@@ -638,17 +647,17 @@
 <a class="md-nav__link" href="#built-in-audits">
 <span class="md-ellipsis">
       
-        Built-in audits
+        Built-in Audits
       
     </span>
 </a>
-<nav aria-label="Built-in audits" class="md-nav">
+<nav aria-label="Built-in Audits" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#generic-assertion-audit">
 <span class="md-ellipsis">
       
-        Generic assertion audit
+        Generic Assertion Audit
       
     </span>
 </a>
@@ -657,7 +666,7 @@
 <a class="md-nav__link" href="#row-counts-and-null-value-audits">
 <span class="md-ellipsis">
       
-        Row counts and NULL value audits
+        Row Counts and NULL Value Audits
       
     </span>
 </a>
@@ -666,7 +675,7 @@
 <a class="md-nav__link" href="#specific-data-values-audits">
 <span class="md-ellipsis">
       
-        Specific data values audits
+        Specific Data Values Audits
       
     </span>
 </a>
@@ -675,7 +684,7 @@
 <a class="md-nav__link" href="#numeric-data-audits">
 <span class="md-ellipsis">
       
-        Numeric data audits
+        Numeric Data Audits
       
     </span>
 </a>
@@ -684,7 +693,7 @@
 <a class="md-nav__link" href="#character-data-audits">
 <span class="md-ellipsis">
       
-        Character data audits
+        Character Data Audits
       
     </span>
 </a>
@@ -693,7 +702,7 @@
 <a class="md-nav__link" href="#statistical-audits">
 <span class="md-ellipsis">
       
-        Statistical audits
+        Statistical Audits
       
     </span>
 </a>
@@ -705,17 +714,17 @@
 <a class="md-nav__link" href="#running-audits">
 <span class="md-ellipsis">
       
-        Running audits
+        Running Audits
       
     </span>
 </a>
-<nav aria-label="Running audits" class="md-nav">
+<nav aria-label="Running Audits" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#the-cli-audit-command">
 <span class="md-ellipsis">
       
-        The CLI audit command
+        The CLI Audit Command
       
     </span>
 </a>
@@ -724,7 +733,7 @@
 <a class="md-nav__link" href="#automated-auditing">
 <span class="md-ellipsis">
       
-        Automated auditing
+        Automated Auditing
       
     </span>
 </a>
@@ -736,17 +745,66 @@
 <a class="md-nav__link" href="#advanced-usage">
 <span class="md-ellipsis">
       
-        Advanced usage
+        Advanced Usage
       
     </span>
 </a>
-<nav aria-label="Advanced usage" class="md-nav">
+<nav aria-label="Advanced Usage" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#skipping-audits">
 <span class="md-ellipsis">
       
-        Skipping audits
+        Skipping Audits
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting">
+<span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+</a>
+<nav aria-label="Troubleshooting" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#audit-fails-unexpectedly">
+<span class="md-ellipsis">
+      
+        Audit Fails Unexpectedly
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#audit-too-strict">
+<span class="md-ellipsis">
+      
+        Audit Too Strict
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-issues">
+<span class="md-ellipsis">
+      
+        Performance Issues
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-audit-results">
+<span class="md-ellipsis">
+      
+        Understanding Audit Results
       
     </span>
 </a>
@@ -1181,10 +1239,19 @@
 <nav aria-label="User-Defined Audits" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#your-first-audit">
+<span class="md-ellipsis">
+      
+        Your First Audit
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#generic-audits">
 <span class="md-ellipsis">
       
-        Generic audits
+        Generic Audits
       
     </span>
 </a>
@@ -1202,7 +1269,7 @@
 <a class="md-nav__link" href="#inline-audits">
 <span class="md-ellipsis">
       
-        Inline audits
+        Inline Audits
       
     </span>
 </a>
@@ -1214,17 +1281,17 @@
 <a class="md-nav__link" href="#built-in-audits">
 <span class="md-ellipsis">
       
-        Built-in audits
+        Built-in Audits
       
     </span>
 </a>
-<nav aria-label="Built-in audits" class="md-nav">
+<nav aria-label="Built-in Audits" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#generic-assertion-audit">
 <span class="md-ellipsis">
       
-        Generic assertion audit
+        Generic Assertion Audit
       
     </span>
 </a>
@@ -1233,7 +1300,7 @@
 <a class="md-nav__link" href="#row-counts-and-null-value-audits">
 <span class="md-ellipsis">
       
-        Row counts and NULL value audits
+        Row Counts and NULL Value Audits
       
     </span>
 </a>
@@ -1242,7 +1309,7 @@
 <a class="md-nav__link" href="#specific-data-values-audits">
 <span class="md-ellipsis">
       
-        Specific data values audits
+        Specific Data Values Audits
       
     </span>
 </a>
@@ -1251,7 +1318,7 @@
 <a class="md-nav__link" href="#numeric-data-audits">
 <span class="md-ellipsis">
       
-        Numeric data audits
+        Numeric Data Audits
       
     </span>
 </a>
@@ -1260,7 +1327,7 @@
 <a class="md-nav__link" href="#character-data-audits">
 <span class="md-ellipsis">
       
-        Character data audits
+        Character Data Audits
       
     </span>
 </a>
@@ -1269,7 +1336,7 @@
 <a class="md-nav__link" href="#statistical-audits">
 <span class="md-ellipsis">
       
-        Statistical audits
+        Statistical Audits
       
     </span>
 </a>
@@ -1281,17 +1348,17 @@
 <a class="md-nav__link" href="#running-audits">
 <span class="md-ellipsis">
       
-        Running audits
+        Running Audits
       
     </span>
 </a>
-<nav aria-label="Running audits" class="md-nav">
+<nav aria-label="Running Audits" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#the-cli-audit-command">
 <span class="md-ellipsis">
       
-        The CLI audit command
+        The CLI Audit Command
       
     </span>
 </a>
@@ -1300,7 +1367,7 @@
 <a class="md-nav__link" href="#automated-auditing">
 <span class="md-ellipsis">
       
-        Automated auditing
+        Automated Auditing
       
     </span>
 </a>
@@ -1312,17 +1379,66 @@
 <a class="md-nav__link" href="#advanced-usage">
 <span class="md-ellipsis">
       
-        Advanced usage
+        Advanced Usage
       
     </span>
 </a>
-<nav aria-label="Advanced usage" class="md-nav">
+<nav aria-label="Advanced Usage" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#skipping-audits">
 <span class="md-ellipsis">
       
-        Skipping audits
+        Skipping Audits
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting">
+<span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+</a>
+<nav aria-label="Troubleshooting" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#audit-fails-unexpectedly">
+<span class="md-ellipsis">
+      
+        Audit Fails Unexpectedly
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#audit-too-strict">
+<span class="md-ellipsis">
+      
+        Audit Too Strict
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-issues">
+<span class="md-ellipsis">
+      
+        Performance Issues
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-audit-results">
+<span class="md-ellipsis">
+      
+        Understanding Audit Results
       
     </span>
 </a>
@@ -1355,18 +1471,21 @@
 </ol>
 </nav>
 <article class="md-content__inner md-typeset">
-<h1 id="auditing">Auditing<a class="headerlink" href="#auditing" title="Link to this section">¶</a></h1>
-<p>Audits are one of the tools Vulcan provides to validate your models. Along with <a href="tests.md">tests</a>, they are a great way to ensure the quality of your data and to build trust in it across your organization.</p>
-<p>Unlike tests, audits are used to validate the output of a model after every run. When you apply a <a href="./plans.md">plan</a>, Vulcan will automatically run each model's audits.</p>
-<p><strong>All audits in Vulcan are blocking</strong> - when an audit fails, Vulcan halts plan application or run execution to prevent potentially invalid data from propagating further downstream. This ensures data quality by stopping the pipeline whenever data validation fails.</p>
-<p>A comprehensive suite of audits can identify data issues upstream, whether they are from your vendors or other teams. Audits also empower your data engineers and analysts to work with confidence by catching problems early as they work on new features or make updates to your models.</p>
-<p><strong>NOTE</strong>: For incremental by time range models, audits are only applied to intervals being processed - not for the entire underlying table.</p>
+<h1 id="audits">Audits<a class="headerlink" href="#audits" title="Link to this section">¶</a></h1>
+<p>Audits are your data quality bouncers—they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your pipeline if something's wrong.</p>
+<p>Unlike <a href="../../tests/tests/">tests</a> (which you run manually to verify logic), audits run automatically whenever you apply a <a href="../../../guides/plan/">plan</a>. They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.</p>
+<p><strong>Here's the key thing:</strong> All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything—no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire pipeline and causing headaches later.</p>
+<p>A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.</p>
+<blockquote>
+<p><strong>Note:</strong> For incremental by time range models, audits only run on the intervals being processed, not the entire table. This keeps things fast and focused on what actually changed.</p>
+</blockquote>
 <h2 id="terminology-audits-and-assertions">Terminology: Audits and Assertions<a class="headerlink" href="#terminology-audits-and-assertions" title="Link to this section">¶</a></h2>
-<p>Vulcan uses two related but distinct concepts:</p>
+<p>Before we dive in, let's clear up some terminology. Vulcan uses two related but distinct concepts:</p>
 <ul>
-<li><strong>AUDIT</strong> - The validation rule (the SQL query that checks for problems)</li>
+<li><strong>AUDIT</strong> - The validation rule itself (the SQL query that checks for problems)</li>
 <li><strong>ASSERTION</strong> - Attaching an audit to a model (claiming it should pass)</li>
 </ul>
+<p>Think of it this way: an audit is the rule ("prices must be positive"), and an assertion is you saying "this model follows that rule."</p>
 <p><strong>In MODEL definitions:</strong></p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">-- Define the AUDIT (the rule)</span>
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="n">AUDIT</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="n">check_positive_price</span><span class="p">);</span>
@@ -1379,40 +1498,48 @@
 </span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="p">);</span>
 </span></code></pre></div>
 <blockquote>
-<p><strong>Note:</strong> You may encounter older code that attaches audits using <code>audits</code> instead of <code>assertions</code> in MODEL definitions. While both work identically, please use <code>assertions</code> for clearer semantics. This documentation uses <code>assertions</code> throughout.</p>
+<p><strong>Note:</strong> You might see older code using <code>audits</code> instead of <code>assertions</code> in MODEL definitions. Both work identically, but <code>assertions</code> is clearer—you're asserting that your model passes these audits. This documentation uses <code>assertions</code> throughout.</p>
 </blockquote>
 <h2 id="how-audits-work">How Audits Work<a class="headerlink" href="#how-audits-work" title="Link to this section">¶</a></h2>
-<p>A failed audit halts the execution of a <code>plan</code> or <code>run</code> to prevent invalid data from propagating to downstream models. The impact of a failure depends on whether you are running a <code>plan</code> or a <code>run</code>.</p>
-<p>Vulcan's audit process is:</p>
+<p>When an audit fails, Vulcan stops everything. No ifs, ands, or buts. This is by design—it's better to catch problems early than to let bad data flow downstream and cause bigger issues.</p>
+<p>Here's what happens when you run a model:</p>
 <ol>
-<li>Evaluate the model (e.g., insert new data or rebuild the table)</li>
-<li>Run the audit query against the newly updated model table. For incremental models, the audit only runs on the processed time intervals.</li>
-<li>If the query returns any rows, the audit fails, halting the <code>plan</code> or <code>run</code>.</li>
+<li><strong>Evaluate the model</strong> - Vulcan runs your model SQL (inserts new data, rebuilds the table, etc.)</li>
+<li><strong>Run the audit query</strong> - Vulcan executes your audit SQL against the newly updated table. For incremental models, this only checks the intervals you're processing (keeps things fast!)</li>
+<li><strong>Check the results</strong> - If the query returns any rows, the audit fails and everything stops</li>
 </ol>
+<p><strong>Why this matters:</strong> Audits query for bad data. If your audit finds bad data (returns rows), that's a problem. If it finds nothing (returns zero rows), you're good to go.</p>
 <h3 id="plan-vs-run">Plan vs. Run<a class="headerlink" href="#plan-vs-run" title="Link to this section">¶</a></h3>
-<p>The key difference is when the model's data is promoted to the production environment:</p>
-<ul>
-<li>
-<p><strong><code>plan</code></strong>: Vulcan evaluates and audits all modified models <em>before</em> promoting them to production. If an audit fails, the <code>plan</code> stops, and the production table is untouched. Invalid data is contained in an isolated table and never reaches the production environment.</p>
-</li>
-<li>
-<p><strong><code>run</code></strong>: Vulcan evaluates and audits models directly against the production environment. If an audit fails, the <code>run</code> stops, but the invalid data <em>is already present</em> in the production table. The blocking action prevents this bad data from being used to build other downstream models.</p>
-</li>
-</ul>
+<p>The difference between <code>plan</code> and <code>run</code> matters a lot when it comes to audits:</p>
+<p><strong><code>plan</code></strong> - The safe way:
+- Vulcan evaluates and audits all modified models <em>before</em> promoting them to production
+- If an audit fails, the plan stops and your production table is untouched
+- Invalid data stays in an isolated table and never reaches production
+- This is like testing in a sandbox before deploying</p>
+<p><strong><code>run</code></strong> - The direct way:
+- Vulcan evaluates and audits models directly against the production environment
+- If an audit fails, the run stops, but the invalid data <em>is already in production</em>
+- The blocking prevents this bad data from being used to build downstream models
+- This is like deploying directly—faster, but riskier</p>
+<p><strong>Which should you use?</strong> For production changes, use <code>plan</code>. It's safer and gives you a chance to fix issues before they hit production. Use <code>run</code> when you're confident or doing quick iterations.</p>
 <h3 id="fixing-a-failed-audit">Fixing a Failed Audit<a class="headerlink" href="#fixing-a-failed-audit" title="Link to this section">¶</a></h3>
-<p>If an audit fails during a <code>run</code>, you must fix the invalid data in the production table. To do so:</p>
+<p>So an audit failed. Don't panic! Here's how to fix it:</p>
 <ol>
-<li><strong>Find the root cause</strong>: examine upstream models and data sources</li>
-<li><strong>Fix the source</strong><ul>
-<li>If the cause is an <strong>external data source</strong>, fix it there. Then, run a <a href="./plans.md#restatement-plans">restatement plan</a> on the first Vulcan model that ingests the source data. This will restate all downstream models, including the one with the failed audit.</li>
-<li>If the cause is a <strong>Vulcan model</strong>, update the model's logic. Then apply the change with a <code>plan</code>, which will automatically re-evaluate all downstream models.</li>
-</ul>
+<li>
+<p><strong>Find the root cause</strong> - Look at the audit query results. What data failed? Check upstream models and data sources.</p>
+</li>
+<li>
+<p><strong>Fix the source</strong> - This depends on where the problem came from:
+   - <strong>External data source?</strong> Fix it at the source, then run a <a href="../../../guides/plan/#restatement-plans">restatement plan</a> on the first Vulcan model that ingests it. This will restate all downstream models automatically.
+   - <strong>Vulcan model?</strong> Update the model's logic, then apply the change with a <code>plan</code>. Vulcan will automatically re-evaluate all downstream models.</p>
 </li>
 </ol>
+<p>The key is fixing the root cause, not just the symptom. If bad data is coming from upstream, fixing it downstream won't help long-term.</p>
 <h2 id="user-defined-audits">User-Defined Audits<a class="headerlink" href="#user-defined-audits" title="Link to this section">¶</a></h2>
-<p>In Vulcan, user-defined audits are defined in <code>.sql</code> files in an <code>audits</code> directory in your Vulcan project. Multiple audits can be defined in a single file, so you can organize them to your liking. Alternatively, audits can be defined inline within the model definition itself.</p>
-<p>Audits are SQL queries that should not return any rows; in other words, they query for bad data, so returned rows indicates that something is wrong.</p>
-<p>In its simplest form, an audit is defined with the <code>AUDIT</code> statement along with a query, as in the following example:</p>
+<p>You can write your own audits! They're just SQL queries that should return zero rows. If they return rows, that means they found bad data and the audit fails.</p>
+<p>Audits live in <code>.sql</code> files in an <code>audits</code> directory in your project. You can put multiple audits in one file (organize them however makes sense) or define them inline in your model files.</p>
+<h3 id="your-first-audit">Your First Audit<a class="headerlink" href="#your-first-audit" title="Link to this section">¶</a></h3>
+<p>Let's create a simple audit. Here's the basic structure:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
 <span class="normal"><a href="#__codelineno-1-3">3</a></span>
@@ -1429,9 +1556,12 @@
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">  </span><span class="n">ds</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>In the example, we defined an audit named <code>assert_item_price_is_not_null</code>, ensuring that every sushi item has a price.</p>
-<p><strong>Note:</strong> If the query is in a different dialect than the rest of your project, you can specify it in the <code>AUDIT</code> statement. In the example above we set it to <code>spark</code>, so SQLGlot will automatically understand how to execute the query behind the scenes.</p>
-<p>To run the audit, attach it to a model using <code>assertions</code> in the <code>MODEL</code> statement:</p>
+<p>This audit checks that every sushi item has a price. If any items are missing prices (the query returns rows), the audit fails.</p>
+<p><strong>A few things to note:</strong>
+- The <code>name</code> is what you'll reference when attaching it to a model
+- If your query uses a different SQL dialect than your project, specify it with <code>dialect</code> (like <code>spark</code> in the example)
+- The <code>@start_ds</code> and <code>@end_ds</code> macros are automatically filled in for incremental models</p>
+<p>To actually use this audit, attach it to a model:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
 <span class="normal"><a href="#__codelineno-2-3">3</a></span>
@@ -1440,10 +1570,10 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span><span class="n">assert_item_price_is_not_null</span><span class="p">)</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Now <code>assert_item_price_is_not_null</code> will run every time the <code>sushi.items</code> model is run.</p>
-<h3 id="generic-audits">Generic audits<a class="headerlink" href="#generic-audits" title="Link to this section">¶</a></h3>
-<p>Audits can also be parameterized and implemented in a model-agnostic way so the same audit can be used for multiple models.</p>
-<p>Consider the following audit definition that checks whether the target column exceeds a configured threshold:</p>
+<p>Now this audit runs every time the <code>sushi.items</code> model runs. Pretty straightforward!</p>
+<h3 id="generic-audits">Generic Audits<a class="headerlink" href="#generic-audits" title="Link to this section">¶</a></h3>
+<p>Here's where audits get really powerful. You can create parameterized audits that work across multiple models. This saves you from writing the same audit over and over.</p>
+<p>Consider this audit that checks if a column exceeds a threshold:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
 <span class="normal"><a href="#__codelineno-3-3">3</a></span>
@@ -1454,9 +1584,10 @@
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">@</span><span class="n">this_model</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="k">WHERE</span><span class="w"> </span><span class="o">@</span><span class="k">column</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">@</span><span class="n">threshold</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This example utilizes <a href="./macros/overview.md">macros</a> to parameterize the audit. <code>@this_model</code> is a special macro which refers to the model that is being audited. For incremental models, this macro also ensures that only relevant data intervals are affected.</p>
-<p><code>@column</code> and <code>@threshold</code> are parameters whose values are specified in a model definition's <code>MODEL</code> statement.</p>
-<p>Apply the generic audit to a model by referencing it in the <code>MODEL</code> statement using <code>assertions</code>:</p>
+<p>This uses <a href="../../advanced-features/macros/overview/">macros</a> to make it flexible:
+- <code>@this_model</code> is a special macro that refers to the model being audited (and handles incremental models correctly)
+- <code>@column</code> and <code>@threshold</code> are parameters you'll specify when you use the audit</p>
+<p>Now you can use this same audit for different columns and thresholds:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
 <span class="normal"><a href="#__codelineno-4-3">3</a></span>
@@ -1471,10 +1602,10 @@
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Notice how <code>column</code> and <code>threshold</code> parameters have been set. These values will be propagated into the audit query and substituted into the <code>@column</code> and <code>@threshold</code> macro variables.</p>
-<p>Note that the same audit can be applied more than once to the a model using different sets of parameters.</p>
-<p>Generic audits can define default values as follows:
-</p><div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<p>See how we're using the same audit twice with different parameters? That's the power of generic audits. You can even use the same audit multiple times on the same model with different parameters.</p>
+<p><strong>Default values:</strong></p>
+<p>You can set default values for parameters:</p>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
 <span class="normal"><a href="#__codelineno-5-2">2</a></span>
 <span class="normal"><a href="#__codelineno-5-3">3</a></span>
 <span class="normal"><a href="#__codelineno-5-4">4</a></span>
@@ -1491,8 +1622,10 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="p">);</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">@</span><span class="n">this_model</span>
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="o">@</span><span class="k">column</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">@</span><span class="n">threshold</span><span class="p">;</span>
-</span></code></pre></div></td></tr></tbody></table></div><p></p>
-<p>Alternatively, you can apply specific audits globally by including them in the model defaults configuration:</p>
+</span></code></pre></div></td></tr></tbody></table></div>
+<p>Now if someone uses the audit without specifying parameters, it'll use these defaults. Handy for common cases!</p>
+<p><strong>Global audits:</strong></p>
+<p>You can also apply audits globally using model defaults:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
 <span class="normal"><a href="#__codelineno-6-3">3</a></span>
@@ -1501,12 +1634,13 @@
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">assert_positive_order_ids</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">does_not_exceed_threshold</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">threshold</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p>This applies these audits to all models by default. Useful for organization-wide rules!</p>
 <blockquote>
-<p><strong>Note:</strong> In <code>model_defaults</code>, you can use either <code>audits</code> or <code>assertions</code> - both are supported for backward compatibility.</p>
+<p><strong>Note:</strong> In <code>model_defaults</code>, you can use either <code>audits</code> or <code>assertions</code>—both work for backward compatibility.</p>
 </blockquote>
 <h3 id="naming">Naming<a class="headerlink" href="#naming" title="Link to this section">¶</a></h3>
-<p>We recommended avoiding SQL keywords when naming audit parameters. Quote any audit argument that is also a SQL keyword.</p>
-<p>For example, if an audit <code>my_audit</code> uses a <code>values</code> parameter, invoking it will require quotes because <code>values</code> is a SQL keyword:</p>
+<p><strong>Avoid SQL keywords</strong> when naming audit parameters. If you must use a keyword, quote it.</p>
+<p>For example, if your audit uses a <code>values</code> parameter (which is a SQL keyword), you'll need quotes:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
 <span class="normal"><a href="#__codelineno-7-2">2</a></span>
 <span class="normal"><a href="#__codelineno-7-3">3</a></span>
@@ -1519,8 +1653,9 @@
 </span></span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="inline-audits">Inline audits<a class="headerlink" href="#inline-audits" title="Link to this section">¶</a></h3>
-<p>You can also define audits directly within a model definition using the same syntax. Multiple audits can be specified within the same SQL model file:</p>
+<p>It's easier to just avoid keywords in the first place, but if you need them, quotes work fine.</p>
+<h3 id="inline-audits">Inline Audits<a class="headerlink" href="#inline-audits" title="Link to this section">¶</a></h3>
+<p>You can also define audits right in your model file. This is handy when an audit is specific to one model:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
@@ -1549,14 +1684,13 @@
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">@</span><span class="n">this_model</span>
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h2 id="built-in-audits">Built-in audits<a class="headerlink" href="#built-in-audits" title="Link to this section">¶</a></h2>
-<p>Vulcan comes with a suite of built-in generic audits that cover a broad set of common use cases. All built-in audits are blocking - when they fail, execution halts immediately.</p>
-<p>This section describes the audits, grouped by general purpose.</p>
-<h3 id="generic-assertion-audit">Generic assertion audit<a class="headerlink" href="#generic-assertion-audit" title="Link to this section">¶</a></h3>
-<p>The <code>forall</code> audit is the most generic built-in audit, allowing arbitrary boolean SQL expressions.</p>
-<h4 id="forall">forall<a class="headerlink" href="#forall" title="Link to this section">¶</a></h4>
-<p>Ensures that a set of arbitrary boolean expressions evaluate to <code>TRUE</code> for all rows in the model. The boolean expressions should be written in SQL.</p>
-<p>This example asserts that all rows have a <code>price</code> greater than 0 and a <code>name</code> value containing at least one character:</p>
+<p>You can define multiple audits in the same file. Just make sure they're defined before (or alongside) the MODEL that uses them.</p>
+<h2 id="built-in-audits">Built-in Audits<a class="headerlink" href="#built-in-audits" title="Link to this section">¶</a></h2>
+<p>Vulcan comes with a whole suite of built-in audits that cover most common use cases. These are ready to use—no need to write SQL yourself for these scenarios.</p>
+<p>All built-in audits are blocking (they stop execution when they fail), and they're grouped by what they check. Let's walk through them:</p>
+<h3 id="generic-assertion-audit">Generic Assertion Audit<a class="headerlink" href="#generic-assertion-audit" title="Link to this section">¶</a></h3>
+<h4 id="forall"><code>forall</code><a class="headerlink" href="#forall" title="Link to this section">¶</a></h4>
+<p>The most flexible built-in audit. It lets you write arbitrary boolean SQL expressions:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
 <span class="normal"><a href="#__codelineno-9-2">2</a></span>
 <span class="normal"><a href="#__codelineno-9-3">3</a></span>
@@ -1575,11 +1709,11 @@
 </span></span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="row-counts-and-null-value-audits">Row counts and NULL value audits<a class="headerlink" href="#row-counts-and-null-value-audits" title="Link to this section">¶</a></h3>
-<p>These audits concern row counts and presence of <code>NULL</code> values.</p>
-<h4 id="number_of_rows">number_of_rows<a class="headerlink" href="#number_of_rows" title="Link to this section">¶</a></h4>
-<p>Ensures that the number of rows in the model's table exceeds the threshold.</p>
-<p>This example asserts that the model has more than 10 rows:</p>
+<p>This checks that all rows have a <code>price</code> greater than 0 AND a <code>name</code> with at least one character. You can add as many criteria as you want—they all need to pass.</p>
+<h3 id="row-counts-and-null-value-audits">Row Counts and NULL Value Audits<a class="headerlink" href="#row-counts-and-null-value-audits" title="Link to this section">¶</a></h3>
+<p>These audits check that you have enough data and that required fields aren't missing.</p>
+<h4 id="number_of_rows"><code>number_of_rows</code><a class="headerlink" href="#number_of_rows" title="Link to this section">¶</a></h4>
+<p>Make sure you have enough rows. Useful for catching cases where a model didn't run properly or data didn't load:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
 <span class="normal"><a href="#__codelineno-10-2">2</a></span>
 <span class="normal"><a href="#__codelineno-10-3">3</a></span>
@@ -1592,9 +1726,9 @@
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="not_null">not_null<a class="headerlink" href="#not_null" title="Link to this section">¶</a></h4>
-<p>Ensures that specified columns do not contain <code>NULL</code> values.</p>
-<p>This example asserts that none of the <code>id</code>, <code>customer_id</code>, or <code>waiter_id</code> columns contain <code>NULL</code> values:</p>
+<p>This ensures your model has more than 10 rows. If you have 10 or fewer, something's probably wrong.</p>
+<h4 id="not_null"><code>not_null</code><a class="headerlink" href="#not_null" title="Link to this section">¶</a></h4>
+<p>The classic "required field" check. Ensures specified columns don't have NULL values:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
 <span class="normal"><a href="#__codelineno-11-2">2</a></span>
 <span class="normal"><a href="#__codelineno-11-3">3</a></span>
@@ -1607,9 +1741,9 @@
 </span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="at_least_one">at_least_one<a class="headerlink" href="#at_least_one" title="Link to this section">¶</a></h4>
-<p>Ensures that specified columns contain at least one non-NULL value.</p>
-<p>This example asserts that the <code>zip</code> column contains at least one non-NULL value:</p>
+<p>This checks that <code>id</code>, <code>customer_id</code>, and <code>waiter_id</code> are never NULL. If any of them are NULL, the audit fails.</p>
+<h4 id="at_least_one"><code>at_least_one</code><a class="headerlink" href="#at_least_one" title="Link to this section">¶</a></h4>
+<p>Sometimes you just need at least one non-NULL value, not all of them. This is useful for optional fields that should have some data:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
 <span class="normal"><a href="#__codelineno-12-2">2</a></span>
 <span class="normal"><a href="#__codelineno-12-3">3</a></span>
@@ -1622,9 +1756,9 @@
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="not_null_proportion">not_null_proportion<a class="headerlink" href="#not_null_proportion" title="Link to this section">¶</a></h4>
-<p>Ensures that the specified column's proportion of <code>NULL</code> values is no greater than a threshold.</p>
-<p>This example asserts that the <code>zip</code> column has no more than 80% <code>NULL</code> values:</p>
+<p>This ensures the <code>zip</code> column has at least one non-NULL value. Maybe most customers don't have zip codes, but at least some should.</p>
+<h4 id="not_null_proportion"><code>not_null_proportion</code><a class="headerlink" href="#not_null_proportion" title="Link to this section">¶</a></h4>
+<p>Check that NULL values don't exceed a certain percentage. Useful when some NULLs are okay, but too many is a problem:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
 <span class="normal"><a href="#__codelineno-13-2">2</a></span>
 <span class="normal"><a href="#__codelineno-13-3">3</a></span>
@@ -1637,11 +1771,11 @@
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="specific-data-values-audits">Specific data values audits<a class="headerlink" href="#specific-data-values-audits" title="Link to this section">¶</a></h3>
-<p>These audits concern the specific set of data values present in a column.</p>
-<h4 id="not_constant">not_constant<a class="headerlink" href="#not_constant" title="Link to this section">¶</a></h4>
-<p>Ensures that the specified columns are not constant (i.e., have at least two non-NULL values).</p>
-<p>This example asserts that the column <code>customer_id</code> has at least two non-NULL values:</p>
+<p>This ensures that at least 80% of rows have a zip code. The other 20% can be NULL, but if more than 20% are missing, that's a problem.</p>
+<h3 id="specific-data-values-audits">Specific Data Values Audits<a class="headerlink" href="#specific-data-values-audits" title="Link to this section">¶</a></h3>
+<p>These audits check the actual values in your data, not just whether they exist.</p>
+<h4 id="not_constant"><code>not_constant</code><a class="headerlink" href="#not_constant" title="Link to this section">¶</a></h4>
+<p>Make sure a column has variety. If every row has the same value, something might be wrong:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
 <span class="normal"><a href="#__codelineno-14-2">2</a></span>
 <span class="normal"><a href="#__codelineno-14-3">3</a></span>
@@ -1654,9 +1788,9 @@
 </span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="unique_values">unique_values<a class="headerlink" href="#unique_values" title="Link to this section">¶</a></h4>
-<p>Ensures that specified columns contain unique values (i.e., have no duplicated values).</p>
-<p>This example asserts that the <code>id</code> and <code>item_id</code> columns have unique values:</p>
+<p>This ensures <code>customer_id</code> has at least two different non-NULL values. If every row has the same customer ID, that's suspicious.</p>
+<h4 id="unique_values"><code>unique_values</code><a class="headerlink" href="#unique_values" title="Link to this section">¶</a></h4>
+<p>The classic uniqueness check. Ensures no duplicate values:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
 <span class="normal"><a href="#__codelineno-15-2">2</a></span>
 <span class="normal"><a href="#__codelineno-15-3">3</a></span>
@@ -1669,9 +1803,9 @@
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="unique_combination_of_columns">unique_combination_of_columns<a class="headerlink" href="#unique_combination_of_columns" title="Link to this section">¶</a></h4>
-<p>Ensures that each row has a unique combination of values over the specified columns.</p>
-<p>This example asserts that the combination of <code>id</code> and <code>ds</code> columns has no duplicated values:</p>
+<p>This checks that <code>id</code> and <code>item_id</code> each have unique values. No duplicates allowed!</p>
+<h4 id="unique_combination_of_columns"><code>unique_combination_of_columns</code><a class="headerlink" href="#unique_combination_of_columns" title="Link to this section">¶</a></h4>
+<p>Check uniqueness across multiple columns. Maybe individual columns can repeat, but combinations must be unique:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
 <span class="normal"><a href="#__codelineno-16-2">2</a></span>
 <span class="normal"><a href="#__codelineno-16-3">3</a></span>
@@ -1684,13 +1818,9 @@
 </span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="accepted_values">accepted_values<a class="headerlink" href="#accepted_values" title="Link to this section">¶</a></h4>
-<p>Ensures that all rows of the specified column contain one of the accepted values.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Rows with <code>NULL</code> values for the column will pass this audit in most databases/engines. Use the <a href="#not_null"><code>not_null</code> audit</a> to ensure there are no <code>NULL</code> values present in a column.</p>
-</div>
-<p>This example asserts that column <code>name</code> has a value of 'Hamachi', 'Unagi', or 'Sake':</p>
+<p>This ensures that the combination of <code>id</code> and <code>ds</code> is unique. So <code>id</code> can repeat across different dates, but the same <code>id</code> can't appear twice on the same date.</p>
+<h4 id="accepted_values"><code>accepted_values</code><a class="headerlink" href="#accepted_values" title="Link to this section">¶</a></h4>
+<p>Make sure values are in an allowed set. Like an enum check:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
 <span class="normal"><a href="#__codelineno-17-2">2</a></span>
 <span class="normal"><a href="#__codelineno-17-3">3</a></span>
@@ -1703,13 +1833,13 @@
 </span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="not_accepted_values">not_accepted_values<a class="headerlink" href="#not_accepted_values" title="Link to this section">¶</a></h4>
-<p>Ensures that no rows of the specified column contain one of the not accepted values.</p>
+<p>This ensures that <code>name</code> is one of the three allowed values. Anything else fails the audit.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This audit does not support rejecting <code>NULL</code> values. Use the <a href="#not_null"><code>not_null</code> audit</a> to ensure there are no <code>NULL</code> values present in a column.</p>
+<p>Rows with <code>NULL</code> values will pass this audit in most databases. If you want to reject NULLs, combine this with a <code>not_null</code> audit.</p>
 </div>
-<p>This example asserts that column <code>name</code> is not one of 'Hamburger' or 'French fries':</p>
+<h4 id="not_accepted_values"><code>not_accepted_values</code><a class="headerlink" href="#not_accepted_values" title="Link to this section">¶</a></h4>
+<p>The opposite—make sure certain values are NOT present:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
 <span class="normal"><a href="#__codelineno-18-2">2</a></span>
 <span class="normal"><a href="#__codelineno-18-3">3</a></span>
@@ -1722,12 +1852,15 @@
 </span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="numeric-data-audits">Numeric data audits<a class="headerlink" href="#numeric-data-audits" title="Link to this section">¶</a></h3>
-<p>These audits concern the distribution of values in numeric columns.</p>
-<h4 id="sequential_values">sequential_values<a class="headerlink" href="#sequential_values" title="Link to this section">¶</a></h4>
-<p>Ensures that each of an ordered numeric column's values contains the previous row's value plus <code>interval</code>.</p>
-<p>For example, with a column having minimum value 1 and maximum value 4 and <code>interval := 1</code>, it ensures that the rows contain values <code>[1, 2, 3, 4]</code>.</p>
-<p>This example asserts that column <code>item_id</code> contains sequential values that differ by <code>1</code>:</p>
+<p>This ensures that <code>name</code> is never 'Hamburger' or 'French fries'. Useful for catching data that shouldn't be there.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This audit doesn't support rejecting <code>NULL</code> values. Use <code>not_null</code> if you need to ensure no NULLs.</p>
+</div>
+<h3 id="numeric-data-audits">Numeric Data Audits<a class="headerlink" href="#numeric-data-audits" title="Link to this section">¶</a></h3>
+<p>These audits check numeric ranges and distributions.</p>
+<h4 id="sequential_values"><code>sequential_values</code><a class="headerlink" href="#sequential_values" title="Link to this section">¶</a></h4>
+<p>Check that values are sequential. Useful for IDs or sequence numbers:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span>
 <span class="normal"><a href="#__codelineno-19-2">2</a></span>
 <span class="normal"><a href="#__codelineno-19-3">3</a></span>
@@ -1740,9 +1873,9 @@
 </span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="accepted_range">accepted_range<a class="headerlink" href="#accepted_range" title="Link to this section">¶</a></h4>
-<p>Ensures that a column's values are in a numeric range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.</p>
-<p>This example asserts that all rows have a <code>price</code> greater than or equal 1 and less than or equal to 100:</p>
+<p>This ensures that <code>item_id</code> values are sequential (1, 2, 3, 4...). If you have gaps or duplicates, the audit fails.</p>
+<h4 id="accepted_range"><code>accepted_range</code><a class="headerlink" href="#accepted_range" title="Link to this section">¶</a></h4>
+<p>Check that values are within a numeric range:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span>
 <span class="normal"><a href="#__codelineno-20-2">2</a></span>
 <span class="normal"><a href="#__codelineno-20-3">3</a></span>
@@ -1755,7 +1888,9 @@
 </span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This example specifies the <code>inclusive := false</code> argument to assert that all rows have a <code>price</code> greater than 0 and less than 100:</p>
+<p>This ensures all prices are between 1 and 100 (inclusive). Values outside this range fail the audit.</p>
+<p><strong>Exclusive ranges:</strong></p>
+<p>You can make the range exclusive (not including the boundaries):</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1">1</a></span>
 <span class="normal"><a href="#__codelineno-21-2">2</a></span>
 <span class="normal"><a href="#__codelineno-21-3">3</a></span>
@@ -1768,9 +1903,9 @@
 </span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="mutually_exclusive_ranges">mutually_exclusive_ranges<a class="headerlink" href="#mutually_exclusive_ranges" title="Link to this section">¶</a></h4>
-<p>Ensures that each row's numeric range does not overlap with any other row's range.</p>
-<p>This example asserts that each row's range [min_price, max_price] does not overlap with any other row's range:</p>
+<p>Now prices must be greater than 0 and less than 100 (not equal to the boundaries).</p>
+<h4 id="mutually_exclusive_ranges"><code>mutually_exclusive_ranges</code><a class="headerlink" href="#mutually_exclusive_ranges" title="Link to this section">¶</a></h4>
+<p>Check that ranges don't overlap. Useful for pricing tiers or time slots:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1">1</a></span>
 <span class="normal"><a href="#__codelineno-22-2">2</a></span>
 <span class="normal"><a href="#__codelineno-22-3">3</a></span>
@@ -1783,15 +1918,15 @@
 </span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="character-data-audits">Character data audits<a class="headerlink" href="#character-data-audits" title="Link to this section">¶</a></h3>
-<p>These audits concern the characteristics of values in character/string columns.</p>
+<p>This ensures that each row's price range [min_price, max_price] doesn't overlap with any other row's range. Perfect for ensuring pricing tiers don't conflict.</p>
+<h3 id="character-data-audits">Character Data Audits<a class="headerlink" href="#character-data-audits" title="Link to this section">¶</a></h3>
+<p>These audits check string formats and patterns.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Databases/engines may exhibit different behavior for different character sets or languages.</p>
+<p>Different databases may behave differently with character sets or languages. Test your audits!</p>
 </div>
-<h4 id="not_empty_string">not_empty_string<a class="headerlink" href="#not_empty_string" title="Link to this section">¶</a></h4>
-<p>Ensures that no rows of a column contain an empty string value <code>''</code>.</p>
-<p>This example asserts that no <code>name</code> is an empty string:</p>
+<h4 id="not_empty_string"><code>not_empty_string</code><a class="headerlink" href="#not_empty_string" title="Link to this section">¶</a></h4>
+<p>Make sure strings aren't empty. NULL is okay, but empty strings <code>''</code> are not:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-23-1">1</a></span>
 <span class="normal"><a href="#__codelineno-23-2">2</a></span>
 <span class="normal"><a href="#__codelineno-23-3">3</a></span>
@@ -1804,9 +1939,9 @@
 </span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="string_length_equal">string_length_equal<a class="headerlink" href="#string_length_equal" title="Link to this section">¶</a></h4>
-<p>Ensures that all rows of a column contain a string with the specified number of characters.</p>
-<p>This example asserts that all <code>zip</code> values are 5 characters long:</p>
+<p>This ensures no <code>name</code> is an empty string. NULL values pass, but <code>''</code> fails.</p>
+<h4 id="string_length_equal"><code>string_length_equal</code><a class="headerlink" href="#string_length_equal" title="Link to this section">¶</a></h4>
+<p>Check that all strings have the exact same length:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
 <span class="normal"><a href="#__codelineno-24-2">2</a></span>
 <span class="normal"><a href="#__codelineno-24-3">3</a></span>
@@ -1819,9 +1954,9 @@
 </span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="string_length_between">string_length_between<a class="headerlink" href="#string_length_between" title="Link to this section">¶</a></h4>
-<p>Ensures that all rows of a column contain a string with number of characters in the specified range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.</p>
-<p>This example asserts that all <code>name</code> values have 5 or more and 50 or fewer characters:</p>
+<p>This ensures all <code>zip</code> values are exactly 5 characters. Useful for fixed-length codes.</p>
+<h4 id="string_length_between"><code>string_length_between</code><a class="headerlink" href="#string_length_between" title="Link to this section">¶</a></h4>
+<p>Check that string lengths are within a range:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
 <span class="normal"><a href="#__codelineno-25-2">2</a></span>
 <span class="normal"><a href="#__codelineno-25-3">3</a></span>
@@ -1834,7 +1969,9 @@
 </span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This example specifies the <code>inclusive := false</code> argument to assert that all rows have a <code>name</code> with 5 or more and 59 or fewer characters:</p>
+<p>This ensures all <code>name</code> values are between 5 and 50 characters (inclusive).</p>
+<p><strong>Exclusive ranges:</strong></p>
+<p>You can make the range exclusive:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">1</a></span>
 <span class="normal"><a href="#__codelineno-26-2">2</a></span>
 <span class="normal"><a href="#__codelineno-26-3">3</a></span>
@@ -1847,10 +1984,9 @@
 </span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="valid_uuid">valid_uuid<a class="headerlink" href="#valid_uuid" title="Link to this section">¶</a></h4>
-<p>Ensures that all non-NULL rows of a column contain a string with the UUID structure.</p>
-<p>UUID structure determined by matching regular expression <code>'^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'</code>.</p>
-<p>This example asserts that all <code>uuid</code> values have the UUID structure:</p>
+<p>Now names must be longer than 4 characters and shorter than 60 (not equal to the boundaries).</p>
+<h4 id="valid_uuid"><code>valid_uuid</code><a class="headerlink" href="#valid_uuid" title="Link to this section">¶</a></h4>
+<p>Check that values match UUID format:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span>
 <span class="normal"><a href="#__codelineno-27-2">2</a></span>
 <span class="normal"><a href="#__codelineno-27-3">3</a></span>
@@ -1863,10 +1999,9 @@
 </span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="valid_email">valid_email<a class="headerlink" href="#valid_email" title="Link to this section">¶</a></h4>
-<p>Ensures that all non-NULL rows of a column contain a string with the email address structure.</p>
-<p>Email address structure determined by matching regular expression <code>'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'</code>.</p>
-<p>This example asserts that all <code>email</code> values have the email address structure:</p>
+<p>This ensures all <code>uuid</code> values match the UUID structure (like <code>550e8400-e29b-41d4-a716-446655440000</code>).</p>
+<h4 id="valid_email"><code>valid_email</code><a class="headerlink" href="#valid_email" title="Link to this section">¶</a></h4>
+<p>Check email format:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-28-1">1</a></span>
 <span class="normal"><a href="#__codelineno-28-2">2</a></span>
 <span class="normal"><a href="#__codelineno-28-3">3</a></span>
@@ -1879,10 +2014,9 @@
 </span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="valid_url">valid_url<a class="headerlink" href="#valid_url" title="Link to this section">¶</a></h4>
-<p>Ensures that all non-NULL rows of a column contain a string with the URL structure.</p>
-<p>URL structure determined by matching regular expression <code>'^(https?|ftp)://[^\s/$.?#].[^\s]*$'</code>.</p>
-<p>This example asserts that all <code>url</code> values have the URL structure:</p>
+<p>This ensures all <code>email</code> values look like valid email addresses (has <code>@</code>, has domain, etc.).</p>
+<h4 id="valid_url"><code>valid_url</code><a class="headerlink" href="#valid_url" title="Link to this section">¶</a></h4>
+<p>Check URL format:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-29-1">1</a></span>
 <span class="normal"><a href="#__codelineno-29-2">2</a></span>
 <span class="normal"><a href="#__codelineno-29-3">3</a></span>
@@ -1895,10 +2029,9 @@
 </span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="valid_http_method">valid_http_method<a class="headerlink" href="#valid_http_method" title="Link to this section">¶</a></h4>
-<p>Ensures that all non-NULL rows of a column contain a valid HTTP method.</p>
-<p>Valid HTTP methods determined by matching values <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>PATCH</code>, <code>HEAD</code>, <code>OPTIONS</code>, <code>TRACE</code>, <code>CONNECT</code>.</p>
-<p>This example asserts that all <code>http_method</code> values are valid HTTP methods:</p>
+<p>This ensures all <code>url</code> values are valid URLs (starts with <code>http://</code>, <code>https://</code>, or <code>ftp://</code>, etc.).</p>
+<h4 id="valid_http_method"><code>valid_http_method</code><a class="headerlink" href="#valid_http_method" title="Link to this section">¶</a></h4>
+<p>Check that values are valid HTTP methods:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-30-1">1</a></span>
 <span class="normal"><a href="#__codelineno-30-2">2</a></span>
 <span class="normal"><a href="#__codelineno-30-3">3</a></span>
@@ -1911,9 +2044,9 @@
 </span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="match_regex_pattern_list">match_regex_pattern_list<a class="headerlink" href="#match_regex_pattern_list" title="Link to this section">¶</a></h4>
-<p>Ensures that all non-NULL rows of a column match at least one of the specified regular expressions.</p>
-<p>This example asserts that all <code>todo</code> values match one of <code>'^\d.*'</code> (string starts with a digit) or <code>'.*!$'</code> (ends with an exclamation mark):</p>
+<p>This ensures <code>http_method</code> is one of: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>PATCH</code>, <code>HEAD</code>, <code>OPTIONS</code>, <code>TRACE</code>, <code>CONNECT</code>.</p>
+<h4 id="match_regex_pattern_list"><code>match_regex_pattern_list</code><a class="headerlink" href="#match_regex_pattern_list" title="Link to this section">¶</a></h4>
+<p>Check that values match at least one regex pattern:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-31-1">1</a></span>
 <span class="normal"><a href="#__codelineno-31-2">2</a></span>
 <span class="normal"><a href="#__codelineno-31-3">3</a></span>
@@ -1926,9 +2059,9 @@
 </span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="not_match_regex_pattern_list">not_match_regex_pattern_list<a class="headerlink" href="#not_match_regex_pattern_list" title="Link to this section">¶</a></h4>
-<p>Ensures that no non-NULL rows of a column match any of the specified regular expressions.</p>
-<p>This example asserts that no <code>todo</code> values match one of <code>'^!.*'</code> (string starts with an exclamation mark) or <code>'.*\d$'</code> (ends with a digit):</p>
+<p>This ensures all <code>todo</code> values match at least one pattern: either start with a digit (<code>^\d.*</code>) or end with an exclamation mark (<code>.*!$</code>).</p>
+<h4 id="not_match_regex_pattern_list"><code>not_match_regex_pattern_list</code><a class="headerlink" href="#not_match_regex_pattern_list" title="Link to this section">¶</a></h4>
+<p>The opposite—make sure values don't match any pattern:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-32-1">1</a></span>
 <span class="normal"><a href="#__codelineno-32-2">2</a></span>
 <span class="normal"><a href="#__codelineno-32-3">3</a></span>
@@ -1941,9 +2074,9 @@
 </span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="match_like_pattern_list">match_like_pattern_list<a class="headerlink" href="#match_like_pattern_list" title="Link to this section">¶</a></h4>
-<p>Ensures that all non-NULL rows of a column are <code>LIKE</code> at least one of the specified patterns.</p>
-<p>This example asserts that all <code>name</code> values are <code>LIKE</code> one of <code>'jim%'</code> or <code>'pam%'</code>:</p>
+<p>This ensures no <code>todo</code> values start with <code>!</code> or end with a digit.</p>
+<h4 id="match_like_pattern_list"><code>match_like_pattern_list</code><a class="headerlink" href="#match_like_pattern_list" title="Link to this section">¶</a></h4>
+<p>Check that values match at least one SQL LIKE pattern:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-33-1">1</a></span>
 <span class="normal"><a href="#__codelineno-33-2">2</a></span>
 <span class="normal"><a href="#__codelineno-33-3">3</a></span>
@@ -1956,9 +2089,9 @@
 </span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="not_match_like_pattern_list">not_match_like_pattern_list<a class="headerlink" href="#not_match_like_pattern_list" title="Link to this section">¶</a></h4>
-<p>Ensures that no non-NULL rows of a column are <code>LIKE</code> any of the specified patterns.</p>
-<p>This example asserts that no <code>name</code> values are <code>LIKE</code> <code>'%doe'</code> or <code>'%smith'</code>:</p>
+<p>This ensures all <code>name</code> values start with 'jim' or 'pam'. Uses SQL LIKE syntax, so <code>%</code> matches any characters.</p>
+<h4 id="not_match_like_pattern_list"><code>not_match_like_pattern_list</code><a class="headerlink" href="#not_match_like_pattern_list" title="Link to this section">¶</a></h4>
+<p>Make sure values don't match any LIKE pattern:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-34-1">1</a></span>
 <span class="normal"><a href="#__codelineno-34-2">2</a></span>
 <span class="normal"><a href="#__codelineno-34-3">3</a></span>
@@ -1971,15 +2104,15 @@
 </span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="statistical-audits">Statistical audits<a class="headerlink" href="#statistical-audits" title="Link to this section">¶</a></h3>
-<p>These audits concern the statistical distributions of numeric columns.</p>
+<p>This ensures no <code>name</code> values end with 'doe' or 'smith'.</p>
+<h3 id="statistical-audits">Statistical Audits<a class="headerlink" href="#statistical-audits" title="Link to this section">¶</a></h3>
+<p>These audits check statistical properties of your data. They're powerful but require some tuning to get the thresholds right.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Audit thresholds will likely require fine-tuning via trial and error for each column being audited.</p>
+<p>Statistical audit thresholds usually need fine-tuning through trial and error. Start with wide ranges and tighten them as you learn what's normal for your data.</p>
 </div>
-<h4 id="mean_in_range">mean_in_range<a class="headerlink" href="#mean_in_range" title="Link to this section">¶</a></h4>
-<p>Ensures that a numeric column's mean is in the specified range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.</p>
-<p>This example asserts that the <code>age</code> column has a mean of at least 21 and at most 50:</p>
+<h4 id="mean_in_range"><code>mean_in_range</code><a class="headerlink" href="#mean_in_range" title="Link to this section">¶</a></h4>
+<p>Check that a column's average is within a range:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-35-1">1</a></span>
 <span class="normal"><a href="#__codelineno-35-2">2</a></span>
 <span class="normal"><a href="#__codelineno-35-3">3</a></span>
@@ -1992,7 +2125,8 @@
 </span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This example specifies the <code>inclusive := false</code> argument to assert that <code>age</code> has a mean greater than 18 and less than 65:</p>
+<p>This ensures the average <code>age</code> is between 21 and 50. Useful for catching when your data distribution shifts unexpectedly.</p>
+<p><strong>Exclusive ranges:</strong></p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-36-1">1</a></span>
 <span class="normal"><a href="#__codelineno-36-2">2</a></span>
 <span class="normal"><a href="#__codelineno-36-3">3</a></span>
@@ -2005,9 +2139,9 @@
 </span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="stddev_in_range">stddev_in_range<a class="headerlink" href="#stddev_in_range" title="Link to this section">¶</a></h4>
-<p>Ensures that a numeric column's standard deviation is in the specified range. Range is inclusive by default, such that values equal to the range boundaries will pass the audit.</p>
-<p>This example asserts that the <code>age</code> column has a standard deviation of at least 2 and at most 5:</p>
+<p>Now the mean must be greater than 18 and less than 65 (not equal to the boundaries).</p>
+<h4 id="stddev_in_range"><code>stddev_in_range</code><a class="headerlink" href="#stddev_in_range" title="Link to this section">¶</a></h4>
+<p>Check that standard deviation is within a range:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-37-1">1</a></span>
 <span class="normal"><a href="#__codelineno-37-2">2</a></span>
 <span class="normal"><a href="#__codelineno-37-3">3</a></span>
@@ -2020,7 +2154,8 @@
 </span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This example specifies the <code>inclusive := false</code> argument to assert that <code>age</code> has a standard deviation greater than 3 and less than 6:</p>
+<p>This ensures the standard deviation of <code>age</code> is between 2 and 5. Useful for detecting when your data becomes more or less spread out than expected.</p>
+<p><strong>Exclusive ranges:</strong></p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-38-1">1</a></span>
 <span class="normal"><a href="#__codelineno-38-2">2</a></span>
 <span class="normal"><a href="#__codelineno-38-3">3</a></span>
@@ -2033,10 +2168,9 @@
 </span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="z_score">z_score<a class="headerlink" href="#z_score" title="Link to this section">¶</a></h4>
-<p>Ensures that no rows of a numeric column contain a value whose absolute z-score exceeds the threshold.</p>
-<p>z-score is calculated as <code>ABS(([row value] - [column mean]) / NULLIF([column standard deviation], 0))</code>.</p>
-<p>This example asserts that the <code>age</code> column contains no rows with z-scores greater than 3:</p>
+<p>Now the standard deviation must be greater than 3 and less than 6.</p>
+<h4 id="z_score"><code>z_score</code><a class="headerlink" href="#z_score" title="Link to this section">¶</a></h4>
+<p>Check for statistical outliers. Values with high z-scores are far from the mean:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-39-1">1</a></span>
 <span class="normal"><a href="#__codelineno-39-2">2</a></span>
 <span class="normal"><a href="#__codelineno-39-3">3</a></span>
@@ -2049,9 +2183,10 @@
 </span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="kl_divergence">kl_divergence<a class="headerlink" href="#kl_divergence" title="Link to this section">¶</a></h4>
-<p>Ensures that the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence">symmetrised Kullback-Leibler divergence</a> (aka "Jeffreys divergence" or "Population Stability Index") between two columns does not exceed a threshold.</p>
-<p>This example asserts that the symmetrised KL Divergence between columns <code>age</code> and <code>reference_age</code> is less than or equal to 0.1:</p>
+<p>This ensures no <code>age</code> values have a z-score greater than 3 (meaning they're more than 3 standard deviations from the mean). Useful for catching outliers that might indicate data quality issues.</p>
+<p>The z-score is calculated as: <code>ABS(([row value] - [column mean]) / NULLIF([column standard deviation], 0))</code></p>
+<h4 id="kl_divergence"><code>kl_divergence</code><a class="headerlink" href="#kl_divergence" title="Link to this section">¶</a></h4>
+<p>Check how different two distributions are. Useful for comparing current data to a reference:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-40-1">1</a></span>
 <span class="normal"><a href="#__codelineno-40-2">2</a></span>
 <span class="normal"><a href="#__codelineno-40-3">3</a></span>
@@ -2064,33 +2199,37 @@
 </span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h4 id="chi_square">chi_square<a class="headerlink" href="#chi_square" title="Link to this section">¶</a></h4>
-<p>Ensures that the <a href="https://en.wikipedia.org/wiki/Chi-squared_test">chi-square</a> statistic for two categorical columns does not exceed a critical value.</p>
-<p>You can look up the critical value corresponding to a p-value with a table (such as <a href="https://www.medcalc.org/manual/chi-square-table.php">this one</a>) or by using the Python <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2.html">scipy library</a>:</p>
-<p></p><div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-41-1">1</a></span>
+<p>This ensures the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence">symmetrised Kullback-Leibler divergence</a> (also called "Jeffreys divergence" or "Population Stability Index") between <code>age</code> and <code>reference_age</code> is less than or equal to 0.1.</p>
+<p>Lower values mean the distributions are more similar. This is great for detecting when your data distribution has shifted significantly from a known good reference.</p>
+<h4 id="chi_square"><code>chi_square</code><a class="headerlink" href="#chi_square" title="Link to this section">¶</a></h4>
+<p>Check the relationship between two categorical columns:</p>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-41-1">1</a></span>
 <span class="normal"><a href="#__codelineno-41-2">2</a></span>
 <span class="normal"><a href="#__codelineno-41-3">3</a></span>
-<span class="normal"><a href="#__codelineno-41-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2</span>
-</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2"></a>
-</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3"></a><span class="c1"># critical value for p-value := 0.95 and degrees of freedom := 1</span>
-</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4"></a><span class="n">chi2</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-41-4">4</a></span>
+<span class="normal"><a href="#__codelineno-41-5">5</a></span>
+<span class="normal"><a href="#__codelineno-41-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">user_segments</span><span class="p">,</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4"></a><span class="w">    </span><span class="n">chi_square</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">user_state</span><span class="p">,</span><span class="w"> </span><span class="n">target_column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">user_type</span><span class="p">,</span><span class="w"> </span><span class="n">critical_value</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">.</span><span class="mi">635</span><span class="p">)</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5"></a><span class="w">    </span><span class="p">)</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-This example asserts that the chi-square statistic0 for columns <code>user_state</code> and <code>user_type</code> does not exceed 6.635:<p></p>
-<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-42-1">1</a></span>
+<p>This ensures the <a href="https://en.wikipedia.org/wiki/Chi-squared_test">chi-square statistic</a> for <code>user_state</code> and <code>user_type</code> doesn't exceed 6.635.</p>
+<p><strong>Finding critical values:</strong></p>
+<p>You can look up critical values in a <a href="https://www.medcalc.org/manual/chi-square-table.php">chi-square table</a> or calculate them with Python:</p>
+<div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-42-1">1</a></span>
 <span class="normal"><a href="#__codelineno-42-2">2</a></span>
 <span class="normal"><a href="#__codelineno-42-3">3</a></span>
-<span class="normal"><a href="#__codelineno-42-4">4</a></span>
-<span class="normal"><a href="#__codelineno-42-5">5</a></span>
-<span class="normal"><a href="#__codelineno-42-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">user_segments</span><span class="p">,</span>
-</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4"></a><span class="w">    </span><span class="n">chi_square</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">user_state</span><span class="p">,</span><span class="w"> </span><span class="n">target_column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">user_type</span><span class="p">,</span><span class="w"> </span><span class="n">critical_value</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">.</span><span class="mi">635</span><span class="p">)</span>
-</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5"></a><span class="w">    </span><span class="p">)</span>
-</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6"></a><span class="p">);</span>
+<span class="normal"><a href="#__codelineno-42-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2"></a>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3"></a><span class="c1"># critical value for p-value := 0.95 and degrees of freedom := 1</span>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4"></a><span class="n">chi2</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h2 id="running-audits">Running audits<a class="headerlink" href="#running-audits" title="Link to this section">¶</a></h2>
-<h3 id="the-cli-audit-command">The CLI audit command<a class="headerlink" href="#the-cli-audit-command" title="Link to this section">¶</a></h3>
-<p>You can execute audits with the <code>vulcan audit</code> command as follows:</p>
+<p>This is useful for detecting when the relationship between two categorical variables has changed unexpectedly.</p>
+<h2 id="running-audits">Running Audits<a class="headerlink" href="#running-audits" title="Link to this section">¶</a></h2>
+<h3 id="the-cli-audit-command">The CLI Audit Command<a class="headerlink" href="#the-cli-audit-command" title="Link to this section">¶</a></h3>
+<p>You can run audits manually with the <code>vulcan audit</code> command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a href="#__codelineno-43-1" id="__codelineno-43-1" name="__codelineno-43-1"></a>$<span class="w"> </span>vulcan<span class="w"> </span>-p<span class="w"> </span>project<span class="w"> </span>audit<span class="w"> </span>--start<span class="w"> </span><span class="m">2022</span>-01-01<span class="w"> </span>--end<span class="w"> </span><span class="m">2022</span>-01-02
 </span><span id="__span-43-2"><a href="#__codelineno-43-2" id="__codelineno-43-2" name="__codelineno-43-2"></a>Found<span class="w"> </span><span class="m">1</span><span class="w"> </span>audit<span class="o">(</span>s<span class="o">)</span>.
 </span><span id="__span-43-3"><a href="#__codelineno-43-3" id="__codelineno-43-3" name="__codelineno-43-3"></a>assert_item_price_is_not_null<span class="w"> </span>FAIL.
@@ -2102,12 +2241,13 @@ This example asserts that the chi-square statistic0 for columns <code>user_state
 </span><span id="__span-43-9"><a href="#__codelineno-43-9" id="__codelineno-43-9" name="__codelineno-43-9"></a>SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>vulcan.sushi__items__1836721418_83893210<span class="w"> </span>WHERE<span class="w"> </span>ds<span class="w"> </span>BETWEEN<span class="w"> </span><span class="s1">'2022-01-01'</span><span class="w"> </span>AND<span class="w"> </span><span class="s1">'2022-01-02'</span><span class="w"> </span>AND<span class="w"> </span>price<span class="w"> </span>IS<span class="w"> </span>NULL
 </span><span id="__span-43-10"><a href="#__codelineno-43-10" id="__codelineno-43-10" name="__codelineno-43-10"></a>Done.
 </span></code></pre></div>
-<h3 id="automated-auditing">Automated auditing<a class="headerlink" href="#automated-auditing" title="Link to this section">¶</a></h3>
-<p>When you apply a plan, Vulcan will automatically run each model's audits.</p>
-<p>Vulcan will halt the pipeline when an audit fails to prevent potentially invalid data from propagating further downstream.</p>
-<h2 id="advanced-usage">Advanced usage<a class="headerlink" href="#advanced-usage" title="Link to this section">¶</a></h2>
-<h3 id="skipping-audits">Skipping audits<a class="headerlink" href="#skipping-audits" title="Link to this section">¶</a></h3>
-<p>Audits can be skipped by setting the <code>skip</code> argument to <code>true</code> as in the following example:</p>
+<p>This is useful for testing audits before running a full plan, or for debugging why an audit is failing. The output shows you exactly what query failed and how many rows it found.</p>
+<h3 id="automated-auditing">Automated Auditing<a class="headerlink" href="#automated-auditing" title="Link to this section">¶</a></h3>
+<p>When you apply a plan, Vulcan automatically runs all audits for models being evaluated. You don't need to do anything special—just run your plan and audits happen automatically.</p>
+<p>If any audit fails, Vulcan halts the pipeline immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us—it's better than finding out later that bad data made it into production.</p>
+<h2 id="advanced-usage">Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this section">¶</a></h2>
+<h3 id="skipping-audits">Skipping Audits<a class="headerlink" href="#skipping-audits" title="Link to this section">¶</a></h3>
+<p>Sometimes you need to temporarily disable an audit. Maybe you're debugging, or you know there's a temporary data issue you're working on fixing. You can skip audits by setting <code>skip</code> to <code>true</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-44-1">1</a></span>
 <span class="normal"><a href="#__codelineno-44-2">2</a></span>
 <span class="normal"><a href="#__codelineno-44-3">3</a></span>
@@ -2122,6 +2262,30 @@ This example asserts that the chi-square statistic0 for columns <code>user_state
 </span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">ds</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span><span class="w"> </span><span class="k">AND</span>
 </span><span id="__span-44-7"><a id="__codelineno-44-7" name="__codelineno-44-7"></a><span class="w">   </span><span class="n">price</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
+<p><strong>Use this sparingly!</strong> Skipped audits won't run, which means they won't catch problems. It's better to fix the underlying issue than to skip the audit. But sometimes you need it for debugging or temporary situations.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">¶</a></h2>
+<h3 id="audit-fails-unexpectedly">Audit Fails Unexpectedly<a class="headerlink" href="#audit-fails-unexpectedly" title="Link to this section">¶</a></h3>
+<p><strong>Problem:</strong> Your audit is failing, but you're not sure why.</p>
+<p><strong>Solution:</strong> Run the audit query manually to see what it's finding:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a>vulcan<span class="w"> </span>-p<span class="w"> </span>project<span class="w"> </span>audit<span class="w"> </span>--start<span class="w"> </span><span class="m">2022</span>-01-01<span class="w"> </span>--end<span class="w"> </span><span class="m">2022</span>-01-02<span class="w"> </span>--verbose
+</span></code></pre></div>
+<p>This will show you the exact query and the rows that failed. Once you see what data is causing the failure, you can either fix the data or adjust the audit.</p>
+<h3 id="audit-too-strict">Audit Too Strict<a class="headerlink" href="#audit-too-strict" title="Link to this section">¶</a></h3>
+<p><strong>Problem:</strong> Your audit is failing during normal operation, even though the data is actually fine.</p>
+<p><strong>Solution:</strong> Review your thresholds. Maybe your <code>accepted_range</code> is too narrow, or your <code>number_of_rows</code> threshold is too high. Statistical audits especially need tuning—start with wide ranges and tighten them as you learn what's normal.</p>
+<h3 id="performance-issues">Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this section">¶</a></h3>
+<p><strong>Problem:</strong> Audits are slowing down your plan execution.</p>
+<p><strong>Solution:</strong> 
+- Make sure your audit queries use indexes on the columns they're checking
+- For incremental models, audits only run on processed intervals (which helps), but you can also add date filters to your audit queries
+- Consider if you really need all those audits—sometimes less is more</p>
+<h3 id="understanding-audit-results">Understanding Audit Results<a class="headerlink" href="#understanding-audit-results" title="Link to this section">¶</a></h3>
+<p>When an audit fails, Vulcan shows you:
+- Which audit failed
+- Which model it was attached to
+- The exact query that was run
+- How many rows were returned (when it expected 0)</p>
+<p>Use this information to understand what went wrong. The query results tell you exactly what data failed the check.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -2134,7 +2298,7 @@ This example asserts that the chi-square statistic0 for columns <code>user_state
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: Testing" class="md-footer__link md-footer__link--prev" href="../../tests/tests/">
+<a aria-label="Previous: Tests" class="md-footer__link md-footer__link--prev" href="../../tests/tests/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -2143,7 +2307,7 @@ This example asserts that the chi-square statistic0 for columns <code>user_state
                 Previous
               </span>
 <div class="md-ellipsis">
-                Testing
+                Tests
               </div>
 </div>
 </a>

@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1000,18 +1000,18 @@
 <h2 id="what-vulcan-is">What Vulcan is<a class="headerlink" href="#what-vulcan-is" title="Link to this section">¶</a></h2>
 <p>Vulcan is a Python framework that automates everything needed to run a scalable data transformation platform. Vulcan works with a variety of execution engines.</p>
 <p>It was created with a focus on both data and organizational scale and works regardless of your data warehouse or SQL engine's capabilities.</p>
-<p>You can use Vulcan with the <a href="../reference/cli.md">CLI</a>.</p>
+<p>You can use Vulcan with the <a href="getting_started/cli.md">CLI</a>.</p>
 <h2 id="how-vulcan-works">How Vulcan works<a class="headerlink" href="#how-vulcan-works" title="Link to this section">¶</a></h2>
 <h3 id="create-models">Create models<a class="headerlink" href="#create-models" title="Link to this section">¶</a></h3>
 <p>You begin by writing your business logic in SQL or Python. A model consists of code that populates a single table or view, along with metadata properties such as the model's name.</p>
 <h3 id="make-a-plan">Make a plan<a class="headerlink" href="#make-a-plan" title="Link to this section">¶</a></h3>
 <p>Creating new models or changing existing models can have dramatic downstream effects in large data systems. Complex interdependencies between models make it challenging to determine the implications of changes to even a single model.</p>
 <p>Beyond understanding the logical implications of a change, you also need to understand the computations required to implement the change <em>before</em> you expend the time and resources to actually perform the computations.</p>
-<p>Vulcan automatically identifies all affected models and the computations a change entails by creating a "Vulcan plan." When you execute the <a href="../reference/cli.md#plan"><code>plan</code> command</a>, Vulcan generates the plan <em>for the environment specified in the command</em> (e.g., dev, test, prod).</p>
+<p>Vulcan automatically identifies all affected models and the computations a change entails by creating a "Vulcan plan." When you execute the <a href="getting_started/cli.md#plan"><code>plan</code> command</a>, Vulcan generates the plan <em>for the environment specified in the command</em> (e.g., dev, test, prod).</p>
 <p>The plan conveys the full scope of a change's effects in the environment by automatically identifying both directly and indirectly-impacted models. This gives a holistic view of all impacts a change will have.</p>
-<p>Learn more about <a href="../plans/">plans</a>.</p>
+<p>Learn more about <a href="../../guides/plan/">plans</a>.</p>
 <h4 id="apply-the-plan">Apply the plan<a class="headerlink" href="#apply-the-plan" title="Link to this section">¶</a></h4>
-<p>After using <a href="../reference/cli.md#plan"><code>plan</code></a> to understand the impacts of a change in an environment, Vulcan offers to execute the computations by <a href="../plans/#plan-application"><code>apply</code></a>ing the plan. However, you must provide additional information that determines the scope of what computations are executed.</p>
+<p>After using <a href="getting_started/cli.md#plan"><code>plan</code></a> to understand the impacts of a change in an environment, Vulcan offers to execute the computations by <a href="../../guides/plan/#plan-application"><code>apply</code></a>ing the plan. However, you must provide additional information that determines the scope of what computations are executed.</p>
 <p>The computations needed to apply a Vulcan plan are determined by both the code changes reflected in the plan and the backfill parameters you specify.</p>
 <p>"Backfilling" is the process of updating existing data to align with your changed models. For example, if your model change alters a calculation, then all existing data based on the old calculation method will be inaccurate once the new model is deployed. Backfilling entails re-calculating the existing fields whose calculation method has now changed.</p>
 <p>Most business data is temporal — each data fact was collected at a specific moment in time. The scale of backfill computations is directly tied to how much historical data must be re-calculated.</p>
@@ -1024,15 +1024,15 @@
 <p>Because Vulcan uses virtual environments instead of re-computing everything in the production environment, promoting changes to production is quick and has no downtime.</p>
 <h2 id="test-your-code-and-data">Test your code and data<a class="headerlink" href="#test-your-code-and-data" title="Link to this section">¶</a></h2>
 <p>Bad data is worse than no data. The best way to keep bad data out of your system is by testing your transformation code and results.</p>
-<h3 id="tests"><a href="./tests.md">Tests</a><a class="headerlink" href="#tests" title="Link to this section">¶</a></h3>
+<h3 id="tests"><a href="../../components/tests/tests/">Tests</a><a class="headerlink" href="#tests" title="Link to this section">¶</a></h3>
 <p>Vulcan "tests" are similar to unit tests in software development, where the unit is a single model. Vulcan tests validate model <em>code</em> — you specify the input data and expected output, then Vulcan runs the test and compares the expected and actual output.</p>
-<p>Vulcan automatically runs tests when you apply a <code>plan</code>, or you can run them on demand with the <a href="../reference/cli.md#test"><code>test</code> command</a>.</p>
-<h3 id="audits"><a href="./audits.md">Audits</a><a class="headerlink" href="#audits" title="Link to this section">¶</a></h3>
+<p>Vulcan automatically runs tests when you apply a <code>plan</code>, or you can run them on demand with the <a href="getting_started/cli.md#test"><code>test</code> command</a>.</p>
+<h3 id="audits"><a href="../../components/audits/audits/">Audits</a><a class="headerlink" href="#audits" title="Link to this section">¶</a></h3>
 <p>In contrast to tests, Vulcan "audits" validate the results of model code applied to your actual data.</p>
 <p>You create audits by writing SQL queries that should return 0 rows. For example, an audit query to ensure <code>your_field</code> has no <code>NULL</code> values would include <code>WHERE your_field IS NULL</code>. If any NULLs are detected, the query will return at least one row and the audit will fail.</p>
-<p>Audits are flexible — they can be tied to a specific model's contents, or you can use <a href="../macros/overview/">macros</a> to create audits that are usable by multiple models. Vulcan also includes pre-made audits for common use cases, such as detecting NULL or duplicated values.</p>
+<p>Audits are flexible — they can be tied to a specific model's contents, or you can use <a href="../../components/advanced-features/macros/overview/">macros</a> to create audits that are usable by multiple models. Vulcan also includes pre-made audits for common use cases, such as detecting NULL or duplicated values.</p>
 <p>You specify which audits should run for a model by including them in the model's metadata properties. To apply them globally across your project, include them in the model defaults configuration.</p>
-<p>Vulcan automatically runs audits when you apply a <code>plan</code> to an environment, or you can run them on demand with the <a href="../reference/cli.md#audit"><code>audit</code> command</a>.</p>
+<p>Vulcan automatically runs audits when you apply a <code>plan</code> to an environment, or you can run them on demand with the <a href="getting_started/cli.md#audit"><code>audit</code> command</a>.</p>
 <h2 id="infrastructure-and-orchestration">Infrastructure and orchestration<a class="headerlink" href="#infrastructure-and-orchestration" title="Link to this section">¶</a></h2>
 <p>Every company's data infrastructure is different. Vulcan is flexible with regard to which engines and orchestration frameworks you use — its only requirement is access to the target SQL/analytics engine.</p>
 <p>Vulcan keeps track of model versions and processed data intervals using your existing infrastructure. Vulcan it automatically creates a <code>vulcan</code> schema in your data warehouse for its internal metadata.</p>

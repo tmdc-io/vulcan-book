@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1193,9 +1193,9 @@
 <h2 id="catalog">Catalog<a class="headerlink" href="#catalog" title="Link to this section">¶</a></h2>
 <p>A catalog is a collection of schemas. A schema is a collection of database objects such as tables and views.</p>
 <h2 id="cicd">CI/CD<a class="headerlink" href="#cicd" title="Link to this section">¶</a></h2>
-<p>An engineering process that combines both Continuous Integration (automated code creation and testing) and Continuous Delivery (deployment of code and tests) in a manner that is scalable, reliable, and secure. Vulcan accomplishes this with <a href="tests.md">tests</a> and <a href="audits.md">audits</a>.</p>
+<p>An engineering process that combines both Continuous Integration (automated code creation and testing) and Continuous Delivery (deployment of code and tests) in a manner that is scalable, reliable, and secure. Vulcan accomplishes this with <a href="components/tests/tests.md">tests</a> and <a href="components/audits/audits.md">audits</a>.</p>
 <h2 id="cte">CTE<a class="headerlink" href="#cte" title="Link to this section">¶</a></h2>
-<p>A Common Table Expression is a temporary named result set created from a SELECT statement, which can then be used in a subsequent SELECT statement. For more information, refer to <a href="tests.md">tests</a>.</p>
+<p>A Common Table Expression is a temporary named result set created from a SELECT statement, which can then be used in a subsequent SELECT statement. For more information, refer to <a href="components/tests/tests.md">tests</a>.</p>
 <h2 id="dag">DAG<a class="headerlink" href="#dag" title="Link to this section">¶</a></h2>
 <p>Directed Acyclic Graph. In this type of graph, objects are represented as nodes with relationships that show the dependencies between them; as such, the relationships are directed, meaning there is no way for data to travel through the graph in a loop that can circle back to the starting point. Vulcan uses a DAG to keep track of a project's models. This allows Vulcan to easily determine a model's lineage and to identify upstream and downstream dependencies.</p>
 <h2 id="data-modeling">Data modeling<a class="headerlink" href="#data-modeling" title="Link to this section">¶</a></h2>
@@ -1217,7 +1217,7 @@
 <h2 id="idempotency">Idempotency<a class="headerlink" href="#idempotency" title="Link to this section">¶</a></h2>
 <p>The property that, given a particular operation, the same outputs will be produced when given the same inputs no matter how many times the operation is applied.</p>
 <h2 id="incremental-loads">Incremental Loads<a class="headerlink" href="#incremental-loads" title="Link to this section">¶</a></h2>
-<p>Incremental loads are a type of data refresh that only updates the data that has changed since the last refresh. This is significantly faster and more efficient than a full refresh loads. Vulcan encourages developers to incrementally load when possible by offering easy to use variables and macros to help define your incremental models. See <a href="models/model_kinds.md">Model Kinds</a> for more information.</p>
+<p>Incremental loads are a type of data refresh that only updates the data that has changed since the last refresh. This is significantly faster and more efficient than a full refresh loads. Vulcan encourages developers to incrementally load when possible by offering easy to use variables and macros to help define your incremental models. See <a href="components/model/model_kinds.md">Model Kinds</a> for more information.</p>
 <h2 id="indirect-modification">Indirect Modification<a class="headerlink" href="#indirect-modification" title="Link to this section">¶</a></h2>
 <p>A change to model's upstream dependency and not to the model itself like a <a href="#direct-modification">Direct Modification</a>.</p>
 <h2 id="integration">Integration<a class="headerlink" href="#integration" title="Link to this section">¶</a></h2>
@@ -1239,11 +1239,11 @@
 <h2 id="view">View<a class="headerlink" href="#view" title="Link to this section">¶</a></h2>
 <p>A view is the result of a SQL query on a database.</p>
 <h2 id="virtual-environments">Virtual Environments<a class="headerlink" href="#virtual-environments" title="Link to this section">¶</a></h2>
-<p>Vulcan's unique approach to environment that allows it to provide both environment isolation and the ability to share tables across environments. This is done in a way to ensure data consistency and accuracy. See <a href="../plans/#plan-application">plan application</a> for more information.</p>
+<p>Vulcan's unique approach to environment that allows it to provide both environment isolation and the ability to share tables across environments. This is done in a way to ensure data consistency and accuracy. See <a href="guides/plan.md#plan-application">plan application</a> for more information.</p>
 <h2 id="virtual-layer">Virtual Layer<a class="headerlink" href="#virtual-layer" title="Link to this section">¶</a></h2>
 <p>The virtual layer is Vulcan's abstraction layer over the <a href="#physical-layer">physical layer and physical data storage</a>. While the physical layer consists of tables where data is actually stored, the virtual layer consists of views that expose tables in the underlying physical layer. Most users should only interact with the virtual layer when building models or querying data.</p>
 <h2 id="virtual-update">Virtual Update<a class="headerlink" href="#virtual-update" title="Link to this section">¶</a></h2>
-<p>Term used to describe a plan that can be applied without having to load any additional data or build any additional tables. See <a href="../plans/#virtual-update">Virtual Update</a> for more information.</p>
+<p>Term used to describe a plan that can be applied without having to load any additional data or build any additional tables. See <a href="guides/plan.md#virtual-update">Virtual Update</a> for more information.</p>
 <h2 id="virtual-preview">Virtual Preview<a class="headerlink" href="#virtual-preview" title="Link to this section">¶</a></h2>
 <p>Term used to describe the ability to create an environment without having to build any additional tables. By comparing the version of models in the repo against what currently exists, Vulcan can create an environment that exactly represents what is in the repo by just updating views.</p>
 </article>

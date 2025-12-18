@@ -438,7 +438,7 @@
 <span class="md-ellipsis">
     
   
-    SQL models
+    SQL
   
 
     
@@ -450,7 +450,7 @@
 <span class="md-ellipsis">
     
   
-    Python models
+    Python
   
 
     
@@ -462,7 +462,7 @@
 <span class="md-ellipsis">
     
   
-    External models
+    External
   
 
     
@@ -474,7 +474,7 @@
 <span class="md-ellipsis">
     
   
-    Managed models
+    Managed
   
 
     
@@ -516,7 +516,7 @@
 <span class="md-ellipsis">
     
   
-    Testing
+    Tests
   
 
     
@@ -528,7 +528,7 @@
 <span class="md-ellipsis">
     
   
-    Auditing
+    Audits
   
 
     
@@ -1085,9 +1085,9 @@
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="n">JINJA_END</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="vulcan-predefined-variables">Vulcan predefined variables<a class="headerlink" href="#vulcan-predefined-variables" title="Link to this section">¶</a></h2>
-<p>Vulcan provides multiple <a href="../macro_variables/">predefined macro variables</a> you may reference in jinja code.</p>
-<p>Some predefined variables provide information about the Vulcan project itself, like the <a href="../macro_variables/#runtime-variables"><code>runtime_stage</code></a> and <a href="../macro_variables/#runtime-variables"><code>this_model</code></a> variables.</p>
-<p>Other predefined variables are <a href="../macro_variables/#temporal-variables">temporal</a>, like <code>start_ds</code> and <code>execution_date</code>. They are used to build incremental model queries and are only available in incremental model kinds.</p>
+<p>Vulcan provides multiple <a href="../../../components/advanced-features/macros/variables/">predefined macro variables</a> you may reference in jinja code.</p>
+<p>Some predefined variables provide information about the Vulcan project itself, like the <a href="../../../components/advanced-features/macros/variables/#runtime-variables"><code>runtime_stage</code></a> and <a href="../../../components/advanced-features/macros/variables/#runtime-variables"><code>this_model</code></a> variables.</p>
+<p>Other predefined variables are <a href="../../../components/advanced-features/macros/variables/#temporal-variables">temporal</a>, like <code>start_ds</code> and <code>execution_date</code>. They are used to build incremental model queries and are only available in incremental model kinds.</p>
 <p>Access predefined macro variables by passing their unquoted name in curly braces. For example, this demonstrates how to access the <code>start_ds</code> and <code>end_ds</code> variables:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
@@ -1110,7 +1110,7 @@
 <p>Global macro variables are defined in the project configuration file and can be accessed in any project model.</p>
 <p>Local macro variables are defined in a model definition and can only be accessed in that model.</p>
 <h3 id="global-variables">Global variables<a class="headerlink" href="#global-variables" title="Link to this section">¶</a></h3>
-<p>Learn more about defining global variables in the <a href="../vulcan_macros/#global-variables">Vulcan macros documentation</a>.</p>
+<p>Learn more about defining global variables in the <a href="../../../components/advanced-features/macros/built_in/#global-variables">Vulcan macros documentation</a>.</p>
 <p>Access global variable values in a model definition using the <code>{{ var() }}</code> jinja function. The function requires the name of the variable <em>in single quotes</em> as the first argument and an optional default value as the second argument. The default value is a safety mechanism used if the variable name is not found in the project configuration file.</p>
 <p>For example, a model would access a global variable named <code>int_var</code> like this:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
@@ -1144,11 +1144,11 @@
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="n">JINJA_END</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="gateway-variables">Gateway variables<a class="headerlink" href="#gateway-variables" title="Link to this section">¶</a></h3>
-<p>Like global variables, gateway variables are defined in the project configuration file. However, they are specified in a specific gateway's <code>variables</code> key. Learn more about defining gateway variables in the <a href="../vulcan_macros/#gateway-variables">Vulcan macros documentation</a>.</p>
+<p>Like global variables, gateway variables are defined in the project configuration file. However, they are specified in a specific gateway's <code>variables</code> key. Learn more about defining gateway variables in the <a href="../../../components/advanced-features/macros/built_in/#gateway-variables">Vulcan macros documentation</a>.</p>
 <p>Access gateway variables in models using the same methods as <a href="#global-variables">global variables</a>.</p>
 <p>Gateway-specific variable values take precedence over variables with the same name specified in the configuration file's root <code>variables</code> key.</p>
 <h3 id="blueprint-variables">Blueprint variables<a class="headerlink" href="#blueprint-variables" title="Link to this section">¶</a></h3>
-<p>Blueprint variables are defined as a property of the <code>MODEL</code> statement, and serve as a mechanism for <a href="../models/sql_models.md">creating model templates</a>:</p>
+<p>Blueprint variables are defined as a property of the <code>MODEL</code> statement, and serve as a mechanism for <a href="../../../components/model/types/sql_models/">creating model templates</a>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
@@ -1354,8 +1354,8 @@
 <p>The double quotes around <code>"'item_id'"</code> signal to Vulcan that it is not a column name.</p>
 <p>Some SQL dialects interpret double and single quotes differently. We could replace the rendered single quoted <code>'item_id'</code> with double quoted <code>"item_id"</code> in the previous example by switching the placement of quotes in the macro function call. Instead of <code>alias("'item_id'", 'item_id2')</code> we would use <code>alias('"item_id"', 'item_id2')</code>.</p>
 <h2 id="mixing-macro-systems">Mixing macro systems<a class="headerlink" href="#mixing-macro-systems" title="Link to this section">¶</a></h2>
-<p>Vulcan supports both the Jinja and <a href="../vulcan_macros/">Vulcan</a> macro systems. We strongly recommend using only one system in a single model - if both are present, they may fail or behave in unintuitive ways.</p>
-<p><a href="../macro_variables/">Predefined Vulcan macro variables</a> can be used in a query containing user-defined Jinja variables and functions. However, predefined variables passed as arguments to a user-defined Jinja macro function must use the Jinja curly brace syntax <code>{{ start_ds }}</code> instead of the Vulcan macro <code>@</code> prefix syntax <code>@start_ds</code>. Note that curly brace syntax may require quoting to generate the equivalent of the <code>@</code> syntax.</p>
+<p>Vulcan supports both the Jinja and <a href="../../../components/advanced-features/macros/built_in/">Vulcan</a> macro systems. We strongly recommend using only one system in a single model - if both are present, they may fail or behave in unintuitive ways.</p>
+<p><a href="../../../components/advanced-features/macros/variables/">Predefined Vulcan macro variables</a> can be used in a query containing user-defined Jinja variables and functions. However, predefined variables passed as arguments to a user-defined Jinja macro function must use the Jinja curly brace syntax <code>{{ start_ds }}</code> instead of the Vulcan macro <code>@</code> prefix syntax <code>@start_ds</code>. Note that curly brace syntax may require quoting to generate the equivalent of the <code>@</code> syntax.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
