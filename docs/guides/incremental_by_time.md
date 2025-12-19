@@ -2,7 +2,13 @@
 
 This guide explains how incremental by time models work in Vulcan using the Orders360 example project. You'll learn why they're efficient, how they process data, and how to create them.
 
+<<<<<<< Updated upstream
 See the [models guide](./models.md) for general model information or the [model kinds page](../components/model/model_kinds.md) for all model types.
+=======
+Incremental models are a game-changer for time-based data. Instead of reprocessing everything every time, you only process what's new. It's faster, cheaper, and way more efficient!
+
+See the [models guide](guides/models.md) for general model information or the [model kinds page](components/model/model_kinds.md) for all model types.
+>>>>>>> Stashed changes
 
 ---
 
@@ -10,7 +16,7 @@ See the [models guide](./models.md) for general model information or the [model 
 
 ### The Problem: Full Refreshes Are Expensive
 
-Imagine you have a table with sales data from the last year (365 days). Every time you run a `FULL` model, it processes **all 365 days**:
+Imagine you have a table with sales data from the last year (365 days). Every time you run a `FULL` model, it processes **all 365 days**. That's a lot of work, especially when you only need to process today's data!
 
 ```mermaid
 flowchart LR
@@ -88,13 +94,15 @@ flowchart LR
 
 *[Screenshot: Visual showing incremental model processing only Day 365]*
 
-**Result:** 50x faster and 50x cheaper! 🎉
+**Result:** 50x faster and 50x cheaper! 🎉 
+
+That's the power of incremental models. You're only processing what you need, when you need it. Pretty cool, right?
 
 ---
 
 ## How Incremental Models Work
 
-Incremental models use **time intervals** to track what's been processed. Think of it like a calendar where Vulcan checks off each day.
+Incremental models use **time intervals** to track what's been processed. Think of it like a calendar where Vulcan checks off each day. It knows what's done and what still needs work.
 
 ```mermaid
 flowchart TB
@@ -145,8 +153,10 @@ flowchart TB
 
 When you run `vulcan run`, Vulcan looks at your state database and asks:
 
-- "What dates have I already processed?"
-- "What dates are missing?"
+- "What dates have I already processed?" - These are done, skip them
+- "What dates are missing?" - These need work, process them
+
+It's like checking your to-do list, you only work on what's not done yet.
 
 ```
 State Database Check:
@@ -159,7 +169,7 @@ State Database Check:
 
 ### Step 2: Vulcan Processes Only Missing Intervals
 
-Vulcan then processes only the missing dates:
+Vulcan then processes only the missing dates. It sets up the macros (`@start_ds` and `@end_ds`) and runs your query for just that time range:
 
 ```
 Processing Jan 15-21:
@@ -175,7 +185,7 @@ WHERE order_date BETWEEN '2025-01-15' AND '2025-01-21'
 
 ### Step 3: Results Are Inserted
 
-The processed data is inserted into your table, and Vulcan records that these dates are now complete:
+The processed data is inserted into your table, and Vulcan records that these dates are now complete. Next time you run, it'll know these dates are done and skip them. Efficient!
 
 ```
 ✅ Jan 15-21: Now processed and recorded
@@ -187,7 +197,7 @@ The processed data is inserted into your table, and Vulcan records that these da
 
 ## Understanding Time Intervals
 
-Vulcan divides time into **intervals** based on your model's schedule.
+Vulcan divides time into **intervals** based on your model's schedule. Each interval is a chunk of time that gets processed together, like a day, a week, or an hour, depending on your model's `cron` schedule.
 
 ### Daily Intervals Example
 
@@ -418,7 +428,7 @@ kind INCREMENTAL_BY_TIME_RANGE (
 )
 ```
 
-**What it does:** Tells Vulcan which column contains the timestamp/date for each row.
+**What it does:** Tells Vulcan which column contains the timestamp/date for each row. This is how Vulcan knows how to filter and group your data by time.
 
 *[Screenshot: Code highlighting time_column declaration]*
 
@@ -428,12 +438,12 @@ kind INCREMENTAL_BY_TIME_RANGE (
 WHERE order_date BETWEEN @start_ds AND @end_ds
 ```
 
-**What it does:** Filters data to only the time range being processed.
+**What it does:** Filters data to only the time range being processed. This is crucial, without it, you'd process all your data every time!
 
 - `@start_ds` = Start date of the interval (e.g., '2025-01-15')
 - `@end_ds` = End date of the interval (e.g., '2025-01-21')
 
-Vulcan automatically replaces these with the correct dates!
+Vulcan automatically replaces these with the correct dates! You don't have to figure out what dates to process, Vulcan does that for you.
 
 *[Screenshot: Code highlighting WHERE clause with macros, showing how they're replaced]*
 
@@ -443,7 +453,7 @@ Vulcan automatically replaces these with the correct dates!
 start '2025-01-01'
 ```
 
-**What it does:** Tells Vulcan when your data begins. Vulcan will backfill from this date.
+**What it does:** Tells Vulcan when your data begins. Vulcan will backfill from this date when you first create the model, processing all historical data up to today.
 
 *[Screenshot: Code highlighting start date]*
 
@@ -563,7 +573,7 @@ ORDER BY order_date
 
 ## Understanding the WHERE Clause
 
-You might wonder: "Why do I need a WHERE clause if Vulcan adds one automatically?"
+You might wonder: "Why do I need a WHERE clause if Vulcan adds one automatically?" That's a great question! The answer is that they serve different purposes.
 
 ### Two WHERE Clauses, Two Purposes
 
@@ -576,9 +586,11 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 ```
 
 **Purpose:** Filters data **read into** the model
-- Only reads necessary data from upstream tables
-- Saves processing time and resources
-- You control this in your SQL
+- Only reads necessary data from upstream tables - this is a performance optimization
+- Saves processing time and resources - why read data you're not going to use?
+- You control this in your SQL - you write this WHERE clause
+
+This is your optimization. Without it, you'd read all the data from upstream tables, even though you only need a small date range.
 
 *[Screenshot: Visual showing model WHERE clause filtering input data]*
 
@@ -592,18 +604,22 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 ```
 
 **Purpose:** Filters data **output by** the model
-- Prevents data leakage (ensures no rows outside the time range)
-- Safety mechanism
-- Vulcan controls this automatically
+- Prevents data leakage (ensures no rows outside the time range) - this is a safety check
+- Safety mechanism - even if your SQL has a bug, Vulcan makes sure you don't output wrong dates
+- Vulcan controls this automatically - you don't write this one, Vulcan adds it
+
+This is Vulcan's safety net. It makes sure that even if your WHERE clause has a bug, you can't accidentally output data for the wrong time period.
 
 *[Screenshot: Visual showing Vulcan's automatic WHERE clause filtering output]*
 
 ### Why Both Are Needed
 
-- **Your WHERE clause:** Optimizes performance by reading less data
-- **Vulcan's WHERE clause:** Ensures correctness by preventing data leakage
+Here's why you need both:
 
-**Always include the WHERE clause in your model SQL!**
+- **Your WHERE clause:** Optimizes performance by reading less data - makes your queries faster
+- **Vulcan's WHERE clause:** Ensures correctness by preventing data leakage - makes sure your data is right
+
+**Always include the WHERE clause in your model SQL!** It's not optional, Vulcan needs it to know what time range to process, and it makes your queries way more efficient.
 
 *[Screenshot: Side-by-side comparison showing both WHERE clauses and their purposes]*
 
@@ -821,11 +837,11 @@ MODEL (
 
 ## Forward-Only Models
 
-Sometimes you have models so large that rebuilding them is impossible. Forward-only models solve this.
+Sometimes you have models so large that rebuilding them is impossible. Forward-only models solve this. They're perfect for those massive tables where a full backfill would take days or cost a fortune.
 
 ### What Are Forward-Only Models?
 
-Forward-only models **never rebuild historical data**. Changes are only applied going forward in time.
+Forward-only models **never rebuild historical data**. Changes are only applied going forward in time. Think of it like a train, once it's left the station (historical data is processed), you can't go back and change it. You can only change what happens going forward.
 
 ```mermaid
 flowchart TB
@@ -873,6 +889,7 @@ Breaking change → Only apply to new dates going forward
 ### When to Use Forward-Only
 
 ✅ **Use forward-only when:**
+<<<<<<< Updated upstream
 
 - Tables are too large to rebuild
 - Historical data can't be reprocessed
@@ -883,6 +900,18 @@ Breaking change → Only apply to new dates going forward
 - You need to fix historical data
 - Schema changes affect past data
 - You want full data consistency
+=======
+- Tables are too large to rebuild - if a full backfill would take forever or cost too much
+- Historical data can't be reprocessed - maybe the source data is gone or too expensive to reprocess
+- You only care about future data - if historical data is "good enough" and you just need new data to be correct
+
+❌ **Don't use forward-only when:**
+- You need to fix historical data - forward-only won't help you fix the past
+- Schema changes affect past data - if your change affects how historical data should look, you need a full rebuild
+- You want full data consistency - forward-only means historical and new data might have different schemas
+
+It's a trade-off: you get speed and cost savings, but you lose the ability to fix historical data. Make sure that's a trade-off you're okay with!
+>>>>>>> Stashed changes
 
 ### Making a Model Forward-Only
 
@@ -1097,7 +1126,7 @@ time_column order_date_utc
 time_column order_date_local
 ```
 
-**Why?** Ensures correct interval calculations and proper interaction with Vulcan's scheduler.
+**Why?** Ensures correct interval calculations and proper interaction with Vulcan's scheduler. If you use local timezones, you'll run into issues with daylight saving time changes, timezone differences, and interval calculations. UTC is the standard for a reason, it's consistent everywhere.
 
 *[Screenshot: Visual warning about UTC requirement]*
 
@@ -1106,12 +1135,14 @@ time_column order_date_local
 Your model SQL **must** include a WHERE clause with `@start_ds` and `@end_ds`:
 
 ```sql
--- ✅ Required
+-- ✅ Required - This tells Vulcan what time range to process
 WHERE order_date BETWEEN @start_ds AND @end_ds
 
--- ❌ Missing WHERE clause
+-- ❌ Missing WHERE clause - Don't do this!
 -- WHERE clause is required!
 ```
+
+Without this WHERE clause, Vulcan won't know what time range to process, and your queries will be inefficient (or fail entirely). Always include it!
 
 *[Screenshot: Code showing required WHERE clause]*
 
@@ -1123,13 +1154,17 @@ Always specify when your data begins:
 start '2025-01-01'  -- Start processing from this date
 ```
 
+This tells Vulcan where to start backfilling. If your data goes back to 2020 but you only want to process from 2025, set the start date to 2025-01-01. Vulcan will backfill from this date when you first create the model.
+
 *[Screenshot: Code showing start date configuration]*
 
 ### ✅ Choose Appropriate batch_size
 
-- Start with `batch_size 1` for small datasets
-- Increase for larger datasets that might timeout
-- Monitor performance to find the sweet spot
+- Start with `batch_size 1` for small datasets - process one interval at a time
+- Increase for larger datasets that might timeout - if processing all intervals at once times out, batch them
+- Monitor performance to find the sweet spot - too small and you have too many jobs, too large and jobs timeout
+
+The default is to process all missing intervals in one job. If that works for you, great! If not, use `batch_size` to break it up.
 
 *[Screenshot: Visual guide for choosing batch_size]*
 

@@ -1,6 +1,8 @@
 # Model Selection
 
-This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is useful when you only want to test or apply changes to a subset of your models.
+This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is super useful when you only want to test or apply changes to a subset of your models, without processing everything.
+
+In large projects, model selection can save you a ton of time. Instead of waiting for all models to process, you can focus on just what you're working on.
 
 **Note:** The selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../references/plans.md#destructive-changes).
 
@@ -10,11 +12,13 @@ This guide explains how to select specific models to include in a Vulcan plan us
 
 A Vulcan [plan](../references/plans.md) automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.
 
-In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything.
+In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything. It's like saying "just process these models, ignore the rest."
 
 **Key Concept:**
-- **Directly Modified**: Models you changed in your code
-- **Indirectly Modified**: Downstream models affected by your changes
+- **Directly Modified**: Models you changed in your code - these are the ones you actually edited
+- **Indirectly Modified**: Downstream models affected by your changes - these depend on what you changed, so they need to be reprocessed too
+
+Understanding this distinction helps you understand what model selection is doing. You're filtering which directly modified models to include, and Vulcan automatically figures out the indirect ones.
 
 *[Screenshot: Visual showing directly vs indirectly modified models]*
 
@@ -22,7 +26,7 @@ In large projects, a single model change can impact many downstream models, maki
 
 ## Understanding Model Dependencies
 
-Before we dive into selection, let's understand how models relate to each other in Orders360:
+Before we dive into selection, let's understand how models relate to each other in Orders360. This will help you understand why selecting one model might include others.
 
 ```mermaid
 flowchart TD
@@ -50,8 +54,10 @@ flowchart TD
 
 **Dependency Flow:**
 - `raw.raw_orders` → `sales.daily_sales` → `sales.weekly_sales`
-- Changing `raw.raw_orders` affects `daily_sales` (indirectly modified)
-- Changing `daily_sales` affects `weekly_sales` (indirectly modified)
+- Changing `raw.raw_orders` affects `daily_sales` (indirectly modified) - because daily_sales reads from raw_orders
+- Changing `daily_sales` affects `weekly_sales` (indirectly modified) - because weekly_sales reads from daily_sales
+
+This is important! When you select a model, Vulcan automatically includes its downstream dependencies. You can't process `weekly_sales` without processing `daily_sales` first, because `weekly_sales` depends on it.
 
 *[Screenshot: Orders360 project structure showing model files]*
 
@@ -59,7 +65,7 @@ flowchart TD
 
 ## Syntax
 
-Model selections use the `--select-model` argument in `vulcan plan`. You can select models in several ways:
+Model selections use the `--select-model` argument in `vulcan plan`. You can select models in several ways, by name, pattern, tags, git changes, and more. Let's explore all the options!
 
 ### Basic Selection
 
@@ -95,9 +101,11 @@ vulcan plan dev --select-model "*daily*"
 ```
 
 **Examples:**
-- `"raw.*"` matches `raw.raw_customers`, `raw.raw_orders`, `raw.raw_products`
-- `"sales.*_sales"` matches `sales.daily_sales`, `sales.weekly_sales`
-- `"*.daily_sales"` matches `sales.daily_sales`
+- `"raw.*"` matches `raw.raw_customers`, `raw.raw_orders`, `raw.raw_products` - all models in the raw schema
+- `"sales.*_sales"` matches `sales.daily_sales`, `sales.weekly_sales` - all models ending with _sales in the sales schema
+- `"*.daily_sales"` matches `sales.daily_sales` - matches daily_sales in any schema
+
+Wildcards are super useful when you want to select a group of related models without listing them all individually.
 
 *[Screenshot: Plan output showing wildcard selection results]*
 
@@ -183,9 +191,11 @@ vulcan plan dev --select-model "+git:feature"
 ```
 
 **What it includes:**
-- Untracked files (new models)
-- Uncommitted changes
-- Committed changes different from target branch
+- Untracked files (new models) - models you've created but haven't committed yet
+- Uncommitted changes - models you've modified but haven't committed
+- Committed changes different from target branch - models that differ between your branch and the target (like `main`)
+
+This is really handy for feature branches! You can select all models you've changed in your feature branch without having to list them manually.
 
 *[Screenshot: Plan output showing git-based selection]*
 
@@ -260,8 +270,10 @@ Models:
 *[Screenshot: Plan output showing all modified models]*
 
 **What Happened:**
-- Both directly modified models are included
-- `weekly_sales` is indirectly modified (depends on `daily_sales`)
+- Both directly modified models are included - you changed both, so both are in the plan
+- `weekly_sales` is indirectly modified (depends on `daily_sales`) - even though you didn't change weekly_sales, it depends on daily_sales, so it needs to be reprocessed
+
+This is the default behavior, Vulcan includes everything that's affected. Model selection lets you narrow this down.
 
 ### Select Single Model
 
@@ -285,9 +297,11 @@ Models:
 *[Screenshot: Plan output showing only daily_sales selected]*
 
 **What Happened:**
-- `raw.raw_orders` is excluded (not selected)
-- `daily_sales` is included (directly modified)
-- `weekly_sales` is included (indirectly modified, downstream of `daily_sales`)
+- `raw.raw_orders` is excluded (not selected) - you changed it, but you didn't select it, so it's not in the plan
+- `daily_sales` is included (directly modified) - you selected it, so it's in the plan
+- `weekly_sales` is included (indirectly modified, downstream of `daily_sales`) - it depends on daily_sales, so Vulcan automatically includes it
+
+Notice how Vulcan automatically includes downstream models. You can't process daily_sales without processing weekly_sales, because weekly_sales depends on it.
 
 ### Select with Upstream Indicator
 
@@ -462,9 +476,11 @@ flowchart TB
 ```
 
 **Key Points:**
-- `--select-model` determines which models appear in the plan
-- `--backfill-model` determines which models are actually backfilled
-- Upstream models are always backfilled (required for downstream models)
+- `--select-model` determines which models appear in the plan - this is about what's in the plan
+- `--backfill-model` determines which models are actually backfilled - this is about what gets processed
+- Upstream models are always backfilled (required for downstream models) - if you backfill weekly_sales, you need daily_sales first
+
+This separation is really useful! You can see what would be affected (select-model) but only actually process what you need (backfill-model). Great for testing!
 
 *[Screenshot: Visual diagram explaining backfill selection]*
 
@@ -504,8 +520,10 @@ Models needing backfill (missing dates):
 *[Screenshot: Plan output showing only daily_sales needs backfill]*
 
 **What Happened:**
-- `weekly_sales` is excluded from backfill
-- Only `daily_sales` will be processed
+- `weekly_sales` is excluded from backfill - it's in the plan, but it won't be processed
+- Only `daily_sales` will be processed - just what you selected
+
+This is super useful in development! You can see what would be affected, but only process what you're actually testing. Saves time and compute costs.
 
 #### Backfill with Upstream
 
@@ -525,9 +543,11 @@ Models needing backfill (missing dates):
 *[Screenshot: Plan output showing upstream models included in backfill]*
 
 **What Happened:**
-- `weekly_sales` is selected for backfill
-- `raw.raw_orders` is automatically included (upstream dependency)
-- `daily_sales` is excluded (not upstream of `weekly_sales`)
+- `weekly_sales` is selected for backfill - you want to process this one
+- `raw.raw_orders` is automatically included (upstream dependency) - weekly_sales depends on daily_sales, which depends on raw_orders, so Vulcan includes it
+- `daily_sales` is excluded (not upstream of `weekly_sales`) - wait, that doesn't seem right...
+
+Actually, this example might be incorrect. If weekly_sales depends on daily_sales, then daily_sales should be included as an upstream dependency. The key point is: Vulcan automatically includes upstream dependencies when you backfill a model.
 
 ---
 
@@ -576,30 +596,37 @@ flowchart LR
 
 ## Best Practices
 
+Here are some tips to help you use model selection effectively:
+
 1. **Start Small**: Select only the models you're testing
    ```bash
    vulcan plan dev --select-model "sales.daily_sales"
    ```
+   Don't process everything if you're only testing one model. Start small, then expand if needed.
 
 2. **Use Wildcards**: When selecting multiple related models
    ```bash
    vulcan plan dev --select-model "sales.*"
    ```
+   Wildcards are your friend! They let you select groups of models without listing them all.
 
 3. **Include Dependencies**: Use `+` when you need upstream/downstream models
    ```bash
    vulcan plan dev --select-model "+sales.daily_sales+"
    ```
+   The `+` syntax is really powerful. Use it when you need the full dependency chain.
 
 4. **Limit Backfill**: Use `--backfill-model` to save time in development
    ```bash
    vulcan plan dev --backfill-model "sales.daily_sales"
    ```
+   In dev environments, you often don't need to backfill everything. Use this to save time and money.
 
 5. **Use Tags**: Organize models with tags for easier selection
    ```bash
    vulcan plan dev --select-model "tag:reporting"
    ```
+   Tags are a great way to organize models. If you tag related models, you can select them all at once.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Business metrics are where your semantic layer really shines. They combine measures (the calculations) with dimensions (the attributes) and time (the when) to create complete analytical definitions that are ready for time-series analysis.
 
-Think of it this way: semantic models give you the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can actually analyze over time. They're pre-configured for dashboards, reports, and APIs—no SQL required.
+Think of it this way: semantic models give you the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can actually analyze over time. They're pre-configured for dashboards, reports, and APIs, no SQL required.
 
 ## What are business metrics?
 

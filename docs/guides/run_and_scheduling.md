@@ -1,6 +1,8 @@
 # Run and Scheduling
 
-This guide covers Vulcan's run functionality and scheduling strategies. Learn how `vulcan run` processes new data intervals and how to automate it for production.
+This guide covers Vulcan's run functionality and scheduling strategies. You'll learn how `vulcan run` processes new data intervals and how to automate it for production.
+
+The `run` command is different from `plan`, it's for regular scheduled execution, not for applying changes. Once you understand the difference, you'll know when to use each one.
 
 ## Run and Scheduler Architecture
 
@@ -126,7 +128,9 @@ gantt
 | **User Interaction** | Prompts for change categorization | Runs automatically |
 | **Output** | Shows diffs and change summary | Shows execution progress |
 
-**Key Insight**: Use `plan` when you've changed code. Use `run` for regular scheduled execution.
+**Key Insight**: Use `plan` when you've changed code. Use `run` for regular scheduled execution. 
+
+Think of it this way: `plan` is for deploying changes, `run` is for processing new data. They serve different purposes!
 
 ---
 
@@ -175,10 +179,12 @@ flowchart TD
 
 **Process Steps:**
 
-1. **No Model Changes**: Assumes no model definitions have changed
-2. **Cron-Based Execution**: Each model's `cron` parameter determines if it should run
-3. **Missing Intervals**: Only processes intervals that haven't been processed yet
-4. **Automatic**: No prompts or user interaction required
+1. **No Model Changes**: Assumes no model definitions have changed - if they have, you'll get an error telling you to use `plan` first
+2. **Cron-Based Execution**: Each model's `cron` parameter determines if it should run - daily models run daily, weekly models run weekly, etc.
+3. **Missing Intervals**: Only processes intervals that haven't been processed yet - efficient!
+4. **Automatic**: No prompts or user interaction required - perfect for automation
+
+This is why `run` is great for scheduled execution. It's fast, automatic, and only processes what's needed.
 
 !!! tip "Interactive Diagrams"
     All diagrams in this guide are interactive! Double-click any diagram to zoom in and explore details. Use drag to pan, arrow keys to navigate, or the zoom controls.
@@ -212,10 +218,12 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 *[Screenshot: First run output showing new interval processing]*
 
 **What Happened?**
-- `sales.daily_sales` has `cron: '@daily'`, so it runs daily
-- Yesterday's plan processed up to 2025-01-15
-- Today (2025-01-16) is a new interval that needs processing
-- `run` automatically processes this missing interval
+- `sales.daily_sales` has `cron: '@daily'`, so it runs daily - Vulcan checks if enough time has passed
+- Yesterday's plan processed up to 2025-01-15 - that's what's already done
+- Today (2025-01-16) is a new interval that needs processing - this is what's missing
+- `run` automatically processes this missing interval - no prompts, just works
+
+This is the beauty of `run`, it automatically figures out what needs processing and does it. Set it up once, and it keeps running!
 
 ---
 
@@ -262,9 +270,11 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 *[Screenshot: Weekly run showing both daily and weekly models]*
 
 **Understanding Cron Schedules:**
-- **Daily model (`@daily`)**: Processes missing daily intervals
-- **Weekly model (`@weekly`)**: Only processes when 7 days have elapsed
-- **Efficient**: Each model only processes what's due based on its schedule
+- **Daily model (`@daily`)**: Processes missing daily intervals - runs every day when `run` executes
+- **Weekly model (`@weekly`)**: Only processes when 7 days have elapsed - skips if not enough time has passed
+- **Efficient**: Each model only processes what's due based on its schedule - no wasted compute
+
+This is why cron schedules are important. They tell Vulcan when each model should run, so you don't process things unnecessarily.
 
 ---
 
@@ -289,7 +299,7 @@ No models to execute. All intervals are up to date.
 
 *[Screenshot: Run output showing no models to execute]*
 
-This is normal when running frequently - nothing to process means everything is up to date.
+This is normal when running frequently - nothing to process means everything is up to date. It's actually a good sign! It means your automation is working and keeping things current.
 
 ---
 
@@ -314,13 +324,15 @@ Please run 'vulcan plan' to apply these changes before using 'vulcan run'.
 
 *[Screenshot: Error message when trying to run with model changes]*
 
-**Workflow**: Always `plan` first to apply changes, then `run` for scheduled execution.
+**Workflow**: Always `plan` first to apply changes, then `run` for scheduled execution. 
+
+This is the key workflow: use `plan` when you've changed code, then use `run` for regular data processing. Don't mix them up!
 
 ---
 
 ## Scheduling for Production
 
-The `vulcan run` command doesn't run continuously - it executes once and exits. For production, you need to schedule it to run periodically.
+The `vulcan run` command doesn't run continuously - it executes once and exits. For production, you need to schedule it to run periodically. This is where automation comes in, you'll set up cron jobs, CI/CD pipelines, or Kubernetes CronJobs to trigger `run` on a schedule.
 
 ### Built-in Scheduler Architecture
 
@@ -560,11 +572,13 @@ graph TD
 
 **Rule**: Schedule `vulcan run` based on your **fastest model's cron**.
 
-- **Hourly models** → Run automation every hour
-- **Daily models** → Run automation daily  
-- **Weekly models** → Run automation weekly
+- **Hourly models** → Run automation every hour - if you have hourly models, you need to run at least hourly
+- **Daily models** → Run automation daily - if your fastest model is daily, you can run daily
+- **Weekly models** → Run automation weekly - if your fastest model is weekly, you can run weekly
 
-**Example**: If your fastest model runs `@hourly`, schedule `vulcan run` to execute hourly. Models with slower schedules (daily, weekly) will only process when their intervals are due.
+**Example**: If your fastest model runs `@hourly`, schedule `vulcan run` to execute hourly. Models with slower schedules (daily, weekly) will only process when their intervals are due. Vulcan is smart, it won't process daily models every hour, it'll wait until they're actually due.
+
+The key insight: you can run `vulcan run` more frequently than your slowest model's schedule. Vulcan will just skip models that aren't due yet.
 
 ---
 
@@ -584,7 +598,9 @@ Processes only the specified model and its upstream dependencies.
 vulcan run --ignore-cron
 ```
 
-Processes all missing intervals regardless of cron schedules. Use sparingly - typically for catching up after downtime.
+Processes all missing intervals regardless of cron schedules. Use sparingly - typically for catching up after downtime. 
+
+This is useful if your automation was down for a while and you need to catch up on missed intervals. But normally, you want Vulcan to respect cron schedules, that's the whole point!
 
 ### Custom Execution Time
 
@@ -619,12 +635,25 @@ See [Configuration Guide](../references/configuration.md#gateways) for configuri
 
 ## Best Practices
 
+<<<<<<< Updated upstream
 1. **Use `run` for scheduled execution** - Don't use `plan` for regular data processing
 2. **Set up automation** - Schedule `vulcan run` based on your most frequent model's cron
 3. **Monitor execution** - Check logs to ensure intervals are processing correctly
 4. **Use `--ignore-cron` sparingly** - Only when catching up on missed intervals
 5. **Separate state database** - Consider PostgreSQL for state storage in production
 6. **Handle errors gracefully** - Set up [notifications](../configurations/options/notifications.md) for run failures
+=======
+Here are some tips to help you use `run` effectively:
+
+1. **Use `run` for scheduled execution** - Don't use `plan` for regular data processing. They serve different purposes!
+2. **Set up automation** - Schedule `vulcan run` based on your most frequent model's cron. Set it and forget it.
+3. **Monitor execution** - Check logs to ensure intervals are processing correctly. Make sure your automation is actually working.
+4. **Use `--ignore-cron` sparingly** - Only when catching up on missed intervals. Normally, let Vulcan respect cron schedules.
+5. **Separate state database** - Consider PostgreSQL for state storage in production. Some SQL engines aren't optimized for frequent transactions.
+6. **Handle errors gracefully** - Set up [notifications](guides-old/notifications.md) for run failures. Know when things go wrong!
+
+Following these practices will help you build reliable, automated data pipelines.
+>>>>>>> Stashed changes
 
 ---
 

@@ -1,8 +1,14 @@
 # Model defaults
 
+<<<<<<< Updated upstream
 The `model_defaults` key is **required** and must contain a value for the `dialect` key. 
+=======
+The `model_defaults` section is **required**, you can't skip it! At minimum, you need to specify the `dialect` key, which tells Vulcan what SQL dialect your models use. You can use any dialect that [SQLGlot supports](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py), which covers most major databases.
+>>>>>>> Stashed changes
 
-All supported `model_defaults` keys are listed in the [models configuration reference page](../../references/model_configuration.md#model-defaults).
+The other defaults are optional, but they're super helpful because they apply to all your models automatically. This means you don't have to repeat the same settings in every model file. If a model needs something different, you can override it in that specific model's definition.
+
+For a complete list of all the options you can set in `model_defaults`, check out the [models configuration reference](../../references/model_configuration.md#model-defaults).
 
 ## Basic configuration
 
@@ -31,17 +37,21 @@ Example configuration:
     )
     ```
 
+<<<<<<< Updated upstream
 The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](../../components/model/model_kinds.md).
+=======
+By default, models are created as `VIEW` unless you specify otherwise with the `kind` key. Views are great for most use cases because they're always up-to-date and don't store duplicate data. But if you need tables or other materialization strategies, you can override this per-model. Learn more about model kinds in the [model concepts page](configurations/components/model/model_kinds.md).
+>>>>>>> Stashed changes
 
 ## Identifier resolution
 
-When a SQL engine receives a query such as `SELECT id FROM "some_table"`, it eventually needs to understand what database objects the identifiers `id` and `"some_table"` correspond to. This process is usually referred to as identifier (or name) resolution.
+Here's something that trips people up: different SQL engines handle identifier names differently. When you write `SELECT id FROM "some_table"`, the engine needs to figure out what `id` and `"some_table"` actually refer to. This is called "identifier resolution," and each dialect has its own rules.
 
-Different SQL dialects implement different rules when resolving identifiers in queries. For example, certain identifiers may be treated as case-sensitive (e.g. if they're quoted), and a case-insensitive identifier is usually either lowercased or uppercased, before the engine actually looks up what object it corresponds to.
+For example, some engines treat quoted identifiers as case-sensitive while unquoted ones get normalized (usually to lowercase or uppercase). This can cause issues if you're not careful.
 
-Vulcan analyzes model queries so that it can extract useful information from them, such as computing Column-Level Lineage. To facilitate this analysis, it _normalizes_ and _quotes_ all identifiers in those queries, [respecting each dialect's resolution rules](https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier).
+Vulcan needs to analyze your queries to do things like compute column-level lineage. To make this work reliably, it normalizes and quotes identifiers according to each dialect's rules. You can read more about how SQLGlot handles this [here](https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier).
 
-The "normalization strategy", i.e. whether case-insensitive identifiers are lowercased or uppercased, is configurable per dialect. For example, to treat all identifiers as case-sensitive in a BigQuery project, one can do:
+The normalization strategy (whether identifiers get lowercased or uppercased) is configurable. For example, if you're using BigQuery and want everything to be case-sensitive, you can do this:
 
 === "YAML"
 
@@ -50,13 +60,15 @@ The "normalization strategy", i.e. whether case-insensitive identifiers are lowe
       dialect: "bigquery,normalization_strategy=case_sensitive"
     ```
 
-This may be useful in cases where the name casing needs to be preserved, since then Vulcan won't be able to normalize them.
+This is useful when you need to preserve exact casing (maybe for compatibility with other tools or systems). When you use `case_sensitive`, Vulcan won't normalize identifiers, so they'll keep whatever casing you use.
 
-See [here](https://sqlglot.com/sqlglot/dialects/dialect.html#NormalizationStrategy) to learn more about the supported normalization strategies.
+Check out the [SQLGlot normalization strategies documentation](https://sqlglot.com/sqlglot/dialects/dialect.html#NormalizationStrategy) to see all your options.
 
 ## Gateway-specific model defaults
 
-You can also define gateway specific `model_defaults` in the `gateways` section, which override the global defaults for that gateway.
+Sometimes you need different defaults for different gateways. Maybe you're using multiple engines and they have different requirements. You can override the global `model_defaults` for a specific gateway by adding `model_defaults` to that gateway's configuration.
+
+Here's an example where we have different normalization strategies for different engines:
 
 ```yaml linenums="1" hl_lines="6 14"
 gateways:
@@ -76,13 +88,9 @@ model_defaults:
   start: 2025-02-05
 ```
 
-This allows you to tailor the behavior of models for each gateway without affecting the global `model_defaults`.
+This is super useful when you're working with multiple engines that have different identifier handling rules. For example, some engines are case-sensitive while others aren't. Without gateway-specific defaults, you'd have to make sure every model aligns with each engine's behavior, which gets messy fast.
 
-For example, in some SQL engines identifiers like table and column names are case-sensitive, but they are case-insensitive in other engines. By default, a project that uses both types of engines would need to ensure the models for each engine aligned with the engine's normalization behavior, which makes project maintenance and debugging more challenging.
+Gateway-specific `model_defaults` let you configure identifier normalization per engine, so you can write models in one style and have Vulcan handle the differences automatically.
 
-Gateway-specific `model_defaults` allow you to change how Vulcan performs identifier normalization *by engine* to align the different engines' behavior.
-
-In the example above, the project's default dialect is `snowflake` (line 14). The `redshift` gateway configuration overrides that global default dialect with `"snowflake,normalization_strategy=case_insensitive"` (line 6).
-
-That value tells Vulcan that the `redshift` gateway's models will be written in the Snowflake SQL dialect (so need to be transpiled from Snowflake to Redshift), but that the resulting Redshift SQL should treat identifiers as case-insensitive to match Snowflake's behavior.
+In the example above, the global default is `snowflake` (line 14), but the `redshift` gateway overrides it with `"snowflake,normalization_strategy=case_insensitive"` (line 6). This tells Vulcan: "Write the SQL in Snowflake dialect (which will get transpiled to Redshift), but normalize identifiers as case-insensitive to match Snowflake's behavior." This way, your models work consistently across both engines.
 

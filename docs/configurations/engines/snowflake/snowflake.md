@@ -1,61 +1,75 @@
 # Snowflake
 
-This page provides information about how to use Vulcan with the Snowflake SQL engine.
+Snowflake is a cloud data warehouse that scales automatically and works seamlessly with Vulcan. It's perfect for teams that need elastic compute and don't want to manage infrastructure. This guide will walk you through everything you need to know to get Vulcan working with Snowflake.
 
-It begins with a [Connection Quickstart](#connection-quickstart) that demonstrates how to connect to Snowflake, or you can skip directly to information about using Snowflake with the [built-in](#localbuilt-in-scheduler).
+We'll start with a [Connection Quickstart](#connection-quickstart) that shows you how to connect to Snowflake step-by-step. If you're already familiar with Snowflake connections, you can jump straight to the [built-in scheduler](#localbuilt-in-scheduler) details.
 
 ## Connection quickstart
 
-Connecting to cloud warehouses involves a few steps, so this connection quickstart provides the info you need to get up and running with Snowflake.
+Connecting to Snowflake involves a few steps, but don't worry, we'll walk you through it. This quickstart will get you up and running in no time.
 
-It demonstrates connecting to Snowflake with the `snowflake-connector-python` library bundled with Vulcan.
+We'll be using the `snowflake-connector-python` library that comes bundled with Vulcan, so you don't need to install anything extra.
 
-Snowflake provides multiple methods of authorizing a connection (e.g., password, SSO, etc.). This quickstart demonstrates authorizing with a password, but configurations for other methods are [described below](#snowflake-authorization-methods).
+Snowflake supports several authentication methods (password, SSO, OAuth, private key, etc.). This quickstart uses password authentication because it's the simplest to get started with. If you need a different method, we cover all the options [below](#snowflake-authorization-methods).
 
 !!! tip
-    This quickstart assumes you are familiar with basic Vulcan commands and functionality.
+    This quickstart assumes you're already familiar with basic Vulcan commands and functionality.
 
+<<<<<<< Updated upstream
     If you're not, work through the [Vulcan Quickstart](../../../guides/get-started/docker.md) before continuing!
+=======
+    If you're new to Vulcan, we recommend working through the [Vulcan Quickstart](configurations/guides/get-started/docker.md) first. It'll give you a solid foundation before diving into Snowflake-specific setup!
+>>>>>>> Stashed changes
 
 ### Prerequisites
 
-Before working through this connection quickstart, ensure that:
+Before we get started, make sure you have everything you need:
 
-1. You have a Snowflake account and know your username and password
-2. Your Snowflake account has at least one [warehouse](https://docs.snowflake.com/en/user-guide/warehouses-overview) available for running computations
-3. Your computer has Vulcan installed with the Snowflake extra available
-    - Install from the command line with the command `pip install "vulcan[snowflake]"`
-4. You have initialized a Vulcan example project on your computer
-    - Open a command line interface and navigate to the directory where the project files should go
-    - Initialize the project with the command `vulcan init snowflake`
+1. **A Snowflake account** with your username and password handy. If you don't have one yet, you can sign up for a free trial.
+
+2. **At least one warehouse** in your Snowflake account. Warehouses are what Snowflake uses to run queries, think of them as compute clusters. If you're not sure what this means, check out [Snowflake's warehouse documentation](https://docs.snowflake.com/en/user-guide/warehouses-overview).
+
+3. **Vulcan installed with Snowflake support**. You'll need to install the Snowflake extra:
+    ```bash
+    pip install "vulcan[snowflake]"
+    ```
+
+4. **A Vulcan project initialized**. If you haven't created one yet:
+    ```bash
+    vulcan init snowflake
+    ```
+    This sets up a basic project structure with Snowflake as the default engine.
 
 ### Access control permissions
 
-Vulcan must have sufficient permissions to create and access different types of database objects.
+Vulcan needs certain permissions to do its job. It has to create schemas, tables, and views, and manage them over time. Let's make sure your Snowflake user has everything it needs.
 
-Vulcan's core functionality requires relatively broad permissions, including:
+Vulcan's core functionality requires these permissions:
 
-1. Ability to create and delete schemas in a database
-2. Ability to create, modify, delete, and query tables and views in the schemas it creates
+1. **Create and delete schemas** in a database
+2. **Create, modify, delete, and query** tables and views in the schemas it creates
 
-If your project uses materialized views or dynamic tables, Vulcan will also need permissions to create, modify, delete, and query those object types.
+If you're using materialized views or dynamic tables, Vulcan will need permissions for those too.
 
-We now describe how to grant Vulcan appropriate permissions.
+Here's how to set up the right permissions:
 
 #### Snowflake roles
 
-Snowflake allows you to grant permissions directly to a user, or you can create and assign permissions to a "role" that you then grant to the user.
+In Snowflake, you can grant permissions directly to a user, but it's usually better to create a role and grant permissions to that role instead. Then you grant the role to the user. This makes it easier to manage permissions, especially if you have multiple users who need the same access.
 
-Roles provide a convenient way to bundle sets of permissions and provide them to multiple users. We create and use a role to grant our user permissions in this quickstart.
-
-The role must be granted `USAGE` on a warehouse so it can execute computations. We describe other permissions below.
+We'll create a `vulcan` role and grant it all the permissions Vulcan needs. The role must have `USAGE` on a warehouse so it can actually run queries. We'll cover all the other permissions below.
 
 #### Database permissions
-The top-level object container in Snowflake is a "database" (often called a "catalog" in other engines). Vulcan does not need permission to create databases; it may use an existing one.
 
-The simplest way to grant Vulcan sufficient permissions for a database is to give it `OWNERSHIP` of the database, which includes all the necessary permissions.
+In Snowflake, databases are the top-level containers (other engines sometimes call them "catalogs"). Vulcan doesn't need to create databases, it can use an existing one.
 
-Alternatively, you may grant Vulcan granular permissions for all the actions and objects it will work with in the database.
+You've got two options for granting permissions:
+
+1. **Give Vulcan `OWNERSHIP` of the database** - This is the simplest approach. Ownership includes all the permissions Vulcan needs, so you don't have to worry about missing something.
+
+2. **Grant granular permissions** - If you prefer more control, you can grant specific permissions for each action and object type. This is more work but gives you finer-grained control.
+
+We'll show you both approaches below, so you can pick whichever fits your security requirements better.
 
 #### Granting the permissions
 
@@ -104,41 +118,33 @@ Both examples create a role named `vulcan`, grant it usage of the warehouse `com
 
 ### Get connection info
 
-Now that our user has sufficient access permissions, we're ready to gather the information needed to configure the Vulcan connection.
+Now that your user has the right permissions, let's gather the connection information you'll need. Don't worry, most of this is easy to find in your Snowflake account.
 
 #### Account name
 
-Snowflake connection configurations require the `account` parameter that identifies the Snowflake account Vulcan should connect to.
+You'll need your Snowflake account identifier for the connection. Here's the thing, Snowflake account identifiers have two parts: your organization name and your account name. Both are right there in your Snowflake web interface URL.
 
-Snowflake account identifiers have two components: your organization name and your account name. Both are embedded in your Snowflake web interface URL, separated by a `/`.
+When you log into Snowflake, look at the URL. You'll see something like `https://idapznw.snowflakecomputing.com/console#/internal/org/Wq29399`. The organization name (`idapznw`) and account name (`wq29399`) are separated by a `/` in the URL path.
 
-This shows the default view when you log in to your Snowflake account, where we can see the two components of the account identifier:
+To use them in Vulcan, you'll combine them with a hyphen. So if your organization is `idapznw` and your account is `wq29399`, your Vulcan `account` parameter would be `idapznw-wq29399`.
 
 ![Snowflake account info in web URL](./images/snowflake_db-guide_account-url.png){ loading=lazy }
 
-In this example, our organization name is `idapznw`, and our account name is `wq29399`.
-
-We concatenate the two components, separated by a `-`, for the Vulcan `account` parameter: `idapznw-wq29399`.
-
 #### Warehouse name
 
-Your Snowflake account may have more than one warehouse available - any will work for this quickstart, which runs very few computations.
+Your Snowflake account might have multiple warehouses, and any of them will work for this quickstart. Since we're just getting set up, we won't be running heavy workloads.
 
-Some Snowflake user accounts may have a default warehouse they automatically use when connecting.
-
-The connection configuration's `warehouse` parameter is not required, but we recommend specifying the warehouse explicitly in the configuration to ensure Vulcan's behavior doesn't change if the user's default warehouse changes.
+Some Snowflake users have a default warehouse that gets used automatically, but we recommend specifying the warehouse explicitly in your Vulcan config. Why? Because if someone changes the user's default warehouse later, your Vulcan configuration won't suddenly start using a different warehouse. It's better to be explicit about these things.
 
 #### Database name
 
-Snowflake user accounts may have a "Default Namespace" that includes a default database they automatically use when connecting.
-
-The connection configuration's `database` parameter is not required, but we recommend specifying the database explicitly in the configuration to ensure Vulcan's behavior doesn't change if the user's default namespace changes.
+Similar to warehouses, Snowflake users can have a "Default Namespace" that includes a default database. While you *can* rely on that default, we strongly recommend specifying the database explicitly in your Vulcan config. This way, your configuration won't break if someone changes the user's default namespace later. Explicit is better than implicit!
 
 ### Configure the connection
 
-We now have the information we need to configure Vulcan's connection to Snowflake.
+Perfect! Now you have everything you need. Let's put it all together in your Vulcan configuration.
 
-We start the configuration by adding a gateway named `snowflake` to our example project's config.yaml file and making it our `default_gateway`:
+We'll add a gateway named `snowflake` to your `config.yaml` file and make it the default gateway:
 
 ```yaml linenums="1" hl_lines="2-6"
 gateways:
@@ -173,10 +179,15 @@ model_defaults:
   start: 2024-07-24
 ```
 
+<<<<<<< Updated upstream
 !!! warning
     Best practice for storing secrets like passwords is placing them in [environment variables that the configuration file loads dynamically](../../../../references/configuration.md#variables). For simplicity, this guide instead places the value directly in the configuration file.
+=======
+!!! warning "Security Best Practice"
+    We're showing the password directly in the config file for simplicity, but **don't do this in production!** Instead, use environment variables to keep secrets out of your config files.
+>>>>>>> Stashed changes
 
-    This code demonstrates how to use the environment variable `SNOWFLAKE_PASSWORD` for the configuration's `password` parameter:
+    Here's how you'd use an environment variable for the password:
 
     ```yaml linenums="1" hl_lines="5"
     gateways:
@@ -186,11 +197,13 @@ model_defaults:
           password: {{ env_var('SNOWFLAKE_PASSWORD') }}
     ```
 
+    This way, your password stays secure and you can use different values for different environments. Check out our [Variables documentation](../../options/variables.md) for more details.
+
 ### Check connection
 
-We have now specified the `snowflake` gateway connection information, so we can confirm that Vulcan is able to successfully connect to Snowflake. We will test the connection with the `vulcan info` command.
+Great! Now let's make sure everything works. We'll test the connection using the `vulcan info` command, which checks both your data warehouse connection and your state backend connection.
 
-First, open a command line terminal. Now enter the command `vulcan info`:
+Open a terminal in your project directory and run:
 
 ![Run vulcan info command in CLI](./images/snowflake_db-guide_sqlmesh-info.png){ loading=lazy }
 
@@ -198,20 +211,24 @@ The output shows that our data warehouse connection succeeded:
 
 ![Successful data warehouse connection](./images/snowflake_db-guide_sqlmesh-info-succeeded.png){ loading=lazy }
 
-However, the output includes a `WARNING` about using the Snowflake SQL engine for storing Vulcan state:
+You might see a warning about using Snowflake for storing Vulcan state. That's because Snowflake isn't designed for transactional workloads, and Vulcan's state needs frequent small writes. Even for testing, it's better to use a different database for state.
 
 ![Snowflake state connection warning](./images/snowflake_db-guide_sqlmesh-info-warning.png){ loading=lazy }
 
 !!! warning
-    Snowflake is not designed for transactional workloads and should not be used to store Vulcan state even in testing deployments.
+    **Don't use Snowflake for state storage.** Snowflake is optimized for analytical workloads, not transactional ones. Vulcan's state backend needs to handle frequent small writes, which isn't what Snowflake is built for.
 
+<<<<<<< Updated upstream
     Learn more about storing Vulcan state [here](../../../../references/configuration.md#gateways).
+=======
+    Use a separate database (like PostgreSQL or DuckDB) for your state connection. Learn more about state connections [here](../../guides-old/configuration.md#state-connection).
+>>>>>>> Stashed changes
 
 ### Specify state connection
 
-We can store Vulcan state in a different SQL engine by specifying a `state_connection` in our `snowflake` gateway.
+Good news, you can use a different database for state storage! Just add a `state_connection` to your gateway configuration. This way, Snowflake handles your data processing, and a more appropriate database handles Vulcan's state.
 
-This example uses the DuckDB engine to store state in the local `snowflake_state.db` file:
+Here's an example using DuckDB (a lightweight local database) to store state in a local file:
 
 ```yaml linenums="1" hl_lines="10-12"
 gateways:
@@ -234,29 +251,33 @@ model_defaults:
   start: 2024-07-24
 ```
 
-Now we no longer see the warning when running `vulcan info`, and we see a new entry `State backend connection succeeded`:
+Now when you run `vulcan info` again, the warning should be gone, and you'll see `State backend connection succeeded`:
 
 ![No state connection warning](./images/snowflake_db-guide_sqlmesh-info-no-warning.png){ loading=lazy }
 
+Perfect! Your state is now stored separately from your data warehouse, which is exactly what you want.
+
 ### Run a `vulcan plan`
 
-Now we're ready to run a `vulcan plan` in Snowflake:
+You're all set! Let's create your first plan. Run:
+
+```bash
+vulcan plan
+```
 
 ![Run vulcan plan in snowflake](./images/snowflake_db-guide_sqlmesh-plan.png){ loading=lazy }
 
-And confirm that our schemas and objects exist in the Snowflake catalog:
+This will create the schemas and objects Vulcan needs in your Snowflake account. You can verify everything was created correctly by checking the Snowflake catalog:
 
 ![Vulcan plan objects in snowflake](./images/snowflake_db-guide_sqlmesh-plan-objects.png){ loading=lazy }
 
-Congratulations - your Vulcan project is up and running on Snowflake!
+🎉 **Congratulations!** Your Vulcan project is now up and running on Snowflake. You're ready to start building your data pipeline!
 
 ### Where are the row counts?
 
-Vulcan reports the number of rows processed by each model in its `plan` and `run` terminal output.
+You might notice that Vulcan doesn't always show row counts for your models when running plans or runs. That's because of a limitation in the Snowflake Python connector, it can't determine row counts for `CREATE TABLE AS` statements.
 
-However, due to limitations in the Snowflake Python connector, row counts cannot be determined for `CREATE TABLE AS` statements. Therefore, Vulcan does not report row counts for certain model kinds, such as `FULL` models.
-
-Learn more about the connector limitation [on Github](https://github.com/snowflakedb/snowflake-connector-python/issues/645).
+So if you're using `FULL` model kinds (which use `CREATE TABLE AS`), you won't see row counts in the output. This is a known limitation, and there's not much we can do about it until the connector adds support. You can read more about it [on Github](https://github.com/snowflakedb/snowflake-connector-python/issues/645) if you're curious about the technical details.
 
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `snowflake`
@@ -287,11 +308,9 @@ pip install "vulcan[snowflake]"
 
 ### Lowercase object names
 
-Snowflake object names are case-insensitive by default, and Snowflake automatically normalizes them to uppercase. For example, the command `CREATE SCHEMA vulcan` will generate a schema named `VULCAN` in Snowflake.
+Here's something to be aware of: Snowflake object names are case-insensitive by default, and Snowflake automatically converts them to uppercase. So if you write `CREATE SCHEMA vulcan`, Snowflake will actually create a schema named `VULCAN`.
 
-If you need to create an object with a case-sensitive lowercase name, the name must be double-quoted in SQL code. In the Vulcan configuration file, it also requires outer single quotes.
-
-For example, a connection to the database `"my_db"` would include:
+If you really need a case-sensitive lowercase name (maybe for compatibility with other tools), you'll need to double-quote it in SQL. In your Vulcan config file, you'll also need to wrap it in single quotes. Here's how:
 
 ``` yaml
 connection:
@@ -302,13 +321,11 @@ connection:
 
 ### Snowflake authorization methods
 
-The simplest (but arguably least secure) method of authorizing a connection with Snowflake is with a username and password.
-
-This section describes how to configure other authorization methods.
+Password authentication is the simplest way to get started, but Snowflake supports several other methods that might be better for your security requirements. Let's look at your options:
 
 #### Snowflake SSO Authorization
 
-Vulcan supports Snowflake SSO authorization connections using the `externalbrowser` authenticator method. For example:
+If your organization uses Single Sign-On (SSO) with Snowflake, you can configure Vulcan to use it. This uses the `externalbrowser` authenticator, which will open your browser for authentication. Here's how to set it up:
 
 ```yaml
 gateways:
@@ -325,7 +342,7 @@ gateways:
 
 #### Snowflake OAuth Authorization
 
-Vulcan supports Snowflake OAuth authorization connections using the `oauth` authenticator method. For example:
+OAuth is another secure authentication option. You'll need an OAuth token from Snowflake, and then you can use it like this:
 
 === "YAML"
 
@@ -360,13 +377,18 @@ Vulcan supports Snowflake OAuth authorization connections using the `oauth` auth
 
 #### Snowflake Private Key Authorization
 
-Vulcan supports Snowflake private key authorization connections by providing the private key as a path, Base64-encoded DER format (representing the key bytes), a plain-text PEM format, or as bytes (Python Only).
+Private key authentication is great for automated systems and CI/CD pipelines. Vulcan supports several ways to provide the private key:
 
-The `account` and `user` parameters are required for each of these methods.
+- **File path** - Point to a file containing the key
+- **Base64-encoded DER format** - The key bytes encoded as Base64
+- **Plain-text PEM format** - The standard PEM format you're probably familiar with
+- **Bytes** - Raw bytes (Python config only)
+
+For all of these methods, you'll need to provide both the `account` and `user` parameters. Let's look at each option:
 
 __Private Key Path__
 
-Note: `private_key_passphrase` is only needed if the key was encrypted with a passphrase.
+This is probably the simplest approach if you have the key stored in a file. Just point Vulcan to the file path. If your key is encrypted with a passphrase, you'll need to provide that too.
 
 === "YAML"
 
@@ -402,7 +424,7 @@ Note: `private_key_passphrase` is only needed if the key was encrypted with a pa
 
 __Private Key PEM__
 
-Note: `private_key_passphrase` is only needed if the key was encrypted with a passphrase.
+If you have the key in PEM format (the standard format that starts with `-----BEGIN PRIVATE KEY-----`), you can paste it directly into your config. Again, only provide the passphrase if your key is encrypted.
 
 === "YAML"
 
@@ -444,7 +466,7 @@ Note: `private_key_passphrase` is only needed if the key was encrypted with a pa
 
 #### Private Key Base64
 
-Note: This is base64 encoding of the bytes of the key itself and not the PEM file contents.
+This option lets you provide the key as Base64-encoded bytes. **Important:** This is the Base64 encoding of the key bytes themselves, not the PEM file contents. So if you have a PEM file, you'll need to extract and encode the key bytes, not just encode the whole file.
 
 === "YAML"
 
@@ -519,11 +541,11 @@ __Private Key Bytes__
     )
     ```
 
-The authenticator method is assumed to be `snowflake_jwt` when `private_key` is provided, but it can also be explicitly provided in the connection configuration.
+When you provide a `private_key`, Vulcan automatically assumes you want to use the `snowflake_jwt` authenticator method. If you need to use a different authenticator, you can specify it explicitly in your connection configuration.
 
 ## Configuring Virtual Warehouses
 
-The Snowflake Virtual Warehouse a model should use can be specified in the `session_properties` attribute of the model definition:
+By default, Vulcan uses the warehouse you specified in your gateway connection. But sometimes you might want different models to use different warehouses (maybe some models need more compute power than others). You can override the warehouse for a specific model using `session_properties`:
 
 ```sql linenums="1"
 MODEL (
@@ -536,11 +558,11 @@ MODEL (
 
 ## Custom View and Table types
 
-Vulcan supports custom view and table types for Snowflake models. You can apply these modifiers to either the physical layer or virtual layer of a model using the `physical_properties` and `virtual_properties` attributes respectively. For example:
+Snowflake supports several special table and view types that have different characteristics. Vulcan lets you use these by specifying them in your model definition. You can apply these to either the physical layer (the actual table) or the virtual layer (the view that exposes it) using `physical_properties` and `virtual_properties`. Here are the options:
 
 ### Secure Views
 
-A table can be exposed through a `SECURE` view in the virtual layer by specifying the `creatable_type` property and setting it to `SECURE`:
+Secure views in Snowflake hide the underlying query logic from users who don't have access. This is useful for protecting sensitive business logic. To create a secure view, set `creatable_type` to `SECURE` in the `virtual_properties`:
 
 ```sql linenums="1"
 MODEL (
@@ -555,7 +577,7 @@ SELECT a FROM schema_name.model_b;
 
 ### Transient Tables
 
-A model can use a `TRANSIENT` table in the physical layer by specifying the `creatable_type` property and setting it to `TRANSIENT`:
+Transient tables don't have the same data retention guarantees as regular tables, but they're cheaper and perfect for temporary or intermediate data. To use a transient table, set `creatable_type` to `TRANSIENT` in the `physical_properties`:
 
 ```sql linenums="1"
 MODEL (
@@ -570,9 +592,11 @@ SELECT a FROM schema_name.model_b;
 
 ### Iceberg Tables
 
-In order for Snowflake to be able to create an Iceberg table, there must be an [External Volume](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-external-volume) configured to store the Iceberg table data on.
+Iceberg tables are great for data lake architectures. They store data in an open format that multiple systems can read, which is perfect if you're using other tools alongside Snowflake.
 
-Once that is configured, you can create a model backed by an Iceberg table by using `table_format iceberg` like so:
+Before you can create Iceberg tables, you'll need to set up an [External Volume](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-external-volume) in Snowflake to store the table data.
+
+Once that's done, you can create an Iceberg-backed model like this:
 
 ```sql linenums="1" hl_lines="4 6-7"
 MODEL (
@@ -586,14 +610,17 @@ MODEL (
 );
 ```
 
-To prevent having to specify `catalog = 'snowflake'` and `external_volume = '<external volume name>'` on every model, see the Snowflake documentation for:
+If you're creating lots of Iceberg tables, you probably don't want to repeat `catalog` and `external_volume` on every model. You've got a couple of options:
 
-  - [Configuring a default Catalog](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-catalog-integration#set-a-default-catalog-at-the-account-database-or-schema-level)
-  - [Configuring a default External Volume](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-external-volume#set-a-default-external-volume-at-the-account-database-or-schema-level)
+1. **Set defaults in Snowflake** - Configure default catalog and external volume at the account, database, or schema level. Check out Snowflake's docs on [configuring a default catalog](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-catalog-integration#set-a-default-catalog-at-the-account-database-or-schema-level) and [configuring a default external volume](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-external-volume#set-a-default-external-volume-at-the-account-database-or-schema-level).
 
+<<<<<<< Updated upstream
 Alternatively you can also use [model defaults](../../../../references/model_configuration.md#model-defaults) to set defaults at the Vulcan level instead.
+=======
+2. **Set defaults in Vulcan** - Use [model defaults](../../guides-old/configuration.md#model-defaults) to set these values once and have them apply to all your models automatically.
+>>>>>>> Stashed changes
 
-To utilize the wide variety of [optional properties](https://docs.snowflake.com/en/sql-reference/sql/create-iceberg-table-snowflake#optional-parameters) that Snowflake makes available for Iceberg tables, simply specify them as `physical_properties`:
+Snowflake supports a bunch of [optional properties](https://docs.snowflake.com/en/sql-reference/sql/create-iceberg-table-snowflake#optional-parameters) for Iceberg tables. You can use any of them by adding them to `physical_properties`. For example:
 
 ```sql linenums="1" hl_lines="8"
 MODEL (
@@ -610,17 +637,23 @@ MODEL (
 
 !!! warning "External catalogs"
 
-    Setting `catalog = 'snowflake'` to use Snowflake's internal catalog is a good default because Vulcan needs to be able to write to the tables it's managing and Snowflake [does not support](https://docs.snowflake.com/en/user-guide/tables-iceberg#catalog-options) writing to Iceberg tables configured under external catalogs.
+    We recommend using `catalog = 'snowflake'` (Snowflake's internal catalog) as your default. Here's why: Vulcan needs to write to the tables it manages, and Snowflake [doesn't support writing](https://docs.snowflake.com/en/user-guide/tables-iceberg#catalog-options) to Iceberg tables that are configured under external catalogs.
 
+<<<<<<< Updated upstream
     You can however still reference a table from an external catalog in your model as a normal [external table](../../../../components/model/types/external_models.md).
+=======
+    That said, you can still *read* from tables in external catalogs by referencing them as [external models](configurations/components/model/types/external_models.md). You just can't use Vulcan to manage them.
+>>>>>>> Stashed changes
 
 ## Troubleshooting
 
 ### Frequent Authentication Prompts
 
-When using Snowflake with security features like Multi-Factor Authentication (MFA), you may experience repeated prompts for authentication while running Vulcan commands. This typically occurs when your Snowflake account isn't configured to issue short-lived tokens.
+If you're using Multi-Factor Authentication (MFA) or other security features with Snowflake, you might find yourself getting prompted for authentication over and over again when running Vulcan commands. This usually happens when your Snowflake account isn't configured to issue short-lived tokens that can be cached.
 
-To reduce authentication prompts, you can enable token caching in your Snowflake connection configuration:
+The good news is that Snowflake supports token caching, which can dramatically reduce the number of prompts you see. Here's where to learn more:
 
-- For general authentication, see [Connection Caching Documentation](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#using-connection-caching-to-minimize-the-number-of-prompts-for-authentication-optional)
-- For MFA specifically, see [MFA Token Caching Documentation](https://docs.snowflake.com/en/user-guide/security-mfa#using-mfa-token-caching-to-minimize-the-number-of-prompts-during-authentication-optional).
+- **General authentication caching**: Check out Snowflake's [Connection Caching Documentation](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#using-connection-caching-to-minimize-the-number-of-prompts-for-authentication-optional)
+- **MFA-specific caching**: See the [MFA Token Caching Documentation](https://docs.snowflake.com/en/user-guide/security-mfa#using-mfa-token-caching-to-minimize-the-number-of-prompts-during-authentication-optional)
+
+Once you enable token caching in your Snowflake account, Vulcan will be able to reuse tokens and you won't be prompted as often.

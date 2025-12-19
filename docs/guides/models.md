@@ -2,6 +2,8 @@
 
 This guide walks you through working with models in Vulcan using the Orders360 example project. You'll learn how to add, edit, evaluate, and manage models with practical examples.
 
+Models are the heart of Vulcan, they define your data transformations. Once you understand how to work with them, you'll be able to build powerful data pipelines!
+
 ## Prerequisites
 
 Before adding a model, ensure that you have:
@@ -16,8 +18,10 @@ Before adding a model, ensure that you have:
 
 Models in Vulcan consist of two core components:
 
-1. **DDL (Data Definition Language)**: The `MODEL` block that defines structure, metadata, and behavior
-2. **DML (Data Manipulation Language)**: The `SELECT` query that contains transformation logic
+1. **DDL (Data Definition Language)**: The `MODEL` block that defines structure, metadata, and behavior - this is where you configure how the model works
+2. **DML (Data Manipulation Language)**: The `SELECT` query that contains transformation logic - this is where you write your SQL
+
+Think of the MODEL block as the configuration and the SELECT as the actual work. Together, they define what your model does and how it does it.
 
 ### Example: Daily Sales Model
 
@@ -215,9 +219,11 @@ order_date          total_orders  total_revenue  avg_order_value  last_order_id
 *[Screenshot: Evaluate command output showing the new avg_order_value column]*
 
 **What Happened?**
-- The `evaluate` command runs the model query without creating tables
-- Shows you the output with the new column
-- Useful for testing changes before applying them
+- The `evaluate` command runs the model query without creating tables - it's like a dry run
+- Shows you the output with the new column - you can see what the data will look like
+- Useful for testing changes before applying them - catch issues before they hit production
+
+This is super useful for iteration! You can test your changes quickly without waiting for full materialization.
 
 ### Step 3: Preview Changes with Plan
 
@@ -259,9 +265,11 @@ Apply - Backfill Tables [y/n]:
 *[Screenshot: Plan output showing non-breaking change with diff highlighting the new column]*
 
 **Understanding the Output:**
-- **Non-breaking**: Vulcan detected this as non-breaking (adding a column)
-- **Diff**: Shows exactly what changed (green `+` indicates added line)
-- **No downstream impact**: `sales.weekly_sales` is not listed because it doesn't use this column yet
+- **Non-breaking**: Vulcan detected this as non-breaking (adding a column) - adding columns is safe, existing queries still work
+- **Diff**: Shows exactly what changed (green `+` indicates added line) - you can see exactly what you modified
+- **No downstream impact**: `sales.weekly_sales` is not listed because it doesn't use this column yet - downstream models don't need to be reprocessed
+
+This is why non-breaking changes are great, they don't cascade. You can add columns without forcing downstream models to reprocess.
 
 ### Step 4: Apply the Changes
 
@@ -348,15 +356,17 @@ Apply - Backfill Tables [y/n]:
 *[Screenshot: Plan output showing breaking change with downstream impact on weekly_sales]*
 
 **Understanding Breaking Changes:**
-- **Breaking**: Adding a WHERE clause filters data, making existing data invalid
-- **Indirectly Modified**: `sales.weekly_sales` depends on `daily_sales`, so it's affected
-- **Cascading backfill**: Both models need to be reprocessed
+- **Breaking**: Adding a WHERE clause filters data, making existing data invalid - rows that should be filtered out might still be in the table
+- **Indirectly Modified**: `sales.weekly_sales` depends on `daily_sales`, so it's affected - it needs to be reprocessed with the new filtered data
+- **Cascading backfill**: Both models need to be reprocessed - Vulcan handles this automatically, processing upstream first
+
+Breaking changes are more expensive because they cascade. Make sure you really need to make a breaking change before you do it!
 
 ---
 
 ## Evaluating a Model
 
-The `evaluate` command lets you test models without materializing data. Perfect for iteration and debugging.
+The `evaluate` command lets you test models without materializing data. Perfect for iteration and debugging. It's like a preview mode, you can see what your model will produce without actually creating tables.
 
 ### Basic Evaluation
 
@@ -402,17 +412,19 @@ vulcan evaluate sales.daily_sales --start=2025-01-15 --end=2025-01-15 --where "t
 *[Screenshot: Evaluate command with WHERE clause filter]*
 
 **Use Cases for Evaluate:**
-- ✅ Test model logic before applying changes
-- ✅ Debug query issues
-- ✅ Verify data transformations
-- ✅ Check data quality
-- ✅ Iterate quickly without materialization costs
+- ✅ Test model logic before applying changes - make sure your SQL does what you think it does
+- ✅ Debug query issues - see what's actually happening with your data
+- ✅ Verify data transformations - check that aggregations, joins, etc. are working correctly
+- ✅ Check data quality - spot issues before they make it to production
+- ✅ Iterate quickly without materialization costs - test changes fast without waiting for full backfills
+
+Evaluate is your best friend during development. Use it liberally!
 
 ---
 
 ## Reverting a Change
 
-Vulcan makes it easy to revert model changes using Virtual Updates.
+Vulcan makes it easy to revert model changes using Virtual Updates. Made a mistake? No problem! You can revert quickly without reprocessing all your data.
 
 ### Step 1: Revert the Change
 
@@ -466,15 +478,17 @@ Apply - Virtual Update [y/n]: y
 *[Screenshot: Plan showing reverted change with diff]*
 
 **Virtual Update:**
-- No backfill required - just updates references
-- Fast operation - completes in seconds
-- Previous data remains available
+- No backfill required - just updates references - Vulcan just changes which physical table the view points to
+- Fast operation - completes in seconds - way faster than a full backfill
+- Previous data remains available - the old data is still there, you're just not using it anymore
+
+Virtual updates are great for reverting changes. They're fast and don't require reprocessing data.
 
 ---
 
 ## Validating Models
 
-Vulcan provides multiple ways to validate your models.
+Vulcan provides multiple ways to validate your models. You don't have to guess if your models are working, Vulcan checks them for you!
 
 ### Automatic Validation
 
@@ -663,12 +677,16 @@ ORDER BY order_date
 
 ## Best Practices
 
-1. **Use descriptive names**: `sales.daily_sales` is clearer than `sales.ds`
-2. **Add column descriptions**: Document what each column represents
-3. **Use assertions**: Validate data quality at the model level
-4. **Test before applying**: Use `evaluate` to preview changes
-5. **Review plans carefully**: Check diffs and downstream impacts
-6. **Use dev environments**: Test changes before production
+Here are some tips to help you work effectively with models:
+
+1. **Use descriptive names**: `sales.daily_sales` is clearer than `sales.ds` - future you will thank present you
+2. **Add column descriptions**: Document what each column represents - helps others (and you) understand the data
+3. **Use assertions**: Validate data quality at the model level - catch issues automatically
+4. **Test before applying**: Use `evaluate` to preview changes - catch bugs before they hit production
+5. **Review plans carefully**: Check diffs and downstream impacts - make sure you understand what will change
+6. **Use dev environments**: Test changes before production - don't test in prod!
+
+Following these practices will make your life easier and your data pipelines more reliable.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Semantic models are your bridge between technical data structures and business understanding. They take your physical Vulcan models (the tables and columns in your database) and map them to business concepts that make sense to analysts, product managers, and other non-technical users.
 
-Think of semantic models as a translation layer. Your database might have tables named `dim_customers` or `fact_orders` (technical naming), but your semantic layer can expose them as `customers` and `orders` (business-friendly naming). More importantly, semantic models define what you can actually do with the data—dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.
+Think of semantic models as a translation layer. Your database might have tables named `dim_customers` or `fact_orders` (technical naming), but your semantic layer can expose them as `customers` and `orders` (business-friendly naming). More importantly, semantic models define what you can actually do with the data, dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.
 
 ## What are semantic models?
 

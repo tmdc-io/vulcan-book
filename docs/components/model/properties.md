@@ -511,8 +511,12 @@ Document your columns! This property lets you add descriptions for each column, 
 Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query, it'll use exactly what you specify.
 
 **When to use:**
+<<<<<<< Updated upstream
 
 - Python models (required—Vulcan can't infer types from Python code)
+=======
+- Python models (required, Vulcan can't infer types from Python code)
+>>>>>>> Stashed changes
 - Seed models (you need to define the CSV schema)
 - When you want strict type control
 
@@ -692,8 +696,12 @@ Think of profiles as your data observability layer, they watch and learn, but do
 Explicitly declare model dependencies. Vulcan automatically infers dependencies from SQL queries, but sometimes you need to add extra ones.
 
 **When to use:**
+<<<<<<< Updated upstream
 
 - Python models (required—Vulcan can't parse Python to find dependencies)
+=======
+- Python models (required, Vulcan can't parse Python to find dependencies)
+>>>>>>> Stashed changes
 - Hidden dependencies (like a macro that references another model)
 - External dependencies that aren't in your SQL
 

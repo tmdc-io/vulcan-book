@@ -2,14 +2,18 @@
 
 The `vulcan transpile` command converts semantic queries into executable SQL, allowing you to preview, debug, and validate semantic logic before execution.
 
+Think of transpilation as a translator, it takes your semantic layer queries (which are business-friendly) and converts them into the SQL that your database actually understands. Pretty neat, right?
+
 ## What is Transpilation?
 
-Transpilation transforms semantic layer queries into database-specific SQL:
+Transpilation transforms semantic layer queries into database-specific SQL. It's like having a translator that speaks both "business language" (semantic queries) and "database language" (SQL).
 
-- **Semantic SQL → Native SQL**: Converts semantic SQL queries with `MEASURE()` functions into standard SQL
-- **REST API Payload → Native SQL**: Converts JSON query payloads into executable SQL statements
-- **Validation**: Catches errors before query execution
-- **Debugging**: Inspect the generated SQL to understand query behavior
+- **Semantic SQL → Native SQL**: Converts semantic SQL queries with `MEASURE()` functions into standard SQL - takes your business-friendly queries and makes them database-ready
+- **REST API Payload → Native SQL**: Converts JSON query payloads into executable SQL statements - perfect for API-driven applications
+- **Validation**: Catches errors before query execution - find problems before they hit production
+- **Debugging**: Inspect the generated SQL to understand query behavior - see exactly what your semantic queries are doing under the hood
+
+Why is this useful? Well, semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap!
 
 ## Basic Structure
 
@@ -327,34 +331,40 @@ Validate semantic queries before execution:
 vulcan transpile --format sql "SELECT MEASURE(total_users) FROM users"
 ```
 
-If the query is invalid, you'll get an error message indicating the issue.
+If the query is invalid, you'll get an error message indicating the issue. This is way better than finding out at runtime! Catch errors early, fix them, then execute.
 
 ### Debugging Query Behavior
 
-Inspect generated SQL to understand how semantic queries are translated:
+Inspect generated SQL to understand how semantic queries are translated. When queries return unexpected results, transpile them to see what's actually happening:
 
 ```bash
 # See how measures are aggregated
 vulcan transpile --format sql "SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"
 ```
 
+This shows you exactly how Vulcan is interpreting your semantic query. Sometimes the generated SQL reveals issues you didn't expect!
+
 ### Performance Analysis
 
-Review generated SQL to identify optimization opportunities:
+Review generated SQL to identify optimization opportunities. The generated SQL shows you exactly what the database will execute, so you can spot performance issues:
 
 ```bash
 # Check join conditions and filter placement
 vulcan transpile --format sql "SELECT users.industry, MEASURE(total_arr) FROM subscriptions CROSS JOIN users WHERE subscriptions.status = 'active' GROUP BY users.industry"
 ```
 
+Look at the generated SQL, are joins efficient? Are filters in the right place? This is your chance to optimize before execution.
+
 ### Documentation
 
-Generate SQL examples for documentation or training:
+Generate SQL examples for documentation or training. Use transpilation to create SQL examples that show how semantic queries translate:
 
 ```bash
 # Create SQL reference from semantic queries
 vulcan transpile --format sql "SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"
 ```
+
+This is great for documentation! You can show both the semantic query (easy to understand) and the generated SQL (what actually runs).
 
 ## Common Errors and Solutions
 
@@ -363,18 +373,22 @@ vulcan transpile --format sql "SELECT MEASURE(total_arr) FROM subscriptions WHER
 **Cause:** Member doesn't exist in semantic model or is misspelled.
 
 **Solution:**
-- Verify member exists in your semantic model
-- Check spelling and casing (case-sensitive)
-- Use fully qualified format: `alias.member_name`
+- Verify member exists in your semantic model - check your semantic model definitions
+- Check spelling and casing (case-sensitive) - `users.plan_type` is different from `users.Plan_Type`
+- Use fully qualified format: `alias.member_name` - always include the alias prefix
+
+This error usually means you've made a typo or the member doesn't exist yet. Double-check your semantic model!
 
 ### Error: "Measure not found: X"
 
 **Cause:** Measure referenced without proper qualification or doesn't exist.
 
 **Solution:**
-- Use `MEASURE(measure_name)` wrapper for SQL format
-- Use fully qualified format: `alias.measure_name` for JSON format
-- Verify measure is defined in semantic model
+- Use `MEASURE(measure_name)` wrapper for SQL format - measures need the MEASURE() wrapper in SQL
+- Use fully qualified format: `alias.measure_name` for JSON format - JSON format uses dot notation
+- Verify measure is defined in semantic model - make sure the measure actually exists
+
+The format differs between SQL and JSON, so make sure you're using the right syntax for each!
 
 ### Error: "Model not found: X"
 
@@ -400,33 +414,39 @@ vulcan transpile --format sql "SELECT MEASURE(total_arr) FROM subscriptions WHER
 **Cause:** Non-aggregated columns not in GROUP BY, or measures missing MEASURE() wrapper.
 
 **Solution:**
-- Add all non-aggregated columns to GROUP BY
-- Use MEASURE() wrapper for all measures in SQL format
+- Add all non-aggregated columns to GROUP BY - if you select a column, it needs to be in GROUP BY (unless it's aggregated)
+- Use MEASURE() wrapper for all measures in SQL format - measures must be wrapped in MEASURE()
+
+This is a SQL rule, you can't mix aggregated and non-aggregated columns without GROUP BY. The error is telling you exactly what's wrong!
 
 ## Best Practices
 
 ### Validate Before Execution
 
-Always transpile queries before running them in production:
+Always transpile queries before running them in production. It's like checking your work before turning it in:
 
 ```bash
 # ✅ Good: Validate first
 vulcan transpile --format sql "SELECT MEASURE(total_users) FROM users"
-# Review output, then execute
+# Review output, then execute - make sure the SQL looks right
 
 # ❌ Bad: Execute without validation
-# Direct execution without checking generated SQL
+# Direct execution without checking generated SQL - don't do this!
 ```
+
+Transpilation catches errors early. Use it!
 
 ### Use Transpilation for Debugging
 
-When queries return unexpected results, transpile to inspect generated SQL:
+When queries return unexpected results, transpile to inspect generated SQL. The generated SQL often reveals what's actually happening:
 
 ```bash
 # Debug query behavior
 vulcan transpile --format sql "SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"
-# Compare generated SQL with expected behavior
+# Compare generated SQL with expected behavior - does it match what you think should happen?
 ```
+
+Sometimes the issue isn't with your semantic query, it's with how it's being translated. Transpilation shows you the translation.
 
 ### Document Query Patterns
 

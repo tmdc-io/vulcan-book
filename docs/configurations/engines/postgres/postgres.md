@@ -1,9 +1,13 @@
 # Postgres
 
+PostgreSQL is a powerful, open-source relational database that works great with Vulcan. It's perfect for smaller projects, development environments, or when you want full control over your database infrastructure.
+
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `postgres`
 
 ### Connection options
+
+Here are all the connection parameters you can use when setting up a PostgreSQL gateway:
 
 | Option             | Description                                                                     | Type   | Required |
 |--------------------|---------------------------------------------------------------------------------|:------:|:--------:|

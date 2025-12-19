@@ -1,5 +1,7 @@
 # CLI Commands
 
+The Vulcan CLI is your primary interface for working with your data pipeline. You'll use it to plan changes, run models, check data quality, and manage your project. Here's everything you need to know about the commands available to you.
+
 ```
 Usage: vulcan [OPTIONS] COMMAND [ARGS]...
 
@@ -55,6 +57,8 @@ Commands:
 
 ## audit
 
+Run data quality audits for your models. This command executes all the audits you've defined in your models and reports which ones pass or fail. It's perfect for validating data quality before deploying changes.
+
 ```
 Usage: vulcan audit [OPTIONS]
 
@@ -93,6 +97,8 @@ Options:
 
 ## check_intervals
 
+Check which time intervals are missing for your models in a given environment. This is super useful for understanding what data needs to be backfilled or processed. By default, it respects signals (like upstream dependencies), but you can disable that if you want to see all missing intervals.
+
 ```
 Usage: vulcan check_intervals [OPTIONS] [ENVIRONMENT]
 
@@ -111,6 +117,8 @@ Options:
 
 ## clean
 
+Clear out Vulcan's cache and any build artifacts. This is handy when you're troubleshooting issues or want to start fresh. Don't worry, it won't delete your models or data, just the cached files.
+
 ```
 Usage: vulcan clean [OPTIONS]
 
@@ -121,6 +129,8 @@ Options:
 ```
 
 ## create_external_models
+
+Generate a schema file for external models that Vulcan can reference. This is useful when you're working with tables or views that exist outside of your Vulcan project but need to be referenced in your models.
 
 ```
 Usage: vulcan create_external_models [OPTIONS]
@@ -138,6 +148,8 @@ Options:
 
 
 ## create_test
+
+Generate a unit test fixture for a model. This command creates the test file structure and can even generate sample data based on queries you provide. It's a great way to quickly set up tests for your models without writing all the boilerplate yourself.
 
 ```
 Usage: vulcan create_test [OPTIONS] MODEL
@@ -171,6 +183,8 @@ Options:
 
 ## dag
 
+Generate a visual representation of your data pipeline's dependency graph (DAG) as an HTML file. This is super helpful for understanding how your models connect and visualizing the flow of data through your pipeline. You can open the HTML file in any browser to explore the graph interactively.
+
 ```
 Usage: vulcan dag [OPTIONS] FILE
 
@@ -188,6 +202,8 @@ Options:
     ```
 
 ## destroy
+
+⚠️ **Use with caution!** This command permanently removes all Vulcan-managed resources from your data warehouse, including state tables, the cache, and all project resources. It will delete all tables, views, and schemas that Vulcan manages, as well as any external resources created by other tools within those schemas. This is a destructive operation that can't be undone, so make sure you really want to do this before running it.
 
 ```
 Usage: vulcan destroy
@@ -251,6 +267,8 @@ Options:
 
 ## diff
 
+See exactly what's different between your local project state and a target environment. This is super useful for understanding what changes you're about to deploy before running a plan. It shows you model changes, semantic layer changes, and quality check modifications in a clear diff format.
+
 ```
 Usage: vulcan diff [OPTIONS] ENVIRONMENT
 
@@ -302,6 +320,9 @@ Options:
     ```
 
 ## environments
+
+List all your Vulcan environments and see when they expire. This is helpful for managing development environments and understanding which ones might need cleanup.
+
 ```
 Usage: vulcan environments [OPTIONS]
 
@@ -321,6 +342,8 @@ Options:
     ```
 
 ## evaluate
+
+Preview a model's output without actually materializing it. This is perfect for debugging and quick iteration, you can see what your model would produce without running a full plan or run. By default, it returns up to 1000 rows, but you can adjust that limit.
 
 ```
 Usage: vulcan evaluate [OPTIONS] MODEL
@@ -354,6 +377,8 @@ Options:
 
 ## fetchdf
 
+Run a raw SQL query against your data warehouse and see the results. This is handy for quick data exploration or debugging queries without opening a separate database client.
+
 ```
 Usage: vulcan fetchdf [OPTIONS] SQL
 
@@ -375,6 +400,8 @@ Options:
     ```
 
 ## format
+
+Automatically format all your SQL models and audits according to your formatting preferences. This helps keep your codebase consistent and readable. You can customize formatting options like indentation, comma placement, and function name casing.
 
 ```
 Usage: vulcan format [OPTIONS]
@@ -406,6 +433,8 @@ Options:
 
 ## info
 
+Get a quick overview of your Vulcan project. This command shows you how many models and macros you have, and it tests your connections to both the data warehouse and state backend. It's a great first command to run when setting up a new project or troubleshooting connection issues.
+
 ```
 Usage: vulcan info [OPTIONS]
 
@@ -432,6 +461,8 @@ Options:
 
 ## init
 
+Initialize a new Vulcan project. This sets up the basic project structure and configuration files you'll need to get started. You can choose from different templates (like dbt or DLT) or start with an empty project.
+
 ```
 Usage: vulcan init [OPTIONS] [ENGINE]
 
@@ -455,6 +486,8 @@ Options:
 
 ## invalidate
 
+Mark an environment for deletion. The janitor process will clean it up on its next run. This is useful when you want to remove a development environment that's no longer needed. By default, the deletion happens asynchronously, but you can use `--sync` to wait for it to complete immediately.
+
 ```
 Usage: vulcan invalidate [OPTIONS] ENVIRONMENT
 
@@ -477,6 +510,8 @@ Options:
     ```
 
 ## janitor
+
+Run the janitor process manually to clean up old environments and expired snapshots. Normally, the janitor runs automatically, but sometimes you might want to trigger it immediately to free up space or clean up resources right away.
 
 ```
 Usage: vulcan janitor [OPTIONS]
@@ -502,6 +537,8 @@ Options:
 
 ## migrate
 
+Upgrade Vulcan's internal state to match the current version you're running. This is typically needed when you upgrade Vulcan itself. **Important:** This command affects all Vulcan users, so make sure to coordinate with your team and contact your Vulcan administrator before running it.
+
 ```
 Usage: vulcan migrate [OPTIONS]
 
@@ -516,6 +553,8 @@ Options:
     The `migrate` command affects all Vulcan users. Contact your Vulcan administrator before running.
 
 ## plan
+
+Create and apply a plan that compares your local project state with a target environment and determines what changes need to be made. This is one of the most important commands, it's how you deploy model changes, add new models, and backfill data. The plan shows you exactly what will happen before it happens, so you can review changes before they're applied.
 
 ```
 Usage: vulcan plan [OPTIONS] [ENVIRONMENT]
@@ -594,6 +633,8 @@ Options:
 
 ## api
 
+Start Vulcan's API server, which provides programmatic access to models, metrics, lineage information, and telemetry. This is useful if you want to integrate Vulcan with other tools or build custom dashboards and applications on top of your data pipeline.
+
 ```
 Usage: vulcan api [OPTIONS]
 
@@ -608,6 +649,8 @@ Options:
 ```
 
 ## render
+
+See the actual SQL that Vulcan will execute for a model. This is super helpful for debugging and understanding how Vulcan transforms your model definitions into executable SQL. You can optionally expand referenced models to see the full query with all dependencies inlined.
 
 ```
 Usage: vulcan render [OPTIONS] MODEL
@@ -662,6 +705,8 @@ Options:
 
 ## rollback
 
+Revert Vulcan's internal state to the previous migration version. This is useful if a migration caused issues and you need to go back. **Important:** Like `migrate`, this command affects all Vulcan users, so coordinate with your team and contact your Vulcan administrator before running it.
+
 ```
 Usage: vulcan rollback [OPTIONS]
 
@@ -676,6 +721,8 @@ Options:
     The `rollback` command affects all Vulcan users. Contact your Vulcan administrator before running.
 
 ## run
+
+Process missing time intervals for your models in a target environment. This is different from `plan`, `run` focuses on executing scheduled work based on cron schedules, while `plan` handles deploying changes. Use `run` when you want to process new or missing data without making any model definition changes.
 
 ```
 Usage: vulcan run [OPTIONS] [ENVIRONMENT]
@@ -704,6 +751,8 @@ Options:
 
 ## state
 
+Manage Vulcan's state database. This includes exporting state for backup or migration purposes, and importing state from another environment. These commands are useful for disaster recovery, environment cloning, or moving state between systems.
+
 ```
 Usage: vulcan state [OPTIONS] COMMAND [ARGS]...
 
@@ -718,6 +767,8 @@ Commands:
 ```
 
 ### export
+
+Export Vulcan's state database to a file. This creates a backup of your state that you can use for recovery or to move state between environments. You can export specific environments or all of them.
 
 ```
 Usage: vulcan state export [OPTIONS]
@@ -738,6 +789,8 @@ Options:
 
 ### import
 
+Import a previously exported state file back into the state database. This is useful for restoring from backups or copying state from one environment to another. By default, it merges with existing state, but you can use `--replace` to completely replace it.
+
 ```
 Usage: vulcan state import [OPTIONS]
 
@@ -753,6 +806,8 @@ Options:
 ```
 
 ## table_diff
+
+Compare data between two tables or models to see what's different. This is super useful for validating that changes produce the expected results, comparing environments, or debugging data discrepancies. You can compare entire tables or specific models, and customize how the comparison works.
 
 ```
 Usage: vulcan table_diff [OPTIONS] SOURCE:TARGET [MODEL]
@@ -790,6 +845,8 @@ Options:
 
 ## table_name
 
+Get the actual physical table name that Vulcan uses for a model. This is helpful when you need to reference the table directly in SQL or other tools, since Vulcan's internal naming might differ from your model name.
+
 ```
 Usage: vulcan table_name [OPTIONS] MODEL_NAME
 
@@ -805,6 +862,8 @@ Options:
 
 ## test
 
+Run unit tests for your models. These tests validate that your SQL logic works correctly with the test fixtures you've defined. It's a great way to catch bugs before deploying to production.
+
 ```
 Usage: vulcan test [OPTIONS] [TESTS]...
 
@@ -819,6 +878,8 @@ Options:
 ```
 
 ## semantic
+
+Work with Vulcan's semantic layer. Currently, this includes exporting your semantic models and metrics to CubeJS-compatible YAML schemas, which lets you use your Vulcan semantic layer with other tools that support CubeJS.
 
 ```
 Usage: vulcan semantic [OPTIONS] {export} [ENVIRONMENT]
@@ -840,6 +901,8 @@ Options:
 ```
 
 ## transpile
+
+Convert semantic SQL queries or REST-style semantic query payloads into executable, database-specific SQL. This is useful for debugging semantic queries, validating them, or understanding how Vulcan translates business-friendly queries into actual SQL.
 
 ```
 Usage: vulcan transpile [OPTIONS] [QUERY]
@@ -885,6 +948,9 @@ Options:
 ```
 
 ## lint
+
+Run linting rules on your models to catch potential issues and enforce code quality standards. You can lint specific models or all models in your project. This is super helpful for maintaining consistent code quality and catching common mistakes early.
+
 ```
 Usage: vulcan lint [OPTIONS]
   Run linter for the target model(s).

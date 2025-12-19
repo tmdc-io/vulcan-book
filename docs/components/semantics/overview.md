@@ -126,11 +126,11 @@ project/
 └── config.yaml
 ```
 
-**File naming:** The filename doesn't matter—Vulcan automatically merges all YAML files in the `semantics/` directory. Organize by domain (like `customers.yml`, `orders.yml`) or by model (like `revenue_metrics.yml`)—whatever makes sense for your team.
+**File naming:** The filename doesn't matter, Vulcan automatically merges all YAML files in the `semantics/` directory. Organize by domain (like `customers.yml`, `orders.yml`) or by model (like `revenue_metrics.yml`), whatever makes sense for your team.
 
 ## Integration with Models
 
-Here's the key insight: **Model columns automatically become dimensions.** The semantic layer adds measures, segments, joins, and metrics on top of your existing models. It builds on what you already have—it doesn't replace anything.
+Here's the key insight: **Model columns automatically become dimensions.** The semantic layer adds measures, segments, joins, and metrics on top of your existing models. It builds on what you already have, it doesn't replace anything.
 
 When you're designing Vulcan models, keep the semantic layer in mind:
 
@@ -151,7 +151,7 @@ This model will automatically expose:
 - `signup_date` as a time dimension (analyze trends over time)
 - `total_spent` as a dimension (create segments like "high-value customers")
 
-Then you can add measures and metrics on top. The semantic layer builds on your models—it doesn't replace them. Your models stay exactly as they are; the semantic layer just makes them more accessible.
+Then you can add measures and metrics on top. The semantic layer builds on your models, it doesn't replace them. Your models stay exactly as they are; the semantic layer just makes them more accessible.
 
 ## Next Steps
 

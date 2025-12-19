@@ -1,27 +1,25 @@
 # Linter
 
-Linting is a powerful tool for improving code quality and consistency. It enables you to automatically validate model definition, ensuring they adhere to your team's best practices.
+Linting is like having a code reviewer that never gets tired. It automatically checks your model definitions to make sure they follow your team's best practices and catches common mistakes before they cause problems.
 
-When a Vulcan plan is created, each model's code is checked for compliance with a set of rules you choose.
+When you create a Vulcan plan, each model's code gets checked against the linting rules you've configured. If any rules are violated, Vulcan will let you know so you can fix the issues before deploying.
 
-Vulcan provides built-in rules, and you can define custom rules. This improves code quality and helps detect issues early in the development cycle when they are simpler to debug.
+Vulcan comes with several built-in rules that catch common SQL mistakes and enforce good practices. But you're not limited to those, you can also write custom rules that match your team's specific requirements. This helps maintain code quality and catches issues early, when they're much easier to fix.
 
 ## Rules
 
-Each linting rule is responsible for identifying a pattern in a model's code.
+Linting rules are basically pattern detectors. Each rule looks for a specific pattern (or lack of a pattern) in your model code.
 
-Some rules validate that a pattern is *not* present, such as not allowing `SELECT *` in a model's outermost query. Other rules validate that a pattern *is* present, like ensuring that every model's `owner` field is specified. We refer to both of these below as "validating a pattern".
+Some rules check that a pattern *isn't* present, like the `NoSelectStar` rule that prevents `SELECT *` in your outermost query. Other rules check that a pattern *is* present, like making sure every model has an `owner` field specified. Both types help keep your code consistent and maintainable.
 
-Rules are defined in Python. Each rule is an individual Python class that inherits from Vulcan's `Rule` base class and defines the logic for validating a pattern.
+Rules are written in Python, which makes them flexible and powerful. Each rule is a Python class that inherits from Vulcan's `Rule` base class. You define the logic for detecting the pattern, and Vulcan handles the rest.
 
-We display a portion of the `Rule` base class's code below ([full source code](https://github.com/TobikoData/vulcan/blob/main/vulcan/core/linter/rule.py)). Its methods and properties illustrate the most important components of the subclassed rules you define.
+Here's how the `Rule` base class works (you can see the [full source code](https://github.com/TobikoData/vulcan/blob/main/vulcan/core/linter/rule.py) if you want all the details). When you create a custom rule, you'll need to implement four things:
 
-Each rule class you create has four vital components:
-
-1. Name: the class's name is used as the rule's name.
-2. Description: the class should define a docstring that provides a short explanation of the rule's purpose.
-3. Pattern validation logic: the class should define a `check_model()` method containing the core logic that validates the rule's pattern. The method can access any `Model` attribute.
-4. Rule violation logic: if a rule's pattern is not validated, the rule is "violated" and the class should return a `RuleViolation` object. The `RuleViolation` object should include the contextual information a user needs to understand and fix the problem.
+1. **Name** - The class name becomes the rule's name (converted to lowercase with underscores).
+2. **Description** - A docstring that explains what the rule checks and why it matters.
+3. **Pattern validation logic** - The `check_model()` method that actually checks your model code. You can access any attribute of the `Model` object to make your decision.
+4. **Rule violation logic** - If the pattern isn't valid, return a `RuleViolation` object with a helpful message that tells the user what's wrong and how to fix it.
 
 ``` python linenums="1"
 # Class name used as rule's name
@@ -42,11 +40,11 @@ class Rule:
 
 ### Built-in rules
 
-Vulcan includes a set of predefined rules that check for potential SQL errors or enforce code style.
+Vulcan comes with several built-in rules that catch common SQL mistakes and enforce good coding practices. These are battle-tested rules that catch real issues we've seen in production.
 
-An example of the latter is the `NoSelectStar` rule, which prohibits a model from using `SELECT *` in its query's outer-most select statement.
+For example, the `NoSelectStar` rule prevents you from using `SELECT *` in your outermost query. Why? Because `SELECT *` makes it unclear what columns your model actually produces, which can break downstream models and make debugging harder.
 
-Here is code for the built-in `NoSelectStar` rule class, with the different components annotated:
+Here's what the `NoSelectStar` rule looks like, with annotations showing how it's structured:
 
 ``` python linenums="1"
 # Rule's name is the class name `NoSelectStar`
@@ -75,9 +73,9 @@ Here are all of Vulcan's built-in linting rules:
 
 ### User-defined rules
 
-You may define custom rules to implement your team's best practices.
+Built-in rules are great, but every team has different standards. That's where custom rules come in. You can write rules that enforce your team's specific best practices.
 
-For instance, you could ensure all models have an `owner` by defining the following linting rule:
+For example, maybe you want to make sure every model has an `owner` field so you know who's responsible for it. Here's how you'd write that rule:
 
 ``` python linenums="1" title="linter/user.py"
 import typing as t
@@ -94,14 +92,20 @@ class NoMissingOwner(Rule):
 
 ```
 
-Place a rule's code in the project's `linter/` directory. Vulcan will load all subclasses of `Rule` from that directory.
+Put your custom rules in the `linter/` directory of your project. Vulcan will automatically find and load any classes that inherit from `Rule` in that directory.
 
+<<<<<<< Updated upstream
 If the rule is specified in the project's [configuration file](#applying-linting-rules), Vulcan will run it when:
 
 - A plan is created during `vulcan plan`
 - The command `vulcan lint` is ran
+=======
+Once you've added a rule to your [configuration file](#applying-linting-rules), Vulcan will run it automatically when:
+- You create a plan with `vulcan plan`
+- You run the `vulcan lint` command
+>>>>>>> Stashed changes
 
-Vulcan will error if a model violates the rule, informing you which model(s) violated the rule. In this example, `full_model.sql` violated the `NoMissingOwner` rule, essentially halting execution:
+If a model violates a rule, Vulcan will stop and tell you exactly which model(s) have problems. Here's what that looks like, in this example, `full_model.sql` is missing an owner, so the plan stops:
 
 ``` bash
 $ vulcan plan
@@ -112,7 +116,7 @@ Linter errors for .../models/full_model.sql:
 Error: Linter detected errors in the code. Please fix them before proceeding.
 ```
 
-Or through the standalone command, for faster iterations:
+You can also run linting on its own for faster iteration during development:
 
 ``` bash
 $ vulcan lint
@@ -128,15 +132,20 @@ Use `vulcan lint --help` for more information.
 
 ## Applying linting rules
 
+<<<<<<< Updated upstream
 Specify which linting rules a project should apply in the project's [configuration file](../overview.md).
+=======
+To use linting in your project, you need to configure it in your [configuration file](configurations/options/configuration.md). Here's how it works:
+>>>>>>> Stashed changes
 
-Rules are specified as lists of rule names under the `linter` key. Globally enable or disable linting with the `enabled` key, which is `false` by default.
+You specify which rules to run as a list under the `linter` key. You can also globally enable or disable linting with the `enabled` key (it defaults to `false`, so you'll need to turn it on).
 
-NOTE: you **must** set the `enabled` key to `true` key to apply the project's linting rules.
+!!! important
+    **Don't forget to set `enabled: true`!** If you don't, Vulcan won't run any linting rules, even if you've specified them.
 
 ### Specific linting rules
 
-This example specifies that the `"ambiguousorinvalidcolumn"` and `"invalidselectstarexpansion"` linting rules should be enforced:
+Want to use just a few specific rules? No problem. Just list them in the `rules` array. Here's an example that enables two built-in rules:
 
 === "YAML"
 
@@ -161,7 +170,7 @@ This example specifies that the `"ambiguousorinvalidcolumn"` and `"invalidselect
 
 ### All linting rules
 
-Apply every built-in and user-defined rule by specifying `"ALL"` instead of a list of rules:
+Want to enable all the rules? Just use `"ALL"` instead of listing them individually. This will run every built-in rule plus any custom rules you've defined:
 
 === "YAML"
 
@@ -184,7 +193,7 @@ Apply every built-in and user-defined rule by specifying `"ALL"` instead of a li
     )
     ```
 
-If you want to apply all rules except for a few, you can specify `"ALL"` and list the rules to ignore in the `ignored_rules` key:
+Sometimes you want almost everything, but there's one or two rules that don't fit your workflow. You can use `"ALL"` and then exclude specific rules with `ignored_rules`:
 
 === "YAML"
 
@@ -213,9 +222,9 @@ If you want to apply all rules except for a few, you can specify `"ALL"` and lis
 
 ### Exclude a model from linting
 
-You can specify that a specific *model* ignore a linting rule by specifying `ignored_rules` in its `MODEL` block.
+Sometimes you have a model that legitimately needs to violate a rule. Maybe it's a legacy model you're migrating, or there's a special case. You can exclude specific models from specific rules (or all rules) by adding `ignored_rules` to the model's `MODEL` block.
 
-This example specifies that the model `docs_example.full_model` should not run the `invalidselectstarexpansion` rule:
+Here's an example where we exclude one model from one rule:
 
 ```sql linenums="1"
 MODEL(
@@ -226,9 +235,9 @@ MODEL(
 
 ### Rule violation behavior
 
-Linting rule violations raise an error by default, preventing the project from running until the violation is addressed.
+By default, when a rule is violated, Vulcan treats it as an error and stops execution. This ensures you fix issues before they make it to production.
 
-You may specify that a rule's violation should not error and only log a warning by specifying it in the `warn_rules` key instead of the `rules` key.
+But sometimes you want a rule to be more of a suggestion than a hard requirement. Maybe it's a style preference that's nice to have but not critical. In that case, you can put the rule in `warn_rules` instead of `rules`. Violations will still be reported, but they won't stop execution:
 
 === "YAML"
 

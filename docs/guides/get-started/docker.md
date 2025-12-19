@@ -2,7 +2,7 @@
 
 Welcome to the Vulcan quickstart guide! This tutorial will walk you through setting up a complete Vulcan project on your local machine.
 
-The example project runs locally using a Postgres SQL engine. Vulcan will automatically generate all the necessary project files and configurations—no manual setup required!
+The example project runs locally using a Postgres SQL engine. Vulcan will automatically generate all the necessary project files and configurations, no manual setup required!
 
 To get started, ensure your system meets the [prerequisites](#prerequisites) below, then follow the step-by-step instructions for your operating system.
 

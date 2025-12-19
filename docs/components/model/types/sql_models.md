@@ -322,7 +322,7 @@ SELECT
 
 ### Explicit SELECTs
 
-Avoid `SELECT *` when possible. It's convenient, but dangerous—if an upstream source adds or removes columns, your model's output changes unexpectedly.
+Avoid `SELECT *` when possible. It's convenient, but dangerous, if an upstream source adds or removes columns, your model's output changes unexpectedly.
 
 **Best practice:** List every column you need explicitly. If you're querying external sources, use [`create_external_models`](../../../getting_started/cli.md#create_external_models) to capture their schema, or define them as [external models](../model_kinds.md#external).
 
@@ -344,7 +344,11 @@ Vulcan uses [SQLGlot](https://github.com/tobymao/sqlglot) to parse and transpile
 
 ## Macros
 
+<<<<<<< Updated upstream
 Standard SQL is powerful, but real-world data modelss need dynamic components. Date filters that change each run, conditional logic, reusable query patterns—macros give you all of this.
+=======
+Standard SQL is powerful, but real-world data pipelines need dynamic components. Date filters that change each run, conditional logic, reusable query patterns, macros give you all of this.
+>>>>>>> Stashed changes
 
 **Macro variables:** Vulcan provides automatic date/time variables for incremental models. Use `@start_date`, `@end_date`, `@start_ds`, `@end_ds` and Vulcan fills them in with the current time range. No more hardcoding dates!
 

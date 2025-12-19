@@ -264,7 +264,7 @@ On-virtual-update statements run when views are created or updated in the virtua
 - Applying column masking policies
 - Any view-level configuration
 
-**Think of it as:** The "access control" phase—setting up who can see what.
+**Think of it as:** The "access control" phase, setting up who can see what.
 
 **Note:** These statements run at the virtual layer, so table names (including `@this_model`) resolve to view names, not physical table names.
 

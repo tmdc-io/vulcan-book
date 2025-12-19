@@ -86,7 +86,7 @@ The `@model` decorator captures your model's metadata (just like the `MODEL` DDL
 
 ## `@model` Specification
 
-The `@model` decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc.—they all work the same way.
+The `@model` decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc. they all work the same way.
 
 Python model `kind`s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the [models configuration reference page](../../../references/model_configuration.md#model-kind-properties).
 

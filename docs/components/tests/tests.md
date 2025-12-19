@@ -1,6 +1,6 @@
 # Tests
 
-Tests are your safety net for data transformations. Just like software engineers write unit tests to catch bugs before they ship, you can write tests to verify that your models transform data correctly—catching problems before they reach production and cause headaches.
+Tests are your safety net for data transformations. Just like software engineers write unit tests to catch bugs before they ship, you can write tests to verify that your models transform data correctly, catching problems before they reach production and cause headaches.
 
 Think of tests as executable documentation. They show exactly how your model should behave with specific inputs, and they'll yell at you if something changes unexpectedly. Unlike [audits](../audits/audits.md) (which check data quality at runtime), tests verify the *logic* of your models against predefined inputs and expected outputs.
 
