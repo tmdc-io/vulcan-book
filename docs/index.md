@@ -1,10 +1,8 @@
 # About
 
-Vulcan is a complete stack for building data products. Think of it as your all-in-one toolkit for transforming data, whether you're working with SQL or Python, small datasets or massive pipelines.
+Vulcan is a complete stack for building data products. Think of it as your all-in-one toolkit for transforming data. It's designed for data teams who want to move fast without breaking things.
 
-## What is Vulcan?
-
-Vulcan is a next-generation data transformation framework that helps you ship data products quickly, efficiently, and reliably. It's designed for data teams who want to move fast without breaking things.
+![Vulcan Architecture Diagram](assets/images/Vulcan_architecture_diagram.jpg)
 
 Here's what makes it special:
 
@@ -101,9 +99,8 @@ Vulcan sits at the heart of your data stack, transforming raw data into producti
 
 ## Getting started
 
-Ready to dive in? The [quickstart guide](guides/get-started/docker.md) will have you up and running in minutes. It walks you through setting up Vulcan and creating your first data transformation.
+Ready to dive in? The [quickstart guide](guides/get-started/docker.md) will have you up and running in minutes. It walks you through setting up Vulcan and creating your first Vulcan project.
 
-!!! note "Python version note"
-    Depending on your system, you might need to use `python3` or `pip3` instead of `python` or `pip`. If you run into issues, try the `3` versions first.
+Once you've got Vulcan running, you'll find guides and examples throughout this documentation to help you build exactly what you need.
 
-Once you've got Vulcan running, you'll find guides and examples throughout this documentation to help you build exactly what you need. Welcome aboard!
+Welcome aboard!
