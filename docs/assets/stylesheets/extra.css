@@ -83,7 +83,7 @@
   --vl-shadow-lg: 0 10px 15px -3px rgba(41, 46, 51, 0.10), 0 4px 6px -4px rgba(41, 46, 51, 0.05);
 
   /* Sidebar sizes - Bento style (matching minimum width) */
-  --vl-sidebar-width: inherit;
+  --vl-sidebar-width: 280px;
   /* Increased to fully accommodate "Execution Hooks" and other long headings */
   --vl-toc-width: 270px;
 
@@ -140,6 +140,7 @@ body {
   text-rendering: optimizeLegibility;
   font-feature-settings: 'liga' 1, 'calt' 1;
   background-color: var(--vl-bg-main);
+  font-size: 14px !important;
 }
 
 /* Apply monospace font to code elements */
@@ -154,9 +155,9 @@ samp,
 
 /* -------------------- Main Header -------------------- */
 .md-header {
-  background-color: #292E33 !important;
+  background-color: #3548ad !important;
   box-shadow: none !important;
-  border-bottom: 1px solid #3A3F45 !important;
+  border-bottom: 1px solid #2f3e93 !important;
   position: sticky !important;
   top: 0 !important;
   z-index: 100 !important;
@@ -166,7 +167,7 @@ samp,
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 0.875rem 2.5rem !important;
+  padding: 0px 1.5rem !important;
   /* Bento-style generous padding */
   max-width: none !important;
   background: transparent !important;
@@ -404,8 +405,8 @@ samp,
   padding: 0 !important;
   position: sticky;
   top: 121px;
-  /* Below header (83px) + tabs (38px) */
-  height: calc(100vh - 83px);
+  /* Below header (62px) + tabs (38px) */
+  height: calc(100vh - 62px);
   overflow-y: auto;
   overflow-x: hidden !important;
   /* Hide horizontal scrollbar */
@@ -434,9 +435,9 @@ samp,
 }
 
 /* Ensure navigation lists don't cause horizontal overflow */
-.md-sidebar--primary .md-nav{
+.md-sidebar--primary .md-nav {
   overflow-x: hidden !important;
-  width: 100% !important;
+  /* width: 100% !important; */
   max-width: 100% !important;
   padding: 0 !important;
 }
@@ -482,7 +483,7 @@ samp,
 /* Nested toggle button styling - 75% zoom, Bento spacing, single-line */
 .md-nav__item--nested>.md-nav__link {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.75rem !important;
+  font-size: 14px !important;
   /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-medium) !important;
   color: var(--vl-text-primary) !important;
@@ -549,7 +550,7 @@ samp,
 .md-sidebar--primary .md-nav__item--nested>.md-nav {
   margin-left: 0.5rem !important;
   /* Better indentation for nested items */
-  padding-left: 0.75rem !important;
+  padding-left: 0.5rem !important;
   /* Better padding for nested items */
   border-left: 2px solid var(--vl-border) !important;
   margin-top: 0.25rem !important;
@@ -626,9 +627,9 @@ samp,
   padding: 1.5rem 0 !important;
   /* Bento-style padding */
   position: sticky;
-  top: 83px;
-  /* Below header (83px) + tabs (38px) */
-  height: calc(100vh - 83px);
+  top: 62px;
+  /* Below header (62px) + tabs (38px) */
+  height: calc(100vh - 62px);
   overflow-y: auto;
   margin-left: 0 !important;
   /* Align with content edge */
@@ -817,7 +818,7 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 /* -------------------- Typography (75% zoom → 100% zoom) -------------------- */
 .md-typeset {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.8125rem !important;
+  font-size: 16px !important;
   /* 13px - 75% of previous 14px */
   line-height: 1.65 !important;
   color: var(--vl-text-primary) !important;
@@ -929,7 +930,7 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 
 .md-typeset pre>code {
   font-family: var(--vl-font-mono) !important;
-  font-size: 0.75rem !important;
+  font-size: 14px !important;
   /* 12px - 75% zoom size */
   background: transparent !important;
   padding: 0 !important;
@@ -1207,8 +1208,7 @@ a.md-button.download-button:hover {
 }
 
 .md-typeset .tabbed-content {
-  padding: 0 !important;
-  /* No padding - code fills container */
+  padding: 8px 24px !important;
 }
 
 /* Remove extra padding from code blocks inside tabs */
@@ -1311,7 +1311,7 @@ a.md-button.download-button:hover {
   }
 
   .md-header__inner {
-    padding: 0.875rem 2rem !important;
+    padding: 0px 0.5rem !important;
     /* Slightly reduced for medium screens */
   }
 
@@ -1326,7 +1326,7 @@ a.md-button.download-button:hover {
   .md-sidebar--secondary {
     display: none !important;
   }
-  
+
   .md-content {
     /* When TOC is hidden, fill available space */
     max-width: 100% !important;
@@ -1340,47 +1340,48 @@ a.md-button.download-button:hover {
     width: var(--vl-sidebar-width) !important;
     min-width: var(--vl-sidebar-width) !important;
   }
-  
+
   .md-content {
     padding: 1.75rem 1.75rem !important;
   }
-  
+
   .md-header__inner {
-    padding: 0.875rem 1.5rem !important;
+    padding: 0px 1.5rem !important;
   }
 }
 
 /* Tablets - Portrait and small tablets (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1023px) {
+
   /* Sidebar should be visible but can be toggled */
   .md-sidebar--primary {
     width: 260px !important;
     min-width: 260px !important;
     position: sticky !important;
-    top: 83px !important;
-    height: calc(100vh - 83px) !important;
+    top: 62px !important;
+    height: calc(100vh - 62px) !important;
     transform: none !important;
     z-index: 1 !important;
   }
-  
+
   .md-sidebar--primary .md-sidebar__scrollwrap {
     padding: 1.25rem 0.875rem !important;
   }
-  
+
   .md-content {
     padding: 1.5rem 1.5rem !important;
   }
-  
+
   .md-header__inner {
-    padding: 0.875rem 1.25rem !important;
+    padding: 0px 1.25rem !important;
   }
-  
+
   /* Hide hamburger menu on tablets - sidebar always visible */
   .md-header__button--menu,
   .md-header__button[for="__drawer"] {
     display: none !important;
   }
-  
+
   /* Tabs styling for tablets */
   .md-tabs {
     display: none !important;
@@ -1393,7 +1394,7 @@ a.md-button.download-button:hover {
     width: 240px !important;
     min-width: 240px !important;
   }
-  
+
   .md-content {
     padding: 1.25rem 1.25rem !important;
   }
@@ -1405,7 +1406,7 @@ a.md-button.download-button:hover {
     width: 280px !important;
     min-width: 280px !important;
   }
-  
+
   .md-content {
     padding: 1.5rem 1.75rem !important;
   }
@@ -1417,26 +1418,26 @@ a.md-button.download-button:hover {
     width: 240px !important;
     min-width: 240px !important;
     position: sticky !important;
-    top: 83px !important;
-    height: calc(100vh - 83px) !important;
+    top: 62px !important;
+    height: calc(100vh - 62px) !important;
     transform: none !important;
     z-index: 1 !important;
   }
-  
+
   .md-sidebar--primary .md-sidebar__scrollwrap {
     padding: 1.25rem 0.875rem !important;
   }
-  
+
   .md-content {
     padding: 1.25rem 1.5rem !important;
   }
-  
+
   /* Hide hamburger menu - sidebar always visible in landscape */
   .md-header__button--menu,
   .md-header__button[for="__drawer"] {
     display: none !important;
   }
-  
+
   .md-tabs {
     display: none !important;
   }
@@ -1449,21 +1450,21 @@ a.md-button.download-button:hover {
     min-width: 100vw !important;
     max-width: 100vw !important;
     position: fixed !important;
-    top: 83px !important;
+    top: 62px !important;
     left: 0 !important;
-    height: calc(100vh - 83px) !important;
+    height: calc(100vh - 62px) !important;
     z-index: 5 !important;
     background: var(--vl-bg-sidebar) !important;
     transform: translateX(-100%) !important;
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15) !important;
   }
-  
+
   /* Show sidebar when drawer is open */
-  [data-md-toggle="drawer"]:checked ~ .md-container .md-sidebar--primary,
-  .md-toggle:checked ~ .md-container .md-sidebar--primary,
-  .md-toggle--drawer:checked ~ .md-container .md-sidebar--primary,
-  #__drawer:checked ~ .md-container .md-sidebar--primary {
+  [data-md-toggle="drawer"]:checked~.md-container .md-sidebar--primary,
+  .md-toggle:checked~.md-container .md-sidebar--primary,
+  .md-toggle--drawer:checked~.md-container .md-sidebar--primary,
+  #__drawer:checked~.md-container .md-sidebar--primary {
     transform: translateX(0) !important;
     z-index: 6 !important;
   }
@@ -1502,10 +1503,10 @@ a.md-button.download-button:hover {
     min-width: 100vw !important;
     max-width: 100vw !important;
     position: fixed !important;
-    top: 83px !important;
+    top: 62px !important;
     /* Start below header */
     left: 0 !important;
-    height: calc(100vh - 83px) !important;
+    height: calc(100vh - 62px) !important;
     /* Full height minus header */
     z-index: 5 !important;
     background: var(--vl-bg-sidebar) !important;
@@ -1533,22 +1534,23 @@ a.md-button.download-button:hover {
     padding: 24px !important;
     margin: 0px !important;
   }
-  .md-sidebar--primary .md-nav__list .md-nav__list  {
+
+  .md-sidebar--primary .md-nav__list .md-nav__list {
     padding: 0px 24px !important;
     margin: 0px !important;
   }
-  
+
   /* Ensure submenu behavior matches desktop on mobile */
   /* Nested items with chevron arrows - same as desktop */
-  .md-sidebar--primary .md-nav__item--nested > .md-nav__link {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     padding-right: 0.5rem !important;
   }
-  
+
   /* Chevron arrow for nested items - same as desktop */
-  .md-sidebar--primary .md-nav__item--nested > .md-nav__link::after {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link::after {
     content: "" !important;
     flex-shrink: 0 !important;
     width: 6px !important;
@@ -1559,39 +1561,39 @@ a.md-button.download-button:hover {
     transform: rotate(-45deg) !important;
     transition: transform 0.2s ease, border-color 0.2s ease !important;
   }
-  
+
   /* Rotate chevron down when expanded - same as desktop */
-  .md-sidebar--primary .md-nav__item--nested > .md-toggle:checked ~ .md-nav__link::after {
+  .md-sidebar--primary .md-nav__item--nested>.md-toggle:checked~.md-nav__link::after {
     transform: rotate(45deg) !important;
     border-color: var(--vl-primary) !important;
   }
-  
+
   /* Chevron hover state - same as desktop */
-  .md-sidebar--primary .md-nav__item--nested > .md-nav__link:hover::after {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link:hover::after {
     border-color: var(--vl-text-primary) !important;
   }
-  
+
   /* Nested items indentation - same as desktop */
-  .md-sidebar--primary .md-nav__item--nested > .md-nav {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav {
     margin-left: 0.5rem !important;
     padding-left: 0.75rem !important;
     border-left: 0px solid var(--vl-border) !important;
     margin-top: 0.25rem !important;
     margin-bottom: 0.25rem !important;
   }
-  
+
   /* Hide default Material toggle icon on mobile - same as desktop */
-  .md-sidebar--primary .md-nav__link > .md-nav__icon {
+  .md-sidebar--primary .md-nav__link>.md-nav__icon {
     display: none !important;
   }
-  
+
   /* Prevent nested items from opening drawer - expand inline instead */
-  .md-sidebar--primary .md-nav__item--nested > .md-nav__link {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link {
     pointer-events: auto !important;
   }
-  
+
   /* Ensure nested nav items expand inline, not in a drawer */
-  .md-sidebar--primary .md-nav__item--nested > .md-nav {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav {
     display: block !important;
     position: relative !important;
     transform: none !important;
@@ -1600,23 +1602,23 @@ a.md-button.download-button:hover {
     max-height: none !important;
     overflow: visible !important;
   }
-  
+
   /* Hide nested items by default, show when toggle is checked */
-  .md-sidebar--primary .md-nav__item--nested > .md-toggle:not(:checked) ~ .md-nav {
+  .md-sidebar--primary .md-nav__item--nested>.md-toggle:not(:checked)~.md-nav {
     display: none !important;
   }
-  
-  .md-sidebar--primary .md-nav__item--nested > .md-toggle:checked ~ .md-nav {
+
+  .md-sidebar--primary .md-nav__item--nested>.md-toggle:checked~.md-nav {
     display: block !important;
   }
-  
+
   /* Prevent Material from creating drawer overlays for nested items */
   .md-sidebar--primary .md-nav__item--nested .md-nav__link[data-md-state] {
     pointer-events: auto !important;
   }
-  
+
   /* Ensure nested nav links don't trigger drawer navigation */
-  .md-sidebar--primary .md-nav__item--nested > .md-nav__link {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link {
     cursor: pointer !important;
   }
 
@@ -1656,7 +1658,7 @@ a.md-button.download-button:hover {
   /* Tabs styling */
   .md-tabs {
     position: sticky !important;
-    top: 83px !important;
+    top: 62px !important;
     /* Below header */
     left: 0 !important;
     transform: none !important;
@@ -1699,12 +1701,12 @@ a.md-button.download-button:hover {
   .md-typeset h3 {
     font-size: 0.875rem !important;
   }
-  
+
   /* Search dialog on mobile - full screen only for small mobile */
   .md-search--active {
     background: rgba(0, 0, 0, 0.6) !important;
   }
-  
+
   .md-search--active .md-search__inner {
     max-width: 100% !important;
     width: 100% !important;
@@ -1719,19 +1721,19 @@ a.md-button.download-button:hover {
     right: 0 !important;
     bottom: 0 !important;
   }
-  
+
   .md-search--active .md-search__form {
     padding: 1rem !important;
     border-bottom: 1px solid var(--vl-border) !important;
     background: var(--vl-bg-main) !important;
   }
-  
+
   .md-search--active .md-search__input {
     border-radius: 8px !important;
     padding: 0.875rem 1rem !important;
     font-size: 1rem !important;
   }
-  
+
   .md-search--active .md-search__output {
     flex: 1 !important;
     overflow-y: auto !important;
@@ -1742,12 +1744,13 @@ a.md-button.download-button:hover {
 
 /* Tablets - Search dialog styling (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1023px) {
+
   /* Search dialog on tablets - centered and compact */
   .md-search--active {
     background: rgba(0, 0, 0, 0.5) !important;
     backdrop-filter: blur(4px) !important;
   }
-  
+
   .md-search--active .md-search__inner {
     max-width: 600px !important;
     margin: 3rem auto !important;
@@ -1758,20 +1761,20 @@ a.md-button.download-button:hover {
     flex-direction: column !important;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
   }
-  
+
   .md-search--active .md-search__form {
     padding: 1.25rem 1.5rem !important;
     border-bottom: 1px solid var(--vl-border) !important;
     background: var(--vl-bg-main) !important;
     border-radius: 12px 12px 0 0 !important;
   }
-  
+
   .md-search--active .md-search__input {
     border-radius: 8px !important;
     padding: 0.875rem 1rem !important;
     font-size: 1rem !important;
   }
-  
+
   .md-search--active .md-search__output {
     max-height: calc(80vh - 80px) !important;
     overflow-y: auto !important;
@@ -1781,12 +1784,13 @@ a.md-button.download-button:hover {
 
 /* Large tablets and iPad Air - Search dialog styling (1024px and above, but below desktop) */
 @media (min-width: 1024px) and (max-width: 1400px) {
+
   /* Search dialog on large tablets - centered and compact */
   .md-search--active {
     background: rgba(0, 0, 0, 0.5) !important;
     backdrop-filter: blur(4px) !important;
   }
-  
+
   .md-search--active .md-search__inner {
     max-width: 640px !important;
     width: 90% !important;
@@ -1803,21 +1807,21 @@ a.md-button.download-button:hover {
     right: auto !important;
     bottom: auto !important;
   }
-  
+
   .md-search--active .md-search__form {
     padding: 1.25rem 1.5rem !important;
     border-bottom: 1px solid var(--vl-border) !important;
     background: var(--vl-bg-main) !important;
     border-radius: 12px 12px 0 0 !important;
   }
-  
+
   .md-search--active .md-search__input {
     border-radius: 8px !important;
     padding: 0.875rem 1rem !important;
     font-size: 1rem !important;
     width: 100% !important;
   }
-  
+
   .md-search--active .md-search__output {
     max-height: calc(70vh - 90px) !important;
     overflow-y: auto !important;
@@ -1831,26 +1835,26 @@ a.md-button.download-button:hover {
     width: 220px !important;
     min-width: 220px !important;
     position: sticky !important;
-    top: 83px !important;
-    height: calc(100vh - 83px) !important;
+    top: 62px !important;
+    height: calc(100vh - 62px) !important;
     transform: none !important;
     z-index: 1 !important;
   }
-  
+
   .md-sidebar--primary .md-sidebar__scrollwrap {
     padding: 1rem 0.75rem !important;
   }
-  
+
   .md-content {
     padding: 1rem 1.25rem !important;
   }
-  
+
   /* Hide hamburger menu in landscape - sidebar always visible */
   .md-header__button--menu,
   .md-header__button[for="__drawer"] {
     display: none !important;
   }
-  
+
   .md-tabs {
     display: none !important;
   }
@@ -1863,7 +1867,7 @@ a.md-button.download-button:hover {
   }
 
   .md-header__inner {
-    padding: 0.5rem 0.75rem !important;
+    padding: 0px 0.75rem !important;
   }
 
   .md-header__title {
@@ -1933,7 +1937,7 @@ a.md-button.download-button:hover {
   }
 
   .md-header__inner {
-    padding: 0.5rem 0.5rem !important;
+    padding: 0px 0.5rem !important;
   }
 
   .md-tabs {
@@ -2578,7 +2582,7 @@ a.md-button.download-button:hover {
 }
 
 /* Scroll margin for TOC anchor links */
-/* Account for header height (83px) + tabs (38px) + extra padding for comfortable spacing */
+/* Account for header height (62px) + tabs (38px) + extra padding for comfortable spacing */
 h1[id],
 h2[id],
 h3[id],
@@ -2591,17 +2595,26 @@ h6[id],
 .md-typeset h4[id],
 .md-typeset h5[id],
 .md-typeset h6[id] {
-  scroll-margin-top: 100px !important;
+  scroll-margin-top: 70px !important;
 }
 
 :target {
-  scroll-margin-top: 140px !important;
+  scroll-margin-top: 70px !important;
 }
 
 /* Add padding-top to headings when they're targets to create visual space from header */
-h1:target, h2:target, h3:target, h4:target, h5:target, h6:target,
-.md-typeset h1:target, .md-typeset h2:target, .md-typeset h3:target,
-.md-typeset h4:target, .md-typeset h5:target, .md-typeset h6:target {
+h1:target,
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target,
+.md-typeset h1:target,
+.md-typeset h2:target,
+.md-typeset h3:target,
+.md-typeset h4:target,
+.md-typeset h5:target,
+.md-typeset h6:target {
   padding-top: 1.5rem !important;
   margin-top: 0 !important;
 }
@@ -2638,17 +2651,20 @@ h1:target, h2:target, h3:target, h4:target, h5:target, h6:target,
 
 @supports selector(::-webkit-scrollbar) {
   [dir=ltr] .md-sidebar__inner {
-      padding-right: 0rem;
+    padding-right: 0rem;
   }
 }
+
 @media screen and (min-width: 76.25em) {
   [dir=ltr] .md-nav--primary .md-nav__list {
-      padding-left: 0rem;
+    padding-left: 0rem;
   }
 }
 
 @media screen and (max-width: 1024px) {
-  [data-md-component="toc"], [aria-label="On this page"] {
+
+  [data-md-component="toc"],
+  [aria-label="On this page"] {
     display: none !important;
   }
 }
@@ -2658,18 +2674,29 @@ h1:target, h2:target, h3:target, h4:target, h5:target, h6:target,
 }
 
 @media (max-width: 768px) {
-  .md-sidebar--primary .md-nav__item--nested > .md-nav {
-      margin-left: 0rem !important;
-      padding-left: 0rem !important;
-      border-left: 0px solid var(--vl-border) !important;
-      margin-top: 0.25rem !important;
-      margin-bottom: 0.25rem !important;
+  .md-sidebar--primary .md-nav__item--nested>.md-nav {
+    margin-left: 0rem !important;
+    padding-left: 0rem !important;
+    border-left: 0px solid var(--vl-border) !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
   }
 }
+
 .md-header {
-  min-height: 83px !important;
+  min-height: 62px !important;
 }
+
 .md-header__inner {
   min-height: inherit !important;
 }
+
+[aria-expanded="false"] {
+  display: none !important;
+}
+
+[aria-expanded="true"] {
+  display: block !important;
+}
+
 /* End of theme */
