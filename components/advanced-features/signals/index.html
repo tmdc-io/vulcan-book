@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1102,10 +1117,12 @@
 </div>
 <h2 id="defining-a-signal">Defining a signal<a class="headerlink" href="#defining-a-signal" title="Link to this section">¶</a></h2>
 <p>To create a signal, add a <code>signals</code> directory to your project and create your signal function in <code>__init__.py</code> (you can organize signals across multiple Python files if you prefer).</p>
-<p>A signal function needs to:
-- Accept a batch of time intervals (<code>DateTimeRanges: t.List[t.Tuple[datetime, datetime]]</code>)
-- Return either a boolean or a list of intervals
-- Use the <code>@signal</code> decorator</p>
+<p>A signal function needs to:</p>
+<ul>
+<li>Accept a batch of time intervals (<code>DateTimeRanges: t.List[t.Tuple[datetime, datetime]]</code>)</li>
+<li>Return either a boolean or a list of intervals</li>
+<li>Use the <code>@signal</code> decorator</li>
+</ul>
 <p>Let's look at some examples, starting simple and building up to more complex use cases.</p>
 <h3 id="simple-example">Simple example<a class="headerlink" href="#simple-example" title="Link to this section">¶</a></h3>
 <p>Here's a basic signal that randomly decides whether intervals are ready (useful for testing, maybe not so much for production!):</p>

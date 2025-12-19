@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1304,7 +1319,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="business-metrics">Business Metrics<a class="headerlink" href="#business-metrics" title="Link to this section">¶</a></h1>
 <p>Business metrics are where your semantic layer really shines. They combine measures (the calculations) with dimensions (the attributes) and time (the when) to create complete analytical definitions that are ready for time-series analysis.</p>
-<p>Think of it this way: semantic models give you the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can actually analyze over time. They're pre-configured for dashboards, reports, and APIs—no SQL required.</p>
+<p>Think of it this way: semantic models give you the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can actually analyze over time. They're pre-configured for dashboards, reports, and APIs, no SQL required.</p>
 <h2 id="what-are-business-metrics">What are business metrics?<a class="headerlink" href="#what-are-business-metrics" title="Link to this section">¶</a></h2>
 <p>Business metrics are complete analytical definitions that:</p>
 <ul>
@@ -1349,10 +1364,12 @@
 </span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.country</span><span class="w">            </span><span class="c1"># And country</span>
 </span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Revenue</span><span class="nv"> </span><span class="s">trends</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">tier</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">country"</span>
 </span></code></pre></div>
-<p>Now you can answer questions like:
-- What's our revenue by tier over time?
-- How does revenue vary by country?
-- What's the revenue breakdown by tier and country together?</p>
+<p>Now you can answer questions like:</p>
+<ul>
+<li>What's our revenue by tier over time?</li>
+<li>How does revenue vary by country?</li>
+<li>What's the revenue breakdown by tier and country together?</li>
+</ul>
 <p>The dimensions give you flexibility to analyze the metric from different angles.</p>
 <h2 id="cross-model-metrics">Cross-model metrics<a class="headerlink" href="#cross-model-metrics" title="Link to this section">¶</a></h2>
 <p>You're not limited to one model. Combine measures and dimensions from multiple models:</p>
@@ -1390,12 +1407,14 @@
 </span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
 </span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Revenue</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">time</span><span class="nv"> </span><span class="s">granularity"</span>
 </span></code></pre></div>
-<p>The same metric can be queried with different granularities:
-- Daily: <code>granularity=day</code>
-- Weekly: <code>granularity=week</code>
-- Monthly: <code>granularity=month</code>
-- Quarterly: <code>granularity=quarter</code>
-- Yearly: <code>granularity=year</code></p>
+<p>The same metric can be queried with different granularities:</p>
+<ul>
+<li>Daily: <code>granularity=day</code></li>
+<li>Weekly: <code>granularity=week</code></li>
+<li>Monthly: <code>granularity=month</code></li>
+<li>Quarterly: <code>granularity=quarter</code></li>
+<li>Yearly: <code>granularity=year</code></li>
+</ul>
 <p>You don't need separate metric definitions for each granularity, just change the query parameter.</p>
 <h2 id="complete-example">Complete example<a class="headerlink" href="#complete-example" title="Link to this section">¶</a></h2>
 <p>Here's a more complete example showing different types of metrics:</p>

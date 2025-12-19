@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1060,22 +1075,26 @@
 </div>
 <h2 id="difference-from-materialized-views">Difference from Materialized Views<a class="headerlink" href="#difference-from-materialized-views" title="Link to this section">¶</a></h2>
 <p>You might be wondering: "What's the difference between a managed model and a materialized view?" Good question!</p>
-<p>Vulcan already supports <a href="components/model/types/model_kinds.md#materialized-views">materialized views</a>, but they have limitations:
-- Some engines only allow materialized views from a single base table
-- Materialized views aren't automatically refreshed, you need to run <code>REFRESH MATERIALIZED VIEW</code> manually
-- You're responsible for scheduling refreshes</p>
+<p>Vulcan already supports <a href="../../model_kinds.md#materialized-views">materialized views</a>, but they have limitations:</p>
+<ul>
+<li>Some engines only allow materialized views from a single base table</li>
+<li>Materialized views aren't automatically refreshed, you need to run <code>REFRESH MATERIALIZED VIEW</code> manually</li>
+<li>You're responsible for scheduling refreshes</li>
+</ul>
 <p><strong>Managed models are different:</strong>
 - ✅ <strong>Automatic updates</strong> - The engine refreshes data when source tables change
 - ✅ <strong>Smart refresh</strong> - The engine understands your query and can do incremental or full refreshes as needed
 - ✅ <strong>No manual commands</strong> - Everything happens in the background</p>
 <p><strong>In some engines, there's no difference</strong> (they're the same thing). In others, managed models give you more automation and flexibility.</p>
 <h2 id="lifecycle-in-vulcan">Lifecycle in Vulcan<a class="headerlink" href="#lifecycle-in-vulcan" title="Link to this section">¶</a></h2>
-<p>Managed models follow the same lifecycle as other Vulcan models:
-- Virtual environments create pointers to model snapshots
-- Model changes create new snapshots
-- Upstream changes trigger new snapshots
-- You can deploy and rollback like any other model
-- Snapshots get cleaned up when TTL expires</p>
+<p>Managed models follow the same lifecycle as other Vulcan models:</p>
+<ul>
+<li>Virtual environments create pointers to model snapshots</li>
+<li>Model changes create new snapshots</li>
+<li>Upstream changes trigger new snapshots</li>
+<li>You can deploy and rollback like any other model</li>
+<li>Snapshots get cleaned up when TTL expires</li>
+</ul>
 <p><strong>Cost consideration:</strong> Managed models usually cost more than regular tables. For example, Snowflake charges extra for Dynamic Tables. To save money, Vulcan uses regular tables for dev previews (in forward-only plans) and only creates managed tables when deploying to production.</p>
 <div class="admonition warning">
 <p class="admonition-title">Dev vs Prod Differences</p>

@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1878,10 +1893,10 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="tests">Tests<a class="headerlink" href="#tests" title="Link to this section">¶</a></h1>
-<p>Tests are your safety net for data transformations. Just like software engineers write unit tests to catch bugs before they ship, you can write tests to verify that your models transform data correctly—catching problems before they reach production and cause headaches.</p>
+<p>Tests are your safety net for data transformations. Just like software engineers write unit tests to catch bugs before they ship, you can write tests to verify that your models transform data correctly, catching problems before they reach production and cause headaches.</p>
 <p>Think of tests as executable documentation. They show exactly how your model should behave with specific inputs, and they'll yell at you if something changes unexpectedly. Unlike <a href="../../audits/audits/">audits</a> (which check data quality at runtime), tests verify the <em>logic</em> of your models against predefined inputs and expected outputs.</p>
 <h2 id="why-testing-matters">Why Testing Matters<a class="headerlink" href="#why-testing-matters" title="Link to this section">¶</a></h2>
-<p>Data pipelines are tricky beasts. Small errors can snowball into significant business impacts. A small change in one model can cascade into big problems downstream. Here's why testing is worth your time:</p>
+<p>Data modelss are tricky beasts. Small errors can snowball into significant business impacts. A small change in one model can cascade into big problems downstream. Here's why testing is worth your time:</p>
 <ul>
 <li><strong>Catch breaking changes</strong> - Refactor with confidence knowing tests will flag unintended behavior changes</li>
 <li><strong>Document expected behavior</strong> - Tests serve as executable specifications (better than comments that get outdated!)</li>
@@ -1889,7 +1904,7 @@
 <li><strong>Data quality assurance</strong> - Verify that aggregations, joins, and calculations produce correct results</li>
 <li><strong>Confidence in changes</strong> - Make updates knowing you'll catch regressions before they hit production</li>
 </ul>
-<p>Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new <a href="guides/plan.md">plan</a>. Either way, they're there to help you sleep better at night.</p>
+<p>Tests run either on demand (like in CI/CD modelss) or automatically when you create a new <a href="guides/plan.md">plan</a>. Either way, they're there to help you sleep better at night.</p>
 <h2 id="creating-tests">Creating Tests<a class="headerlink" href="#creating-tests" title="Link to this section">¶</a></h2>
 <p>Tests live in YAML files in the <code>tests/</code> folder of your project. The filename must start with <code>test</code> and end with <code>.yaml</code> or <code>.yml</code>. You can put multiple tests in one file (organize them however makes sense).</p>
 <p>At minimum, a test needs three things:</p>
@@ -2158,11 +2173,13 @@
 </span><span id="__span-2-72"><a id="__codelineno-2-72" name="__codelineno-2-72"></a><span class="w">          </span><span class="nt">total_spent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 </span><span id="__span-2-73"><a id="__codelineno-2-73" name="__codelineno-2-73"></a><span class="w">          </span><span class="nt">avg_order_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">  </span><span class="c1"># Division by zero handled</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Notice how we're providing mock data for all three upstream tables. The test verifies that the model correctly:
-- Joins customers with orders and order items
-- Counts distinct orders per customer
-- Calculates total spent (quantity × unit_price summed across all items)
-- Handles division by zero (Charlie has no orders, so avg_order_value should be NULL)</p>
+<p>Notice how we're providing mock data for all three upstream tables. The test verifies that the model correctly:</p>
+<ul>
+<li>Joins customers with orders and order items</li>
+<li>Counts distinct orders per customer</li>
+<li>Calculates total spent (quantity × unit_price summed across all items)</li>
+<li>Handles division by zero (Charlie has no orders, so avg_order_value should be NULL)</li>
+</ul>
 <p>The comments in the YAML help explain the test data, which makes it easier to understand what's being tested.</p>
 <h3 id="testing-incremental-models">Testing Incremental Models<a class="headerlink" href="#testing-incremental-models" title="Link to this section">¶</a></h3>
 <p>Incremental models are a bit special because they filter data by time range. You'll need to set <code>start</code> and <code>end</code> dates using the <code>vars</code> attribute:</p>
@@ -2395,9 +2412,11 @@
 </span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">item_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="w">          </span><span class="nt">num_orders</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This verifies that:
-1. The CTE correctly filters to <code>item_id = 1</code> (should return rows with id 1 and 2)
-2. The final query correctly counts distinct orders (should be 2)</p>
+<p>This verifies that:</p>
+<ol>
+<li>The CTE correctly filters to <code>item_id = 1</code> (should return rows with id 1 and 2)</li>
+<li>The final query correctly counts distinct orders (should be 2)</li>
+</ol>
 <p>Testing CTEs separately makes it easier to pinpoint where things go wrong in complex queries.</p>
 <h2 id="supported-data-formats">Supported Data Formats<a class="headerlink" href="#supported-data-formats" title="Link to this section">¶</a></h2>
 <p>Vulcan gives you flexibility in how you define test data. Pick whatever format works best for your situation:</p>

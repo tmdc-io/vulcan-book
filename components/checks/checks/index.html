@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1758,11 +1773,11 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="checks">Checks<a class="headerlink" href="#checks" title="Link to this section">¶</a></h1>
-<p>Quality checks are validation rules that monitor your data quality over time without blocking your pipelines. Think of them as your data's health checkup, they'll warn you when something looks off, but they won't stop the show.</p>
-<p>Unlike <a href="../../audits/audits/">audits</a> (which block pipeline execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.</p>
+<p>Quality checks are validation rules that monitor your data quality over time without blocking your modelss. Think of them as your data's health checkup, they'll warn you when something looks off, but they won't stop the show.</p>
+<p>Unlike <a href="../../audits/audits/">audits</a> (which block models execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.</p>
 <p><strong>What makes checks special:</strong>
 - Configured in simple YAML files in the <code>checks/</code> directory
-- Don't block pipelines (your models keep running even if checks fail)
+- Don't block modelss (your models keep running even if checks fail)
 - Track historical patterns and trends
 - Support complex statistical analysis
 - Integrate with Activity API for monitoring and alerting</p>
@@ -1791,7 +1806,7 @@
 <td>With model</td>
 </tr>
 <tr>
-<td><strong>Blocks pipeline?</strong></td>
+<td><strong>Blocks models?</strong></td>
 <td>Yes (always)</td>
 <td>No</td>
 <td>No</td>
@@ -1825,7 +1840,7 @@
 <p><strong>The Three-Layer Strategy:</strong></p>
 <p>Think of it like a security system for your data:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>┌─────────────────────────────────────────┐
-</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>│  AUDITS (Critical - Blocks Pipeline)   │
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>│  AUDITS (Critical - Blocks models)   │
 </span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>│  • Primary keys must be unique          │
 </span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>│  • Revenue must be non-negative         │
 </span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>│  • Foreign key relationships valid      │
@@ -1847,27 +1862,33 @@
 </span></code></pre></div>
 <p><strong>Why this matters:</strong> Audits are your bouncers, they stop bad data at the door. Checks are your security cameras, they watch for problems but don't interfere. Profiles are your data scientists, they observe patterns and help you understand what's normal.</p>
 <h2 id="when-to-use-checks">When to Use Checks<a class="headerlink" href="#when-to-use-checks" title="Link to this section">¶</a></h2>
-<p>✅ <strong>Use Quality Checks for:</strong>
-- Monitoring data quality trends over time (is completeness getting worse?)
-- Statistical anomaly detection (did revenue suddenly spike?)
-- Cross-model validation (do orders match customers?)
-- Non-critical validation (warnings, not blockers)
-- Complex validation requiring historical context
-- Building data quality dashboards</p>
-<p>❌ <strong>Use Audits Instead for:</strong>
-- Critical business rules that must pass (revenue can't be negative)
-- Model-specific validation (runs inline with the model)
-- Simple SQL assertions
-- Blocking invalid data from flowing downstream</p>
-<p>❌ <strong>Use Profiles Instead for:</strong>
-- Understanding data characteristics (what does this column look like?)
-- Discovering patterns (not validation)
-- Detecting data drift over time
-- Informing which checks/audits to add</p>
+<p>✅ <strong>Use Quality Checks for:</strong></p>
+<ul>
+<li>Monitoring data quality trends over time (is completeness getting worse?)</li>
+<li>Statistical anomaly detection (did revenue suddenly spike?)</li>
+<li>Cross-model validation (do orders match customers?)</li>
+<li>Non-critical validation (warnings, not blockers)</li>
+<li>Complex validation requiring historical context</li>
+<li>Building data quality dashboards</li>
+</ul>
+<p>❌ <strong>Use Audits Instead for:</strong></p>
+<ul>
+<li>Critical business rules that must pass (revenue can't be negative)</li>
+<li>Model-specific validation (runs inline with the model)</li>
+<li>Simple SQL assertions</li>
+<li>Blocking invalid data from flowing downstream</li>
+</ul>
+<p>❌ <strong>Use Profiles Instead for:</strong></p>
+<ul>
+<li>Understanding data characteristics (what does this column look like?)</li>
+<li>Discovering patterns (not validation)</li>
+<li>Detecting data drift over time</li>
+<li>Informing which checks/audits to add</li>
+</ul>
 <p><strong>Example: Revenue validation strategy</strong></p>
 <p>Here's how you'd layer all three for a revenue table:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1">-- AUDIT (Critical - blocks if fails)</span>
-</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="c1">-- This stops the pipeline if revenue is invalid</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="c1">-- This stops the models if revenue is invalid</span>
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">revenue</span><span class="p">,</span>
 </span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span>
@@ -2807,11 +2828,11 @@
 </span></code></pre></div>
 <p>Anomaly detection learns what's normal and adapts to variance, which reduces false positives.</p>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">¶</a></h2>
-<p>Quality checks provide a comprehensive way to monitor data quality over time without blocking your pipelines. Here's what we covered:</p>
+<p>Quality checks provide a comprehensive way to monitor data quality over time without blocking your modelss. Here's what we covered:</p>
 <h3 id="core-concepts">Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this section">¶</a></h3>
 <p><strong>1. Quality Checks</strong>
 - YAML-configured validation rules
-- Non-blocking (don't stop pipelines)
+- Non-blocking (don't stop modelss)
 - Track trends over time
 - Integrate with Activity API</p>
 <p><strong>2. Check Types</strong>

@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1438,7 +1453,8 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="run-and-scheduling">Run and Scheduling<a class="headerlink" href="#run-and-scheduling" title="Link to this section">¶</a></h1>
-<p>This guide covers Vulcan's run functionality and scheduling strategies. Learn how <code>vulcan run</code> processes new data intervals and how to automate it for production.</p>
+<p>This guide covers Vulcan's run functionality and scheduling strategies. You'll learn how <code>vulcan run</code> processes new data intervals and how to automate it for production.</p>
+<p>The <code>run</code> command is different from <code>plan</code>, it's for regular scheduled execution, not for applying changes. Once you understand the difference, you'll know when to use each one.</p>
 <h2 id="run-and-scheduler-architecture">Run and Scheduler Architecture<a class="headerlink" href="#run-and-scheduler-architecture" title="Link to this section">¶</a></h2>
 <p>The following diagram illustrates how Vulcan's run system works with cron-based scheduling:</p>
 <pre class="mermaid"><code>graph TB
@@ -1585,7 +1601,8 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Key Insight</strong>: Use <code>plan</code> when you've changed code. Use <code>run</code> for regular scheduled execution.</p>
+<p><strong>Key Insight</strong>: Use <code>plan</code> when you've changed code. Use <code>run</code> for regular scheduled execution. </p>
+<p>Think of it this way: <code>plan</code> is for deploying changes, <code>run</code> is for processing new data. They serve different purposes!</p>
 <hr/>
 <h2 id="how-run-works">How Run Works<a class="headerlink" href="#how-run-works" title="Link to this section">¶</a></h2>
 <p>The <code>vulcan run</code> command processes missing data intervals for models that haven't changed:</p>
@@ -1627,11 +1644,12 @@
     style SUCCESS fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000</code></pre>
 <p><strong>Process Steps:</strong></p>
 <ol>
-<li><strong>No Model Changes</strong>: Assumes no model definitions have changed</li>
-<li><strong>Cron-Based Execution</strong>: Each model's <code>cron</code> parameter determines if it should run</li>
-<li><strong>Missing Intervals</strong>: Only processes intervals that haven't been processed yet</li>
-<li><strong>Automatic</strong>: No prompts or user interaction required</li>
+<li><strong>No Model Changes</strong>: Assumes no model definitions have changed - if they have, you'll get an error telling you to use <code>plan</code> first</li>
+<li><strong>Cron-Based Execution</strong>: Each model's <code>cron</code> parameter determines if it should run - daily models run daily, weekly models run weekly, etc.</li>
+<li><strong>Missing Intervals</strong>: Only processes intervals that haven't been processed yet - efficient!</li>
+<li><strong>Automatic</strong>: No prompts or user interaction required - perfect for automation</li>
 </ol>
+<p>This is why <code>run</code> is great for scheduled execution. It's fast, automatic, and only processes what's needed.</p>
 <div class="admonition tip">
 <p class="admonition-title">Interactive Diagrams</p>
 <p>All diagrams in this guide are interactive! Double-click any diagram to zoom in and explore details. Use drag to pan, arrow keys to navigate, or the zoom controls.</p>
@@ -1657,10 +1675,11 @@
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: First run output showing new interval processing]</em></p>
 <p><strong>What Happened?</strong>
-- <code>sales.daily_sales</code> has <code>cron: '@daily'</code>, so it runs daily
-- Yesterday's plan processed up to 2025-01-15
-- Today (2025-01-16) is a new interval that needs processing
-- <code>run</code> automatically processes this missing interval</p>
+- <code>sales.daily_sales</code> has <code>cron: '@daily'</code>, so it runs daily - Vulcan checks if enough time has passed
+- Yesterday's plan processed up to 2025-01-15 - that's what's already done
+- Today (2025-01-16) is a new interval that needs processing - this is what's missing
+- <code>run</code> automatically processes this missing interval - no prompts, just works</p>
+<p>This is the beauty of <code>run</code>, it automatically figures out what needs processing and does it. Set it up once, and it keeps running!</p>
 <hr/>
 <h2 id="scenario-2-cron-based-execution">Scenario 2: Cron-Based Execution<a class="headerlink" href="#scenario-2-cron-based-execution" title="Link to this section">¶</a></h2>
 <p>Different models can have different <code>cron</code> schedules. <code>run</code> respects each model's schedule.</p>
@@ -1690,9 +1709,10 @@
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Weekly run showing both daily and weekly models]</em></p>
 <p><strong>Understanding Cron Schedules:</strong>
-- <strong>Daily model (<code>@daily</code>)</strong>: Processes missing daily intervals
-- <strong>Weekly model (<code>@weekly</code>)</strong>: Only processes when 7 days have elapsed
-- <strong>Efficient</strong>: Each model only processes what's due based on its schedule</p>
+- <strong>Daily model (<code>@daily</code>)</strong>: Processes missing daily intervals - runs every day when <code>run</code> executes
+- <strong>Weekly model (<code>@weekly</code>)</strong>: Only processes when 7 days have elapsed - skips if not enough time has passed
+- <strong>Efficient</strong>: Each model only processes what's due based on its schedule - no wasted compute</p>
+<p>This is why cron schedules are important. They tell Vulcan when each model should run, so you don't process things unnecessarily.</p>
 <hr/>
 <h2 id="scenario-3-run-with-no-missing-intervals">Scenario 3: Run with No Missing Intervals<a class="headerlink" href="#scenario-3-run-with-no-missing-intervals" title="Link to this section">¶</a></h2>
 <p>When all intervals are up to date, <code>run</code> skips execution:</p>
@@ -1708,7 +1728,7 @@
 </span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a>✔ Run completed successfully
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Run output showing no models to execute]</em></p>
-<p>This is normal when running frequently - nothing to process means everything is up to date.</p>
+<p>This is normal when running frequently - nothing to process means everything is up to date. It's actually a good sign! It means your automation is working and keeping things current.</p>
 <hr/>
 <h2 id="scenario-4-run-after-model-changes-error-case">Scenario 4: Run After Model Changes (Error Case)<a class="headerlink" href="#scenario-4-run-after-model-changes-error-case" title="Link to this section">¶</a></h2>
 <p>If models have changed, Vulcan detects this and requires a plan first:</p>
@@ -1724,10 +1744,11 @@
 </span><span id="__span-9-7"><a href="#__codelineno-9-7" id="__codelineno-9-7" name="__codelineno-9-7"></a>Please run 'vulcan plan' to apply these changes before using 'vulcan run'.
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Error message when trying to run with model changes]</em></p>
-<p><strong>Workflow</strong>: Always <code>plan</code> first to apply changes, then <code>run</code> for scheduled execution.</p>
+<p><strong>Workflow</strong>: Always <code>plan</code> first to apply changes, then <code>run</code> for scheduled execution. </p>
+<p>This is the key workflow: use <code>plan</code> when you've changed code, then use <code>run</code> for regular data processing. Don't mix them up!</p>
 <hr/>
 <h2 id="scheduling-for-production">Scheduling for Production<a class="headerlink" href="#scheduling-for-production" title="Link to this section">¶</a></h2>
-<p>The <code>vulcan run</code> command doesn't run continuously - it executes once and exits. For production, you need to schedule it to run periodically.</p>
+<p>The <code>vulcan run</code> command doesn't run continuously - it executes once and exits. For production, you need to schedule it to run periodically. This is where automation comes in, you'll set up cron jobs, CI/CD pipelines, or Kubernetes CronJobs to trigger <code>run</code> on a schedule.</p>
 <h3 id="built-in-scheduler-architecture">Built-in Scheduler Architecture<a class="headerlink" href="#built-in-scheduler-architecture" title="Link to this section">¶</a></h3>
 <pre class="mermaid"><code>graph TB
     subgraph "🔄 Automation Layer - Triggers"
@@ -1942,11 +1963,12 @@
     style RESULT3 fill:#ffe082,stroke:#f9a825,stroke-width:2px,color:#000</code></pre>
 <p><strong>Rule</strong>: Schedule <code>vulcan run</code> based on your <strong>fastest model's cron</strong>.</p>
 <ul>
-<li><strong>Hourly models</strong> → Run automation every hour</li>
-<li><strong>Daily models</strong> → Run automation daily  </li>
-<li><strong>Weekly models</strong> → Run automation weekly</li>
+<li><strong>Hourly models</strong> → Run automation every hour - if you have hourly models, you need to run at least hourly</li>
+<li><strong>Daily models</strong> → Run automation daily - if your fastest model is daily, you can run daily</li>
+<li><strong>Weekly models</strong> → Run automation weekly - if your fastest model is weekly, you can run weekly</li>
 </ul>
-<p><strong>Example</strong>: If your fastest model runs <code>@hourly</code>, schedule <code>vulcan run</code> to execute hourly. Models with slower schedules (daily, weekly) will only process when their intervals are due.</p>
+<p><strong>Example</strong>: If your fastest model runs <code>@hourly</code>, schedule <code>vulcan run</code> to execute hourly. Models with slower schedules (daily, weekly) will only process when their intervals are due. Vulcan is smart, it won't process daily models every hour, it'll wait until they're actually due.</p>
+<p>The key insight: you can run <code>vulcan run</code> more frequently than your slowest model's schedule. Vulcan will just skip models that aren't due yet.</p>
 <hr/>
 <h2 id="advanced-run-options">Advanced Run Options<a class="headerlink" href="#advanced-run-options" title="Link to this section">¶</a></h2>
 <h3 id="run-specific-models">Run Specific Models<a class="headerlink" href="#run-specific-models" title="Link to this section">¶</a></h3>
@@ -1956,7 +1978,8 @@
 <h3 id="ignore-cron-schedules">Ignore Cron Schedules<a class="headerlink" href="#ignore-cron-schedules" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan<span class="w"> </span>run<span class="w"> </span>--ignore-cron
 </span></code></pre></div>
-<p>Processes all missing intervals regardless of cron schedules. Use sparingly - typically for catching up after downtime.</p>
+<p>Processes all missing intervals regardless of cron schedules. Use sparingly - typically for catching up after downtime. </p>
+<p>This is useful if your automation was down for a while and you need to catch up on missed intervals. But normally, you want Vulcan to respect cron schedules, that's the whole point!</p>
 <h3 id="custom-execution-time">Custom Execution Time<a class="headerlink" href="#custom-execution-time" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>vulcan<span class="w"> </span>run<span class="w"> </span>--execution-time<span class="w"> </span><span class="s2">"2025-01-20 10:00:00"</span>
 </span></code></pre></div>
@@ -1972,17 +1995,42 @@
 - Your SQL engine is BigQuery (not optimized for frequent transactions)
 - You observe performance degradation
 - You need better isolation</p>
-<p>See <a href="guides-old/connections.md#state-connection">Connections Guide</a> for configuring a separate state database.</p>
+<p>See <a href="../../references/configuration/#gateways">Configuration Guide</a> for configuring a separate state database.</p>
 <hr/>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
+1. <strong>Use <code>run</code> for scheduled execution</strong> - Don't use <code>plan</code> for regular data processing
+2. <strong>Set up automation</strong> - Schedule <code>vulcan run</code> based on your most frequent model's cron
+3. <strong>Monitor execution</strong> - Check logs to ensure intervals are processing correctly
+4. <strong>Use <code>--ignore-cron</code> sparingly</strong> - Only when catching up on missed intervals
+5. <strong>Separate state database</strong> - Consider PostgreSQL for state storage in production
+6. <strong>Handle errors gracefully</strong> - Set up <a href="../../configurations/options/notifications/">notifications</a> for run failures
+=======
+Here are some tips to help you use <code>run</code> effectively:</p>
 <ol>
-<li><strong>Use <code>run</code> for scheduled execution</strong> - Don't use <code>plan</code> for regular data processing</li>
-<li><strong>Set up automation</strong> - Schedule <code>vulcan run</code> based on your most frequent model's cron</li>
-<li><strong>Monitor execution</strong> - Check logs to ensure intervals are processing correctly</li>
-<li><strong>Use <code>--ignore-cron</code> sparingly</strong> - Only when catching up on missed intervals</li>
-<li><strong>Separate state database</strong> - Consider PostgreSQL for state storage in production</li>
-<li><strong>Handle errors gracefully</strong> - Set up <a href="guides-old/notifications.md">notifications</a> for run failures</li>
+<li><strong>Use <code>run</code> for scheduled execution</strong> - Don't use <code>plan</code> for regular data processing. They serve different purposes!</li>
+<li><strong>Set up automation</strong> - Schedule <code>vulcan run</code> based on your most frequent model's cron. Set it and forget it.</li>
+<li><strong>Monitor execution</strong> - Check logs to ensure intervals are processing correctly. Make sure your automation is actually working.</li>
+<li><strong>Use <code>--ignore-cron</code> sparingly</strong> - Only when catching up on missed intervals. Normally, let Vulcan respect cron schedules.</li>
+<li><strong>Separate state database</strong> - Consider PostgreSQL for state storage in production. Some SQL engines aren't optimized for frequent transactions.</li>
+<li><strong>Handle errors gracefully</strong> - Set up <a href="guides-old/notifications.md">notifications</a> for run failures. Know when things go wrong!</li>
 </ol>
+<p>Following these practices will help you build reliable, automated data pipelines.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Stashed changes</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <hr/>
 <h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this section">¶</a></h2>
 <table>
@@ -2024,11 +2072,7 @@
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="guides/plan.md">Plan Guide</a> for applying model changes</li>
-<li>Check <a href="getting_started/cli.md#run">Run Command</a> for complete CLI reference</li>
-<li>Set up <a href="guides-old/notifications.md">Notifications</a> to monitor run execution</li>
-<li>Explore <a href="concepts-old/environments.md">Environments</a> for managing multiple environments</li>
-<li>Configure <a href="guides-old/connections.md">Connections</a> for state database setup</li>
+<li>Learn about <a href="../../references/plans/">Plan Guide</a> for applying model changes</li>
 </ul>
 </article>
 </div>

@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1207,10 +1222,12 @@
 </span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span>
 </span></code></pre></div>
-<p>This creates a <code>monthly_revenue</code> metric that:
-- Uses the <code>total_revenue</code> measure from the orders model
-- Groups by <code>order_date</code> (time dimension)
-- Can be sliced by <code>customer_tier</code> (business dimension)</p>
+<p>This creates a <code>monthly_revenue</code> metric that:</p>
+<ul>
+<li>Uses the <code>total_revenue</code> measure from the orders model</li>
+<li>Groups by <code>order_date</code> (time dimension)</li>
+<li>Can be sliced by <code>customer_tier</code> (business dimension)</li>
+</ul>
 <p>Now anyone can query "monthly revenue by customer tier" without writing SQL! They just reference the metric name, and Vulcan handles all the complexity behind the scenes.</p>
 <h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Link to this section">¶</a></h2>
 <p>Setting up your semantic layer is straightforward. Here's the workflow:</p>
@@ -1238,9 +1255,9 @@
 </span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>│
 </span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a>└── config.yaml
 </span></code></pre></div>
-<p><strong>File naming:</strong> The filename doesn't matter—Vulcan automatically merges all YAML files in the <code>semantics/</code> directory. Organize by domain (like <code>customers.yml</code>, <code>orders.yml</code>) or by model (like <code>revenue_metrics.yml</code>)—whatever makes sense for your team.</p>
+<p><strong>File naming:</strong> The filename doesn't matter, Vulcan automatically merges all YAML files in the <code>semantics/</code> directory. Organize by domain (like <code>customers.yml</code>, <code>orders.yml</code>) or by model (like <code>revenue_metrics.yml</code>), whatever makes sense for your team.</p>
 <h2 id="integration-with-models">Integration with Models<a class="headerlink" href="#integration-with-models" title="Link to this section">¶</a></h2>
-<p>Here's the key insight: <strong>Model columns automatically become dimensions.</strong> The semantic layer adds measures, segments, joins, and metrics on top of your existing models. It builds on what you already have—it doesn't replace anything.</p>
+<p>Here's the key insight: <strong>Model columns automatically become dimensions.</strong> The semantic layer adds measures, segments, joins, and metrics on top of your existing models. It builds on what you already have, it doesn't replace anything.</p>
 <p>When you're designing Vulcan models, keep the semantic layer in mind:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">-- ✅ Good: Clean column names, business-friendly</span>
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">customers</span><span class="p">);</span>
@@ -1251,11 +1268,13 @@
 </span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">  </span><span class="n">total_spent</span><span class="w">         </span><span class="c1">-- Good for segments (can create "high-value" segment)</span>
 </span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="k">FROM</span><span class="w"> </span><span class="n">raw</span><span class="p">.</span><span class="n">customers</span><span class="p">;</span>
 </span></code></pre></div>
-<p>This model will automatically expose:
-- <code>customer_tier</code> as a dimension (filter by tier, group by tier)
-- <code>signup_date</code> as a time dimension (analyze trends over time)
-- <code>total_spent</code> as a dimension (create segments like "high-value customers")</p>
-<p>Then you can add measures and metrics on top. The semantic layer builds on your models—it doesn't replace them. Your models stay exactly as they are; the semantic layer just makes them more accessible.</p>
+<p>This model will automatically expose:</p>
+<ul>
+<li><code>customer_tier</code> as a dimension (filter by tier, group by tier)</li>
+<li><code>signup_date</code> as a time dimension (analyze trends over time)</li>
+<li><code>total_spent</code> as a dimension (create segments like "high-value customers")</li>
+</ul>
+<p>Then you can add measures and metrics on top. The semantic layer builds on your models, it doesn't replace them. Your models stay exactly as they are; the semantic layer just makes them more accessible.</p>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <p>Ready to dive in? Here's where to go next:</p>
 <ul>

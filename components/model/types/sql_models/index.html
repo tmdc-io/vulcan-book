@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1260,12 +1275,14 @@
 <p><strong>Why SQL models?</strong> They're simple, powerful, and work with any SQL database. Most of your data transformations will probably be SQL models.</p>
 <h2 id="sql-based-definition">SQL-Based Definition<a class="headerlink" href="#sql-based-definition" title="Link to this section">¶</a></h2>
 <p>SQL-based models are the most common type. They're designed to feel like regular SQL, but with superpowers.</p>
-<p><strong>Structure:</strong> A SQL model file has these parts (in order):
-1. The <code>MODEL</code> DDL (metadata and configuration)
-2. Optional pre-statements (setup SQL)
-3. A single query (your transformation logic)
-4. Optional post-statements (cleanup/optimization SQL)
-5. Optional on-virtual-update statements (view permissions, etc.)</p>
+<p><strong>Structure:</strong> A SQL model file has these parts (in order):</p>
+<ol>
+<li>The <code>MODEL</code> DDL (metadata and configuration)</li>
+<li>Optional pre-statements (setup SQL)</li>
+<li>A single query (your transformation logic)</li>
+<li>Optional post-statements (cleanup/optimization SQL)</li>
+<li>Optional on-virtual-update statements (view permissions, etc.)</li>
+</ol>
 <p><strong>Creating a SQL model:</strong> Add a <code>.sql</code> file to your <code>models/</code> directory (or a subdirectory). The filename doesn't matter to Vulcan, but it's conventional to name it after your model. For example, <code>sales.daily_sales</code> → <code>daily_sales.sql</code>.</p>
 <h3 id="example">Example<a class="headerlink" href="#example" title="Link to this section">¶</a></h3>
 <p>Here's a simple SQL model to get you started:</p>
@@ -1313,12 +1330,14 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="model-ddl"><code>MODEL</code> DDL<a class="headerlink" href="#model-ddl" title="Link to this section">¶</a></h3>
 <p>The <code>MODEL</code> DDL is where you define your model's metadata, name, kind, schedule, owner, and more. It must be the first statement in your SQL file.</p>
-<p>Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the <a href="components/model/types/overview.md#model-properties">Model Properties</a> documentation.</p>
+<p>Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the <a href="../../overview/#model-properties">Model Properties</a> documentation.</p>
 <h3 id="optional-prepost-statements">Optional Pre/Post-Statements<a class="headerlink" href="#optional-prepost-statements" title="Link to this section">¶</a></h3>
 <p>Pre-statements run before your query, post-statements run after. They're perfect for setup, cleanup, and optimization tasks.</p>
-<p><strong>Common use cases:</strong>
-- Pre-statements: Set session parameters, load UDFs, cache tables
-- Post-statements: Create indexes, run data quality checks, set retention policies</p>
+<p><strong>Common use cases:</strong></p>
+<ul>
+<li>Pre-statements: Set session parameters, load UDFs, cache tables</li>
+<li>Post-statements: Create indexes, run data quality checks, set retention policies</li>
+</ul>
 <p><strong>Important:</strong> Pre/post-statements must end with semicolons. If you have post-statements, your main query must also end with a semicolon (so Vulcan knows where the query ends).</p>
 <div class="admonition warning">
 <p class="admonition-title">Concurrency</p>
@@ -1360,14 +1379,14 @@
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="c1">-- Post-statement: Clean up the cached table</span>
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="n">UNCACHE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">countries</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Project-level defaults:</strong> You can define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="components/configurations-old/configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../../references/model_configuration/#model-defaults">model configuration reference</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Statements Run Twice</p>
 </div>
-<p>Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can <a href="../../advanced-features/macros/vulcan_macros.md#prepost-statements">conditionally execute</a> them based on Vulcan's <a href="../../../advanced-features/macros/variables/#runtime-variables">runtime stage</a>.</p>
+<p>Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can <a href="../../../advanced-features/macros/built_in/#prepost-statements">conditionally execute</a> them based on Vulcan's <a href="../../../advanced-features/macros/variables/#runtime-variables">runtime stage</a>.</p>
 <div class="language-text highlight"><pre><span></span><code>**Solution:** Use conditional execution with `@IF` and `@runtime_stage` to control when statements run. For example, only run a post-statement when the query is actually being evaluated:
 </code></pre></div>
-<p>We can condition the post-statement to only run after the model query is evaluated using the <a href="../../advanced-features/macros/vulcan_macros.md#if"><code>@IF</code> macro operator</a> and <a href="../../../advanced-features/macros/variables/#runtime-variables"><code>@runtime_stage</code> macro variable</a> like this:</p>
+<p>We can condition the post-statement to only run after the model query is evaluated using the <a href="../../../advanced-features/macros/built_in/#if"><code>@IF</code> macro operator</a> and <a href="../../../advanced-features/macros/variables/#runtime-variables"><code>@runtime_stage</code> macro variable</a> like this:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
@@ -1448,9 +1467,11 @@
 <p>These statements run at the virtual layer, so table names resolve to view names, not physical table names. In a <code>dev</code> environment, <code>sales.daily_sales</code> and <code>@this_model</code> resolve to <code>sales__dev.daily_sales</code> (the view), not the physical table.</p>
 </div>
 <h3 id="the-model-query">The Model Query<a class="headerlink" href="#the-model-query" title="Link to this section">¶</a></h3>
-<p>Your model must contain a standalone query. This can be:
-- A single <code>SELECT</code> statement
-- Multiple <code>SELECT</code> statements combined with <code>UNION</code>, <code>INTERSECT</code>, or <code>EXCEPT</code></p>
+<p>Your model must contain a standalone query. This can be:</p>
+<ul>
+<li>A single <code>SELECT</code> statement</li>
+<li>Multiple <code>SELECT</code> statements combined with <code>UNION</code>, <code>INTERSECT</code>, or <code>EXCEPT</code></li>
+</ul>
 <p>The result of this query becomes your model's table or view data. Pretty straightforward!</p>
 <h3 id="sql-model-blueprinting">SQL Model Blueprinting<a class="headerlink" href="#sql-model-blueprinting" title="Link to this section">¶</a></h3>
 <p>SQL models can serve as templates for creating multiple models. This is called "blueprinting", define one template, get multiple models.</p>
@@ -1539,8 +1560,7 @@
 </span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="w">  </span><span class="k">LOWER</span><span class="p">(</span><span class="n">region_name</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">LOWER</span><span class="p">(</span><span class="s1">'south'</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p><strong>Important syntax:</strong> Notice <code>@{region}</code> in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal).</p>
-<p>You can see the different behavior in the WHERE clause. <code>@region</code> (without braces) is resolved to the string literal <code>'north'</code> (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax <a href="../../advanced-features/macros/vulcan_macros.md#embedding-variables-in-strings">here</a>.</p>
-<p>Learn more about this syntax <a href="../../../advanced-features/macros/built_in.md#embedding-variables-in-strings">here</a>.</p>
+<p>You can see the different behavior in the WHERE clause. <code>@region</code> (without braces) is resolved to the string literal <code>'north'</code> (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax <a href="../../../advanced-features/macros/built_in/#embedding-variables-in-strings">here</a>.</p>
 <p><strong>Dynamic blueprints:</strong> You can generate blueprints using macros. This is handy when your blueprint list comes from external sources (CSV files, APIs, etc.):</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">fct_daily_sales__</span><span class="o">@</span><span class="err">{</span><span class="n">region</span><span class="err">}</span><span class="p">,</span>
@@ -1593,12 +1613,14 @@
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="w">  </span><span class="k">LOWER</span><span class="p">(</span><span class="n">region_name</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">LOWER</span><span class="p">(</span><span class="o">@</span><span class="n">region</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="python-based-definition">Python-Based Definition<a class="headerlink" href="#python-based-definition" title="Link to this section">¶</a></h2>
-<p>You can also define SQL models using Python! This is useful when:
-- Your query is too complex for clean SQL
-- You need heavy dynamic logic (would require lots of macros)
-- You want to generate SQL programmatically</p>
+<p>You can also define SQL models using Python! This is useful when:</p>
+<ul>
+<li>Your query is too complex for clean SQL</li>
+<li>You need heavy dynamic logic (would require lots of macros)</li>
+<li>You want to generate SQL programmatically</li>
+</ul>
 <p><strong>How it works:</strong> You write Python code that generates SQL, and Vulcan executes it. You still get SQL models (they run SQL queries), but you write them in Python.</p>
-<p>For the complete guide on Python-based SQL models, including the <code>@model</code> decorator, execution context, and examples, see the <a href="components/model/types/python_models.md">Python Models</a> page.</p>
+<p>For the complete guide on Python-based SQL models, including the <code>@model</code> decorator, execution context, and examples, see the <a href="../python_models/">Python Models</a> page.</p>
 <h2 id="automatic-dependencies">Automatic Dependencies<a class="headerlink" href="#automatic-dependencies" title="Link to this section">¶</a></h2>
 <p>One of Vulcan's superpowers: it parses your SQL and automatically figures out dependencies. No need to manually specify what your model depends on, Vulcan just knows!</p>
 <p><strong>How it works:</strong> Vulcan analyzes your <code>FROM</code> and <code>JOIN</code> clauses and builds a dependency graph. When you run <code>vulcan plan</code>, it ensures upstream models run first.</p>
@@ -1608,7 +1630,7 @@
 </span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div>
 <p>Vulcan will make sure <code>raw.raw_orders</code> runs before this model. Pretty neat!</p>
-<p><strong>External dependencies:</strong> If you reference tables that aren't Vulcan models, Vulcan can handle them too, either implicitly (through execution order) or via <a href="../../../advanced-features/signals.md">signals</a>.</p>
+<p><strong>External dependencies:</strong> If you reference tables that aren't Vulcan models, Vulcan can handle them too, either implicitly (through execution order) or via <a href="../../../advanced-features/signals/">signals</a>.</p>
 <p><strong>Manual dependencies:</strong> Sometimes you need to add extra dependencies manually (maybe a hidden dependency or a macro that references another model). Use the <code>depends_on</code> property in your <code>MODEL</code> DDL for that.</p>
 <h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Link to this section">¶</a></h2>
 <p>Vulcan follows some conventions to keep things consistent and reliable. Here are the key ones:</p>
@@ -1622,8 +1644,8 @@
 </span></code></pre></div>
 <p><strong>Why this matters:</strong> Explicit types make your models more predictable and help Vulcan optimize queries better.</p>
 <h3 id="explicit-selects">Explicit SELECTs<a class="headerlink" href="#explicit-selects" title="Link to this section">¶</a></h3>
-<p>Avoid <code>SELECT *</code> when possible. It's convenient, but dangerous—if an upstream source adds or removes columns, your model's output changes unexpectedly.</p>
-<p><strong>Best practice:</strong> List every column you need explicitly. If you're querying external sources, use <a href="components/getting_started/cli.md#create_external_models"><code>create_external_models</code></a> to capture their schema, or define them as <a href="components/model/types/model_kinds.md#external">external models</a>.</p>
+<p>Avoid <code>SELECT *</code> when possible. It's convenient, but dangerous, if an upstream source adds or removes columns, your model's output changes unexpectedly.</p>
+<p><strong>Best practice:</strong> List every column you need explicitly. If you're querying external sources, use <a href="../../../../getting_started/cli/#create_external_models"><code>create_external_models</code></a> to capture their schema, or define them as <a href="../../model_kinds/#external">external models</a>.</p>
 <p><strong>Why avoid <code>SELECT *</code> on external sources:</strong> It prevents Vulcan from optimizing queries and determining column-level lineage. Define external models instead!</p>
 <h3 id="encoding">Encoding<a class="headerlink" href="#encoding" title="Link to this section">¶</a></h3>
 <p>SQL model files must be UTF-8 encoded. Using other encodings can cause parsing errors or unexpected behavior.</p>
@@ -1633,7 +1655,25 @@
 <p><strong>Use advanced syntax:</strong> You can use features from one dialect even if your engine doesn't support them. For example, <code>x::int</code> (PostgreSQL syntax) works even on engines that only support <code>CAST(x AS INT)</code>. SQLGlot handles the conversion.</p>
 <p><strong>Formatting flexibility:</strong> Trailing commas, extra whitespace, minor formatting differences, SQLGlot normalizes them all. Write SQL however you like, and Vulcan makes it consistent.</p>
 <h2 id="macros">Macros<a class="headerlink" href="#macros" title="Link to this section">¶</a></h2>
-<p>Standard SQL is powerful, but real-world data pipelines need dynamic components. Date filters that change each run, conditional logic, reusable query patterns—macros give you all of this.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
+Standard SQL is powerful, but real-world data modelss need dynamic components. Date filters that change each run, conditional logic, reusable query patterns—macros give you all of this.
+=======
+Standard SQL is powerful, but real-world data pipelines need dynamic components. Date filters that change each run, conditional logic, reusable query patterns, macros give you all of this.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Stashed changes</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p><strong>Macro variables:</strong> Vulcan provides automatic date/time variables for incremental models. Use <code>@start_date</code>, <code>@end_date</code>, <code>@start_ds</code>, <code>@end_ds</code> and Vulcan fills them in with the current time range. No more hardcoding dates!</p>
 <p><strong>Custom macros:</strong> For complex logic or reusable patterns, Vulcan supports a powerful <a href="../../../advanced-features/macros/overview/">macro syntax</a> and <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja templates</a>. Write macros once, use them everywhere.</p>
 <p><strong>Why macros matter:</strong> They make your SQL more maintainable. Instead of copy-pasting complex logic, define it once as a macro and reuse it. Your queries stay clean and readable.</p>

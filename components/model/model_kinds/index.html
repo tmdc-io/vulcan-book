@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1646,9 +1661,11 @@
 <h2 id="incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE<a class="headerlink" href="#incremental_by_time_range" title="Link to this section">¶</a></h2>
 <p><code>INCREMENTAL_BY_TIME_RANGE</code> models are perfect for time-series data, things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.</p>
 <p><strong>Why this matters:</strong> If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With <code>INCREMENTAL_BY_TIME_RANGE</code>, Vulcan only processes the new intervals, which saves you time and money. Pretty smart, right?</p>
-<p>To use this kind, you need to tell Vulcan two things:
-1. <strong>Which column has your time data</strong> - So Vulcan knows how to partition and filter
-2. <strong>A WHERE clause</strong> - That filters your upstream data by time range using Vulcan's time macros</p>
+<p>To use this kind, you need to tell Vulcan two things:</p>
+<ol>
+<li><strong>Which column has your time data</strong> - So Vulcan knows how to partition and filter</li>
+<li><strong>A WHERE clause</strong> - That filters your upstream data by time range using Vulcan's time macros</li>
+</ol>
 <p>You specify the time column in your <code>MODEL</code> DDL using the <code>time_column</code> key. Here's a simple example:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
@@ -2100,9 +2117,11 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p>Use the same SQL dialect for your format string as the one used in your model's query.</p>
 </div>
 <p><strong>Safety feature:</strong> Vulcan automatically adds a time range filter to your query's output to prevent data leakage. This means even if your <code>WHERE</code> clause has a bug, Vulcan won't accidentally store records outside the target interval.</p>
-<p>Here's how it works:
-- <strong>Your WHERE clause</strong> filters the <strong>input</strong> data as it's read from upstream tables (makes queries faster)
-- <strong>Vulcan's automatic filter</strong> filters the <strong>output</strong> data before it's stored (prevents data leakage)</p>
+<p>Here's how it works:</p>
+<ul>
+<li><strong>Your WHERE clause</strong> filters the <strong>input</strong> data as it's read from upstream tables (makes queries faster)</li>
+<li><strong>Vulcan's automatic filter</strong> filters the <strong>output</strong> data before it's stored (prevents data leakage)</li>
+</ul>
 <p>This is especially important when handling late-arriving data, you don't want to accidentally overwrite unrelated records!</p>
 <p>Here's a cool example: sometimes your upstream data uses a different time column than your model. In this case, you filter on the upstream column (<code>shipped_date</code>), but Vulcan still adds a filter on your model's time column (<code>order_date</code>):</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
@@ -2221,10 +2240,12 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </table>
 <h2 id="incremental_by_unique_key">INCREMENTAL_BY_UNIQUE_KEY<a class="headerlink" href="#incremental_by_unique_key" title="Link to this section">¶</a></h2>
 <p><code>INCREMENTAL_BY_UNIQUE_KEY</code> models update data based on a unique key. Think of it like an upsert operation, if a key exists, update it; if it doesn't, insert it.</p>
-<p>Here's how it works:
-- <strong>New key?</strong> → Insert the row
-- <strong>Existing key?</strong> → Update the row with new data
-- <strong>Key missing from new data?</strong> → Leave the existing row alone</p>
+<p>Here's how it works:</p>
+<ul>
+<li><strong>New key?</strong> → Insert the row</li>
+<li><strong>Existing key?</strong> → Update the row with new data</li>
+<li><strong>Key missing from new data?</strong> → Leave the existing row alone</li>
+</ul>
 <p><strong>Why use this?</strong> Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list, you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.</p>
 <p>This kind is a good fit for datasets that have the following traits:</p>
 <ul>
@@ -3473,7 +3494,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <li>Cheeseburger was removed from the menu.</li>
 <li>Milkshakes were added to the menu.</li>
 </ul>
-<p>Assuming your pipeline ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
+<p>Assuming your models ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
 <table>
 <thead>
 <tr>
@@ -3749,7 +3770,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <li>Cheeseburger was removed from the menu.</li>
 <li>Milkshakes were added to the menu.</li>
 </ul>
-<p>Assuming your pipeline ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
+<p>Assuming your models ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
 <table>
 <thead>
 <tr>
@@ -4002,7 +4023,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tr>
 <tr>
 <td>execution_time_as_valid_from</td>
-<td>By default, when the model is first loaded <code>valid_from</code> is set to <code>1970-01-01 00:00:00</code> and future new rows will have <code>execution_time</code> of when the pipeline ran. This changes the behavior to always use <code>execution_time</code>. Default: <code>false</code></td>
+<td>By default, when the model is first loaded <code>valid_from</code> is set to <code>1970-01-01 00:00:00</code> and future new rows will have <code>execution_time</code> of when the models ran. This changes the behavior to always use <code>execution_time</code>. Default: <code>false</code></td>
 <td>bool</td>
 </tr>
 <tr>

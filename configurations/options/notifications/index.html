@@ -440,8 +440,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -451,6 +453,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1149,19 +1164,37 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="notifications">Notifications<a class="headerlink" href="#notifications" title="Link to this section">¶</a></h1>
-<p>Vulcan can send notifications via Slack or email when certain events occur. This page describes how to configure notifications and specify recipients.</p>
+<p>Want to know when your pipeline finishes? Or when something goes wrong? Vulcan can send notifications via Slack or email so you don't have to constantly check on things. This page shows you how to set it all up.</p>
 <h2 id="notification-targets">Notification targets<a class="headerlink" href="#notification-targets" title="Link to this section">¶</a></h2>
-<p>Notifications are configured with <code>notification targets</code>. Targets are specified in a project's <a href="../../../references/configuration/">configuration</a> file (<code>config.yml</code> or <code>config.py</code>), and multiple targets can be specified for a project.</p>
-<p>A project may specify both global and user-specific notifications. Each target's notifications will be sent for all instances of each <a href="#vulcan-event-types">event type</a> (e.g., notifications for <code>run</code> will be sent for <em>all</em> of the project's environments), with exceptions for audit failures and when an <a href="#notifications-during-development">override is configured for development</a>.</p>
-<p><a href="configurations/components/audits/audits.md">Audit</a> failure notifications can be sent for specific models if five conditions are met:</p>
+<p>Notifications are configured using "notification targets." You define these in your project's <a href="../../../references/configuration/">configuration</a> file, and you can set up multiple targets if you want different people or channels to get different notifications.</p>
+<p>You can configure both global notifications (that go to everyone) and user-specific notifications (that only go to specific people). By default, notifications are sent for all environments, but you can override this for development work (more on that <a href="#notifications-during-development">below</a>).</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
+<a href="../../../components/audits/audits/">Audit</a> failure notifications can be sent for specific models if five conditions are met:
+=======
+There's one special case: audit failure notifications can be targeted to specific model owners. This is super useful because the person who owns a model probably wants to know if their audits are failing. For this to work, five things need to be true:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Stashed changes</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <ol>
-<li>A model's <code>owner</code> field is populated</li>
-<li>The model executes one or more audits</li>
+<li>The model has an <code>owner</code> field set</li>
+<li>The model has one or more audits defined</li>
 <li>The owner has a user-specific notification target configured</li>
-<li>The owner's notification target <code>notify_on</code> key includes audit failure events</li>
+<li>The owner's notification target includes audit failure events in <code>notify_on</code></li>
 <li>The audit fails in the <code>prod</code> environment</li>
 </ol>
-<p>When those conditions are met, the audit owner will be notified if their audit failed in the <code>prod</code> environment.</p>
+<p>When all of these are true, the model owner gets notified about the failure. Pretty neat, right?</p>
 <p>There are three types of notification target, corresponding to the two <a href="#slack-notifications">Slack notification methods</a> and <a href="#email-notifications">email notification</a>. They are specified in either a specific user's <code>notification_targets</code> key or the top-level <code>notification_targets</code> configuration key.</p>
 <p>This example shows the location of both user-specific and global notification targets:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
@@ -1273,8 +1306,9 @@
 </div>
 </div>
 <h3 id="notifications-during-development">Notifications During Development<a class="headerlink" href="#notifications-during-development" title="Link to this section">¶</a></h3>
-<p>Events triggering notifications may be executed repeatedly during code development. To prevent excessive notification, Vulcan can stop all but one user's notification targets.</p>
-<p>Specify the top-level <code>username</code> configuration key with a value also present in a user-specific notification target's <code>username</code> key to only notify that user. This key can be specified in either the project configuration file or a machine-specific configuration file located in <code>~/.vulcan</code>. The latter may be useful if a specific machine is always used for development.</p>
+<p>Here's a problem: when you're developing and testing, you might run plans and runs over and over again. If notifications are enabled, you (and your team) will get bombarded with notifications for every test run. That gets annoying fast!</p>
+<p>Vulcan can help with this. If you set the top-level <code>username</code> configuration key, only that user's notification targets will receive notifications. Everyone else's targets will be silenced. This is perfect for development work.</p>
+<p>You can set <code>username</code> in either your project's config file or in a machine-specific config file at <code>~/.vulcan</code>. The machine-specific file is handy if you have a dedicated development machine and want to automatically silence notifications there without affecting your project config.</p>
 <p>This example stops all notifications other than those for <code>User1</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">YAML</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
@@ -1337,9 +1371,32 @@
 </div>
 </div>
 <h2 id="vulcan-event-types">Vulcan Event Types<a class="headerlink" href="#vulcan-event-types" title="Link to this section">¶</a></h2>
-<p>Vulcan notifications are triggered by events. The events that should trigger a notification are specified in the notification target's <code>notify_on</code> field.</p>
-<p>Notifications are supported for <a href="configurations/guides/plan.md"><code>plan</code> application</a> start/end/failure, <a href="configurations/getting_started/cli.md#run"><code>run</code></a> start/end/failure, and <a href="configurations/components/audits/audits.md"><code>audit</code></a> failures.</p>
-<p>For <code>plan</code> and <code>run</code> start/end, the target environment name is included in the notification message. For failures, the Python exception or error text is included in the notification message.</p>
+<p>Vulcan can notify you about several different events. You choose which ones you care about by listing them in the notification target's <code>notify_on</code> field.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
+Notifications are supported for <a href="../../../guides/plan/"><code>plan</code> application</a> start/end/failure, <a href="../../../getting_started/cli/#run"><code>run</code></a> start/end/failure, and <a href="../../../components/audits/audits/"><code>audit</code></a> failures.
+=======
+Here are the events you can get notified about:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Stashed changes</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li><strong>Plan events</strong>: When a <a href="configurations/guides/plan.md"><code>plan</code></a> starts, finishes, or fails</li>
+<li><strong>Run events</strong>: When a <a href="configurations/getting_started/cli.md#run"><code>run</code></a> starts, finishes, or fails  </li>
+<li><strong>Audit failures</strong>: When an <a href="configurations/components/audits/audits.md"><code>audit</code></a> fails</li>
+</ul>
+<p>For start/end events, the notification includes the target environment name so you know which environment the event happened in. For failure events, you'll get the actual error message or exception, which helps with debugging.</p>
 <p>This table lists each event, its associated <code>notify_on</code> value, and its notification message:</p>
 <table>
 <thead>
@@ -1389,10 +1446,15 @@
 </table>
 <p>Any combination of these events can be specified in a notification target's <code>notify_on</code> field.</p>
 <h2 id="slack-notifications">Slack Notifications<a class="headerlink" href="#slack-notifications" title="Link to this section">¶</a></h2>
-<p>Vulcan supports two types of Slack notification. Slack webhooks can notify a Slack channel, but they cannot message specific users. The Slack Web API can notify channels or users.</p>
+<p>Vulcan supports two ways to send Slack notifications:</p>
+<ol>
+<li><strong>Slack Webhooks</strong> - Simple and easy to set up. Can send messages to channels, but can't message individual users directly.</li>
+<li><strong>Slack Web API</strong> - More flexible. Can send to channels or direct message specific users. Requires an API token.</li>
+</ol>
+<p>Let's look at both options:</p>
 <h3 id="webhook-configuration">Webhook Configuration<a class="headerlink" href="#webhook-configuration" title="Link to this section">¶</a></h3>
-<p>Vulcan uses Slack's "Incoming Webhooks" for webhook notifications. When you <a href="https://api.slack.com/messaging/webhooks">create an incoming webhook</a> in Slack, you will receive a unique URL associated with a specific Slack channel. Vulcan transmits the notification message by submitting a JSON payload to that URL.</p>
-<p>This example shows a Slack webhook notification target. Notifications are triggered by plan application start, plan application failure, or Vulcan run start. The specification uses an environment variable <code>SLACK_WEBHOOK_URL</code> instead of hard-coding the URL directly into the configuration file:</p>
+<p>Slack webhooks are the simplest way to get started. When you <a href="https://api.slack.com/messaging/webhooks">create an incoming webhook</a> in Slack, you get a unique URL that's tied to a specific channel. Vulcan just sends a JSON payload to that URL, and Slack posts it to the channel.</p>
+<p>Here's an example configuration. Notice we're using an environment variable for the webhook URL, this keeps secrets out of your config file:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">YAML</label><label for="__tabbed_3_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1428,8 +1490,8 @@
 </div>
 </div>
 <h3 id="api-configuration">API Configuration<a class="headerlink" href="#api-configuration" title="Link to this section">¶</a></h3>
-<p>If you want to notify users, you can use the Slack API notification target. This requires a Slack API token, which can be used for multiple notification targets with different channels or users. See <a href="https://api.slack.com/tutorials/tracks/getting-a-token">Slack's official documentation</a> for information on getting an API token.</p>
-<p>This example shows a Slack API notification target. Notifications are triggered by plan application start, plan application end, or audit failure. The specification uses an environment variable <code>SLACK_API_TOKEN</code> instead of hard-coding the token directly into the configuration file:</p>
+<p>If you need to message individual users (not just channels), you'll need to use the Slack Web API. This requires an API token, but the good news is that one token can be used for multiple notification targets, so you can set up different channels or users without creating multiple tokens.</p>
+<p>To get a token, check out <a href="https://api.slack.com/tutorials/tracks/getting-a-token">Slack's official documentation</a>. Once you have it, configure it like this (again, using an environment variable to keep it secure):</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">YAML</label><label for="__tabbed_4_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1469,8 +1531,8 @@
 </div>
 </div>
 <h2 id="email-notifications">Email Notifications<a class="headerlink" href="#email-notifications" title="Link to this section">¶</a></h2>
-<p>Vulcan supports notifications via email. The notification target specifies the SMTP host, user, password, and sender address. A target may notify multiple recipient email addresses.</p>
-<p>This example shows an email notification target, where <code>sushi@example.com</code> emails <code>data-team@example.com</code> on Vulcan run failure. The specification uses environment variables <code>SMTP_HOST</code>, <code>SMTP_USER</code>, and <code>SMTP_PASSWORD</code> instead of hard-coding the values directly into the configuration file:</p>
+<p>If Slack isn't your thing, Vulcan can also send email notifications. You'll need to configure SMTP settings (host, user, password) and specify who should receive the emails. One notification target can send to multiple recipients, which is handy for team-wide notifications.</p>
+<p>Here's an example that sends an email to the data team whenever a run fails. As always, we're using environment variables for sensitive information:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">YAML</label><label for="__tabbed_5_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1525,9 +1587,9 @@
 </div>
 <h2 id="advanced-usage">Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this section">¶</a></h2>
 <h3 id="overriding-notification-targets">Overriding Notification Targets<a class="headerlink" href="#overriding-notification-targets" title="Link to this section">¶</a></h3>
-<p>In Python configuration files, new notification targets can be configured to send custom messages.</p>
-<p>To customize a notification, create a new notification target class as a subclass of one of the three target classes described above (<code>SlackWebhookNotificationTarget</code>, <code>SlackApiNotificationTarget</code>, or <code>BasicSMTPNotificationTarget</code>). See the definitions of these classes on Github <a href="https://github.com/TobikoData/vulcan/blob/main/vulcan/core/notification_target.py">here</a>.</p>
-<p>Each of those notification target classes is a subclass of <code>BaseNotificationTarget</code>, which contains a <code>notify</code> function corresponding to each event type. This table lists the notification functions, along with the contextual information available to them at calling time (e.g., the environment name for start/end events):</p>
+<p>If you're using a Python configuration file, you can create custom notification targets that send exactly the messages you want. This is useful if you need to format messages differently, add extra context, or integrate with other systems.</p>
+<p>To create a custom notification target, subclass one of the built-in target classes (<code>SlackWebhookNotificationTarget</code>, <code>SlackApiNotificationTarget</code>, or <code>BasicSMTPNotificationTarget</code>). You can see the full class definitions <a href="https://github.com/TobikoData/vulcan/blob/main/vulcan/core/notification_target.py">on Github</a>.</p>
+<p>Each notification target class inherits from <code>BaseNotificationTarget</code>, which provides a <code>notify</code> function for each event type. Here's what information is available to each function:</p>
 <table>
 <thead>
 <tr>
@@ -1566,8 +1628,7 @@
 </tr>
 </tbody>
 </table>
-<p>This example creates a new notification target class <code>CustomSMTPNotificationTarget</code>.</p>
-<p>It overrides the default <code>notify_run_failure</code> function to read a log file <code>"/home/vulcan/vulcan.log"</code> and append its contents to the exception stack trace <code>exc</code>:</p>
+<p>Here's a practical example. Let's say you want to include log file contents in failure notifications to make debugging easier. You can create a custom notification target that reads the log file and appends it to the error message:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="6:1"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block"></div>
