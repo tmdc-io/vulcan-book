@@ -1530,10 +1530,11 @@ a.md-button.download-button:hover {
     overflow-x: hidden !important;
     width: 100% !important;
     max-width: 100% !important;
-    padding: 0px 24px !important;
-    margin: 24px 0px !important;
+    padding: 24px !important;
+    margin: 0px !important;
   }
   .md-sidebar--primary .md-nav__list .md-nav__list  {
+    padding: 0px 24px !important;
     margin: 0px !important;
   }
   
@@ -2643,6 +2644,26 @@ h1:target, h2:target, h3:target, h4:target, h5:target, h6:target,
 @media screen and (min-width: 76.25em) {
   [dir=ltr] .md-nav--primary .md-nav__list {
       padding-left: 0rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  [data-md-component="toc"], [aria-label="On this page"] {
+    display: none !important;
+  }
+}
+
+.md-nav__source {
+  background-color: #2196F3 !important;
+}
+
+@media (max-width: 768px) {
+  .md-sidebar--primary .md-nav__item--nested > .md-nav {
+      margin-left: 0rem !important;
+      padding-left: 0rem !important;
+      border-left: 0px solid var(--vl-border) !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
   }
 }
 
