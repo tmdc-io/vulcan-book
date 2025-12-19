@@ -2666,5 +2666,10 @@ h1:target, h2:target, h3:target, h4:target, h5:target, h6:target,
       margin-bottom: 0.25rem !important;
   }
 }
-
+.md-header {
+  min-height: 83px !important;
+}
+.md-header__inner {
+  min-height: inherit !important;
+}
 /* End of theme */
