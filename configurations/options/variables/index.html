@@ -1146,12 +1146,11 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h1>
-<p>Environment variables and configuration overrides let you keep secrets out of your config files and customize settings without editing code. This page shows you how to use them effectively.</p>
+<p>This page covers environment variables and configuration overrides for your Vulcan project.</p>
 <h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this section">¶</a></h2>
-<p>Environment variables are the best way to handle secrets and configuration that changes between environments. Vulcan can read environment variables when it loads your configuration, so you can keep passwords, API keys, and other sensitive information out of your config files. You can also use them to change settings based on who's running Vulcan or what environment they're in.</p>
+<p>Vulcan can access environment variables during configuration, enabling you to store secrets outside configuration files and dynamically change settings based on the user running Vulcan.</p>
 <h3 id="using-env-files">Using .env Files<a class="headerlink" href="#using-env-files" title="Link to this section">¶</a></h3>
-<p>The easiest way to manage environment variables is with a <code>.env</code> file in your project directory. Vulcan automatically loads it when it starts, so you don't have to remember to export variables manually.</p>
-<p>Here's what a <code>.env</code> file looks like:</p>
+<p>Vulcan automatically loads environment variables from a <code>.env</code> file in your project directory:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># .env file</span>
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nv">SNOWFLAKE_PW</span><span class="o">=</span>my_secret_password
 </span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="nv">S3_BUCKET</span><span class="o">=</span>s3://my-data-bucket/warehouse
@@ -1163,27 +1162,25 @@
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Security</p>
-<p><strong>Important:</strong> Make sure <code>.env</code> is in your <code>.gitignore</code> file! You don't want to accidentally commit passwords and API keys to your repository. This is a common mistake that can cause serious security issues.</p>
+<p>Add <code>.env</code> to your <code>.gitignore</code> file to avoid committing sensitive information.</p>
 </div>
 <h3 id="custom-env-file-location">Custom .env File Location<a class="headerlink" href="#custom-env-file-location" title="Link to this section">¶</a></h3>
-<p>By default, Vulcan looks for a <code>.env</code> file in your project root. But sometimes you might want to use a different file or location. You've got two options:</p>
-<p><strong>Option 1: Use the <code>--dotenv</code> flag</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan<span class="w"> </span>--dotenv<span class="w"> </span>/path/to/custom/.env<span class="w"> </span>plan
-</span></code></pre></div><p></p>
-<p><strong>Option 2: Set the <code>VULCAN_DOTENV_PATH</code> environment variable</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VULCAN_DOTENV_PATH</span><span class="o">=</span>/path/to/custom/.custom_env
+<p>Specify a custom path using the <code>--dotenv</code> CLI flag:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan<span class="w"> </span>--dotenv<span class="w"> </span>/path/to/custom/.env<span class="w"> </span>plan
+</span></code></pre></div>
+<p>Or set the <code>VULCAN_DOTENV_PATH</code> environment variable:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VULCAN_DOTENV_PATH</span><span class="o">=</span>/path/to/custom/.custom_env
 </span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>vulcan<span class="w"> </span>plan
-</span></code></pre></div><p></p>
+</span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you're using the <code>--dotenv</code> flag, make sure it comes <strong>before</strong> the subcommand (like <code>plan</code> or <code>run</code>). Otherwise Vulcan won't find it!</p>
+<p>The <code>--dotenv</code> flag must be placed <strong>before</strong> the subcommand (e.g., <code>plan</code>, <code>run</code>).</p>
 </div>
 <h3 id="accessing-variables-in-configuration">Accessing Variables in Configuration<a class="headerlink" href="#accessing-variables-in-configuration" title="Link to this section">¶</a></h3>
-<p>To use environment variables in your config, you'll use different syntax depending on whether you're using YAML or Python:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>In YAML configs, use the <code>{{ env_var('VARIABLE_NAME') }}</code> syntax. This is a Jinja2 template expression that gets evaluated when Vulcan loads your config:</p>
+<p>Use <code>{{ env_var('VARIABLE_NAME') }}</code> syntax:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
 <span class="normal"><a href="#__codelineno-3-3">3</a></span>
@@ -1200,7 +1197,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 </div>
 <div class="tabbed-block">
-<p>In Python configs, you can use <code>os.environ</code> directly. This gives you more flexibility if you need to do any processing on the variable:</p>
+<p>Use <code>os.environ</code>:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
@@ -1233,13 +1230,12 @@
 </div>
 </div>
 <h2 id="configuration-overrides">Configuration Overrides<a class="headerlink" href="#configuration-overrides" title="Link to this section">¶</a></h2>
-<p>Here's a powerful feature: environment variables can override any value in your configuration file, and they have the <strong>highest precedence</strong>. This means you can change settings without editing your config files at all.</p>
-<p>To use this feature, name your environment variable using the <code>VULCAN__</code> prefix and double underscores (<code>__</code>) to navigate the configuration hierarchy.</p>
+<p>Environment variables have the <strong>highest precedence</strong> and will override configuration file values if they follow the <code>VULCAN__</code> naming convention.</p>
 <h3 id="override-naming-structure">Override Naming Structure<a class="headerlink" href="#override-naming-structure" title="Link to this section">¶</a></h3>
-<p>The pattern is straightforward: start with <code>VULCAN__</code>, then use double underscores to go deeper into nested config:</p>
+<p>Use double underscores <code>__</code> to navigate the configuration hierarchy:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>VULCAN__&lt;ROOT_KEY&gt;__&lt;NESTED_KEY&gt;__&lt;FIELD&gt;=value
 </span></code></pre></div>
-<p><strong>Example:</strong> Let's say you want to override a gateway password. In your config file, you might have:</p>
+<p><strong>Example:</strong> Override a gateway connection password:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
 <span class="normal"><a href="#__codelineno-6-3">3</a></span>
@@ -1252,15 +1248,12 @@
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snowflake</span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dummy_pw</span><span class="w">  </span><span class="c1"># This will be overridden</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>But then you set an environment variable:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1"># Override with environment variable</span>
 </span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VULCAN__GATEWAYS__MY_GATEWAY__CONNECTION__PASSWORD</span><span class="o">=</span><span class="s2">"real_pw"</span>
 </span></code></pre></div>
-<p>Now when Vulcan loads the config, it will use <code>real_pw</code> instead of <code>dummy_pw</code>. This is super useful for overriding settings in different environments without changing your config files.</p>
 <h2 id="dynamic-configuration">Dynamic Configuration<a class="headerlink" href="#dynamic-configuration" title="Link to this section">¶</a></h2>
 <h3 id="user-based-target-environment">User-based Target Environment<a class="headerlink" href="#user-based-target-environment" title="Link to this section">¶</a></h3>
-<p>Sometimes you want each developer to have their own environment. Instead of having everyone remember to specify their environment name every time, you can make it automatic based on who's running Vulcan.</p>
-<p>Use the <code>{{ user() }}</code> function (in YAML) or <code>getpass.getuser()</code> (in Python) to get the current system user:</p>
+<p>Use the <code>{{ user() }}</code> function to dynamically set configuration based on the current user:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">YAML</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1284,7 +1277,7 @@
 </div>
 </div>
 </div>
-<p>Now when Alice runs <code>vulcan plan</code>, it automatically targets <code>dev_alice</code>. When Bob runs it, it targets <code>dev_bob</code>. No need to remember environment names, just run <code>vulcan plan</code> and it works!</p>
+<p>This allows running <code>vulcan plan</code> instead of <code>vulcan plan dev_username</code>.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

@@ -1032,27 +1032,8 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="model-defaults">Model defaults<a class="headerlink" href="#model-defaults" title="Link to this section">¶</a></h1>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
-The <code>model_defaults</code> key is <strong>required</strong> and must contain a value for the <code>dialect</code> key. 
-=======
-The <code>model_defaults</code> section is <strong>required</strong>, you can't skip it! At minimum, you need to specify the <code>dialect</code> key, which tells Vulcan what SQL dialect your models use. You can use any dialect that <a href="https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py">SQLGlot supports</a>, which covers most major databases.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Stashed changes</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>The other defaults are optional, but they're super helpful because they apply to all your models automatically. This means you don't have to repeat the same settings in every model file. If a model needs something different, you can override it in that specific model's definition.</p>
-<p>For a complete list of all the options you can set in <code>model_defaults</code>, check out the <a href="../../../references/model_configuration/#model-defaults">models configuration reference</a>.</p>
+<p>The <code>model_defaults</code> key is <strong>required</strong> and must contain a value for the <code>dialect</code> key. </p>
+<p>All supported <code>model_defaults</code> keys are listed in the <a href="../../../references/model_configuration/#model-defaults">models configuration reference page</a>.</p>
 <h2 id="basic-configuration">Basic configuration<a class="headerlink" href="#basic-configuration" title="Link to this section">¶</a></h2>
 <p>Example configuration:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
@@ -1089,30 +1070,12 @@ The <code>model_defaults</code> section is <strong>required</strong>, you can't 
 </div>
 </div>
 </div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
-The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="../../../components/model/model_kinds/">model concepts page</a>.
-=======
-By default, models are created as <code>VIEW</code> unless you specify otherwise with the <code>kind</code> key. Views are great for most use cases because they're always up-to-date and don't store duplicate data. But if you need tables or other materialization strategies, you can override this per-model. Learn more about model kinds in the <a href="configurations/components/model/model_kinds.md">model concepts page</a>.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Stashed changes</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="../../../components/model/model_kinds/">model concepts page</a>.</p>
 <h2 id="identifier-resolution">Identifier resolution<a class="headerlink" href="#identifier-resolution" title="Link to this section">¶</a></h2>
-<p>Here's something that trips people up: different SQL engines handle identifier names differently. When you write <code>SELECT id FROM "some_table"</code>, the engine needs to figure out what <code>id</code> and <code>"some_table"</code> actually refer to. This is called "identifier resolution," and each dialect has its own rules.</p>
-<p>For example, some engines treat quoted identifiers as case-sensitive while unquoted ones get normalized (usually to lowercase or uppercase). This can cause issues if you're not careful.</p>
-<p>Vulcan needs to analyze your queries to do things like compute column-level lineage. To make this work reliably, it normalizes and quotes identifiers according to each dialect's rules. You can read more about how SQLGlot handles this <a href="https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier">here</a>.</p>
-<p>The normalization strategy (whether identifiers get lowercased or uppercased) is configurable. For example, if you're using BigQuery and want everything to be case-sensitive, you can do this:</p>
+<p>When a SQL engine receives a query such as <code>SELECT id FROM "some_table"</code>, it eventually needs to understand what database objects the identifiers <code>id</code> and <code>"some_table"</code> correspond to. This process is usually referred to as identifier (or name) resolution.</p>
+<p>Different SQL dialects implement different rules when resolving identifiers in queries. For example, certain identifiers may be treated as case-sensitive (e.g. if they're quoted), and a case-insensitive identifier is usually either lowercased or uppercased, before the engine actually looks up what object it corresponds to.</p>
+<p>Vulcan analyzes model queries so that it can extract useful information from them, such as computing Column-Level Lineage. To facilitate this analysis, it <em>normalizes</em> and <em>quotes</em> all identifiers in those queries, <a href="https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier">respecting each dialect's resolution rules</a>.</p>
+<p>The "normalization strategy", i.e. whether case-insensitive identifiers are lowercased or uppercased, is configurable per dialect. For example, to treat all identifiers as case-sensitive in a BigQuery project, one can do:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">YAML</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1123,11 +1086,10 @@ By default, models are created as <code>VIEW</code> unless you specify otherwise
 </div>
 </div>
 </div>
-<p>This is useful when you need to preserve exact casing (maybe for compatibility with other tools or systems). When you use <code>case_sensitive</code>, Vulcan won't normalize identifiers, so they'll keep whatever casing you use.</p>
-<p>Check out the <a href="https://sqlglot.com/sqlglot/dialects/dialect.html#NormalizationStrategy">SQLGlot normalization strategies documentation</a> to see all your options.</p>
+<p>This may be useful in cases where the name casing needs to be preserved, since then Vulcan won't be able to normalize them.</p>
+<p>See <a href="https://sqlglot.com/sqlglot/dialects/dialect.html#NormalizationStrategy">here</a> to learn more about the supported normalization strategies.</p>
 <h2 id="gateway-specific-model-defaults">Gateway-specific model defaults<a class="headerlink" href="#gateway-specific-model-defaults" title="Link to this section">¶</a></h2>
-<p>Sometimes you need different defaults for different gateways. Maybe you're using multiple engines and they have different requirements. You can override the global <code>model_defaults</code> for a specific gateway by adding <code>model_defaults</code> to that gateway's configuration.</p>
-<p>Here's an example where we have different normalization strategies for different engines:</p>
+<p>You can also define gateway specific <code>model_defaults</code> in the <code>gateways</code> section, which override the global defaults for that gateway.</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
@@ -1158,9 +1120,11 @@ By default, models are created as <code>VIEW</code> unless you specify otherwise
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="hll"><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snowflake</span>
 </span></span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2025-02-05</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This is super useful when you're working with multiple engines that have different identifier handling rules. For example, some engines are case-sensitive while others aren't. Without gateway-specific defaults, you'd have to make sure every model aligns with each engine's behavior, which gets messy fast.</p>
-<p>Gateway-specific <code>model_defaults</code> let you configure identifier normalization per engine, so you can write models in one style and have Vulcan handle the differences automatically.</p>
-<p>In the example above, the global default is <code>snowflake</code> (line 14), but the <code>redshift</code> gateway overrides it with <code>"snowflake,normalization_strategy=case_insensitive"</code> (line 6). This tells Vulcan: "Write the SQL in Snowflake dialect (which will get transpiled to Redshift), but normalize identifiers as case-insensitive to match Snowflake's behavior." This way, your models work consistently across both engines.</p>
+<p>This allows you to tailor the behavior of models for each gateway without affecting the global <code>model_defaults</code>.</p>
+<p>For example, in some SQL engines identifiers like table and column names are case-sensitive, but they are case-insensitive in other engines. By default, a project that uses both types of engines would need to ensure the models for each engine aligned with the engine's normalization behavior, which makes project maintenance and debugging more challenging.</p>
+<p>Gateway-specific <code>model_defaults</code> allow you to change how Vulcan performs identifier normalization <em>by engine</em> to align the different engines' behavior.</p>
+<p>In the example above, the project's default dialect is <code>snowflake</code> (line 14). The <code>redshift</code> gateway configuration overrides that global default dialect with <code>"snowflake,normalization_strategy=case_insensitive"</code> (line 6).</p>
+<p>That value tells Vulcan that the <code>redshift</code> gateway's models will be written in the Snowflake SQL dialect (so need to be transpiled from Snowflake to Redshift), but that the resulting Redshift SQL should treat identifiers as case-insensitive to match Snowflake's behavior.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
