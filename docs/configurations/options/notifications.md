@@ -1,26 +1,22 @@
 # Notifications
 
-Want to know when your pipeline finishes? Or when something goes wrong? Vulcan can send notifications via Slack or email so you don't have to constantly check on things. This page shows you how to set it all up.
+Vulcan can send notifications via Slack or email when certain events occur. This page describes how to configure notifications and specify recipients.
 
 ## Notification targets
 
-Notifications are configured using "notification targets." You define these in your project's [configuration](../../references/configuration.md) file, and you can set up multiple targets if you want different people or channels to get different notifications.
+Notifications are configured with `notification targets`. Targets are specified in a project's [configuration](../../references/configuration.md) file (`config.yml` or `config.py`), and multiple targets can be specified for a project.
 
-You can configure both global notifications (that go to everyone) and user-specific notifications (that only go to specific people). By default, notifications are sent for all environments, but you can override this for development work (more on that [below](#notifications-during-development)).
+A project may specify both global and user-specific notifications. Each target's notifications will be sent for all instances of each [event type](#vulcan-event-types) (e.g., notifications for `run` will be sent for *all* of the project's environments), with exceptions for audit failures and when an [override is configured for development](#notifications-during-development).
 
-<<<<<<< Updated upstream
 [Audit](../../components/audits/audits.md) failure notifications can be sent for specific models if five conditions are met:
-=======
-There's one special case: audit failure notifications can be targeted to specific model owners. This is super useful because the person who owns a model probably wants to know if their audits are failing. For this to work, five things need to be true:
->>>>>>> Stashed changes
 
-1. The model has an `owner` field set
-2. The model has one or more audits defined
+1. A model's `owner` field is populated
+2. The model executes one or more audits
 3. The owner has a user-specific notification target configured
-4. The owner's notification target includes audit failure events in `notify_on`
+4. The owner's notification target `notify_on` key includes audit failure events
 5. The audit fails in the `prod` environment
 
-When all of these are true, the model owner gets notified about the failure. Pretty neat, right?
+When those conditions are met, the audit owner will be notified if their audit failed in the `prod` environment.
 
 There are three types of notification target, corresponding to the two [Slack notification methods](#slack-notifications) and [email notification](#email-notifications). They are specified in either a specific user's `notification_targets` key or the top-level `notification_targets` configuration key.
 
@@ -88,11 +84,9 @@ This example shows the location of both user-specific and global notification ta
 
 ### Notifications During Development
 
-Here's a problem: when you're developing and testing, you might run plans and runs over and over again. If notifications are enabled, you (and your team) will get bombarded with notifications for every test run. That gets annoying fast!
+Events triggering notifications may be executed repeatedly during code development. To prevent excessive notification, Vulcan can stop all but one user's notification targets.
 
-Vulcan can help with this. If you set the top-level `username` configuration key, only that user's notification targets will receive notifications. Everyone else's targets will be silenced. This is perfect for development work.
-
-You can set `username` in either your project's config file or in a machine-specific config file at `~/.vulcan`. The machine-specific file is handy if you have a dedicated development machine and want to automatically silence notifications there without affecting your project config.
+Specify the top-level `username` configuration key with a value also present in a user-specific notification target's `username` key to only notify that user. This key can be specified in either the project configuration file or a machine-specific configuration file located in `~/.vulcan`. The latter may be useful if a specific machine is always used for development.
 
 This example stops all notifications other than those for `User1`:
 
@@ -134,19 +128,11 @@ This example stops all notifications other than those for `User1`:
 
 ## Vulcan Event Types
 
-Vulcan can notify you about several different events. You choose which ones you care about by listing them in the notification target's `notify_on` field.
+Vulcan notifications are triggered by events. The events that should trigger a notification are specified in the notification target's `notify_on` field.
 
-<<<<<<< Updated upstream
 Notifications are supported for [`plan` application](../../guides/plan.md) start/end/failure, [`run`](../../getting_started/cli.md#run) start/end/failure, and [`audit`](../../components/audits/audits.md) failures.
-=======
-Here are the events you can get notified about:
->>>>>>> Stashed changes
 
-- **Plan events**: When a [`plan`](configurations/guides/plan.md) starts, finishes, or fails
-- **Run events**: When a [`run`](configurations/getting_started/cli.md#run) starts, finishes, or fails  
-- **Audit failures**: When an [`audit`](configurations/components/audits/audits.md) fails
-
-For start/end events, the notification includes the target environment name so you know which environment the event happened in. For failure events, you'll get the actual error message or exception, which helps with debugging.
+For `plan` and `run` start/end, the target environment name is included in the notification message. For failures, the Python exception or error text is included in the notification message.
 
 This table lists each event, its associated `notify_on` value, and its notification message:
 
@@ -164,18 +150,13 @@ Any combination of these events can be specified in a notification target's `not
 
 ## Slack Notifications
 
-Vulcan supports two ways to send Slack notifications:
-
-1. **Slack Webhooks** - Simple and easy to set up. Can send messages to channels, but can't message individual users directly.
-2. **Slack Web API** - More flexible. Can send to channels or direct message specific users. Requires an API token.
-
-Let's look at both options:
+Vulcan supports two types of Slack notification. Slack webhooks can notify a Slack channel, but they cannot message specific users. The Slack Web API can notify channels or users.
 
 ### Webhook Configuration
 
-Slack webhooks are the simplest way to get started. When you [create an incoming webhook](https://api.slack.com/messaging/webhooks) in Slack, you get a unique URL that's tied to a specific channel. Vulcan just sends a JSON payload to that URL, and Slack posts it to the channel.
+Vulcan uses Slack's "Incoming Webhooks" for webhook notifications. When you [create an incoming webhook](https://api.slack.com/messaging/webhooks) in Slack, you will receive a unique URL associated with a specific Slack channel. Vulcan transmits the notification message by submitting a JSON payload to that URL.
 
-Here's an example configuration. Notice we're using an environment variable for the webhook URL, this keeps secrets out of your config file:
+This example shows a Slack webhook notification target. Notifications are triggered by plan application start, plan application failure, or Vulcan run start. The specification uses an environment variable `SLACK_WEBHOOK_URL` instead of hard-coding the URL directly into the configuration file:
 
 === "YAML"
 
@@ -202,9 +183,9 @@ Here's an example configuration. Notice we're using an environment variable for 
 
 ### API Configuration
 
-If you need to message individual users (not just channels), you'll need to use the Slack Web API. This requires an API token, but the good news is that one token can be used for multiple notification targets, so you can set up different channels or users without creating multiple tokens.
+If you want to notify users, you can use the Slack API notification target. This requires a Slack API token, which can be used for multiple notification targets with different channels or users. See [Slack's official documentation](https://api.slack.com/tutorials/tracks/getting-a-token) for information on getting an API token.
 
-To get a token, check out [Slack's official documentation](https://api.slack.com/tutorials/tracks/getting-a-token). Once you have it, configure it like this (again, using an environment variable to keep it secure):
+This example shows a Slack API notification target. Notifications are triggered by plan application start, plan application end, or audit failure. The specification uses an environment variable `SLACK_API_TOKEN` instead of hard-coding the token directly into the configuration file:
 
 === "YAML"
 
@@ -233,9 +214,9 @@ To get a token, check out [Slack's official documentation](https://api.slack.com
 
 ## Email Notifications
 
-If Slack isn't your thing, Vulcan can also send email notifications. You'll need to configure SMTP settings (host, user, password) and specify who should receive the emails. One notification target can send to multiple recipients, which is handy for team-wide notifications.
+Vulcan supports notifications via email. The notification target specifies the SMTP host, user, password, and sender address. A target may notify multiple recipient email addresses.
 
-Here's an example that sends an email to the data team whenever a run fails. As always, we're using environment variables for sensitive information:
+This example shows an email notification target, where `sushi@example.com` emails `data-team@example.com` on Vulcan run failure. The specification uses environment variables `SMTP_HOST`, `SMTP_USER`, and `SMTP_PASSWORD` instead of hard-coding the values directly into the configuration file:
 
 === "YAML"
 
@@ -273,11 +254,11 @@ Here's an example that sends an email to the data team whenever a run fails. As 
 
 ### Overriding Notification Targets
 
-If you're using a Python configuration file, you can create custom notification targets that send exactly the messages you want. This is useful if you need to format messages differently, add extra context, or integrate with other systems.
+In Python configuration files, new notification targets can be configured to send custom messages.
 
-To create a custom notification target, subclass one of the built-in target classes (`SlackWebhookNotificationTarget`, `SlackApiNotificationTarget`, or `BasicSMTPNotificationTarget`). You can see the full class definitions [on Github](https://github.com/TobikoData/vulcan/blob/main/vulcan/core/notification_target.py).
+To customize a notification, create a new notification target class as a subclass of one of the three target classes described above (`SlackWebhookNotificationTarget`, `SlackApiNotificationTarget`, or `BasicSMTPNotificationTarget`). See the definitions of these classes on Github [here](https://github.com/TobikoData/vulcan/blob/main/vulcan/core/notification_target.py).
 
-Each notification target class inherits from `BaseNotificationTarget`, which provides a `notify` function for each event type. Here's what information is available to each function:
+Each of those notification target classes is a subclass of `BaseNotificationTarget`, which contains a `notify` function corresponding to each event type. This table lists the notification functions, along with the contextual information available to them at calling time (e.g., the environment name for start/end events):
 
 | Function name        | Contextual information           |
 | -------------------- | -------------------------------- |
@@ -289,7 +270,9 @@ Each notification target class inherits from `BaseNotificationTarget`, which pro
 | notify_run_failure   | Exception stack trace: `exc`     |
 | notify_audit_failure | Audit error trace: `audit_error` |
 
-Here's a practical example. Let's say you want to include log file contents in failure notifications to make debugging easier. You can create a custom notification target that reads the log file and appends it to the error message:
+This example creates a new notification target class `CustomSMTPNotificationTarget`.
+
+It overrides the default `notify_run_failure` function to read a log file `"/home/vulcan/vulcan.log"` and append its contents to the exception stack trace `exc`:
 
 === "Python"
 

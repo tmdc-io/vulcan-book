@@ -653,7 +653,6 @@ Here are some tips to help you use `run` effectively:
 6. **Handle errors gracefully** - Set up [notifications](guides-old/notifications.md) for run failures. Know when things go wrong!
 
 Following these practices will help you build reliable, automated data pipelines.
->>>>>>> Stashed changes
 
 ---
 
