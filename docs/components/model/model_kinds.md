@@ -11,6 +11,7 @@ Find information about all model kind configuration parameters in the [model con
 **Why this matters:** If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With `INCREMENTAL_BY_TIME_RANGE`, Vulcan only processes the new intervals, which saves you time and money. Pretty smart, right?
 
 To use this kind, you need to tell Vulcan two things:
+
 1. **Which column has your time data** - So Vulcan knows how to partition and filter
 2. **A WHERE clause** - That filters your upstream data by time range using Vulcan's time macros
 
@@ -432,6 +433,7 @@ MODEL (
 **Safety feature:** Vulcan automatically adds a time range filter to your query's output to prevent data leakage. This means even if your `WHERE` clause has a bug, Vulcan won't accidentally store records outside the target interval.
 
 Here's how it works:
+
 - **Your WHERE clause** filters the **input** data as it's read from upstream tables (makes queries faster)
 - **Vulcan's automatic filter** filters the **output** data before it's stored (prevents data leakage)
 
@@ -517,6 +519,7 @@ Depending on the target engine, models of the `INCREMENTAL_BY_TIME_RANGE` kind a
 `INCREMENTAL_BY_UNIQUE_KEY` models update data based on a unique key. Think of it like an upsert operation, if a key exists, update it; if it doesn't, insert it.
 
 Here's how it works:
+
 - **New key?** → Insert the row
 - **Existing key?** → Update the row with new data
 - **Key missing from new data?** → Leave the existing row alone
@@ -1471,7 +1474,7 @@ Summary of Changes:
 * Cheeseburger was removed from the menu.
 * Milkshakes were added to the menu.
 
-Assuming your pipeline ran at `2020-01-02 11:00:00`, target table will be updated with the following data:
+Assuming your models ran at `2020-01-02 11:00:00`, target table will be updated with the following data:
 
 | ID | Name             | Price |     Updated At      |     Valid From      |      Valid To       |
 |----|------------------|:-----:|:-------------------:|:-------------------:|:-------------------:|
@@ -1548,7 +1551,7 @@ Summary of Changes:
 * Cheeseburger was removed from the menu.
 * Milkshakes were added to the menu.
 
-Assuming your pipeline ran at `2020-01-02 11:00:00`, target table will be updated with the following data:
+Assuming your models ran at `2020-01-02 11:00:00`, target table will be updated with the following data:
 
 | ID | Name             | Price |     Valid From      |      Valid To       |
 |----|------------------|:-----:|:-------------------:|:-------------------:|
@@ -1626,7 +1629,7 @@ After running at `2020-01-03 11:00:00`, your final SCD Type 2 table:
 | Name                         | Description                                                                                                                                                                                                                                                                                                                                  | Type                      |
 |------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
 | columns                      | The name of the columns to check for changes. `*` to represent that all columns should be checked.                                                                                                                                                                                                                                           | List of strings or string |
-| execution_time_as_valid_from | By default, when the model is first loaded `valid_from` is set to `1970-01-01 00:00:00` and future new rows will have `execution_time` of when the pipeline ran. This changes the behavior to always use `execution_time`. Default: `false`                                                                                                  | bool                      |
+| execution_time_as_valid_from | By default, when the model is first loaded `valid_from` is set to `1970-01-01 00:00:00` and future new rows will have `execution_time` of when the models ran. This changes the behavior to always use `execution_time`. Default: `false`                                                                                                  | bool                      |
 | updated_at_name              | If sourcing from a table that includes as timestamp to use as valid_from, set this property to that column. See [Processing Source Table with Historical Data](#processing-source-table-with-historical-data) for more info on this use case. (Default: `None`) | int                       |
 
 

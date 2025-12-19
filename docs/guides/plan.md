@@ -286,6 +286,7 @@ Apply - Backfill Tables [y/n]:
 ### Step 3: Review Dependencies
 
 Notice that:
+
 - Only the new model appears in the plan
 - The upstream model (`sales.daily_sales`) is not affected because adding a downstream model doesn't change upstream data
 - Backfill is needed from the model's start date
@@ -393,6 +394,7 @@ Apply - Backfill Tables [y/n]:
 ### Step 3: Check Downstream Models
 
 Notice that `sales.weekly_sales` (which depends on `daily_sales`) is **not** listed. This is because:
+
 - The change is non-breaking
 - Downstream models don't need to be reprocessed
 - They'll automatically see the new column once `daily_sales` is backfilled

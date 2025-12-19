@@ -16,7 +16,8 @@ Most Vulcan models manage their own data, you run `vulcan run`, and Vulcan updat
 
 You might be wondering: "What's the difference between a managed model and a materialized view?" Good question!
 
-Vulcan already supports [materialized views](components/model/types/model_kinds.md#materialized-views), but they have limitations:
+Vulcan already supports [materialized views](../../model_kinds.md#materialized-views), but they have limitations:
+
 - Some engines only allow materialized views from a single base table
 - Materialized views aren't automatically refreshed, you need to run `REFRESH MATERIALIZED VIEW` manually
 - You're responsible for scheduling refreshes
@@ -31,6 +32,7 @@ Vulcan already supports [materialized views](components/model/types/model_kinds.
 ## Lifecycle in Vulcan
 
 Managed models follow the same lifecycle as other Vulcan models:
+
 - Virtual environments create pointers to model snapshots
 - Model changes create new snapshots
 - Upstream changes trigger new snapshots

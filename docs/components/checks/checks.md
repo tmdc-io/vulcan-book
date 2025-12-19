@@ -1,12 +1,12 @@
 # Checks
 
-Quality checks are validation rules that monitor your data quality over time without blocking your pipelines. Think of them as your data's health checkup, they'll warn you when something looks off, but they won't stop the show.
+Quality checks are validation rules that monitor your data quality over time without blocking your modelss. Think of them as your data's health checkup, they'll warn you when something looks off, but they won't stop the show.
 
-Unlike [audits](../audits/audits.md) (which block pipeline execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.
+Unlike [audits](../audits/audits.md) (which block models execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.
 
 **What makes checks special:**
 - Configured in simple YAML files in the `checks/` directory
-- Don't block pipelines (your models keep running even if checks fail)
+- Don't block modelss (your models keep running even if checks fail)
 - Track historical patterns and trends
 - Support complex statistical analysis
 - Integrate with Activity API for monitoring and alerting
@@ -19,7 +19,7 @@ Before we dive in, let's clear up the confusion around these three data quality 
 |---------|--------|--------|----------|
 | **Purpose** | Critical validation | Monitoring & analysis | Observation & tracking |
 | **When runs** | With model (inline) | Separately or with models | With model |
-| **Blocks pipeline?** | Yes (always) | No | No |
+| **Blocks models?** | Yes (always) | No | No |
 | **Configuration** | In MODEL DDL or .sql files | YAML files (`checks/`) | In MODEL DDL |
 | **Output** | Pass/fail | Pass/fail + samples | Statistical metrics |
 | **Best for** | Business rules, data integrity | Trend monitoring, anomalies | Understanding data |
@@ -31,7 +31,7 @@ Think of it like a security system for your data:
 
 ```
 ┌─────────────────────────────────────────┐
-│  AUDITS (Critical - Blocks Pipeline)   │
+│  AUDITS (Critical - Blocks models)   │
 │  • Primary keys must be unique          │
 │  • Revenue must be non-negative         │
 │  • Foreign key relationships valid      │
@@ -57,6 +57,7 @@ Think of it like a security system for your data:
 ## When to Use Checks
 
 ✅ **Use Quality Checks for:**
+
 - Monitoring data quality trends over time (is completeness getting worse?)
 - Statistical anomaly detection (did revenue suddenly spike?)
 - Cross-model validation (do orders match customers?)
@@ -65,12 +66,14 @@ Think of it like a security system for your data:
 - Building data quality dashboards
 
 ❌ **Use Audits Instead for:**
+
 - Critical business rules that must pass (revenue can't be negative)
 - Model-specific validation (runs inline with the model)
 - Simple SQL assertions
 - Blocking invalid data from flowing downstream
 
 ❌ **Use Profiles Instead for:**
+
 - Understanding data characteristics (what does this column look like?)
 - Discovering patterns (not validation)
 - Detecting data drift over time
@@ -82,7 +85,7 @@ Here's how you'd layer all three for a revenue table:
 
 ```sql
 -- AUDIT (Critical - blocks if fails)
--- This stops the pipeline if revenue is invalid
+-- This stops the models if revenue is invalid
 MODEL (
   name analytics.revenue,
   assertions (
@@ -1291,13 +1294,13 @@ Anomaly detection learns what's normal and adapts to variance, which reduces fal
 
 ## Summary
 
-Quality checks provide a comprehensive way to monitor data quality over time without blocking your pipelines. Here's what we covered:
+Quality checks provide a comprehensive way to monitor data quality over time without blocking your modelss. Here's what we covered:
 
 ### Core Concepts
 
 **1. Quality Checks**
 - YAML-configured validation rules
-- Non-blocking (don't stop pipelines)
+- Non-blocking (don't stop modelss)
 - Track trends over time
 - Integrate with Activity API
 

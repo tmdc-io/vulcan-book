@@ -1,10 +1,10 @@
 # Audits
 
-Audits are your data quality bouncers, they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your pipeline if something's wrong.
+Audits are your data quality bouncers, they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your models if something's wrong.
 
 Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audits run automatically whenever you apply a [plan](../../guides/plan.md). They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.
 
-**Here's the key thing:** All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything, no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire pipeline and causing headaches later.
+**Here's the key thing:** All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything, no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire models and causing headaches later.
 
 A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.
 
@@ -131,6 +131,7 @@ WHERE @column >= @threshold;
 ```
 
 This uses [macros](../advanced-features/macros/overview.md) to make it flexible:
+
 - `@this_model` is a special macro that refers to the model being audited (and handles incremental models correctly)
 - `@column` and `@threshold` are parameters you'll specify when you use the audit
 
@@ -797,7 +798,7 @@ This is useful for testing audits before running a full plan, or for debugging w
 
 When you apply a plan, Vulcan automatically runs all audits for models being evaluated. You don't need to do anything special, just run your plan and audits happen automatically.
 
-If any audit fails, Vulcan halts the pipeline immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us, it's better than finding out later that bad data made it into production.
+If any audit fails, Vulcan halts the models immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us, it's better than finding out later that bad data made it into production.
 
 ## Advanced Usage
 
@@ -849,6 +850,7 @@ This will show you the exact query and the rows that failed. Once you see what d
 ### Understanding Audit Results
 
 When an audit fails, Vulcan shows you:
+
 - Which audit failed
 - Which model it was attached to
 - The exact query that was run

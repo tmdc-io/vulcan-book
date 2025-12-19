@@ -95,7 +95,7 @@ Gateways define connections to your data warehouse, state backend, and other ser
 | `scheduler` | Scheduler configuration | `builtin` |
 | `state_schema` | Schema name for state tables | `vulcan` |
 
-→ See [Configuration Reference](../configurations-old/configuration.md#gateways) for detailed gateway options.
+→ See [Configuration Reference](../../references/configuration.md#gateways) for detailed gateway options.
 
 ### Model Defaults (Required)
 
@@ -139,14 +139,14 @@ Configure alerts via Slack or email for pipeline events.
 
 Vulcan supports connecting to various data warehouses:
 
-- **[PostgreSQL](./configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md)** - Open-source relational database
-- **[Snowflake](./configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md)** - Cloud data warehouse
+- **[PostgreSQL](../../references/integrations/engines/postgres.md)** - Open-source relational database
+- **[Snowflake](../../references/integrations/engines/snowflake.md)** - Cloud data warehouse
 
 ## Configuration Reference
 
 | Topic | Description |
 |-------|-------------|
-| [Configuration Reference](../configurations-old/configuration.md) | Complete list of all configuration parameters |
+| [Configuration Reference](../../references/configuration.md) | Complete list of all configuration parameters |
 | [Variables](./options/variables.md) | Environment variables and `.env` files |
 | [Model Defaults](./options/model_defaults.md) | Default settings for all models |
 | [Execution Hooks](./options/execution_hooks.md) | `before_all` and `after_all` statements |

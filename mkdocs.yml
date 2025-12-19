@@ -20,7 +20,8 @@ nav:
       - Engines:
         - configurations/engines/postgres/postgres.md
         - configurations/engines/snowflake/snowflake.md
-      - CI/CD: ci-cd/index.md 
+      - CI/CD: 
+        - configurations/ci_cd/index.md
   - Components:
       - Model:
         - components/model/overview.md

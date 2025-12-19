@@ -2,7 +2,7 @@
 
 SQL is a [declarative language](https://en.wikipedia.org/wiki/Declarative_programming), which means you describe what you want, not how to get it. That's great for clarity, but it also means SQL doesn't have built-in features like variables or control flow (if-then statements, loops) that let your queries adapt to different situations.
 
-The problem? Data pipelines are dynamic. You need different behavior depending on context, maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.
+The problem? Data modelss are dynamic. You need different behavior depending on context, maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.
 
 Macros let you make your SQL dynamic. Instead of hardcoding values, you can use variables that get substituted at runtime. Instead of writing repetitive code, you can use functions that generate SQL for you.
 

@@ -2,7 +2,7 @@
 
 Models are the heart of Vulcan, they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.
 
-Models live in `.sql` files in the `models/` directory of your project. The cool thing is that Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Just write your SQL, and Vulcan handles the lineage.
+Models live in `.sql` and `.py` files in the `models/` directory of your project. The cool thing is that Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Just write your SQL, and Vulcan handles the lineage.
 
 Every model has two parts:
 
@@ -107,6 +107,7 @@ MODEL (
 ```
 
 This tells Vulcan:
+
 - **`name`** - What to call this model (schema.table format)
 - **`kind`** - How to materialize it (FULL rebuilds everything, INCREMENTAL only updates changes, etc.)
 - **`cron`** - When to run it (`@daily` means every day)
@@ -144,6 +145,7 @@ ORDER BY order_date
 ```
 
 This query:
+
 - Reads from `raw.raw_orders`
 - Groups by `order_date`
 - Counts orders, sums revenue, finds the latest order ID
@@ -340,7 +342,7 @@ def execute(
 The DataFrame columns need to match your `columns` definition exactly, same names, compatible types.
 
 !!! info "Learn more"
-    Want to dive deeper into Python models? Check out the [Python Models](components/model/python_models.md) documentation for detailed information, advanced patterns, and more examples.
+    Want to dive deeper into Python models? Check out the [Python Models](../model/types/python_models.md) documentation for detailed information, advanced patterns, and more examples.
 
 ## Comment Registration
 
@@ -375,20 +377,9 @@ Here's what each engine supports:
 
 | Engine        | `TABLE` comments | `VIEW` comments |
 | ------------- | ---------------- | --------------- |
-| Athena        | N                | N               |
-| BigQuery      | Y                | Y               |
-| ClickHouse    | Y                | Y               |
-| Databricks    | Y                | Y               |
-| DuckDB <=0.9  | N                | N               |
-| DuckDB >=0.10 | Y                | Y               |
-| MySQL         | Y                | Y               |
-| MSSQL         | N                | N               |
 | Postgres      | Y                | Y               |
-| GCP Postgres  | Y                | Y               |
-| Redshift      | Y                | N               |
 | Snowflake     | Y                | Y               |
 | Spark         | Y                | Y               |
-| Trino         | Y                | Y               |
 
 If your engine doesn't support comments, Vulcan will skip registration (no errors, it just won't register them).
 

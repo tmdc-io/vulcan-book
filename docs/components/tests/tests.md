@@ -6,7 +6,7 @@ Think of tests as executable documentation. They show exactly how your model sho
 
 ## Why Testing Matters
 
-Data pipelines are tricky beasts. Small errors can snowball into significant business impacts. A small change in one model can cascade into big problems downstream. Here's why testing is worth your time:
+Data modelss are tricky beasts. Small errors can snowball into significant business impacts. A small change in one model can cascade into big problems downstream. Here's why testing is worth your time:
 
 - **Catch breaking changes** - Refactor with confidence knowing tests will flag unintended behavior changes
 - **Document expected behavior** - Tests serve as executable specifications (better than comments that get outdated!)
@@ -14,7 +14,7 @@ Data pipelines are tricky beasts. Small errors can snowball into significant bus
 - **Data quality assurance** - Verify that aggregations, joins, and calculations produce correct results
 - **Confidence in changes** - Make updates knowing you'll catch regressions before they hit production
 
-Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new [plan](guides/plan.md). Either way, they're there to help you sleep better at night.
+Tests run either on demand (like in CI/CD modelss) or automatically when you create a new [plan](guides/plan.md). Either way, they're there to help you sleep better at night.
 
 ## Creating Tests
 
@@ -180,6 +180,7 @@ test_full_model_basic:
 ```
 
 Notice how we're providing mock data for all three upstream tables. The test verifies that the model correctly:
+
 - Joins customers with orders and order items
 - Counts distinct orders per customer
 - Calculates total spent (quantity × unit_price summed across all items)
@@ -323,6 +324,7 @@ test_model_with_cte:
 ```
 
 This verifies that:
+
 1. The CTE correctly filters to `item_id = 1` (should return rows with id 1 and 2)
 2. The final query correctly counts distinct orders (should be 2)
 

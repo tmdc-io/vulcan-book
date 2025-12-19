@@ -45,7 +45,7 @@ This page is your complete reference for all available properties. We'll cover w
 | `formatting` | Enable model formatting | `bool` | N |
 | `ignored_rules` | Linter rules to ignore | `str` \| `array` | N |
 
-*Required unless [name inference](#model-naming) is enabled.
+**Note:** Required unless [name inference](#model-naming) is enabled.
 
 ---
 
@@ -226,6 +226,7 @@ Controls when your model runs. You can use standard cron expressions or Vulcan's
     ```
 
 **Cron shortcuts:** Vulcan provides convenient shortcuts:
+
 - `@hourly` - Every hour
 - `@daily` - Every day at midnight UTC
 - `@weekly` - Once per week
@@ -294,6 +295,7 @@ Controls the granularity of time intervals for incremental models. By default, V
 Sets the earliest date/time your model should process. This is useful for limiting backfills or defining when your model's data begins.
 
 You can use:
+
 - **Absolute dates:** `'2024-01-01'`
 - **Relative expressions:** `'1 year ago'`
 - **Epoch milliseconds:** `1704067200000`
@@ -502,13 +504,14 @@ Document your columns! This property lets you add descriptions for each column, 
     ```
 
 !!! warning "Priority"
-    If `column_descriptions` is present, [inline column comments](components/model/overview.md#inline-column-comments) will not be registered.
+    If `column_descriptions` is present, [inline column comments](../overview.md#inline-column-comments) will not be registered.
 
 ### columns
 
 Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query, it'll use exactly what you specify.
 
 **When to use:**
+
 - Python models (required—Vulcan can't infer types from Python code)
 - Seed models (you need to define the CSV schema)
 - When you want strict type control
@@ -543,15 +546,11 @@ Explicitly defines your model's column names and data types. When you use this, 
     ```
 
 !!! note "Python Models"
-This is required for [Python models](components/model/python_models.md) since Vulcan can't infer column types from Python code. You must explicitly define your schema.
+This is required for [Python models](../model/types/python_models.md) since Vulcan can't infer column types from Python code. You must explicitly define your schema.
 
 ### dialect
 
-Specifies the SQL dialect your model uses. Defaults to whatever you set in `model_defaults`, but you can override it per-model if needed.
-
-**Why this matters:** Vulcan uses SQLGlot to parse and transpile SQL. You can write in one dialect (like PostgreSQL) and Vulcan will convert it to whatever your engine needs (like BigQuery). Pretty neat!
-
-Supports all [SQLGlot dialects](https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/__init__.py).
+Specifies the SQL dialect your model uses. Defaults to whatever you set in `model_defaults`.
 
 === "SQL"
 
@@ -595,7 +594,7 @@ Labels for organizing and filtering models.
 
 ### assertions
 
-Attach [audits](../audits/audits.md) directly to your model. These validations run after each model evaluation and will block the pipeline if they fail.
+Attach [assertions](../audits/audits.md) directly to your model. These validations run after each model evaluation and will block the models if they fail.
 
 **Why use assertions?** They're your safety net, they catch bad data before it flows downstream. If revenue can't be negative, assert it. If customer IDs must be unique, assert it. Fail fast, fix fast.
 
@@ -630,11 +629,12 @@ Think of assertions as "this data must be true" validations that run automatical
 
 ### profiles
 
-Enable automatic data profiling for specific columns. Profiles track statistical metrics over time (like null percentages, distinct counts, distributions) without blocking your pipeline.
+Enable automatic data profiling for specific columns. Profiles track statistical metrics over time (like null percentages, distinct counts, distributions) without blocking your models.
 
 **How it works:** Vulcan collects metrics each run and stores them in the `_check_profiles` table. You can query this to see how your data changes over time, detect data drift, understand patterns, and decide which checks or audits to add.
 
 **Use cases:**
+
 - Track null percentages over time
 - Monitor distinct value counts
 - Detect data drift
@@ -692,6 +692,7 @@ Think of profiles as your data observability layer, they watch and learn, but do
 Explicitly declare model dependencies. Vulcan automatically infers dependencies from SQL queries, but sometimes you need to add extra ones.
 
 **When to use:**
+
 - Python models (required—Vulcan can't parse Python to find dependencies)
 - Hidden dependencies (like a macro that references another model)
 - External dependencies that aren't in your SQL
@@ -836,6 +837,7 @@ Specifies the table format for engines that support multiple formats. Different 
 **Supported formats:** `iceberg`, `hive`, `delta`
 
 **When to use:** If your engine supports multiple formats, choose based on your needs:
+
 - **Iceberg:** Great for time travel and schema evolution
 - **Delta:** Good for ACID transactions and time travel
 - **Hive:** Traditional format, widely supported
@@ -895,6 +897,7 @@ These properties let you pass engine-specific settings to Vulcan. Each engine ha
 Pass engine-specific properties directly to the physical table/view creation. This is where you set things like retention policies, labels, or other engine-specific features.
 
 **Use cases:**
+
 - Set table retention (BigQuery: `partition_expiration_days`)
 - Add labels or tags (BigQuery, Snowflake)
 - Configure table type (Snowflake: `TRANSIENT` tables)
@@ -931,6 +934,7 @@ Pass engine-specific properties directly to the physical table/view creation. Th
 Pass engine-specific properties to the virtual layer view. This is useful for things like view-level security, labels, or other view-specific settings.
 
 **Use cases:**
+
 - Create secure views (Snowflake: `SECURE` views)
 - Add labels to views
 - Set view-level permissions
@@ -965,6 +969,7 @@ Pass engine-specific properties to the virtual layer view. This is useful for th
 Set session-level properties that apply when Vulcan executes your model. These affect how queries run but don't change the table structure.
 
 **Use cases:**
+
 - Set query timeouts
 - Configure parallelism
 - Adjust memory limits
@@ -1055,6 +1060,7 @@ Force a new model version without changing the definition. This is like a versio
 Control whether the model is active. Set to `false` to disable a model without deleting it.
 
 **When to use:**
+
 - Temporarily disable a model while debugging
 - Deprecate a model but keep it for reference
 - Skip models during development
@@ -1084,11 +1090,12 @@ Control whether the model is active. Set to `false` to disable a model without d
 Allow processing of incomplete data intervals. By default, Vulcan waits for complete intervals before processing (keeps data quality high). Set this to `true` if you need to process partial intervals.
 
 **When to use:**
-- Real-time or near-real-time pipelines
+
+- Real-time or near-real-time modelss
 - When you need data ASAP, even if it's incomplete
 - Streaming data scenarios
 
-**Trade-off:** You lose the ability to distinguish between "missing data" (pipeline issue) and "partial interval" (expected). Use with caution!
+**Trade-off:** You lose the ability to distinguish between "missing data" (models issue) and "partial interval" (expected). Use with caution!
 
 **Default:** `false` (wait for complete intervals)
 
@@ -1097,6 +1104,7 @@ Allow processing of incomplete data intervals. By default, Vulcan waits for comp
 Enable or disable query optimization. Vulcan optimizes queries by default (rewrites them for better performance), but sometimes you want to disable this.
 
 **When to disable:**
+
 - The optimizer is breaking your query
 - You have engine-specific optimizations you want to preserve
 - Debugging query issues
@@ -1126,6 +1134,7 @@ Enable or disable query optimization. Vulcan optimizes queries by default (rewri
 Control whether Vulcan formats this model when you run `vulcan format`. Set to `false` if you want to preserve custom formatting.
 
 **When to disable:**
+
 - Legacy models with specific formatting requirements
 - Models where formatting breaks something
 - When you prefer manual formatting control
@@ -1204,13 +1213,14 @@ These properties work with all incremental model kinds. They're your toolkit for
 
 | Property | Description | Type | Default |
 |----------|-------------|:----:|:-------:|
-| `forward_only` | All changes should be [forward-only](../guides/plan.md#forward-only-plans) | `bool` | `false` |
+| `forward_only` | All changes should be [forward-only](../../references/plans.md#forward-only-plans) | `bool` | `false` |
 | `on_destructive_change` | Behavior for destructive schema changes | `str` | `error` |
 | `on_additive_change` | Behavior for additive schema changes | `str` | `allow` |
-| `disable_restatement` | Disable [data restatement](../guides/plan.md#restatement-plans) | `bool` | `false` |
+| `disable_restatement` | Disable [data restatement](../../references/plans.md#restatement-plans) | `bool` | `false` |
 | `auto_restatement_cron` | Cron expression for automatic restatement | `str` | - |
 
 **Values for `on_destructive_change` / `on_additive_change`:**
+
 - `allow` - Let the change happen (default for additive)
 - `warn` - Allow but warn about it
 - `error` - Block the change (default for destructive)
@@ -1662,4 +1672,4 @@ infer_names: true
 
 **When to use:** If your project structure matches your schema structure, this saves you from typing `name` in every model. Pretty convenient!
 
-Learn more in the [configuration guide](../guides-old/configuration.md#model-naming).
+Learn more in the [configuration guide](../../references/configuration.md#model-naming).

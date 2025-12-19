@@ -8,7 +8,7 @@ Notifications are configured with `notification targets`. Targets are specified 
 
 A project may specify both global and user-specific notifications. Each target's notifications will be sent for all instances of each [event type](#vulcan-event-types) (e.g., notifications for `run` will be sent for *all* of the project's environments), with exceptions for audit failures and when an [override is configured for development](#notifications-during-development).
 
-[Audit](configurations/components/audits/audits.md) failure notifications can be sent for specific models if five conditions are met:
+[Audit](../../components/audits/audits.md) failure notifications can be sent for specific models if five conditions are met:
 
 1. A model's `owner` field is populated
 2. The model executes one or more audits
@@ -130,7 +130,7 @@ This example stops all notifications other than those for `User1`:
 
 Vulcan notifications are triggered by events. The events that should trigger a notification are specified in the notification target's `notify_on` field.
 
-Notifications are supported for [`plan` application](configurations/guides/plan.md) start/end/failure, [`run`](configurations/getting_started/cli.md#run) start/end/failure, and [`audit`](configurations/components/audits/audits.md) failures.
+Notifications are supported for [`plan` application](../../guides/plan.md) start/end/failure, [`run`](../../getting_started/cli.md#run) start/end/failure, and [`audit`](../../components/audits/audits.md) failures.
 
 For `plan` and `run` start/end, the target environment name is included in the notification message. For failures, the Python exception or error text is included in the notification message.
 

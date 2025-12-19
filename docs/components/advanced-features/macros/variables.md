@@ -43,7 +43,7 @@ Vulcan comes with a bunch of predefined variables like this. You can also create
 
 ## Predefined variables
 
-Vulcan provides a set of predefined variables that are automatically available in your models. Most of them are related to time (dates, timestamps, etc.), which makes sense since time-based logic is super common in data pipelines.
+Vulcan provides a set of predefined variables that are automatically available in your models. Most of them are related to time (dates, timestamps, etc.), which makes sense since time-based logic is super common in data modelss.
 
 The time variables follow a consistent naming pattern: they combine a prefix (like `start`, `end`, or `execution`) with a postfix (like `ds`, `ts`, or `epoch`) to create variables like `@start_ds` or `@execution_epoch`.
 
@@ -136,16 +136,17 @@ Beyond time, Vulcan provides variables that give you information about the curre
   
   Learn more about using this in [pre/post-statements](components/advanced-features/model/sql_models.md#optional-prepost-statements).
 
-- **`@gateway`** - The name of the current [gateway](components/guides-old/connections.md) (your database connection)
+- **`@gateway`** - The name of the current [gateway](../../../../references/configuration.md#gateways) (your database connection)
 
 - **`@this_model`** - The physical table name that the model's view selects from. Handy for creating [generic audits](../../../../../audits/audits.md#generic-audits). When used in [on_virtual_update statements](components/advanced-features/model/sql_models.md#optional-on-virtual-update-statements), it contains the qualified view name instead.
 
-- **`@model_kind_name`** - The name of the current model kind (like `'FULL'` or `'INCREMENTAL_BY_TIME_RANGE'`). Useful when you need to control [physical properties in model defaults](components/configurations-old/configuration.md#model-defaults) based on the model kind.
+- **`@model_kind_name`** - The name of the current model kind (like `'FULL'` or `'INCREMENTAL_BY_TIME_RANGE'`). Useful when you need to control [physical properties in model defaults](../../../../references/model_configuration.md#model-defaults) based on the model kind.
 
 !!! note "Embedding variables in strings"
     Sometimes you'll see variables written with curly braces like `@{variable}` instead of just `@variable`. They do different things!
 
     The curly brace syntax tells Vulcan to treat the rendered value as a SQL identifier (like a table or column name), not a string literal. So if `variable` contains `foo.bar`, then:
+
     - `@variable` produces `foo.bar` (as a literal value)
     - `@{variable}` produces `"foo.bar"` (as an identifier, with quotes)
 
@@ -155,10 +156,10 @@ Beyond time, Vulcan provides variables that give you information about the curre
 
 #### Before all and after all variables
 
-These variables are available in [`before_all` and `after_all` statements](../../guides-old/configuration.md#before_all-and-after_all-statements), as well as in any macros called within those statements:
+These variables are available in [`before_all` and `after_all` statements](../../../../references/configuration.md#before_all--after_all), as well as in any macros called within those statements:
 
 - **`@this_env`** - The name of the current [environment](components/advanced-features/environments.md)
-- **`@schemas`** - A list of schema names in the [virtual layer](components/concepts-old/glossary.md#virtual-layer) for the current environment
-- **`@views`** - A list of view names in the [virtual layer](components/concepts-old/glossary.md#virtual-layer) for the current environment
+- **`@schemas`** - A list of schema names in the [virtual layer](../../../../references/glossary.md#virtual-layer) for the current environment
+- **`@views`** - A list of view names in the [virtual layer](../../../../references/glossary.md#virtual-layer) for the current environment
 
 These are handy when you need to perform setup or cleanup operations that depend on the environment context.

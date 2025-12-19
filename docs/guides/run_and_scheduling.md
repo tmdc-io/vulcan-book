@@ -613,7 +613,7 @@ By default, Vulcan stores scheduler state in your SQL engine. For production:
 - You observe performance degradation
 - You need better isolation
 
-See [Connections Guide](guides-old/connections.md#state-connection) for configuring a separate state database.
+See [Configuration Guide](../references/configuration.md#gateways) for configuring a separate state database.
 
 ---
 
@@ -624,7 +624,7 @@ See [Connections Guide](guides-old/connections.md#state-connection) for configur
 3. **Monitor execution** - Check logs to ensure intervals are processing correctly
 4. **Use `--ignore-cron` sparingly** - Only when catching up on missed intervals
 5. **Separate state database** - Consider PostgreSQL for state storage in production
-6. **Handle errors gracefully** - Set up [notifications](guides-old/notifications.md) for run failures
+6. **Handle errors gracefully** - Set up [notifications](../configurations/options/notifications.md) for run failures
 
 ---
 

@@ -31,6 +31,7 @@ The scheduler looks at candidate intervals, groups them into batches (controlled
 To create a signal, add a `signals` directory to your project and create your signal function in `__init__.py` (you can organize signals across multiple Python files if you prefer).
 
 A signal function needs to:
+
 - Accept a batch of time intervals (`DateTimeRanges: t.List[t.Tuple[datetime, datetime]]`)
 - Return either a boolean or a list of intervals
 - Use the `@signal` decorator

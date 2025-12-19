@@ -65,6 +65,7 @@ metrics:
 ```
 
 Now you can answer questions like:
+
 - What's our revenue by tier over time?
 - How does revenue vary by country?
 - What's the revenue breakdown by tier and country together?
@@ -123,6 +124,7 @@ metrics:
 ```
 
 The same metric can be queried with different granularities:
+
 - Daily: `granularity=day`
 - Weekly: `granularity=week`
 - Monthly: `granularity=month`

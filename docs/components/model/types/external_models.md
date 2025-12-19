@@ -28,6 +28,7 @@ The querying model's [`kind`](../model_kinds.md), [`cron`](../overview.md#cron),
 ## Creating External Models
 
 External models are defined in YAML files. You have two options:
+
 1. **Let Vulcan generate it** (easiest) - Use the `create_external_models` CLI command
 2. **Write it yourself** - Hand-craft the YAML if you need more control
 
@@ -69,7 +70,7 @@ If Vulcan does not have access to an external table's metadata, the table will b
 
 ### Gateway-specific external models
 
-In some use-cases such as [isolated systems with multiple gateways](../../guides-old/isolated_systems.md#multiple-gateways), there are external models that only exist on a certain gateway.
+In some use-cases such as [isolated systems with multiple gateways](../../../../guides-old/isolated_systems.md#multiple-gateways), there are external models that only exist on a certain gateway.
 
 **Gateway names are case-insensitive in external model configurations.** You can specify the gateway name using any case (e.g., `gateway: dev`, `gateway: DEV`, `gateway: Dev`) and Vulcan will handle the matching correctly.
 

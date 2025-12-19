@@ -95,6 +95,7 @@ SELECT @{my_variable} AS the_column; -- renders to SELECT col AS the_column
 Vulcan supports four kinds of user-defined macro variables: [global](#global-variables), [gateway](#gateway-variables), [blueprint](#blueprint-variables), and [local](#local-variables).
 
 Here's how they're organized:
+
 - **Global and gateway variables** are defined in your project configuration file and can be used in any model
 - **Blueprint and local variables** are defined in a specific model and only work in that model
 
@@ -102,7 +103,7 @@ What happens if you have variables with the same name at different levels? The m
 
 ### Global variables
 
-Global variables live in your project configuration file under the [`variables` key](components/configurations-old/configuration.md#variables). They're perfect for values you want to use across multiple models.
+Global variables live in your project configuration file under the [`variables` key](../../../../references/configuration.md#variables). They're perfect for values you want to use across multiple models.
 
 You can store numbers (`int`, `float`), booleans (`bool`), strings (`str`), or even lists and dictionaries containing these types.
 
@@ -817,6 +818,7 @@ Note these aspects of the rendered query:
 `@GENERATE_SURROGATE_KEY` generates a surrogate key from a set of columns. The surrogate key is a sequence of alphanumeric digits returned by a hash function, such as [`MD5`](https://en.wikipedia.org/wiki/MD5), on the concatenated column values.
 
 The surrogate key is created by:
+
 1. `CAST`ing each column's value to `TEXT` (or the SQL engine's equivalent type)
 2. Replacing `NULL` values with the text `'_vulcan_surrogate_key_null_'` for each column
 3. Concatenating the column values after steps (1) and (2)

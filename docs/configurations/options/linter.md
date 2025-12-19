@@ -97,6 +97,7 @@ class NoMissingOwner(Rule):
 Place a rule's code in the project's `linter/` directory. Vulcan will load all subclasses of `Rule` from that directory.
 
 If the rule is specified in the project's [configuration file](#applying-linting-rules), Vulcan will run it when:
+
 - A plan is created during `vulcan plan`
 - The command `vulcan lint` is ran
 
@@ -127,7 +128,7 @@ Use `vulcan lint --help` for more information.
 
 ## Applying linting rules
 
-Specify which linting rules a project should apply in the project's [configuration file](configurations/options/configuration.md).
+Specify which linting rules a project should apply in the project's [configuration file](../overview.md).
 
 Rules are specified as lists of rule names under the `linter` key. Globally enable or disable linting with the `enabled` key, which is `false` by default.
 

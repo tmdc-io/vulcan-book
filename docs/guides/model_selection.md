@@ -222,6 +222,7 @@ Let's see how model selection works with the Orders360 project. We'll modify `ra
 ### Example Setup
 
 We've modified two models:
+
 - `raw.raw_orders` (directly modified)
 - `sales.daily_sales` (directly modified)
 

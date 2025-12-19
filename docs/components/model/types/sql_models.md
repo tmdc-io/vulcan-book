@@ -9,6 +9,7 @@ SQL models are Vulcan's bread and butter, they're the most common type of model 
 SQL-based models are the most common type. They're designed to feel like regular SQL, but with superpowers.
 
 **Structure:** A SQL model file has these parts (in order):
+
 1. The `MODEL` DDL (metadata and configuration)
 2. Optional pre-statements (setup SQL)
 3. A single query (your transformation logic)
@@ -49,13 +50,14 @@ ORDER BY order_date
 
 The `MODEL` DDL is where you define your model's metadata, name, kind, schedule, owner, and more. It must be the first statement in your SQL file.
 
-Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the [Model Properties](components/model/types/overview.md#model-properties) documentation.
+Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the [Model Properties](../overview.md#model-properties) documentation.
 
 ### Optional Pre/Post-Statements
 
 Pre-statements run before your query, post-statements run after. They're perfect for setup, cleanup, and optimization tasks.
 
 **Common use cases:**
+
 - Pre-statements: Set session parameters, load UDFs, cache tables
 - Post-statements: Create indexes, run data quality checks, set retention policies
 
@@ -86,15 +88,15 @@ GROUP BY order_date;
 UNCACHE TABLE countries;
 ```
 
-**Project-level defaults:** You can define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](components/configurations-old/configuration.md#model-defaults).
+**Project-level defaults:** You can define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
 
 !!! warning "Statements Run Twice"
 
-Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can [conditionally execute](../../advanced-features/macros/vulcan_macros.md#prepost-statements) them based on Vulcan's [runtime stage](../../advanced-features/macros/variables.md#runtime-variables).
+Pre/post-statements are evaluated twice: when a model's table is created and when its query logic is evaluated. Executing statements more than once can have unintended side-effects, so you can [conditionally execute](../../advanced-features/macros/built_in.md#prepost-statements) them based on Vulcan's [runtime stage](../../advanced-features/macros/variables.md#runtime-variables).
 
     **Solution:** Use conditional execution with `@IF` and `@runtime_stage` to control when statements run. For example, only run a post-statement when the query is actually being evaluated:
 
-We can condition the post-statement to only run after the model query is evaluated using the [`@IF` macro operator](../../advanced-features/macros/vulcan_macros.md#if) and [`@runtime_stage` macro variable](../../advanced-features/macros/variables.md#runtime-variables) like this:
+We can condition the post-statement to only run after the model query is evaluated using the [`@IF` macro operator](../../advanced-features/macros/built_in.md#if) and [`@runtime_stage` macro variable](../../advanced-features/macros/variables.md#runtime-variables) like this:
 
 ```sql linenums="1" hl_lines="14-17"
 MODEL (
@@ -157,6 +159,7 @@ ON_VIRTUAL_UPDATE_END;
 ### The Model Query
 
 Your model must contain a standalone query. This can be:
+
 - A single `SELECT` statement
 - Multiple `SELECT` statements combined with `UNION`, `INTERSECT`, or `EXCEPT`
 
@@ -222,9 +225,8 @@ WHERE
 
 **Important syntax:** Notice `@{region}` in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal).
 
-You can see the different behavior in the WHERE clause. `@region` (without braces) is resolved to the string literal `'north'` (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax [here](../../advanced-features/macros/vulcan_macros.md#embedding-variables-in-strings).
+You can see the different behavior in the WHERE clause. `@region` (without braces) is resolved to the string literal `'north'` (with single quotes) because the blueprint value is quoted. Learn more about the curly brace syntax [here](../../advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
-Learn more about this syntax [here](../../../advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
 **Dynamic blueprints:** You can generate blueprints using macros. This is handy when your blueprint list comes from external sources (CSV files, APIs, etc.):
 
@@ -270,13 +272,14 @@ FROM vulcan_demo.fct_daily_sales
 ## Python-Based Definition
 
 You can also define SQL models using Python! This is useful when:
+
 - Your query is too complex for clean SQL
 - You need heavy dynamic logic (would require lots of macros)
 - You want to generate SQL programmatically
 
 **How it works:** You write Python code that generates SQL, and Vulcan executes it. You still get SQL models (they run SQL queries), but you write them in Python.
 
-For the complete guide on Python-based SQL models, including the `@model` decorator, execution context, and examples, see the [Python Models](components/model/types/python_models.md) page.
+For the complete guide on Python-based SQL models, including the `@model` decorator, execution context, and examples, see the [Python Models](python_models.md) page.
 
 ## Automatic Dependencies
 
@@ -294,7 +297,7 @@ GROUP BY order_date
 
 Vulcan will make sure `raw.raw_orders` runs before this model. Pretty neat!
 
-**External dependencies:** If you reference tables that aren't Vulcan models, Vulcan can handle them too, either implicitly (through execution order) or via [signals](../../../advanced-features/signals.md).
+**External dependencies:** If you reference tables that aren't Vulcan models, Vulcan can handle them too, either implicitly (through execution order) or via [signals](../../advanced-features/signals.md).
 
 **Manual dependencies:** Sometimes you need to add extra dependencies manually (maybe a hidden dependency or a macro that references another model). Use the `depends_on` property in your `MODEL` DDL for that.
 
@@ -321,7 +324,7 @@ SELECT
 
 Avoid `SELECT *` when possible. It's convenient, but dangerous—if an upstream source adds or removes columns, your model's output changes unexpectedly.
 
-**Best practice:** List every column you need explicitly. If you're querying external sources, use [`create_external_models`](components/getting_started/cli.md#create_external_models) to capture their schema, or define them as [external models](components/model/types/model_kinds.md#external).
+**Best practice:** List every column you need explicitly. If you're querying external sources, use [`create_external_models`](../../../getting_started/cli.md#create_external_models) to capture their schema, or define them as [external models](../model_kinds.md#external).
 
 **Why avoid `SELECT *` on external sources:** It prevents Vulcan from optimizing queries and determining column-level lineage. Define external models instead!
 
@@ -341,7 +344,7 @@ Vulcan uses [SQLGlot](https://github.com/tobymao/sqlglot) to parse and transpile
 
 ## Macros
 
-Standard SQL is powerful, but real-world data pipelines need dynamic components. Date filters that change each run, conditional logic, reusable query patterns—macros give you all of this.
+Standard SQL is powerful, but real-world data modelss need dynamic components. Date filters that change each run, conditional logic, reusable query patterns—macros give you all of this.
 
 **Macro variables:** Vulcan provides automatic date/time variables for incremental models. Use `@start_date`, `@end_date`, `@start_ds`, `@end_ds` and Vulcan fills them in with the current time range. No more hardcoding dates!
 

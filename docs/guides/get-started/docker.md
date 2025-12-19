@@ -406,6 +406,7 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
     **Services Won't Start**
     
     If services fail to start, ensure Docker Desktop is running with at least 4GB RAM allocated. You can check and adjust this in Docker Desktop settings:
+
     - **Mac**: Docker Desktop → Settings → Resources → Advanced
     - **Windows**: Docker Desktop → Settings → Resources → Advanced
     
@@ -457,6 +458,7 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
     **Access MinIO Console**
     
     You can access the MinIO console to manage your object storage:
+
     - **URL**: `http://localhost:9001`
     - **Username**: `admin`
     - **Password**: `password`

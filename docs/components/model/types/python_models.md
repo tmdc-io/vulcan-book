@@ -5,7 +5,7 @@ SQL is great, but sometimes you need Python. Maybe you're doing machine learning
 Vulcan has first-class support for Python models. As long as your function returns a Pandas, Spark, Bigframe, or Snowpark DataFrame, you can do whatever you want in Python. No restrictions!
 
 **When to use Python models:**
-- Machine learning pipelines
+- Machine learning modelss
 - API integrations
 - Complex transformations that are easier in Python
 - Data processing that benefits from Python libraries
@@ -102,7 +102,7 @@ from vulcan import ModelKindName
 )
 ```
 
-All model kind properties are documented in the [model configuration reference](components/configurations-old/configuration.md#model-kind-properties).
+All model kind properties are documented in the [model configuration reference](../../../../references/model_configuration.md#model-kind-properties).
 
 Supported `kind` dictionary `name` values are:
 
@@ -155,7 +155,7 @@ You can pass SQL strings, SQLGlot expressions, or macro calls as lists to `pre_s
 
     Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.
 
-**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](components/configurations-old/configuration.md#model-defaults).
+**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../../references/model_configuration.md#model-defaults).
 
 ``` python linenums="1" hl_lines="8-12"
 @model(
@@ -318,7 +318,7 @@ def execute(
     return context.fetchdf(query)
 ```
 
-You can use [global variables](components/configurations-old/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
+You can use [global variables](../../../../references/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
 
 ```python linenums="1"
 @model(
@@ -356,7 +356,7 @@ def execute(
 
 ## User-defined variables
 
-[User-defined global variables](components/configurations-old/configuration.md#variables) can be accessed from within the Python model with the `context.var` method.
+[User-defined global variables](../../../../references/configuration.md#variables) can be accessed from within the Python model with the `context.var` method.
 
 For example, this model access the user-defined variables `var` and `var_with_default`. It specifies a default value of `default_value` if `variable_with_default` resolves to a missing value.
 

@@ -403,6 +403,7 @@ Here's a complex example where audits and checks work together to validate reven
 ### The Problem
 
 We need to ensure:
+
 1. **Critical:** Revenue is always positive (audit - blocks)
 2. **Critical:** Daily totals match raw order sums (audit - blocks)
 3. **Monitoring:** Revenue trends are normal (check - warns)

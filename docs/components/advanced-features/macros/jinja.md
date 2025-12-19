@@ -186,6 +186,7 @@ JINJA_END;
 ```
 
 A few things to notice:
+
 - The values in the list are quoted: `['car', 'truck', 'bus']`
 - When you use `{{ vehicle_type }}` in the `CASE WHEN`, you need quotes around it: `'{{ vehicle_type }}'`
 - When you use it in an identifier name like `vehicle_{{ vehicle_type }}`, no quotes needed

@@ -87,6 +87,7 @@ metrics:
 ```
 
 This creates a `monthly_revenue` metric that:
+
 - Uses the `total_revenue` measure from the orders model
 - Groups by `order_date` (time dimension)
 - Can be sliced by `customer_tier` (business dimension)
@@ -145,6 +146,7 @@ FROM raw.customers;
 ```
 
 This model will automatically expose:
+
 - `customer_tier` as a dimension (filter by tier, group by tier)
 - `signup_date` as a time dimension (analyze trends over time)
 - `total_spent` as a dimension (create segments like "high-value customers")
