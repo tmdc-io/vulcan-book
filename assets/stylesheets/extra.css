@@ -2018,7 +2018,7 @@ html .md-footer-meta.md-typeset a:hover {
 
 .md-nav__title {
   color: var(--md-default-fg-color--light);
-  display: block;
+  display: none;
   font-weight: 700;
   overflow: hidden;
   padding: 0 .6rem;
@@ -2065,7 +2065,8 @@ html .md-footer-meta.md-typeset a:hover {
 .md-nav__link {
   align-items: flex-start;
   display: flex;
-  margin-top: .625em;
+  margin-top: 0;
+  margin-bottom: 0;
   scroll-snap-align: start;
   transition: color 125ms;
   padding: 5px 8px;
@@ -6741,4 +6742,26 @@ html .md-typeset .footnote-ref {
 
 nav.md-footer__inner {
   display: none !important;
+}
+
+.md-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+@media screen and (min-width: 76.25em) {
+  [dir=ltr] .md-nav--primary .md-nav__list {
+    padding-left: 0rem;
+    .md-nav__list {
+      margin-top: 8px;
+    }
+  }
+}
+
+@media screen and (max-width: 1219px) {
+  .md-nav__title {
+    display: block;
+  }
 }
