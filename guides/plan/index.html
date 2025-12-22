@@ -327,10 +327,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../configurations/ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
@@ -340,19 +338,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -2115,8 +2100,8 @@
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
 <p>Before following this guide, ensure you have:</p>
 <ol>
-<li><strong>Orders360 example project</strong> set up (see <a href="../../examples/overview/">Examples Overview</a>)</li>
-<li><strong>Docker environment</strong> running (see <a href="../get-started/docker.md">Docker Quickstart</a>)</li>
+<li><strong>Orders360 example project</strong> set up (see <a href="examples/overview.md">Examples Overview</a>)</li>
+<li><strong>Docker environment</strong> running (see <a href="guides/get-started/docker.md">Docker Quickstart</a>)</li>
 <li><strong>Vulcan CLI</strong> accessible via <code>vulcan</code> command or <code>vulcan.bat</code> (Windows)</li>
 </ol>
 <h2 id="scenario-1-first-plan-initializing-production">Scenario 1: First Plan - Initializing Production<a class="headerlink" href="#scenario-1-first-plan-initializing-production" title="Link to this section">¶</a></h2>
@@ -2235,12 +2220,10 @@
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan showing new weekly_sales model]</em></p>
 <h3 id="step-3-review-dependencies">Step 3: Review Dependencies<a class="headerlink" href="#step-3-review-dependencies" title="Link to this section">¶</a></h3>
-<p>Notice that:</p>
-<ul>
-<li>Only the new model appears in the plan</li>
-<li>The upstream model (<code>sales.daily_sales</code>) is not affected because adding a downstream model doesn't change upstream data</li>
-<li>Backfill is needed from the model's start date</li>
-</ul>
+<p>Notice that:
+- Only the new model appears in the plan
+- The upstream model (<code>sales.daily_sales</code>) is not affected because adding a downstream model doesn't change upstream data
+- Backfill is needed from the model's start date</p>
 <h3 id="step-4-apply-the-plan">Step 4: Apply the Plan<a class="headerlink" href="#step-4-apply-the-plan" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>Apply - Backfill Tables [y/n]: y
@@ -2322,12 +2305,10 @@
 <li><strong>Backfill required</strong>: The modified model needs to be backfilled to populate the new column</li>
 </ul>
 <h3 id="step-3-check-downstream-models">Step 3: Check Downstream Models<a class="headerlink" href="#step-3-check-downstream-models" title="Link to this section">¶</a></h3>
-<p>Notice that <code>sales.weekly_sales</code> (which depends on <code>daily_sales</code>) is <strong>not</strong> listed. This is because:</p>
-<ul>
-<li>The change is non-breaking</li>
-<li>Downstream models don't need to be reprocessed</li>
-<li>They'll automatically see the new column once <code>daily_sales</code> is backfilled</li>
-</ul>
+<p>Notice that <code>sales.weekly_sales</code> (which depends on <code>daily_sales</code>) is <strong>not</strong> listed. This is because:
+- The change is non-breaking
+- Downstream models don't need to be reprocessed
+- They'll automatically see the new column once <code>daily_sales</code> is backfilled</p>
 <h3 id="step-4-apply-the-plan_1">Step 4: Apply the Plan<a class="headerlink" href="#step-4-apply-the-plan_1" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>Apply - Backfill Tables [y/n]: y
@@ -2777,10 +2758,11 @@
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../../references/plans/">Plans Concepts</a> for deeper understanding</li>
-<li>Explore <a href="../../references/environments/">Environments</a> for managing multiple environments</li>
-<li>Read about <a href="../../components/model/model_kinds/">Model Kinds</a> to understand different model types</li>
-<li>Set up <a href="../../configurations/options/notifications/">Notifications</a> to monitor plan execution</li>
+<li>Learn about <a href="guides/plan.md">Plans Concepts</a> for deeper understanding</li>
+<li>Explore <a href="concepts-old/environments.md">Environments</a> for managing multiple environments</li>
+<li>Read about <a href="components/model/model_kinds.md">Model Kinds</a> to understand different model types</li>
+<li>Check <a href="guides/run_and_scheduling.md">Run Guide</a> for scheduled execution after applying plans</li>
+<li>Set up <a href="guides-old/notifications.md">Notifications</a> to monitor plan execution</li>
 </ul>
 </article>
 </div>

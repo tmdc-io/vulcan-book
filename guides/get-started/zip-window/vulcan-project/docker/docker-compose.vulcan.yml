@@ -1,6 +1,6 @@
 x-images:
-  vulcan: &vulcan_image "tmdcio/vulcan:${VERSION:-0.225.0-dev-02}"
-  vulcan-transpiler: &vulcan_transpiler_image "tmdcio/vulcan-transpiler:${VERSION:-0.225.0-dev-02}"
+  vulcan: &vulcan_image "tmdcio/vulcan:${VERSION:-0.225.0-dev}"
+  vulcan-transpiler: &vulcan_transpiler_image "tmdcio/vulcan-transpiler:${VERSION:-0.225.0-dev}"
 
 networks:
   vulcan:

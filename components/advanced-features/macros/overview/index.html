@@ -327,10 +327,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../../../configurations/ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
@@ -340,19 +338,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -961,7 +946,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
 <p>SQL is a <a href="https://en.wikipedia.org/wiki/Declarative_programming">declarative language</a>, which means you describe what you want, not how to get it. That's great for clarity, but it also means SQL doesn't have built-in features like variables or control flow (if-then statements, loops) that let your queries adapt to different situations.</p>
-<p>The problem? Data modelss are dynamic. You need different behavior depending on context, maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.</p>
+<p>The problem? Data pipelines are dynamic. You need different behavior depending on context—maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.</p>
 <p>Macros let you make your SQL dynamic. Instead of hardcoding values, you can use variables that get substituted at runtime. Instead of writing repetitive code, you can use functions that generate SQL for you.</p>
 <p>Vulcan supports two macro systems, each with its own strengths:</p>
 <ul>

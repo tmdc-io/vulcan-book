@@ -1,0 +1,20 @@
+models:
+  vulcan_example.full_model:
+    alias: full_model
+    description: "Example full model with aggregated order counts by item"
+    
+    dimensions:
+      includes:
+        - item_id
+    
+    measures:
+      total_orders:
+        type: sum
+        expression: "{full_model.num_orders}"
+        description: "Total number of orders"
+      
+      avg_orders_per_item:
+        type: avg
+        expression: "{full_model.num_orders}"
+        description: "Average orders per item"
+  

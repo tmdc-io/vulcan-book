@@ -327,10 +327,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../../../configurations/ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
@@ -340,19 +338,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1065,11 +1050,11 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h1>
-<p>Macro variables are placeholders that get replaced with actual values when Vulcan renders your SQL. They're what make your queries dynamic, instead of hardcoding values, you use variables that change based on context.</p>
+<p>Macro variables are placeholders that get replaced with actual values when Vulcan renders your SQL. They're what make your queries dynamic—instead of hardcoding values, you use variables that change based on context.</p>
 <p>Think of them like this: instead of writing <code>WHERE date &gt; '2023-01-01'</code> and manually updating it every day, you write <code>WHERE date &gt; @execution_ds</code> and it automatically uses today's date. Much better!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This page covers Vulcan's built-in macro variables, the ones that come pre-configured and ready to use. If you want to create your own custom variables, check out the <a href="../built_in/#user-defined-variables">Vulcan macros page</a> or <a href="../jinja/#user-defined-variables">Jinja macros page</a>.</p>
+<p>This page covers Vulcan's built-in macro variables—the ones that come pre-configured and ready to use. If you want to create your own custom variables, check out the <a href="../built_in/#user-defined-variables">Vulcan macros page</a> or <a href="../jinja/#user-defined-variables">Jinja macros page</a>.</p>
 </div>
 <h2 id="a-quick-example">A quick example<a class="headerlink" href="#a-quick-example" title="Link to this section">¶</a></h2>
 <p>Let's say you have a query that filters by date. Without macros, you'd write something like this:</p>
@@ -1087,7 +1072,7 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="k">FROM</span><span class="w"> </span><span class="k">table</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">execution_ds</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>The <code>@</code> symbol tells Vulcan "this is a macro variable, replace it with a value before executing." The <code>@execution_ds</code> variable is predefined, so Vulcan automatically sets it to the date when execution started.</p>
+<p>The <code>@</code> symbol tells Vulcan "this is a macro variable—replace it with a value before executing." The <code>@execution_ds</code> variable is predefined, so Vulcan automatically sets it to the date when execution started.</p>
 <p>If you run this model on February 1, 2023, Vulcan renders it as:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
@@ -1096,9 +1081,9 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">my_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">'2023-02-01'</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>The date updates automatically every time you run it. No manual editing needed!</p>
-<p>Vulcan comes with a bunch of predefined variables like this. You can also create your own custom variables if you need something specific, we'll cover those in the macro system pages.</p>
+<p>Vulcan comes with a bunch of predefined variables like this. You can also create your own custom variables if you need something specific—we'll cover those in the macro system pages.</p>
 <h2 id="predefined-variables">Predefined variables<a class="headerlink" href="#predefined-variables" title="Link to this section">¶</a></h2>
-<p>Vulcan provides a set of predefined variables that are automatically available in your models. Most of them are related to time (dates, timestamps, etc.), which makes sense since time-based logic is super common in data modelss.</p>
+<p>Vulcan provides a set of predefined variables that are automatically available in your models. Most of them are related to time (dates, timestamps, etc.), which makes sense since time-based logic is super common in data pipelines.</p>
 <p>The time variables follow a consistent naming pattern: they combine a prefix (like <code>start</code>, <code>end</code>, or <code>execution</code>) with a postfix (like <code>ds</code>, <code>ts</code>, or <code>epoch</code>) to create variables like <code>@start_ds</code> or <code>@execution_epoch</code>.</p>
 <h3 id="temporal-variables">Temporal variables<a class="headerlink" href="#temporal-variables" title="Link to this section">¶</a></h3>
 <p>Vulcan uses Python's <a href="https://docs.python.org/3/library/datetime.html">datetime module</a> under the hood and follows the standard <a href="https://en.wikipedia.org/wiki/Unix_time">Unix epoch</a> (starting January 1, 1970).</p>
@@ -1177,32 +1162,30 @@
 <p>Learn more about using this in <a href="components/advanced-features/model/sql_models.md#optional-prepost-statements">pre/post-statements</a>.</p>
 <ul>
 <li>
-<p><strong><code>@gateway</code></strong> - The name of the current <a href="../../../../references/configuration.md#gateways">gateway</a> (your database connection)</p>
+<p><strong><code>@gateway</code></strong> - The name of the current <a href="components/guides-old/connections.md">gateway</a> (your database connection)</p>
 </li>
 <li>
 <p><strong><code>@this_model</code></strong> - The physical table name that the model's view selects from. Handy for creating <a href="../../../../../audits/audits.md#generic-audits">generic audits</a>. When used in <a href="components/advanced-features/model/sql_models.md#optional-on-virtual-update-statements">on_virtual_update statements</a>, it contains the qualified view name instead.</p>
 </li>
 <li>
-<p><strong><code>@model_kind_name</code></strong> - The name of the current model kind (like <code>'FULL'</code> or <code>'INCREMENTAL_BY_TIME_RANGE'</code>). Useful when you need to control <a href="../../../../references/model_configuration.md#model-defaults">physical properties in model defaults</a> based on the model kind.</p>
+<p><strong><code>@model_kind_name</code></strong> - The name of the current model kind (like <code>'FULL'</code> or <code>'INCREMENTAL_BY_TIME_RANGE'</code>). Useful when you need to control <a href="components/configurations-old/configuration.md#model-defaults">physical properties in model defaults</a> based on the model kind.</p>
 </li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Embedding variables in strings</p>
 <p>Sometimes you'll see variables written with curly braces like <code>@{variable}</code> instead of just <code>@variable</code>. They do different things!</p>
-<p>The curly brace syntax tells Vulcan to treat the rendered value as a SQL identifier (like a table or column name), not a string literal. So if <code>variable</code> contains <code>foo.bar</code>, then:</p>
-<ul>
-<li><code>@variable</code> produces <code>foo.bar</code> (as a literal value)</li>
-<li><code>@{variable}</code> produces <code>"foo.bar"</code> (as an identifier, with quotes)</li>
-</ul>
+<p>The curly brace syntax tells Vulcan to treat the rendered value as a SQL identifier (like a table or column name), not a string literal. So if <code>variable</code> contains <code>foo.bar</code>, then:
+- <code>@variable</code> produces <code>foo.bar</code> (as a literal value)
+- <code>@{variable}</code> produces <code>"foo.bar"</code> (as an identifier, with quotes)</p>
 <p>You'll most often use <code>@{variable}</code> when you want to interpolate a value into an identifier name, like <code>@{schema}_table</code>. The regular <code>@variable</code> syntax is for plain value substitution.</p>
 <p>Learn more in the <a href="../built_in/#embedding-variables-in-strings">Vulcan macros documentation</a>.</p>
 </div>
 <h4 id="before-all-and-after-all-variables">Before all and after all variables<a class="headerlink" href="#before-all-and-after-all-variables" title="Link to this section">¶</a></h4>
-<p>These variables are available in <a href="../../../../references/configuration.md#before_all--after_all"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in any macros called within those statements:</p>
+<p>These variables are available in <a href="../../guides-old/configuration.md#before_all-and-after_all-statements"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in any macros called within those statements:</p>
 <ul>
 <li><strong><code>@this_env</code></strong> - The name of the current <a href="components/advanced-features/environments.md">environment</a></li>
-<li><strong><code>@schemas</code></strong> - A list of schema names in the <a href="../../../../references/glossary.md#virtual-layer">virtual layer</a> for the current environment</li>
-<li><strong><code>@views</code></strong> - A list of view names in the <a href="../../../../references/glossary.md#virtual-layer">virtual layer</a> for the current environment</li>
+<li><strong><code>@schemas</code></strong> - A list of schema names in the <a href="components/concepts-old/glossary.md#virtual-layer">virtual layer</a> for the current environment</li>
+<li><strong><code>@views</code></strong> - A list of view names in the <a href="components/concepts-old/glossary.md#virtual-layer">virtual layer</a> for the current environment</li>
 </ul>
 <p>These are handy when you need to perform setup or cleanup operations that depend on the environment context.</p>
 </article>

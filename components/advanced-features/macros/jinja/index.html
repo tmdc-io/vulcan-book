@@ -327,10 +327,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../../../configurations/ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
@@ -340,19 +338,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1218,7 +1203,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="jinja">Jinja<a class="headerlink" href="#jinja" title="Link to this section">¶</a></h1>
 <p>Vulcan supports macros from the <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a> templating system. If you're already familiar with Jinja (maybe from dbt or other tools), you'll feel right at home here.</p>
-<p>Jinja works differently than Vulcan's native macros. While Vulcan macros understand the semantic structure of your SQL, Jinja macros are pure string substitution, they assemble SQL text by replacing placeholders, without building a semantic representation of the query.</p>
+<p>Jinja works differently than Vulcan's native macros. While Vulcan macros understand the semantic structure of your SQL, Jinja macros are pure string substitution—they assemble SQL text by replacing placeholders, without building a semantic representation of the query.</p>
 <div class="admonition note">
 <p class="admonition-title">dbt compatibility</p>
 <p>Vulcan supports the standard Jinja function library, but <strong>not</strong> dbt-specific functions like <code>{{ ref() }}</code>. If you're working with a dbt project using the Vulcan adapter, dbt-specific functions will work there, but not in native Vulcan projects.</p>
@@ -1411,7 +1396,7 @@
 </span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="n">JINJA_END</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>The <code>{% set %}</code> statement goes after the <code>MODEL</code> block and before your SQL query.</p>
-<p>Jinja variables can be strings, numbers, or even complex data structures like lists, tuples, or dictionaries. They support Python methods too, so you can call <code>.upper()</code> on strings, iterate over lists, and so on.</p>
+<p>Jinja variables can be strings, numbers, or even complex data structures like lists, tuples, or dictionaries. They support Python methods too—so you can call <code>.upper()</code> on strings, iterate over lists, and so on.</p>
 <h2 id="control-flow">Control flow<a class="headerlink" href="#control-flow" title="Link to this section">¶</a></h2>
 <p>Jinja gives you control flow operators to make your SQL dynamic.</p>
 <h3 id="for-loops">For loops<a class="headerlink" href="#for-loops" title="Link to this section">¶</a></h3>
@@ -1435,13 +1420,11 @@
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a>
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="n">JINJA_END</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>A few things to notice:</p>
-<ul>
-<li>The values in the list are quoted: <code>['car', 'truck', 'bus']</code></li>
-<li>When you use <code>{{ vehicle_type }}</code> in the <code>CASE WHEN</code>, you need quotes around it: <code>'{{ vehicle_type }}'</code></li>
-<li>When you use it in an identifier name like <code>vehicle_{{ vehicle_type }}</code>, no quotes needed</li>
-<li>There's a trailing comma after the <code>CASE WHEN</code> line, Vulcan's semantic understanding will remove it automatically</li>
-</ul>
+<p>A few things to notice:
+- The values in the list are quoted: <code>['car', 'truck', 'bus']</code>
+- When you use <code>{{ vehicle_type }}</code> in the <code>CASE WHEN</code>, you need quotes around it: <code>'{{ vehicle_type }}'</code>
+- When you use it in an identifier name like <code>vehicle_{{ vehicle_type }}</code>, no quotes needed
+- There's a trailing comma after the <code>CASE WHEN</code> line—Vulcan's semantic understanding will remove it automatically</p>
 <p>This renders to:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
 <span class="normal"><a href="#__codelineno-8-2">2</a></span>

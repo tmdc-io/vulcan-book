@@ -327,10 +327,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../../../configurations/ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
@@ -340,19 +338,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1065,8 +1050,8 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="managed">Managed<a class="headerlink" href="#managed" title="Link to this section">¶</a></h1>
-<p>Most Vulcan models manage their own data, you run <code>vulcan run</code>, and Vulcan updates the tables. Managed models are different: the database engine handles data updates automatically in the background.</p>
-<p><strong>How it works:</strong> You define a query, and the engine monitors upstream tables. When source data changes, the engine automatically refreshes your managed table. No manual <code>REFRESH</code> commands needed, it just happens.</p>
+<p>Most Vulcan models manage their own data—you run <code>vulcan run</code>, and Vulcan updates the tables. Managed models are different: the database engine handles data updates automatically in the background.</p>
+<p><strong>How it works:</strong> You define a query, and the engine monitors upstream tables. When source data changes, the engine automatically refreshes your managed table. No manual <code>REFRESH</code> commands needed—it just happens.</p>
 <p><strong>Why use this?</strong> Perfect for scenarios where you need always-fresh data without managing refresh schedules yourself. The engine handles the complexity of incremental updates, change detection, and refresh timing.</p>
 <p><strong>Best use case:</strong> Managed models are typically built on <a href="components/model/types/external_models.md">External Models</a> rather than other Vulcan models. Since Vulcan already keeps its models up to date, the main benefit comes when you're reading from external tables that aren't tracked by Vulcan. The engine keeps your managed table in sync with those external sources automatically.</p>
 <div class="admonition warning">
@@ -1075,26 +1060,22 @@
 </div>
 <h2 id="difference-from-materialized-views">Difference from Materialized Views<a class="headerlink" href="#difference-from-materialized-views" title="Link to this section">¶</a></h2>
 <p>You might be wondering: "What's the difference between a managed model and a materialized view?" Good question!</p>
-<p>Vulcan already supports <a href="../../model_kinds.md#materialized-views">materialized views</a>, but they have limitations:</p>
-<ul>
-<li>Some engines only allow materialized views from a single base table</li>
-<li>Materialized views aren't automatically refreshed, you need to run <code>REFRESH MATERIALIZED VIEW</code> manually</li>
-<li>You're responsible for scheduling refreshes</li>
-</ul>
+<p>Vulcan already supports <a href="components/model/types/model_kinds.md#materialized-views">materialized views</a>, but they have limitations:
+- Some engines only allow materialized views from a single base table
+- Materialized views aren't automatically refreshed—you need to run <code>REFRESH MATERIALIZED VIEW</code> manually
+- You're responsible for scheduling refreshes</p>
 <p><strong>Managed models are different:</strong>
 - ✅ <strong>Automatic updates</strong> - The engine refreshes data when source tables change
 - ✅ <strong>Smart refresh</strong> - The engine understands your query and can do incremental or full refreshes as needed
 - ✅ <strong>No manual commands</strong> - Everything happens in the background</p>
 <p><strong>In some engines, there's no difference</strong> (they're the same thing). In others, managed models give you more automation and flexibility.</p>
 <h2 id="lifecycle-in-vulcan">Lifecycle in Vulcan<a class="headerlink" href="#lifecycle-in-vulcan" title="Link to this section">¶</a></h2>
-<p>Managed models follow the same lifecycle as other Vulcan models:</p>
-<ul>
-<li>Virtual environments create pointers to model snapshots</li>
-<li>Model changes create new snapshots</li>
-<li>Upstream changes trigger new snapshots</li>
-<li>You can deploy and rollback like any other model</li>
-<li>Snapshots get cleaned up when TTL expires</li>
-</ul>
+<p>Managed models follow the same lifecycle as other Vulcan models:
+- Virtual environments create pointers to model snapshots
+- Model changes create new snapshots
+- Upstream changes trigger new snapshots
+- You can deploy and rollback like any other model
+- Snapshots get cleaned up when TTL expires</p>
 <p><strong>Cost consideration:</strong> Managed models usually cost more than regular tables. For example, Snowflake charges extra for Dynamic Tables. To save money, Vulcan uses regular tables for dev previews (in forward-only plans) and only creates managed tables when deploying to production.</p>
 <div class="admonition warning">
 <p class="admonition-title">Dev vs Prod Differences</p>
@@ -1168,7 +1149,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition note">
 <p class="admonition-title">No Intervals</p>
-<p>Vulcan doesn't create intervals or run this model on a schedule. You don't need <code>WHERE</code> clauses with date filters like you would for incremental models. Snowflake handles all the refreshing automatically, you just define the query and let Snowflake do its thing.</p>
+<p>Vulcan doesn't create intervals or run this model on a schedule. You don't need <code>WHERE</code> clauses with date filters like you would for incremental models. Snowflake handles all the refreshing automatically—you just define the query and let Snowflake do its thing.</p>
 </div>
 <h4 id="table-properties">Table Properties<a class="headerlink" href="#table-properties" title="Link to this section">¶</a></h4>
 <p>Dynamic Tables have properties that control refresh frequency, initial data population, retention, and more. You can find the complete list in the <a href="https://docs.snowflake.com/sql-reference/sql/create-dynamic-table">Snowflake documentation</a>.</p>

@@ -7,7 +7,7 @@ flowchart TB
     subgraph "Data Quality Layers"
         direction TB
         
-        subgraph Layer1["Layer 1: Audits (Critical - Blocks models)"]
+        subgraph Layer1["Layer 1: Audits (Critical - Blocks Pipeline)"]
             A1[not_null checks]
             A2[unique_values checks]
             A3[accepted_range checks]
@@ -18,7 +18,7 @@ flowchart TB
             A3 --> Block
             A4 --> Block
             
-            Block -->|Yes| Stop[STOP models<br/>Fix Data First]
+            Block -->|Yes| Stop[STOP PIPELINE<br/>Fix Data First]
             Block -->|No| Pass1[✓ All Passed]
         end
         

@@ -327,10 +327,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../../configurations/ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../ci-cd/index.md">
 <span class="md-ellipsis">
     
   
@@ -340,19 +338,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1281,14 +1266,14 @@
 <article class="md-content__inner md-typeset">
 <h1 id="custom-materializations">Custom materializations<a class="headerlink" href="#custom-materializations" title="Link to this section">¶</a></h1>
 <p>Vulcan comes with a variety of <a href="../../model/model_kinds.md">model kinds</a> that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?</p>
-<p>Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in, they let you write your own Python code to control exactly how your models get materialized.</p>
+<p>Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in—they let you write your own Python code to control exactly how your models get materialized.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advanced Feature</p>
 <p>Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If you're considering this path, we'd love to hear from you in our <a href="https://tobikodata.com/community.html">community slack</a>. If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.</p>
 </div>
 <h2 id="what-is-a-materialization">What is a materialization?<a class="headerlink" href="#what-is-a-materialization" title="Link to this section">¶</a></h2>
 <p>Think of a materialization as the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to actually get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.</p>
-<p>Some materializations are straightforward. For example, a <code>FULL</code> model kind completely replaces the table each time it runs, so its materialization is essentially just <code>CREATE OR REPLACE TABLE [name] AS [your query]</code>. Simple!</p>
+<p>Some materializations are straightforward. For example, a <code>FULL</code> model kind completely replaces the table each time it runs—so its materialization is essentially just <code>CREATE OR REPLACE TABLE [name] AS [your query]</code>. Simple!</p>
 <p>Other materializations are more complex. An <code>INCREMENTAL_BY_TIME_RANGE</code> model needs to figure out which time intervals to process, query only that data, and then merge it into the existing table. That requires more logic.</p>
 <p>The materialization logic can also vary by SQL engine. PostgreSQL doesn't support <code>CREATE OR REPLACE TABLE</code>, so <code>FULL</code> models on Postgres use <code>DROP</code> then <code>CREATE</code> instead. Vulcan handles all these engine-specific details for built-in model kinds, but with custom materializations, you're in control.</p>
 <h2 id="how-custom-materializations-work">How custom materializations work<a class="headerlink" href="#how-custom-materializations-work" title="Link to this section">¶</a></h2>
@@ -1427,7 +1412,7 @@
 </tr>
 <tr>
 <td><code>model</code></td>
-<td>The full model definition object, gives you access to all model properties</td>
+<td>The full model definition object—gives you access to all model properties</td>
 </tr>
 <tr>
 <td><code>is_first_insert</code></td>
@@ -1439,7 +1424,7 @@
 </tr>
 <tr>
 <td><code>self.adapter</code></td>
-<td>The engine adapter, your interface to execute SQL and interact with the database</td>
+<td>The engine adapter—your interface to execute SQL and interact with the database</td>
 </tr>
 </tbody>
 </table>
@@ -1750,7 +1735,7 @@
 <p class="admonition-title">Warning</p>
 <p>This is advanced territory. You're working with Vulcan's internals here, so there's extra complexity involved. If the basic custom materialization approach works for you, stick with that. Only dive into this if you really need the extra control.</p>
 </div>
-<p>Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals, maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.</p>
+<p>Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals—maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.</p>
 <p>In those cases, you can create a subclass of <code>CustomKind</code> that Vulcan will use instead of the default. When your project loads, Vulcan will detect your subclass and use it instead of the standard <code>CustomKind</code>.</p>
 <h3 id="creating-a-custom-kind">Creating a custom kind<a class="headerlink" href="#creating-a-custom-kind" title="Link to this section">¶</a></h3>
 <p>Here's how you'd create a custom kind that validates a <code>primary_key</code> property:</p>
@@ -1871,7 +1856,7 @@
 <h2 id="sharing-custom-materializations">Sharing custom materializations<a class="headerlink" href="#sharing-custom-materializations" title="Link to this section">¶</a></h2>
 <p>Once you've built a custom materialization, you'll probably want to use it across multiple projects. You have a couple of options.</p>
 <h3 id="copying-files">Copying files<a class="headerlink" href="#copying-files" title="Link to this section">¶</a></h3>
-<p>The simplest approach is to copy the materialization code into each project's <code>materializations/</code> directory. It works, but it's not the most maintainable approach, you'll need to manually update each copy when you make changes.</p>
+<p>The simplest approach is to copy the materialization code into each project's <code>materializations/</code> directory. It works, but it's not the most maintainable approach—you'll need to manually update each copy when you make changes.</p>
 <p>If you go this route, we strongly recommend keeping the materialization code in version control and setting up a reliable way to notify users when updates are available.</p>
 <h3 id="python-packaging">Python packaging<a class="headerlink" href="#python-packaging" title="Link to this section">¶</a></h3>
 <p>A more robust approach is to package your materialization as a Python package. This is especially useful if you're using Airflow or other external schedulers where the scheduler cluster doesn't have direct access to your project's <code>materializations/</code> folder.</p>
