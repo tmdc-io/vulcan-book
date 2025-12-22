@@ -8,9 +8,9 @@
 <link href="../notifications/" rel="prev"/>
 <link href="../../engines/postgres/postgres/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Linter - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -322,6 +322,55 @@
 </ul>
 </nav>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#applying-linting-rules">
+<span class="md-ellipsis">
+      
+        Applying linting rules
+      
+    </span>
+</a>
+<nav aria-label="Applying linting rules" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#specific-linting-rules">
+<span class="md-ellipsis">
+      
+        Specific linting rules
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#all-linting-rules">
+<span class="md-ellipsis">
+      
+        All linting rules
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exclude-a-model-from-linting">
+<span class="md-ellipsis">
+      
+        Exclude a model from linting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rule-violation-behavior">
+<span class="md-ellipsis">
+      
+        Rule violation behavior
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
 </ul>
 </nav>
 </li>
@@ -378,10 +427,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../ci-cd/ci-cd/">
 <span class="md-ellipsis">
     
   
@@ -391,19 +438,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1007,6 +1041,55 @@
 </ul>
 </nav>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#applying-linting-rules">
+<span class="md-ellipsis">
+      
+        Applying linting rules
+      
+    </span>
+</a>
+<nav aria-label="Applying linting rules" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#specific-linting-rules">
+<span class="md-ellipsis">
+      
+        Specific linting rules
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#all-linting-rules">
+<span class="md-ellipsis">
+      
+        All linting rules
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exclude-a-model-from-linting">
+<span class="md-ellipsis">
+      
+        Exclude a model from linting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rule-violation-behavior">
+<span class="md-ellipsis">
+      
+        Rule violation behavior
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
 </ul>
 </nav>
 </div>
@@ -1170,31 +1253,9 @@
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">violation</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">model</span><span class="o">.</span><span class="n">owner</span> <span class="k">else</span> <span class="kc">None</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Put your custom rules in the <code>linter/</code> directory of your project. Vulcan will automatically find and load any classes that inherit from <code>Rule</code> in that directory.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
-If the rule is specified in the project's <a href="#applying-linting-rules">configuration file</a>, Vulcan will run it when:</p>
-<ul>
-<li>A plan is created during <code>vulcan plan</code></li>
-<li>
-<h1 id="the-command-vulcan-lint-is-ran">The command <code>vulcan lint</code> is ran<a class="headerlink" href="#the-command-vulcan-lint-is-ran" title="Link to this section">¶</a></h1>
-Once you've added a rule to your <a href="#applying-linting-rules">configuration file</a>, Vulcan will run it automatically when:</li>
-<li>You create a plan with <code>vulcan plan</code></li>
-<li>You run the <code>vulcan lint</code> command<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Stashed changes</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</li>
-</ul>
+<p>Once you've added a rule to your <a href="#applying-linting-rules">configuration file</a>, Vulcan will run it automatically when:
+- You create a plan with <code>vulcan plan</code>
+- You run the <code>vulcan lint</code> command</p>
 <p>If a model violates a rule, Vulcan will stop and tell you exactly which model(s) have problems. Here's what that looks like, in this example, <code>full_model.sql</code> is missing an owner, so the plan stops:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>$<span class="w"> </span>vulcan<span class="w"> </span>plan
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>
@@ -1213,25 +1274,7 @@ Once you've added a rule to your <a href="#applying-linting-rules">configuration
 </span></code></pre></div>
 <p>Use <code>vulcan lint --help</code> for more information.</p>
 <h2 id="applying-linting-rules">Applying linting rules<a class="headerlink" href="#applying-linting-rules" title="Link to this section">¶</a></h2>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
-Specify which linting rules a project should apply in the project's <a href="../../overview/">configuration file</a>.
-=======
-To use linting in your project, you need to configure it in your <a href="configurations/options/configuration.md">configuration file</a>. Here's how it works:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Stashed changes</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>Specify which linting rules a project should apply in the project's <a href="../../overview/">configuration file</a>.</p>
 <p>You specify which rules to run as a list under the <code>linter</code> key. You can also globally enable or disable linting with the <code>enabled</code> key (it defaults to <code>false</code>, so you'll need to turn it on).</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -1440,7 +1483,7 @@ To use linting in your project, you need to configure it in your <a href="config
 <div class="md-footer-meta__inner md-grid">
 <div class="md-copyright">
 <div class="md-copyright__highlight">
-      Copyright © 2024 DataOS Vulcan Team<br/>
+      Copyright © 2025 DataOS Vulcan Team<br/>
 <small>Complete stack for building data products</small>
 </div>
   
@@ -1463,8 +1506,8 @@ To use linting in your project, you need to configure it in your <a href="config
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

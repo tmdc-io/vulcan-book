@@ -8,9 +8,9 @@
 <link href="../models/" rel="prev"/>
 <link href="../data_quality/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Incremental by Time - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -327,10 +327,8 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
-<div class="md-nav__link md-nav__container">
-<a class="md-nav__link" href="../../configurations/ci_cd/">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../ci-cd/ci-cd/">
 <span class="md-ellipsis">
     
   
@@ -340,19 +338,6 @@
     
   </span>
 </a>
-</div>
-<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="__nav_2_4">
-<span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD
-  
-
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -1130,8 +1115,133 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#making-a-model-forward-only">
+<span class="md-ellipsis">
+      
+        Making a Model Forward-Only
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#forward-only-plans">
+<span class="md-ellipsis">
+      
+        Forward-Only Plans
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#schema-changes-in-forward-only-models">
+<span class="md-ellipsis">
+      
+        Schema Changes in Forward-Only Models
+      
+    </span>
+</a>
+<nav aria-label="Schema Changes in Forward-Only Models" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#types-of-schema-changes">
+<span class="md-ellipsis">
+      
+        Types of Schema Changes
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#controlling-schema-change-behavior">
+<span class="md-ellipsis">
+      
+        Controlling Schema Change Behavior
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#common-patterns">
+<span class="md-ellipsis">
+      
+        Common Patterns
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-notes">
+<span class="md-ellipsis">
+      
+        Important Notes
+      
+    </span>
+</a>
+<nav aria-label="Important Notes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#time-column-must-be-utc">
+<span class="md-ellipsis">
+      
+        ⚠️ Time Column Must Be UTC
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#always-include-where-clause">
+<span class="md-ellipsis">
+      
+        ✅ Always Include WHERE Clause
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#set-a-start-date">
+<span class="md-ellipsis">
+      
+        ✅ Set a Start Date
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choose-appropriate-batch_size">
+<span class="md-ellipsis">
+      
+        ✅ Choose Appropriate batch_size
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#summary">
+<span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-steps">
+<span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+</a>
 </li>
 </ul>
 </nav>
@@ -1502,8 +1612,133 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#making-a-model-forward-only">
+<span class="md-ellipsis">
+      
+        Making a Model Forward-Only
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#forward-only-plans">
+<span class="md-ellipsis">
+      
+        Forward-Only Plans
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#schema-changes-in-forward-only-models">
+<span class="md-ellipsis">
+      
+        Schema Changes in Forward-Only Models
+      
+    </span>
+</a>
+<nav aria-label="Schema Changes in Forward-Only Models" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#types-of-schema-changes">
+<span class="md-ellipsis">
+      
+        Types of Schema Changes
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#controlling-schema-change-behavior">
+<span class="md-ellipsis">
+      
+        Controlling Schema Change Behavior
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#common-patterns">
+<span class="md-ellipsis">
+      
+        Common Patterns
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-notes">
+<span class="md-ellipsis">
+      
+        Important Notes
+      
+    </span>
+</a>
+<nav aria-label="Important Notes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#time-column-must-be-utc">
+<span class="md-ellipsis">
+      
+        ⚠️ Time Column Must Be UTC
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#always-include-where-clause">
+<span class="md-ellipsis">
+      
+        ✅ Always Include WHERE Clause
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#set-a-start-date">
+<span class="md-ellipsis">
+      
+        ✅ Set a Start Date
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choose-appropriate-batch_size">
+<span class="md-ellipsis">
+      
+        ✅ Choose Appropriate batch_size
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#summary">
+<span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-steps">
+<span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+</a>
 </li>
 </ul>
 </nav>
@@ -1532,26 +1767,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="incremental-by-time">Incremental by Time<a class="headerlink" href="#incremental-by-time" title="Link to this section">¶</a></h1>
 <p>This guide explains how incremental by time models work in Vulcan using the Orders360 example project. You'll learn why they're efficient, how they process data, and how to create them.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
-See the <a href="../models/">models guide</a> for general model information or the <a href="../../components/model/model_kinds/">model kinds page</a> for all model types.
-=======
-Incremental models are a game-changer for time-based data. Instead of reprocessing everything every time, you only process what's new. It's faster, cheaper, and way more efficient!</p>
-<p>See the <a href="guides/models.md">models guide</a> for general model information or the <a href="components/model/model_kinds.md">model kinds page</a> for all model types.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Stashed changes</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>See the <a href="../models/">models guide</a> for general model information or the <a href="../../components/model/model_kinds/">model kinds page</a> for all model types.</p>
 <hr/>
 <h2 id="why-use-incremental-models">Why Use Incremental Models?<a class="headerlink" href="#why-use-incremental-models" title="Link to this section">¶</a></h2>
 <h3 id="the-problem-full-refreshes-are-expensive">The Problem: Full Refreshes Are Expensive<a class="headerlink" href="#the-problem-full-refreshes-are-expensive" title="Link to this section">¶</a></h3>
@@ -2234,43 +2450,14 @@ Incremental models are a game-changer for time-based data. Instead of reprocessi
 <p><em>[Screenshot: Visual comparison showing regular rebuild vs forward-only]</em></p>
 <h3 id="when-to-use-forward-only">When to Use Forward-Only<a class="headerlink" href="#when-to-use-forward-only" title="Link to this section">¶</a></h3>
 <p>✅ <strong>Use forward-only when:</strong>
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream</p>
-<ul>
-<li>Tables are too large to rebuild</li>
-<li>Historical data can't be reprocessed</li>
-<li>You only care about future data</li>
-</ul>
-<p>❌ <strong>Don't use forward-only when:</strong></p>
-<ul>
-<li>You need to fix historical data</li>
-<li>Schema changes affect past data</li>
-<li>
-<h1 id="you-want-full-data-consistency">You want full data consistency<a class="headerlink" href="#you-want-full-data-consistency" title="Link to this section">¶</a></h1>
-</li>
-<li>Tables are too large to rebuild - if a full backfill would take forever or cost too much</li>
-<li>Historical data can't be reprocessed - maybe the source data is gone or too expensive to reprocess</li>
-<li>You only care about future data - if historical data is "good enough" and you just need new data to be correct</li>
-</ul>
+- Tables are too large to rebuild - if a full backfill would take forever or cost too much
+- Historical data can't be reprocessed - maybe the source data is gone or too expensive to reprocess
+- You only care about future data - if historical data is "good enough" and you just need new data to be correct</p>
 <p>❌ <strong>Don't use forward-only when:</strong>
 - You need to fix historical data - forward-only won't help you fix the past
 - Schema changes affect past data - if your change affects how historical data should look, you need a full rebuild
 - You want full data consistency - forward-only means historical and new data might have different schemas</p>
 <p>It's a trade-off: you get speed and cost savings, but you lose the ability to fix historical data. Make sure that's a trade-off you're okay with!</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Stashed changes</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <h3 id="making-a-model-forward-only">Making a Model Forward-Only<a class="headerlink" href="#making-a-model-forward-only" title="Link to this section">¶</a></h3>
 <p>Add <code>forward_only true</code> to your model:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
@@ -2514,7 +2701,7 @@ Incremental models are a game-changer for time-based data. Instead of reprocessi
 <div class="md-footer-meta__inner md-grid">
 <div class="md-copyright">
 <div class="md-copyright__highlight">
-      Copyright © 2024 DataOS Vulcan Team<br/>
+      Copyright © 2025 DataOS Vulcan Team<br/>
 <small>Complete stack for building data products</small>
 </div>
   
@@ -2537,8 +2724,8 @@ Incremental models are a game-changer for time-based data. Instead of reprocessi
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });
