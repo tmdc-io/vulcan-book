@@ -94,16 +94,9 @@ class NoMissingOwner(Rule):
 
 Put your custom rules in the `linter/` directory of your project. Vulcan will automatically find and load any classes that inherit from `Rule` in that directory.
 
-<<<<<<< Updated upstream
-If the rule is specified in the project's [configuration file](#applying-linting-rules), Vulcan will run it when:
-
-- A plan is created during `vulcan plan`
-- The command `vulcan lint` is ran
-=======
 Once you've added a rule to your [configuration file](#applying-linting-rules), Vulcan will run it automatically when:
 - You create a plan with `vulcan plan`
 - You run the `vulcan lint` command
->>>>>>> Stashed changes
 
 If a model violates a rule, Vulcan will stop and tell you exactly which model(s) have problems. Here's what that looks like, in this example, `full_model.sql` is missing an owner, so the plan stops:
 
@@ -132,11 +125,7 @@ Use `vulcan lint --help` for more information.
 
 ## Applying linting rules
 
-<<<<<<< Updated upstream
 Specify which linting rules a project should apply in the project's [configuration file](../overview.md).
-=======
-To use linting in your project, you need to configure it in your [configuration file](configurations/options/configuration.md). Here's how it works:
->>>>>>> Stashed changes
 
 You specify which rules to run as a list under the `linter` key. You can also globally enable or disable linting with the `enabled` key (it defaults to `false`, so you'll need to turn it on).
 

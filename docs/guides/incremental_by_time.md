@@ -2,13 +2,7 @@
 
 This guide explains how incremental by time models work in Vulcan using the Orders360 example project. You'll learn why they're efficient, how they process data, and how to create them.
 
-<<<<<<< Updated upstream
 See the [models guide](./models.md) for general model information or the [model kinds page](../components/model/model_kinds.md) for all model types.
-=======
-Incremental models are a game-changer for time-based data. Instead of reprocessing everything every time, you only process what's new. It's faster, cheaper, and way more efficient!
-
-See the [models guide](guides/models.md) for general model information or the [model kinds page](components/model/model_kinds.md) for all model types.
->>>>>>> Stashed changes
 
 ---
 
@@ -889,18 +883,6 @@ Breaking change → Only apply to new dates going forward
 ### When to Use Forward-Only
 
 ✅ **Use forward-only when:**
-<<<<<<< Updated upstream
-
-- Tables are too large to rebuild
-- Historical data can't be reprocessed
-- You only care about future data
-
-❌ **Don't use forward-only when:**
-
-- You need to fix historical data
-- Schema changes affect past data
-- You want full data consistency
-=======
 - Tables are too large to rebuild - if a full backfill would take forever or cost too much
 - Historical data can't be reprocessed - maybe the source data is gone or too expensive to reprocess
 - You only care about future data - if historical data is "good enough" and you just need new data to be correct
@@ -911,7 +893,6 @@ Breaking change → Only apply to new dates going forward
 - You want full data consistency - forward-only means historical and new data might have different schemas
 
 It's a trade-off: you get speed and cost savings, but you lose the ability to fix historical data. Make sure that's a trade-off you're okay with!
->>>>>>> Stashed changes
 
 ### Making a Model Forward-Only
 

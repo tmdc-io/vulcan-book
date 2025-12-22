@@ -635,14 +635,13 @@ See [Configuration Guide](../references/configuration.md#gateways) for configuri
 
 ## Best Practices
 
-<<<<<<< Updated upstream
 1. **Use `run` for scheduled execution** - Don't use `plan` for regular data processing
 2. **Set up automation** - Schedule `vulcan run` based on your most frequent model's cron
 3. **Monitor execution** - Check logs to ensure intervals are processing correctly
 4. **Use `--ignore-cron` sparingly** - Only when catching up on missed intervals
 5. **Separate state database** - Consider PostgreSQL for state storage in production
 6. **Handle errors gracefully** - Set up [notifications](../configurations/options/notifications.md) for run failures
-=======
+
 Here are some tips to help you use `run` effectively:
 
 1. **Use `run` for scheduled execution** - Don't use `plan` for regular data processing. They serve different purposes!

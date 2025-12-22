@@ -139,13 +139,8 @@ Set up alerts via Slack or email so you know when important things happen in you
 
 Vulcan works with a variety of data warehouses, so you can use it with whatever infrastructure you already have:
 
-<<<<<<< Updated upstream
 - **[PostgreSQL](../../references/integrations/engines/postgres.md)** - Open-source relational database
 - **[Snowflake](../../references/integrations/engines/snowflake.md)** - Cloud data warehouse
-=======
-- **[PostgreSQL](./configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md)** - The popular open-source relational database. Great for smaller projects or when you want full control over your infrastructure.
-- **[Snowflake](./configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md)** - The cloud data warehouse that scales automatically. Perfect for larger teams and projects that need elastic compute.
->>>>>>> Stashed changes
 
 ## Configuration Reference
 
