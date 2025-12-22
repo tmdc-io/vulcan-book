@@ -21,39 +21,61 @@
 /* -------------------- Color Palette -------------------- */
 :root {
   /* DataOS gray palette */
-  --vl-gray-darkest: #292E33;      /* Dark charcoal */
-  --vl-gray-light: #D9DADA;        /* Light gray */
-  --vl-gray-medium: #9C9C9C;       /* Medium gray */
-  --vl-gray-dark: #828282;         /* Darker gray */
+  --vl-gray-darkest: #292E33;
+  /* Dark charcoal */
+  --vl-gray-light: #D9DADA;
+  /* Light gray */
+  --vl-gray-medium: #9C9C9C;
+  /* Medium gray */
+  --vl-gray-dark: #828282;
+  /* Darker gray */
 
   /* Primary colors - DataOS Blue */
-  --vl-primary: #1D94FC;           /* Bright blue - main brand color */
-  --vl-primary-dark: #1A7FDB;      /* Darker blue for hover */
-  --vl-primary-light: #5CB0FA;     /* Light blue */
+  --vl-primary: #1D94FC;
+  /* Bright blue - main brand color */
+  --vl-primary-dark: #1A7FDB;
+  /* Darker blue for hover */
+  --vl-primary-light: #5CB0FA;
+  /* Light blue */
   --vl-primary-subtle: rgba(29, 148, 252, 0.10);
 
   /* Backgrounds */
-  --vl-bg-main: #FFFFFF;           /* White main background */
-  --vl-bg-sidebar: #F5F6F7;        /* Very light gray sidebar */
-  --vl-bg-code: #F0F2F4;           /* Light gray code background */
-  --vl-bg-hover: #E8EAED;          /* Light gray hover */
-  --vl-bg-header: #292E33;         /* Dark header */
+  --vl-bg-main: #FFFFFF;
+  /* White main background */
+  --vl-bg-sidebar: #F5F6F7;
+  /* Very light gray sidebar */
+  --vl-bg-code: #F0F2F4;
+  /* Light gray code background */
+  --vl-bg-hover: #E8EAED;
+  /* Light gray hover */
+  --vl-bg-header: #292E33;
+  /* Dark header */
 
   /* Text colors */
-  --vl-text-primary: #292E33;      /* Dark charcoal */
-  --vl-text-secondary: #4A5056;    /* Medium dark gray */
-  --vl-text-muted: #828282;        /* Muted gray */
-  --vl-text-light: #9C9C9C;        /* Light gray */
+  --vl-text-primary: #292E33;
+  /* Dark charcoal */
+  --vl-text-secondary: #4A5056;
+  /* Medium dark gray */
+  --vl-text-muted: #828282;
+  /* Muted gray */
+  --vl-text-light: #9C9C9C;
+  /* Light gray */
 
   /* Borders */
-  --vl-border: #D9DADA;            /* Light gray border */
-  --vl-border-light: #E8EAED;      /* Lighter gray border */
+  --vl-border: #D9DADA;
+  /* Light gray border */
+  --vl-border-light: #E8EAED;
+  /* Lighter gray border */
 
   /* Accent colors */
-  --vl-success: #22C55E;           /* Green */
-  --vl-warning: #F59E0B;           /* Amber */
-  --vl-error: #EF4444;             /* Red */
-  --vl-info: #1D94FC;              /* Blue (same as primary) */
+  --vl-success: #22C55E;
+  /* Green */
+  --vl-warning: #F59E0B;
+  /* Amber */
+  --vl-error: #EF4444;
+  /* Red */
+  --vl-info: #1D94FC;
+  /* Blue (same as primary) */
 
   /* Shadows */
   --vl-shadow-sm: 0 1px 2px 0 rgba(41, 46, 51, 0.05);
@@ -61,13 +83,14 @@
   --vl-shadow-lg: 0 10px 15px -3px rgba(41, 46, 51, 0.10), 0 4px 6px -4px rgba(41, 46, 51, 0.05);
 
   /* Sidebar sizes - Bento style (matching minimum width) */
-  --vl-sidebar-width: 290px; /* Increased to fully accommodate "Execution Hooks" and other long headings */
+  --vl-sidebar-width: 280px;
+  /* Increased to fully accommodate "Execution Hooks" and other long headings */
   --vl-toc-width: 270px;
 
   /* Typography - Cube-style fonts */
   --vl-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --vl-font-mono: 'Source Code Pro', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono', monospace;
-  
+
   /* Font weights */
   --vl-font-weight-normal: 400;
   --vl-font-weight-medium: 500;
@@ -117,10 +140,14 @@ body {
   text-rendering: optimizeLegibility;
   font-feature-settings: 'liga' 1, 'calt' 1;
   background-color: var(--vl-bg-main);
+  font-size: 14px !important;
 }
 
 /* Apply monospace font to code elements */
-code, pre, kbd, samp,
+code,
+pre,
+kbd,
+samp,
 .md-typeset code,
 .md-typeset pre {
   font-family: var(--vl-font-mono) !important;
@@ -128,9 +155,9 @@ code, pre, kbd, samp,
 
 /* -------------------- Main Header -------------------- */
 .md-header {
-  background-color: #292E33 !important;
+  background-color: #3548ad !important;
   box-shadow: none !important;
-  border-bottom: 1px solid #3A3F45 !important;
+  border-bottom: 1px solid #2f3e93 !important;
   position: sticky !important;
   top: 0 !important;
   z-index: 100 !important;
@@ -140,7 +167,8 @@ code, pre, kbd, samp,
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 0.875rem 2.5rem !important; /* Bento-style generous padding */
+  padding: 0px 1.5rem !important;
+  /* Bento-style generous padding */
   max-width: none !important;
   background: transparent !important;
 }
@@ -149,7 +177,8 @@ code, pre, kbd, samp,
 .md-header__title {
   font-family: var(--vl-font-sans) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.875rem !important; /* 14px - balanced for header */
+  font-size: 0.875rem !important;
+  /* 14px - balanced for header */
   letter-spacing: -0.01em;
   flex-shrink: 0 !important;
 }
@@ -157,7 +186,8 @@ code, pre, kbd, samp,
 .md-header__topic {
   font-family: var(--vl-font-sans) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.875rem !important; /* 14px - balanced for header */
+  font-size: 0.875rem !important;
+  /* 14px - balanced for header */
 }
 
 /* Keep "DataOS Vulcan" always visible - hide page title on scroll */
@@ -191,6 +221,26 @@ code, pre, kbd, samp,
   fill: #FFFFFF !important;
 }
 
+/* -------------------- Theme Toggle Buttons -------------------- */
+/* Use data-md-color-scheme attribute which is more reliable */
+/* When in light mode (default scheme), show dark mode toggle (palette 1) */
+[data-md-color-scheme="default"] .md-header__button[for="__palette_0"] {
+  display: none !important;
+}
+
+[data-md-color-scheme="default"] .md-header__button[for="__palette_1"] {
+  display: flex !important;
+}
+
+/* When in dark mode (slate scheme), show light mode toggle (palette 0) */
+[data-md-color-scheme="slate"] .md-header__button[for="__palette_1"] {
+  display: none !important;
+}
+
+[data-md-color-scheme="slate"] .md-header__button[for="__palette_0"] {
+  display: flex !important;
+}
+
 /* Header search - ensure it stays on the right */
 .md-search {
   position: relative !important;
@@ -201,7 +251,8 @@ code, pre, kbd, samp,
   font-family: var(--vl-font-sans) !important;
   background-color: rgba(255, 255, 255, 0.15) !important;
   border-radius: 6px !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
   color: #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
@@ -220,6 +271,55 @@ code, pre, kbd, samp,
   z-index: 100 !important;
 }
 
+/* -------------------- Search Dialog/Overlay -------------------- */
+/* When search is active, style the dialog overlay */
+.md-search--active {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 200 !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Search dialog container - Desktop default */
+.md-search--active .md-search__inner {
+  position: relative !important;
+  max-width: 640px !important;
+  margin: 2rem auto !important;
+  background: var(--vl-bg-main) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden !important;
+  height: auto !important;
+  max-height: 75vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Search input in active dialog */
+.md-search--active .md-search__input {
+  background-color: var(--vl-bg-main) !important;
+  color: var(--vl-text-primary) !important;
+  border: 1px solid var(--vl-border) !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 1rem 1.25rem !important;
+  font-size: 1rem !important;
+}
+
+.md-search--active .md-search__input::placeholder {
+  color: var(--vl-text-muted) !important;
+}
+
+.md-search--active .md-search__input:focus {
+  background-color: var(--vl-bg-main) !important;
+  border-color: var(--vl-primary) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--vl-primary-subtle) !important;
+}
+
 /* -------------------- Navigation Tabs in Header -------------------- */
 .md-header__inner {
   position: relative !important;
@@ -229,10 +329,12 @@ code, pre, kbd, samp,
   position: absolute !important;
   top: 0 !important;
   bottom: 0 !important;
-  left: calc(var(--vl-sidebar-width) + 3rem) !important; /* Bento: align with content area start (sidebar + 3rem gap) */
+  left: calc(var(--vl-sidebar-width) + 3rem) !important;
+  /* Bento: align with content area start (sidebar + 3rem gap) */
   transform: none !important;
   display: flex !important;
-  align-items: center !important; /* vertically center with search bar */
+  align-items: center !important;
+  /* vertically center with search bar */
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -256,7 +358,8 @@ code, pre, kbd, samp,
 .md-tabs__link {
   font-family: var(--vl-font-sans) !important;
   color: #f1f3f5 !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-medium) !important;
   padding: 0.35rem 0.6rem !important;
   transition: all 0.15s ease !important;
@@ -299,14 +402,18 @@ code, pre, kbd, samp,
   min-width: var(--vl-sidebar-width) !important;
   background: var(--vl-bg-sidebar) !important;
   border-right: 1px solid var(--vl-border) !important;
-  padding: 1.5rem 0 !important; /* Bento-style padding */
+  padding: 0 !important;
   position: sticky;
-  top: 86px;  /* Below header (48px) + tabs (38px) */
-  height: calc(100vh - 86px);
+  top: 121px;
+  /* Below header (62px) + tabs (38px) */
+  height: calc(100vh - 62px);
   overflow-y: auto;
-  overflow-x: hidden !important; /* Hide horizontal scrollbar */
-  scrollbar-width: none !important; /* Firefox - hide scrollbar */
-  -ms-overflow-style: none !important; /* IE and Edge - hide scrollbar */
+  overflow-x: hidden !important;
+  /* Hide horizontal scrollbar */
+  scrollbar-width: none !important;
+  /* Firefox - hide scrollbar */
+  -ms-overflow-style: none !important;
+  /* IE and Edge - hide scrollbar */
 }
 
 /* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
@@ -317,30 +424,38 @@ code, pre, kbd, samp,
 }
 
 .md-sidebar--primary .md-sidebar__scrollwrap {
-  padding: 0 0.5rem !important; /* Reduced padding to give more room for single-line headings */
-  width: 100% !important; /* Use full sidebar width */
-  box-sizing: border-box !important; /* Include padding in width calculation */
-  overflow-x: hidden !important; /* Prevent horizontal scrolling */
+  padding: 1.5rem 1rem !important;
+  /* Improved padding: vertical 1.5rem, horizontal 1rem */
+  width: 100% !important;
+  /* Use full sidebar width */
+  box-sizing: border-box !important;
+  /* Include padding in width calculation */
+  overflow-x: hidden !important;
+  /* Prevent horizontal scrolling */
 }
 
 /* Ensure navigation lists don't cause horizontal overflow */
-.md-sidebar--primary .md-nav,
-.md-sidebar--primary .md-nav__list {
+.md-sidebar--primary .md-nav {
   overflow-x: hidden !important;
-  width: 100% !important;
+  /* width: 100% !important; */
   max-width: 100% !important;
+  padding: 0 !important;
 }
 
 /* -------------------- Collapsible Navigation Sections -------------------- */
 /* Main section titles (About, Configurations, Components, Guides) - 75% zoom, Bento spacing */
 .md-nav__title {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-semibold) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: 0.01em !important;
   color: var(--vl-text-primary) !important;
-  padding: 0.625rem 0.5rem !important; /* Bento: generous vertical padding */
-  margin-top: 0.75rem !important; /* Bento: more spacing between sections */
+  padding: 0.75rem 0.875rem !important;
+  /* Improved padding for better spacing */
+  margin-top: 1rem !important;
+  /* More spacing between sections */
+  margin-bottom: 0.25rem !important;
   cursor: pointer !important;
   border-radius: 6px !important;
   transition: background-color 0.15s ease !important;
@@ -360,40 +475,47 @@ code, pre, kbd, samp,
 }
 
 /* Section toggle styling */
-.md-nav--lifted > .md-nav__list > .md-nav__item--nested,
+.md-nav--lifted>.md-nav__list>.md-nav__item--nested,
 .md-nav__item--nested {
   margin: 0.125rem 0 !important;
 }
 
 /* Nested toggle button styling - 75% zoom, Bento spacing, single-line */
-.md-nav__item--nested > .md-nav__link {
+.md-nav__item--nested>.md-nav__link {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 14px !important;
+  /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-medium) !important;
   color: var(--vl-text-primary) !important;
-  padding: 0.5rem 0.375rem !important; /* Reduced horizontal padding to maximize text space */
+  padding: 0.625rem 0.875rem !important;
+  /* Improved padding for better readability */
   border-radius: 6px !important;
   display: flex !important;
   align-items: center !important;
-  white-space: nowrap !important; /* Prevent text wrapping */
-  word-break: keep-all !important; /* Prevent word breaking */
-  overflow: visible !important; /* Ensure full text is visible - no truncation */
-  text-overflow: clip !important; /* No ellipsis - show full text */
-  max-width: none !important; /* Remove any width restrictions */
+  white-space: nowrap !important;
+  /* Prevent text wrapping */
+  word-break: keep-all !important;
+  /* Prevent word breaking */
+  overflow: visible !important;
+  /* Ensure full text is visible - no truncation */
+  text-overflow: clip !important;
+  /* No ellipsis - show full text */
+  max-width: none !important;
+  /* Remove any width restrictions */
 }
 
-.md-nav__item--nested > .md-nav__link:hover {
+.md-nav__item--nested>.md-nav__link:hover {
   background-color: var(--vl-bg-hover) !important;
 }
 
 /* Hide the default Material toggle icon */
-.md-sidebar--primary .md-nav__link > .md-nav__icon {
+.md-sidebar--primary .md-nav__link>.md-nav__icon {
   display: none !important;
 }
 
 /* -------------------- Dropdown Arrows (Bento-style) -------------------- */
 /* Add chevron arrows to nav items with children */
-.md-sidebar--primary .md-nav__item--nested > .md-nav__link {
+.md-sidebar--primary .md-nav__item--nested>.md-nav__link {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -401,7 +523,7 @@ code, pre, kbd, samp,
 }
 
 /* The chevron arrow ">" */
-.md-sidebar--primary .md-nav__item--nested > .md-nav__link::after {
+.md-sidebar--primary .md-nav__item--nested>.md-nav__link::after {
   content: "" !important;
   flex-shrink: 0 !important;
   width: 6px !important;
@@ -414,40 +536,52 @@ code, pre, kbd, samp,
 }
 
 /* Rotate chevron down when expanded */
-.md-sidebar--primary .md-nav__item--nested > .md-toggle:checked ~ .md-nav__link::after {
+.md-sidebar--primary .md-nav__item--nested>.md-toggle:checked~.md-nav__link::after {
   transform: rotate(45deg) !important;
   border-color: var(--vl-primary) !important;
 }
 
 /* Chevron hover state */
-.md-sidebar--primary .md-nav__item--nested > .md-nav__link:hover::after {
+.md-sidebar--primary .md-nav__item--nested>.md-nav__link:hover::after {
   border-color: var(--vl-text-primary) !important;
 }
 
 /* Hide nested items by default - they show when parent is toggled */
-.md-nav__item--nested > .md-nav {
-  margin-left: 0.25rem !important; /* Reduced to give more room for nested text */
-  padding-left: 0.375rem !important; /* Reduced to give more room for nested text */
+.md-sidebar--primary .md-nav__item--nested>.md-nav {
+  margin-left: 0.5rem !important;
+  /* Better indentation for nested items */
+  padding-left: 0.5rem !important;
+  /* Better padding for nested items */
   border-left: 2px solid var(--vl-border) !important;
-  margin-top: 0.125rem !important;
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.25rem !important;
 }
 
 /* Navigation links - 75% zoom size, Bento spacing, single-line */
 .md-nav__link {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
   font-weight: var(--vl-font-weight-normal) !important;
   color: var(--vl-text-secondary) !important;
-  padding: 0.5rem 0.375rem !important; /* Reduced horizontal padding to maximize text space */
+  padding: 0.625rem 0.875rem !important;
+  /* Improved padding for better readability and spacing */
   border-radius: 6px !important;
-  margin: 0.25rem 0 !important; /* Bento: generous spacing between items (10-15px equivalent) */
+  margin: 0.125rem 0 !important;
+  /* Better spacing between items */
   transition: all 0.15s ease !important;
-  line-height: 1.4 !important;
-  white-space: nowrap !important; /* Prevent text wrapping - keep on single line */
-  word-break: keep-all !important; /* Prevent word breaking */
-  overflow: visible !important; /* Ensure full text is visible - no truncation */
-  text-overflow: clip !important; /* No ellipsis - show full text */
-  max-width: none !important; /* Remove any width restrictions */
+  line-height: 1.5 !important;
+  /* Improved line height for better readability */
+  white-space: nowrap !important;
+  /* Prevent text wrapping - keep on single line */
+  word-break: keep-all !important;
+  /* Prevent word breaking */
+  overflow: visible !important;
+  /* Ensure full text is visible - no truncation */
+  text-overflow: clip !important;
+  /* No ellipsis - show full text */
+  max-width: none !important;
+  /* Remove any width restrictions */
 }
 
 .md-nav__link:hover {
@@ -470,8 +604,10 @@ code, pre, kbd, samp,
 .md-nav__item {
   margin: 0 !important;
   padding: 0 !important;
-  width: 100% !important; /* Ensure items can use full available width */
-  max-width: none !important; /* Remove any width restrictions */
+  width: 100% !important;
+  /* Ensure items can use full available width */
+  max-width: none !important;
+  /* Remove any width restrictions */
 }
 
 /* Ensure nav link text containers can expand */
@@ -488,16 +624,20 @@ code, pre, kbd, samp,
   min-width: var(--vl-toc-width) !important;
   background: transparent !important;
   border-left: 1px solid var(--vl-border) !important;
-  padding: 1.5rem 0 !important; /* Bento-style padding */
+  padding: 1.5rem 0 !important;
+  /* Bento-style padding */
   position: sticky;
-  top: 86px;  /* Below header (48px) + tabs (38px) */
-  height: calc(100vh - 86px);
+  top: 62px;
+  /* Below header (62px) + tabs (38px) */
+  height: calc(100vh - 62px);
   overflow-y: auto;
-  margin-left: 0 !important; /* Align with content edge */
+  margin-left: 0 !important;
+  /* Align with content edge */
 }
 
 .md-sidebar--secondary .md-sidebar__scrollwrap {
-  padding: 0 0.5rem 0 0; /* No left padding - TOC at edge */
+  padding: 0 0.5rem 0 0;
+  /* No left padding - TOC at edge */
 }
 
 /* TOC title */
@@ -520,13 +660,16 @@ code, pre, kbd, samp,
 /* TOC links - 75% zoom, Bento spacing */
 .md-sidebar--secondary .md-nav__link {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.6875rem !important; /* 11px - 75% zoom size */
+  font-size: 0.6875rem !important;
+  /* 11px - 75% zoom size */
   font-weight: var(--vl-font-weight-normal) !important;
   color: var(--vl-text-muted) !important;
-  padding: 0.5rem 0.75rem 0.5rem 0.25rem !important; /* Less left padding - closer to edge */
+  padding: 0.5rem 0.75rem 0.5rem 0.25rem !important;
+  /* Less left padding - closer to edge */
   border-left: 2px solid transparent !important;
   border-radius: 0 !important;
-  margin: 0.125rem 0 !important; /* Bento: spacing between TOC items */
+  margin: 0.125rem 0 !important;
+  /* Bento: spacing between TOC items */
   background: transparent !important;
 }
 
@@ -550,7 +693,8 @@ code, pre, kbd, samp,
   /* Fill available space between sidebar and TOC */
   max-width: 100% !important;
   margin: 0 !important;
-  padding: 2rem 2rem !important; /* Consistent padding */
+  padding: 2rem 2rem !important;
+  /* Consistent padding */
   background: var(--vl-bg-main) !important;
 }
 
@@ -569,8 +713,8 @@ code, pre, kbd, samp,
 /* -------------------- Breadcrumbs -------------------- */
 /* Cube-style alignment: Ensure breadcrumbs and h1 share exact same left position */
 /* Remove ALL padding and margin from breadcrumb containers */
-.md-content__inner > nav[aria-label="Breadcrumbs"],
-.md-content__inner > .md-nav__path,
+.md-content__inner>nav[aria-label="Breadcrumbs"],
+.md-content__inner>.md-nav__path,
 .md-content .md-nav__path,
 .md-content nav[aria-label="Breadcrumbs"],
 nav[aria-label="Breadcrumbs"],
@@ -580,7 +724,8 @@ nav[aria-label="Breadcrumbs"],
   margin-left: 0 !important;
   padding-left: 0 !important;
   text-indent: 0 !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
 }
 
 /* Remove all padding from breadcrumb lists and items */
@@ -611,8 +756,8 @@ nav[aria-label="Breadcrumbs"] a {
 }
 
 /* Target first element in breadcrumb to ensure it starts at edge */
-.md-nav__path > *:first-child,
-nav[aria-label="Breadcrumbs"] > *:first-child,
+.md-nav__path>*:first-child,
+nav[aria-label="Breadcrumbs"]>*:first-child,
 .md-nav__path .md-nav__item:first-child,
 nav[aria-label="Breadcrumbs"] .md-nav__item:first-child,
 .md-nav__path .md-nav__link:first-child,
@@ -636,22 +781,22 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 }
 
 /* Ensure breadcrumb container and h1 are both direct children and aligned */
-.md-content__inner > nav[aria-label="Breadcrumbs"]:first-child,
-.md-content__inner > .md-nav__path:first-child {
+.md-content__inner>nav[aria-label="Breadcrumbs"]:first-child,
+.md-content__inner>.md-nav__path:first-child {
   margin-left: 0 !important;
   padding-left: 0 !important;
   width: 100% !important;
 }
 
 /* Force alignment: both breadcrumb and h1 should start at content inner edge */
-.md-content__inner > nav[aria-label="Breadcrumbs"] + .md-typeset,
-.md-content__inner > .md-nav__path + .md-typeset {
+.md-content__inner>nav[aria-label="Breadcrumbs"]+.md-typeset,
+.md-content__inner>.md-nav__path+.md-typeset {
   margin-left: 0 !important;
   padding-left: 0 !important;
 }
 
-.md-content__inner > nav[aria-label="Breadcrumbs"] + .md-typeset h1,
-.md-content__inner > .md-nav__path + .md-typeset h1 {
+.md-content__inner>nav[aria-label="Breadcrumbs"]+.md-typeset h1,
+.md-content__inner>.md-nav__path+.md-typeset h1 {
   margin-left: 0 !important;
   padding-left: 0 !important;
 }
@@ -664,8 +809,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 }
 
 /* Override any Material default styles that might add spacing */
-.md-content__inner > *:first-child nav[aria-label="Breadcrumbs"],
-.md-content__inner > *:first-child .md-nav__path {
+.md-content__inner>*:first-child nav[aria-label="Breadcrumbs"],
+.md-content__inner>*:first-child .md-nav__path {
   margin-left: 0 !important;
   padding-left: 0 !important;
 }
@@ -673,7 +818,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 /* -------------------- Typography (75% zoom → 100% zoom) -------------------- */
 .md-typeset {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.8125rem !important; /* 13px - 75% of previous 14px */
+  font-size: 16px !important;
+  /* 13px - 75% of previous 14px */
   line-height: 1.65 !important;
   color: var(--vl-text-primary) !important;
   font-weight: var(--vl-font-weight-normal) !important;
@@ -683,7 +829,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 
 .md-typeset h1 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 1.21875rem !important; /* ~19.5px - 75% of previous 26px */
+  font-size: 1.21875rem !important;
+  /* ~19.5px - 75% of previous 26px */
   font-weight: var(--vl-font-weight-bold) !important;
   letter-spacing: -0.02em !important;
   color: var(--vl-text-primary) !important;
@@ -694,7 +841,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 
 .md-typeset h2 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.9375rem !important; /* 15px - 75% of previous 20px */
+  font-size: 0.9375rem !important;
+  /* 15px - 75% of previous 20px */
   font-weight: var(--vl-font-weight-semibold) !important;
   letter-spacing: -0.015em !important;
   color: var(--vl-text-primary) !important;
@@ -707,7 +855,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 
 .md-typeset h3 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.875rem !important; /* 14px - rounded from 75% of previous 17px */
+  font-size: 0.875rem !important;
+  /* 14px - rounded from 75% of previous 17px */
   font-weight: var(--vl-font-weight-semibold) !important;
   color: var(--vl-text-primary) !important;
   margin-top: 1.25rem !important;
@@ -717,7 +866,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 
 .md-typeset h4 {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.8125rem !important; /* 13px - rounded from 75% of previous 15px */
+  font-size: 0.8125rem !important;
+  /* 13px - rounded from 75% of previous 15px */
   font-weight: var(--vl-font-weight-semibold) !important;
   color: var(--vl-text-primary) !important;
   margin-top: 1rem !important;
@@ -727,13 +877,16 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 
 .md-typeset p {
   color: var(--vl-text-primary) !important;
-  margin-bottom: 1rem !important; /* Tighter spacing like Bento */
-  line-height: 1.65 !important; /* Bento paragraph line-height */
+  margin-bottom: 1rem !important;
+  /* Tighter spacing like Bento */
+  line-height: 1.65 !important;
+  /* Bento paragraph line-height */
 }
 
 .md-typeset li {
   color: var(--vl-text-primary) !important;
-  line-height: 1.65 !important; /* Bento list line-height (tighter) */
+  line-height: 1.65 !important;
+  /* Bento list line-height (tighter) */
 }
 
 /* Links */
@@ -753,7 +906,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 /* Inline code - 75% zoom */
 .md-typeset code {
   font-family: var(--vl-font-mono) !important;
-  font-size: 0.75em !important; /* ~9.75px - 75% zoom size */
+  font-size: 0.75em !important;
+  /* ~9.75px - 75% zoom size */
   font-weight: 500 !important;
   background-color: #F3F4F6 !important;
   color: var(--vl-text-primary) !important;
@@ -765,7 +919,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 /* Code blocks - 75% zoom */
 .md-typeset pre {
   font-family: var(--vl-font-mono) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
   line-height: 1.6 !important;
   background-color: #F8F9FA !important;
   border-radius: 8px !important;
@@ -773,9 +928,10 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   padding: 0.875rem !important;
 }
 
-.md-typeset pre > code {
+.md-typeset pre>code {
   font-family: var(--vl-font-mono) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 14px !important;
+  /* 12px - 75% zoom size */
   background: transparent !important;
   padding: 0 !important;
   border: none !important;
@@ -791,7 +947,7 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   background-color: #1E2228 !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset pre > code {
+[data-md-color-scheme="slate"] .md-typeset pre>code {
   background: transparent !important;
   color: inherit !important;
 }
@@ -810,7 +966,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
 .md-typeset summary {
   font-family: var(--vl-font-sans) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
   padding: 0.75rem 1rem !important;
   padding-left: 2.5rem !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
@@ -835,14 +992,14 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   border-left: 4px solid var(--vl-primary) !important;
 }
 
-.md-typeset .note > .admonition-title,
-.md-typeset .note > summary {
+.md-typeset .note>.admonition-title,
+.md-typeset .note>summary {
   background-color: rgba(29, 148, 252, 0.08) !important;
   color: #1D94FC !important;
 }
 
-.md-typeset .note > .admonition-title::before,
-.md-typeset .note > summary::before {
+.md-typeset .note>.admonition-title::before,
+.md-typeset .note>summary::before {
   background-color: var(--vl-primary) !important;
 }
 
@@ -853,14 +1010,14 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   border-left: 4px solid var(--vl-success) !important;
 }
 
-.md-typeset .tip > .admonition-title,
-.md-typeset .tip > summary {
+.md-typeset .tip>.admonition-title,
+.md-typeset .tip>summary {
   background-color: rgba(34, 197, 94, 0.08) !important;
   color: #16A34A !important;
 }
 
-.md-typeset .tip > .admonition-title::before,
-.md-typeset .tip > summary::before {
+.md-typeset .tip>.admonition-title::before,
+.md-typeset .tip>summary::before {
   background-color: var(--vl-success) !important;
 }
 
@@ -871,14 +1028,14 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   border-left: 4px solid var(--vl-warning) !important;
 }
 
-.md-typeset .warning > .admonition-title,
-.md-typeset .warning > summary {
+.md-typeset .warning>.admonition-title,
+.md-typeset .warning>summary {
   background-color: rgba(245, 158, 11, 0.08) !important;
   color: #D97706 !important;
 }
 
-.md-typeset .warning > .admonition-title::before,
-.md-typeset .warning > summary::before {
+.md-typeset .warning>.admonition-title::before,
+.md-typeset .warning>summary::before {
   background-color: var(--vl-warning) !important;
 }
 
@@ -891,10 +1048,10 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   border-left: 4px solid var(--vl-error) !important;
 }
 
-.md-typeset .danger > .admonition-title,
-.md-typeset .danger > summary,
-.md-typeset .error > .admonition-title,
-.md-typeset .error > summary {
+.md-typeset .danger>.admonition-title,
+.md-typeset .danger>summary,
+.md-typeset .error>.admonition-title,
+.md-typeset .error>summary {
   background-color: rgba(239, 68, 68, 0.08) !important;
   color: #DC2626 !important;
 }
@@ -906,8 +1063,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   border-left: 4px solid var(--vl-primary-light) !important;
 }
 
-.md-typeset .info > .admonition-title,
-.md-typeset .info > summary {
+.md-typeset .info>.admonition-title,
+.md-typeset .info>summary {
   background-color: rgba(92, 176, 250, 0.08) !important;
   color: #1D94FC !important;
 }
@@ -919,8 +1076,8 @@ nav[aria-label="Breadcrumbs"] .md-nav__link:first-child {
   border-left: 4px solid #5CB0FA !important;
 }
 
-.md-typeset .question > .admonition-title,
-.md-typeset .question > summary {
+.md-typeset .question>.admonition-title,
+.md-typeset .question>summary {
   background-color: rgba(92, 176, 250, 0.08) !important;
   color: #1D94FC !important;
 }
@@ -935,7 +1092,8 @@ a.md-button {
   border-radius: 8px !important;
   padding: 0.75rem 1.5rem !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
   box-shadow: var(--vl-shadow-sm) !important;
   transition: all 0.15s ease !important;
 }
@@ -988,7 +1146,8 @@ a.md-button.download-button:hover {
   font-family: var(--vl-font-sans) !important;
   background-color: var(--vl-bg-sidebar) !important;
   font-weight: var(--vl-font-weight-semibold) !important;
-  font-size: 0.6875rem !important; /* 11px - 75% zoom size */
+  font-size: 0.6875rem !important;
+  /* 11px - 75% zoom size */
   text-transform: none !important;
   letter-spacing: 0 !important;
   color: var(--vl-text-primary) !important;
@@ -1000,7 +1159,8 @@ a.md-button.download-button:hover {
   font-family: var(--vl-font-sans) !important;
   padding: 0.625rem 0.875rem !important;
   border-bottom: 1px solid var(--vl-border-light) !important;
-  font-size: 0.75rem !important; /* 12px - 75% zoom size */
+  font-size: 0.75rem !important;
+  /* 12px - 75% zoom size */
 }
 
 .md-typeset table:not([class]) tr:last-child td {
@@ -1026,42 +1186,45 @@ a.md-button.download-button:hover {
   min-height: auto !important;
 }
 
-.md-typeset .tabbed-labels > label {
+.md-typeset .tabbed-labels>label {
   font-family: var(--vl-font-sans) !important;
-  font-size: 0.75rem !important; /* 12px - normal readable size */
+  font-size: 0.75rem !important;
+  /* 12px - normal readable size */
   font-weight: var(--vl-font-weight-semibold) !important;
   color: var(--vl-text-muted) !important;
-  padding: 0.25rem 0.5rem !important; /* Compact padding, normal text */
+  padding: 0.25rem 0.5rem !important;
+  /* Compact padding, normal text */
   border-bottom: 2px solid transparent !important;
   margin-bottom: -1px !important;
 }
 
-.md-typeset .tabbed-labels > label:hover {
+.md-typeset .tabbed-labels>label:hover {
   color: var(--vl-text-primary) !important;
 }
 
-.md-typeset .tabbed-labels > label.tabbed-label--active {
+.md-typeset .tabbed-labels>label.tabbed-label--active {
   color: var(--vl-primary) !important;
   border-bottom-color: var(--vl-primary) !important;
 }
 
 .md-typeset .tabbed-content {
-  padding: 0 !important; /* No padding - code fills container */
+  padding: 8px 24px !important;
 }
 
 /* Remove extra padding from code blocks inside tabs */
-.md-typeset .tabbed-content > .highlight,
-.md-typeset .tabbed-content > .highlighttable,
-.md-typeset .tabbed-content > pre {
+.md-typeset .tabbed-content>.highlight,
+.md-typeset .tabbed-content>.highlighttable,
+.md-typeset .tabbed-content>pre {
   margin: 0 !important;
   border: none !important;
   border-radius: 0 !important;
 }
 
-.md-typeset .tabbed-content > .highlight pre,
+.md-typeset .tabbed-content>.highlight pre,
 .md-typeset .tabbed-content pre {
   margin: 0 !important;
-  padding: 0.375rem 0.5rem !important; /* Ultra tight code padding */
+  padding: 0.375rem 0.5rem !important;
+  /* Ultra tight code padding */
   border: none !important;
   border-radius: 0 !important;
 }
@@ -1131,12 +1294,14 @@ a.md-button.download-button:hover {
 /* Medium desktops and smaller laptops */
 @media (max-width: 1400px) {
   .md-sidebar--primary {
-    width: var(--vl-sidebar-width) !important; /* Use CSS variable for consistency */
+    width: var(--vl-sidebar-width) !important;
+    /* Use CSS variable for consistency */
     min-width: var(--vl-sidebar-width) !important;
   }
-  
+
   .md-sidebar--secondary {
-    width: 180px !important; /* Maintain TOC width */
+    width: 180px !important;
+    /* Maintain TOC width */
     min-width: 180px !important;
   }
 
@@ -1146,7 +1311,8 @@ a.md-button.download-button:hover {
   }
 
   .md-header__inner {
-    padding: 0.875rem 2rem !important; /* Slightly reduced for medium screens */
+    padding: 0px 0.5rem !important;
+    /* Slightly reduced for medium screens */
   }
 
   /* Adjust tabs position to match sidebar */
@@ -1155,12 +1321,12 @@ a.md-button.download-button:hover {
   }
 }
 
-/* Medium screens (max-width: 1200px) */
+/* Large tablets and small desktops (max-width: 1200px) */
 @media (max-width: 1200px) {
   .md-sidebar--secondary {
     display: none !important;
   }
-  
+
   .md-content {
     /* When TOC is hidden, fill available space */
     max-width: 100% !important;
@@ -1168,39 +1334,322 @@ a.md-button.download-button:hover {
   }
 }
 
-/* Tablets and smaller (max-width: 768px) */
-@media (max-width: 768px) {
-  /* Reset sidebar to let Material theme handle mobile drawer */
+/* Tablets - Landscape (1024px - 1200px) */
+@media (min-width: 1024px) and (max-width: 1200px) {
   .md-sidebar--primary {
-    width: auto !important;
-    min-width: auto !important;
+    width: var(--vl-sidebar-width) !important;
+    min-width: var(--vl-sidebar-width) !important;
+  }
+
+  .md-content {
+    padding: 1.75rem 1.75rem !important;
+  }
+
+  .md-header__inner {
+    padding: 0px 1.5rem !important;
+  }
+}
+
+/* Tablets - Portrait and small tablets (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  /* Sidebar should be visible but can be toggled */
+  .md-sidebar--primary {
+    width: 260px !important;
+    min-width: 260px !important;
+    position: sticky !important;
+    top: 62px !important;
+    height: calc(100vh - 62px) !important;
+    transform: none !important;
+    z-index: 1 !important;
+  }
+
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    padding: 1.25rem 0.875rem !important;
+  }
+
+  .md-content {
+    padding: 1.5rem 1.5rem !important;
+  }
+
+  .md-header__inner {
+    padding: 0px 1.25rem !important;
+  }
+
+  /* Hide hamburger menu on tablets - sidebar always visible */
+  .md-header__button--menu,
+  .md-header__button[for="__drawer"] {
+    display: none !important;
+  }
+
+  /* Tabs styling for tablets */
+  .md-tabs {
+    display: none !important;
+  }
+}
+
+/* Tablets - Portrait orientation (768px - 1024px, portrait) */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
+  .md-sidebar--primary {
+    width: 240px !important;
+    min-width: 240px !important;
+  }
+
+  .md-content {
+    padding: 1.25rem 1.25rem !important;
+  }
+}
+
+/* Tablets - Landscape orientation (768px - 1024px, landscape) */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+  .md-sidebar--primary {
+    width: 280px !important;
+    min-width: 280px !important;
+  }
+
+  .md-content {
+    padding: 1.5rem 1.75rem !important;
+  }
+}
+
+/* Small tablets and large phones - Landscape (600px - 768px, landscape) */
+@media (min-width: 600px) and (max-width: 768px) and (orientation: landscape) {
+  .md-sidebar--primary {
+    width: 240px !important;
+    min-width: 240px !important;
+    position: sticky !important;
+    top: 62px !important;
+    height: calc(100vh - 62px) !important;
+    transform: none !important;
+    z-index: 1 !important;
+  }
+
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    padding: 1.25rem 0.875rem !important;
+  }
+
+  .md-content {
+    padding: 1.25rem 1.5rem !important;
+  }
+
+  /* Hide hamburger menu - sidebar always visible in landscape */
+  .md-header__button--menu,
+  .md-header__button[for="__drawer"] {
+    display: none !important;
+  }
+
+  .md-tabs {
+    display: none !important;
+  }
+}
+
+/* Small tablets and large phones - Portrait (600px - 768px, portrait) */
+@media (min-width: 600px) and (max-width: 768px) and (orientation: portrait) {
+  .md-sidebar--primary {
+    width: 280px !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
     position: fixed !important;
-    top: 0 !important;
+    top: 62px !important;
     left: 0 !important;
-    height: 100vh !important;
-    z-index: 4 !important;
+    height: calc(100vh - 62px) !important;
+    z-index: 5 !important;
     background: var(--vl-bg-sidebar) !important;
     transform: translateX(-100%) !important;
-    transition: transform 0.25s !important;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15) !important;
   }
-  
+
   /* Show sidebar when drawer is open */
-  .md-toggle--drawer:checked ~ .md-container .md-sidebar--primary {
+  [data-md-toggle="drawer"]:checked~.md-container .md-sidebar--primary,
+  .md-toggle:checked~.md-container .md-sidebar--primary,
+  .md-toggle--drawer:checked~.md-container .md-sidebar--primary,
+  #__drawer:checked~.md-container .md-sidebar--primary {
     transform: translateX(0) !important;
+    z-index: 6 !important;
   }
-  
+}
+
+/* Mobile and small tablets (max-width: 768px) */
+@media (max-width: 768px) {
+
+  /* Ensure hamburger menu button is visible and styled */
+  .md-header__button--menu,
+  .md-header__button[for="__drawer"],
+  .md-header__button[aria-label="Open navigation drawer"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    order: -1 !important;
+    /* Show before title */
+    margin-right: 0.5rem !important;
+  }
+
+  /* Ensure header buttons are visible */
+  .md-header__button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Hide tabs on mobile - they're in a separate section below header */
+  .md-header .md-tabs {
+    display: none !important;
+  }
+
+  /* Reset sidebar to let Material theme handle mobile drawer */
+  .md-sidebar--primary {
+    width: 280px !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+    position: fixed !important;
+    top: 62px !important;
+    /* Start below header */
+    left: 0 !important;
+    height: calc(100vh - 62px) !important;
+    /* Full height minus header */
+    z-index: 5 !important;
+    background: var(--vl-bg-sidebar) !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15) !important;
+    padding-top: 0 !important;
+    /* No padding needed since we start below header */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Sidebar scrollwrap on mobile */
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    padding: 1.5rem 1rem !important;
+    /* Improved padding matching desktop */
+    height: 100% !important;
+    overflow-y: auto !important;
+  }
+
+  .md-sidebar--primary .md-nav__list {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 24px !important;
+    margin: 0px !important;
+  }
+
+  .md-sidebar--primary .md-nav__list .md-nav__list {
+    padding: 0px 24px !important;
+    margin: 0px !important;
+  }
+
+  /* Ensure submenu behavior matches desktop on mobile */
+  /* Nested items with chevron arrows - same as desktop */
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Chevron arrow for nested items - same as desktop */
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link::after {
+    content: "" !important;
+    flex-shrink: 0 !important;
+    width: 6px !important;
+    height: 6px !important;
+    margin-left: 0.5rem !important;
+    border-right: 2px solid var(--vl-text-muted) !important;
+    border-bottom: 2px solid var(--vl-text-muted) !important;
+    transform: rotate(-45deg) !important;
+    transition: transform 0.2s ease, border-color 0.2s ease !important;
+  }
+
+  /* Rotate chevron down when expanded - same as desktop */
+  .md-sidebar--primary .md-nav__item--nested>.md-toggle:checked~.md-nav__link::after {
+    transform: rotate(45deg) !important;
+    border-color: var(--vl-primary) !important;
+  }
+
+  /* Chevron hover state - same as desktop */
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link:hover::after {
+    border-color: var(--vl-text-primary) !important;
+  }
+
+  /* Nested items indentation - same as desktop */
+  .md-sidebar--primary .md-nav__item--nested>.md-nav {
+    margin-left: 0.5rem !important;
+    padding-left: 0.75rem !important;
+    border-left: 0px solid var(--vl-border) !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  /* Hide default Material toggle icon on mobile - same as desktop */
+  .md-sidebar--primary .md-nav__link>.md-nav__icon {
+    display: none !important;
+  }
+
+  /* Prevent nested items from opening drawer - expand inline instead */
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link {
+    pointer-events: auto !important;
+  }
+
+  /* Ensure nested nav items expand inline, not in a drawer */
+  .md-sidebar--primary .md-nav__item--nested>.md-nav {
+    display: block !important;
+    position: relative !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Hide nested items by default, show when toggle is checked */
+  .md-sidebar--primary .md-nav__item--nested>.md-toggle:not(:checked)~.md-nav {
+    display: none !important;
+  }
+
+  .md-sidebar--primary .md-nav__item--nested>.md-toggle:checked~.md-nav {
+    display: block !important;
+  }
+
+  /* Prevent Material from creating drawer overlays for nested items */
+  .md-sidebar--primary .md-nav__item--nested .md-nav__link[data-md-state] {
+    pointer-events: auto !important;
+  }
+
+  /* Ensure nested nav links don't trigger drawer navigation */
+  .md-sidebar--primary .md-nav__item--nested>.md-nav__link {
+    cursor: pointer !important;
+  }
+
+  /* Show sidebar when drawer is open - multiple selector patterns for compatibility */
+  [data-md-toggle="drawer"]:checked~.md-container .md-sidebar--primary,
+  .md-toggle:checked~.md-container .md-sidebar--primary,
+  .md-toggle--drawer:checked~.md-container .md-sidebar--primary,
+  #__drawer:checked~.md-container .md-sidebar--primary {
+    transform: translateX(0) !important;
+    z-index: 6 !important;
+    /* Above tabs which are typically z-index 1-2 */
+  }
+
+  /* Overlay when drawer is open - Material creates .md-overlay automatically */
+  .md-overlay {
+    z-index: 4 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+
   /* Full width content on mobile */
   .md-content {
     max-width: 100% !important;
     width: 100% !important;
     padding: 1rem 1.25rem !important;
   }
-  
+
   /* Main container should not use flex that constrains content */
   .md-main__inner {
     display: block !important;
   }
-  
+
   /* Hide TOC on mobile */
   .md-sidebar--secondary {
     display: none !important;
@@ -1209,7 +1658,8 @@ a.md-button.download-button:hover {
   /* Tabs styling */
   .md-tabs {
     position: sticky !important;
-    top: 48px !important;
+    top: 62px !important;
+    /* Below header */
     left: 0 !important;
     transform: none !important;
     width: 100% !important;
@@ -1243,13 +1693,170 @@ a.md-button.download-button:hover {
   .md-typeset h1 {
     font-size: 1.25rem !important;
   }
-  
+
   .md-typeset h2 {
     font-size: 1rem !important;
   }
-  
+
   .md-typeset h3 {
     font-size: 0.875rem !important;
+  }
+
+  /* Search dialog on mobile - full screen only for small mobile */
+  .md-search--active {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .md-search--active .md-search__inner {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+
+  .md-search--active .md-search__form {
+    padding: 1rem !important;
+    border-bottom: 1px solid var(--vl-border) !important;
+    background: var(--vl-bg-main) !important;
+  }
+
+  .md-search--active .md-search__input {
+    border-radius: 8px !important;
+    padding: 0.875rem 1rem !important;
+    font-size: 1rem !important;
+  }
+
+  .md-search--active .md-search__output {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+  }
+}
+
+/* Tablets - Search dialog styling (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  /* Search dialog on tablets - centered and compact */
+  .md-search--active {
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(4px) !important;
+  }
+
+  .md-search--active .md-search__inner {
+    max-width: 600px !important;
+    margin: 3rem auto !important;
+    border-radius: 12px !important;
+    height: auto !important;
+    max-height: 80vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .md-search--active .md-search__form {
+    padding: 1.25rem 1.5rem !important;
+    border-bottom: 1px solid var(--vl-border) !important;
+    background: var(--vl-bg-main) !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  .md-search--active .md-search__input {
+    border-radius: 8px !important;
+    padding: 0.875rem 1rem !important;
+    font-size: 1rem !important;
+  }
+
+  .md-search--active .md-search__output {
+    max-height: calc(80vh - 80px) !important;
+    overflow-y: auto !important;
+    border-radius: 0 0 12px 12px !important;
+  }
+}
+
+/* Large tablets and iPad Air - Search dialog styling (1024px and above, but below desktop) */
+@media (min-width: 1024px) and (max-width: 1400px) {
+
+  /* Search dialog on large tablets - centered and compact */
+  .md-search--active {
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(4px) !important;
+  }
+
+  .md-search--active .md-search__inner {
+    max-width: 640px !important;
+    width: 90% !important;
+    margin: 3rem auto !important;
+    border-radius: 12px !important;
+    height: auto !important;
+    max-height: 70vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+  }
+
+  .md-search--active .md-search__form {
+    padding: 1.25rem 1.5rem !important;
+    border-bottom: 1px solid var(--vl-border) !important;
+    background: var(--vl-bg-main) !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  .md-search--active .md-search__input {
+    border-radius: 8px !important;
+    padding: 0.875rem 1rem !important;
+    font-size: 1rem !important;
+    width: 100% !important;
+  }
+
+  .md-search--active .md-search__output {
+    max-height: calc(70vh - 90px) !important;
+    overflow-y: auto !important;
+    border-radius: 0 0 12px 12px !important;
+  }
+}
+
+/* Mobile - Landscape orientation (480px - 768px, landscape) */
+@media (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
+  .md-sidebar--primary {
+    width: 220px !important;
+    min-width: 220px !important;
+    position: sticky !important;
+    top: 62px !important;
+    height: calc(100vh - 62px) !important;
+    transform: none !important;
+    z-index: 1 !important;
+  }
+
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    padding: 1rem 0.75rem !important;
+  }
+
+  .md-content {
+    padding: 1rem 1.25rem !important;
+  }
+
+  /* Hide hamburger menu in landscape - sidebar always visible */
+  .md-header__button--menu,
+  .md-header__button[for="__drawer"] {
+    display: none !important;
+  }
+
+  .md-tabs {
+    display: none !important;
   }
 }
 
@@ -1260,7 +1867,7 @@ a.md-button.download-button:hover {
   }
 
   .md-header__inner {
-    padding: 0.5rem 0.75rem !important;
+    padding: 0px 0.75rem !important;
   }
 
   .md-header__title {
@@ -1284,13 +1891,13 @@ a.md-button.download-button:hover {
     font-size: 1.125rem !important;
     margin-bottom: 0.75rem !important;
   }
-  
+
   .md-typeset h2 {
     font-size: 0.9375rem !important;
     margin-top: 1.25rem !important;
     margin-bottom: 0.5rem !important;
   }
-  
+
   .md-typeset h3 {
     font-size: 0.875rem !important;
     margin-top: 1rem !important;
@@ -1309,7 +1916,7 @@ a.md-button.download-button:hover {
     overflow-x: auto !important;
     max-width: 100% !important;
   }
-  
+
   .md-typeset code {
     font-size: 0.75rem !important;
     word-break: break-word !important;
@@ -1330,7 +1937,7 @@ a.md-button.download-button:hover {
   }
 
   .md-header__inner {
-    padding: 0.5rem 0.5rem !important;
+    padding: 0px 0.5rem !important;
   }
 
   .md-tabs {
@@ -1349,11 +1956,11 @@ a.md-button.download-button:hover {
   .md-typeset h1 {
     font-size: 0.9375rem !important;
   }
-  
+
   .md-typeset h2 {
     font-size: 0.75rem !important;
   }
-  
+
   .md-typeset h3 {
     font-size: 0.6875rem !important;
   }
@@ -1478,9 +2085,9 @@ a.md-button.download-button:hover {
 
 .mermaid-zoom-wrapper.zoomed .mermaid-zoom-controls {
   display: flex;
-  }
-  
-  .zoom-control-btn {
+}
+
+.zoom-control-btn {
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
@@ -1545,8 +2152,8 @@ a.md-button.download-button:hover {
   border-left-color: var(--vl-primary) !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .note > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset .note > summary {
+[data-md-color-scheme="slate"] .md-typeset .note>.admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .note>summary {
   background-color: rgba(92, 176, 250, 0.18) !important;
   color: var(--vl-primary-light) !important;
 }
@@ -1558,8 +2165,8 @@ a.md-button.download-button:hover {
   border-left-color: var(--vl-success) !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .tip > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset .tip > summary {
+[data-md-color-scheme="slate"] .md-typeset .tip>.admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .tip>summary {
   background-color: rgba(34, 197, 94, 0.18) !important;
   color: #4ADE80 !important;
 }
@@ -1571,8 +2178,8 @@ a.md-button.download-button:hover {
   border-left-color: var(--vl-warning) !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .warning > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset .warning > summary {
+[data-md-color-scheme="slate"] .md-typeset .warning>.admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .warning>summary {
   background-color: rgba(245, 158, 11, 0.18) !important;
   color: #FBBF24 !important;
 }
@@ -1586,10 +2193,10 @@ a.md-button.download-button:hover {
   border-left-color: var(--vl-error) !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .danger > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset .danger > summary,
-[data-md-color-scheme="slate"] .md-typeset .error > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset .error > summary {
+[data-md-color-scheme="slate"] .md-typeset .danger>.admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .danger>summary,
+[data-md-color-scheme="slate"] .md-typeset .error>.admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .error>summary {
   background-color: rgba(239, 68, 68, 0.18) !important;
   color: #F87171 !important;
 }
@@ -1601,8 +2208,8 @@ a.md-button.download-button:hover {
   border-left-color: var(--vl-primary-light) !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .info > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset .info > summary {
+[data-md-color-scheme="slate"] .md-typeset .info>.admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .info>summary {
   background-color: rgba(92, 176, 250, 0.18) !important;
   color: var(--vl-primary-light) !important;
 }
@@ -1614,8 +2221,8 @@ a.md-button.download-button:hover {
   border-left-color: #5CB0FA !important;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .question > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset .question > summary {
+[data-md-color-scheme="slate"] .md-typeset .question>.admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .question>summary {
   background-color: rgba(92, 176, 250, 0.18) !important;
   color: #7EC4FF !important;
 }
@@ -1678,7 +2285,7 @@ a.md-button.download-button:hover {
   width: 100% !important;
 }
 
-.md-typeset .highlighttable td.code > div {
+.md-typeset .highlighttable td.code>div {
   padding: 1rem !important;
 }
 
@@ -1689,7 +2296,7 @@ a.md-button.download-button:hover {
   right: 0.5rem !important;
 }
 
-.md-typeset .highlighttable td.code > div {
+.md-typeset .highlighttable td.code>div {
   position: relative !important;
 }
 
@@ -1709,6 +2316,7 @@ a.md-button.download-button:hover {
 
 /* -------------------- Print Styles -------------------- */
 @media print {
+
   .md-sidebar--primary,
   .md-sidebar--secondary,
   .md-header,
@@ -1716,7 +2324,7 @@ a.md-button.download-button:hover {
   .md-footer {
     display: none !important;
   }
-  
+
   .md-content {
     max-width: 100% !important;
     padding: 0 !important;
@@ -1756,7 +2364,7 @@ a.md-button.download-button:hover {
 
 [data-md-color-scheme="slate"] .md-search__output {
   background: #1e2228 !important;
-  border: 1px solid rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 /* Compact sizing */
@@ -1778,6 +2386,7 @@ a.md-button.download-button:hover {
   padding: 0 !important;
   border-top: 1px solid var(--vl-border-light) !important;
 }
+
 .md-search-result__item:first-child {
   border-top: none !important;
 }
@@ -1849,8 +2458,8 @@ a.md-button.download-button:hover {
    ========================================================= */
 
 /* Hide the share button */
-.md-search__options > a[href*="?q="],
-.md-search__options > a[data-md-component="search-share"],
+.md-search__options>a[href*="?q="],
+.md-search__options>a[data-md-component="search-share"],
 .md-search__share {
   display: none !important;
 }
@@ -1872,7 +2481,7 @@ a.md-button.download-button:hover {
 }
 
 /* Magnifier icon - positioned on the left inside input */
-.md-search__form > .md-search__icon {
+.md-search__form>.md-search__icon {
   position: absolute !important;
   left: 0.55rem !important;
   top: 50% !important;
@@ -1920,6 +2529,7 @@ a.md-button.download-button:hover {
 [data-md-color-scheme="default"] .md-search--active .md-search__icon {
   color: #4a5568 !important;
 }
+
 [data-md-color-scheme="default"] .md-search--active .md-search__icon svg {
   fill: #4a5568 !important;
 }
@@ -1928,12 +2538,15 @@ a.md-button.download-button:hover {
 [data-md-color-scheme="default"] .md-search__options button {
   color: #4a5568 !important;
 }
+
 [data-md-color-scheme="default"] .md-search__options button svg {
   fill: #4a5568 !important;
 }
+
 [data-md-color-scheme="default"] .md-search__options button:hover {
   color: #1a202c !important;
 }
+
 [data-md-color-scheme="default"] .md-search__options button:hover svg {
   fill: #1a202c !important;
 }
@@ -1944,36 +2557,66 @@ a.md-button.download-button:hover {
 
 /* Magnifier icon in dark mode */
 [data-md-color-scheme="slate"] .md-search__icon {
-  color: rgba(255,255,255,0.8) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
+
 [data-md-color-scheme="slate"] .md-search__icon svg {
-  fill: rgba(255,255,255,0.8) !important;
+  fill: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Clear button in dark mode */
 [data-md-color-scheme="slate"] .md-search__options button {
-  color: rgba(255,255,255,0.7) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
 }
+
 [data-md-color-scheme="slate"] .md-search__options button svg {
-  fill: rgba(255,255,255,0.7) !important;
+  fill: rgba(255, 255, 255, 0.7) !important;
 }
+
 [data-md-color-scheme="slate"] .md-search__options button:hover {
   color: #ffffff !important;
 }
+
 [data-md-color-scheme="slate"] .md-search__options button:hover svg {
   fill: #ffffff !important;
 }
 
 /* Scroll margin for TOC anchor links */
-
-h1[id], h2[id], h3[id], h4[id], h5[id], h6[id],
-.md-typeset h1[id], .md-typeset h2[id], .md-typeset h3[id],
-.md-typeset h4[id], .md-typeset h5[id], .md-typeset h6[id] {
-  scroll-margin-top: 100px;
+/* Account for header height (62px) + tabs (38px) + extra padding for comfortable spacing */
+h1[id],
+h2[id],
+h3[id],
+h4[id],
+h5[id],
+h6[id],
+.md-typeset h1[id],
+.md-typeset h2[id],
+.md-typeset h3[id],
+.md-typeset h4[id],
+.md-typeset h5[id],
+.md-typeset h6[id] {
+  scroll-margin-top: 70px !important;
 }
 
 :target {
-  scroll-margin-top: 100px;
+  scroll-margin-top: 70px !important;
+}
+
+/* Add padding-top to headings when they're targets to create visual space from header */
+h1:target,
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target,
+.md-typeset h1:target,
+.md-typeset h2:target,
+.md-typeset h3:target,
+.md-typeset h4:target,
+.md-typeset h5:target,
+.md-typeset h6:target {
+  padding-top: 1.5rem !important;
+  margin-top: 0 !important;
 }
 
 /* Search icon visible in light mode (dark icon on light background) */
@@ -2004,6 +2647,56 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id],
 
 [data-md-color-scheme="default"] .md-search__options button:hover svg {
   fill: #1a202c !important;
+}
+
+@supports selector(::-webkit-scrollbar) {
+  [dir=ltr] .md-sidebar__inner {
+    padding-right: 0rem;
+  }
+}
+
+@media screen and (min-width: 76.25em) {
+  [dir=ltr] .md-nav--primary .md-nav__list {
+    padding-left: 0rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+
+  [data-md-component="toc"],
+  [aria-label="On this page"] {
+    display: none !important;
+  }
+}
+
+.md-nav__source {
+  background-color: #2196F3 !important;
+}
+
+@media (max-width: 768px) {
+  .md-sidebar--primary .md-nav__item--nested>.md-nav {
+    margin-left: 0rem !important;
+    padding-left: 0rem !important;
+    border-left: 0px solid var(--vl-border) !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+}
+
+.md-header {
+  min-height: 62px !important;
+}
+
+.md-header__inner {
+  min-height: inherit !important;
+}
+
+[aria-expanded="false"] {
+  display: none !important;
+}
+
+[aria-expanded="true"] {
+  display: block !important;
 }
 
 /* End of theme */

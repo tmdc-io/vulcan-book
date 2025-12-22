@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1472,9 +1487,9 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="audits">Audits<a class="headerlink" href="#audits" title="Link to this section">¶</a></h1>
-<p>Audits are your data quality bouncers—they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your pipeline if something's wrong.</p>
+<p>Audits are your data quality bouncers, they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your models if something's wrong.</p>
 <p>Unlike <a href="../../tests/tests/">tests</a> (which you run manually to verify logic), audits run automatically whenever you apply a <a href="../../../guides/plan/">plan</a>. They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.</p>
-<p><strong>Here's the key thing:</strong> All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything—no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire pipeline and causing headaches later.</p>
+<p><strong>Here's the key thing:</strong> All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything, no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire models and causing headaches later.</p>
 <p>A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.</p>
 <blockquote>
 <p><strong>Note:</strong> For incremental by time range models, audits only run on the intervals being processed, not the entire table. This keeps things fast and focused on what actually changed.</p>
@@ -1498,10 +1513,10 @@
 </span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="p">);</span>
 </span></code></pre></div>
 <blockquote>
-<p><strong>Note:</strong> You might see older code using <code>audits</code> instead of <code>assertions</code> in MODEL definitions. Both work identically, but <code>assertions</code> is clearer—you're asserting that your model passes these audits. This documentation uses <code>assertions</code> throughout.</p>
+<p><strong>Note:</strong> You might see older code using <code>audits</code> instead of <code>assertions</code> in MODEL definitions. Both work identically, but <code>assertions</code> is clearer, you're asserting that your model passes these audits. This documentation uses <code>assertions</code> throughout.</p>
 </blockquote>
 <h2 id="how-audits-work">How Audits Work<a class="headerlink" href="#how-audits-work" title="Link to this section">¶</a></h2>
-<p>When an audit fails, Vulcan stops everything. No ifs, ands, or buts. This is by design—it's better to catch problems early than to let bad data flow downstream and cause bigger issues.</p>
+<p>When an audit fails, Vulcan stops everything. No ifs, ands, or buts. This is by design, it's better to catch problems early than to let bad data flow downstream and cause bigger issues.</p>
 <p>Here's what happens when you run a model:</p>
 <ol>
 <li><strong>Evaluate the model</strong> - Vulcan runs your model SQL (inserts new data, rebuilds the table, etc.)</li>
@@ -1520,7 +1535,7 @@
 - Vulcan evaluates and audits models directly against the production environment
 - If an audit fails, the run stops, but the invalid data <em>is already in production</em>
 - The blocking prevents this bad data from being used to build downstream models
-- This is like deploying directly—faster, but riskier</p>
+- This is like deploying directly, faster, but riskier</p>
 <p><strong>Which should you use?</strong> For production changes, use <code>plan</code>. It's safer and gives you a chance to fix issues before they hit production. Use <code>run</code> when you're confident or doing quick iterations.</p>
 <h3 id="fixing-a-failed-audit">Fixing a Failed Audit<a class="headerlink" href="#fixing-a-failed-audit" title="Link to this section">¶</a></h3>
 <p>So an audit failed. Don't panic! Here's how to fix it:</p>
@@ -1584,9 +1599,11 @@
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">@</span><span class="n">this_model</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="k">WHERE</span><span class="w"> </span><span class="o">@</span><span class="k">column</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">@</span><span class="n">threshold</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This uses <a href="../../advanced-features/macros/overview/">macros</a> to make it flexible:
-- <code>@this_model</code> is a special macro that refers to the model being audited (and handles incremental models correctly)
-- <code>@column</code> and <code>@threshold</code> are parameters you'll specify when you use the audit</p>
+<p>This uses <a href="../../advanced-features/macros/overview/">macros</a> to make it flexible:</p>
+<ul>
+<li><code>@this_model</code> is a special macro that refers to the model being audited (and handles incremental models correctly)</li>
+<li><code>@column</code> and <code>@threshold</code> are parameters you'll specify when you use the audit</li>
+</ul>
 <p>Now you can use this same audit for different columns and thresholds:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
@@ -1636,7 +1653,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This applies these audits to all models by default. Useful for organization-wide rules!</p>
 <blockquote>
-<p><strong>Note:</strong> In <code>model_defaults</code>, you can use either <code>audits</code> or <code>assertions</code>—both work for backward compatibility.</p>
+<p><strong>Note:</strong> In <code>model_defaults</code>, you can use either <code>audits</code> or <code>assertions</code>, both work for backward compatibility.</p>
 </blockquote>
 <h3 id="naming">Naming<a class="headerlink" href="#naming" title="Link to this section">¶</a></h3>
 <p><strong>Avoid SQL keywords</strong> when naming audit parameters. If you must use a keyword, quote it.</p>
@@ -1686,7 +1703,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>You can define multiple audits in the same file. Just make sure they're defined before (or alongside) the MODEL that uses them.</p>
 <h2 id="built-in-audits">Built-in Audits<a class="headerlink" href="#built-in-audits" title="Link to this section">¶</a></h2>
-<p>Vulcan comes with a whole suite of built-in audits that cover most common use cases. These are ready to use—no need to write SQL yourself for these scenarios.</p>
+<p>Vulcan comes with a whole suite of built-in audits that cover most common use cases. These are ready to use, no need to write SQL yourself for these scenarios.</p>
 <p>All built-in audits are blocking (they stop execution when they fail), and they're grouped by what they check. Let's walk through them:</p>
 <h3 id="generic-assertion-audit">Generic Assertion Audit<a class="headerlink" href="#generic-assertion-audit" title="Link to this section">¶</a></h3>
 <h4 id="forall"><code>forall</code><a class="headerlink" href="#forall" title="Link to this section">¶</a></h4>
@@ -1709,7 +1726,7 @@
 </span></span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This checks that all rows have a <code>price</code> greater than 0 AND a <code>name</code> with at least one character. You can add as many criteria as you want—they all need to pass.</p>
+<p>This checks that all rows have a <code>price</code> greater than 0 AND a <code>name</code> with at least one character. You can add as many criteria as you want, they all need to pass.</p>
 <h3 id="row-counts-and-null-value-audits">Row Counts and NULL Value Audits<a class="headerlink" href="#row-counts-and-null-value-audits" title="Link to this section">¶</a></h3>
 <p>These audits check that you have enough data and that required fields aren't missing.</p>
 <h4 id="number_of_rows"><code>number_of_rows</code><a class="headerlink" href="#number_of_rows" title="Link to this section">¶</a></h4>
@@ -1839,7 +1856,7 @@
 <p>Rows with <code>NULL</code> values will pass this audit in most databases. If you want to reject NULLs, combine this with a <code>not_null</code> audit.</p>
 </div>
 <h4 id="not_accepted_values"><code>not_accepted_values</code><a class="headerlink" href="#not_accepted_values" title="Link to this section">¶</a></h4>
-<p>The opposite—make sure certain values are NOT present:</p>
+<p>The opposite, make sure certain values are NOT present:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
 <span class="normal"><a href="#__codelineno-18-2">2</a></span>
 <span class="normal"><a href="#__codelineno-18-3">3</a></span>
@@ -2061,7 +2078,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This ensures all <code>todo</code> values match at least one pattern: either start with a digit (<code>^\d.*</code>) or end with an exclamation mark (<code>.*!$</code>).</p>
 <h4 id="not_match_regex_pattern_list"><code>not_match_regex_pattern_list</code><a class="headerlink" href="#not_match_regex_pattern_list" title="Link to this section">¶</a></h4>
-<p>The opposite—make sure values don't match any pattern:</p>
+<p>The opposite, make sure values don't match any pattern:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-32-1">1</a></span>
 <span class="normal"><a href="#__codelineno-32-2">2</a></span>
 <span class="normal"><a href="#__codelineno-32-3">3</a></span>
@@ -2243,8 +2260,8 @@
 </span></code></pre></div>
 <p>This is useful for testing audits before running a full plan, or for debugging why an audit is failing. The output shows you exactly what query failed and how many rows it found.</p>
 <h3 id="automated-auditing">Automated Auditing<a class="headerlink" href="#automated-auditing" title="Link to this section">¶</a></h3>
-<p>When you apply a plan, Vulcan automatically runs all audits for models being evaluated. You don't need to do anything special—just run your plan and audits happen automatically.</p>
-<p>If any audit fails, Vulcan halts the pipeline immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us—it's better than finding out later that bad data made it into production.</p>
+<p>When you apply a plan, Vulcan automatically runs all audits for models being evaluated. You don't need to do anything special, just run your plan and audits happen automatically.</p>
+<p>If any audit fails, Vulcan halts the models immediately. This prevents bad data from propagating downstream and causing bigger problems. It might be annoying when it happens, but trust us, it's better than finding out later that bad data made it into production.</p>
 <h2 id="advanced-usage">Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this section">¶</a></h2>
 <h3 id="skipping-audits">Skipping Audits<a class="headerlink" href="#skipping-audits" title="Link to this section">¶</a></h3>
 <p>Sometimes you need to temporarily disable an audit. Maybe you're debugging, or you know there's a temporary data issue you're working on fixing. You can skip audits by setting <code>skip</code> to <code>true</code>:</p>
@@ -2272,19 +2289,21 @@
 <p>This will show you the exact query and the rows that failed. Once you see what data is causing the failure, you can either fix the data or adjust the audit.</p>
 <h3 id="audit-too-strict">Audit Too Strict<a class="headerlink" href="#audit-too-strict" title="Link to this section">¶</a></h3>
 <p><strong>Problem:</strong> Your audit is failing during normal operation, even though the data is actually fine.</p>
-<p><strong>Solution:</strong> Review your thresholds. Maybe your <code>accepted_range</code> is too narrow, or your <code>number_of_rows</code> threshold is too high. Statistical audits especially need tuning—start with wide ranges and tighten them as you learn what's normal.</p>
+<p><strong>Solution:</strong> Review your thresholds. Maybe your <code>accepted_range</code> is too narrow, or your <code>number_of_rows</code> threshold is too high. Statistical audits especially need tuning, start with wide ranges and tighten them as you learn what's normal.</p>
 <h3 id="performance-issues">Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this section">¶</a></h3>
 <p><strong>Problem:</strong> Audits are slowing down your plan execution.</p>
 <p><strong>Solution:</strong> 
 - Make sure your audit queries use indexes on the columns they're checking
 - For incremental models, audits only run on processed intervals (which helps), but you can also add date filters to your audit queries
-- Consider if you really need all those audits—sometimes less is more</p>
+- Consider if you really need all those audits, sometimes less is more</p>
 <h3 id="understanding-audit-results">Understanding Audit Results<a class="headerlink" href="#understanding-audit-results" title="Link to this section">¶</a></h3>
-<p>When an audit fails, Vulcan shows you:
-- Which audit failed
-- Which model it was attached to
-- The exact query that was run
-- How many rows were returned (when it expected 0)</p>
+<p>When an audit fails, Vulcan shows you:</p>
+<ul>
+<li>Which audit failed</li>
+<li>Which model it was attached to</li>
+<li>The exact query that was run</li>
+<li>How many rows were returned (when it expected 0)</li>
+</ul>
 <p>Use this information to understand what went wrong. The query results tell you exactly what data failed the check.</p>
 </article>
 </div>

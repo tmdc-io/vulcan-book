@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1064,271 +1079,349 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="get-started">Get Started<a class="headerlink" href="#get-started" title="Link to this section">¶</a></h1>
-<p>Welcome to the Vulcan quickstart, which will get you up and running with an example project.</p>
-<p>The example project runs locally on your machine with a Postgres SQL engine, and Vulcan will generate all the necessary project files - no configuration necessary!</p>
-<p>All you need to do is download Vulcan on your machine - get started by ensuring your system meets the basic prerequisites for using Vulcan.</p>
+<p>Welcome to the Vulcan quickstart guide! This tutorial will walk you through setting up a complete Vulcan project on your local machine.</p>
+<p>The example project runs locally using a Postgres SQL engine. Vulcan will automatically generate all the necessary project files and configurations, no manual setup required!</p>
+<p>To get started, ensure your system meets the <a href="#prerequisites">prerequisites</a> below, then follow the step-by-step instructions for your operating system.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
+<p>Before you begin, make sure you have Docker installed and configured on your system. Follow the instructions below for your operating system.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">Mac/Linux</label><label for="__tabbed_1_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<ol>
-<li>Docker Desktop is installed and running, at least with 4GB RAM, Verify that Docker is installed and running: 
+<p><strong>1. Verify Docker Installation</strong></p>
+<p>First, check if Docker Desktop (Mac) or Docker Engine (Linux) is installed and running:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>--version
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
-</span></code></pre></div></li>
-<li>
-<p>If not Download from <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop for Mac</a></p>
-</li>
-<li>
-<p>Install Docker Engine and Docker Compose from <a href="https://docs.docker.com/engine/install/" target="_blank">Docker for Linux</a></p>
-</li>
-</ol>
+</span></code></pre></div>
+<p>If both commands return version numbers, Docker is installed. Make sure Docker Desktop is running (you should see the Docker icon in your menu bar or system tray).</p>
+<p><strong>2. Install Docker (if needed)</strong></p>
+<ul>
+<li><strong>Mac</strong>: Download and install <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop for Mac</a></li>
+<li><strong>Linux</strong>: Install Docker Engine and Docker Compose following the <a href="https://docs.docker.com/engine/install/" target="_blank">official Docker installation guide</a></li>
+</ul>
+<p><strong>3. Configure Resources</strong></p>
+<p>Ensure Docker Desktop has at least <strong>4GB of RAM</strong> allocated. You can adjust this in Docker Desktop settings under Resources → Advanced.</p>
 </div>
 <div class="tabbed-block">
-<ol>
-<li>
-<p>Docker Desktop for Windows installed and running, at least 4GB RAM, Verify that Docker is installed and running: 
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>docker<span class="w"> </span>--version
+<p><strong>1. Verify Docker Installation</strong></p>
+<p>Check if Docker Desktop for Windows is installed and running:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>docker<span class="w"> </span>--version
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
-</span></code></pre></div><p></p>
-</li>
-<li>
-<p>If not Download from <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop for Windows</a></p>
-</li>
-</ol>
+</span></code></pre></div>
+<p>If both commands return version numbers, Docker is installed. Make sure Docker Desktop is running (you should see the Docker icon in your system tray).</p>
+<p><strong>2. Install Docker (if needed)</strong></p>
+<p>If Docker is not installed, download and install <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop for Windows</a></p>
+<p><strong>3. Configure Resources</strong></p>
+<p>Ensure Docker Desktop has at least <strong>4GB of RAM</strong> allocated. You can adjust this in Docker Desktop settings under Settings → Resources → Advanced.</p>
 </div>
 </div>
 </div>
 <h2 id="vulcan-setup-locally">Vulcan Setup Locally<a class="headerlink" href="#vulcan-setup-locally" title="Link to this section">¶</a></h2>
+<p>Follow these steps to set up Vulcan on your local machine. The setup process will create all necessary infrastructure services and prepare your environment for development.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">Mac/Linux</label><label for="__tabbed_2_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><a class="md-button md-button--primary download-button" href="../zip-mac/vulcan-project.zip" target="_blank"><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 20h14v-2H5m14-9h-4V3H9v6H5l7 7z"></path></svg></span> Download for Mac/Linux</a></p>
-<p><small>Contains: Docker Compose files, Makefile, and README</small></p>
-<ol>
-<li>
-<p><strong>Extract the zip file and navigate to the directory:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>vulcan-project
-</span></code></pre></div><p></p>
-</li>
-<li>
-<p><strong>Run setup:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>make<span class="w"> </span>setup
+<p><small>The download includes: Docker Compose files, Makefile, and a comprehensive README</small></p>
+<p><strong>Step 1: Extract and Navigate</strong></p>
+<p>Extract the downloaded zip file and open the <code>vulcan-project</code> folder in VS Code or your preferred IDE:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>vulcan-project
 </span></code></pre></div>
-   This creates:<p></p>
+<p><strong>Step 2: Run Setup</strong></p>
+<p><strong>Important</strong>: Before running setup, ensure Docker Desktop is running on your machine and that you are logged into RubikLabs.</p>
+<p>Execute the setup command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>make<span class="w"> </span>setup
+</span></code></pre></div>
+<p>This command creates and starts three essential services:</p>
 <ul>
-<li><strong>statestore</strong> (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, &amp; execution history, and Vulcan uses it to persist the semantic model, plans, and track materialization state</li>
-<li><strong>minio</strong> (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates, and 
-Vulcan uses it to store query results and artifacts, enabling efficient data retrieval and caching</li>
-<li><strong>minio-init</strong>: Initializes MinIO buckets and policies, and these services are essential for Vulcan's operation and must be running before you can use Vulcan</li>
+<li>
+<p><strong>statestore</strong> (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, and execution history. This database persists your semantic model, plans, and tracks materialization state.</p>
+</li>
+<li>
+<p><strong>minio</strong> (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service enables efficient data retrieval and caching for your workflows.</p>
+</li>
+<li>
+<p><strong>minio-init</strong>: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.</p>
+</li>
 </ul>
-</li>
-<li>
-<p><strong>Access Vulcan:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan  --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev-02 vulcan"</span>
+<p><strong>Note</strong>: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.</p>
+<p><strong>Step 3: Configure Vulcan CLI Access</strong></p>
+<p>Create an alias to access the Vulcan CLI easily:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev-02 vulcan"</span>
 </span></code></pre></div>
-<strong>Note</strong>: This alias is temporary and will be lost when you close your shell session. To make it permanent, add it to your shell configuration file (~/.bashrc or ~/.zshrc).<p></p>
-</li>
-<li>
-<p><strong>Start API Services:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>make<span class="w"> </span>vulcan-up
+<p><strong>Note</strong>: This alias is temporary and will be lost when you close your shell session. To make it permanent, add this line to your shell configuration file (<code>~/.bashrc</code> for Bash or <code>~/.zshrc</code> for Zsh), then restart your terminal or run <code>source ~/.zshrc</code> (or <code>source ~/.bashrc</code>).</p>
+<p><strong>Step 4: Start API Services</strong></p>
+<p>Start the Vulcan API services:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>make<span class="w"> </span>vulcan-up
 </span></code></pre></div>
-   This starts <strong>vulcan-api</strong> for querying your semantic model by <strong>REST API</strong>(available at <code>http://localhost:8000</code>) &amp;
-    <strong>vulcan-transpiler</strong> for transpiling semantic queries to SQL<p></p>
-</li>
-</ol>
+<p>This command starts two services:</p>
+<ul>
+<li><strong>vulcan-api</strong>: A REST API server for querying your semantic model (available at <code>http://localhost:8000</code>)</li>
+<li><strong>vulcan-transpiler</strong>: A service for transpiling semantic queries to SQL</li>
+</ul>
+<p>Once these services are running, you're ready to create your first project!</p>
 </div>
 <div class="tabbed-block">
 <p><a class="md-button md-button--primary download-button" href="../zip-window/vulcan-project.zip" target="_blank"><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 20h14v-2H5m14-9h-4V3H9v6H5l7 7z"></path></svg></span> Download for Windows</a></p>
-<p><small>Contains: Docker Compose files, Windows batch scripts, and README</small></p>
-<ol>
-<li>
-<p><strong>Extract the zip file and navigate to the directory:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>cd vulcan-project
-</span></code></pre></div><p></p>
-</li>
-<li>
-<p><strong>Run setup:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>setup.bat
+<p><small>The download includes: Docker Compose files, Windows batch scripts, and a comprehensive README</small></p>
+<p><strong>Step 1: Extract and Navigate</strong></p>
+<p>Extract the downloaded zip file and navigate to the <code>vulcan-project</code> directory:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>cd vulcan-project
 </span></code></pre></div>
-   This creates:<p></p>
+<p><strong>Step 2: Run Setup</strong></p>
+<p><strong>Important</strong>: Before running setup, ensure Docker Desktop for Windows is running and that you are logged into RubikLabs.</p>
+<p>Execute the setup script:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>setup.bat
+</span></code></pre></div>
+<p>This script creates and starts three essential services:</p>
 <ul>
-<li><strong>statestore</strong> (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, &amp; execution history, and Vulcan uses it to persist the semantic model, plans, and track materialization state</li>
-<li><strong>minio</strong> (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates, and 
-Vulcan uses it to store query results and artifacts, enabling efficient data retrieval and caching</li>
-<li><strong>minio-init</strong>: Initializes MinIO buckets and policies, and these services are essential for Vulcan's operation and must be running before you can use Vulcan</li>
+<li>
+<p><strong>statestore</strong> (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, and execution history. This database persists your semantic model, plans, and tracks materialization state.</p>
+</li>
+<li>
+<p><strong>minio</strong> (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service enables efficient data retrieval and caching for your workflows.</p>
+</li>
+<li>
+<p><strong>minio-init</strong>: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.</p>
+</li>
 </ul>
-</li>
-<li>
-<p><strong>Access Vulcan:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>vulcan.bat
-</span></code></pre></div><p></p>
-</li>
-<li>
-<p><strong>Start API Services:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>start-vulcan-api.bat
+<p><strong>Note</strong>: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.</p>
+<p><strong>Step 3: Access Vulcan CLI</strong></p>
+<p>Use the provided batch script to access the Vulcan CLI:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>vulcan.bat
 </span></code></pre></div>
-   This starts:<p></p>
-<p><strong>vulcan-api</strong> for querying your semantic model by <strong>REST API</strong>(available at <code>http://localhost:8000</code>) &amp;</p>
-<p><strong>vulcan-transpiler</strong> for transpiling semantic queries to SQL</p>
-</li>
-</ol>
+<p>This script runs Vulcan commands in a Docker container with the correct network and volume settings.</p>
+<p><strong>Step 4: Start API Services</strong></p>
+<p>Start the Vulcan API services:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>start-vulcan-api.bat
+</span></code></pre></div>
+<p>This command starts two services:</p>
+<ul>
+<li><strong>vulcan-api</strong>: A REST API server for querying your semantic model (available at <code>http://localhost:8000</code>)</li>
+<li><strong>vulcan-transpiler</strong>: A service for transpiling semantic queries to SQL</li>
+</ul>
+<p>Once these services are running, you're ready to create your first project!</p>
 </div>
 </div>
 </div>
 <h2 id="create-your-first-project">Create Your First Project<a class="headerlink" href="#create-your-first-project" title="Link to this section">¶</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Mac/Linux</label></div>
+<p>Now that your environment is set up, let's create your first Vulcan project. This section walks you through initializing a project, verifying the setup, running your first plan, and querying your data.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Mac/Linux</label><label for="__tabbed_3_2">Windows</label></div>
 <div class="tabbed-content">
-<div class="tabbed-block"></div>
-</div>
-</div>
+<div class="tabbed-block">
+<p><strong>Step 1: Initialize Your Project</strong></p>
+<p>Initialize a new Vulcan project: <a href="../../../cli-command/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>vulcan<span class="w"> </span>init
+</span></code></pre></div>
+<p>When prompted:</p>
+<ul>
+<li>
+<p>Choose <code>DEFAULT</code> as the project type</p>
+</li>
+<li>
+<p>Select <code>Postgres</code> as your SQL engine</p>
+</li>
+</ul>
+<p>This command creates a complete project structure with 7 directories:</p>
+<ul>
+<li><code>models/</code> - Contains <code>.sql</code> and <code>.py</code> files for your data models</li>
+<li><code>seeds/</code> - CSV files for static datasets</li>
+<li><code>audits/</code> - Write logic to assert data quality and block downstream models if checks fail</li>
+<li><code>tests/</code> - Test files for validating your model logic</li>
+<li><code>macros/</code> - Write custom macros for reusable SQL patterns</li>
+<li><code>checks/</code> - Write data quality checks</li>
+<li><code>semantics/</code> - Semantic layer definitions (measures, dimensions, etc.)</li>
+</ul>
+<p><strong>Step 2: Verify Your Setup</strong></p>
+<p>Check your project configuration and connection status: <a href="../../../cli-command/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>vulcan<span class="w"> </span>info
+</span></code></pre></div>
+<p>This command displays:</p>
+<ul>
+<li>Connection status to your database</li>
+<li>Number of models, macros, and other project components</li>
+<li>Project configuration details</li>
+</ul>
+<p><strong>Important</strong>: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.</p>
+<p><strong>Step 3: Create and Apply Your First Plan</strong></p>
+<p>Generate a plan for your models: <a href="../../../cli-command/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>vulcan<span class="w"> </span>plan
+</span></code></pre></div>
+<p>This command performs three key actions:</p>
 <ol>
-<li>
-<p><strong>Initialize project:</strong> <a href="guides/getting_started/cli.md#init" target="_blank"><em>Click here</em></a>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>vulcan<span class="w"> </span>init
-</span></code></pre></div>
-       Choose <code>DEFAULT</code> project type and <code>Postgres</code> as SQL engine. <p></p>
-<div class="language-text highlight"><pre><span></span><code>It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
-</code></pre></div>
-</li>
-<li>
-<p><strong>Check connection and number of models, macros, and other project components:</strong> <a href="guides/getting_started/cli.md#info" target="_blank"><em>Click here</em></a>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>vulcan<span class="w"> </span>info
-</span></code></pre></div>
-      It verifies that the setup is correct before running plans<p></p>
-</li>
-<li>
-<p><strong>Run the plan:</strong> <a href="guides/getting_started/cli.md#plan" target="_blank"><em>Click here</em></a>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>vulcan<span class="w"> </span>plan
-</span></code></pre></div>
-      This will:<p></p>
-<div class="language-text highlight"><pre><span></span><code>1. Validate and creates the necessary database objects (tables, views, etc.) based on your models
-2. Backfills historical data according to your model's `start` date and `cron` schedule
-3. Prompt you to apply the plan
-
-Enter `y` when prompted to apply the plan and backfill your models.
-</code></pre></div>
-</li>
-<li>
-<p><strong>Query the models:</strong> <a href="guides/getting_started/cli.md#fetchdf" target="_blank"><em>Click here</em></a>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>vulcan<span class="w"> </span>fetchdf<span class="w"> </span><span class="s2">"select * from schema.model_name"</span>
-</span></code></pre></div>
-       Executes a SQL query and returns results as a pandas DataFrame<p></p>
-</li>
-<li>
-<p><strong>Query the Semantic:</strong> <a href="guides/getting_started/cli.md#transpile" target="_blank"><em>Click here</em></a>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="w"> </span>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(measure_name) FROM model"</span>
-</span></code></pre></div>
-      Returns the generated SQL that can be executed against your warehouse<p></p>
-</li>
+<li><strong>Validates</strong> your models and creates the necessary database objects (tables, views, etc.)</li>
+<li><strong>Calculates</strong> which data intervals need to be backfilled based on your model's <code>start</code> date and <code>cron</code> schedule</li>
+<li><strong>Prompts</strong> you to apply the plan</li>
 </ol>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Windows</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block"></div>
+<p>When prompted, enter <code>y</code> to apply the plan and backfill your models with historical data.</p>
+<p><strong>Note</strong>: The backfill process may take a few minutes depending on the amount of historical data to process.</p>
+<p><strong>Step 4: Query Your Models</strong></p>
+<p>Execute SQL queries against your models: <a href="../../../cli-command/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>vulcan<span class="w"> </span>fetchdf<span class="w"> </span><span class="s2">"select * from schema.model_name"</span>
+</span></code></pre></div>
+<p>This command executes a SQL query and returns the results as a pandas DataFrame, which is perfect for data analysis and exploration.</p>
+<p><strong>Step 5: Query Using Semantic Layer</strong></p>
+<p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-command/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(measure_name) FROM model"</span>
+</span></code></pre></div>
+<p>This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.</p>
 </div>
-</div>
+<div class="tabbed-block">
+<p><strong>Step 1: Initialize Your Project</strong></p>
+<p>Initialize a new Vulcan project: <a href="../../../cli-command/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan init
+</span></code></pre></div>
+<p>When prompted:</p>
+<ul>
+<li>
+<p>Choose <code>DEFAULT</code> as the project type</p>
+</li>
+<li>
+<p>Select <code>Postgres</code> as your SQL engine</p>
+</li>
+</ul>
+<p>This command creates a complete project structure with 7 directories:</p>
+<ul>
+<li><code>models/</code> - Contains <code>.sql</code> and <code>.py</code> files for your data models</li>
+<li><code>seeds/</code> - CSV files for static datasets</li>
+<li><code>audits/</code> - Write logic to assert data quality and block downstream models if checks fail</li>
+<li><code>tests/</code> - Test files for validating your model logic</li>
+<li><code>macros/</code> - Write custom macros for reusable SQL patterns</li>
+<li><code>checks/</code> - Write data quality checks</li>
+<li><code>semantics/</code> - Semantic layer definitions (measures, dimensions, etc.)</li>
+</ul>
+<p><strong>Step 2: Verify Your Setup</strong></p>
+<p>Check your project configuration and connection status: <a href="../../../cli-command/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>vulcan info
+</span></code></pre></div>
+<p>This command displays:</p>
+<ul>
+<li>Connection status to your database</li>
+<li>Number of models, macros, and other project components</li>
+<li>Project configuration details</li>
+</ul>
+<p><strong>Important</strong>: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.</p>
+<p><strong>Step 3: Create and Apply Your First Plan</strong></p>
+<p>Generate a plan for your models: <a href="../../../cli-command/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>vulcan plan
+</span></code></pre></div>
+<p>This command performs three key actions:</p>
 <ol>
-<li>
-<p><strong>Initialize project:</strong> <a href="guides/getting_started/cli.md#init" target="_blank"><em>Click here</em></a>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan init
-</span></code></pre></div>
-       Choose <code>DEFAULT</code> project type and <code>Postgres</code> as SQL engine. <p></p>
-<div class="language-text highlight"><pre><span></span><code>It creates 7 `directories` containing SQL/PYTHON models,seed data files, audit files, test files, macro files, checks files, and semantics files
-</code></pre></div>
-</li>
-<li>
-<p><strong>Check connection and number of models, macros, and other project components:</strong> <a href="guides/getting_started/cli.md#info" target="_blank"><em>Click here</em></a>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>vulcan info
-</span></code></pre></div>
-       It verifies that the setup is correct before running plans<p></p>
-</li>
-<li>
-<p><strong>Run the plan:</strong> <a href="guides/getting_started/cli.md#plan" target="_blank"><em>Click here</em></a>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>vulcan plan
-</span></code></pre></div>
-      This will:<p></p>
-<div class="language-text highlight"><pre><span></span><code>1. Validate and creates the necessary database objects (tables, views, etc.) based on your models
-2. Backfills historical data according to your model's `start` date and `cron` schedule
-3. Prompt you to apply the plan
-
-Enter `y` when prompted to apply the plan and backfill your models.
-</code></pre></div>
-</li>
-<li>
-<p><strong>Query the models:</strong> <a href="guides/getting_started/cli.md#fetchdf" target="_blank"><em>Click here</em></a>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>vulcan fetchdf "select * from schema.model_name"
-</span></code></pre></div>
-       Executes a SQL query and returns results as a pandas DataFrame<p></p>
-</li>
-<li>
-<p><strong>Query the Semantic:</strong> <a href="guides/getting_started/cli.md#transpile" target="_blank"><em>Click here</em></a>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a> vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
-</span></code></pre></div>
-      Returns the generated SQL that can be executed against your warehouse<p></p>
-</li>
+<li><strong>Validates</strong> your models and creates the necessary database objects (tables, views, etc.)</li>
+<li><strong>Calculates</strong> which data intervals need to be backfilled based on your model's <code>start</code> date and <code>cron</code> schedule</li>
+<li><strong>Prompts</strong> you to apply the plan</li>
 </ol>
+<p>When prompted, enter <code>y</code> to apply the plan and backfill your models with historical data.</p>
+<p><strong>Note</strong>: The backfill process may take a few minutes depending on the amount of historical data to process.</p>
+<p><strong>Step 4: Query Your Models</strong></p>
+<p>Execute SQL queries against your models: <a href="../../../cli-command/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>vulcan fetchdf "select * from schema.model_name"
+</span></code></pre></div>
+<p>This command executes a SQL query and returns the results as a pandas DataFrame, which is perfect for data analysis and exploration.</p>
+<p><strong>Step 5: Query Using Semantic Layer</strong></p>
+<p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-command/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
+</span></code></pre></div>
+<p>This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.</p>
+</div>
+</div>
+</div>
 <h2 id="stopping-services">Stopping Services<a class="headerlink" href="#stopping-services" title="Link to this section">¶</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Mac/Linux</label><label for="__tabbed_5_2">Windows</label></div>
+<p>When you're done working with Vulcan, you can stop the services to free up system resources. Use the commands below based on your operating system.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Mac/Linux</label><label for="__tabbed_4_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>To stop all services:  <br/>
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>make<span class="w"> </span>all-down<span class="w">       </span><span class="c1"># Stop all services</span>
-</span><span id="__span-20-2"><a href="#__codelineno-20-2" id="__codelineno-20-2" name="__codelineno-20-2"></a>make<span class="w"> </span>all-clean<span class="w">      </span><span class="c1"># Stop and remove volumes (this will delete all data)</span>
-</span><span id="__span-20-3"><a href="#__codelineno-20-3" id="__codelineno-20-3" name="__codelineno-20-3"></a>make<span class="w"> </span>vulcan-down<span class="w">     </span><span class="c1"># Stop only Vulcan services</span>
+<p><strong>Stop All Services</strong></p>
+<p>To stop all running services:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>make<span class="w"> </span>all-down<span class="w">       </span><span class="c1"># Stop all services</span>
 </span></code></pre></div>
-To stop individual services:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>make<span class="w"> </span>vulcan-down<span class="w">     </span><span class="c1"># Stop Vulcan services</span>
-</span><span id="__span-21-2"><a href="#__codelineno-21-2" id="__codelineno-21-2" name="__codelineno-21-2"></a>make<span class="w"> </span>infra-down<span class="w">      </span><span class="c1"># Stop infrastructure services</span>
-</span><span id="__span-21-3"><a href="#__codelineno-21-3" id="__codelineno-21-3" name="__codelineno-21-3"></a>make<span class="w"> </span>warehouse-down<span class="w">  </span><span class="c1"># Stop warehouse services</span>
-</span></code></pre></div><p></p>
+<p><strong>Stop and Clean Up (Warning: This deletes all data)</strong></p>
+<p>To stop all services and remove volumes (this will delete all data):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>make<span class="w"> </span>all-clean<span class="w">      </span><span class="c1"># Stop and remove volumes (this will delete all data)</span>
+</span></code></pre></div>
+<p><strong>Stop Individual Service Groups</strong></p>
+<p>You can also stop specific service groups:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>make<span class="w"> </span>vulcan-down<span class="w">     </span><span class="c1"># Stop only Vulcan API services</span>
+</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>make<span class="w"> </span>infra-down<span class="w">      </span><span class="c1"># Stop infrastructure services (statestore, minio)</span>
+</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a>make<span class="w"> </span>warehouse-down<span class="w">  </span><span class="c1"># Stop warehouse services</span>
+</span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>To stop services, you can use batch scripts:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>stop-all.bat           # Stop all services
-</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>clean.bat              # Stop and remove volumes (this will delete all data)
-</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a>vulcan-down.bat        # Stop only Vulcan API services
+<p><strong>Stop All Services</strong></p>
+<p>To stop all running services:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>stop-all.bat           # Stop all services
+</span></code></pre></div>
+<p><strong>Stop and Clean Up (Warning: This deletes all data)</strong></p>
+<p>To stop all services and remove volumes (this will delete all data):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>clean.bat              # Stop and remove volumes (this will delete all data)
+</span></code></pre></div>
+<p><strong>Stop Individual Services</strong></p>
+<p>To stop only the Vulcan API services:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>vulcan-down.bat        # Stop only Vulcan API services
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">¶</a></h2>
+<p>If you encounter any issues during setup or while using Vulcan, refer to the solutions below.</p>
 <details class="note">
-<summary>Troubleshooting</summary>
-<p><strong>Services won't start:</strong> Ensure Docker Desktop is running with at least 4GB RAM allocated.</p>
-<p><strong>Network errors:</strong> Ensure the <code>vulcan</code> network exists:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">Mac/Linux</label><label for="__tabbed_6_2">Windows</label></div>
+<summary>Common Issues and Solutions</summary>
+<p><strong>Services Won't Start</strong></p>
+<p>If services fail to start, ensure Docker Desktop is running with at least 4GB RAM allocated. You can check and adjust this in Docker Desktop settings:</p>
+<ul>
+<li><strong>Mac</strong>: Docker Desktop → Settings → Resources → Advanced</li>
+<li><strong>Windows</strong>: Docker Desktop → Settings → Resources → Advanced</li>
+</ul>
+<p><strong>Network Errors</strong></p>
+<p>If you encounter network-related errors, ensure the <code>vulcan</code> Docker network exists:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Mac/Linux</label><label for="__tabbed_5_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>docker<span class="w"> </span>network<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan
+<p>Check if the network exists:
+</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>docker<span class="w"> </span>network<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan
 </span></code></pre></div>
 If it doesn't exist, create it:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
 </span></code></pre></div><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a> docker network ls | grep vulcan
+<p>Check if the network exists:
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a>docker network ls | grep vulcan
 </span></code></pre></div>
 If it doesn't exist, create it:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>docker network create vulcan
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>docker network create vulcan
 </span></code></pre></div><p></p>
 </div>
 </div>
 </div>
-<p><strong>Port conflicts:</strong> If ports 5431, 5433, 9000, 9001, or 8000 are already in use, you can modify the port mappings in the Docker Compose files.</p>
-<p><strong>Can't connect to services:</strong> Make sure all services are running:
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>ps
-</span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>ps
-</span></code></pre></div><p></p>
-<p><strong>MinIO console:</strong>
-You can access the MinIO console at <code>http://localhost:9001</code> with:
-- Username: <code>admin</code>
-- Password: <code>password</code></p>
+<p><strong>Port Conflicts</strong></p>
+<p>If you see errors about ports already being in use, one of the required ports (5431, 5433, 9000, 9001, or 8000) is likely occupied by another application. You have two options:</p>
+<ol>
+<li><strong>Stop the conflicting application</strong> using that port</li>
+<li><strong>Modify the port mappings</strong> in the Docker Compose files (<code>docker/docker-compose.infra.yml</code> and <code>docker/docker-compose.warehouse.yml</code>)</li>
+</ol>
+<p><strong>Can't Connect to Services</strong></p>
+<p>If you're unable to connect to Vulcan services, verify that all required services are running:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>ps
+</span><span id="__span-30-2"><a href="#__codelineno-30-2" id="__codelineno-30-2" name="__codelineno-30-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>ps
+</span></code></pre></div>
+<p>All services should show as "Up" or "running". If any service shows as "Exited" or "Stopped", check the logs:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>logs
+</span></code></pre></div>
+<p><strong>Access MinIO Console</strong></p>
+<p>You can access the MinIO console to manage your object storage:</p>
+<ul>
+<li><strong>URL</strong>: <code>http://localhost:9001</code></li>
+<li><strong>Username</strong>: <code>admin</code></li>
+<li><strong>Password</strong>: <code>password</code></li>
+</ul>
+<p>The MinIO console allows you to browse buckets, upload files, and manage storage policies.</p>
 </details>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
+<p>Congratulations! You've successfully set up Vulcan and created your first project. Here are some recommended next steps to continue your journey:</p>
 <ul>
-<li><a href="guides/getting_started/cli.md" target="_blank">Learn more about Vulcan CLI commands</a></li>
-<li><a href="../concepts-old/overview.md" target="_blank">Explore Vulcan concepts</a></li>
-<li><a href="guides/guides-old/connections.md" target="_blank">Set up connections to different warehouses</a></li>
+<li><strong><a href="../../../cli-command/cli/" target="_blank">Learn more about Vulcan CLI commands</a></strong> - Explore all available commands and their options</li>
+<li><strong><a href="../../../components/model/overview/" target="_blank">Explore Vulcan concepts</a></strong> - Deep dive into how models work and how to structure your data pipeline</li>
+<li><strong><a href="../../../components/model/model_kinds/" target="_blank">Read the model kinds documentation</a></strong> - Understand different model types and when to use them</li>
 </ul>
 </article>
 </div>

@@ -374,8 +374,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -385,6 +387,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1017,7 +1032,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="model-defaults">Model defaults<a class="headerlink" href="#model-defaults" title="Link to this section">¶</a></h1>
-<p>The <code>model_defaults</code> key is <strong>required</strong> and must contain a value for the <code>dialect</code> key. All SQL dialects <a href="https://github.com/tobymao/sqlglot/blob/main/sqlglot/dialects/dialect.py">supported by the SQLGlot library</a> are allowed. Other values are set automatically unless explicitly overridden in the model definition.</p>
+<p>The <code>model_defaults</code> key is <strong>required</strong> and must contain a value for the <code>dialect</code> key. </p>
 <p>All supported <code>model_defaults</code> keys are listed in the <a href="../../../references/model_configuration/#model-defaults">models configuration reference page</a>.</p>
 <h2 id="basic-configuration">Basic configuration<a class="headerlink" href="#basic-configuration" title="Link to this section">¶</a></h2>
 <p>Example configuration:</p>
@@ -1055,7 +1070,7 @@
 </div>
 </div>
 </div>
-<p>The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="configurations/components/model/model_kinds.md">model concepts page</a>.</p>
+<p>The default model kind is <code>VIEW</code> unless overridden with the <code>kind</code> key. For more information on model kinds, refer to <a href="../../../components/model/model_kinds/">model concepts page</a>.</p>
 <h2 id="identifier-resolution">Identifier resolution<a class="headerlink" href="#identifier-resolution" title="Link to this section">¶</a></h2>
 <p>When a SQL engine receives a query such as <code>SELECT id FROM "some_table"</code>, it eventually needs to understand what database objects the identifiers <code>id</code> and <code>"some_table"</code> correspond to. This process is usually referred to as identifier (or name) resolution.</p>
 <p>Different SQL dialects implement different rules when resolving identifiers in queries. For example, certain identifiers may be treated as case-sensitive (e.g. if they're quoted), and a case-insensitive identifier is usually either lowercased or uppercased, before the engine actually looks up what object it corresponds to.</p>

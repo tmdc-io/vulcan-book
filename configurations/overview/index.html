@@ -477,8 +477,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -488,6 +490,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1216,12 +1231,12 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>Vulcan projects are configured through a central configuration file that defines how your data pipeline connects to databases, manages environments, and handles model execution.</p>
+<p>Every Vulcan project needs a configuration file that tells Vulcan how to connect to your data warehouse, manage environments, and handle model execution. Think of it as the control center for your entire data pipeline, it's where you define connections, set defaults, and configure optional features like linting and notifications.</p>
 <h2 id="configuration-file">Configuration File<a class="headerlink" href="#configuration-file" title="Link to this section">¶</a></h2>
-<p>Every Vulcan project requires a configuration file in the project root directory:</p>
+<p>You'll need a configuration file in your project root directory. You've got two options:</p>
 <ul>
-<li><strong><code>config.yaml</code></strong> - YAML format (recommended for most users)</li>
-<li><strong><code>config.py</code></strong> - Python format (for advanced use cases requiring dynamic configuration)</li>
+<li><strong><code>config.yaml</code></strong> - YAML format (recommended for most users). It's simple, readable, and perfect for most use cases.</li>
+<li><strong><code>config.py</code></strong> - Python format (for advanced use cases). Use this if you need dynamic configuration or want to programmatically generate settings.</li>
 </ul>
 <h2 id="quick-start-example">Quick Start Example<a class="headerlink" href="#quick-start-example" title="Link to this section">¶</a></h2>
 <p>Here's a practical example of a Vulcan configuration file:</p>
@@ -1315,7 +1330,7 @@
     Options --&gt; Format[format]</code></pre>
 <h2 id="configuration-sections">Configuration Sections<a class="headerlink" href="#configuration-sections" title="Link to this section">¶</a></h2>
 <h3 id="project-settings">Project Settings<a class="headerlink" href="#project-settings" title="Link to this section">¶</a></h3>
-<p>Basic project metadata for identification.</p>
+<p>These are basic metadata fields that help identify your project. They're useful for organization and documentation, but they don't affect how Vulcan runs.</p>
 <table>
 <thead>
 <tr>
@@ -1343,7 +1358,7 @@
 </tbody>
 </table>
 <h3 id="gateways">Gateways<a class="headerlink" href="#gateways" title="Link to this section">¶</a></h3>
-<p>Gateways define connections to your data warehouse, state backend, and other services.</p>
+<p>Gateways are how Vulcan connects to your data warehouse, state backend, and other services. You can define multiple gateways for different environments (like dev, staging, and prod), each with its own connection settings. This gives you flexibility to use different databases or configurations per environment.</p>
 <table>
 <thead>
 <tr>
@@ -1380,9 +1395,9 @@
 </tr>
 </tbody>
 </table>
-<p>→ See <a href="../configurations-old/configuration.md#gateways">Configuration Reference</a> for detailed gateway options.</p>
+<p>→ See <a href="../../references/configuration.md#gateways">Configuration Reference</a> for detailed gateway options.</p>
 <h3 id="model-defaults-required">Model Defaults (Required)<a class="headerlink" href="#model-defaults-required" title="Link to this section">¶</a></h3>
-<p>The <code>model_defaults</code> section is <strong>required</strong> and must include at least the <code>dialect</code> key.</p>
+<p>The <code>model_defaults</code> section is <strong>required</strong>, you can't skip it! At minimum, you need to specify the <code>dialect</code> key, which tells Vulcan what SQL dialect your models use. The other defaults are optional but super helpful because they apply to all your models automatically, saving you from repeating the same settings in every model file.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w">     </span><span class="c1"># Required</span>
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data-team</span>
@@ -1391,23 +1406,40 @@
 </span></code></pre></div>
 <p>→ See <a href="../options/model_defaults/">Model Defaults</a> for all available options.</p>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h3>
-<p>Configure environment variables, <code>.env</code> files, and configuration overrides.</p>
+<p>Manage environment variables, <code>.env</code> files, and configuration overrides. This is where you'll store sensitive information like passwords and API keys securely, without hardcoding them in your config files. You can also use variables to override configuration values dynamically.</p>
 <p>→ See <a href="../options/variables/">Variables</a> for details.</p>
 <h3 id="execution-hooks">Execution Hooks<a class="headerlink" href="#execution-hooks" title="Link to this section">¶</a></h3>
-<p>Execute SQL statements at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands using <code>before_all</code> and <code>after_all</code>.</p>
+<p>Run SQL statements automatically at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands. This is super useful for things like setting up temporary tables, granting permissions, or cleaning up after runs. You can use <code>before_all</code> for setup tasks and <code>after_all</code> for cleanup or post-processing.</p>
 <p>→ See <a href="../options/execution_hooks/">Execution Hooks</a> for detailed examples and use cases.</p>
 <h3 id="linter">Linter<a class="headerlink" href="#linter" title="Link to this section">¶</a></h3>
-<p>Enable automatic code quality checks for your models.</p>
+<p>Enable automatic code quality checks that run whenever you create a plan or run the lint command. This helps catch common mistakes and enforce coding standards across your team. You can use built-in rules or create custom ones that match your team's preferences.</p>
 <p>→ See <a href="../options/linter/">Linter</a> for rules and custom linter configuration.</p>
 <h3 id="notifications">Notifications<a class="headerlink" href="#notifications" title="Link to this section">¶</a></h3>
-<p>Configure alerts via Slack or email for pipeline events.</p>
+<p>Set up alerts via Slack or email so you know when important things happen in your pipeline. You can get notified when plans start or finish, when runs complete, or when audits fail. This keeps your team in the loop without having to constantly check the pipeline status.</p>
 <p>→ See <a href="../options/notifications/">Notifications</a> for Slack webhooks, API, and email setup.</p>
 <h2 id="supported-engines">Supported Engines<a class="headerlink" href="#supported-engines" title="Link to this section">¶</a></h2>
-<p>Vulcan supports connecting to various data warehouses:</p>
-<ul>
-<li><strong><a href="./configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">PostgreSQL</a></strong> - Open-source relational database</li>
-<li><strong><a href="./configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md">Snowflake</a></strong> - Cloud data warehouse</li>
-</ul>
+<p>Vulcan works with a variety of data warehouses, so you can use it with whatever infrastructure you already have:</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
+- <strong><a href="../../references/integrations/engines/postgres.md">PostgreSQL</a></strong> - Open-source relational database
+- <strong><a href="../../references/integrations/engines/snowflake.md">Snowflake</a></strong> - Cloud data warehouse
+=======
+- <strong><a href="./configurations-old/configurations-old/configurations-old/integrations/engines/postgres.md">PostgreSQL</a></strong> - The popular open-source relational database. Great for smaller projects or when you want full control over your infrastructure.
+- <strong><a href="./configurations-old/configurations-old/configurations-old/integrations/engines/snowflake.md">Snowflake</a></strong> - The cloud data warehouse that scales automatically. Perfect for larger teams and projects that need elastic compute.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Stashed changes</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <h2 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this section">¶</a></h2>
 <table>
 <thead>
@@ -1418,7 +1450,7 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../configurations-old/configuration.md">Configuration Reference</a></td>
+<td><a href="../../references/configuration.md">Configuration Reference</a></td>
 <td>Complete list of all configuration parameters</td>
 </tr>
 <tr>
@@ -1444,12 +1476,23 @@
 </tbody>
 </table>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
+<p>Here are some tips to help you get the most out of your Vulcan configuration:</p>
 <ol>
-<li><strong>Use environment variables</strong> for sensitive data like passwords and API keys</li>
-<li><strong>Set meaningful defaults</strong> in <code>model_defaults</code> to reduce boilerplate</li>
-<li><strong>Enable linting</strong> to catch common errors early in development</li>
-<li><strong>Separate state connection</strong> from data warehouse for better isolation</li>
-<li><strong>Use multiple gateways</strong> for different environments (dev, staging, prod)</li>
+<li>
+<p><strong>Use environment variables</strong> for sensitive data like passwords and API keys. This keeps secrets out of your config files and makes it easier to manage different environments.</p>
+</li>
+<li>
+<p><strong>Set meaningful defaults</strong> in <code>model_defaults</code> to reduce boilerplate. If most of your models use the same dialect, start date, or cron schedule, set it once here instead of repeating it everywhere.</p>
+</li>
+<li>
+<p><strong>Enable linting</strong> to catch common errors early in development. It's much easier to fix issues before they make it to production.</p>
+</li>
+<li>
+<p><strong>Separate state connection</strong> from your data warehouse for better isolation. This prevents state operations from interfering with your data processing and gives you more flexibility.</p>
+</li>
+<li>
+<p><strong>Use multiple gateways</strong> for different environments (dev, staging, prod). This lets you test changes safely before deploying to production, and you can use different database configurations for each environment.</p>
+</li>
 </ol>
 </article>
 </div>

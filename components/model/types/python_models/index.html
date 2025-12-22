@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1305,7 +1320,7 @@
 <p>SQL is great, but sometimes you need Python. Maybe you're doing machine learning, calling external APIs, or implementing complex business logic that's painful to express in SQL.</p>
 <p>Vulcan has first-class support for Python models. As long as your function returns a Pandas, Spark, Bigframe, or Snowpark DataFrame, you can do whatever you want in Python. No restrictions!</p>
 <p><strong>When to use Python models:</strong>
-- Machine learning pipelines
+- Machine learning modelss
 - API integrations
 - Complex transformations that are easier in Python
 - Data processing that benefits from Python libraries</p>
@@ -1408,7 +1423,7 @@
 </span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p><strong>How it works:</strong></p>
-<p>The <code>@model</code> decorator captures your model's metadata (just like the <code>MODEL</code> DDL in SQL models). You specify column names and types in the <code>columns</code> argument—this is required because Vulcan needs to create the table before your function runs.</p>
+<p>The <code>@model</code> decorator captures your model's metadata (just like the <code>MODEL</code> DDL in SQL models). You specify column names and types in the <code>columns</code> argument, this is required because Vulcan needs to create the table before your function runs.</p>
 <p><strong>Function signature:</strong> Your <code>execute</code> function receives:
 - <code>context: ExecutionContext</code> - For running queries and getting time intervals
 - <code>start</code>, <code>end</code> - Time range for incremental models
@@ -1416,7 +1431,7 @@
 - <code>**kwargs</code> - Any other runtime variables</p>
 <p><strong>Return types:</strong> You can return Pandas, PySpark, Bigframe, or Snowpark DataFrames. If your output is huge, you can also use Python generators to return data in chunks (great for memory management).</p>
 <h2 id="model-specification"><code>@model</code> Specification<a class="headerlink" href="#model-specification" title="Link to this section">¶</a></h2>
-<p>The <code>@model</code> decorator accepts the same properties as SQL models—just use Python syntax instead of SQL DDL. <code>name</code>, <code>kind</code>, <code>cron</code>, <code>grains</code>, etc.—they all work the same way.</p>
+<p>The <code>@model</code> decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. <code>name</code>, <code>kind</code>, <code>cron</code>, <code>grains</code>, etc. they all work the same way.</p>
 <p>Python model <code>kind</code>s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the <a href="../../../../references/model_configuration/#model-kind-properties">models configuration reference page</a>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelKindName</span>
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
@@ -1428,7 +1443,7 @@
 </span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>    <span class="p">),</span>
 </span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="p">)</span>
 </span></code></pre></div>
-<p>All model kind properties are documented in the <a href="components/configurations-old/configuration.md#model-kind-properties">model configuration reference</a>.</p>
+<p>All model kind properties are documented in the <a href="../../../../references/model_configuration.md#model-kind-properties">model configuration reference</a>.</p>
 <p>Supported <code>kind</code> dictionary <code>name</code> values are:</p>
 <ul>
 <li><code>ModelKindName.VIEW</code></li>
@@ -1453,7 +1468,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">resolve_table</span><span class="p">(</span><span class="s2">"vulcan_demo.products"</span><span class="p">)</span>
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SELECT * FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>Best practice:</strong> Make your models <a href="components/model/glossary.md#idempotency">idempotent</a>—running them multiple times should produce the same result. This makes debugging and restatements much easier.</p>
+<p><strong>Best practice:</strong> Make your models <a href="components/model/glossary.md#idempotency">idempotent</a>, running them multiple times should produce the same result. This makes debugging and restatements much easier.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="s2">"SELECT * FROM vulcan_demo.products"</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="optional-prepost-statements">Optional Pre/Post-Statements<a class="headerlink" href="#optional-prepost-statements" title="Link to this section">¶</a></h2>
@@ -1463,9 +1478,9 @@
 <p>You can pass SQL strings, SQLGlot expressions, or macro calls as lists to <code>pre_statements</code> and <code>post_statements</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Concurrency</p>
-<p>Be careful with pre-statements that create or alter physical tables—if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.</p>
+<p>Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.</p>
 </div>
-<p><strong>Project-level defaults:</strong> You can also define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="components/configurations-old/configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can also define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../../references/model_configuration.md#model-defaults">model configuration reference</a>.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
@@ -1702,7 +1717,7 @@
 </span><span id="__span-10-35"><a id="__codelineno-10-35" name="__codelineno-10-35"></a>
 </span><span id="__span-10-36"><a id="__codelineno-10-36" name="__codelineno-10-36"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>You can use <a href="components/configurations-old/configuration.md#variables">global variables</a> or <a href="#python-model-blueprinting">blueprint variables</a> in <code>resolve_table</code> calls. Here's how:</p>
+<p>You can use <a href="../../../../references/configuration.md#variables">global variables</a> or <a href="#python-model-blueprinting">blueprint variables</a> in <code>resolve_table</code> calls. Here's how:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
 <span class="normal"><a href="#__codelineno-11-2">2</a></span>
 <span class="normal"><a href="#__codelineno-11-3">3</a></span>
@@ -1751,7 +1766,7 @@
 </span></span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="hll">        <span class="k">yield</span> <span class="n">df</span>
 </span></span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="user-defined-variables">User-defined variables<a class="headerlink" href="#user-defined-variables" title="Link to this section">¶</a></h2>
-<p><a href="components/configurations-old/configuration.md#variables">User-defined global variables</a> can be accessed from within the Python model with the <code>context.var</code> method.</p>
+<p><a href="../../../../references/configuration.md#variables">User-defined global variables</a> can be accessed from within the Python model with the <code>context.var</code> method.</p>
 <p>For example, this model access the user-defined variables <code>var</code> and <code>var_with_default</code>. It specifies a default value of <code>default_value</code> if <code>variable_with_default</code> resolves to a missing value.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
@@ -1810,7 +1825,7 @@
 <p>Make sure the argument has a default value if it's possible for the variable to be missing.</p>
 <p>Note that arguments must be specified explicitly - variables cannot be accessed using <code>kwargs</code>.</p>
 <h2 id="python-model-blueprinting">Python Model Blueprinting<a class="headerlink" href="#python-model-blueprinting" title="Link to this section">¶</a></h2>
-<p>Python models can serve as templates for creating multiple models. This is called "blueprinting"—you define one model template, and Vulcan creates multiple models from it.</p>
+<p>Python models can serve as templates for creating multiple models. This is called "blueprinting", you define one model template, and Vulcan creates multiple models from it.</p>
 <p><strong>How it works:</strong> You parameterize the model name with a variable (using <code>@{variable}</code> syntax) and provide a list of mappings in <code>blueprints</code>. Vulcan creates one model for each mapping.</p>
 <p><strong>Use case:</strong> When you have similar models that differ only by a few parameters (like different schemas, regions, or customers).</p>
 <p>Here's an example that creates two models:</p>
@@ -1960,7 +1975,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Link to this section">¶</a></h2>
 <p>Here are some practical examples showing different ways to use Python models.</p>
 <h3 id="basic">Basic<a class="headerlink" href="#basic" title="Link to this section">¶</a></h3>
-<p>A simple Python model that returns a static Pandas DataFrame. All the <a href="components/model/types/overview.md#model-properties">metadata properties</a> work the same as SQL models—just use Python syntax.</p>
+<p>A simple Python model that returns a static Pandas DataFrame. All the <a href="components/model/types/overview.md#model-properties">metadata properties</a> work the same as SQL models, just use Python syntax.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-20-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-20-3"> 3</a></span>

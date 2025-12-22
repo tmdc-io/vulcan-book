@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1641,14 +1656,16 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="kinds">Kinds<a class="headerlink" href="#kinds" title="Link to this section">¶</a></h1>
-<p>Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies—each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.</p>
+<p>Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies, each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.</p>
 <p>Find information about all model kind configuration parameters in the <a href="../../reference/model_configuration.md">model configuration reference page</a>.</p>
 <h2 id="incremental_by_time_range">INCREMENTAL_BY_TIME_RANGE<a class="headerlink" href="#incremental_by_time_range" title="Link to this section">¶</a></h2>
-<p><code>INCREMENTAL_BY_TIME_RANGE</code> models are perfect for time-series data—things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.</p>
+<p><code>INCREMENTAL_BY_TIME_RANGE</code> models are perfect for time-series data, things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.</p>
 <p><strong>Why this matters:</strong> If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With <code>INCREMENTAL_BY_TIME_RANGE</code>, Vulcan only processes the new intervals, which saves you time and money. Pretty smart, right?</p>
-<p>To use this kind, you need to tell Vulcan two things:
-1. <strong>Which column has your time data</strong> - So Vulcan knows how to partition and filter
-2. <strong>A WHERE clause</strong> - That filters your upstream data by time range using Vulcan's time macros</p>
+<p>To use this kind, you need to tell Vulcan two things:</p>
+<ol>
+<li><strong>Which column has your time data</strong> - So Vulcan knows how to partition and filter</li>
+<li><strong>A WHERE clause</strong> - That filters your upstream data by time range using Vulcan's time macros</li>
+</ol>
 <p>You specify the time column in your <code>MODEL</code> DDL using the <code>time_column</code> key. Here's a simple example:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
@@ -1938,9 +1955,9 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <div class="admonition info">
 <p class="admonition-title">Important: Timezone Requirements</p>
 <p>Your <code>time_column</code> should be in UTC timezone. This ensures Vulcan's scheduler and time macros work correctly.</p>
-<p><strong>Why UTC?</strong> It's a data engineering best practice—convert everything to UTC when it enters your system, then convert to local timezones only when data leaves for end users. This prevents timezone-related bugs as data flows between models.</p>
-<p><strong>Important:</strong> The <code>cron_tz</code> flag doesn't change this requirement—it only affects when your model runs, not how time intervals are calculated.</p>
-<p>If you absolutely must use a different timezone, you can try to work around it using <code>lookback</code>, <code>allow_partials</code>, or cron offsets, but UTC is strongly recommended. Trust us on this one—timezone bugs are no fun!</p>
+<p><strong>Why UTC?</strong> It's a data engineering best practice, convert everything to UTC when it enters your system, then convert to local timezones only when data leaves for end users. This prevents timezone-related bugs as data flows between models.</p>
+<p><strong>Important:</strong> The <code>cron_tz</code> flag doesn't change this requirement, it only affects when your model runs, not how time intervals are calculated.</p>
+<p>If you absolutely must use a different timezone, you can try to work around it using <code>lookback</code>, <code>allow_partials</code>, or cron offsets, but UTC is strongly recommended. Trust us on this one, timezone bugs are no fun!</p>
 </div>
 <p>This example implements a complete <code>INCREMENTAL_BY_TIME_RANGE</code> model that specifies the time column name <code>order_date</code> in the <code>MODEL</code> DDL and includes a SQL <code>WHERE</code> clause to filter records by time range:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">SQL</label><label for="__tabbed_1_2">Python</label></div>
@@ -2100,10 +2117,12 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p>Use the same SQL dialect for your format string as the one used in your model's query.</p>
 </div>
 <p><strong>Safety feature:</strong> Vulcan automatically adds a time range filter to your query's output to prevent data leakage. This means even if your <code>WHERE</code> clause has a bug, Vulcan won't accidentally store records outside the target interval.</p>
-<p>Here's how it works:
-- <strong>Your WHERE clause</strong> filters the <strong>input</strong> data as it's read from upstream tables (makes queries faster)
-- <strong>Vulcan's automatic filter</strong> filters the <strong>output</strong> data before it's stored (prevents data leakage)</p>
-<p>This is especially important when handling late-arriving data—you don't want to accidentally overwrite unrelated records!</p>
+<p>Here's how it works:</p>
+<ul>
+<li><strong>Your WHERE clause</strong> filters the <strong>input</strong> data as it's read from upstream tables (makes queries faster)</li>
+<li><strong>Vulcan's automatic filter</strong> filters the <strong>output</strong> data before it's stored (prevents data leakage)</li>
+</ul>
+<p>This is especially important when handling late-arriving data, you don't want to accidentally overwrite unrelated records!</p>
 <p>Here's a cool example: sometimes your upstream data uses a different time column than your model. In this case, you filter on the upstream column (<code>shipped_date</code>), but Vulcan still adds a filter on your model's time column (<code>order_date</code>):</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
@@ -2157,7 +2176,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <h3 id="partitioning">Partitioning<a class="headerlink" href="#partitioning" title="Link to this section">¶</a></h3>
 <p>By default, Vulcan automatically adds your <code>time_column</code> to the partition key. This lets database engines do partition pruning (skipping partitions that don't match your query), which makes queries faster.</p>
 <p><strong>Why this matters:</strong> If you're querying data from the last 7 days, the engine can skip scanning all the old partitions. That's a huge performance win!</p>
-<p>Sometimes you might not want this though—maybe you want to partition exclusively on another column, or you want to partition on <code>month(time_column)</code> but your engine doesn't support expression-based partitioning.</p>
+<p>Sometimes you might not want this though, maybe you want to partition exclusively on another column, or you want to partition on <code>month(time_column)</code> but your engine doesn't support expression-based partitioning.</p>
 <p>To disable automatic time column partitioning, set <code>partition_by_time_column false</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
 <span class="normal"><a href="#__codelineno-13-2">2</a></span>
@@ -2220,12 +2239,14 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tbody>
 </table>
 <h2 id="incremental_by_unique_key">INCREMENTAL_BY_UNIQUE_KEY<a class="headerlink" href="#incremental_by_unique_key" title="Link to this section">¶</a></h2>
-<p><code>INCREMENTAL_BY_UNIQUE_KEY</code> models update data based on a unique key. Think of it like an upsert operation—if a key exists, update it; if it doesn't, insert it.</p>
-<p>Here's how it works:
-- <strong>New key?</strong> → Insert the row
-- <strong>Existing key?</strong> → Update the row with new data
-- <strong>Key missing from new data?</strong> → Leave the existing row alone</p>
-<p><strong>Why use this?</strong> Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list—you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.</p>
+<p><code>INCREMENTAL_BY_UNIQUE_KEY</code> models update data based on a unique key. Think of it like an upsert operation, if a key exists, update it; if it doesn't, insert it.</p>
+<p>Here's how it works:</p>
+<ul>
+<li><strong>New key?</strong> → Insert the row</li>
+<li><strong>Existing key?</strong> → Update the row with new data</li>
+<li><strong>Key missing from new data?</strong> → Leave the existing row alone</li>
+</ul>
+<p><strong>Why use this?</strong> Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list, you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.</p>
 <p>This kind is a good fit for datasets that have the following traits:</p>
 <ul>
 <li>Each record has a unique key associated with it.</li>
@@ -2426,7 +2447,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </details>
 <p><strong>Note:</strong> Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are inherently <a href="../glossary.md#idempotency">non-idempotent</a>, which should be taken into consideration during data <a href="../plans.md#restatement-plans">restatement</a>. As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.</p>
 <h3 id="unique-key-expressions">Unique Key Expressions<a class="headerlink" href="#unique-key-expressions" title="Link to this section">¶</a></h3>
-<p>You're not limited to just column names—you can use SQL expressions too! This is handy when you need to create a key from multiple columns or transform values. Here's an example using <code>COALESCE</code>:</p>
+<p>You're not limited to just column names, you can use SQL expressions too! This is handy when you need to create a key from multiple columns or transform values. Here's an example using <code>COALESCE</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
 <span class="normal"><a href="#__codelineno-24-2">2</a></span>
 <span class="normal"><a href="#__codelineno-24-3">3</a></span>
@@ -2440,7 +2461,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="when-matched-expression">When Matched Expression<a class="headerlink" href="#when-matched-expression" title="Link to this section">¶</a></h3>
-<p>By default, when a key matches (source and target have the same key), Vulcan updates all columns. But sometimes you want more control—maybe you want to preserve certain values, or only update specific columns.</p>
+<p>By default, when a key matches (source and target have the same key), Vulcan updates all columns. But sometimes you want more control, maybe you want to preserve certain values, or only update specific columns.</p>
 <p>You can customize this behavior with <code>when_matched</code> expressions:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
 <span class="normal"><a href="#__codelineno-25-2">2</a></span>
@@ -2567,7 +2588,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tbody>
 </table>
 <h2 id="full">FULL<a class="headerlink" href="#full" title="Link to this section">¶</a></h2>
-<p><code>FULL</code> models are the simplest kind—they rebuild everything from scratch every time they run. No incremental logic, no time columns, no unique keys. Just run the query and replace the entire table.</p>
+<p><code>FULL</code> models are the simplest kind, they rebuild everything from scratch every time they run. No incremental logic, no time columns, no unique keys. Just run the query and replace the entire table.</p>
 <p><strong>When to use FULL:</strong>
 - Small datasets where rebuilding is fast and cheap
 - Aggregate tables without a time dimension
@@ -2777,7 +2798,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p><strong>When NOT to use VIEW:</strong>
 - Expensive queries that run frequently (you'll pay the compute cost every time)
 - Complex aggregations or joins (materialize these instead)
-- Python models (VIEW isn't supported for Python—use SQL)</p>
+- Python models (VIEW isn't supported for Python, use SQL)</p>
 <div class="admonition note">
 <p class="admonition-title">Default Kind</p>
 <p><code>VIEW</code> is the default model kind if you don't specify one. So if you write a model without a <code>kind</code>, it becomes a VIEW automatically.</p>
@@ -2884,7 +2905,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </div>
 <p><strong>Smart refresh:</strong> Vulcan only recreates the materialized view when your query changes or the view doesn't exist. This means you get all the performance benefits of materialized views without unnecessary refreshes. Pretty efficient!</p>
 <h2 id="embedded">EMBEDDED<a class="headerlink" href="#embedded" title="Link to this section">¶</a></h2>
-<p><code>EMBEDDED</code> models are like reusable SQL snippets. They don't create tables or views—instead, their query gets injected directly into any downstream model that references them, as a subquery.</p>
+<p><code>EMBEDDED</code> models are like reusable SQL snippets. They don't create tables or views, instead, their query gets injected directly into any downstream model that references them, as a subquery.</p>
 <p><strong>Why use this?</strong> If you have common logic that multiple models need (like a CTE that filters active customers), you can define it once in an EMBEDDED model and reuse it everywhere. It's like a macro, but for SQL.</p>
 <p><strong>Perfect for:</strong>
 - Common CTEs used across multiple models
@@ -2892,7 +2913,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 - Avoiding code duplication</p>
 <div class="admonition note">
 <p class="admonition-title">Python Models</p>
-<p>Python models don't support the <code>EMBEDDED</code> kind—use a SQL model instead.</p>
+<p>Python models don't support the <code>EMBEDDED</code> kind, use a SQL model instead.</p>
 </div>
 <p>This example specifies an <code>EMBEDDED</code> model kind:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-43-1"> 1</a></span>
@@ -2925,11 +2946,11 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 - Test data</p>
 <div class="admonition note">
 <p class="admonition-title">Python Models</p>
-<p>Python models don't support the <code>SEED</code> kind—use a SQL model instead.</p>
+<p>Python models don't support the <code>SEED</code> kind, use a SQL model instead.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">When Data Reloads</p>
-<p>Seed models are loaded once and stay loaded unless you update the model definition or change the CSV file. This keeps things efficient—no point reloading static data every run!</p>
+<p>Seed models are loaded once and stay loaded unless you update the model definition or change the CSV file. This keeps things efficient, no point reloading static data every run!</p>
 </div>
 <p>This example specifies a <code>SEED</code> model kind:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-44-1"> 1</a></span>
@@ -3473,7 +3494,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <li>Cheeseburger was removed from the menu.</li>
 <li>Milkshakes were added to the menu.</li>
 </ul>
-<p>Assuming your pipeline ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
+<p>Assuming your models ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
 <table>
 <thead>
 <tr>
@@ -3650,7 +3671,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tr>
 </tbody>
 </table>
-<p><strong>Notice:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 00:00:00</code>. If you query the table for that time range, you won't see it—which accurately reflects that it wasn't on the menu during that period.</p>
+<p><strong>Notice:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 00:00:00</code>. If you query the table for that time range, you won't see it, which accurately reflects that it wasn't on the menu during that period.</p>
 <p>This is the most accurate representation based on your source data. If <code>Cheeseburger</code> had been added back with its original <code>updated_at</code> timestamp (<code>2020-01-01</code>), Vulcan would have set the new record's <code>valid_from</code> to <code>2020-01-02 11:00:00</code> (when it was detected again), filling the gap. But since the timestamp didn't change, it's likely the item was removed in error, and the gap accurately represents that.</p>
 <h3 id="example-of-scd-type-2-by-column-in-action">Example of SCD Type 2 By Column in Action<a class="headerlink" href="#example-of-scd-type-2-by-column-in-action" title="Link to this section">¶</a></h3>
 <p>Now let's see how <strong>By Column</strong> works. Same restaurant menu example, but this time the source table doesn't have an <code>updated_at</code> column. We'll configure the model to watch <code>Name</code> and <code>Price</code> for changes.</p>
@@ -3749,7 +3770,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <li>Cheeseburger was removed from the menu.</li>
 <li>Milkshakes were added to the menu.</li>
 </ul>
-<p>Assuming your pipeline ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
+<p>Assuming your models ran at <code>2020-01-02 11:00:00</code>, target table will be updated with the following data:</p>
 <table>
 <thead>
 <tr>
@@ -3906,7 +3927,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tr>
 </tbody>
 </table>
-<p><strong>Notice:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 11:00:00</code>. Query the table for that time range, and you won't see it—which accurately reflects that it wasn't on the menu during that period.</p>
+<p><strong>Notice:</strong> <code>Cheeseburger</code> was deleted from <code>2020-01-02 11:00:00</code> to <code>2020-01-03 11:00:00</code>. Query the table for that time range, and you won't see it, which accurately reflects that it wasn't on the menu during that period.</p>
 <h3 id="shared-configuration-options">Shared Configuration Options<a class="headerlink" href="#shared-configuration-options" title="Link to this section">¶</a></h3>
 <table>
 <thead>
@@ -4002,7 +4023,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tr>
 <tr>
 <td>execution_time_as_valid_from</td>
-<td>By default, when the model is first loaded <code>valid_from</code> is set to <code>1970-01-01 00:00:00</code> and future new rows will have <code>execution_time</code> of when the pipeline ran. This changes the behavior to always use <code>execution_time</code>. Default: <code>false</code></td>
+<td>By default, when the model is first loaded <code>valid_from</code> is set to <code>1970-01-01 00:00:00</code> and future new rows will have <code>execution_time</code> of when the models ran. This changes the behavior to always use <code>execution_time</code>. Default: <code>false</code></td>
 <td>bool</td>
 </tr>
 <tr>
@@ -4013,7 +4034,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </tbody>
 </table>
 <h3 id="processing-source-table-with-historical-data">Processing Source Table with Historical Data<a class="headerlink" href="#processing-source-table-with-historical-data" title="Link to this section">¶</a></h3>
-<p>Most of the time, you're creating history for a table that doesn't have it. Like the restaurant menu—it just shows what's available now, but you want to track what was available over time. For this use case, leave <code>batch_size</code> as <code>None</code> (the default).</p>
+<p>Most of the time, you're creating history for a table that doesn't have it. Like the restaurant menu, it just shows what's available now, but you want to track what was available over time. For this use case, leave <code>batch_size</code> as <code>None</code> (the default).</p>
 <p><strong>But what if your source already has history?</strong> Some systems create "daily snapshot" tables that contain historical records. If you're sourcing from one of these, set <code>batch_size</code> to <code>1</code> to process each interval sequentially (one day at a time if you're using <code>@daily</code> cron).</p>
 <p><strong>Why sequential?</strong> SCD Type 2 needs to compare each day's snapshot to the previous day to detect changes. Processing them in order ensures the history is captured correctly.</p>
 <h4 id="example-source-from-daily-snapshot-table">Example - Source from Daily Snapshot Table<a class="headerlink" href="#example-source-from-daily-snapshot-table" title="Link to this section">¶</a></h4>
@@ -4246,7 +4267,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-70-7"><a id="__codelineno-70-7" name="__codelineno-70-7"></a><span class="w">  </span><span class="n">id</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="reset-scd-type-2-model-clearing-history">Reset SCD Type 2 Model (Clearing History)<a class="headerlink" href="#reset-scd-type-2-model-clearing-history" title="Link to this section">¶</a></h3>
-<p>By default, SCD Type 2 models protect your history—once it's gone, you can't recreate it. But sometimes you need to start fresh (maybe you're fixing a bug, or the history got corrupted).</p>
+<p>By default, SCD Type 2 models protect your history, once it's gone, you can't recreate it. But sometimes you need to start fresh (maybe you're fixing a bug, or the history got corrupted).</p>
 <p><strong>Warning:</strong> This will delete all historical data. Make sure you really want to do this!</p>
 <p>To reset history, follow these steps:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-71-1">1</a></span>
@@ -4584,8 +4605,8 @@ Then you will want to <a href="../plans.md#restatement-plans">restate the model<
 </tbody>
 </table>
 <h2 id="incremental_unmanaged">INCREMENTAL_UNMANAGED<a class="headerlink" href="#incremental_unmanaged" title="Link to this section">¶</a></h2>
-<p><code>INCREMENTAL_UNMANAGED</code> models are for append-only tables. They're "unmanaged" because Vulcan doesn't try to deduplicate or manage the data—it just runs your query and appends whatever it gets to the table.</p>
-<p><strong>How it works:</strong> Every time the model runs, Vulcan executes your query and appends the results to the table. No deduplication, no updates, no deletes—just append, append, append.</p>
+<p><code>INCREMENTAL_UNMANAGED</code> models are for append-only tables. They're "unmanaged" because Vulcan doesn't try to deduplicate or manage the data, it just runs your query and appends whatever it gets to the table.</p>
+<p><strong>How it works:</strong> Every time the model runs, Vulcan executes your query and appends the results to the table. No deduplication, no updates, no deletes, just append, append, append.</p>
 <div class="admonition question">
 <p class="admonition-title">Should You Use This?</p>
 <p><strong>Use it for:</strong> Data Vault patterns, event logs, audit trails, or any scenario where you need true append-only behavior.</p>
@@ -4643,7 +4664,7 @@ Then you will want to <a href="../plans.md#restatement-plans">restate the model<
 </span><span id="__span-78-22"><a id="__codelineno-78-22" name="__codelineno-78-22"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">customers</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">customer_id</span>
 </span><span id="__span-78-23"><a id="__codelineno-78-23" name="__codelineno-78-23"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">shipped_date</span><span class="w"> </span><span class="k">DESC</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Note:</strong> Since it's unmanaged, <code>INCREMENTAL_UNMANAGED</code> doesn't support <code>batch_size</code> or <code>batch_concurrency</code> properties. Vulcan just runs your query and appends the results—no batching or concurrency control.</p>
+<p><strong>Note:</strong> Since it's unmanaged, <code>INCREMENTAL_UNMANAGED</code> doesn't support <code>batch_size</code> or <code>batch_concurrency</code> properties. Vulcan just runs your query and appends the results, no batching or concurrency control.</p>
 <div class="admonition warning">
 <p class="admonition-title">Only Full Restatements Supported</p>
 <p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../plans.md#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>

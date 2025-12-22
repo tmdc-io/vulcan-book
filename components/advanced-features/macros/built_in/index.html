@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1615,9 +1630,9 @@
 <article class="md-content__inner md-typeset">
 <h1 id="built-in">Built In<a class="headerlink" href="#built-in" title="Link to this section">¶</a></h1>
 <h2 id="macro-systems-two-approaches">Macro systems: two approaches<a class="headerlink" href="#macro-systems-two-approaches" title="Link to this section">¶</a></h2>
-<p>Vulcan macros work differently than templating systems like <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a>. Here's the key difference: templating systems are all about string substitution—they scan your code, find special characters, and replace them with other text. That's their whole job.</p>
+<p>Vulcan macros work differently than templating systems like <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a>. Here's the key difference: templating systems are all about string substitution, they scan your code, find special characters, and replace them with other text. That's their whole job.</p>
 <p>Templating systems are intentionally language-agnostic. They work for blog posts, HTML, SQL, or pretty much anything. They have control flow (if-then, loops) and other features, but those are just tools to help them substitute the right strings.</p>
-<p>Vulcan macros are different. They're built specifically for SQL, and they understand what your SQL actually means. Instead of just swapping strings, Vulcan macros analyze your SQL using the <a href="https://github.com/tobymao/sqlglot">sqlglot</a> library to build a semantic representation of your query. Then they modify that representation. This means they can do things templating systems can't—like knowing whether something is a column name or a string literal, or understanding the structure of your query.</p>
+<p>Vulcan macros are different. They're built specifically for SQL, and they understand what your SQL actually means. Instead of just swapping strings, Vulcan macros analyze your SQL using the <a href="https://github.com/tobymao/sqlglot">sqlglot</a> library to build a semantic representation of your query. Then they modify that representation. This means they can do things templating systems can't, like knowing whether something is a column name or a string literal, or understanding the structure of your query.</p>
 <p>Plus, you can write macro logic in Python, which gives you way more power than simple string substitution.</p>
 <h3 id="how-vulcan-macros-work">How Vulcan macros work<a class="headerlink" href="#how-vulcan-macros-work" title="Link to this section">¶</a></h3>
 <p>This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's super helpful when you're debugging something that's not working as expected. Feel free to skip it and come back later if you need to.</p>
@@ -1683,14 +1698,16 @@
 <p><code>col</code> is not surrounded with single quotes, and the SQL engine will determine that the query is referencing a column or other object named <code>col</code>.</p>
 <h2 id="user-defined-variables">User-defined variables<a class="headerlink" href="#user-defined-variables" title="Link to this section">¶</a></h2>
 <p>Vulcan supports four kinds of user-defined macro variables: <a href="#global-variables">global</a>, <a href="#gateway-variables">gateway</a>, <a href="#blueprint-variables">blueprint</a>, and <a href="#local-variables">local</a>.</p>
-<p>Here's how they're organized:
-- <strong>Global and gateway variables</strong> are defined in your project configuration file and can be used in any model
-- <strong>Blueprint and local variables</strong> are defined in a specific model and only work in that model</p>
+<p>Here's how they're organized:</p>
+<ul>
+<li><strong>Global and gateway variables</strong> are defined in your project configuration file and can be used in any model</li>
+<li><strong>Blueprint and local variables</strong> are defined in a specific model and only work in that model</li>
+</ul>
 <p>What happens if you have variables with the same name at different levels? The most specific one wins. Local variables override blueprint or gateway variables, gateway variables override global variables, and so on. This lets you set defaults globally but override them when needed.</p>
 <h3 id="global-variables">Global variables<a class="headerlink" href="#global-variables" title="Link to this section">¶</a></h3>
-<p>Global variables live in your project configuration file under the <a href="components/configurations-old/configuration.md#variables"><code>variables</code> key</a>. They're perfect for values you want to use across multiple models.</p>
+<p>Global variables live in your project configuration file under the <a href="../../../../references/configuration.md#variables"><code>variables</code> key</a>. They're perfect for values you want to use across multiple models.</p>
 <p>You can store numbers (<code>int</code>, <code>float</code>), booleans (<code>bool</code>), strings (<code>str</code>), or even lists and dictionaries containing these types.</p>
-<p>Access them in your models using either <code>@VAR_NAME</code> (the simple syntax) or <code>@VAR('var_name')</code> (the function syntax). The function syntax is handy because you can provide a default value as the second argument—useful if the variable might not be defined.</p>
+<p>Access them in your models using either <code>@VAR_NAME</code> (the simple syntax) or <code>@VAR('var_name')</code> (the function syntax). The function syntax is handy because you can provide a default value as the second argument, useful if the variable might not be defined.</p>
 <p>For example, this Vulcan configuration key defines six variables of different data types:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
@@ -2183,7 +2200,7 @@
 <ol>
 <li>A condition that evaluates to <code>TRUE</code> or <code>FALSE</code> (written in SQL)</li>
 <li>What to return if the condition is <code>TRUE</code></li>
-<li>What to return if the condition is <code>FALSE</code> (this is optional—if you omit it and the condition is false, nothing gets included)</li>
+<li>What to return if the condition is <code>FALSE</code> (this is optional, if you omit it and the condition is false, nothing gets included)</li>
 </ol>
 <p>These elements are specified as:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-31-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="o">@</span><span class="k">IF</span><span class="p">([</span><span class="n">logical</span><span class="w"> </span><span class="n">condition</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="n">value</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">TRUE</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="n">value</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">FALSE</span><span class="p">])</span>
@@ -2455,11 +2472,13 @@
 </ul>
 <h3 id="generate_surrogate_key"><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/GENERATE_SURROGATE_KEY" title="GitHub User: GENERATE_SURROGATE_KEY">@GENERATE_SURROGATE_KEY</a><a class="headerlink" href="#generate_surrogate_key" title="Link to this section">¶</a></h3>
 <p><code>@GENERATE_SURROGATE_KEY</code> generates a surrogate key from a set of columns. The surrogate key is a sequence of alphanumeric digits returned by a hash function, such as <a href="https://en.wikipedia.org/wiki/MD5"><code>MD5</code></a>, on the concatenated column values.</p>
-<p>The surrogate key is created by:
-1. <code>CAST</code>ing each column's value to <code>TEXT</code> (or the SQL engine's equivalent type)
-2. Replacing <code>NULL</code> values with the text <code>'_vulcan_surrogate_key_null_'</code> for each column
-3. Concatenating the column values after steps (1) and (2)
-4. Applying the <a href="https://en.wikipedia.org/wiki/MD5"><code>MD5()</code> hash function</a> to the concatenated value returned by step (3)</p>
+<p>The surrogate key is created by:</p>
+<ol>
+<li><code>CAST</code>ing each column's value to <code>TEXT</code> (or the SQL engine's equivalent type)</li>
+<li>Replacing <code>NULL</code> values with the text <code>'_vulcan_surrogate_key_null_'</code> for each column</li>
+<li>Concatenating the column values after steps (1) and (2)</li>
+<li>Applying the <a href="https://en.wikipedia.org/wiki/MD5"><code>MD5()</code> hash function</a> to the concatenated value returned by step (3)</li>
+</ol>
 <p>For example, the following query:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-47-1">1</a></span>
 <span class="normal"><a href="#__codelineno-47-2">2</a></span>
@@ -3108,7 +3127,7 @@ would be rendered as:<p></p>
 <p>Vulcan supports macro functions in two languages:</p>
 <ul>
 <li><strong>SQL functions</strong> use the <a href="../jinja/#user-defined-macro-functions">Jinja templating system</a></li>
-<li><strong>Python functions</strong> use SQLGlot and give you way more power—you can do complex operations that go beyond what variables and operators can handle alone</li>
+<li><strong>Python functions</strong> use SQLGlot and give you way more power, you can do complex operations that go beyond what variables and operators can handle alone</li>
 </ul>
 <h3 id="python-macro-functions">Python macro functions<a class="headerlink" href="#python-macro-functions" title="Link to this section">¶</a></h3>
 <h4 id="setup">Setup<a class="headerlink" href="#setup" title="Link to this section">¶</a></h4>

@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1286,7 +1301,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="semantic-models">Semantic Models<a class="headerlink" href="#semantic-models" title="Link to this section">¶</a></h1>
 <p>Semantic models are your bridge between technical data structures and business understanding. They take your physical Vulcan models (the tables and columns in your database) and map them to business concepts that make sense to analysts, product managers, and other non-technical users.</p>
-<p>Think of semantic models as a translation layer. Your database might have tables named <code>dim_customers</code> or <code>fact_orders</code> (technical naming), but your semantic layer can expose them as <code>customers</code> and <code>orders</code> (business-friendly naming). More importantly, semantic models define what you can actually do with the data—dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.</p>
+<p>Think of semantic models as a translation layer. Your database might have tables named <code>dim_customers</code> or <code>fact_orders</code> (technical naming), but your semantic layer can expose them as <code>customers</code> and <code>orders</code> (business-friendly naming). More importantly, semantic models define what you can actually do with the data, dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.</p>
 <h2 id="what-are-semantic-models">What are semantic models?<a class="headerlink" href="#what-are-semantic-models" title="Link to this section">¶</a></h2>
 <p>Semantic models bridge the gap between technical table structures and business understanding:</p>
 <ul>
@@ -1294,7 +1309,7 @@
 <li><strong>Provide business aliases</strong>: Hide technical naming (like <code>dim_customers</code> or <code>fact_orders</code>) behind consumer-friendly names</li>
 <li><strong>Expose analytical capabilities</strong>: Define dimensions, measures, segments, and joins for each model</li>
 </ul>
-<p>They're the foundation of your semantic layer—everything else (business metrics, semantic queries) builds on top of semantic models.</p>
+<p>They're the foundation of your semantic layer, everything else (business metrics, semantic queries) builds on top of semantic models.</p>
 <h2 id="basic-structure">Basic structure<a class="headerlink" href="#basic-structure" title="Link to this section">¶</a></h2>
 <p>A semantic model maps a physical Vulcan model to a semantic representation. Here's the basic structure:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">models</span><span class="p">:</span>
@@ -1308,7 +1323,7 @@
 </span></code></pre></div>
 <p>The physical model name (<code>analytics.customers</code>) is the key, and everything else defines how it appears in the semantic layer.</p>
 <h2 id="dimensions">Dimensions<a class="headerlink" href="#dimensions" title="Link to this section">¶</a></h2>
-<p>Dimensions are attributes you use for grouping and filtering. They answer "by what?" questions—like "revenue by customer tier" or "orders by country."</p>
+<p>Dimensions are attributes you use for grouping and filtering. They answer "by what?" questions, like "revenue by customer tier" or "orders by country."</p>
 <p><strong>The good news:</strong> All columns from your Vulcan model automatically become dimensions. You don't have to define them manually unless you want to control which ones are exposed or add enhancements.</p>
 <p>Here's how you can control dimensions:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1"># All columns from analytics.customers automatically become dimensions:</span>
@@ -1334,7 +1349,7 @@
 </span><span id="__span-1-21"><a href="#__codelineno-1-21" id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">          </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">"3</span><span class="nv"> </span><span class="s">months"</span>
 </span><span id="__span-1-22"><a href="#__codelineno-1-22" id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Quarterly</span><span class="nv"> </span><span class="s">cohorts"</span>
 </span></code></pre></div>
-<p>Use <code>excludes</code> to hide sensitive or internal columns. Use <code>enhancements</code> to add time granularities for cohort analysis—super useful for subscription or signup dates.</p>
+<p>Use <code>excludes</code> to hide sensitive or internal columns. Use <code>enhancements</code> to add time granularities for cohort analysis, super useful for subscription or signup dates.</p>
 <h2 id="measures">Measures<a class="headerlink" href="#measures" title="Link to this section">¶</a></h2>
 <p>Measures are aggregated calculations that answer "how much?" or "how many?" questions. They're what you use to calculate totals, averages, counts, and other aggregations.</p>
 <p>You define measures using SQL expressions with aggregations like <code>SUM()</code>, <code>COUNT()</code>, <code>AVG()</code>, etc.:</p>
@@ -1376,9 +1391,9 @@
 </span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="w">    </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">"{customers.signup_date}</span><span class="nv"> </span><span class="s">&gt;=</span><span class="nv"> </span><span class="s">CURRENT_DATE</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">INTERVAL</span><span class="nv"> </span><span class="s">'30</span><span class="nv"> </span><span class="s">days'"</span>
 </span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Customers</span><span class="nv"> </span><span class="s">who</span><span class="nv"> </span><span class="s">signed</span><span class="nv"> </span><span class="s">up</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">last</span><span class="nv"> </span><span class="s">30</span><span class="nv"> </span><span class="s">days"</span>
 </span></code></pre></div>
-<p>Segments make your semantic layer more consistent—everyone uses the same definition of "active customers" or "high value," so there's no confusion about what those terms mean.</p>
+<p>Segments make your semantic layer more consistent, everyone uses the same definition of "active customers" or "high value," so there's no confusion about what those terms mean.</p>
 <h2 id="joins">Joins<a class="headerlink" href="#joins" title="Link to this section">¶</a></h2>
-<p>Joins define relationships between semantic models. They're what enable cross-model analysis—like combining order data with customer data or product data.</p>
+<p>Joins define relationships between semantic models. They're what enable cross-model analysis, like combining order data with customer data or product data.</p>
 <p>You define the relationship type (<code>one_to_one</code>, <code>one_to_many</code>, <code>many_to_one</code>) and the join expression:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nt">joins</span><span class="p">:</span>
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">customers</span><span class="p">:</span>
@@ -1393,7 +1408,7 @@
 </span></code></pre></div>
 <p>The relationship type helps Vulcan understand the cardinality, which is important for aggregations and preventing double-counting. The expression is the actual SQL join condition, using semantic references with curly braces.</p>
 <h2 id="cross-model-analysis">Cross-model analysis<a class="headerlink" href="#cross-model-analysis" title="Link to this section">¶</a></h2>
-<p>Once you've defined joins, you can reference columns and measures from other models in your current model's definitions. This is where semantic models really shine—you can build complex analytical definitions that span multiple models.</p>
+<p>Once you've defined joins, you can reference columns and measures from other models in your current model's definitions. This is where semantic models really shine, you can build complex analytical definitions that span multiple models.</p>
 <h3 id="referencing-joined-model-fields">Referencing joined model fields<a class="headerlink" href="#referencing-joined-model-fields" title="Link to this section">¶</a></h3>
 <p>You can use columns from joined models in measure expressions and filters:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nt">measures</span><span class="p">:</span>
@@ -1419,7 +1434,7 @@
 - The referenced model must be joined to the current model
 - The measure must exist on the target model
 - Use the format <code>model_alias.measure_name</code></p>
-<p>Proxy dimensions are powerful—they let you analyze one model using aggregated values from another model, all without writing complex SQL.</p>
+<p>Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL.</p>
 <h2 id="complete-example">Complete example<a class="headerlink" href="#complete-example" title="Link to this section">¶</a></h2>
 <p>Here's a complete semantic model definition that brings it all together:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nt">models</span><span class="p">:</span>

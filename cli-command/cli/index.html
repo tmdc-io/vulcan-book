@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1558,6 +1573,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="cli-commands">CLI Commands<a class="headerlink" href="#cli-commands" title="Link to this section">¶</a></h1>
+<p>The Vulcan CLI is your primary interface for working with your data pipeline. You'll use it to plan changes, run models, check data quality, and manage your project. Here's everything you need to know about the commands available to you.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>Usage: vulcan [OPTIONS] COMMAND [ARGS]...
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>  Vulcan command line tool.
@@ -1610,6 +1626,7 @@
 </span><span id="__span-0-50"><a href="#__codelineno-0-50" id="__codelineno-0-50" name="__codelineno-0-50"></a>  transpiler              Manage the Transpiler service (subcommands: up,...
 </span></code></pre></div>
 <h2 id="audit">audit<a class="headerlink" href="#audit" title="Link to this section">¶</a></h2>
+<p>Run data quality audits for your models. This command executes all the audits you've defined in your models and reports which ones pass or fail. It's perfect for validating data quality before deploying changes.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>Usage: vulcan audit [OPTIONS]
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>  Run audits for the target model(s).
@@ -1644,6 +1661,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="check_intervals">check_intervals<a class="headerlink" href="#check_intervals" title="Link to this section">¶</a></h2>
+<p>Check which time intervals are missing for your models in a given environment. This is super useful for understanding what data needs to be backfilled or processed. By default, it respects signals (like upstream dependencies), but you can disable that if you want to see all missing intervals.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>Usage: vulcan check_intervals [OPTIONS] [ENVIRONMENT]
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>
 </span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>  Show missing intervals in an environment, respecting signals.
@@ -1658,6 +1676,7 @@
 </span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a>  --help               Show this message and exit.
 </span></code></pre></div>
 <h2 id="clean">clean<a class="headerlink" href="#clean" title="Link to this section">¶</a></h2>
+<p>Clear out Vulcan's cache and any build artifacts. This is handy when you're troubleshooting issues or want to start fresh. Don't worry, it won't delete your models or data, just the cached files.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>Usage: vulcan clean [OPTIONS]
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>
 </span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a>  Clears the Vulcan cache and any build artifacts.
@@ -1666,6 +1685,7 @@
 </span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>  --help  Show this message and exit.
 </span></code></pre></div>
 <h2 id="create_external_models">create_external_models<a class="headerlink" href="#create_external_models" title="Link to this section">¶</a></h2>
+<p>Generate a schema file for external models that Vulcan can reference. This is useful when you're working with tables or views that exist outside of your Vulcan project but need to be referenced in your models.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>Usage: vulcan create_external_models [OPTIONS]
 </span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>
 </span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>  Create a schema file containing external model schemas.
@@ -1679,6 +1699,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="create_test">create_test<a class="headerlink" href="#create_test" title="Link to this section">¶</a></h2>
+<p>Generate a unit test fixture for a model. This command creates the test file structure and can even generate sample data based on queries you provide. It's a great way to quickly set up tests for your models without writing all the boilerplate yourself.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>Usage: vulcan create_test [OPTIONS] MODEL
 </span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>
 </span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a>  Generate a unit test fixture for a given model.
@@ -1707,6 +1728,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="dag">dag<a class="headerlink" href="#dag" title="Link to this section">¶</a></h2>
+<p>Generate a visual representation of your data pipeline's dependency graph (DAG) as an HTML file. This is super helpful for understanding how your models connect and visualizing the flow of data through your pipeline. You can open the HTML file in any browser to explore the graph interactively.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>Usage: vulcan dag [OPTIONS] FILE
 </span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a>
 </span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a>  Render the DAG as an html file.
@@ -1721,6 +1743,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="destroy">destroy<a class="headerlink" href="#destroy" title="Link to this section">¶</a></h2>
+<p>⚠️ <strong>Use with caution!</strong> This command permanently removes all Vulcan-managed resources from your data warehouse, including state tables, the cache, and all project resources. It will delete all tables, views, and schemas that Vulcan manages, as well as any external resources created by other tools within those schemas. This is a destructive operation that can't be undone, so make sure you really want to do this before running it.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>Usage: vulcan destroy
 </span><span id="__span-11-2"><a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a>
 </span><span id="__span-11-3"><a href="#__codelineno-11-3" id="__codelineno-11-3" name="__codelineno-11-3"></a>  Removes all state tables, the Vulcan cache and all project resources, including warehouse objects. This includes all tables, views and schemas managed by Vulcan, as well as any external resources that may have been created by other tools within those schemas.
@@ -1775,6 +1798,7 @@
 </span><span id="__span-13-8"><a href="#__codelineno-13-8" id="__codelineno-13-8" name="__codelineno-13-8"></a>  --help            Show this message and exit.
 </span></code></pre></div>
 <h2 id="diff">diff<a class="headerlink" href="#diff" title="Link to this section">¶</a></h2>
+<p>See exactly what's different between your local project state and a target environment. This is super useful for understanding what changes you're about to deploy before running a plan. It shows you model changes, semantic layer changes, and quality check modifications in a clear diff format.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>Usage: vulcan diff [OPTIONS] ENVIRONMENT
 </span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a>
 </span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a>  Show the diff between the local state and the target environment.
@@ -1823,6 +1847,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="environments">environments<a class="headerlink" href="#environments" title="Link to this section">¶</a></h2>
+<p>List all your Vulcan environments and see when they expire. This is helpful for managing development environments and understanding which ones might need cleanup.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>Usage: vulcan environments [OPTIONS]
 </span><span id="__span-16-2"><a href="#__codelineno-16-2" id="__codelineno-16-2" name="__codelineno-16-2"></a>
 </span><span id="__span-16-3"><a href="#__codelineno-16-3" id="__codelineno-16-3" name="__codelineno-16-3"></a>  Prints the list of Vulcan environments with its expiry datetime.
@@ -1839,6 +1864,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="evaluate">evaluate<a class="headerlink" href="#evaluate" title="Link to this section">¶</a></h2>
+<p>Preview a model's output without actually materializing it. This is perfect for debugging and quick iteration, you can see what your model would produce without running a full plan or run. By default, it returns up to 1000 rows, but you can adjust that limit.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>Usage: vulcan evaluate [OPTIONS] MODEL
 </span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a>
 </span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a>  Evaluate a model and return a dataframe with a default limit of 1000.
@@ -1867,6 +1893,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="fetchdf">fetchdf<a class="headerlink" href="#fetchdf" title="Link to this section">¶</a></h2>
+<p>Run a raw SQL query against your data warehouse and see the results. This is handy for quick data exploration or debugging queries without opening a separate database client.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>Usage: vulcan fetchdf [OPTIONS] SQL
 </span><span id="__span-20-2"><a href="#__codelineno-20-2" id="__codelineno-20-2" name="__codelineno-20-2"></a>
 </span><span id="__span-20-3"><a href="#__codelineno-20-3" id="__codelineno-20-3" name="__codelineno-20-3"></a>  Run a SQL query and display the results.
@@ -1885,6 +1912,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="format">format<a class="headerlink" href="#format" title="Link to this section">¶</a></h2>
+<p>Automatically format all your SQL models and audits according to your formatting preferences. This helps keep your codebase consistent and readable. You can customize formatting options like indentation, comma placement, and function name casing.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>Usage: vulcan format [OPTIONS]
 </span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>
 </span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a>  Format all SQL models and audits.
@@ -1912,6 +1940,7 @@
 </span><span id="__span-22-25"><a href="#__codelineno-22-25" id="__codelineno-22-25" name="__codelineno-22-25"></a>  --help                      Show this message and exit.
 </span></code></pre></div>
 <h2 id="info">info<a class="headerlink" href="#info" title="Link to this section">¶</a></h2>
+<p>Get a quick overview of your Vulcan project. This command shows you how many models and macros you have, and it tests your connections to both the data warehouse and state backend. It's a great first command to run when setting up a new project or troubleshooting connection issues.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>Usage: vulcan info [OPTIONS]
 </span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a>
 </span><span id="__span-23-3"><a href="#__codelineno-23-3" id="__codelineno-23-3" name="__codelineno-23-3"></a>  Print information about a Vulcan project.
@@ -1934,6 +1963,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="init">init<a class="headerlink" href="#init" title="Link to this section">¶</a></h2>
+<p>Initialize a new Vulcan project. This sets up the basic project structure and configuration files you'll need to get started. You can choose from different templates (like dbt or DLT) or start with an empty project.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>Usage: vulcan init [OPTIONS] [ENGINE]
 </span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a>
 </span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a>  Create a new Vulcan repository.
@@ -1953,6 +1983,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="invalidate">invalidate<a class="headerlink" href="#invalidate" title="Link to this section">¶</a></h2>
+<p>Mark an environment for deletion. The janitor process will clean it up on its next run. This is useful when you want to remove a development environment that's no longer needed. By default, the deletion happens asynchronously, but you can use <code>--sync</code> to wait for it to complete immediately.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>Usage: vulcan invalidate [OPTIONS] ENVIRONMENT
 </span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a>
 </span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a>  Invalidate the target environment, forcing its removal during the next run
@@ -1972,6 +2003,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="janitor">janitor<a class="headerlink" href="#janitor" title="Link to this section">¶</a></h2>
+<p>Run the janitor process manually to clean up old environments and expired snapshots. Normally, the janitor runs automatically, but sometimes you might want to trigger it immediately to free up space or clean up resources right away.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>Usage: vulcan janitor [OPTIONS]
 </span><span id="__span-29-2"><a href="#__codelineno-29-2" id="__codelineno-29-2" name="__codelineno-29-2"></a>
 </span><span id="__span-29-3"><a href="#__codelineno-29-3" id="__codelineno-29-3" name="__codelineno-29-3"></a>  Run the janitor process on-demand.
@@ -1992,6 +2024,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="migrate">migrate<a class="headerlink" href="#migrate" title="Link to this section">¶</a></h2>
+<p>Upgrade Vulcan's internal state to match the current version you're running. This is typically needed when you upgrade Vulcan itself. <strong>Important:</strong> This command affects all Vulcan users, so make sure to coordinate with your team and contact your Vulcan administrator before running it.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a>Usage: vulcan migrate [OPTIONS]
 </span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a>
 </span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a>  Migrate Vulcan to the current running version.
@@ -2004,6 +2037,7 @@
 <p>The <code>migrate</code> command affects all Vulcan users. Contact your Vulcan administrator before running.</p>
 </div>
 <h2 id="plan">plan<a class="headerlink" href="#plan" title="Link to this section">¶</a></h2>
+<p>Create and apply a plan that compares your local project state with a target environment and determines what changes need to be made. This is one of the most important commands, it's how you deploy model changes, add new models, and backfill data. The plan shows you exactly what will happen before it happens, so you can review changes before they're applied.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a>Usage: vulcan plan [OPTIONS] [ENVIRONMENT]
 </span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a>
 </span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a>  Apply local changes to the target environment.
@@ -2078,6 +2112,7 @@
 </span><span id="__span-32-72"><a href="#__codelineno-32-72" id="__codelineno-32-72" name="__codelineno-32-72"></a>  --help                          Show this message and exit.
 </span></code></pre></div>
 <h2 id="api">api<a class="headerlink" href="#api" title="Link to this section">¶</a></h2>
+<p>Start Vulcan's API server, which provides programmatic access to models, metrics, lineage information, and telemetry. This is useful if you want to integrate Vulcan with other tools or build custom dashboards and applications on top of your data pipeline.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a>Usage: vulcan api [OPTIONS]
 </span><span id="__span-33-2"><a href="#__codelineno-33-2" id="__codelineno-33-2" name="__codelineno-33-2"></a>
 </span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a>  Start the Vulcan API server (models, metrics, lineage, telemetry).
@@ -2090,6 +2125,7 @@
 </span><span id="__span-33-10"><a href="#__codelineno-33-10" id="__codelineno-33-10" name="__codelineno-33-10"></a>  --help             Show this message and exit.
 </span></code></pre></div>
 <h2 id="render">render<a class="headerlink" href="#render" title="Link to this section">¶</a></h2>
+<p>See the actual SQL that Vulcan will execute for a model. This is super helpful for debugging and understanding how Vulcan transforms your model definitions into executable SQL. You can optionally expand referenced models to see the full query with all dependencies inlined.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a>Usage: vulcan render [OPTIONS] MODEL
 </span><span id="__span-34-2"><a href="#__codelineno-34-2" id="__codelineno-34-2" name="__codelineno-34-2"></a>
 </span><span id="__span-34-3"><a href="#__codelineno-34-3" id="__codelineno-34-3" name="__codelineno-34-3"></a>  Render a model's query, optionally expanding referenced models.
@@ -2139,6 +2175,7 @@
 </span></code></pre></div>
 </details>
 <h2 id="rollback">rollback<a class="headerlink" href="#rollback" title="Link to this section">¶</a></h2>
+<p>Revert Vulcan's internal state to the previous migration version. This is useful if a migration caused issues and you need to go back. <strong>Important:</strong> Like <code>migrate</code>, this command affects all Vulcan users, so coordinate with your team and contact your Vulcan administrator before running it.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a>Usage: vulcan rollback [OPTIONS]
 </span><span id="__span-36-2"><a href="#__codelineno-36-2" id="__codelineno-36-2" name="__codelineno-36-2"></a>
 </span><span id="__span-36-3"><a href="#__codelineno-36-3" id="__codelineno-36-3" name="__codelineno-36-3"></a>  Rollback Vulcan to the previous migration.
@@ -2151,6 +2188,7 @@
 <p>The <code>rollback</code> command affects all Vulcan users. Contact your Vulcan administrator before running.</p>
 </div>
 <h2 id="run">run<a class="headerlink" href="#run" title="Link to this section">¶</a></h2>
+<p>Process missing time intervals for your models in a target environment. This is different from <code>plan</code>, <code>run</code> focuses on executing scheduled work based on cron schedules, while <code>plan</code> handles deploying changes. Use <code>run</code> when you want to process new or missing data without making any model definition changes.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a>Usage: vulcan run [OPTIONS] [ENVIRONMENT]
 </span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a>
 </span><span id="__span-37-3"><a href="#__codelineno-37-3" id="__codelineno-37-3" name="__codelineno-37-3"></a>  Evaluate missing intervals for the target environment.
@@ -2175,6 +2213,7 @@
 </span><span id="__span-37-22"><a href="#__codelineno-37-22" id="__codelineno-37-22" name="__codelineno-37-22"></a>  --help                        Show this message and exit.
 </span></code></pre></div>
 <h2 id="state">state<a class="headerlink" href="#state" title="Link to this section">¶</a></h2>
+<p>Manage Vulcan's state database. This includes exporting state for backup or migration purposes, and importing state from another environment. These commands are useful for disaster recovery, environment cloning, or moving state between systems.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-38-1"><a href="#__codelineno-38-1" id="__codelineno-38-1" name="__codelineno-38-1"></a>Usage: vulcan state [OPTIONS] COMMAND [ARGS]...
 </span><span id="__span-38-2"><a href="#__codelineno-38-2" id="__codelineno-38-2" name="__codelineno-38-2"></a>
 </span><span id="__span-38-3"><a href="#__codelineno-38-3" id="__codelineno-38-3" name="__codelineno-38-3"></a>  Commands for interacting with state
@@ -2187,6 +2226,7 @@
 </span><span id="__span-38-10"><a href="#__codelineno-38-10" id="__codelineno-38-10" name="__codelineno-38-10"></a>  import  Import a state export file back into the state database
 </span></code></pre></div>
 <h3 id="export">export<a class="headerlink" href="#export" title="Link to this section">¶</a></h3>
+<p>Export Vulcan's state database to a file. This creates a backup of your state that you can use for recovery or to move state between environments. You can export specific environments or all of them.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a href="#__codelineno-39-1" id="__codelineno-39-1" name="__codelineno-39-1"></a>Usage: vulcan state export [OPTIONS]
 </span><span id="__span-39-2"><a href="#__codelineno-39-2" id="__codelineno-39-2" name="__codelineno-39-2"></a>
 </span><span id="__span-39-3"><a href="#__codelineno-39-3" id="__codelineno-39-3" name="__codelineno-39-3"></a>  Export the state database to a file
@@ -2203,6 +2243,7 @@
 </span><span id="__span-39-14"><a href="#__codelineno-39-14" id="__codelineno-39-14" name="__codelineno-39-14"></a>  --help                  Show this message and exit.
 </span></code></pre></div>
 <h3 id="import">import<a class="headerlink" href="#import" title="Link to this section">¶</a></h3>
+<p>Import a previously exported state file back into the state database. This is useful for restoring from backups or copying state from one environment to another. By default, it merges with existing state, but you can use <code>--replace</code> to completely replace it.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a href="#__codelineno-40-1" id="__codelineno-40-1" name="__codelineno-40-1"></a>Usage: vulcan state import [OPTIONS]
 </span><span id="__span-40-2"><a href="#__codelineno-40-2" id="__codelineno-40-2" name="__codelineno-40-2"></a>
 </span><span id="__span-40-3"><a href="#__codelineno-40-3" id="__codelineno-40-3" name="__codelineno-40-3"></a>  Import a state export file back into the state database
@@ -2216,6 +2257,7 @@
 </span><span id="__span-40-11"><a href="#__codelineno-40-11" id="__codelineno-40-11" name="__codelineno-40-11"></a>  --help                 Show this message and exit.
 </span></code></pre></div>
 <h2 id="table_diff">table_diff<a class="headerlink" href="#table_diff" title="Link to this section">¶</a></h2>
+<p>Compare data between two tables or models to see what's different. This is super useful for validating that changes produce the expected results, comparing environments, or debugging data discrepancies. You can compare entire tables or specific models, and customize how the comparison works.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a href="#__codelineno-41-1" id="__codelineno-41-1" name="__codelineno-41-1"></a>Usage: vulcan table_diff [OPTIONS] SOURCE:TARGET [MODEL]
 </span><span id="__span-41-2"><a href="#__codelineno-41-2" id="__codelineno-41-2" name="__codelineno-41-2"></a>
 </span><span id="__span-41-3"><a href="#__codelineno-41-3" id="__codelineno-41-3" name="__codelineno-41-3"></a>  Show the diff between two tables or a selection of models when they are
@@ -2249,6 +2291,7 @@
 </span><span id="__span-41-31"><a href="#__codelineno-41-31" id="__codelineno-41-31" name="__codelineno-41-31"></a>  --help                   Show this message and exit.
 </span></code></pre></div>
 <h2 id="table_name">table_name<a class="headerlink" href="#table_name" title="Link to this section">¶</a></h2>
+<p>Get the actual physical table name that Vulcan uses for a model. This is helpful when you need to reference the table directly in SQL or other tools, since Vulcan's internal naming might differ from your model name.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a>Usage: vulcan table_name [OPTIONS] MODEL_NAME
 </span><span id="__span-42-2"><a href="#__codelineno-42-2" id="__codelineno-42-2" name="__codelineno-42-2"></a>
 </span><span id="__span-42-3"><a href="#__codelineno-42-3" id="__codelineno-42-3" name="__codelineno-42-3"></a>  Prints the name of the physical table for the given model.
@@ -2261,6 +2304,7 @@
 </span><span id="__span-42-10"><a href="#__codelineno-42-10" id="__codelineno-42-10" name="__codelineno-42-10"></a>  --help                     Show this message and exit.
 </span></code></pre></div>
 <h2 id="test">test<a class="headerlink" href="#test" title="Link to this section">¶</a></h2>
+<p>Run unit tests for your models. These tests validate that your SQL logic works correctly with the test fixtures you've defined. It's a great way to catch bugs before deploying to production.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a href="#__codelineno-43-1" id="__codelineno-43-1" name="__codelineno-43-1"></a>Usage: vulcan test [OPTIONS] [TESTS]...
 </span><span id="__span-43-2"><a href="#__codelineno-43-2" id="__codelineno-43-2" name="__codelineno-43-2"></a>
 </span><span id="__span-43-3"><a href="#__codelineno-43-3" id="__codelineno-43-3" name="__codelineno-43-3"></a>  Run model unit tests.
@@ -2273,6 +2317,7 @@
 </span><span id="__span-43-10"><a href="#__codelineno-43-10" id="__codelineno-43-10" name="__codelineno-43-10"></a>  --help               Show this message and exit.
 </span></code></pre></div>
 <h2 id="semantic">semantic<a class="headerlink" href="#semantic" title="Link to this section">¶</a></h2>
+<p>Work with Vulcan's semantic layer. Currently, this includes exporting your semantic models and metrics to CubeJS-compatible YAML schemas, which lets you use your Vulcan semantic layer with other tools that support CubeJS.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a href="#__codelineno-44-1" id="__codelineno-44-1" name="__codelineno-44-1"></a>Usage: vulcan semantic [OPTIONS] {export} [ENVIRONMENT]
 </span><span id="__span-44-2"><a href="#__codelineno-44-2" id="__codelineno-44-2" name="__codelineno-44-2"></a>
 </span><span id="__span-44-3"><a href="#__codelineno-44-3" id="__codelineno-44-3" name="__codelineno-44-3"></a>  Semantic layer operations.
@@ -2291,6 +2336,7 @@
 </span><span id="__span-44-16"><a href="#__codelineno-44-16" id="__codelineno-44-16" name="__codelineno-44-16"></a>  --help              Show this message and exit.
 </span></code></pre></div>
 <h2 id="transpile">transpile<a class="headerlink" href="#transpile" title="Link to this section">¶</a></h2>
+<p>Convert semantic SQL queries or REST-style semantic query payloads into executable, database-specific SQL. This is useful for debugging semantic queries, validating them, or understanding how Vulcan translates business-friendly queries into actual SQL.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a>Usage: vulcan transpile [OPTIONS] [QUERY]
 </span><span id="__span-45-2"><a href="#__codelineno-45-2" id="__codelineno-45-2" name="__codelineno-45-2"></a>
 </span><span id="__span-45-3"><a href="#__codelineno-45-3" id="__codelineno-45-3" name="__codelineno-45-3"></a>  Transpile a semantic SQL or REST-style semantic query to executable SQL.
@@ -2327,6 +2373,7 @@
 </span><span id="__span-47-7"><a href="#__codelineno-47-7" id="__codelineno-47-7" name="__codelineno-47-7"></a>  --help       Show this message and exit.
 </span></code></pre></div>
 <h2 id="lint">lint<a class="headerlink" href="#lint" title="Link to this section">¶</a></h2>
+<p>Run linting rules on your models to catch potential issues and enforce code quality standards. You can lint specific models or all models in your project. This is super helpful for maintaining consistent code quality and catching common mistakes early.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-48-1"><a href="#__codelineno-48-1" id="__codelineno-48-1" name="__codelineno-48-1"></a>Usage: vulcan lint [OPTIONS]
 </span><span id="__span-48-2"><a href="#__codelineno-48-2" id="__codelineno-48-2" name="__codelineno-48-2"></a>  Run linter for the target model(s).
 </span><span id="__span-48-3"><a href="#__codelineno-48-3" id="__codelineno-48-3" name="__codelineno-48-3"></a>

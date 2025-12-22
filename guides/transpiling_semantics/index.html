@@ -327,8 +327,10 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../ci-cd/index.md">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../configurations/ci_cd/">
 <span class="md-ellipsis">
     
   
@@ -338,6 +340,19 @@
     
   </span>
 </a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -1839,14 +1854,16 @@
 <article class="md-content__inner md-typeset">
 <h1 id="transpiling-semantics">Transpiling Semantics<a class="headerlink" href="#transpiling-semantics" title="Link to this section">¶</a></h1>
 <p>The <code>vulcan transpile</code> command converts semantic queries into executable SQL, allowing you to preview, debug, and validate semantic logic before execution.</p>
+<p>Think of transpilation as a translator, it takes your semantic layer queries (which are business-friendly) and converts them into the SQL that your database actually understands. Pretty neat, right?</p>
 <h2 id="what-is-transpilation">What is Transpilation?<a class="headerlink" href="#what-is-transpilation" title="Link to this section">¶</a></h2>
-<p>Transpilation transforms semantic layer queries into database-specific SQL:</p>
+<p>Transpilation transforms semantic layer queries into database-specific SQL. It's like having a translator that speaks both "business language" (semantic queries) and "database language" (SQL).</p>
 <ul>
-<li><strong>Semantic SQL → Native SQL</strong>: Converts semantic SQL queries with <code>MEASURE()</code> functions into standard SQL</li>
-<li><strong>REST API Payload → Native SQL</strong>: Converts JSON query payloads into executable SQL statements</li>
-<li><strong>Validation</strong>: Catches errors before query execution</li>
-<li><strong>Debugging</strong>: Inspect the generated SQL to understand query behavior</li>
+<li><strong>Semantic SQL → Native SQL</strong>: Converts semantic SQL queries with <code>MEASURE()</code> functions into standard SQL - takes your business-friendly queries and makes them database-ready</li>
+<li><strong>REST API Payload → Native SQL</strong>: Converts JSON query payloads into executable SQL statements - perfect for API-driven applications</li>
+<li><strong>Validation</strong>: Catches errors before query execution - find problems before they hit production</li>
+<li><strong>Debugging</strong>: Inspect the generated SQL to understand query behavior - see exactly what your semantic queries are doing under the hood</li>
 </ul>
+<p>Why is this useful? Well, semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap!</p>
 <h2 id="basic-structure">Basic Structure<a class="headerlink" href="#basic-structure" title="Link to this section">¶</a></h2>
 <h3 id="semantic-sql-query-structure">Semantic SQL Query Structure<a class="headerlink" href="#semantic-sql-query-structure" title="Link to this section">¶</a></h3>
 <p>Semantic SQL queries follow standard SQL syntax with semantic layer extensions:</p>
@@ -2061,35 +2078,40 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="c1"># Check if query syntax is correct</span>
 </span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
 </span></code></pre></div>
-<p>If the query is invalid, you'll get an error message indicating the issue.</p>
+<p>If the query is invalid, you'll get an error message indicating the issue. This is way better than finding out at runtime! Catch errors early, fix them, then execute.</p>
 <h3 id="debugging-query-behavior">Debugging Query Behavior<a class="headerlink" href="#debugging-query-behavior" title="Link to this section">¶</a></h3>
-<p>Inspect generated SQL to understand how semantic queries are translated:</p>
+<p>Inspect generated SQL to understand how semantic queries are translated. When queries return unexpected results, transpile them to see what's actually happening:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="c1"># See how measures are aggregated</span>
 </span><span id="__span-29-2"><a href="#__codelineno-29-2" id="__codelineno-29-2" name="__codelineno-29-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
 </span></code></pre></div>
+<p>This shows you exactly how Vulcan is interpreting your semantic query. Sometimes the generated SQL reveals issues you didn't expect!</p>
 <h3 id="performance-analysis">Performance Analysis<a class="headerlink" href="#performance-analysis" title="Link to this section">¶</a></h3>
-<p>Review generated SQL to identify optimization opportunities:</p>
+<p>Review generated SQL to identify optimization opportunities. The generated SQL shows you exactly what the database will execute, so you can spot performance issues:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="c1"># Check join conditions and filter placement</span>
 </span><span id="__span-30-2"><a href="#__codelineno-30-2" id="__codelineno-30-2" name="__codelineno-30-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.industry, MEASURE(total_arr) FROM subscriptions CROSS JOIN users WHERE subscriptions.status = 'active' GROUP BY users.industry"</span>
 </span></code></pre></div>
+<p>Look at the generated SQL, are joins efficient? Are filters in the right place? This is your chance to optimize before execution.</p>
 <h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Link to this section">¶</a></h3>
-<p>Generate SQL examples for documentation or training:</p>
+<p>Generate SQL examples for documentation or training. Use transpilation to create SQL examples that show how semantic queries translate:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="c1"># Create SQL reference from semantic queries</span>
 </span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"</span>
 </span></code></pre></div>
+<p>This is great for documentation! You can show both the semantic query (easy to understand) and the generated SQL (what actually runs).</p>
 <h2 id="common-errors-and-solutions">Common Errors and Solutions<a class="headerlink" href="#common-errors-and-solutions" title="Link to this section">¶</a></h2>
 <h3 id="error-unknown-member-x">Error: "Unknown member: X"<a class="headerlink" href="#error-unknown-member-x" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Member doesn't exist in semantic model or is misspelled.</p>
 <p><strong>Solution:</strong>
-- Verify member exists in your semantic model
-- Check spelling and casing (case-sensitive)
-- Use fully qualified format: <code>alias.member_name</code></p>
+- Verify member exists in your semantic model - check your semantic model definitions
+- Check spelling and casing (case-sensitive) - <code>users.plan_type</code> is different from <code>users.Plan_Type</code>
+- Use fully qualified format: <code>alias.member_name</code> - always include the alias prefix</p>
+<p>This error usually means you've made a typo or the member doesn't exist yet. Double-check your semantic model!</p>
 <h3 id="error-measure-not-found-x">Error: "Measure not found: X"<a class="headerlink" href="#error-measure-not-found-x" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Measure referenced without proper qualification or doesn't exist.</p>
 <p><strong>Solution:</strong>
-- Use <code>MEASURE(measure_name)</code> wrapper for SQL format
-- Use fully qualified format: <code>alias.measure_name</code> for JSON format
-- Verify measure is defined in semantic model</p>
+- Use <code>MEASURE(measure_name)</code> wrapper for SQL format - measures need the MEASURE() wrapper in SQL
+- Use fully qualified format: <code>alias.measure_name</code> for JSON format - JSON format uses dot notation
+- Verify measure is defined in semantic model - make sure the measure actually exists</p>
+<p>The format differs between SQL and JSON, so make sure you're using the right syntax for each!</p>
 <h3 id="error-model-not-found-x">Error: "Model not found: X"<a class="headerlink" href="#error-model-not-found-x" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Alias doesn't match any semantic model.</p>
 <p><strong>Solution:</strong>
@@ -2105,24 +2127,27 @@
 <h3 id="error-projection-references-non-aggregate-values">Error: "Projection references non-aggregate values"<a class="headerlink" href="#error-projection-references-non-aggregate-values" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Non-aggregated columns not in GROUP BY, or measures missing MEASURE() wrapper.</p>
 <p><strong>Solution:</strong>
-- Add all non-aggregated columns to GROUP BY
-- Use MEASURE() wrapper for all measures in SQL format</p>
+- Add all non-aggregated columns to GROUP BY - if you select a column, it needs to be in GROUP BY (unless it's aggregated)
+- Use MEASURE() wrapper for all measures in SQL format - measures must be wrapped in MEASURE()</p>
+<p>This is a SQL rule, you can't mix aggregated and non-aggregated columns without GROUP BY. The error is telling you exactly what's wrong!</p>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <h3 id="validate-before-execution">Validate Before Execution<a class="headerlink" href="#validate-before-execution" title="Link to this section">¶</a></h3>
-<p>Always transpile queries before running them in production:</p>
+<p>Always transpile queries before running them in production. It's like checking your work before turning it in:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="c1"># ✅ Good: Validate first</span>
 </span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
-</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="c1"># Review output, then execute</span>
+</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="c1"># Review output, then execute - make sure the SQL looks right</span>
 </span><span id="__span-32-4"><a href="#__codelineno-32-4" id="__codelineno-32-4" name="__codelineno-32-4"></a>
 </span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="c1"># ❌ Bad: Execute without validation</span>
-</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="c1"># Direct execution without checking generated SQL</span>
+</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="c1"># Direct execution without checking generated SQL - don't do this!</span>
 </span></code></pre></div>
+<p>Transpilation catches errors early. Use it!</p>
 <h3 id="use-transpilation-for-debugging">Use Transpilation for Debugging<a class="headerlink" href="#use-transpilation-for-debugging" title="Link to this section">¶</a></h3>
-<p>When queries return unexpected results, transpile to inspect generated SQL:</p>
+<p>When queries return unexpected results, transpile to inspect generated SQL. The generated SQL often reveals what's actually happening:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a><span class="c1"># Debug query behavior</span>
 </span><span id="__span-33-2"><a href="#__codelineno-33-2" id="__codelineno-33-2" name="__codelineno-33-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
-</span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a><span class="c1"># Compare generated SQL with expected behavior</span>
+</span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a><span class="c1"># Compare generated SQL with expected behavior - does it match what you think should happen?</span>
 </span></code></pre></div>
+<p>Sometimes the issue isn't with your semantic query, it's with how it's being translated. Transpilation shows you the translation.</p>
 <h3 id="document-query-patterns">Document Query Patterns<a class="headerlink" href="#document-query-patterns" title="Link to this section">¶</a></h3>
 <p>Use transpilation output to document common query patterns:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a><span class="c1"># Generate SQL examples for documentation</span>
