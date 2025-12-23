@@ -49,7 +49,7 @@ Vulcan reports changes using a few consistent buckets. You’ll see these for mo
 
 - **Added**: exists locally, not in the environment (new object will be created/registered).
 - **Removed**: exists in the environment, removed from local project (will be removed from the environment).
-- **Directly modified**: you edited the object itself (model SQL/Python, semantics YAML, check YAML, assertion SQL).
+- **Directly modified**: you edited the object itself (model SQL/Python, semantics YAML, check YAML, Assertion SQL).
 - **Indirectly impacted**: you didn’t edit the object, but something it depends on changed (common for downstream models, and also for semantics/metrics/checks that reference a changed model/column).
 - **Metadata-only**: description/tags/ownership/config changes that don’t require historical recomputation.
 
@@ -129,7 +129,7 @@ Here’s the mental model:
 In non-prod environments, you can control the backfill window:
 
 ```bash
-vulcan plan dev --start "2024-01-01" --end "2024-01-10"
+vulcan plan dev --start "2024-01-01" --end "2024-01-05"
 ```
 
 Some model kinds are inherently non-idempotent (for example `INCREMENTAL_BY_UNIQUE_KEY`, `INCREMENTAL_BY_PARTITION`, and SCD variants). In those cases, Vulcan may compute a **preview** for a limited range that can’t be reused when deploying to production.
