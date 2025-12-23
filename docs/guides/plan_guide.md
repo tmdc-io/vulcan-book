@@ -6,7 +6,7 @@
 It’s not just about model SQL. Vulcan plan also tracks changes to:
 
 - **Semantics and metrics** (so business definitions stay consistent)
-- **Audits, checks, and profiles** (so data quality stays visible and predictable)
+- **Assertions, checks, and profiles** (so data quality stays visible and predictable)
 
 ## Quick start
 
@@ -33,7 +33,7 @@ If you want a walkthrough with screenshots and CLI snippets, see [Plan](plan.md)
 
 Here’s the end-to-end flow Vulcan follows:
 
-1. **Diff scope**: compare local project state to the target environment (models, standalone audits, semantics, metrics, checks, metadata).
+1. **Diff scope**: compare local project state to the target environment (models, standalone assertions, semantics, metrics, checks, metadata).
 2. **Plan type**: determine whether this is a backfill plan vs a virtual update (and whether forward-only / restatement options apply).
 3. **Categorize impact**: auto-identify breaking vs non-breaking and propagate impact to indirectly impacted objects.
 4. **Compute intervals**: compute the time ranges that must be executed.
@@ -45,11 +45,11 @@ Here’s the end-to-end flow Vulcan follows:
 
 ## Change types (how to read “what changed”)
 
-Vulcan reports changes using a few consistent buckets. You’ll see these for models, and often for semantics/metrics/checks/audits too.
+Vulcan reports changes using a few consistent buckets. You’ll see these for models, and often for semantics/metrics/checks/assertions too.
 
 - **Added**: exists locally, not in the environment (new object will be created/registered).
 - **Removed**: exists in the environment, removed from local project (will be removed from the environment).
-- **Directly modified**: you edited the object itself (model SQL/Python, semantics YAML, check YAML, audit SQL).
+- **Directly modified**: you edited the object itself (model SQL/Python, semantics YAML, check YAML, assertion SQL).
 - **Indirectly impacted**: you didn’t edit the object, but something it depends on changed (common for downstream models, and also for semantics/metrics/checks that reference a changed model/column).
 - **Metadata-only**: description/tags/ownership/config changes that don’t require historical recomputation.
 
@@ -117,7 +117,7 @@ Here’s the mental model:
 
 ![Virtual vs physical layers: how snapshots change when you update a model](../assets/images/vulcan_plan_snapshot_flow.png)
 
-*Diagram: initial environment state vs creating a new snapshot when Model A changes. Save the image as `vulcan-resources/vulcan-book/docs/assets/images/vulcan_plan_snapshot_flow.png` so this renders correctly.*
+
 
 ## Backfill vs virtual update
 
