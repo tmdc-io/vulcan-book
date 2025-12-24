@@ -52,6 +52,7 @@ nav:
   - Guides:
       - guides/get-started/docker.md
       - guides/plan.md
+      - guides/plan_guide.md
       - guides/run_and_scheduling.md
       - guides/models.md
       - guides/incremental_by_time.md
