@@ -2,382 +2,390 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/FILE_REFERENCES/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/comparisons/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/ci-cd/ci-cd/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/cli-command/cli/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/advanced-features/custom_materializations/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/advanced-features/signals/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/advanced-features/macros/built_in/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/advanced-features/macros/jinja/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/advanced-features/macros/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/advanced-features/macros/variables/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/audits/audits/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/checks/checks/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/model_kinds/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/properties/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/statements/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/types/external_models/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/types/managed_models/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/types/python_models/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/model/types/sql_models/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/semantics/business_metrics/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/semantics/models/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/semantics/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/components/tests/tests/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/environments/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/glossary/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/plans/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/state/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/architecture/serialization/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/architecture/snapshots/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/macros/jinja_macros/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/macros/macro_variables/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/macros/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/concepts-old/macros/vulcan_macros/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/ci_cd/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/postgres/postgres/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/snowflake/snowflake/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/options/execution_hooks/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/options/linter/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/options/model_defaults/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/options/notifications/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/options/variables/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/cookbook/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/examples/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/examples/exhaustive_model/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/faq/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/getting_started/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/getting_started/cli/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/getting_started/prerequisites/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/data_quality/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/incremental_by_time/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/model_selection/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/models/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/plan/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/guides/plan_guide/</loc>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/run_and_scheduling/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/transpiling_semantics/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
+    </url>
+    <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/guides/troubleshooting/</loc>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/get-started/docker/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/get-started/zip-mac/vulcan-project/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/get-started/zip-window/vulcan-project/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/configuration/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/connections/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/customizing_vulcan/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/isolated_systems/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/migrations/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/notifications/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/projects/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides-old/table_migration/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/configuration/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/environments/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/glossary/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/model_configuration/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/overview/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/plans/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/state/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/athena/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/azuresql/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/bigquery/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/clickhouse/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/coming_soon/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/databricks/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/duckdb/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/fabric/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/gcp-postgres/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/motherduck/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/mssql/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/mysql/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/postgres/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/redshift/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/risingwave/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/snowflake/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/spark/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/references/integrations/engines/trino/</loc>
-         <lastmod>2025-12-22</lastmod>
+         <lastmod>2025-12-24</lastmod>
     </url>
 </urlset>

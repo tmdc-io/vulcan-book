@@ -2692,7 +2692,7 @@ html .md-footer-meta.md-typeset a:hover {
   font-size: .7rem;
   margin: 0 .8rem;
   overflow: auto;
-  padding-top: 1.2rem
+  padding-top: 1.4rem
 }
 
 @media screen and (min-width: 76.25em) {
@@ -3780,7 +3780,7 @@ html .md-footer-meta.md-typeset a:hover {
 
 .md-sidebar__scrollwrap:focus-within,
 .md-sidebar__scrollwrap:hover {
-  scrollbar-color: var(--md-accent-fg-color) #0000
+  scrollbar-color: var(--md-primary-fg-color) #0000
 }
 
 .md-sidebar__scrollwrap:focus-within::-webkit-scrollbar-thumb,
