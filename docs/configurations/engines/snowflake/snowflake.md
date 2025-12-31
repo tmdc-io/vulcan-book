@@ -1,6 +1,6 @@
 # Snowflake
 
-Snowflake is a cloud-based data warehouse that provides scalable storage and compute resources. It's ideal for enterprise workloads, large-scale analytics, and data sharing across organizations.
+Snowflake is a cloud-based data warehouse that provides scalable storage and compute resources. It's ideal for enterprise workloads, large-scale analytics, and data sharing across organizations. Vulcan integrates seamlessly with Snowflake to manage your data transformations with version control and safe deployments.
 
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `snowflake`
