@@ -5,8 +5,8 @@
 <meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
 <meta content="DataOS Vulcan Team" name="author"/>
 <link href="https://tmdc-io.github.io/vulcan-docs/configurations/engines/postgres/postgres/" rel="canonical"/>
-<link href="../../../options/linter/" rel="prev"/>
-<link href="../../snowflake/snowflake/" rel="next"/>
+<link href="../../mysql/mysql/" rel="prev"/>
+<link href="../../redshift/redshift/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
 <title>Postgres - DataOS Vulcan</title>
@@ -300,6 +300,66 @@
 
           </label>
 <ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../bigquery/bigquery/">
+<span class="md-ellipsis">
+    
+  
+    BigQuery
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../databricks/databricks/">
+<span class="md-ellipsis">
+    
+  
+    Databricks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../fabric/fabric/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft Fabric
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../mssql/mssql/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft SQL Server
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../mysql/mysql/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
+  
+
+    
+  </span>
+</a>
+</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
@@ -340,10 +400,37 @@
 <nav aria-label="Local/Built-in Scheduler" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions">
+<span class="md-ellipsis">
+      
+        Permissions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#connection-options">
 <span class="md-ellipsis">
       
-        Connection options
+        Connection Options
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-images">
+<span class="md-ellipsis">
+      
+        Docker Images
       
     </span>
 </a>
@@ -355,11 +442,35 @@
 </nav>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="../../redshift/redshift/">
+<span class="md-ellipsis">
+    
+  
+    Amazon Redshift
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="../../snowflake/snowflake/">
 <span class="md-ellipsis">
     
   
     Snowflake
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../trino/trino/">
+<span class="md-ellipsis">
+    
+  
+    Trino
   
 
     
@@ -963,10 +1074,37 @@
 <nav aria-label="Local/Built-in Scheduler" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions">
+<span class="md-ellipsis">
+      
+        Permissions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#connection-options">
 <span class="md-ellipsis">
       
-        Connection options
+        Connection Options
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-images">
+<span class="md-ellipsis">
+      
+        Docker Images
       
     </span>
 </a>
@@ -997,7 +1135,7 @@
 </a>
 </li>
 <li class="md-path__item">
-<a class="md-path__link" href="./">
+<a class="md-path__link" href="../../bigquery/bigquery/">
 <span class="md-ellipsis">
     Engines
   </span>
@@ -1010,7 +1148,21 @@
 <p>PostgreSQL is a powerful, open-source relational database that works great with Vulcan. It's perfect for smaller projects, development environments, or when you want full control over your database infrastructure.</p>
 <h2 id="localbuilt-in-scheduler">Local/Built-in Scheduler<a class="headerlink" href="#localbuilt-in-scheduler" title="Link to this section">¶</a></h2>
 <p><strong>Engine Adapter Type</strong>: <code>postgres</code></p>
-<h3 id="connection-options">Connection options<a class="headerlink" href="#connection-options" title="Link to this section">¶</a></h3>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h3>
+<ol>
+<li>A PostgreSQL server instance (version 12 or higher recommended)</li>
+<li>A database user with appropriate permissions</li>
+<li>Network connectivity to the PostgreSQL server</li>
+</ol>
+<h3 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Link to this section">¶</a></h3>
+<p>Vulcan requires the following PostgreSQL permissions:</p>
+<ul>
+<li><code>CREATE</code> on the target database for creating schemas</li>
+<li><code>CREATE</code> on schemas for creating tables and views</li>
+<li><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> on tables</li>
+<li><code>USAGE</code> on schemas</li>
+</ul>
+<h3 id="connection-options">Connection Options<a class="headerlink" href="#connection-options" title="Link to this section">¶</a></h3>
 <p>Here are all the connection parameters you can use when setting up a PostgreSQL gateway:</p>
 <table>
 <thead>
@@ -1090,6 +1242,43 @@
 </tr>
 </tbody>
 </table>
+<h3 id="docker-images">Docker Images<a class="headerlink" href="#docker-images" title="Link to this section">¶</a></h3>
+<p>The following Docker images are available for running Vulcan with PostgreSQL:</p>
+<table>
+<thead>
+<tr>
+<th>Image</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tmdcio/vulcan-postgres:0.228.1</code></td>
+<td>Main Vulcan API service for PostgreSQL</td>
+</tr>
+<tr>
+<td><code>tmdcio/vulcan-transpiler:0.228.1</code></td>
+<td>SQL transpiler service</td>
+</tr>
+<tr>
+<td><code>tmdcio/vulcan-graphql:0.228.1</code></td>
+<td>GraphQL API service</td>
+</tr>
+</tbody>
+</table>
+<p>Pull the images:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-postgres:0.228.1
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-transpiler:0.228.1
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-graphql:0.228.1
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <code>sslmode: require</code> for secure connections in production environments.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always use environment variables for passwords: <code>password: {{ env_var('POSTGRES_PASSWORD') }}</code></p>
+</div>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1102,7 +1291,7 @@
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: Linter" class="md-footer__link md-footer__link--prev" href="../../../options/linter/">
+<a aria-label="Previous: MySQL" class="md-footer__link md-footer__link--prev" href="../../mysql/mysql/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -1111,17 +1300,17 @@
                 Previous
               </span>
 <div class="md-ellipsis">
-                Linter
+                MySQL
               </div>
 </div>
 </a>
-<a aria-label="Next: Snowflake" class="md-footer__link md-footer__link--next" href="../../snowflake/snowflake/">
+<a aria-label="Next: Amazon Redshift" class="md-footer__link md-footer__link--next" href="../../redshift/redshift/">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 Next
               </span>
 <div class="md-ellipsis">
-                Snowflake
+                Amazon Redshift
               </div>
 </div>
 <div class="md-footer__button md-icon">

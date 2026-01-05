@@ -153,11 +153,39 @@
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/bigquery/bigquery/</loc>
+         <lastmod>2026-01-05</lastmod>
+    </url>
+    <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/databricks/databricks/</loc>
+         <lastmod>2026-01-05</lastmod>
+    </url>
+    <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/fabric/fabric/</loc>
+         <lastmod>2026-01-05</lastmod>
+    </url>
+    <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/mssql/mssql/</loc>
+         <lastmod>2026-01-05</lastmod>
+    </url>
+    <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/mysql/mysql/</loc>
+         <lastmod>2026-01-05</lastmod>
+    </url>
+    <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/postgres/postgres/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/redshift/redshift/</loc>
+         <lastmod>2026-01-05</lastmod>
+    </url>
+    <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/snowflake/snowflake/</loc>
+         <lastmod>2026-01-05</lastmod>
+    </url>
+    <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/configurations/engines/trino/trino/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
