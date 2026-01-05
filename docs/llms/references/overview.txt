@@ -1,0 +1,86 @@
+# Overview
+
+Source: https://tmdc-io.github.io/vulcan-book/references/overview/
+
+---
+
+# Overview
+
+This page explains what Vulcan does and how its components work together.
+
+## What Vulcan is
+
+Vulcan is a Python framework that automates data transformation workflows. It works with multiple execution engines and scales with your data and organization size.
+
+You control Vulcan through the [CLI](../../getting_started/cli.md).
+
+## How Vulcan works
+
+### Create models
+
+You write business logic in SQL or Python. Each model contains code that populates a single table or view, plus metadata like the model name.
+
+### Make a plan
+
+Changing models in large data systems affects downstream dependencies. Interdependencies make it hard to see the full impact of a single model change.
+
+You need to understand both the logical impact and the computational cost before running the changes.
+
+Vulcan creates a plan that identifies all affected models and required computations. When you run [`vulcan plan`](../../getting_started/cli.md#plan), Vulcan generates the plan for the environment you specify (dev, test, prod).
+
+The plan shows the full scope of changes by identifying directly and indirectly affected models. You see all impacts before applying changes.
+
+Learn more about [plans](./plans.md).
+
+#### Apply the plan
+
+After reviewing a plan, you apply it to execute the computations. You specify the scope of computations to run.
+
+The computations depend on both the code changes in the plan and the backfill parameters you set.
+
+Backfilling updates existing data to match your changed models. If a model change alters a calculation, existing data becomes inaccurate. Backfilling recalculates those fields.
+
+Most business data is temporal. Each data point has a timestamp. Backfill cost depends on how much historical data needs recalculation.
+
+The plan identifies which models and dates need backfill. You specify the date ranges for backfill before applying the plan.
+
+#### Build a Virtual Environment
+
+Test changes in non-production environments before deploying to production.
+
+Using multiple environments usually means running backfills twice: once in non-production, again in production. This doubles time and compute costs.
+
+Vulcan tracks all model versions and changes. It detects when non-production computations produce identical outputs to production.
+
+Vulcan creates a Virtual Environment by replacing references to outdated production tables with references to newly computed non-production tables. It promotes views and tables from non-production to production without recomputation or data movement.
+
+Promoting changes to production is fast and has no downtime.
+
+## Test your code and data
+
+Bad data causes more problems than missing data. Test your transformation code and results to prevent bad data.
+
+### Tests
+
+Vulcan tests work like unit tests, where each model is a unit. Tests validate model code. You specify input data and expected output. Vulcan runs the test and compares expected and actual output.
+
+Vulcan runs tests automatically when you apply a plan. You can also run them with [`vulcan test`](../../getting_started/cli.md#test).
+
+### Audits
+
+Audits validate the results of model code applied to your actual data.
+
+You write SQL queries that should return 0 rows. For example, to ensure `your_field` has no NULL values, include `WHERE your_field IS NULL`. If NULLs exist, the query returns rows and the audit fails.
+
+Audits can target specific models or use [macros](../../components/advanced-features/macros/overview.md) for reusable audits. Vulcan includes built-in audits for common cases like detecting NULL or duplicate values.
+
+Specify audits in model metadata properties. To apply them globally, add them to model defaults configuration.
+
+Vulcan runs audits automatically when you apply a plan to an environment. You can also run them with [`vulcan audit`](../../getting_started/cli.md#audit).
+
+## Infrastructure and orchestration
+
+Vulcan works with any SQL or analytics engine. It only needs access to the target engine.
+
+Vulcan tracks model versions and processed data intervals using your existing infrastructure. It creates a `vulcan` schema in your data warehouse for internal metadata.
+

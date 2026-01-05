@@ -1,0 +1,98 @@
+# Glossary
+
+Source: https://tmdc-io.github.io/vulcan-book/references/glossary/
+
+---
+
+# Glossary
+
+## Abstract Syntax Tree
+A tree representation of the syntactic structure of source code. Each tree node represents a construct that occurs. The tree is abstract because it does not represent every detail appearing in the actual syntax; it also does not have a standard representation.
+
+## Backfill
+Load or refresh model data, triggered by a vulcan plan command.
+
+## Catalog
+A catalog is a collection of schemas. A schema is a collection of database objects such as tables and views.
+
+## CI/CD
+A process that combines Continuous Integration (automated code creation and testing) and Continuous Delivery (deployment of code and tests). Vulcan implements this with [tests](../../components/tests/tests.md) and [audits](../../components/audits/audits.md).
+
+## CTE
+A Common Table Expression is a temporary named result set created from a SELECT statement, which can then be used in a subsequent SELECT statement. For more information, see [tests](../../components/tests/tests.md).
+
+## DAG
+Directed Acyclic Graph. In this type of graph, objects are represented as nodes with relationships that show the dependencies between them; as such, the relationships are directed, meaning there is no way for data to travel through the graph in a loop that can circle back to the starting point. Vulcan uses a DAG to keep track of a project's models. This allows Vulcan to easily determine a model's lineage and to identify upstream and downstream dependencies.
+
+## Data modeling
+Data modeling allows practitioners to visualize and conceptually represent how data is stored in a data warehouse. This can be done using diagrams that represent how data is interrelated.
+
+## Data pipeline
+The set of tools and processes for moving data from one system to another. Datasets are then organized, transformed, and inserted into some type of database, tool, or app, where data scientists, engineers, and analysts can access the data for analysis, insights, and reporting.
+
+## Data transformation
+Data transformation is the process of converting data from one format to another; for example, by converting raw data into a form usable for analysis by harmonizing data types, removing duplicate data, and organizing data.
+
+## Data warehouse
+The repository that houses the single source of truth where data is stored, which is integrated from various sources. This repository, normally a relational database, is optimized for handling large volumes of data.
+
+## Direct Modification
+A change to a model's definition from the user instead of being inherited from an upstream dependency like [Indirect Modification](#indirect-modification).
+
+## ELT
+Acronym for Extract, Load, and Transform. The process of retrieving data from various sources, loading it into a data warehouse, and then transforming it into a usable and reliable resource for data practitioners.
+
+## ETL
+Acronym for Extract, Transform, and Load. The process of retrieving data from various sources, transforming the data into a usable and reliable resource, and then loading it into a data warehouse for data practitioners.
+
+## Full refresh
+In a full data refresh, a complete dataset is deleted and then entirely overwritten with an updated dataset.
+
+## Idempotency
+The property that, given a particular operation, the same outputs will be produced when given the same inputs no matter how many times the operation is applied.
+
+## Incremental Loads
+Incremental loads update only data that changed since the last refresh. This is faster and more efficient than full refreshes. Vulcan provides variables and macros to help define incremental models. See [Model Kinds](../../components/model/model_kinds.md) for more information.
+
+## Indirect Modification
+A change to model's upstream dependency and not to the model itself like a [Direct Modification](#direct-modification).
+
+## Integration
+Combining data from various sources (such as from a data warehouse) into one unified view.
+
+## Lineage
+The lineage of your data is a visualization of the life cycle of your data as it flows from data sources downstream to consumption.
+
+## Physical Layer
+The physical layer is where Vulcan stores and manages data in database tables and materialized views. It is the concrete data storage layer of the SQL engine, in contrast to the [Vulcan virtual layer's](#virtual-layer) views. Vulcan handles the management and maintenance of the physical layer automatically, and users should rarely interact with it directly.
+
+## Plan Summaries
+An upcoming feature that allows users to see a summary of changes applied to a given environment.
+
+## Semantic Understanding
+Vulcan understands the full meaning of a SQL model. It validates that SQL is valid and can transpile SQL into other engine dialects when needed.
+
+## Slowly Changing Dimension (SCD)
+A dimension (in a data warehouse, typically a dataset) containing relatively static data that can change slowly but unpredictably, rather than on a regular schedule. Some examples of typical slowly changing dimensions are places and products.
+
+## Table
+A table is the visual representation of data stored in rows and columns.
+
+## User-Defined Function (UDF)
+Functions that a user of a database server provides to extend its functionality, in contrast to built-in functions that are already provided. UDFs are typically written to satisfy the particular requirements of the user.
+
+## View
+A view is the result of a SQL query on a database.
+
+## Virtual Environments
+Vulcan's approach to environments that provides both environment isolation and the ability to share tables across environments. This ensures data consistency and accuracy. See [plan application](./plans.md#plan-application) for more information.
+
+## Virtual Layer
+The virtual layer is Vulcan's abstraction layer over the [physical layer and physical data storage](#physical-layer). While the physical layer consists of tables where data is actually stored, the virtual layer consists of views that expose tables in the underlying physical layer. Most users should only interact with the virtual layer when building models or querying data.
+
+## Virtual Update
+A plan that can be applied without loading additional data or building additional tables. See [Virtual Update](./plans.md#virtual-update) for more information.
+
+## Virtual Preview
+The ability to create an environment without building additional tables. By comparing model versions in the repo against what currently exists, Vulcan creates an environment that matches the repo by updating views.
+

@@ -1,0 +1,54 @@
+# Prerequisites
+
+Source: https://tmdc-io.github.io/vulcan-book/getting_started/prerequisites/
+
+---
+
+# Prerequisites
+
+This page describes the system prerequisites needed to run Vulcan and provides instructions for meeting them.
+
+## Docker Prerequisites
+
+The recommended way to run Vulcan is using Docker. This provides a consistent, production-like environment.
+
+### Docker Desktop
+
+You'll need Docker Desktop installed and running on your machine:
+
+- **macOS**: Download from [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
+- **Windows**: Download from [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
+- **Linux**: Install Docker Engine and Docker Compose following the [official Docker installation guide](https://docs.docker.com/engine/install/)
+
+### Verify Docker Installation
+
+Verify that Docker is installed and running:
+
+```bash
+docker --version
+docker compose version
+```
+
+You should see version numbers for both commands. If Docker Desktop is running, you should also be able to run:
+
+```bash
+docker ps
+```
+
+### System Requirements
+
+- **RAM**: At least 4GB of available RAM (8GB recommended)
+- **Disk Space**: At least 5GB of free disk space
+- **CPU**: Modern multi-core processor
+
+### Docker Compose
+
+Docker Compose is included with Docker Desktop. If you're on Linux and need to install it separately, follow the [Docker Compose installation guide](https://docs.docker.com/compose/install/).
+
+## Python Prerequisites
+
+!!! info "Python Library Installation"
+    Vulcan will be available as a Python library in the future. When available, you'll need Python 3.8 or higher.
+
+    For now, use the Docker installation method above.
+
