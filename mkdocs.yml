@@ -18,8 +18,15 @@ nav:
         - configurations/options/notifications.md
         - configurations/options/linter.md
       - Engines:
+        - configurations/engines/bigquery/bigquery.md
+        - configurations/engines/databricks/databricks.md
+        - configurations/engines/fabric/fabric.md
+        - configurations/engines/mssql/mssql.md
+        - configurations/engines/mysql/mysql.md
         - configurations/engines/postgres/postgres.md
+        - configurations/engines/redshift/redshift.md
         - configurations/engines/snowflake/snowflake.md
+        - configurations/engines/trino/trino.md
       - CI/CD: ci-cd/ci-cd.md
   - Components:
       - Model:
