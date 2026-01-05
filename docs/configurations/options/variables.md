@@ -1,10 +1,10 @@
 # Variables
 
-This page covers environment variables and configuration overrides for your Vulcan project.
+Store sensitive information like passwords and API keys without hardcoding them in your configuration files. Use environment variables, `.env` files, or configuration overrides to change settings dynamically.
 
 ## Environment Variables
 
-Vulcan can access environment variables during configuration, enabling you to store secrets outside configuration files and dynamically change settings based on the user running Vulcan.
+Vulcan accesses environment variables during configuration. Store secrets outside configuration files and change settings based on who's running Vulcan.
 
 ### Using .env Files
 
@@ -81,7 +81,7 @@ vulcan plan
 
 ## Configuration Overrides
 
-Environment variables have the **highest precedence** and will override configuration file values if they follow the `VULCAN__` naming convention.
+Environment variables have the highest precedence. They override configuration file values if they follow the `VULCAN__` naming convention.
 
 ### Override Naming Structure
 
@@ -91,7 +91,7 @@ Use double underscores `__` to navigate the configuration hierarchy:
 VULCAN__<ROOT_KEY>__<NESTED_KEY>__<FIELD>=value
 ```
 
-**Example:** Override a gateway connection password:
+Example: Override a gateway connection password:
 
 ```yaml linenums="1"
 # config.yaml

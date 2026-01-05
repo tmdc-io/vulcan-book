@@ -1,15 +1,16 @@
 # Overview
 
-Models are the heart of Vulcan, they're how you transform raw data into useful tables and views. Think of a model as a recipe: you define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.
+Models transform raw data into tables and views. Define what you want (the metadata) and how to make it (the SQL query), and Vulcan handles the rest.
 
-Models live in `.sql` and `.py` files in the `models/` directory of your project. The cool thing is that Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Just write your SQL, and Vulcan handles the lineage.
+Models live in `.sql` and `.py` files in the `models/` directory of your project. Vulcan automatically figures out how your models relate to each other by parsing your SQL, so you don't have to manually configure dependencies. Write your SQL, and Vulcan handles the lineage.
 
 Every model has two parts:
 
 - **DDL (Data Definition Language)** - The `MODEL` block that tells Vulcan what this model is (name, schedule, how to materialize it, etc.)
+
 - **DML (Data Manipulation Language)** - The `SELECT` query that does the actual transformation work
 
-It's like filling out a form (DDL) and then writing the actual code (DML). Simple!
+The DDL defines the model metadata. The DML contains the transformation logic.
 
 ## Model Structure
 
@@ -36,7 +37,9 @@ You can write models in SQL or Python. Both work the same way conceptually, they
     ```
 
     **Breaking it down:**
+
     - **Lines 1-6**: The DDL (`MODEL` block) - tells Vulcan this is a daily sales model that runs every day
+
     - **Lines 8-17**: The DML (`SELECT` query) - the actual transformation that aggregates orders by date
 
 === "Python Model"
@@ -84,10 +87,12 @@ You can write models in SQL or Python. Both work the same way conceptually, they
     ```
 
     **Breaking it down:**
+
     - **Lines 7-20**: The DDL (`@model` decorator) - same metadata as SQL, just Python syntax
+
     - **Lines 21-40**: The DML (function body) - runs the SQL and returns a DataFrame
 
-Both formats do the same thing, pick whichever you're more comfortable with!
+Both formats do the same thing. Choose the one you prefer.
 
 ## DDL: The MODEL Block
 
@@ -109,8 +114,11 @@ MODEL (
 This tells Vulcan:
 
 - **`name`** - What to call this model (schema.table format)
+
 - **`kind`** - How to materialize it (FULL rebuilds everything, INCREMENTAL only updates changes, etc.)
+
 - **`cron`** - When to run it (`@daily` means every day)
+
 - **`grain`** - What makes each row unique (in this case, `order_date`)
 
 ### Common Properties
@@ -147,8 +155,11 @@ ORDER BY order_date
 This query:
 
 - Reads from `raw.raw_orders`
+
 - Groups by `order_date`
+
 - Counts orders, sums revenue, finds the latest order ID
+
 - Returns the results ordered by date
 
 Pretty standard SQL! Vulcan will automatically figure out that this model depends on `raw.raw_orders` and build the dependency graph for you.
@@ -164,7 +175,7 @@ Vulcan tries to be smart and infer as much as possible from your SQL. This means
 Your final `SELECT` needs unique column names. No duplicates allowed!
 
 ```sql linenums="1"
--- ✓ Good: Each column has a unique name
+-- Good: Each column has a unique name
 SELECT
   order_date::TIMESTAMP AS order_date,
   COUNT(order_id)::INTEGER AS total_orders,
@@ -200,13 +211,13 @@ Your columns need names that Vulcan can figure out. If Vulcan can't infer a name
 
 ```sql linenums="1"
 SELECT
-  1,                              -- ❌ not inferrable (what do you call this?)
-  total_amount + 1,               -- ❌ not inferrable (needs an alias)
-  SUM(total_amount),              -- ❌ not inferrable (needs an alias)
-  order_date,                     -- ✓ inferrable as order_date
-  order_date::TIMESTAMP,          -- ✓ inferrable as order_date
-  total_amount + 1 AS adjusted,   -- ✓ explicitly named
-  SUM(total_amount) AS revenue    -- ✓ explicitly named
+  1,                              -- not inferrable (what do you call this?)
+  total_amount + 1,               -- not inferrable (needs an alias)
+  SUM(total_amount),              -- not inferrable (needs an alias)
+  order_date,                     -- inferrable as order_date
+  order_date::TIMESTAMP,          -- inferrable as order_date
+  total_amount + 1 AS adjusted,   -- explicitly named
+  SUM(total_amount) AS revenue    -- explicitly named
 ```
 
 If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit, you'll know what the column is called!
@@ -233,7 +244,7 @@ MODEL (
 );
 ```
 
-This is the cleanest way, all your documentation is in one place, right in the MODEL block.
+This keeps all your documentation in one place, in the MODEL block.
 
 !!! note "Priority"
     If you use `column_descriptions` in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority, so if you define descriptions in both places, the DDL version wins.
@@ -259,7 +270,7 @@ FROM raw.raw_orders
 GROUP BY order_date
 ```
 
-Vulcan will register these comments as column descriptions in your database. Pretty handy!
+Vulcan registers these comments as column descriptions in your database.
 
 **Table comments:** If you put a comment before the `MODEL` block, Vulcan will use it as the table description. But if you also specify `description` in the MODEL block, that takes priority.
 
@@ -342,30 +353,37 @@ def execute(
 The DataFrame columns need to match your `columns` definition exactly, same names, compatible types.
 
 !!! info "Learn more"
-    Want to dive deeper into Python models? Check out the [Python Models](../model/types/python_models.md) documentation for detailed information, advanced patterns, and more examples.
+    See [Python Models](./types/python_models.md) for detailed information, advanced patterns, and more examples.
 
 ## Comment Registration
 
-Vulcan can register comments (descriptions) in your database so they show up in your BI tools and data catalogs. This is super useful for documentation!
+Vulcan registers comments (descriptions) in your database so they show up in your BI tools and data catalogs.
 
 ### How Comments Get Registered
 
 **Model-level comments:**
+
 - If you put a comment before the `MODEL` block, Vulcan uses it as the table comment
+
 - If you also specify `description` in the MODEL block, that takes priority
 
 **Column-level comments:**
+
 - Use `column_descriptions` in the DDL (recommended)
+
 - Or use inline comments in your SELECT query (if `column_descriptions` isn't specified)
 
 ### What Gets Registered
 
 Not everything gets comments registered:
 
-- ✅ **Physical tables** - Comments are registered (tables in the `vulcan__[project schema]` schema)
-- ✅ **Production views** - Comments are registered
-- ❌ **Temporary tables** - No comments (they're temporary!)
-- ❌ **Non-production views** - No comments (keeps things clean)
+- **Physical tables** - Comments are registered (tables in the `vulcan__[project schema]` schema)
+
+- **Production views** - Comments are registered
+
+- **Temporary tables** - No comments (they're temporary)
+
+- **Non-production views** - No comments (keeps things clean)
 
 **Note:** Some engines automatically pass comments from physical tables to views that select from them. So even if Vulcan didn't explicitly register a comment on a view, it might still show up if the engine does this automatically.
 
@@ -389,4 +407,4 @@ Macros are like variables for your SQL. They let you parameterize queries and av
 
 Macros use the `@` prefix. For example, `@this_model` refers to the current model being processed, and `@start_ds` is the start date for incremental processing.
 
-Want to learn more? Check out the [macros documentation](../advanced-features/macros/overview.md) for all the details.
+See the [macros documentation](../advanced-features/macros/overview.md) for details.

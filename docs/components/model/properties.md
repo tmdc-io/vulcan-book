@@ -1,8 +1,8 @@
 # Properties
 
-The `MODEL` DDL statement has a bunch of properties you can use to control how your model behaves. Think of them as knobs and switches, you can configure scheduling, storage, validation, and more.
+The `MODEL` DDL statement has properties you can use to control how your model behaves. Configure scheduling, storage, validation, and more.
 
-This page is your complete reference for all available properties. We'll cover what each one does, when to use it, and show you examples.
+This page is a complete reference for all available properties. It covers what each one does, when to use it, and shows examples.
 
 ---
 
@@ -228,8 +228,11 @@ Controls when your model runs. You can use standard cron expressions or Vulcan's
 **Cron shortcuts:** Vulcan provides convenient shortcuts:
 
 - `@hourly` - Every hour
+
 - `@daily` - Every day at midnight UTC
+
 - `@weekly` - Once per week
+
 - `@monthly` - Once per month
 
 These are much easier than writing `0 * * * *`!
@@ -297,7 +300,9 @@ Sets the earliest date/time your model should process. This is useful for limiti
 You can use:
 
 - **Absolute dates:** `'2024-01-01'`
+
 - **Relative expressions:** `'1 year ago'`
+
 - **Epoch milliseconds:** `1704067200000`
 
 === "SQL"
@@ -504,15 +509,18 @@ Document your columns! This property lets you add descriptions for each column, 
     ```
 
 !!! warning "Priority"
-    If `column_descriptions` is present, [inline column comments](../overview.md#inline-column-comments) will not be registered.
+    If `column_descriptions` is present, [inline column comments](./overview.md#inline-column-comments) will not be registered.
 
 ### columns
 
 Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query, it'll use exactly what you specify.
 
 **When to use:**
+
 - Python models (required, Vulcan can't infer types from Python code)
+
 - Seed models (you need to define the CSV schema)
+
 - When you want strict type control
 
 === "SQL"
@@ -635,9 +643,13 @@ Enable automatic data profiling for specific columns. Profiles track statistical
 **Use cases:**
 
 - Track null percentages over time
+
 - Monitor distinct value counts
+
 - Detect data drift
+
 - Understand column distributions
+
 - Inform which checks/audits to create
 
 Think of profiles as your data observability layer, they watch and learn, but don't block.
@@ -691,8 +703,11 @@ Think of profiles as your data observability layer, they watch and learn, but do
 Explicitly declare model dependencies. Vulcan automatically infers dependencies from SQL queries, but sometimes you need to add extra ones.
 
 **When to use:**
+
 - Python models (required, Vulcan can't parse Python to find dependencies)
+
 - Hidden dependencies (like a macro that references another model)
+
 - External dependencies that aren't in your SQL
 
 **Note:** Dependencies you declare here are added to the ones Vulcan infers, they don't replace them.
@@ -837,7 +852,9 @@ Specifies the table format for engines that support multiple formats. Different 
 **When to use:** If your engine supports multiple formats, choose based on your needs:
 
 - **Iceberg:** Great for time travel and schema evolution
+
 - **Delta:** Good for ACID transactions and time travel
+
 - **Hive:** Traditional format, widely supported
 
 === "SQL"
@@ -897,8 +914,11 @@ Pass engine-specific properties directly to the physical table/view creation. Th
 **Use cases:**
 
 - Set table retention (BigQuery: `partition_expiration_days`)
+
 - Add labels or tags (BigQuery, Snowflake)
+
 - Configure table type (Snowflake: `TRANSIENT` tables)
+
 - Any other engine-specific table settings
 
 === "SQL"
@@ -934,8 +954,11 @@ Pass engine-specific properties to the virtual layer view. This is useful for th
 **Use cases:**
 
 - Create secure views (Snowflake: `SECURE` views)
+
 - Add labels to views
+
 - Set view-level permissions
+
 - Configure view-specific engine features
 
 === "SQL"
@@ -969,8 +992,11 @@ Set session-level properties that apply when Vulcan executes your model. These a
 **Use cases:**
 
 - Set query timeouts
+
 - Configure parallelism
+
 - Adjust memory limits
+
 - Set engine-specific session variables
 
 **Example:** If you have a large query that needs more time, set `query_timeout: 3600` to give it an hour instead of the default timeout.
@@ -1060,7 +1086,9 @@ Control whether the model is active. Set to `false` to disable a model without d
 **When to use:**
 
 - Temporarily disable a model while debugging
+
 - Deprecate a model but keep it for reference
+
 - Skip models during development
 
 **Default:** `true` (models are enabled by default)
@@ -1089,8 +1117,10 @@ Allow processing of incomplete data intervals. By default, Vulcan waits for comp
 
 **When to use:**
 
-- Real-time or near-real-time modelss
+- Real-time or near-real-time models
+
 - When you need data ASAP, even if it's incomplete
+
 - Streaming data scenarios
 
 **Trade-off:** You lose the ability to distinguish between "missing data" (models issue) and "partial interval" (expected). Use with caution!
@@ -1104,7 +1134,9 @@ Enable or disable query optimization. Vulcan optimizes queries by default (rewri
 **When to disable:**
 
 - The optimizer is breaking your query
+
 - You have engine-specific optimizations you want to preserve
+
 - Debugging query issues
 
 **Default:** `true` (optimize queries)
@@ -1134,7 +1166,9 @@ Control whether Vulcan formats this model when you run `vulcan format`. Set to `
 **When to disable:**
 
 - Legacy models with specific formatting requirements
+
 - Models where formatting breaks something
+
 - When you prefer manual formatting control
 
 **Default:** `true` (format models automatically)
@@ -1220,8 +1254,11 @@ These properties work with all incremental model kinds. They're your toolkit for
 **Values for `on_destructive_change` / `on_additive_change`:**
 
 - `allow` - Let the change happen (default for additive)
+
 - `warn` - Allow but warn about it
+
 - `error` - Block the change (default for destructive)
+
 - `ignore` - Pretend it didn't happen
 
 **Why this matters:** Schema changes can break downstream models. These settings let you control how strict Vulcan should be when your schema evolves.
@@ -1630,10 +1667,15 @@ Configure default values for all models in your project's `config.yaml`:
 **Supported default properties:**
 
 - `kind`, `dialect`, `cron`, `owner`, `start`
+
 - `table_format`, `storage_format`
+
 - `physical_properties`, `virtual_properties`, `session_properties`
+
 - `on_destructive_change`, `on_additive_change`
+
 - `assertions`, `optimize_query`, `allow_partials`, `enabled`, `interval_unit`
+
 - `pre_statements`, `post_statements`, `on_virtual_update`
 
 ### Overriding Defaults

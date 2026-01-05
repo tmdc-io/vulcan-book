@@ -5,17 +5,25 @@ This package contains all the Docker Compose files and Windows batch scripts nee
 ## Contents
 
 - `docker/docker-compose.infra.yml` - Infrastructure services (statestore, MinIO)
+
 - `docker/docker-compose.warehouse.yml` - Warehouse database (PostgreSQL)
+
 - `docker/docker-compose.vulcan.yml` - Vulcan API and transpiler services
+
 - `setup.bat` - Setup script to start all infrastructure
+
 - `vulcan.bat` - Wrapper script to run Vulcan CLI commands
+
 - `start-vulcan-api.bat` - Start Vulcan API services
+
 - `stop-all.bat` - Stop all services
+
 - `clean.bat` - Stop all services and remove volumes
 
 ## Prerequisites
 
 - Docker Desktop for Windows installed and running
+
 - At least 4GB of available RAM
 
 ## Quick Start
@@ -26,8 +34,11 @@ This package contains all the Docker Compose files and Windows batch scripts nee
    ```
    This will:
    - Create the Docker network
+
    - Start statestore (PostgreSQL) on port 5431
+
    - Start MinIO object storage on ports 9000 and 9001
+
    - Start warehouse database (PostgreSQL) on port 5433
 
 2. **Access Vulcan:**
@@ -77,6 +88,7 @@ This package contains all the Docker Compose files and Windows batch scripts nee
    enabled: true
    rules:
       - ambiguousorinvalidcolumn
+
       - invalidselectstarexpansion
    ```
 
@@ -88,17 +100,24 @@ This package contains all the Docker Compose files and Windows batch scripts nee
 ## Available Scripts
 
 - `setup.bat` - Create network and start all infrastructure
+
 - `start-vulcan-api.bat` - Start Vulcan API services
+
 - `stop-all.bat` - Stop all services
+
 - `clean.bat` - Stop all services and remove volumes
 
 
 ## Service Ports
 
 - **Statestore**: 5431
+
 - **Warehouse**: 5433
+
 - **MinIO API**: 9000
+
 - **MinIO Console**: 9001 (admin/password)
+
 - **Vulcan API**: 8000
 ```
 

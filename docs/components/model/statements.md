@@ -1,13 +1,18 @@
 # Statements
 
-Statements let you run SQL commands at specific points during model execution. Think of them as hooks, you can run code before your query, after it completes, or when views are created.
+Statements let you run SQL commands at specific points during model execution. You can run code before your query, after it completes, or when views are created.
 
 **Why use statements?** They're perfect for:
 - Setting session parameters (timeouts, memory limits)
+
 - Loading UDFs or creating temporary tables
+
 - Creating indexes or clustering
+
 - Running data quality checks
+
 - Logging anomalies or errors
+
 - Granting permissions on views
 
 You can define statements at the model level (for specific needs) or at the project level via `model_defaults` (for consistent behavior across all models).
@@ -15,7 +20,9 @@ You can define statements at the model level (for specific needs) or at the proj
 **Statement types:**
 
 - **Pre-statements**: Run before the main model query executes
+
 - **Post-statements**: Run after the main model query completes
+
 - **On-virtual-update statements**: Run when views are created or updated in the virtual layer
 
 !!! warning "Concurrency Considerations"
@@ -24,7 +31,7 @@ You can define statements at the model level (for specific needs) or at the proj
 
 ## Model Defaults
 
-You can define statements at the project level using `model_defaults` in your configuration. This is great for setting up common behavior across all models, like session timeouts or default permissions.
+You can define statements at the project level using `model_defaults` in your configuration. Use this for setting up common behavior across all models, like session timeouts or default permissions.
 
 **How it works:** Default statements run first, then model-specific statements. So if you set a default timeout in `model_defaults` and a model-specific timeout in a model, the model-specific one runs after (and can override the default).
 
@@ -67,12 +74,16 @@ You can define statements at the project level using `model_defaults` in your co
 Pre-statements run before your main model query executes. They're perfect for setting up the environment your query needs.
 
 **Common use cases:**
+
 - Loading JARs or UDFs that your query uses
+
 - Creating temporary tables or caching data
+
 - Setting session parameters (timeouts, memory, etc.)
+
 - Initializing variables or settings
 
-**Think of it as:** The "setup" phase before your main query runs.
+Pre-statements run in the setup phase before your main query runs.
 
 === "SQL"
 
@@ -160,9 +171,13 @@ Post-statements run after your model query completes. They're great for cleanup,
 **Important:** When you use post-statements in SQL models, your main query **must end with a semicolon**. This tells Vulcan where the query ends and the statements begin.
 
 **Common use cases:**
+
 - Creating indexes or clustering (for query performance)
+
 - Running data quality checks or validations
+
 - Logging anomalies or errors to tracking tables
+
 - Conditional table alterations (like setting retention policies)
 
 **Think of it as:** The "cleanup and optimization" phase after your data is loaded.
@@ -259,9 +274,13 @@ Post-statements run after your model query completes. They're great for cleanup,
 On-virtual-update statements run when views are created or updated in the virtual layer. This happens after your model's physical table is created and the view pointing to it is set up.
 
 **Common use cases:**
+
 - Granting permissions on views (so users can query them)
+
 - Setting up access controls or row-level security
+
 - Applying column masking policies
+
 - Any view-level configuration
 
 **Think of it as:** The "access control" phase, setting up who can see what.

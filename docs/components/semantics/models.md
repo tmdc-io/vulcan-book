@@ -2,14 +2,16 @@
 
 Semantic models are your bridge between technical data structures and business understanding. They take your physical Vulcan models (the tables and columns in your database) and map them to business concepts that make sense to analysts, product managers, and other non-technical users.
 
-Think of semantic models as a translation layer. Your database might have tables named `dim_customers` or `fact_orders` (technical naming), but your semantic layer can expose them as `customers` and `orders` (business-friendly naming). More importantly, semantic models define what you can actually do with the data, dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.
+Semantic models are a translation layer. Your database might have tables named `dim_customers` or `fact_orders` (technical naming), but your semantic layer can expose them as `customers` and `orders` (business-friendly naming). Semantic models define what you can do with the data: dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.
 
 ## What are semantic models?
 
 Semantic models bridge the gap between technical table structures and business understanding:
 
 - **Reference physical models**: Each semantic model references a Vulcan model defined in your `models/` directory
+
 - **Provide business aliases**: Hide technical naming (like `dim_customers` or `fact_orders`) behind consumer-friendly names
+
 - **Expose analytical capabilities**: Define dimensions, measures, segments, and joins for each model
 
 They're the foundation of your semantic layer, everything else (business metrics, semantic queries) builds on top of semantic models.
@@ -50,6 +52,7 @@ Here's how you can control dimensions:
 dimensions:
   excludes:
     - password_hash       # Hide sensitive data
+
     - internal_notes
   
   # Enhance dimensions with additional capabilities:
@@ -64,7 +67,7 @@ dimensions:
           description: "Quarterly cohorts"
 ```
 
-Use `excludes` to hide sensitive or internal columns. Use `enhancements` to add time granularities for cohort analysis, super useful for subscription or signup dates.
+Use `excludes` to hide sensitive or internal columns. Use `enhancements` to add time granularities for cohort analysis, useful for subscription or signup dates.
 
 ## Measures
 
@@ -102,7 +105,7 @@ Measures can have filters (like `active_customers` above), which let you calcula
 
 Segments are reusable filter conditions that answer "which ones?" questions. They define meaningful subsets of your data that you can use across multiple queries and metrics.
 
-Think of segments as saved filters. Instead of writing `WHERE status = 'active'` every time, you define an `active_customers` segment once and reuse it:
+Segments are saved filters. Instead of writing `WHERE status = 'active'` every time, you define an `active_customers` segment once and reuse it:
 
 ```yaml
 segments:
@@ -177,8 +180,11 @@ dimensions:
 ```
 
 **Requirements:**
+
 - The referenced model must be joined to the current model
+
 - The measure must exist on the target model
+
 - Use the format `model_alias.measure_name`
 
 Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL.
@@ -195,6 +201,7 @@ models:
     dimensions:
       excludes:
         - password_hash
+
         - internal_notes
       enhancements:
         - name: signup_date
@@ -237,8 +244,11 @@ models:
 
 This semantic model:
 - Exposes customer dimensions (with some exclusions and enhancements)
+
 - Defines customer measures (total and active counts)
+
 - Creates reusable segments (active and high-value customers)
+
 - Joins to orders for cross-model analysis
 
 ## Best practices
@@ -248,12 +258,12 @@ This semantic model:
 Your aliases should make sense to business users, not just developers:
 
 ```yaml
-# ✅ Good: Consumer-friendly
+# Good: Consumer-friendly
 alias: customers
 alias: orders
 alias: subscriptions
 
-# ❌ Bad: Technical naming
+# Bad: Technical naming
 alias: dim_customers
 alias: fact_orders
 ```
@@ -265,7 +275,7 @@ The whole point of semantic models is to hide technical complexity. Don't bring 
 When you're building your Vulcan models, think about how they'll be used semantically:
 
 ```sql
--- ✅ Good: Clean column names, business-friendly
+-- Good: Clean column names, business-friendly
 MODEL (name analytics.customers);
 SELECT
   customer_id,
@@ -299,7 +309,7 @@ The `meta` section is perfect for business context, ownership, calculation detai
 When referencing any column or measure anywhere in your semantic model definitions, always use curly braces `{}`:
 
 ```yaml
-# ✅ Good: Use curly braces for all references
+# Good: Use curly braces for all references
 measures:
   total_revenue:
     type: sum
@@ -323,8 +333,11 @@ joins:
 
 **Why use curly braces?**
 - Clear distinction between semantic references and SQL functions
+
 - Consistent syntax across all semantic model definitions
+
 - Prevents ambiguity in complex expressions
+
 - Required for cross-model references (e.g., `{customers.customer_tier}`)
 
 It's a best practice that makes your semantic models more maintainable and less error-prone.
@@ -334,15 +347,21 @@ It's a best practice that makes your semantic models more maintainable and less 
 Vulcan automatically validates semantic model definitions when you create a plan. It checks:
 
 - All column references in measures exist
+
 - All column references in segments exist
+
 - Join expressions reference valid columns
+
 - Cross-model references have valid join paths
+
 - Semantic aliases are properly defined
 
 If something's wrong, you'll know about it before you try to use the semantic layer. This catches errors early and keeps your semantic models reliable.
 
 ## Next steps
 
-- Learn about [Business Metrics](../../../../business_semantics/business_metrics.md) that combine measures with time and dimensions
+- Learn about [Business Metrics](./business_metrics.md) that combine measures with time and dimensions
+
 - Explore semantic model examples in your project's `semantics/` directory
+
 - See the [Semantics Overview](overview.md) for the complete picture

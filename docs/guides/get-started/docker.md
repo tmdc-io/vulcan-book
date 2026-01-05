@@ -1,8 +1,8 @@
 # Get Started
 
-Welcome to the Vulcan quickstart guide! This tutorial will walk you through setting up a complete Vulcan project on your local machine.
+This guide shows you how to set up a complete Vulcan project on your local machine.
 
-The example project runs locally using a Postgres SQL engine. Vulcan will automatically generate all the necessary project files and configurations, no manual setup required!
+The example project runs locally using a Postgres SQL engine. Vulcan automatically generates all necessary project files and configurations.
 
 To get started, ensure your system meets the [prerequisites](#prerequisites) below, then follow the step-by-step instructions for your operating system.
 
@@ -26,6 +26,7 @@ Before you begin, make sure you have Docker installed and configured on your sys
     **2. Install Docker (if needed)**
     
     - **Mac**: Download and install [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/){:target="_blank"}
+
     - **Linux**: Install Docker Engine and Docker Compose following the [official Docker installation guide](https://docs.docker.com/engine/install/){:target="_blank"}
     
     **3. Configure Resources**
@@ -85,7 +86,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     - **statestore** (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, and execution history. This database persists your semantic model, plans, and tracks materialization state.
     
-    - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service enables efficient data retrieval and caching for your workflows.
+    - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service provides data retrieval and caching for your workflows.
     
     - **minio-init**: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.
     
@@ -112,6 +113,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     This command starts two services:
     
     - **vulcan-api**: A REST API server for querying your semantic model (available at `http://localhost:8000`)
+
     - **vulcan-transpiler**: A service for transpiling semantic queries to SQL
     
     Once these services are running, you're ready to create your first project!
@@ -144,7 +146,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     - **statestore** (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, and execution history. This database persists your semantic model, plans, and tracks materialization state.
     
-    - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service enables efficient data retrieval and caching for your workflows.
+    - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service provides data retrieval and caching for your workflows.
     
     - **minio-init**: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.
     
@@ -171,6 +173,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     This command starts two services:
     
     - **vulcan-api**: A REST API server for querying your semantic model (available at `http://localhost:8000`)
+
     - **vulcan-transpiler**: A service for transpiling semantic queries to SQL
     
     Once these services are running, you're ready to create your first project!
@@ -198,11 +201,17 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     This command creates a complete project structure with 7 directories:
 
     - `models/` - Contains `.sql` and `.py` files for your data models
+
     - `seeds/` - CSV files for static datasets
+
     - `audits/` - Write logic to assert data quality and block downstream models if checks fail
+
     - `tests/` - Test files for validating your model logic
+
     - `macros/` - Write custom macros for reusable SQL patterns
+
     - `checks/` - Write data quality checks
+
     - `semantics/` - Semantic layer definitions (measures, dimensions, etc.)
 
     **Step 2: Verify Your Setup**
@@ -216,7 +225,9 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     This command displays:
 
     - Connection status to your database
+
     - Number of models, macros, and other project components
+
     - Project configuration details
     
     **Important**: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.
@@ -247,7 +258,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     vulcan fetchdf "select * from schema.model_name"
     ```
     
-    This command executes a SQL query and returns the results as a pandas DataFrame, which is perfect for data analysis and exploration.
+    This command executes a SQL query and returns the results as a pandas DataFrame.
 
     **Step 5: Query Using Semantic Layer**
     
@@ -278,11 +289,17 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     This command creates a complete project structure with 7 directories:
 
     - `models/` - Contains `.sql` and `.py` files for your data models
+
     - `seeds/` - CSV files for static datasets
+
     - `audits/` - Write logic to assert data quality and block downstream models if checks fail
+
     - `tests/` - Test files for validating your model logic
+
     - `macros/` - Write custom macros for reusable SQL patterns
+
     - `checks/` - Write data quality checks
+
     - `semantics/` - Semantic layer definitions (measures, dimensions, etc.)
 
     **Step 2: Verify Your Setup**
@@ -296,7 +313,9 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     This command displays:
 
     - Connection status to your database
+
     - Number of models, macros, and other project components
+
     - Project configuration details
     
     **Important**: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.
@@ -327,7 +346,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     vulcan fetchdf "select * from schema.model_name"
     ```
     
-    This command executes a SQL query and returns the results as a pandas DataFrame, which is perfect for data analysis and exploration.
+    This command executes a SQL query and returns the results as a pandas DataFrame.
 
     **Step 5: Query Using Semantic Layer**
     
@@ -408,6 +427,7 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
     If services fail to start, ensure Docker Desktop is running with at least 4GB RAM allocated. You can check and adjust this in Docker Desktop settings:
 
     - **Mac**: Docker Desktop → Settings → Resources → Advanced
+
     - **Windows**: Docker Desktop → Settings → Resources → Advanced
     
     **Network Errors**
@@ -460,7 +480,9 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
     You can access the MinIO console to manage your object storage:
 
     - **URL**: `http://localhost:9001`
+
     - **Username**: `admin`
+
     - **Password**: `password`
     
     The MinIO console allows you to browse buckets, upload files, and manage storage policies.
@@ -468,8 +490,10 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
 
 ## Next Steps
 
-Congratulations! You've successfully set up Vulcan and created your first project. Here are some recommended next steps to continue your journey:
+You've set up Vulcan and created your first project. Here are recommended next steps:
 
 - **[Learn more about Vulcan CLI commands](../../cli-command/cli.md){:target="_blank"}** - Explore all available commands and their options
+
 - **[Explore Vulcan concepts](../../components/model/overview.md){:target="_blank"}** - Deep dive into how models work and how to structure your data pipeline
+
 - **[Read the model kinds documentation](../../components/model/model_kinds.md){:target="_blank"}** - Understand different model types and when to use them

@@ -1,14 +1,13 @@
 # Kinds
 
-Model kinds determine how Vulcan loads and processes your data. Think of them as different strategies, each one optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some just create views that compute on-demand.
+Model kinds determine how Vulcan loads and processes your data. Each kind is optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some create views that compute on-demand.
 
-Find information about all model kind configuration parameters in the [model configuration reference page](../../reference/model_configuration.md).
 
 ## INCREMENTAL_BY_TIME_RANGE
 
 `INCREMENTAL_BY_TIME_RANGE` models are perfect for time-series data, things like events, logs, transactions, or any data that arrives over time. Instead of rebuilding everything each run (like FULL models do), these models only process the time intervals that are missing or need updating.
 
-**Why this matters:** If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With `INCREMENTAL_BY_TIME_RANGE`, Vulcan only processes the new intervals, which saves you time and money. Pretty smart, right?
+If you're processing daily sales data, you don't want to reprocess all of 2023 just to add today's data. With `INCREMENTAL_BY_TIME_RANGE`, Vulcan only processes the new intervals, which saves time and money.
 
 To use this kind, you need to tell Vulcan two things:
 
@@ -27,7 +26,7 @@ MODEL (
 ```
 
 <a id="timezones"></a>
-In addition to specifying a time column in the `MODEL` DDL, the model's query must contain a `WHERE` clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: `@start_date` / `@end_date` and `@start_ds` / `@end_ds`. Refer to [Macros](../macros/macro_variables.md) for more information.
+In addition to specifying a time column in the `MODEL` DDL, the model's query must contain a `WHERE` clause that filters the upstream records by time range. Vulcan provides special macros that represent the start and end of the time range being processed: `@start_date` / `@end_date` and `@start_ds` / `@end_ds`. See [Macros](../advanced-features/macros/variables.md) for more information.
 
 ??? "Example SQL sequence when applying this model kind (ex: BigQuery)"
     This example demonstrates incremental by time range models.
@@ -39,12 +38,16 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
       name demo.incrementals_demo,
       kind INCREMENTAL_BY_TIME_RANGE (
         -- How does this model kind behave?
+
         --   DELETE by time range, then INSERT
         time_column transaction_date,
 
         -- How do I handle late-arriving data?
+
         --   Handle late-arriving events for the past 2 (2*1) days based on cron
+
         --   interval. Each time it runs, it will process today, yesterday, and
+
         --   the day before yesterday.
         lookback 2,
       ),
@@ -53,6 +56,7 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
       start '2024-10-25',
 
       -- What schedule should I run these at?
+
       --   Daily at Midnight UTC
       cron '@daily',
 
@@ -60,12 +64,19 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
       grain transaction_id,
 
       -- How do I test this data?
+
       --   Validate that the `transaction_id` primary key values are both unique
+
       --   and non-null. Data audit tests only run for the processed intervals,
+
       --   not for the entire table.
+
       -- audits (
+
       --   UNIQUE_VALUES(columns = (transaction_id)),
+
       --   NOT_NULL(columns = (transaction_id))
+
       -- )
     );
 
@@ -76,15 +87,20 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
         customer_id,
         transaction_amount,
         -- How do I account for UTC vs. PST (California baby) timestamps?
+
         --   Make sure all time columns are in UTC and convert them to PST in the
+
         --   presentation layer downstream.
         transaction_timestamp,
         payment_method,
         currency
       FROM vulcan-public-demo.tcloud_raw_data.sales  -- Source A: sales data
       -- How do I make this run fast and only process the necessary intervals?
+
       --   Use our date macros that will automatically run the necessary intervals.
+
       --   Because Vulcan manages state, it will know what needs to run each time
+
       --   you invoke `vulcan run`.
       WHERE transaction_timestamp BETWEEN @start_dt AND @end_dt
     ),
@@ -404,7 +420,7 @@ Vulcan needs to know which column in your model's output represents the timestam
 
     Your `time_column` should be in UTC timezone. Learn more about why this matters [above](#timezones).
 
-The time column is used to determine which records will be overwritten during data [restatement](../plans.md#restatement-plans) and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the `MODEL` DDL `kind` specification:
+The time column is used to determine which records will be overwritten during data [restatement](../../guides/plan.md#restatement-plans) and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the `MODEL` DDL `kind` specification:
 
 ```sql linenums="1"
 MODEL (
@@ -435,11 +451,12 @@ MODEL (
 Here's how it works:
 
 - **Your WHERE clause** filters the **input** data as it's read from upstream tables (makes queries faster)
+
 - **Vulcan's automatic filter** filters the **output** data before it's stored (prevents data leakage)
 
 This is especially important when handling late-arriving data, you don't want to accidentally overwrite unrelated records!
 
-Here's a cool example: sometimes your upstream data uses a different time column than your model. In this case, you filter on the upstream column (`shipped_date`), but Vulcan still adds a filter on your model's time column (`order_date`):
+Example: sometimes your upstream data uses a different time column than your model. In this case, you filter on the upstream column (`shipped_date`), but Vulcan still adds a filter on your model's time column (`order_date`):
 
 ```sql linenums="1"
 MODEL (
@@ -495,9 +512,9 @@ MODEL (
 ```
 
 ### Idempotency
-We recommend making sure incremental by time range model queries are [idempotent](../glossary.md#idempotency) to prevent unexpected results during data [restatement](../plans.md#restatement-plans).
+Make incremental by time range model queries [idempotent](../../references/glossary.md#idempotency) to prevent unexpected results during data [restatement](../../guides/plan.md#restatement-plans).
 
-We recommend making your incremental by time range queries [idempotent](../glossary.md#idempotency). This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
+Make your incremental by time range queries idempotent. This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
 
 **Watch out:** Your upstream models can affect idempotency. If you reference a FULL model (which rebuilds everything each run), your incremental model becomes non-idempotent because that upstream data changes every time. This is usually fine, but it's good to be aware of.
 
@@ -516,12 +533,14 @@ Depending on the target engine, models of the `INCREMENTAL_BY_TIME_RANGE` kind a
 
 ## INCREMENTAL_BY_UNIQUE_KEY
 
-`INCREMENTAL_BY_UNIQUE_KEY` models update data based on a unique key. Think of it like an upsert operation, if a key exists, update it; if it doesn't, insert it.
+`INCREMENTAL_BY_UNIQUE_KEY` models update data based on a unique key. It works like an upsert operation: if a key exists, update it; if it doesn't, insert it.
 
 Here's how it works:
 
 - **New key?** → Insert the row
+
 - **Existing key?** → Update the row with new data
+
 - **Key missing from new data?** → Leave the existing row alone
 
 **Why use this?** Perfect for dimension tables, customer records, or any data where you want to keep the latest version of each record without rebuilding everything. It's like updating a contact list, you update existing contacts and add new ones, but you don't delete contacts that aren't in your latest import.
@@ -532,7 +551,7 @@ This kind is a good fit for datasets that have the following traits:
 * There is at most one record associated with each unique key.
 * It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their keys match.
 
-A [Slowly Changing Dimension](../glossary.md#slowly-changing-dimension-scd) (SCD) is one approach that fits this description well. See the [SCD Type 2](#scd-type-2) model kind for a specific model kind for SCD Type 2 models.
+A [Slowly Changing Dimension](../../references/glossary.md#slowly-changing-dimension-scd) (SCD) is one approach that fits this description well. See the [SCD Type 2](#scd-type-2) model kind for SCD Type 2 models.
 
 The name of the unique key column must be provided as part of the `MODEL` DDL, as in this example:
 
@@ -686,11 +705,11 @@ GROUP BY c.customer_id, c.name
     SELECT * FROM `vulcan-public-demo`.`vulcan__demo`.`demo__incremental_by_unique_key_example__1161945221`
     ```
 
-**Note:** Models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are inherently [non-idempotent](../glossary.md#idempotency), which should be taken into consideration during data [restatement](../plans.md#restatement-plans). As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.
+**Note:** Models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are inherently [non-idempotent](../../references/glossary.md#idempotency), which should be taken into consideration during data [restatement](../../guides/plan.md#restatement-plans). As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.
 
 ### Unique Key Expressions
 
-You're not limited to just column names, you can use SQL expressions too! This is handy when you need to create a key from multiple columns or transform values. Here's an example using `COALESCE`:
+You're not limited to column names. You can use SQL expressions when you need to create a key from multiple columns or transform values. Example using `COALESCE`:
 
 ```sql linenums="1"
 MODEL (
@@ -741,10 +760,15 @@ MODEL (
     `when_matched` only works on engines that support the `MERGE` statement. Supported engines include:
     
     - BigQuery
+
     - Databricks
+
     - Postgres
+
     - Redshift (requires `enable_merge: true` in connection config)
+
     - Snowflake
+
     - Spark
 
     **Redshift users:** You need to enable MERGE support by setting `enable_merge: true` in your connection config. It's disabled by default.
@@ -779,7 +803,7 @@ MODEL (
 
 Just like `when_matched`, use `source` and `target` aliases to reference the source and target tables.
 
-**Coming from dbt?** If your dbt project uses `incremental_predicates`, Vulcan will automatically convert them to `merge_filter` for you. Pretty convenient!
+If your dbt project uses `incremental_predicates`, Vulcan automatically converts them to `merge_filter`.
 
 ### Materialization strategy
 Depending on the target engine, models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are materialized using the following strategies:
@@ -799,14 +823,21 @@ Depending on the target engine, models of the `INCREMENTAL_BY_UNIQUE_KEY` kind a
 `FULL` models are the simplest kind, they rebuild everything from scratch every time they run. No incremental logic, no time columns, no unique keys. Just run the query and replace the entire table.
 
 **When to use FULL:**
+
 - Small datasets where rebuilding is fast and cheap
+
 - Aggregate tables without a time dimension
+
 - Tables that change completely each run (like a "current state" snapshot)
+
 - Development and testing (simpler is better when you're iterating)
 
 **When NOT to use FULL:**
+
 - Large datasets (you'll wait forever and pay a lot)
+
 - Time-series data (use `INCREMENTAL_BY_TIME_RANGE` instead)
+
 - Tables that only change partially (use incremental kinds)
 
 The trade-off is simplicity vs. performance. For small tables, FULL is perfect. For large tables, incremental kinds will save you time and money.
@@ -950,14 +981,21 @@ Unlike the other kinds, `VIEW` models don't store any data. Instead, they create
 **How it works:** When a downstream model or user queries your VIEW model, the database executes your query on-the-fly. No data is pre-computed or stored.
 
 **When to use VIEW:**
+
 - Simple transformations that are fast to compute
+
 - When you want always-fresh data (no caching)
+
 - When storage is expensive but compute is cheap
+
 - For lightweight transformations that don't need materialization
 
 **When NOT to use VIEW:**
+
 - Expensive queries that run frequently (you'll pay the compute cost every time)
+
 - Complex aggregations or joins (materialize these instead)
+
 - Python models (VIEW isn't supported for Python, use SQL)
 
 !!! note "Default Kind"
@@ -1053,12 +1091,14 @@ MODEL (
     Materialized views are only supported on:
     
     - BigQuery
+
     - Databricks
+
     - Snowflake
     
     On other engines, this flag is ignored and you'll get a regular VIEW.
 
-**Smart refresh:** Vulcan only recreates the materialized view when your query changes or the view doesn't exist. This means you get all the performance benefits of materialized views without unnecessary refreshes. Pretty efficient!
+Vulcan only recreates the materialized view when your query changes or the view doesn't exist. This provides the performance benefits of materialized views without unnecessary refreshes.
 
 ## EMBEDDED
 
@@ -1067,8 +1107,11 @@ MODEL (
 **Why use this?** If you have common logic that multiple models need (like a CTE that filters active customers), you can define it once in an EMBEDDED model and reuse it everywhere. It's like a macro, but for SQL.
 
 **Perfect for:**
+
 - Common CTEs used across multiple models
+
 - Reusable business logic (like "active customers" or "valid orders")
+
 - Avoiding code duplication
 
 !!! note "Python Models"
@@ -1091,14 +1134,18 @@ FROM vulcan_demo.customers
 ```
 
 ## SEED
-The `SEED` model kind is used to specify [seed models](./seed_models.md) for using static CSV datasets in your Vulcan project.
+The `SEED` model kind is used to specify seed models for using static CSV datasets in your Vulcan project.
 
 **How it works:** You point to a CSV file, define the schema, and Vulcan loads it into a table. The data only gets reloaded if you change the model definition or update the CSV file.
 
 **Use cases:**
+
 - Reference data (countries, states, categories)
+
 - Lookup tables
+
 - Static configuration data
+
 - Test data
 
 !!! note "Python Models"
@@ -1197,7 +1244,7 @@ Vulcan achieves this by adding a `valid_from` and `valid_to` column to your mode
 
 Therefore, you can use these models to not only tell you what the latest value is for a given record but also what the values were anytime in the past. Note that maintaining this history does come at a cost of increased storage and compute and this may not be a good fit for sources that change frequently since the history could get very large.
 
-**Note**: Partial data [restatement](../plans.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.
+**Note**: Partial data [restatement](../../guides/plan.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.
 
 Vulcan supports two ways to detect changes: **By Time** (recommended) or **By Column**. Let's look at both:
 
@@ -1440,7 +1487,7 @@ When a record is added back, the new record will be inserted into the table with
 
 - **`true`:** Deletes are accurately tracked with precise timestamps. Use this if you want to know exactly when records were deleted, even if it creates gaps in history.
 
-Think of it this way: `false` assumes "missing = still valid", while `true` assumes "missing = deleted at this time".
+With `false`, missing records are still considered valid. With `true`, missing records are treated as deleted at that time.
 
 ### Example of SCD Type 2 By Time in Action
 
@@ -1804,7 +1851,7 @@ MODEL (
 ```
 
 Plan/apply this change to production.
-Then you will want to [restate the model](../plans.md#restatement-plans).
+Then you will want to [restate the model](../../guides/plan.md#restatement-plans).
 
 !!! warning "Data Loss Warning"
 
@@ -1825,7 +1872,7 @@ MODEL (
 
 ## EXTERNAL
 
-The EXTERNAL model kind is used to specify [external models](./external_models.md) that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.
+The EXTERNAL model kind is used to specify [external models](./types/external_models.md) that store metadata about external tables. External models are special; they are not specified in .sql files like the other model kinds. They are optional but useful for propagating column and type information for external tables queried in your Vulcan project.
 
 ## MANAGED
 
@@ -1839,13 +1886,13 @@ The `MANAGED` model kind is used to create models where the underlying database 
 
 These models don't get updated with new intervals or refreshed when `vulcan run` is called. Responsibility for keeping the *data* up to date falls on the engine.
 
-You can control how the engine creates the managed model by using the [`physical_properties`](../models/overview.md#physical_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
+You can control how the engine creates the managed model by using the [`physical_properties`](./overview.md#physical_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
 
 Due to there being no standard, each vendor has a different implementation with different semantics and different configuration parameters. Therefore, `MANAGED` models are not as portable between database engines as other Vulcan model types. In addition, due to their black-box nature, Vulcan has limited visibility into the integrity and state of the model.
 
-We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](../overview.md#build-a-virtual-environment).
+We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](./overview.md#build-a-virtual-environment).
 
-See [Managed Models](./managed_models.md) for more information on which engines are supported and which properties are available.
+See [Managed Models](./types/managed_models.md) for more information on which engines are supported and which properties are available.
 
 ## INCREMENTAL_BY_PARTITION
 
@@ -1853,11 +1900,11 @@ Models of the `INCREMENTAL_BY_PARTITION` kind are computed incrementally based o
 
 !!! question "Should you use this model kind?"
 
-    Any model kind can use a partitioned **table** by specifying the [`partitioned_by` key](../models/overview.md#partitioned_by) in the `MODEL` DDL.
+    Any model kind can use a partitioned **table** by specifying the [`partitioned_by` key](./overview.md#partitioned_by) in the `MODEL` DDL.
 
     The "partition" in `INCREMENTAL_BY_PARTITION` is about how the data is **loaded** when the model runs.
 
-    `INCREMENTAL_BY_PARTITION` models are inherently [non-idempotent](../glossary.md#idempotency), so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.
+    `INCREMENTAL_BY_PARTITION` models are inherently [non-idempotent](../../references/glossary.md#idempotency), so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.
 
     In most scenarios, an `INCREMENTAL_BY_TIME_RANGE` model can meet your needs and will be easier to manage. The `INCREMENTAL_BY_PARTITION` model kind should only be used when the data must be loaded by partition (usually for performance reasons).
 
@@ -1868,7 +1915,9 @@ It may be used with any SQL engine. Vulcan will automatically create partitioned
 New rows are loaded based on their partitioning key value:
 
 - If a partitioning key in newly loaded data is not present in the model table, the new partitioning key and its data rows are inserted.
+
 - If a partitioning key in newly loaded data is already present in the model table, **all the partitioning key's existing data rows in the model table are replaced** with the partitioning key's data rows in the newly loaded data.
+
 - If a partitioning key is present in the model table but not present in the newly loaded data, the partitioning key's existing data rows are not modified and remain in the model table.
 
 This kind should only be used for datasets that have the following traits:
@@ -1959,7 +2008,7 @@ MODEL (
 
 !!! warning "Only Full Restatements Supported"
 
-    Partial data [restatements](../plans.md#restatement-plans) are used to reprocess part of a table's data (usually a limited time range).
+    Partial data [restatements](../../guides/plan.md#restatement-plans) are used to reprocess part of a table's data (usually a limited time range).
 
     Partial data restatement is not supported for `INCREMENTAL_BY_PARTITION` models. If you restate an `INCREMENTAL_BY_PARTITION` model, its entire table will be recreated from scratch.
 
@@ -1977,7 +2026,9 @@ MODEL (
 );
 
 -- This is the source of truth for what partitions need to be updated and will join to the product usage data
+
 -- This could be an INCREMENTAL_BY_TIME_RANGE model that reads in the user_segment values last updated in the past 30 days to reduce scope
+
 -- Use this strategy to reduce full restatements
 WITH partitions_to_update AS (
   SELECT DISTINCT
@@ -2014,7 +2065,7 @@ SELECT
 FROM product_usage
 ```
 
-**Note**: Partial data [restatement](../plans.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.
+**Note**: Partial data [restatement](../../guides/plan.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.
 
 ### Materialization strategy
 Depending on the target engine, models of the `INCREMENTAL_BY_PARTITION` kind are materialized using the following strategies:
@@ -2042,9 +2093,13 @@ Depending on the target engine, models of the `INCREMENTAL_BY_PARTITION` kind ar
     **Don't use it for:** Most other cases. `INCREMENTAL_BY_TIME_RANGE` or `INCREMENTAL_BY_UNIQUE_KEY` give you much more control and are usually better choices.
 
 **When to use:**
+
 - Data Vault hubs, links, or satellites
+
 - Event logs where every event should be preserved
+
 - Audit trails
+
 - Any pattern that requires true append-only semantics
 
 Here's how you'd set one up:
@@ -2079,6 +2134,6 @@ ORDER BY s.shipped_date DESC
 
 !!! warning "Only Full Restatements Supported"
 
-    Similar to `INCREMENTAL_BY_PARTITION`, attempting to [restate](../plans.md#restatement-plans) an `INCREMENTAL_UNMANAGED` model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.
+    Similar to `INCREMENTAL_BY_PARTITION`, attempting to [restate](../../guides/plan.md#restatement-plans) an `INCREMENTAL_UNMANAGED` model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.
 
     Be very careful when restating these models!

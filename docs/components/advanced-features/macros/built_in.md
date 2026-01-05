@@ -12,7 +12,7 @@ Plus, you can write macro logic in Python, which gives you way more power than s
 
 ### How Vulcan macros work
 
-This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's super helpful when you're debugging something that's not working as expected. Feel free to skip it and come back later if you need to.
+This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's helpful when you're debugging something that's not working as expected.
 
 The critical distinction between the Vulcan macro approach and templating systems is the role string substitution plays. In templating systems, string substitution is the entire and only point.
 
@@ -27,7 +27,9 @@ It uses the following five step approach to accomplish this:
 2. Examine the placeholder values to classify them as one of the following types:
 
     - Creation of user-defined macro variables with the `@DEF` operator (see more about [user-defined macro variables](#user-defined-variables))
+
     - Macro variables: [Vulcan pre-defined](./variables.md), [user-defined local](#local-variables), and [user-defined global](#global-variables)
+
     - Macro functions, both [Vulcan's](#macro-operators) and [user-defined](#user-defined-macro-functions)
 
 3. Substitute macro variable values where they are detected. In most cases, this is direct string substitution as with a templating system.
@@ -43,7 +45,9 @@ Vulcan always incorporates macro variable values into the semantic representatio
 For context, two commonly used types of string in SQL are:
 
 - String literals, which represent text values and are surrounded by single quotes, such as `'the_string'`
+
 - Identifiers, which reference database objects like column, table, alias, and function names
+
     - They may be unquoted or quoted with double quotes, backticks, or brackets, depending on the SQL dialect
 
 In a normal query, Vulcan can easily determine which role a given string is playing. However, it is more difficult if a macro variable is embedded directly into a string - especially if the string is in the `MODEL` block (and not the query itself).
@@ -97,17 +101,18 @@ Vulcan supports four kinds of user-defined macro variables: [global](#global-var
 Here's how they're organized:
 
 - **Global and gateway variables** are defined in your project configuration file and can be used in any model
+
 - **Blueprint and local variables** are defined in a specific model and only work in that model
 
 What happens if you have variables with the same name at different levels? The most specific one wins. Local variables override blueprint or gateway variables, gateway variables override global variables, and so on. This lets you set defaults globally but override them when needed.
 
 ### Global variables
 
-Global variables live in your project configuration file under the [`variables` key](../../../../references/configuration.md#variables). They're perfect for values you want to use across multiple models.
+Global variables live in your project configuration file under the [`variables` key](../../../references/configuration.md#variables). They're perfect for values you want to use across multiple models.
 
 You can store numbers (`int`, `float`), booleans (`bool`), strings (`str`), or even lists and dictionaries containing these types.
 
-Access them in your models using either `@VAR_NAME` (the simple syntax) or `@VAR('var_name')` (the function syntax). The function syntax is handy because you can provide a default value as the second argument, useful if the variable might not be defined.
+Access them in your models using either `@VAR_NAME` (the simple syntax) or `@VAR('var_name')` (the function syntax). The function syntax lets you provide a default value as the second argument, useful if the variable might not be defined.
 
 For example, this Vulcan configuration key defines six variables of different data types:
 
@@ -265,7 +270,7 @@ Vulcan has three basic requirements for using the `@DEF` operator:
 2. All `@DEF` uses must come after the `MODEL` statement and before the SQL query
 3. Each `@DEF` use must end with a semi-colon `;`
 
-For example, consider the following model `vulcan_example.full_model` from the [Vulcan quickstart guide](components/guides/get-started/docker.md):
+For example, consider the following model `vulcan_example.full_model` from the [Vulcan quickstart guide](../../../guides/get-started/docker.md):
 
 ```sql linenums="1"
 MODEL (
@@ -548,17 +553,25 @@ The value to return if the condition is `FALSE` is optional - if it is not provi
 The logical condition should be written *in SQL* and is evaluated with [SQLGlot's](https://github.com/tobymao/sqlglot) SQL executor. It supports the following operators:
 
 - Equality: `=` for equals, `!=` or `<>` for not equals
+
 - Comparison: `<`, `>`, `<=`, `>=`,
+
 - Between: `[number] BETWEEN [low number] AND [high number]`
+
 - Membership: `[item] IN ([comma-separated list of items])`
 
 For example, the following simple conditions are all valid SQL and evaluate to `TRUE`:
 
 - `'a' = 'a'`
+
 - `'a' != 'b'`
+
 - `0 < 1`
+
 - `1 >= 1`
+
 - `2 BETWEEN 1 AND 3`
+
 - `'a' IN ('a', 'b')`
 
 `@IF` can be used to modify any part of a SQL query. For example, this query conditionally includes `sensitive_col` in the query results:
@@ -743,10 +756,15 @@ If the column data types are known, the resulting query `CAST`s columns to their
 `@STAR` supports the following arguments, in this order:
 
 - `relation`: The relation/table whose columns are being selected
+
 - `alias` (optional): The alias of the relation (if it has one)
+
 - `exclude` (optional): A list of columns to exclude
+
 - `prefix` (optional): A string to use as a prefix for all selected column names
+
 - `suffix` (optional): A string to use as a suffix for all selected column names
+
 - `quote_identifiers` (optional): Whether to quote the resulting identifiers, defaults to true
 
 **NOTE**: the `exclude` argument used to be named `except_`. The latter is still supported but we discourage its use because it will be deprecated in the future.
@@ -782,8 +800,11 @@ FROM foo AS bar
 Note these aspects of the rendered query:
 
 - Each column is `CAST` to its data type in the table `foo` (e.g., `a` to `TEXT`)
+
 - Each column selection uses the alias `bar` (e.g., `"bar"."a"`)
+
 - Column `c` is not present because it was passed to `@STAR`'s `exclude` argument
+
 - Each column alias is prefixed with `baz_` and suffixed with `_qux` (e.g., `"baz_a_qux"`)
 
 Now consider a more complex example that provides different prefixes to `a` and `b` than to `d` and includes an explicit column `my_column`:
@@ -810,7 +831,9 @@ FROM foo AS bar
 Note these aspects of the rendered query:
 
 - Columns `a` and `b` have the prefix `"ab_pre_"` , while column `d` has the prefix `"d_pre_"`
+
 - Column `c` is not present because it was passed to the `exclude` argument in both `@STAR` calls
+
 - `my_column` is present in the query
 
 ### @GENERATE_SURROGATE_KEY
@@ -940,6 +963,7 @@ If the first argument is not a boolean condition, it's treated as the `UNION` "t
 Let's assume that:
 
 - `foo` is a table that contains three columns: `a` (`INT`), `b` (`TEXT`), `c` (`TEXT`)
+
 - `bar` is a table that contains three columns: `a` (`INT`), `b` (`INT`), `c` (`TEXT`)
 
 Then, the following expression:
@@ -1010,9 +1034,13 @@ FROM foo
 It supports the following arguments, in this order:
 
 - `lat1`: Latitude of the first point
+
 - `lon1`: Longitude of the first point
+
 - `lat2`: Latitude of the second point
+
 - `lon2`: Longitude of the second point
+
 - `unit` (optional): The measurement unit, currently only `'mi'` (miles, default) and `'km'` (kilometers) are supported
 
 Vulcan macro operators do not accept named arguments. For example, `@HAVERSINE_DISTANCE(lat1=lat_column)` will error.
@@ -1040,15 +1068,25 @@ FROM rides
 It supports the following arguments, in this order:
 
 - `column`: The column to pivot
+
 - `values`: The values to use for pivoting (one column is created for each value in `values`)
+
 - `alias` (optional): Whether to create aliases for the resulting columns, defaults to true
+
 - `agg` (optional): The aggregation function to use, defaults to `SUM`
+
 - `cmp` (optional): The comparison operator to use for comparing the column values, defaults to `=`
+
 - `prefix` (optional): A prefix to use for all aliases
+
 - `suffix` (optional): A suffix to use for all aliases
+
 - `then_value` (optional): The value to be used if the comparison succeeds, defaults to `1`
+
 - `else_value` (optional): The value to be used if the comparison fails, defaults to `0`
+
 - `quote` (optional): Whether to quote the resulting aliases, defaults to true
+
 - `distinct` (optional): Whether to apply a `DISTINCT` clause for the aggregation function, defaults to false
 
 Like all Vulcan macro functions, omitting an argument when calling `@PIVOT` requires passing subsequent arguments with their name and the special `:=` keyword operator. For example, we might omit the `agg` argument with `@PIVOT(status, ['cancelled', 'completed'], cmp := '<')`. Learn more about macro function arguments [below](#positional-and-keyword-arguments).
@@ -1081,7 +1119,9 @@ GROUP BY 1
 It supports the following arguments, in this order:
 
 - `relation`: The table or CTE name to deduplicate
+
 - `partition_by`: column names, or expressions to use to identify a window of rows out of which to select one as the deduplicated row
+
 - `order_by`: A list of strings representing the ORDER BY clause, optional - you can add nulls ordering like this: ['<column_name> desc nulls last']
 
 For example, the following query:
@@ -1115,7 +1155,9 @@ FROM "raw_data" AS "raw_data"
 It supports the following arguments, in this order:
 
 - `datepart`: The datepart to use for the date spine - day, week, month, quarter, year
+
 - `start_date`: The start date for the date spine in format YYYY-MM-DD
+
 - `end_date`: The end date for the date spine in format YYYY-MM-DD
 
 For example, the following query:
@@ -1143,6 +1185,7 @@ FROM "discount_promotion_dates" AS "discount_promotion_dates"
 
 Note: This is DuckDB SQL and other dialects will be transpiled accordingly.
 - Recursive CTEs (common table expressions) will be used for `Redshift / MySQL / MSSQL`.
+
 - For `MSSQL` in particular, there's a recursion limit of approximately 100. If this becomes a problem, you can add an `OPTION (MAXRECURSION 0)` clause after the date spine macro logic to remove the limit. This applies for long date ranges.
 
 ### @RESOLVE_TEMPLATE
@@ -1150,6 +1193,7 @@ Note: This is DuckDB SQL and other dialects will be transpiled accordingly.
 `@resolve_template` is a helper macro intended to be used in situations where you need to gain access to the *components* of the physical object name. It's intended for use in the following situations:
 
 - Providing explicit control over table locations on a per-model basis for engines that decouple storage and compute (such as Athena, Trino, Spark etc)
+
 - Generating references to engine-specific metadata tables that are derived from the physical table name, such as the [`<table>$properties`](https://trino.io/docs/current/connector/iceberg.html#metadata-tables) metadata table in Trino.
 
 Under the hood, it uses the `@this_model` variable so it can only be used during the `creating` and `evaluation` [runtime stages](./variables.md#runtime-variables). Attempting to use it at the `loading` runtime stage will result in a no-op.
@@ -1157,12 +1201,15 @@ Under the hood, it uses the `@this_model` variable so it can only be used during
 The `@resolve_template` macro supports the following arguments:
 
  - `template` - The string template to render into an AST node
+
  - `mode` - What type of SQLGlot AST node to return after rendering the template. Valid values are `literal` or `table`. Defaults to `literal`.
 
 The `template` can contain the following placeholders that will be substituted:
 
   - `@{catalog_name}` - The name of the catalog, eg `datalake`
+
   - `@{schema_name}` - The name of the physical schema that Vulcan is using for the model version table, eg `vulcan__landing`
+
   - `@{table_name}` - The name of the physical table that Vulcan is using for the model version, eg `landing__customers__2517971505`
 
 Note the use of the curly brace syntax `@{}` in the template placeholders - learn more [above](#embedding-variables-in-strings).
@@ -1178,6 +1225,7 @@ MODEL (
   )
 );
 -- CREATE TABLE "datalake"."vulcan__landing"."landing__customers__2517971505" ...
+
 -- WITH (location = 's3://warehouse-data/datalake/prod/vulcan__landing/landing__customers__2517971505')
 ```
 
@@ -1225,11 +1273,17 @@ TRUE
 Vulcan's macro system has six operators that correspond to different clauses in SQL syntax. They are:
 
 - `@WITH`: common table expression `WITH` clause
+
 - `@JOIN`: table `JOIN` clause(s)
+
 - `@WHERE`: filtering `WHERE` clause
+
 - `@GROUP_BY`: grouping `GROUP BY` clause
+
 - `@HAVING`: group by filtering `HAVING` clause
+
 - `@ORDER_BY`: ordering `ORDER BY` clause
+
 - `@LIMIT`: limiting `LIMIT` clause
 
 Each of these operators is used to dynamically add the code for its corresponding clause to a model's SQL query.
@@ -1475,6 +1529,7 @@ Macro functions let you write reusable logic that you can call from multiple mod
 Vulcan supports macro functions in two languages:
 
 - **SQL functions** use the [Jinja templating system](./jinja.md#user-defined-macro-functions)
+
 - **Python functions** use SQLGlot and give you way more power, you can do complex operations that go beyond what variables and operators can handle alone
 
 ### Python macro functions
@@ -1631,7 +1686,9 @@ def add_args(evaluator, *args: int): # Variable-length arguments of integer type
 This macro can be called with one or more arguments. For example:
 
 - `@add_args(1)` returns 1
+
 - `@add_args(1, 2)` returns 3
+
 - `@add_args(1, 2, 3)` returns 6
 
 #### Returning more than one value
@@ -1646,7 +1703,9 @@ Two things will happen to the input Python list before the function code is exec
 
 1. Each of its entries will be parsed by SQLGlot. Different inputs are parsed into different SQLGlot expressions:
     - Numbers are parsed into [`Literal` expressions](https://sqlglot.com/sqlglot/expressions.html#Literal)
+
     - Quoted strings are parsed into [`Literal` expressions](https://sqlglot.com/sqlglot/expressions.html#Literal)
+
     - Unquoted strings are parsed into [`Column` expressions](https://sqlglot.com/sqlglot/expressions.html#Column)
 
 2. The parsed entries will be contained in a SQLGlot [`Array` expression](https://sqlglot.com/sqlglot/expressions.html#Array), the SQL entity analogous to a Python list
@@ -1770,6 +1829,7 @@ When Vulcan renders and executes a model, it converts the model name into three 
 1. The *fully qualified* name
 
     - If the model name is of the form `schema.table`, Vulcan determines the correct catalog and adds it, like `catalog.schema.table`
+
     - Vulcan quotes each component of the name using the SQL engine's quoting and case-sensitivity rules, like `"catalog"."schema"."table"`
 
 2. The *resolved* physical table name
@@ -1803,15 +1863,21 @@ The `this_model` property returns different names depending on the runtime stage
 - `promoting` runtime stage: `this_model` resolves to the virtual layer view name
 
     - Example
+
         - Model name is `db.test_model`
+
         - `plan` is running in the `dev` environment
+
         - `this_model` resolves to `"catalog"."db__dev"."test_model"` (note the `__dev` suffix in the schema name)
 
 - All other runtime stages: `this_model` resolves to the physical table name
 
     - Example
+
         - Model name is `db.test_model`
+
         - `plan` is running in any environment
+
         - `this_model` resolves to `"catalog"."vulcan__project"."project__test_model__684351896"`
 
 ```python linenums="1"
@@ -1874,7 +1940,9 @@ Note that `columns_to_types` expects an _unquoted model name_, such as `schema.p
 Accessing the schema of an upstream model can be useful for various reasons. For example:
 
 - Renaming columns so that downstream consumers are not tightly coupled to external or source tables
+
 - Selecting only a subset of columns that satisfy some criteria (e.g. columns whose names start with a specific prefix)
+
 - Applying transformations to columns, such as masking PII or computing various statistics based on the column types
 
 Thus, leveraging `columns_to_types` can also enable one to write code according to the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle, as a single macro function can implement the transformations instead of creating a different macro for each model of interest.
@@ -2041,21 +2109,33 @@ Typed macros coerce the **inputs** to a macro function, but the macro code is re
 Vulcan supports common Python types for typed macros including:
 
 - `str` -- This handles string literals and basic identifiers, but won't coerce anything more complicated.
+
 - `int`
+
 - `float`
+
 - `bool`
+
 - `datetime.datetime`
+
 - `datetime.date`
+
 - `SQL` -- When you want the SQL string representation of the argument that's passed in
+
 - `list[T]` - where `T` is any supported type including sqlglot expressions
+
 - `tuple[T]` - where `T` is any supported type including sqlglot expressions
+
 - `T1 | T2 | ...` - where `T1`, `T2`, etc. are any supported types including sqlglot expressions
 
 We also support SQLGlot expressions as type hints, allowing you to ensure inputs are coerced to the desired SQL AST node your intending on working with. Some useful examples include:
 
 - `exp.Table`
+
 - `exp.Column`
+
 - `exp.Literal`
+
 - `exp.Identifier`
 
 While these might be obvious examples, you can effectively coerce an input into _any_ SQLGlot expression type, which can be useful for more complex macros. When coercing to more complex types, you will almost certainly need to pass a string literal since expression to expression coercion is limited. When a string literal is passed to a macro that hints at a SQLGlot expression, the string will be parsed using SQLGlot and coerced to the correct type. Failure to coerce to the correct type will result in the original expression being passed to the macro and a warning being logged for the user to address as-needed.

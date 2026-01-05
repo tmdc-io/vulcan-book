@@ -1,16 +1,16 @@
 # Vulcan configuration
 
-This page lists Vulcan configuration options and their parameters. Learn more about Vulcan configuration in the [configuration overview](../configurations/overview.md).
+This page lists all Vulcan configuration options and their parameters. For an overview of Vulcan configuration, see the [configuration overview](../configurations/overview.md).
 
-Configuration options for model definitions are listed in the [model configuration reference page](./model_configuration.md).
+Model-specific configuration options are listed in the [model configuration reference](./model_configuration.md).
 
 ## Root configurations
 
-A Vulcan project configuration consists of root level parameters within which other parameters are defined.
+A Vulcan project configuration contains root-level parameters that define other parameters.
 
-Two important root level parameters are [`gateways`](#gateways) and [gateway/connection defaults](#gatewayconnection-defaults), which have their own sections below.
+The main root-level parameters are [`gateways`](#gateways) and [gateway/connection defaults](#gatewayconnection-defaults), which have their own sections below.
 
-This section describes the other root level configuration parameters.
+This section covers the other root-level configuration parameters.
 
 ### Projects
 
@@ -25,7 +25,7 @@ Configuration options for Vulcan project directories.
 
 ### Database (Physical Layer)
 
-Configuration options for how Vulcan manages database objects in the [physical layer](./glossary.md#physical-layer).
+Configuration options for how Vulcan manages database objects in the [physical layer](./glossary.md#physical-layer). The physical layer stores actual data in database tables.
 
 | Option                        | Description                                                                                                                                                                                                                                                                                        | Type                 | Required |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|:--------:|
@@ -36,7 +36,7 @@ Configuration options for how Vulcan manages database objects in the [physical l
 
 ### Environments (Virtual Layer)
 
-Configuration options for how Vulcan manages environment creation and promotion in the [virtual layer](./glossary.md#virtual-layer).
+Configuration options for how Vulcan manages environment creation and promotion in the [virtual layer](./glossary.md#virtual-layer). The virtual layer provides views over physical tables.
 
 | Option                        | Description                                                                                                                                                                                                                                                                                        | Type                 | Required |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|:--------:|
@@ -62,9 +62,13 @@ See all the keys allowed in `model_defaults` at the [model configuration referen
 
 ### Variables
 
-The `variables` key can be used to provide values for user-defined variables, accessed using the [`@VAR` macro function](components/advanced-features/macros/built_in.md#global-variables) in SQL model definitions, [`context.var` method](components/model/types/python_models.md#user-defined-variables) in Python model definitions, and [`evaluator.var` method](components/advanced-features/macros/built_in.md#accessing-global-variable-values) in Python macro functions.
+The `variables` key provides values for user-defined variables. Access them using:
 
-The `variables` key consists of a mapping of variable names to their values - see an example on the [Vulcan macros concepts page](components/advanced-features/macros/built_in.md#global-variables). Note that keys are case insensitive.
+- [`@VAR` macro function](../../components/advanced-features/macros/built_in.md#global-variables) in SQL model definitions
+- [`context.var` method](../../components/model/types/python_models.md#user-defined-variables) in Python model definitions
+- [`evaluator.var` method](../../components/advanced-features/macros/built_in.md#accessing-global-variable-values) in Python macro functions
+
+The `variables` key maps variable names to their values. See examples on the [macros page](../../components/advanced-features/macros/built_in.md#global-variables). Variable names are case-insensitive.
 
 Global variable values may be any of the data types in the table below or lists or dictionaries containing those types.
 
@@ -74,7 +78,7 @@ Global variable values may be any of the data types in the table below or lists 
 
 ### Before_all / after_all
 
-The `before_all` and `after_all` keys can be used to specify lists of SQL statements and/or Vulcan macros that are executed at the start and end, respectively, of the `vulcan plan` and `vulcan run` commands. For more information and examples, see [Execution Hooks](../configurations/options/execution_hooks.md).
+The `before_all` and `after_all` keys specify lists of SQL statements and Vulcan macros that run at the start and end of `vulcan plan` and `vulcan run` commands. For more information and examples, see [Execution Hooks](../configurations/options/execution_hooks.md).
 
 | Option       | Description                                                                          | Type         | Required |
 |--------------|--------------------------------------------------------------------------------------|:------------:|:--------:|
@@ -87,18 +91,18 @@ Configuration for the `vulcan plan` command.
 
 | Option                    | Description                                                                                                                                                                                                                                             | Type                 | Required |
 |---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------:|:--------:|
-| `auto_categorize_changes` | Indicates whether Vulcan should attempt to automatically [categorize](../guides/plan.md#change-categories) model changes during plan creation per each model source type | dict[string, string] | N        |
-| `include_unmodified`      | Indicates whether to create views for all models in the target development environment or only for modified ones (Default: False)                                                                                                                       | boolean              | N        |
-| `auto_apply`              | Indicates whether to automatically apply a new plan after creation (Default: False)                                                                                                                                                                     | boolean              | N        |
-| `forward_only`            | Indicates whether the plan should be [forward-only](guides/plan.md#forward-only-plans) (Default: False)                                                                                                                                           | boolean              | N        |
-| `enable_preview`          | Indicates whether to enable [data preview](guides/plan.md#data-preview-for-forward-only-changes) for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)                | Boolean              | N        |
+| `auto_categorize_changes` | Whether Vulcan automatically [categorizes](../guides/plan.md#change-categories) model changes during plan creation per model source type | dict[string, string] | N        |
+| `include_unmodified`      | Whether to create views for all models in the target development environment or only for modified ones (Default: False)                                                                                                                       | boolean              | N        |
+| `auto_apply`              | Whether to automatically apply a new plan after creation (Default: False)                                                                                                                                                                     | boolean              | N        |
+| `forward_only`            | Whether the plan should be [forward-only](../guides/plan.md#forward-only-plans) (Default: False)                                                                                                                                           | boolean              | N        |
+| `enable_preview`          | Whether to enable [data preview](../guides/plan.md#data-preview-for-forward-only-changes) for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)                | Boolean              | N        |
 | `no_diff`                 | Don't show diffs for changed models (Default: False)                                                                                                                                                                                                    | boolean              | N        |
 | `no_prompts`              | Disables interactive prompts in CLI (Default: True)                                                                                                                                                                                                     | boolean              | N        |
 | `always_recreate_environment`              | Always recreates the target environment from the environment specified in `create_from` (by default `prod`) (Default: False)                                                                                                                                                                                                     | boolean              | N        |
 
 ## Run
 
-Configuration for the `vulcan run` command. Please note that this is only applicable when configured with the [builtin](#builtin) scheduler.
+Configuration for the `vulcan run` command. This only applies when using the [builtin](#builtin) scheduler.
 
 | Option                       | Description                                                                                                        | Type | Required |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------ | :--: | :------: |
@@ -133,9 +137,9 @@ Configuration for the `vulcan janitor` command.
 
 ## Gateways
 
-The `gateways` dictionary defines how Vulcan should connect to the data warehouse, state backend, test backend, and scheduler.
+The `gateways` dictionary defines how Vulcan connects to the data warehouse, state backend, test backend, and scheduler.
 
-It takes one or more named `gateway` configuration keys, each of which can define its own connections. **Gateway names are case-insensitive** - Vulcan normalizes all gateway names to lowercase during configuration validation, allowing you to use any case when referencing gateways. A named gateway does not need to specify all four components and will use defaults if any are omitted - more information is provided about [gateway defaults](#gatewayconnection-defaults) below.
+You can define one or more named gateway configurations, each with its own connections. Gateway names are case-insensitive. Vulcan normalizes all gateway names to lowercase during configuration validation. A gateway doesn't need to specify all four components. It uses defaults if any are omitted. See [gateway defaults](#gatewayconnection-defaults) below.
 
 For example, a project might configure the `gate1` and `gate2` gateways:
 
@@ -207,11 +211,11 @@ These pages describe the connection configuration options for each execution eng
 
 ### Scheduler
 
-Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing [plans](guides/plan.md).
+Specifies which scheduler backend to use. The scheduler stores metadata and executes [plans](../guides/plan.md).
 
-By default, the scheduler type is set to `builtin` and uses the gateway's connection to store metadata.
+By default, the scheduler type is `builtin` and uses the gateway's connection to store metadata.
 
-Below is the list of configuration options specific to each corresponding scheduler type. Find additional details in the [configuration overview](../configurations/overview.md#scheduler).
+Configuration options for each scheduler type are listed below. For more details, see the [configuration overview](../configurations/overview.md#scheduler).
 
 #### Builtin
 
@@ -221,7 +225,7 @@ No configuration options are supported by this scheduler type.
 
 ## Gateway/connection defaults
 
-The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. Find additional details in the [configuration overview](../configurations/overview.md#gateways).
+Default gateway and connection keys specify what happens when gateways or connections aren't explicitly specified. For more details, see the [configuration overview](../configurations/overview.md#gateways).
 
 ### Default gateway
 
@@ -250,7 +254,7 @@ Enable debug mode in one of two ways:
 - Pass the `--debug` flag between the CLI command and the subcommand. For example, `vulcan --debug plan`.
 - Set the `VULCAN_DEBUG` environment variable to one of the following values: "1", "true", "t", "yes" or "y".
 
-Enabling this mode ensures that full backtraces are printed when using CLI. The default log level is set to `DEBUG` when this mode is enabled.
+Enabling debug mode prints full backtraces in the CLI. The log level is set to `DEBUG` when debug mode is enabled.
 
 Example enabling debug mode for the CLI command `vulcan plan`:
 
@@ -304,6 +308,7 @@ It accepts the following values, which will cause Vulcan to behave as if it were
 - `ci` (CI/CD or other non-interactive environment) -->
 
 ## Parallel loading
-Vulcan by default uses all of your cores when loading models and snapshots. It takes advantage of `fork` which is not available on Windows. The default is to use the same number of workers as cores on your machine if fork is available.
 
-You can override this setting by setting the environment variable `MAX_FORK_WORKERS`. A value of 1 will disable forking and load things sequentially.
+Vulcan uses all available cores when loading models and snapshots. It uses `fork`, which isn't available on Windows. By default, it uses the same number of workers as cores if fork is available.
+
+Override this by setting the `MAX_FORK_WORKERS` environment variable. Set it to `1` to disable forking and load sequentially.

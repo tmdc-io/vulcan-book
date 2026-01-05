@@ -1,17 +1,18 @@
 # Overview
 
-Every Vulcan project needs a configuration file that tells Vulcan how to connect to your data warehouse, manage environments, and handle model execution. Think of it as the control center for your entire data pipeline, it's where you define connections, set defaults, and configure optional features like linting and notifications.
+Your Vulcan project needs a configuration file. It tells Vulcan how to connect to your data warehouse, where to store state, and what defaults to use for your models. Without it, Vulcan doesn't know where your data lives or how to run your transformations.
 
 ## Configuration File
 
-You'll need a configuration file in your project root directory. You've got two options:
+Create a configuration file in your project root. Choose one:
 
-- **`config.yaml`** - YAML format (recommended for most users). It's simple, readable, and perfect for most use cases.
-- **`config.py`** - Python format (for advanced use cases). Use this if you need dynamic configuration or want to programmatically generate settings.
+- `config.yaml`: YAML format. Use this for most projects. Simple and readable.
 
-## Quick Start Example
+- `config.py`: Python format. Use this if you need dynamic configuration or want to generate settings programmatically.
 
-Here's a practical example of a Vulcan configuration file:
+## Example Configuration
+
+Here's what a typical configuration file looks like:
 
 ```yaml linenums="1"
 # Project metadata
@@ -50,6 +51,7 @@ linter:
   enabled: true
   rules:
     - ambiguousorinvalidcolumn
+
     - invalidselectstarexpansion
 ```
 
@@ -75,17 +77,17 @@ graph TB
 
 ### Project Settings
 
-These are basic metadata fields that help identify your project. They're useful for organization and documentation, but they don't affect how Vulcan runs.
+Metadata fields that identify your project. They don't affect how Vulcan runs, but they're useful for organization.
 
 | Option | Description | Type |
 |--------|-------------|:----:|
 | `name` | Project name | string |
 | `tenant` | Tenant or organization name | string |
-| `description` | Human-readable project description | string |
+| `description` | Project description | string |
 
 ### Gateways
 
-Gateways are how Vulcan connects to your data warehouse, state backend, and other services. You can define multiple gateways for different environments (like dev, staging, and prod), each with its own connection settings. This gives you flexibility to use different databases or configurations per environment.
+Gateways define how Vulcan connects to your data warehouse and state backend. Define multiple gateways for different environments: dev, staging, prod. Each gateway has its own connection settings.
 
 | Component | Description | Default |
 |-----------|-------------|---------|
@@ -95,11 +97,11 @@ Gateways are how Vulcan connects to your data warehouse, state backend, and othe
 | `scheduler` | Scheduler configuration | `builtin` |
 | `state_schema` | Schema name for state tables | `vulcan` |
 
-→ See [Configuration Reference](../../references/configuration.md#gateways) for detailed gateway options.
+See [Configuration Reference](../references/configuration.md#gateways) for detailed gateway options.
 
-### Model Defaults (Required)
+### Model Defaults
 
-The `model_defaults` section is **required**, you can't skip it! At minimum, you need to specify the `dialect` key, which tells Vulcan what SQL dialect your models use. The other defaults are optional but super helpful because they apply to all your models automatically, saving you from repeating the same settings in every model file.
+The `model_defaults` section is required. At minimum, specify `dialect` to tell Vulcan what SQL dialect your models use. Other defaults are optional but apply to all models automatically, so you don't repeat the same settings in every model file.
 
 ```yaml
 model_defaults:
@@ -109,44 +111,45 @@ model_defaults:
   cron: '@daily'
 ```
 
-→ See [Model Defaults](./options/model_defaults.md) for all available options.
+See [Model Defaults](./options/model_defaults.md) for all available options.
 
 ### Variables
 
-Manage environment variables, `.env` files, and configuration overrides. This is where you'll store sensitive information like passwords and API keys securely, without hardcoding them in your config files. You can also use variables to override configuration values dynamically.
+Store sensitive information like passwords and API keys without hardcoding them. Use environment variables, `.env` files, or configuration overrides. Variables also let you override configuration values dynamically.
 
-→ See [Variables](./options/variables.md) for details.
+See [Variables](./options/variables.md) for details.
 
 ### Execution Hooks
 
-Run SQL statements automatically at the start and end of `vulcan plan` and `vulcan run` commands. This is super useful for things like setting up temporary tables, granting permissions, or cleaning up after runs. You can use `before_all` for setup tasks and `after_all` for cleanup or post-processing.
+Run SQL statements automatically at the start and end of `vulcan plan` and `vulcan run` commands. Use `before_all` for setup tasks like creating temporary tables or granting permissions. Use `after_all` for cleanup or post-processing.
 
-→ See [Execution Hooks](./options/execution_hooks.md) for detailed examples and use cases.
+See [Execution Hooks](./options/execution_hooks.md) for detailed examples and use cases.
 
 ### Linter
 
-Enable automatic code quality checks that run whenever you create a plan or run the lint command. This helps catch common mistakes and enforce coding standards across your team. You can use built-in rules or create custom ones that match your team's preferences.
+Automatic code quality checks that run when you create a plan or run the lint command. Catches common mistakes and enforces coding standards. Use built-in rules or create custom ones.
 
-→ See [Linter](./options/linter.md) for rules and custom linter configuration.
+See [Linter](./options/linter.md) for rules and custom linter configuration.
 
 ### Notifications
 
-Set up alerts via Slack or email so you know when important things happen in your pipeline. You can get notified when plans start or finish, when runs complete, or when audits fail. This keeps your team in the loop without having to constantly check the pipeline status.
+Set up alerts via Slack or email. Get notified when plans start or finish, when runs complete, or when audits fail.
 
-→ See [Notifications](./options/notifications.md) for Slack webhooks, API, and email setup.
+See [Notifications](./options/notifications.md) for Slack webhooks, API, and email setup.
 
 ## Supported Engines
 
-Vulcan works with a variety of data warehouses, so you can use it with whatever infrastructure you already have:
+Vulcan works with these data warehouses:
 
-- **[PostgreSQL](../../references/integrations/engines/postgres.md)** - Open-source relational database
-- **[Snowflake](../../references/integrations/engines/snowflake.md)** - Cloud data warehouse
+- [PostgreSQL](../references/integrations/engines/postgres.md)
+
+- [Snowflake](../references/integrations/engines/snowflake.md)
 
 ## Configuration Reference
 
 | Topic | Description |
 |-------|-------------|
-| [Configuration Reference](../../references/configuration.md) | Complete list of all configuration parameters |
+| [Configuration Reference](../references/configuration.md) | Complete list of all configuration parameters |
 | [Variables](./options/variables.md) | Environment variables and `.env` files |
 | [Model Defaults](./options/model_defaults.md) | Default settings for all models |
 | [Execution Hooks](./options/execution_hooks.md) | `before_all` and `after_all` statements |
@@ -155,14 +158,12 @@ Vulcan works with a variety of data warehouses, so you can use it with whatever 
 
 ## Best Practices
 
-Here are some tips to help you get the most out of your Vulcan configuration:
+Use environment variables for sensitive data like passwords and API keys. Keeps secrets out of your config files and makes it easier to manage different environments.
 
-1. **Use environment variables** for sensitive data like passwords and API keys. This keeps secrets out of your config files and makes it easier to manage different environments.
+Set meaningful defaults in `model_defaults` to reduce boilerplate. If most of your models use the same dialect, start date, or cron schedule, set it once here instead of repeating it everywhere.
 
-2. **Set meaningful defaults** in `model_defaults` to reduce boilerplate. If most of your models use the same dialect, start date, or cron schedule, set it once here instead of repeating it everywhere.
+Enable linting to catch common errors early in development. Fix issues before they make it to production.
 
-3. **Enable linting** to catch common errors early in development. It's much easier to fix issues before they make it to production.
+Separate state connection from your data warehouse for better isolation. Prevents state operations from interfering with your data processing.
 
-4. **Separate state connection** from your data warehouse for better isolation. This prevents state operations from interfering with your data processing and gives you more flexibility.
-
-5. **Use multiple gateways** for different environments (dev, staging, prod). This lets you test changes safely before deploying to production, and you can use different database configurations for each environment.
+Use multiple gateways for different environments: dev, staging, prod. Test changes safely before deploying to production. Use different database configurations for each environment.

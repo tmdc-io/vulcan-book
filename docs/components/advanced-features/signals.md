@@ -1,10 +1,10 @@
 # Signals
 
-Vulcan's [built-in scheduler](./scheduling.md#built-in-scheduler) is pretty smart, it knows when to run your models based on their `cron` schedules. If you have a model set to run `@daily`, it checks whether a day has passed since the last run and evaluates the model if needed.
+Vulcan's built-in scheduler knows when to run your models based on their `cron` schedules. If you have a model set to run `@daily`, it checks whether a day has passed since the last run and evaluates the model if needed.
 
 But here's the thing: real-world data doesn't always follow our schedules. Sometimes data arrives late, maybe your upstream system had an issue, or a batch job ran behind schedule. When that happens, your daily model might have already run for the day, and that late data won't get processed until tomorrow's scheduled run.
 
-Signals solve this problem by letting you add custom conditions that must be met before a model runs. Think of them as extra gates that the scheduler checks, beyond just "has enough time passed?" and "are upstream dependencies done?"
+Signals solve this problem by letting you add custom conditions that must be met before a model runs. They are extra gates that the scheduler checks, beyond "has enough time passed?" and "are upstream dependencies done?"
 
 ## What is a signal?
 
@@ -20,11 +20,13 @@ Here's how it works under the hood: The scheduler doesn't actually evaluate "a m
 The scheduler looks at candidate intervals, groups them into batches (controlled by your model's `batch_size` parameter), and then checks signals to see if those batches are ready. Your signal function gets called with a batch of time intervals and can return:
 
 - `True` if all intervals in the batch are ready
+
 - `False` if none are ready
+
 - A list of specific intervals if only some are ready
 
 !!! note "One model, multiple signals"
-    You can specify multiple signals for a single model. When you do, Vulcan requires that **all** signal functions agree an interval is ready before it gets evaluated. Think of it as an AND gate, every signal must give the green light.
+    You can specify multiple signals for a single model. When you do, Vulcan requires that **all** signal functions agree an interval is ready before it gets evaluated. It works like an AND gate: every signal must give the green light.
 
 ## Defining a signal
 
@@ -33,7 +35,9 @@ To create a signal, add a `signals` directory to your project and create your si
 A signal function needs to:
 
 - Accept a batch of time intervals (`DateTimeRanges: t.List[t.Tuple[datetime, datetime]]`)
+
 - Return either a boolean or a list of intervals
+
 - Use the `@signal` decorator
 
 Let's look at some examples, starting simple and building up to more complex use cases.
@@ -53,7 +57,7 @@ def random_signal(batch: DatetimeRanges, threshold: float) -> t.Union[bool, Date
     return random.random() > threshold
 ```
 
-This signal takes a `threshold` argument (you'll pass this from your model definition) and returns `True` if a random number exceeds that threshold. Notice how the function signature includes `threshold: float`, Vulcan will automatically extract this from your model definition and pass it to the function. The type inference works the same way as [Vulcan macros](../../advanced-features/macros/built_in.md#typed-macros).
+This signal takes a `threshold` argument (you'll pass this from your model definition) and returns `True` if a random number exceeds that threshold. Notice how the function signature includes `threshold: float`, Vulcan will automatically extract this from your model definition and pass it to the function. The type inference works the same way as [Vulcan macros](./macros/built_in.md#typed-macros).
 
 To use this signal in a model, add it to the `signals` key in your `MODEL` block:
 
@@ -69,7 +73,7 @@ MODEL (
 SELECT 1
 ```
 
-The `signals` key accepts a list of signal calls, each with its own arguments. When you run `vulcan run`, this signal will essentially flip a coin, if the random number is greater than 0.5, the model runs; otherwise, it waits.
+The `signals` key accepts a list of signal calls, each with its own arguments. When you run `vulcan run`, this signal checks if a random number is greater than 0.5. If it is, the model runs; otherwise, it waits.
 
 ### Advanced example
 
@@ -140,6 +144,7 @@ Signals only evaluate when you run `vulcan run` or use the `check_intervals` com
 1. Deploy your changes to an environment: `vulcan plan my_dev`
 2. Check which intervals would be evaluated: `vulcan check_intervals my_dev`
    - Use `--select-model` to check specific models
+
    - Use `--no-signals` to see what would run without signal checks
 3. Iterate by making changes to your signal and redeploying
 

@@ -216,11 +216,16 @@
                 
                 // Control buttons
                 navControls.addEventListener('click', function(e) {
-                    const action = e.target.getAttribute('data-action');
+                    // Prevent double-click from propagating to wrapper
+                    e.stopPropagation();
+                    
+                    const button = e.target.closest('.zoom-control-btn');
+                    if (!button) return;
+                    
+                    const action = button.getAttribute('data-action');
                     if (!action) return;
                     
                     e.preventDefault();
-                    e.stopPropagation();
                     
                     switch(action) {
                         case 'zoom-in':
@@ -236,6 +241,12 @@
                             closeZoom();
                             break;
                     }
+                });
+                
+                // Prevent double-click on buttons from closing zoom
+                navControls.addEventListener('dblclick', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
                 });
                 
                 // Keyboard navigation

@@ -5,15 +5,21 @@ This package contains all the Docker Compose files and configuration needed to g
 ## Contents
 
 - `docker/docker-compose.infra.yml` - Infrastructure services (statestore, MinIO)
+
 - `docker/docker-compose.warehouse.yml` - Warehouse database (PostgreSQL)
+
 - `docker/docker-compose.vulcan.yml` - Vulcan API and transpiler services
+
 - `Makefile` - Convenient commands for managing services
 
 ## Prerequisites
 
 - Docker Desktop installed and running
+
 - Docker Compose (included with Docker Desktop)
+
 - At least 4GB of available RAM
+
 - A terminal/command line interface
 
 ## Quick Start
@@ -24,8 +30,11 @@ This package contains all the Docker Compose files and configuration needed to g
    ```
    This will:
    - Create the Docker network
+
    - Start statestore (PostgreSQL) on port 5431
+
    - Start MinIO object storage on ports 9000 and 9001
+
    - Start warehouse database (PostgreSQL) on port 5433
 
 2. **Access Vulcan:**
@@ -76,6 +85,7 @@ This package contains all the Docker Compose files and configuration needed to g
    enabled: true
    rules:
       - ambiguousorinvalidcolumn
+
       - invalidselectstarexpansion
    ```
 
@@ -86,21 +96,29 @@ This package contains all the Docker Compose files and configuration needed to g
 
 ## Available Make Commands
 - `make setup` - Run all setup steps
+
 - `make vulcan-up` - Start Vulcan API services
 
 - `make network` - Create the Docker network
+
 - `make infra` - Start infrastructure services
+
 - `make warehouse` - Start warehouse database
 
 - `make all-down` - Stop all services
+
 - `make all-clean` - Stop all services and remove volumes
 
 ## Service Ports
 
 - **Statestore**: 5431
+
 - **Warehouse**: 5433
+
 - **MinIO API**: 9000
+
 - **MinIO Console**: 9001 (admin/password)
+
 - **Vulcan API**: 8000
 
 

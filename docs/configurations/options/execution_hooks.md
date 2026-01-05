@@ -1,17 +1,17 @@
 # Execution Hooks
 
-Execution hooks let you run SQL statements or macros automatically at the start and end of `vulcan plan` and `vulcan run` commands. Think of them as a way to automate all those setup and cleanup tasks you'd otherwise have to do manually. They're super powerful for things like setting up temporary tables, granting permissions, logging pipeline runs, or cleaning up after yourself.
+Run SQL statements or macros automatically at the start and end of `vulcan plan` and `vulcan run` commands. Automate setup and cleanup tasks: create temporary tables, grant permissions, log pipeline runs, clean up after execution.
 
 ## Overview
 
-Here's the basic idea: you've got two hooks that run at different times:
+Two hooks run at different times:
 
 | Hook | When it Runs | Common Use Cases |
 |------|--------------|------------------|
 | `before_all` | Before any model is processed | Setup tables, initialize logging, validate prerequisites |
 | `after_all` | After all models are processed | Grant privileges, cleanup, send notifications, update metadata |
 
-The `before_all` hook runs once at the very beginning, before Vulcan starts processing any models. Use it for setup tasks. The `after_all` hook runs once at the very end, after all models have been processed. Use it for cleanup or post-processing tasks.
+The `before_all` hook runs once at the beginning, before Vulcan processes any models. Use it for setup tasks. The `after_all` hook runs once at the end, after all models are processed. Use it for cleanup or post-processing.
 
 ## Basic Configuration
 
@@ -20,10 +20,12 @@ The `before_all` hook runs once at the very beginning, before Vulcan starts proc
     ```yaml linenums="1"
     before_all:
       - CREATE TABLE IF NOT EXISTS audit_log (model VARCHAR, started_at TIMESTAMP)
+
       - INSERT INTO audit_log VALUES ('pipeline', CURRENT_TIMESTAMP)
     
     after_all:
       - "@grant_select_privileges()"
+
       - UPDATE audit_log SET completed_at = CURRENT_TIMESTAMP WHERE model = 'pipeline'
     ```
 
@@ -46,7 +48,7 @@ The `before_all` hook runs once at the very beginning, before Vulcan starts proc
 
 ## Using Macros in Hooks
 
-Hooks can execute Vulcan macros using the `@macro_name()` syntax, which is super powerful because macros have access to runtime context. This means your hooks can be dynamic, they can see what views were created, what schemas are being used, and what environment you're running in. This makes it possible to write hooks that adapt to your actual pipeline state.
+Hooks execute Vulcan macros using the `@macro_name()` syntax. Macros have access to runtime context, so hooks can be dynamic. They see what views were created, what schemas are used, and what environment you're running in. Write hooks that adapt to your pipeline state.
 
 ### Available Context Variables
 
@@ -65,7 +67,7 @@ Macros invoked in hooks have access to:
 
 ### 1. Granting Privileges on Views
 
-If you're creating lots of views and need to grant permissions on all of them, doing it model-by-model gets tedious fast. Instead, use `after_all` to grant access to all views in one go. This is much cleaner and easier to maintain:
+Creating many views and granting permissions model-by-model gets tedious. Use `after_all` to grant access to all views at once:
 
 ```python linenums="1" title="macros/privileges.py"
 from vulcan.core.macros import macro
@@ -88,11 +90,11 @@ after_all:
 ```
 
 !!! tip "Preventing Name Replacement"
-    That `/* sqlglot.meta replace=false */` comment is important! It tells Vulcan not to replace the view name with the physical table name during SQL rendering. Without it, Vulcan might try to be helpful and swap in the underlying table name, which would break your GRANT statement.
+    The `/* sqlglot.meta replace=false */` comment tells Vulcan not to replace the view name with the physical table name during SQL rendering. Without it, Vulcan might swap in the underlying table name, which breaks your GRANT statement.
 
 ### 2. Environment-Specific Execution
 
-Sometimes you want different behavior in different environments. Maybe you only want to grant certain permissions in production, or you want to run cleanup tasks only in development. The `@IF` macro lets you conditionally execute statements based on the current environment:
+Use different behavior in different environments. Grant certain permissions only in production. Run cleanup tasks only in development. The `@IF` macro conditionally executes statements based on the current environment:
 
 ```yaml linenums="1" title="config.yaml"
 after_all:
@@ -128,7 +130,7 @@ def cleanup_dev_tables(evaluator):
 
 ### 3. Audit Logging
 
-Want to keep track of when your pipeline runs and how long it takes? Audit logging is a great use case for hooks. You can log the start time in `before_all` and the completion time in `after_all`:
+Track when your pipeline runs and how long it takes. Log the start time in `before_all` and the completion time in `after_all`:
 
 ```yaml linenums="1" title="config.yaml"
 before_all:
@@ -174,13 +176,16 @@ def log_pipeline_end(evaluator):
 
 ### 4. Schema and Database Setup
 
-Before your models can run, you need to make sure all the schemas they depend on actually exist. Instead of creating them manually or remembering to create them in a specific order, let `before_all` handle it automatically:
+Before models run, ensure all schemas they depend on exist. Instead of creating them manually or remembering the order, let `before_all` handle it:
 
 ```yaml linenums="1" title="config.yaml"
 before_all:
   - CREATE SCHEMA IF NOT EXISTS staging
+
   - CREATE SCHEMA IF NOT EXISTS analytics
+
   - CREATE SCHEMA IF NOT EXISTS reporting
+
   - "@setup_external_tables()"
 ```
 
@@ -206,7 +211,7 @@ def setup_external_tables(evaluator):
 
 ### 5. Data Quality Gates
 
-Want to make sure your source data is good before you start processing? You can use `before_all` to run validation checks. If the checks fail, the pipeline stops before wasting time processing bad data:
+Validate source data before processing. Use `before_all` to run validation checks. If checks fail, the pipeline stops before processing bad data:
 
 ```yaml linenums="1" title="config.yaml"
 before_all:
@@ -236,7 +241,7 @@ def validate_source_data(evaluator):
 
 ### 6. Refresh Materialized Views
 
-If you have materialized views that depend on your Vulcan models, you'll want to refresh them after your models update. Instead of remembering to do it manually, let `after_all` handle it automatically:
+If materialized views depend on your Vulcan models, refresh them after models update. Let `after_all` handle it:
 
 ```yaml linenums="1" title="config.yaml"
 after_all:
@@ -263,7 +268,7 @@ def refresh_materialized_views(evaluator):
 
 ### 7. Notification Integration
 
-Want to notify your team when the pipeline finishes? You can use `after_all` to send notifications. This example logs to a table, but you could easily extend it to call an external API or send emails:
+Notify your team when the pipeline finishes. Use `after_all` to send notifications. This example logs to a table. Extend it to call an external API or send emails:
 
 ```yaml linenums="1" title="config.yaml"
 after_all:
@@ -306,28 +311,31 @@ def notify_completion(evaluator):
 ## Execution Order
 
 ```mermaid
-graph TD
+graph LR
     A[Start] --> B[before_all]
     B --> C[Process Models]
     C --> D[after_all]
     D --> E[Complete]
+    
+    style B fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style E fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
 
 ## Best Practices
 
-Here are some tips to help you write hooks that are reliable and maintainable:
+Use macros for complex logic. If hook logic gets complicated, move it to a Python macro. Keeps your YAML config clean and makes the logic easier to test and maintain.
 
-1. **Use macros for complex logic** - If your hook logic is getting complicated, move it to a Python macro. This keeps your YAML config clean and makes the logic easier to test and maintain.
+Make hooks idempotent. Hooks might run multiple times if a plan fails and gets retried. Make sure they're safe to run repeatedly. Use `IF NOT EXISTS`, `ON CONFLICT`, or similar patterns.
 
-2. **Make hooks idempotent** - Hooks might run multiple times (maybe a plan fails and gets retried), so make sure they're safe to run repeatedly. Use `IF NOT EXISTS`, `ON CONFLICT`, or similar patterns to handle this gracefully.
+Use environment checks. Not everything should run in every environment. Use `@IF(@this_env = 'prod', ...)` to gate production-only operations so you don't accidentally run them in development.
 
-3. **Use environment checks** - Not everything should run in every environment. Use `@IF(@this_env = 'prod', ...)` to gate production-only operations so you don't accidentally run them in development.
+Handle failures gracefully. Think about what happens if a hook fails. Will it break your entire pipeline? Use transactions where appropriate, and handle failures appropriately.
 
-4. **Handle failures gracefully** - Think about what happens if a hook fails. Will it break your entire pipeline? Use transactions where appropriate, and make sure failures are handled in a way that makes sense for your use case.
+Document your hooks. Add comments explaining why each hook exists and what it does.
 
-5. **Document your hooks** - Add comments explaining why each hook exists and what it does. Future you (and your teammates) will thank you.
-
-6. **Test in development first** - Always test hooks in a development environment before running them in production. Hooks run automatically, so mistakes can be costly!
+Test in development first. Always test hooks in a development environment before running them in production. Hooks run automatically, so mistakes can be costly.
 
 ## Comparison with Model-Level Hooks
 
@@ -340,6 +348,6 @@ You might be wondering: when should I use execution hooks versus model-level hoo
 | Access to | All views, schemas, environment | Model-specific context |
 | Use for | Global setup, cleanup, privileges | Model-specific operations |
 
-**Use execution hooks** (`before_all`/`after_all`) for operations that apply to your entire pipeline, things like setting up audit tables, granting permissions on all views, or sending completion notifications.
+Use execution hooks (`before_all`/`after_all`) for operations that apply to your entire pipeline: setting up audit tables, granting permissions on all views, sending completion notifications.
 
-**Use model-level hooks** (`pre_statements`/`post_statements`) for operations that are specific to individual models, things like creating temporary tables that only one model needs, or running model-specific validations.
+Use model-level hooks (`pre_statements`/`post_statements`) for operations specific to individual models: creating temporary tables that only one model needs, running model-specific validations.

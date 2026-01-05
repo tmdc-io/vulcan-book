@@ -2,7 +2,7 @@
 
 This guide explains how to use **Audits**, **Checks**, and **Tests** together to ensure data quality in your Orders360 project. You'll learn when to use each tool and see complex examples where they work together.
 
-Think of these three tools as layers of protection for your data. Each one serves a different purpose, and together they give you comprehensive coverage. Pretty neat, right?
+These three tools work as layers of protection for your data. Each serves a different purpose. Together they provide comprehensive coverage.
 
 ---
 
@@ -40,11 +40,11 @@ Here's a quick guide to help you choose:
 
 | Tool | Purpose | Blocks Pipeline? | Best For |
 |------|---------|------------------|----------|
-| **Audits** | Critical validation | ✅ Yes (always) | Business rules, data integrity |
-| **Checks** | Quality monitoring | ❌ No | Trends, anomalies, monitoring |
-| **Tests** | Logic validation | ❌ No | SQL correctness, edge cases |
+| **Audits** | Critical validation | Yes (always) | Business rules, data integrity |
+| **Checks** | Quality monitoring | No | Trends, anomalies, monitoring |
+| **Tests** | Logic validation | No | SQL correctness, edge cases |
 
-The key difference? Audits stop everything if they fail, they're your safety net. Checks and tests just warn you, so you can investigate without blocking production.
+The key difference: Audits stop everything if they fail. Checks and tests warn you, so you can investigate without blocking production.
 
 *[Screenshot: Visual comparison of the three quality tools]*
 
@@ -72,10 +72,14 @@ MODEL (
 ```
 
 **Why audits are useful:**
-- ✅ Always blocking - if they fail, execution stops immediately. No bad data gets through!
-- ✅ Run automatically with model execution - you don't have to remember to run them
-- ✅ Fast feedback during development - catch issues before they hit production
-- ✅ Perfect for critical business rules - things like "revenue must be positive" or "primary keys must be unique"
+
+- Always blocking - if they fail, execution stops immediately. No bad data gets through
+
+- Run automatically with model execution - you don't have to remember to run them
+
+- Fast feedback during development - catch issues before they hit production
+
+- Use for critical business rules like "revenue must be positive" or "primary keys must be unique"
 
 Think of audits as your bouncer, they check IDs at the door and don't let anyone sketchy in.
 
@@ -103,12 +107,16 @@ checks:
 ```
 
 **Why checks are useful:**
-- ✅ Non-blocking - warnings, not failures. Your pipeline keeps running even if a check flags something
-- ✅ Historical tracking - see trends over time. You can spot patterns like "revenue always drops on weekends" or "row counts are trending down"
-- ✅ Anomaly detection - statistical analysis. Checks can detect when something is statistically unusual, even if it's not technically wrong
-- ✅ Perfect for monitoring and alerting - set up alerts for when checks fail, so you know to investigate
 
-Checks are like your security cameras, they watch everything and alert you if something suspicious happens, but they don't stop the show.
+- Non-blocking - warnings, not failures. Your pipeline keeps running even if a check flags something
+
+- Historical tracking - see trends over time. You can spot patterns like "revenue always drops on weekends" or "row counts are trending down"
+
+- Anomaly detection - statistical analysis. Checks can detect when something is statistically unusual, even if it's not technically wrong
+
+- Use for monitoring and alerting. Set up alerts for when checks fail, so you know to investigate.
+
+Checks monitor everything and alert you if something suspicious happens, but they don't stop execution.
 
 *[Screenshot: Check results showing trends over time]*
 
@@ -133,12 +141,16 @@ tests:
 ```
 
 **Why tests are useful:**
-- ✅ Unit testing for SQL logic - test your transformations in isolation
-- ✅ Validates expected outputs - make sure you're getting the results you expect
-- ✅ Tests edge cases - what happens with empty data? Null values? Boundary conditions?
-- ✅ Perfect for development - catch bugs before they make it to production
 
-Tests are like your practice runs, you test everything in a controlled environment before the big game.
+- Unit testing for SQL logic - test your transformations in isolation
+
+- Validates expected outputs - make sure you're getting the results you expect
+
+- Tests edge cases - what happens with empty data? Null values? Boundary conditions?
+
+- Use for development. Catch bugs before they make it to production.
+
+Tests run in a controlled environment before production.
 
 *[Screenshot: Test execution showing pass/fail results]*
 
@@ -404,7 +416,7 @@ flowchart TB
 4. **Audits** run immediately (block if fail) - critical validation happens right away
 5. **Checks** run (track trends, don't block) - monitoring happens in the background
 
-Notice how tests happen first, then audits catch critical issues, and checks monitor everything. It's a nice layered approach!
+Tests happen first, then audits catch critical issues, and checks monitor everything. This layered approach provides comprehensive coverage.
 
 *[Screenshot: Complete workflow showing all three layers]*
 
@@ -504,8 +516,10 @@ checks:
 
 You might wonder why you need both an audit and a check for revenue. Here's the thing:
 
-- **Audit:** Stops pipeline if revenue is wrong (critical) - if daily totals don't match raw orders, that's a data integrity issue and everything stops
+- **Audit:** Stops pipeline if revenue is wrong (critical). If daily totals don't match raw orders, that's a data integrity issue and everything stops.
+
 - **Check:** Warns about trends and anomalies (monitoring) - if revenue spikes 50% day-over-day, that might be legitimate (big sale!) or it might be a problem, but you want to investigate, not block
+
 - **Together:** Critical issues blocked, trends monitored - you get both immediate protection and ongoing visibility
 
 The audit has a tight tolerance (0.01) because it's checking for correctness. The check has a wider tolerance (10.0) because it's looking for trends, not exact matches. Pretty clever, right?
@@ -559,7 +573,7 @@ vulcan plan dev
 
 ## Best Practices
 
-### ✅ DO:
+### DO:
 
 Here are some tips to help you use these tools effectively:
 
@@ -569,7 +583,7 @@ Here are some tips to help you use these tools effectively:
 4. **Use Descriptive Names** - Makes debugging easier. Names like `revenue_mismatch_with_raw` are much better than `check_1`.
 5. **Order Audits Efficiently** - Fast checks first, slow checks last. If you have multiple audits, put the quick ones first so you fail fast.
 
-### ❌ DON'T:
+### DON'T:
 
 And here's what to avoid:
 
@@ -583,18 +597,27 @@ And here's what to avoid:
 ## Summary
 
 **Three-Layer Strategy:**
+
 - **Audits** = Critical blocking validation (must pass)
+
 - **Checks** = Quality monitoring (trends, anomalies)
+
 - **Tests** = Logic validation (development)
 
 **Use Together:**
+
 - Audits block invalid data
+
 - Checks monitor quality trends
+
 - Tests validate SQL logic
 
 **Orders360 Example:**
+
 - Audits ensure revenue is positive and matches raw data
+
 - Checks detect anomalies and trends
+
 - Tests validate aggregation logic
 
 ---
@@ -602,6 +625,8 @@ And here's what to avoid:
 ## Next Steps
 
 - Learn about [Built-in Audits](../components/audits/audits.md#built-in-audits)
+
 - Explore [Check Dimensions](../components/checks/checks.md#data-quality-dimensions)
+
 - Read about [Testing](../components/tests/tests.md)
 

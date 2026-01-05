@@ -1,12 +1,12 @@
 # Notifications
 
-Vulcan can send notifications via Slack or email when certain events occur. This page describes how to configure notifications and specify recipients.
+Vulcan can send notifications when certain events occur. Configure notifications and specify recipients in your configuration file.
 
-## Notification targets
+## Notification Targets
 
-Notifications are configured with `notification targets`. Targets are specified in a project's [configuration](../../references/configuration.md) file (`config.yml` or `config.py`), and multiple targets can be specified for a project.
+Configure notifications with notification targets. Specify targets in a project's [configuration](../../references/configuration.md) file (`config.yml` or `config.py`). You can specify multiple targets for a project.
 
-A project may specify both global and user-specific notifications. Each target's notifications will be sent for all instances of each [event type](#vulcan-event-types) (e.g., notifications for `run` will be sent for *all* of the project's environments), with exceptions for audit failures and when an [override is configured for development](#notifications-during-development).
+A project can specify both global and user-specific notifications. Each target's notifications are sent for all instances of each [event type](#vulcan-event-types) (for example, notifications for `run` are sent for all of the project's environments), with exceptions for audit failures and when an [override is configured for development](#notifications-during-development).
 
 [Audit](../../components/audits/audits.md) failure notifications can be sent for specific models if five conditions are met:
 
@@ -18,7 +18,7 @@ A project may specify both global and user-specific notifications. Each target's
 
 When those conditions are met, the audit owner will be notified if their audit failed in the `prod` environment.
 
-There are three types of notification target, corresponding to the two [Slack notification methods](#slack-notifications) and [email notification](#email-notifications). They are specified in either a specific user's `notification_targets` key or the top-level `notification_targets` configuration key.
+There are three types of notification targets, corresponding to the two [Slack notification methods](#slack-notifications) and [email notification](#email-notifications). Specify them in either a specific user's `notification_targets` key or the top-level `notification_targets` configuration key.
 
 This example shows the location of both user-specific and global notification targets:
 
@@ -84,9 +84,9 @@ This example shows the location of both user-specific and global notification ta
 
 ### Notifications During Development
 
-Events triggering notifications may be executed repeatedly during code development. To prevent excessive notification, Vulcan can stop all but one user's notification targets.
+Events triggering notifications may execute repeatedly during code development. To prevent excessive notifications, Vulcan can stop all but one user's notification targets.
 
-Specify the top-level `username` configuration key with a value also present in a user-specific notification target's `username` key to only notify that user. This key can be specified in either the project configuration file or a machine-specific configuration file located in `~/.vulcan`. The latter may be useful if a specific machine is always used for development.
+Specify the top-level `username` configuration key with a value also present in a user-specific notification target's `username` key to only notify that user. Specify this key in either the project configuration file or a machine-specific configuration file located in `~/.vulcan`. The latter is useful if a specific machine is always used for development.
 
 This example stops all notifications other than those for `User1`:
 
@@ -128,7 +128,7 @@ This example stops all notifications other than those for `User1`:
 
 ## Vulcan Event Types
 
-Vulcan notifications are triggered by events. The events that should trigger a notification are specified in the notification target's `notify_on` field.
+Vulcan notifications are triggered by events. Specify which events should trigger a notification in the notification target's `notify_on` field.
 
 Notifications are supported for [`plan` application](../../guides/plan.md) start/end/failure, [`run`](../../getting_started/cli.md#run) start/end/failure, and [`audit`](../../components/audits/audits.md) failures.
 
@@ -150,13 +150,13 @@ Any combination of these events can be specified in a notification target's `not
 
 ## Slack Notifications
 
-Vulcan supports two types of Slack notification. Slack webhooks can notify a Slack channel, but they cannot message specific users. The Slack Web API can notify channels or users.
+Vulcan supports two types of Slack notifications. Slack webhooks notify a Slack channel, but they cannot message specific users. The Slack Web API can notify channels or users.
 
 ### Webhook Configuration
 
-Vulcan uses Slack's "Incoming Webhooks" for webhook notifications. When you [create an incoming webhook](https://api.slack.com/messaging/webhooks) in Slack, you will receive a unique URL associated with a specific Slack channel. Vulcan transmits the notification message by submitting a JSON payload to that URL.
+Vulcan uses Slack's "Incoming Webhooks" for webhook notifications. When you [create an incoming webhook](https://api.slack.com/messaging/webhooks) in Slack, you receive a unique URL associated with a specific Slack channel. Vulcan transmits the notification message by submitting a JSON payload to that URL.
 
-This example shows a Slack webhook notification target. Notifications are triggered by plan application start, plan application failure, or Vulcan run start. The specification uses an environment variable `SLACK_WEBHOOK_URL` instead of hard-coding the URL directly into the configuration file:
+This example shows a Slack webhook notification target. Notifications are triggered by plan application start, plan application failure, or Vulcan run start. The specification uses an environment variable `SLACK_WEBHOOK_URL` instead of hard-coding the URL:
 
 === "YAML"
 
@@ -165,7 +165,9 @@ This example shows a Slack webhook notification target. Notifications are trigge
       - type: slack_webhook
         notify_on:
           - apply_start
+
           - apply_failure
+
           - run_start
         url: "{{ env_var('SLACK_WEBHOOK_URL') }}"
     ```
@@ -183,9 +185,9 @@ This example shows a Slack webhook notification target. Notifications are trigge
 
 ### API Configuration
 
-If you want to notify users, you can use the Slack API notification target. This requires a Slack API token, which can be used for multiple notification targets with different channels or users. See [Slack's official documentation](https://api.slack.com/tutorials/tracks/getting-a-token) for information on getting an API token.
+To notify users, use the Slack API notification target. This requires a Slack API token, which can be used for multiple notification targets with different channels or users. See [Slack's official documentation](https://api.slack.com/tutorials/tracks/getting-a-token) for information on getting an API token.
 
-This example shows a Slack API notification target. Notifications are triggered by plan application start, plan application end, or audit failure. The specification uses an environment variable `SLACK_API_TOKEN` instead of hard-coding the token directly into the configuration file:
+This example shows a Slack API notification target. Notifications are triggered by plan application start, plan application end, or audit failure. The specification uses an environment variable `SLACK_API_TOKEN` instead of hard-coding the token:
 
 === "YAML"
 
@@ -194,7 +196,9 @@ This example shows a Slack API notification target. Notifications are triggered 
       - type: slack_api
         notify_on:
           - apply_start
+
           - apply_end
+
           - audit_failure
         token: "{{ env_var('SLACK_API_TOKEN') }}"
         channel: "UXXXXXXXXX"  # Channel or a user's Slack member ID
@@ -214,9 +218,9 @@ This example shows a Slack API notification target. Notifications are triggered 
 
 ## Email Notifications
 
-Vulcan supports notifications via email. The notification target specifies the SMTP host, user, password, and sender address. A target may notify multiple recipient email addresses.
+Vulcan supports notifications via email. The notification target specifies the SMTP host, user, password, and sender address. A target can notify multiple recipient email addresses.
 
-This example shows an email notification target, where `sushi@example.com` emails `data-team@example.com` on Vulcan run failure. The specification uses environment variables `SMTP_HOST`, `SMTP_USER`, and `SMTP_PASSWORD` instead of hard-coding the values directly into the configuration file:
+This example shows an email notification target, where `sushi@example.com` emails `data-team@example.com` on Vulcan run failure. The specification uses environment variables `SMTP_HOST`, `SMTP_USER`, and `SMTP_PASSWORD` instead of hard-coding the values:
 
 === "YAML"
 
@@ -254,9 +258,9 @@ This example shows an email notification target, where `sushi@example.com` email
 
 ### Overriding Notification Targets
 
-In Python configuration files, new notification targets can be configured to send custom messages.
+In Python configuration files, configure new notification targets to send custom messages.
 
-To customize a notification, create a new notification target class as a subclass of one of the three target classes described above (`SlackWebhookNotificationTarget`, `SlackApiNotificationTarget`, or `BasicSMTPNotificationTarget`). See the definitions of these classes on Github [here](https://github.com/TobikoData/vulcan/blob/main/vulcan/core/notification_target.py).
+To customize a notification, create a new notification target class as a subclass of one of the three target classes described above (`SlackWebhookNotificationTarget`, `SlackApiNotificationTarget`, or `BasicSMTPNotificationTarget`). See the definitions of these classes on [Github](https://github.com/TobikoData/vulcan/blob/main/vulcan/core/notification_target.py).
 
 Each of those notification target classes is a subclass of `BaseNotificationTarget`, which contains a `notify` function corresponding to each event type. This table lists the notification functions, along with the contextual information available to them at calling time (e.g., the environment name for start/end events):
 
