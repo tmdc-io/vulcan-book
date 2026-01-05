@@ -8,9 +8,9 @@
 <link href="../run_and_scheduling/" rel="prev"/>
 <link href="../incremental_by_time/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Models - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1688,14 +1688,20 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="models">Models<a class="headerlink" href="#models" title="Link to this section">¶</a></h1>
-<p>This guide walks you through working with models in Vulcan using the Orders360 example project. You'll learn how to add, edit, evaluate, and manage models with practical examples.</p>
-<p>Models are the heart of Vulcan, they define your data transformations. Once you understand how to work with them, you'll be able to build powerful data pipelines!</p>
+<p>This guide shows you how to work with models in Vulcan using the Orders360 example project. You'll learn how to add, edit, evaluate, and manage models with practical examples.</p>
+<p>Models define your data transformations. They contain the SQL or Python code that transforms your data.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
 <p>Before adding a model, ensure that you have:</p>
 <ul>
-<li><a href="../get-started/docker/">Created your project</a> </li>
-<li><a href="../plan/#scenario-1-first-plan-initializing-production">Applied your first plan</a></li>
-<li>Working in a <a href="../../references/environments/">dev environment</a> for testing changes</li>
+<li>
+<p><a href="../get-started/docker/">Created your project</a> </p>
+</li>
+<li>
+<p><a href="../plan/#scenario-1-first-plan-initializing-production">Applied your first plan</a></p>
+</li>
+<li>
+<p>Working in a <a href="../../references/environments/">dev environment</a> for testing changes</p>
+</li>
 </ul>
 <hr/>
 <h2 id="understanding-models">Understanding Models<a class="headerlink" href="#understanding-models" title="Link to this section">¶</a></h2>
@@ -1774,14 +1780,18 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>vulcan<span class="w"> </span>info
 </span></code></pre></div>
 <p><strong>Expected Output:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>Connection: ✅ Connected
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>Connection: Connected
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>Models: 5
 </span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a>  - raw.raw_customers
-</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>  - raw.raw_orders
-</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a>  - raw.raw_products
-</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>  - sales.daily_sales
-</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a>  - sales.weekly_sales  ← NEW MODEL
-</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a>...
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a>  - raw.raw_orders
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a>  - raw.raw_products
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a>  - sales.daily_sales
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a>  - sales.weekly_sales  ← NEW MODEL
+</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a>...
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: <code>vulcan info</code> output showing the new weekly_sales model]</em></p>
 <h3 id="step-4-apply-the-model">Step 4: Apply the Model<a class="headerlink" href="#step-4-apply-the-model" title="Link to this section">¶</a></h3>
@@ -1852,11 +1862,19 @@
 </span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a>2025-01-15 00:00:00           42         1250.50           29.77        ORD-00142
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Evaluate command output showing the new avg_order_value column]</em></p>
-<p><strong>What Happened?</strong>
-- The <code>evaluate</code> command runs the model query without creating tables - it's like a dry run
-- Shows you the output with the new column - you can see what the data will look like
-- Useful for testing changes before applying them - catch issues before they hit production</p>
-<p>This is super useful for iteration! You can test your changes quickly without waiting for full materialization.</p>
+<p><strong>What Happened?</strong></p>
+<ul>
+<li>
+<p>The <code>evaluate</code> command runs the model query without creating tables. It's a dry run.</p>
+</li>
+<li>
+<p>Shows you the output with the new column. You can see what the data will look like.</p>
+</li>
+<li>
+<p>Useful for testing changes before applying them. Catch issues before they hit production.</p>
+</li>
+</ul>
+<p>Use <code>evaluate</code> to test changes quickly without waiting for full materialization.</p>
 <h3 id="step-3-preview-changes-with-plan">Step 3: Preview Changes with Plan<a class="headerlink" href="#step-3-preview-changes-with-plan" title="Link to this section">¶</a></h3>
 <p>See what will change and how it affects downstream models:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
@@ -1889,11 +1907,19 @@
 </span><span id="__span-11-25"><a href="#__codelineno-11-25" id="__codelineno-11-25" name="__codelineno-11-25"></a>Apply - Backfill Tables [y/n]:
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing non-breaking change with diff highlighting the new column]</em></p>
-<p><strong>Understanding the Output:</strong>
-- <strong>Non-breaking</strong>: Vulcan detected this as non-breaking (adding a column) - adding columns is safe, existing queries still work
-- <strong>Diff</strong>: Shows exactly what changed (green <code>+</code> indicates added line) - you can see exactly what you modified
-- <strong>No downstream impact</strong>: <code>sales.weekly_sales</code> is not listed because it doesn't use this column yet - downstream models don't need to be reprocessed</p>
-<p>This is why non-breaking changes are great, they don't cascade. You can add columns without forcing downstream models to reprocess.</p>
+<p><strong>Understanding the Output:</strong></p>
+<ul>
+<li>
+<p><strong>Non-breaking</strong>: Vulcan detected this as non-breaking (adding a column). Adding columns is safe. Existing queries still work.</p>
+</li>
+<li>
+<p><strong>Diff</strong>: Shows exactly what changed. The green <code>+</code> indicates an added line. You can see exactly what you modified.</p>
+</li>
+<li>
+<p><strong>No downstream impact</strong>: <code>sales.weekly_sales</code> isn't listed because it doesn't use this column yet. Downstream models don't need to be reprocessed.</p>
+</li>
+</ul>
+<p>Non-breaking changes don't cascade. You can add columns without forcing downstream models to reprocess.</p>
 <h3 id="step-4-apply-the-changes">Step 4: Apply the Changes<a class="headerlink" href="#step-4-apply-the-changes" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply the plan:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>Apply - Backfill Tables [y/n]: y
@@ -1957,14 +1983,22 @@
 </span><span id="__span-16-27"><a href="#__codelineno-16-27" id="__codelineno-16-27" name="__codelineno-16-27"></a>Apply - Backfill Tables [y/n]:
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing breaking change with downstream impact on weekly_sales]</em></p>
-<p><strong>Understanding Breaking Changes:</strong>
-- <strong>Breaking</strong>: Adding a WHERE clause filters data, making existing data invalid - rows that should be filtered out might still be in the table
-- <strong>Indirectly Modified</strong>: <code>sales.weekly_sales</code> depends on <code>daily_sales</code>, so it's affected - it needs to be reprocessed with the new filtered data
-- <strong>Cascading backfill</strong>: Both models need to be reprocessed - Vulcan handles this automatically, processing upstream first</p>
-<p>Breaking changes are more expensive because they cascade. Make sure you really need to make a breaking change before you do it!</p>
+<p><strong>Understanding Breaking Changes:</strong></p>
+<ul>
+<li>
+<p><strong>Breaking</strong>: Adding a WHERE clause filters data, making existing data invalid. Rows that should be filtered out might still be in the table.</p>
+</li>
+<li>
+<p><strong>Indirectly Modified</strong>: <code>sales.weekly_sales</code> depends on <code>daily_sales</code>, so it's affected. It needs to be reprocessed with the new filtered data.</p>
+</li>
+<li>
+<p><strong>Cascading backfill</strong>: Both models need to be reprocessed. Vulcan handles this automatically, processing upstream first.</p>
+</li>
+</ul>
+<p>Breaking changes are more expensive because they cascade. Make sure you need to make a breaking change before you do it.</p>
 <hr/>
 <h2 id="evaluating-a-model">Evaluating a Model<a class="headerlink" href="#evaluating-a-model" title="Link to this section">¶</a></h2>
-<p>The <code>evaluate</code> command lets you test models without materializing data. Perfect for iteration and debugging. It's like a preview mode, you can see what your model will produce without actually creating tables.</p>
+<p>The <code>evaluate</code> command tests models without materializing data. Use it for iteration and debugging. It shows what your model will produce without creating tables.</p>
 <h3 id="basic-evaluation">Basic Evaluation<a class="headerlink" href="#basic-evaluation" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>vulcan<span class="w"> </span>evaluate<span class="w"> </span>sales.daily_sales<span class="w"> </span>--start<span class="o">=</span><span class="m">2025</span>-01-15<span class="w"> </span>--end<span class="o">=</span><span class="m">2025</span>-01-15
 </span></code></pre></div>
@@ -1991,16 +2025,27 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>vulcan<span class="w"> </span>evaluate<span class="w"> </span>sales.daily_sales<span class="w"> </span>--start<span class="o">=</span><span class="m">2025</span>-01-15<span class="w"> </span>--end<span class="o">=</span><span class="m">2025</span>-01-15<span class="w"> </span>--where<span class="w"> </span><span class="s2">"total_amount &gt; 50"</span>
 </span></code></pre></div>
 <p><em>[Screenshot: Evaluate command with WHERE clause filter]</em></p>
-<p><strong>Use Cases for Evaluate:</strong>
-- ✅ Test model logic before applying changes - make sure your SQL does what you think it does
-- ✅ Debug query issues - see what's actually happening with your data
-- ✅ Verify data transformations - check that aggregations, joins, etc. are working correctly
-- ✅ Check data quality - spot issues before they make it to production
-- ✅ Iterate quickly without materialization costs - test changes fast without waiting for full backfills</p>
-<p>Evaluate is your best friend during development. Use it liberally!</p>
+<p><strong>Use Cases for Evaluate:</strong></p>
+<ul>
+<li>
+<p>Test model logic before applying changes. Make sure your SQL does what you think it does.</p>
+</li>
+<li>
+<p>Debug query issues. See what's actually happening with your data.</p>
+</li>
+<li>
+<p>Verify data transformations. Check that aggregations, joins, etc. are working correctly.</p>
+</li>
+<li>
+<p>Check data quality. Spot issues before they make it to production.</p>
+</li>
+<li>
+<p>Iterate quickly without materialization costs. Test changes fast without waiting for full backfills.</p>
+</li>
+</ul>
 <hr/>
 <h2 id="reverting-a-change">Reverting a Change<a class="headerlink" href="#reverting-a-change" title="Link to this section">¶</a></h2>
-<p>Vulcan makes it easy to revert model changes using Virtual Updates. Made a mistake? No problem! You can revert quickly without reprocessing all your data.</p>
+<p>Vulcan lets you revert model changes using Virtual Updates. You can revert quickly without reprocessing all your data.</p>
 <h3 id="step-1-revert-the-change">Step 1: Revert the Change<a class="headerlink" href="#step-1-revert-the-change" title="Link to this section">¶</a></h3>
 <p>Edit <code>models/sales/daily_sales.sql</code> to remove the WHERE clause we added:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="k">SELECT</span>
@@ -2041,14 +2086,22 @@
 </span><span id="__span-24-20"><a href="#__codelineno-24-20" id="__codelineno-24-20" name="__codelineno-24-20"></a>Apply - Virtual Update [y/n]: y
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan showing reverted change with diff]</em></p>
-<p><strong>Virtual Update:</strong>
-- No backfill required - just updates references - Vulcan just changes which physical table the view points to
-- Fast operation - completes in seconds - way faster than a full backfill
-- Previous data remains available - the old data is still there, you're just not using it anymore</p>
-<p>Virtual updates are great for reverting changes. They're fast and don't require reprocessing data.</p>
+<p><strong>Virtual Update:</strong></p>
+<ul>
+<li>
+<p>No backfill required. Just updates references. Vulcan changes which physical table the view points to.</p>
+</li>
+<li>
+<p>Fast operation. Completes in seconds. Faster than a full backfill.</p>
+</li>
+<li>
+<p>Previous data remains available. The old data is still there. You're just not using it anymore.</p>
+</li>
+</ul>
+<p>Virtual updates work well for reverting changes. They're fast and don't require reprocessing data.</p>
 <hr/>
 <h2 id="validating-models">Validating Models<a class="headerlink" href="#validating-models" title="Link to this section">¶</a></h2>
-<p>Vulcan provides multiple ways to validate your models. You don't have to guess if your models are working, Vulcan checks them for you!</p>
+<p>Vulcan provides multiple ways to validate your models. Vulcan checks them automatically.</p>
 <h3 id="automatic-validation">Automatic Validation<a class="headerlink" href="#automatic-validation" title="Link to this section">¶</a></h3>
 <p>Vulcan automatically validates models when you run <code>plan</code>:</p>
 <ol>
@@ -2196,20 +2249,37 @@
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <p>Here are some tips to help you work effectively with models:</p>
 <ol>
-<li><strong>Use descriptive names</strong>: <code>sales.daily_sales</code> is clearer than <code>sales.ds</code> - future you will thank present you</li>
-<li><strong>Add column descriptions</strong>: Document what each column represents - helps others (and you) understand the data</li>
-<li><strong>Use assertions</strong>: Validate data quality at the model level - catch issues automatically</li>
-<li><strong>Test before applying</strong>: Use <code>evaluate</code> to preview changes - catch bugs before they hit production</li>
-<li><strong>Review plans carefully</strong>: Check diffs and downstream impacts - make sure you understand what will change</li>
-<li><strong>Use dev environments</strong>: Test changes before production - don't test in prod!</li>
+<li>
+<p><strong>Use descriptive names</strong>: <code>sales.daily_sales</code> is clearer than <code>sales.ds</code>.</p>
+</li>
+<li>
+<p><strong>Add column descriptions</strong>: Document what each column represents. Helps others understand the data.</p>
+</li>
+<li>
+<p><strong>Use assertions</strong>: Validate data quality at the model level. Catch issues automatically.</p>
+</li>
+<li>
+<p><strong>Test before applying</strong>: Use <code>evaluate</code> to preview changes. Catch bugs before they hit production.</p>
+</li>
+<li>
+<p><strong>Review plans carefully</strong>: Check diffs and downstream impacts. Make sure you understand what will change.</p>
+</li>
+<li>
+<p><strong>Use dev environments</strong>: Test changes before production. Don't test in prod.</p>
+</li>
 </ol>
-<p>Following these practices will make your life easier and your data pipelines more reliable.</p>
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../../components/model/model_kinds/">Model Kinds</a> for different model types</li>
-<li>Explore <a href="../../components/model/properties/">Model Properties</a> for advanced configuration</li>
-<li>Read about <a href="../plan/">Plan Guide</a> for applying model changes</li>
+<li>
+<p>Learn about <a href="../../components/model/model_kinds/">Model Kinds</a> for different model types</p>
+</li>
+<li>
+<p>Explore <a href="../../components/model/properties/">Model Properties</a> for advanced configuration</p>
+</li>
+<li>
+<p>Read about <a href="../plan/">Plans</a> for applying model changes</p>
+</li>
 </ul>
 </article>
 </div>
@@ -2277,8 +2347,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

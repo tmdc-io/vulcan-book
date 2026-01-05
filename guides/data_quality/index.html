@@ -8,9 +8,9 @@
 <link href="../incremental_by_time/" rel="prev"/>
 <link href="../model_selection/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Data Quality - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1054,7 +1054,7 @@
 <a class="md-nav__link" href="#do">
 <span class="md-ellipsis">
       
-        ✅ DO:
+        DO:
       
     </span>
 </a>
@@ -1063,7 +1063,7 @@
 <a class="md-nav__link" href="#dont">
 <span class="md-ellipsis">
       
-        ❌ DON'T:
+        DON'T:
       
     </span>
 </a>
@@ -1361,7 +1361,7 @@
 <a class="md-nav__link" href="#do">
 <span class="md-ellipsis">
       
-        ✅ DO:
+        DO:
       
     </span>
 </a>
@@ -1370,7 +1370,7 @@
 <a class="md-nav__link" href="#dont">
 <span class="md-ellipsis">
       
-        ❌ DON'T:
+        DON'T:
       
     </span>
 </a>
@@ -1423,7 +1423,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="data-quality">Data Quality<a class="headerlink" href="#data-quality" title="Link to this section">¶</a></h1>
 <p>This guide explains how to use <strong>Audits</strong>, <strong>Checks</strong>, and <strong>Tests</strong> together to ensure data quality in your Orders360 project. You'll learn when to use each tool and see complex examples where they work together.</p>
-<p>Think of these three tools as layers of protection for your data. Each one serves a different purpose, and together they give you comprehensive coverage. Pretty neat, right?</p>
+<p>These three tools work as layers of protection for your data. Each serves a different purpose. Together they provide comprehensive coverage.</p>
 <hr/>
 <h2 id="the-three-layer-quality-strategy">The Three-Layer Quality Strategy<a class="headerlink" href="#the-three-layer-quality-strategy" title="Link to this section">¶</a></h2>
 <pre class="mermaid"><code>flowchart TB
@@ -1464,24 +1464,24 @@
 <tr>
 <td><strong>Audits</strong></td>
 <td>Critical validation</td>
-<td>✅ Yes (always)</td>
+<td>Yes (always)</td>
 <td>Business rules, data integrity</td>
 </tr>
 <tr>
 <td><strong>Checks</strong></td>
 <td>Quality monitoring</td>
-<td>❌ No</td>
+<td>No</td>
 <td>Trends, anomalies, monitoring</td>
 </tr>
 <tr>
 <td><strong>Tests</strong></td>
 <td>Logic validation</td>
-<td>❌ No</td>
+<td>No</td>
 <td>SQL correctness, edge cases</td>
 </tr>
 </tbody>
 </table>
-<p>The key difference? Audits stop everything if they fail, they're your safety net. Checks and tests just warn you, so you can investigate without blocking production.</p>
+<p>The key difference: Audits stop everything if they fail. Checks and tests warn you, so you can investigate without blocking production.</p>
 <p><em>[Screenshot: Visual comparison of the three quality tools]</em></p>
 <hr/>
 <h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this section">¶</a></h2>
@@ -1500,11 +1500,21 @@
 </span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="p">);</span>
 </span></code></pre></div>
-<p><strong>Why audits are useful:</strong>
-- ✅ Always blocking - if they fail, execution stops immediately. No bad data gets through!
-- ✅ Run automatically with model execution - you don't have to remember to run them
-- ✅ Fast feedback during development - catch issues before they hit production
-- ✅ Perfect for critical business rules - things like "revenue must be positive" or "primary keys must be unique"</p>
+<p><strong>Why audits are useful:</strong></p>
+<ul>
+<li>
+<p>Always blocking - if they fail, execution stops immediately. No bad data gets through</p>
+</li>
+<li>
+<p>Run automatically with model execution - you don't have to remember to run them</p>
+</li>
+<li>
+<p>Fast feedback during development - catch issues before they hit production</p>
+</li>
+<li>
+<p>Use for critical business rules like "revenue must be positive" or "primary keys must be unique"</p>
+</li>
+</ul>
 <p>Think of audits as your bouncer, they check IDs at the door and don't let anyone sketchy in.</p>
 <p><em>[Screenshot: Audit failure blocking plan execution]</em></p>
 <h3 id="checks-quality-monitoring">Checks: Quality Monitoring<a class="headerlink" href="#checks-quality-monitoring" title="Link to this section">¶</a></h3>
@@ -1524,12 +1534,22 @@
 </span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">          </span><span class="nt">attributes</span><span class="p">:</span>
 </span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Detect</span><span class="nv"> </span><span class="s">unusual</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">patterns"</span>
 </span></code></pre></div>
-<p><strong>Why checks are useful:</strong>
-- ✅ Non-blocking - warnings, not failures. Your pipeline keeps running even if a check flags something
-- ✅ Historical tracking - see trends over time. You can spot patterns like "revenue always drops on weekends" or "row counts are trending down"
-- ✅ Anomaly detection - statistical analysis. Checks can detect when something is statistically unusual, even if it's not technically wrong
-- ✅ Perfect for monitoring and alerting - set up alerts for when checks fail, so you know to investigate</p>
-<p>Checks are like your security cameras, they watch everything and alert you if something suspicious happens, but they don't stop the show.</p>
+<p><strong>Why checks are useful:</strong></p>
+<ul>
+<li>
+<p>Non-blocking - warnings, not failures. Your pipeline keeps running even if a check flags something</p>
+</li>
+<li>
+<p>Historical tracking - see trends over time. You can spot patterns like "revenue always drops on weekends" or "row counts are trending down"</p>
+</li>
+<li>
+<p>Anomaly detection - statistical analysis. Checks can detect when something is statistically unusual, even if it's not technically wrong</p>
+</li>
+<li>
+<p>Use for monitoring and alerting. Set up alerts for when checks fail, so you know to investigate.</p>
+</li>
+</ul>
+<p>Checks monitor everything and alert you if something suspicious happens, but they don't stop execution.</p>
 <p><em>[Screenshot: Check results showing trends over time]</em></p>
 <h3 id="tests-logic-validation">Tests: Logic Validation<a class="headerlink" href="#tests-logic-validation" title="Link to this section">¶</a></h3>
 <p><strong>Use tests when:</strong> You need to validate SQL transformations and edge cases. These are your unit tests for SQL, they make sure your logic is correct before you deploy it.</p>
@@ -1547,12 +1567,22 @@
 </span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">        </span><span class="nt">total_orders</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </span><span id="__span-2-13"><a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="w">        </span><span class="nt">total_revenue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.50</span>
 </span></code></pre></div>
-<p><strong>Why tests are useful:</strong>
-- ✅ Unit testing for SQL logic - test your transformations in isolation
-- ✅ Validates expected outputs - make sure you're getting the results you expect
-- ✅ Tests edge cases - what happens with empty data? Null values? Boundary conditions?
-- ✅ Perfect for development - catch bugs before they make it to production</p>
-<p>Tests are like your practice runs, you test everything in a controlled environment before the big game.</p>
+<p><strong>Why tests are useful:</strong></p>
+<ul>
+<li>
+<p>Unit testing for SQL logic - test your transformations in isolation</p>
+</li>
+<li>
+<p>Validates expected outputs - make sure you're getting the results you expect</p>
+</li>
+<li>
+<p>Tests edge cases - what happens with empty data? Null values? Boundary conditions?</p>
+</li>
+<li>
+<p>Use for development. Catch bugs before they make it to production.</p>
+</li>
+</ul>
+<p>Tests run in a controlled environment before production.</p>
 <p><em>[Screenshot: Test execution showing pass/fail results]</em></p>
 <hr/>
 <h2 id="complex-example-orders360-daily-sales">Complex Example: Orders360 Daily Sales<a class="headerlink" href="#complex-example-orders360-daily-sales" title="Link to this section">¶</a></h2>
@@ -1787,7 +1817,7 @@
 3. <strong>Model</strong> executes transformation - data gets processed
 4. <strong>Audits</strong> run immediately (block if fail) - critical validation happens right away
 5. <strong>Checks</strong> run (track trends, don't block) - monitoring happens in the background</p>
-<p>Notice how tests happen first, then audits catch critical issues, and checks monitor everything. It's a nice layered approach!</p>
+<p>Tests happen first, then audits catch critical issues, and checks monitor everything. This layered approach provides comprehensive coverage.</p>
 <p><em>[Screenshot: Complete workflow showing all three layers]</em></p>
 <hr/>
 <h2 id="complex-scenario-revenue-validation">Complex Scenario: Revenue Validation<a class="headerlink" href="#complex-scenario-revenue-validation" title="Link to this section">¶</a></h2>
@@ -1875,9 +1905,15 @@
 <p><strong>Why Both?</strong></p>
 <p>You might wonder why you need both an audit and a check for revenue. Here's the thing:</p>
 <ul>
-<li><strong>Audit:</strong> Stops pipeline if revenue is wrong (critical) - if daily totals don't match raw orders, that's a data integrity issue and everything stops</li>
-<li><strong>Check:</strong> Warns about trends and anomalies (monitoring) - if revenue spikes 50% day-over-day, that might be legitimate (big sale!) or it might be a problem, but you want to investigate, not block</li>
-<li><strong>Together:</strong> Critical issues blocked, trends monitored - you get both immediate protection and ongoing visibility</li>
+<li>
+<p><strong>Audit:</strong> Stops pipeline if revenue is wrong (critical). If daily totals don't match raw orders, that's a data integrity issue and everything stops.</p>
+</li>
+<li>
+<p><strong>Check:</strong> Warns about trends and anomalies (monitoring) - if revenue spikes 50% day-over-day, that might be legitimate (big sale!) or it might be a problem, but you want to investigate, not block</p>
+</li>
+<li>
+<p><strong>Together:</strong> Critical issues blocked, trends monitored - you get both immediate protection and ongoing visibility</p>
+</li>
 </ul>
 <p>The audit has a tight tolerance (0.01) because it's checking for correctness. The check has a wider tolerance (10.0) because it's looking for trends, not exact matches. Pretty clever, right?</p>
 <p><em>[Screenshot: Dashboard showing audit blocks vs check warnings]</em></p>
@@ -1915,7 +1951,7 @@
 <p><em>[Screenshot: Check execution output with trends]</em></p>
 <hr/>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
-<h3 id="do">✅ DO:<a class="headerlink" href="#do" title="Link to this section">¶</a></h3>
+<h3 id="do">DO:<a class="headerlink" href="#do" title="Link to this section">¶</a></h3>
 <p>Here are some tips to help you use these tools effectively:</p>
 <ol>
 <li><strong>Start with Audits</strong> - Add critical blocking validations first. Get your safety net in place before worrying about trends.</li>
@@ -1924,7 +1960,7 @@
 <li><strong>Use Descriptive Names</strong> - Makes debugging easier. Names like <code>revenue_mismatch_with_raw</code> are much better than <code>check_1</code>.</li>
 <li><strong>Order Audits Efficiently</strong> - Fast checks first, slow checks last. If you have multiple audits, put the quick ones first so you fail fast.</li>
 </ol>
-<h3 id="dont">❌ DON'T:<a class="headerlink" href="#dont" title="Link to this section">¶</a></h3>
+<h3 id="dont">DON'T:<a class="headerlink" href="#dont" title="Link to this section">¶</a></h3>
 <p>And here's what to avoid:</p>
 <ol>
 <li><strong>Don't use Checks for Critical Rules</strong> - Use audits instead. If it's critical, it should block. Checks are for monitoring, not blocking.</li>
@@ -1934,24 +1970,54 @@
 </ol>
 <hr/>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">¶</a></h2>
-<p><strong>Three-Layer Strategy:</strong>
-- <strong>Audits</strong> = Critical blocking validation (must pass)
-- <strong>Checks</strong> = Quality monitoring (trends, anomalies)
-- <strong>Tests</strong> = Logic validation (development)</p>
-<p><strong>Use Together:</strong>
-- Audits block invalid data
-- Checks monitor quality trends
-- Tests validate SQL logic</p>
-<p><strong>Orders360 Example:</strong>
-- Audits ensure revenue is positive and matches raw data
-- Checks detect anomalies and trends
-- Tests validate aggregation logic</p>
+<p><strong>Three-Layer Strategy:</strong></p>
+<ul>
+<li>
+<p><strong>Audits</strong> = Critical blocking validation (must pass)</p>
+</li>
+<li>
+<p><strong>Checks</strong> = Quality monitoring (trends, anomalies)</p>
+</li>
+<li>
+<p><strong>Tests</strong> = Logic validation (development)</p>
+</li>
+</ul>
+<p><strong>Use Together:</strong></p>
+<ul>
+<li>
+<p>Audits block invalid data</p>
+</li>
+<li>
+<p>Checks monitor quality trends</p>
+</li>
+<li>
+<p>Tests validate SQL logic</p>
+</li>
+</ul>
+<p><strong>Orders360 Example:</strong></p>
+<ul>
+<li>
+<p>Audits ensure revenue is positive and matches raw data</p>
+</li>
+<li>
+<p>Checks detect anomalies and trends</p>
+</li>
+<li>
+<p>Tests validate aggregation logic</p>
+</li>
+</ul>
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../../components/audits/audits/#built-in-audits">Built-in Audits</a></li>
-<li>Explore <a href="../../components/checks/checks/#data-quality-dimensions">Check Dimensions</a></li>
-<li>Read about <a href="../../components/tests/tests/">Testing</a></li>
+<li>
+<p>Learn about <a href="../../components/audits/audits/#built-in-audits">Built-in Audits</a></p>
+</li>
+<li>
+<p>Explore <a href="../../components/checks/checks/#data-quality-dimensions">Check Dimensions</a></p>
+</li>
+<li>
+<p>Read about <a href="../../components/tests/tests/">Testing</a></p>
+</li>
 </ul>
 </article>
 </div>
@@ -2019,8 +2085,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

@@ -8,9 +8,9 @@
 <link href="../notifications/" rel="prev"/>
 <link href="../../engines/postgres/postgres/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Linter - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -305,7 +305,7 @@
 <a class="md-nav__link" href="#built-in-rules">
 <span class="md-ellipsis">
       
-        Built-in rules
+        Built-in Rules
       
     </span>
 </a>
@@ -314,7 +314,7 @@
 <a class="md-nav__link" href="#user-defined-rules">
 <span class="md-ellipsis">
       
-        User-defined rules
+        User-Defined Rules
       
     </span>
 </a>
@@ -326,17 +326,17 @@
 <a class="md-nav__link" href="#applying-linting-rules">
 <span class="md-ellipsis">
       
-        Applying linting rules
+        Applying Linting Rules
       
     </span>
 </a>
-<nav aria-label="Applying linting rules" class="md-nav">
+<nav aria-label="Applying Linting Rules" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#specific-linting-rules">
 <span class="md-ellipsis">
       
-        Specific linting rules
+        Specific Linting Rules
       
     </span>
 </a>
@@ -345,7 +345,7 @@
 <a class="md-nav__link" href="#all-linting-rules">
 <span class="md-ellipsis">
       
-        All linting rules
+        All Linting Rules
       
     </span>
 </a>
@@ -354,7 +354,7 @@
 <a class="md-nav__link" href="#exclude-a-model-from-linting">
 <span class="md-ellipsis">
       
-        Exclude a model from linting
+        Exclude a Model from Linting
       
     </span>
 </a>
@@ -363,7 +363,7 @@
 <a class="md-nav__link" href="#rule-violation-behavior">
 <span class="md-ellipsis">
       
-        Rule violation behavior
+        Rule Violation Behavior
       
     </span>
 </a>
@@ -1036,7 +1036,7 @@
 <a class="md-nav__link" href="#built-in-rules">
 <span class="md-ellipsis">
       
-        Built-in rules
+        Built-in Rules
       
     </span>
 </a>
@@ -1045,7 +1045,7 @@
 <a class="md-nav__link" href="#user-defined-rules">
 <span class="md-ellipsis">
       
-        User-defined rules
+        User-Defined Rules
       
     </span>
 </a>
@@ -1057,17 +1057,17 @@
 <a class="md-nav__link" href="#applying-linting-rules">
 <span class="md-ellipsis">
       
-        Applying linting rules
+        Applying Linting Rules
       
     </span>
 </a>
-<nav aria-label="Applying linting rules" class="md-nav">
+<nav aria-label="Applying Linting Rules" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#specific-linting-rules">
 <span class="md-ellipsis">
       
-        Specific linting rules
+        Specific Linting Rules
       
     </span>
 </a>
@@ -1076,7 +1076,7 @@
 <a class="md-nav__link" href="#all-linting-rules">
 <span class="md-ellipsis">
       
-        All linting rules
+        All Linting Rules
       
     </span>
 </a>
@@ -1085,7 +1085,7 @@
 <a class="md-nav__link" href="#exclude-a-model-from-linting">
 <span class="md-ellipsis">
       
-        Exclude a model from linting
+        Exclude a Model from Linting
       
     </span>
 </a>
@@ -1094,7 +1094,7 @@
 <a class="md-nav__link" href="#rule-violation-behavior">
 <span class="md-ellipsis">
       
-        Rule violation behavior
+        Rule Violation Behavior
       
     </span>
 </a>
@@ -1135,19 +1135,27 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="linter">Linter<a class="headerlink" href="#linter" title="Link to this section">¶</a></h1>
-<p>Linting is like having a code reviewer that never gets tired. It automatically checks your model definitions to make sure they follow your team's best practices and catches common mistakes before they cause problems.</p>
-<p>When you create a Vulcan plan, each model's code gets checked against the linting rules you've configured. If any rules are violated, Vulcan will let you know so you can fix the issues before deploying.</p>
-<p>Vulcan comes with several built-in rules that catch common SQL mistakes and enforce good practices. But you're not limited to those, you can also write custom rules that match your team's specific requirements. This helps maintain code quality and catches issues early, when they're much easier to fix.</p>
+<p>Linting automatically checks your model definitions against your team's best practices and catches common mistakes before they cause problems.</p>
+<p>When you create a Vulcan plan, each model's code gets checked against the linting rules you've configured. If any rules are violated, Vulcan tells you so you can fix the issues before deploying.</p>
+<p>Vulcan includes built-in rules that catch common SQL mistakes and enforce good practices. You can also write custom rules that match your team's specific requirements. This maintains code quality and catches issues early, when they're easier to fix.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Link to this section">¶</a></h2>
-<p>Linting rules are basically pattern detectors. Each rule looks for a specific pattern (or lack of a pattern) in your model code.</p>
-<p>Some rules check that a pattern <em>isn't</em> present, like the <code>NoSelectStar</code> rule that prevents <code>SELECT *</code> in your outermost query. Other rules check that a pattern <em>is</em> present, like making sure every model has an <code>owner</code> field specified. Both types help keep your code consistent and maintainable.</p>
-<p>Rules are written in Python, which makes them flexible and powerful. Each rule is a Python class that inherits from Vulcan's <code>Rule</code> base class. You define the logic for detecting the pattern, and Vulcan handles the rest.</p>
-<p>Here's how the <code>Rule</code> base class works (you can see the <a href="https://github.com/TobikoData/vulcan/blob/main/vulcan/core/linter/rule.py">full source code</a> if you want all the details). When you create a custom rule, you'll need to implement four things:</p>
+<p>Linting rules are pattern detectors. Each rule looks for a specific pattern (or lack of a pattern) in your model code.</p>
+<p>Some rules check that a pattern isn't present, like the <code>NoSelectStar</code> rule that prevents <code>SELECT *</code> in your outermost query. Other rules check that a pattern is present, like making sure every model has an <code>owner</code> field specified. Both types keep your code consistent and maintainable.</p>
+<p>Rules are written in Python. Each rule is a Python class that inherits from Vulcan's <code>Rule</code> base class. You define the logic for detecting the pattern, and Vulcan handles the rest.</p>
+<p>When you create a custom rule, implement four things:</p>
 <ol>
-<li><strong>Name</strong> - The class name becomes the rule's name (converted to lowercase with underscores).</li>
-<li><strong>Description</strong> - A docstring that explains what the rule checks and why it matters.</li>
-<li><strong>Pattern validation logic</strong> - The <code>check_model()</code> method that actually checks your model code. You can access any attribute of the <code>Model</code> object to make your decision.</li>
-<li><strong>Rule violation logic</strong> - If the pattern isn't valid, return a <code>RuleViolation</code> object with a helpful message that tells the user what's wrong and how to fix it.</li>
+<li>
+<p>Name: The class name becomes the rule's name (converted to lowercase with underscores).</p>
+</li>
+<li>
+<p>Description: A docstring that explains what the rule checks and why it matters.</p>
+</li>
+<li>
+<p>Pattern validation logic: The <code>check_model()</code> method that checks your model code. You can access any attribute of the <code>Model</code> object.</p>
+</li>
+<li>
+<p>Rule violation logic: If the pattern isn't valid, return a <code>RuleViolation</code> object with a message that tells the user what's wrong and how to fix it.</p>
+</li>
 </ol>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
@@ -1177,9 +1185,9 @@
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">        </span><span class="sd">"""Return a RuleViolation instance if this rule is violated"""</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>        <span class="k">return</span> <span class="n">RuleViolation</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">violation_msg</span><span class="o">=</span><span class="n">violation_msg</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="built-in-rules">Built-in rules<a class="headerlink" href="#built-in-rules" title="Link to this section">¶</a></h3>
-<p>Vulcan comes with several built-in rules that catch common SQL mistakes and enforce good coding practices. These are battle-tested rules that catch real issues we've seen in production.</p>
-<p>For example, the <code>NoSelectStar</code> rule prevents you from using <code>SELECT *</code> in your outermost query. Why? Because <code>SELECT *</code> makes it unclear what columns your model actually produces, which can break downstream models and make debugging harder.</p>
+<h3 id="built-in-rules">Built-in Rules<a class="headerlink" href="#built-in-rules" title="Link to this section">¶</a></h3>
+<p>Vulcan includes built-in rules that catch common SQL mistakes and enforce good coding practices. These rules catch real issues seen in production.</p>
+<p>For example, the <code>NoSelectStar</code> rule prevents using <code>SELECT *</code> in your outermost query. <code>SELECT *</code> makes it unclear what columns your model produces, which can break downstream models and make debugging harder.</p>
 <p>Here's what the <code>NoSelectStar</code> rule looks like, with annotations showing how it's structured:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
@@ -1239,9 +1247,9 @@
 </tr>
 </tbody>
 </table>
-<h3 id="user-defined-rules">User-defined rules<a class="headerlink" href="#user-defined-rules" title="Link to this section">¶</a></h3>
-<p>Built-in rules are great, but every team has different standards. That's where custom rules come in. You can write rules that enforce your team's specific best practices.</p>
-<p>For example, maybe you want to make sure every model has an <code>owner</code> field so you know who's responsible for it. Here's how you'd write that rule:</p>
+<h3 id="user-defined-rules">User-Defined Rules<a class="headerlink" href="#user-defined-rules" title="Link to this section">¶</a></h3>
+<p>Built-in rules are good, but every team has different standards. Write custom rules that enforce your team's specific best practices.</p>
+<p>For example, make sure every model has an <code>owner</code> field so you know who's responsible for it:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">linter/user.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
@@ -1266,8 +1274,10 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Put your custom rules in the <code>linter/</code> directory of your project. Vulcan will automatically find and load any classes that inherit from <code>Rule</code> in that directory.</p>
 <p>Once you've added a rule to your <a href="#applying-linting-rules">configuration file</a>, Vulcan will run it automatically when:
-- You create a plan with <code>vulcan plan</code>
-- You run the <code>vulcan lint</code> command</p>
+- You create a plan with <code>vulcan plan</code></p>
+<ul>
+<li>You run the <code>vulcan lint</code> command</li>
+</ul>
 <p>If a model violates a rule, Vulcan will stop and tell you exactly which model(s) have problems. Here's what that looks like, in this example, <code>full_model.sql</code> is missing an owner, so the plan stops:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>$<span class="w"> </span>vulcan<span class="w"> </span>plan
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>
@@ -1285,15 +1295,15 @@
 </span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>Error:<span class="w"> </span>Linter<span class="w"> </span>detected<span class="w"> </span>errors<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>code.<span class="w"> </span>Please<span class="w"> </span>fix<span class="w"> </span>them<span class="w"> </span>before<span class="w"> </span>proceeding.
 </span></code></pre></div>
 <p>Use <code>vulcan lint --help</code> for more information.</p>
-<h2 id="applying-linting-rules">Applying linting rules<a class="headerlink" href="#applying-linting-rules" title="Link to this section">¶</a></h2>
+<h2 id="applying-linting-rules">Applying Linting Rules<a class="headerlink" href="#applying-linting-rules" title="Link to this section">¶</a></h2>
 <p>Specify which linting rules a project should apply in the project's <a href="../../overview/">configuration file</a>.</p>
-<p>You specify which rules to run as a list under the <code>linter</code> key. You can also globally enable or disable linting with the <code>enabled</code> key (it defaults to <code>false</code>, so you'll need to turn it on).</p>
+<p>List which rules to run under the <code>linter</code> key. Globally enable or disable linting with the <code>enabled</code> key (defaults to <code>false</code>, so you need to turn it on).</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p><strong>Don't forget to set <code>enabled: true</code>!</strong> If you don't, Vulcan won't run any linting rules, even if you've specified them.</p>
+<p>Don't forget to set <code>enabled: true</code>! If you don't, Vulcan won't run any linting rules, even if you've specified them.</p>
 </div>
-<h3 id="specific-linting-rules">Specific linting rules<a class="headerlink" href="#specific-linting-rules" title="Link to this section">¶</a></h3>
-<p>Want to use just a few specific rules? No problem. Just list them in the <code>rules</code> array. Here's an example that enables two built-in rules:</p>
+<h3 id="specific-linting-rules">Specific Linting Rules<a class="headerlink" href="#specific-linting-rules" title="Link to this section">¶</a></h3>
+<p>Use just a few specific rules. List them in the <code>rules</code> array. Example that enables two built-in rules:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1324,8 +1334,8 @@
 </div>
 </div>
 </div>
-<h3 id="all-linting-rules">All linting rules<a class="headerlink" href="#all-linting-rules" title="Link to this section">¶</a></h3>
-<p>Want to enable all the rules? Just use <code>"ALL"</code> instead of listing them individually. This will run every built-in rule plus any custom rules you've defined:</p>
+<h3 id="all-linting-rules">All Linting Rules<a class="headerlink" href="#all-linting-rules" title="Link to this section">¶</a></h3>
+<p>Enable all rules. Use <code>"ALL"</code> instead of listing them individually. This runs every built-in rule plus any custom rules you've defined:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">YAML</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1356,7 +1366,7 @@
 </div>
 </div>
 </div>
-<p>Sometimes you want almost everything, but there's one or two rules that don't fit your workflow. You can use <code>"ALL"</code> and then exclude specific rules with <code>ignored_rules</code>:</p>
+<p>Sometimes you want almost everything, but one or two rules don't fit your workflow. Use <code>"ALL"</code> and exclude specific rules with <code>ignored_rules</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">YAML</label><label for="__tabbed_3_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1395,8 +1405,8 @@
 </div>
 </div>
 </div>
-<h3 id="exclude-a-model-from-linting">Exclude a model from linting<a class="headerlink" href="#exclude-a-model-from-linting" title="Link to this section">¶</a></h3>
-<p>Sometimes you have a model that legitimately needs to violate a rule. Maybe it's a legacy model you're migrating, or there's a special case. You can exclude specific models from specific rules (or all rules) by adding <code>ignored_rules</code> to the model's <code>MODEL</code> block.</p>
+<h3 id="exclude-a-model-from-linting">Exclude a Model from Linting<a class="headerlink" href="#exclude-a-model-from-linting" title="Link to this section">¶</a></h3>
+<p>Sometimes a model legitimately needs to violate a rule. Maybe it's a legacy model you're migrating, or there's a special case. Exclude specific models from specific rules (or all rules) by adding <code>ignored_rules</code> to the model's <code>MODEL</code> block.</p>
 <p>Here's an example where we exclude one model from one rule:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
 <span class="normal"><a href="#__codelineno-11-2">2</a></span>
@@ -1406,9 +1416,9 @@
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">  </span><span class="n">ignored_rules</span><span class="w"> </span><span class="p">[</span><span class="ss">"invalidselectstarexpansion"</span><span class="p">]</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="ss">"ALL"</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">turn</span><span class="w"> </span><span class="k">off</span><span class="w"> </span><span class="n">linting</span><span class="w"> </span><span class="n">completely</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<h3 id="rule-violation-behavior">Rule violation behavior<a class="headerlink" href="#rule-violation-behavior" title="Link to this section">¶</a></h3>
+<h3 id="rule-violation-behavior">Rule Violation Behavior<a class="headerlink" href="#rule-violation-behavior" title="Link to this section">¶</a></h3>
 <p>By default, when a rule is violated, Vulcan treats it as an error and stops execution. This ensures you fix issues before they make it to production.</p>
-<p>But sometimes you want a rule to be more of a suggestion than a hard requirement. Maybe it's a style preference that's nice to have but not critical. In that case, you can put the rule in <code>warn_rules</code> instead of <code>rules</code>. Violations will still be reported, but they won't stop execution:</p>
+<p>Sometimes you want a rule to be a suggestion rather than a hard requirement. Maybe it's a style preference that's nice to have but not critical. Put the rule in <code>warn_rules</code> instead of <code>rules</code>. Violations are still reported, but they won't stop execution:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">YAML</label><label for="__tabbed_4_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1518,8 +1528,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

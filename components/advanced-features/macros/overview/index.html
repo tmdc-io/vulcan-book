@@ -8,9 +8,9 @@
 <link href="../../../semantics/business_metrics/" rel="prev"/>
 <link href="../variables/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Overview - DataOS Vulcan</title>
-<link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -957,20 +957,30 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>SQL is a <a href="https://en.wikipedia.org/wiki/Declarative_programming">declarative language</a>, which means you describe what you want, not how to get it. That's great for clarity, but it also means SQL doesn't have built-in features like variables or control flow (if-then statements, loops) that let your queries adapt to different situations.</p>
-<p>The problem? Data modelss are dynamic. You need different behavior depending on context, maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.</p>
+<p>SQL is a <a href="https://en.wikipedia.org/wiki/Declarative_programming">declarative language</a>, which means you describe what you want, not how to get it. This provides clarity, but SQL doesn't have built-in features like variables or control flow (if-then statements, loops) that let your queries adapt to different situations.</p>
+<p>The problem? Data models are dynamic. You need different behavior depending on context, maybe filter by a different date each day, or include different columns based on configuration. That's where macros come in.</p>
 <p>Macros let you make your SQL dynamic. Instead of hardcoding values, you can use variables that get substituted at runtime. Instead of writing repetitive code, you can use functions that generate SQL for you.</p>
 <p>Vulcan supports two macro systems, each with its own strengths:</p>
 <ul>
-<li><strong>Vulcan macros</strong>: Built specifically for SQL, with semantic understanding of your queries</li>
-<li><strong>Jinja macros</strong>: The popular templating system, great if you're already familiar with it</li>
+<li>
+<p><strong>Vulcan macros</strong>: Built specifically for SQL, with semantic understanding of your queries</p>
+</li>
+<li>
+<p><strong>Jinja macros</strong>: The popular templating system, useful if you're already familiar with it</p>
+</li>
 </ul>
 <p>Both systems can use the same <a href="../variables/">pre-defined variables</a> that Vulcan provides, like <code>@execution_ds</code> for the current execution date or <code>@this_model</code> for the current model name.</p>
-<p>Ready to dive in? Here's where to go next:</p>
+<p>Next steps:</p>
 <ul>
-<li><a href="../variables/">Pre-defined macro variables</a> - Built-in variables available in both systems</li>
-<li><a href="../built_in/">Vulcan macros</a> - Vulcan's native macro system with SQL-aware features</li>
-<li><a href="../jinja/">Jinja macros</a> - The Jinja templating system for SQL</li>
+<li>
+<p><a href="../variables/">Pre-defined macro variables</a> - Built-in variables available in both systems</p>
+</li>
+<li>
+<p><a href="../built_in/">Vulcan macros</a> - Vulcan's native macro system with SQL-aware features</p>
+</li>
+<li>
+<p><a href="../jinja/">Jinja macros</a> - The Jinja templating system for SQL</p>
+</li>
 </ul>
 </article>
 </div>
@@ -1038,8 +1048,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

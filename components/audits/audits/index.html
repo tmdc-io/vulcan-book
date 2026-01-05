@@ -8,9 +8,9 @@
 <link href="../../tests/tests/" rel="prev"/>
 <link href="../../checks/checks/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Audits - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1484,9 +1484,9 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="audits">Audits<a class="headerlink" href="#audits" title="Link to this section">¶</a></h1>
-<p>Audits are your data quality bouncers, they stop bad data at the door before it can cause problems downstream. Think of them as strict validators that run after every model execution and halt your models if something's wrong.</p>
-<p>Unlike <a href="../../tests/tests/">tests</a> (which you run manually to verify logic), audits run automatically whenever you apply a <a href="../../../guides/plan/">plan</a>. They're perfect for catching data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.</p>
-<p><strong>Here's the key thing:</strong> All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything, no plan application, no run execution, nothing. This might sound strict, but it's actually a good thing. It prevents bad data from propagating through your entire models and causing headaches later.</p>
+<p>Audits stop bad data before it causes problems downstream. They run after every model execution and halt your models if something's wrong.</p>
+<p>Unlike <a href="../../tests/tests/">tests</a> (which you run manually to verify logic), audits run automatically whenever you apply a <a href="../../../guides/plan/">plan</a>. They catch data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.</p>
+<p>All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything: no plan application, no run execution. This prevents bad data from propagating through your entire pipeline.</p>
 <p>A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.</p>
 <blockquote>
 <p><strong>Note:</strong> For incremental by time range models, audits only run on the intervals being processed, not the entire table. This keeps things fast and focused on what actually changed.</p>
@@ -1494,10 +1494,14 @@
 <h2 id="terminology-audits-and-assertions">Terminology: Audits and Assertions<a class="headerlink" href="#terminology-audits-and-assertions" title="Link to this section">¶</a></h2>
 <p>Before we dive in, let's clear up some terminology. Vulcan uses two related but distinct concepts:</p>
 <ul>
-<li><strong>AUDIT</strong> - The validation rule itself (the SQL query that checks for problems)</li>
-<li><strong>ASSERTION</strong> - Attaching an audit to a model (claiming it should pass)</li>
+<li>
+<p><strong>AUDIT</strong> - The validation rule itself (the SQL query that checks for problems)</p>
+</li>
+<li>
+<p><strong>ASSERTION</strong> - Attaching an audit to a model (claiming it should pass)</p>
+</li>
 </ul>
-<p>Think of it this way: an audit is the rule ("prices must be positive"), and an assertion is you saying "this model follows that rule."</p>
+<p>An audit is the rule ("prices must be positive"), and an assertion is you saying "this model follows that rule."</p>
 <p><strong>In MODEL definitions:</strong></p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">-- Define the AUDIT (the rule)</span>
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="n">AUDIT</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="n">check_positive_price</span><span class="p">);</span>
@@ -1524,15 +1528,31 @@
 <h3 id="plan-vs-run">Plan vs. Run<a class="headerlink" href="#plan-vs-run" title="Link to this section">¶</a></h3>
 <p>The difference between <code>plan</code> and <code>run</code> matters a lot when it comes to audits:</p>
 <p><strong><code>plan</code></strong> - The safe way:
-- Vulcan evaluates and audits all modified models <em>before</em> promoting them to production
-- If an audit fails, the plan stops and your production table is untouched
-- Invalid data stays in an isolated table and never reaches production
-- This is like testing in a sandbox before deploying</p>
+- Vulcan evaluates and audits all modified models <em>before</em> promoting them to production</p>
+<ul>
+<li>
+<p>If an audit fails, the plan stops and your production table is untouched</p>
+</li>
+<li>
+<p>Invalid data stays in an isolated table and never reaches production</p>
+</li>
+<li>
+<p>This is like testing in a sandbox before deploying</p>
+</li>
+</ul>
 <p><strong><code>run</code></strong> - The direct way:
-- Vulcan evaluates and audits models directly against the production environment
-- If an audit fails, the run stops, but the invalid data <em>is already in production</em>
-- The blocking prevents this bad data from being used to build downstream models
-- This is like deploying directly, faster, but riskier</p>
+- Vulcan evaluates and audits models directly against the production environment</p>
+<ul>
+<li>
+<p>If an audit fails, the run stops, but the invalid data <em>is already in production</em></p>
+</li>
+<li>
+<p>The blocking prevents this bad data from being used to build downstream models</p>
+</li>
+<li>
+<p>This is like deploying directly, faster, but riskier</p>
+</li>
+</ul>
 <p><strong>Which should you use?</strong> For production changes, use <code>plan</code>. It's safer and gives you a chance to fix issues before they hit production. Use <code>run</code> when you're confident or doing quick iterations.</p>
 <h3 id="fixing-a-failed-audit">Fixing a Failed Audit<a class="headerlink" href="#fixing-a-failed-audit" title="Link to this section">¶</a></h3>
 <p>So an audit failed. Don't panic! Here's how to fix it:</p>
@@ -1542,10 +1562,12 @@
 </li>
 <li>
 <p><strong>Fix the source</strong> - This depends on where the problem came from:
-   - <strong>External data source?</strong> Fix it at the source, then run a <a href="../../../guides/plan/#restatement-plans">restatement plan</a> on the first Vulcan model that ingests it. This will restate all downstream models automatically.
-   - <strong>Vulcan model?</strong> Update the model's logic, then apply the change with a <code>plan</code>. Vulcan will automatically re-evaluate all downstream models.</p>
+   - <strong>External data source?</strong> Fix it at the source, then run a <a href="../../../guides/plan/#restatement-plans">restatement plan</a> on the first Vulcan model that ingests it. This will restate all downstream models automatically.</p>
 </li>
 </ol>
+<ul>
+<li><strong>Vulcan model?</strong> Update the model's logic, then apply the change with a <code>plan</code>. Vulcan will automatically re-evaluate all downstream models.</li>
+</ul>
 <p>The key is fixing the root cause, not just the symptom. If bad data is coming from upstream, fixing it downstream won't help long-term.</p>
 <h2 id="user-defined-audits">User-Defined Audits<a class="headerlink" href="#user-defined-audits" title="Link to this section">¶</a></h2>
 <p>You can write your own audits! They're just SQL queries that should return zero rows. If they return rows, that means they found bad data and the audit fails.</p>
@@ -1569,10 +1591,18 @@
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This audit checks that every sushi item has a price. If any items are missing prices (the query returns rows), the audit fails.</p>
-<p><strong>A few things to note:</strong>
-- The <code>name</code> is what you'll reference when attaching it to a model
-- If your query uses a different SQL dialect than your project, specify it with <code>dialect</code> (like <code>spark</code> in the example)
-- The <code>@start_ds</code> and <code>@end_ds</code> macros are automatically filled in for incremental models</p>
+<p><strong>A few things to note:</strong></p>
+<ul>
+<li>
+<p>The <code>name</code> is what you'll reference when attaching it to a model</p>
+</li>
+<li>
+<p>If your query uses a different SQL dialect than your project, specify it with <code>dialect</code> (like <code>spark</code> in the example)</p>
+</li>
+<li>
+<p>The <code>@start_ds</code> and <code>@end_ds</code> macros are automatically filled in for incremental models</p>
+</li>
+</ul>
 <p>To actually use this audit, attach it to a model:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
@@ -1582,7 +1612,7 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span><span class="n">assert_item_price_is_not_null</span><span class="p">)</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Now this audit runs every time the <code>sushi.items</code> model runs. Pretty straightforward!</p>
+<p>This audit runs every time the <code>sushi.items</code> model runs.</p>
 <h3 id="generic-audits">Generic Audits<a class="headerlink" href="#generic-audits" title="Link to this section">¶</a></h3>
 <p>Here's where audits get really powerful. You can create parameterized audits that work across multiple models. This saves you from writing the same audit over and over.</p>
 <p>Consider this audit that checks if a column exceeds a threshold:</p>
@@ -1598,8 +1628,12 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This uses <a href="../../advanced-features/macros/overview/">macros</a> to make it flexible:</p>
 <ul>
-<li><code>@this_model</code> is a special macro that refers to the model being audited (and handles incremental models correctly)</li>
-<li><code>@column</code> and <code>@threshold</code> are parameters you'll specify when you use the audit</li>
+<li>
+<p><code>@this_model</code> is a special macro that refers to the model being audited (and handles incremental models correctly)</p>
+</li>
+<li>
+<p><code>@column</code> and <code>@threshold</code> are parameters you'll specify when you use the audit</p>
+</li>
 </ul>
 <p>Now you can use this same audit for different columns and thresholds:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
@@ -1616,7 +1650,7 @@
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>See how we're using the same audit twice with different parameters? That's the power of generic audits. You can even use the same audit multiple times on the same model with different parameters.</p>
+<p>You can use the same audit multiple times on the same model with different parameters.</p>
 <p><strong>Default values:</strong></p>
 <p>You can set default values for parameters:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
@@ -1637,18 +1671,20 @@
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">@</span><span class="n">this_model</span>
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="o">@</span><span class="k">column</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">@</span><span class="n">threshold</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Now if someone uses the audit without specifying parameters, it'll use these defaults. Handy for common cases!</p>
+<p>If someone uses the audit without specifying parameters, it uses these defaults.</p>
 <p><strong>Global audits:</strong></p>
 <p>You can also apply audits globally using model defaults:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
 <span class="normal"><a href="#__codelineno-6-3">3</a></span>
-<span class="normal"><a href="#__codelineno-6-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">model_defaults</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-6-4">4</a></span>
+<span class="normal"><a href="#__codelineno-6-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">model_defaults</span><span class="p">:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="n">assertions</span><span class="p">:</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">assert_positive_order_ids</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">does_not_exceed_threshold</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">threshold</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">does_not_exceed_threshold</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">threshold</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>This applies these audits to all models by default. Useful for organization-wide rules!</p>
+<p>This applies these audits to all models by default.</p>
 <blockquote>
 <p><strong>Note:</strong> In <code>model_defaults</code>, you can use either <code>audits</code> or <code>assertions</code>, both work for backward compatibility.</p>
 </blockquote>
@@ -1669,7 +1705,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>It's easier to just avoid keywords in the first place, but if you need them, quotes work fine.</p>
 <h3 id="inline-audits">Inline Audits<a class="headerlink" href="#inline-audits" title="Link to this section">¶</a></h3>
-<p>You can also define audits right in your model file. This is handy when an audit is specific to one model:</p>
+<p>You can also define audits right in your model file. This is useful when an audit is specific to one model:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
@@ -2289,17 +2325,33 @@
 <p><strong>Solution:</strong> Review your thresholds. Maybe your <code>accepted_range</code> is too narrow, or your <code>number_of_rows</code> threshold is too high. Statistical audits especially need tuning, start with wide ranges and tighten them as you learn what's normal.</p>
 <h3 id="performance-issues">Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this section">¶</a></h3>
 <p><strong>Problem:</strong> Audits are slowing down your plan execution.</p>
-<p><strong>Solution:</strong> 
-- Make sure your audit queries use indexes on the columns they're checking
-- For incremental models, audits only run on processed intervals (which helps), but you can also add date filters to your audit queries
-- Consider if you really need all those audits, sometimes less is more</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>Make sure your audit queries use indexes on the columns they're checking</p>
+</li>
+<li>
+<p>For incremental models, audits only run on processed intervals (which helps), but you can also add date filters to your audit queries</p>
+</li>
+<li>
+<p>Consider if you really need all those audits, sometimes less is more</p>
+</li>
+</ul>
 <h3 id="understanding-audit-results">Understanding Audit Results<a class="headerlink" href="#understanding-audit-results" title="Link to this section">¶</a></h3>
 <p>When an audit fails, Vulcan shows you:</p>
 <ul>
-<li>Which audit failed</li>
-<li>Which model it was attached to</li>
-<li>The exact query that was run</li>
-<li>How many rows were returned (when it expected 0)</li>
+<li>
+<p>Which audit failed</p>
+</li>
+<li>
+<p>Which model it was attached to</p>
+</li>
+<li>
+<p>The exact query that was run</p>
+</li>
+<li>
+<p>How many rows were returned (when it expected 0)</p>
+</li>
 </ul>
 <p>Use this information to understand what went wrong. The query results tell you exactly what data failed the check.</p>
 </article>
@@ -2368,8 +2420,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

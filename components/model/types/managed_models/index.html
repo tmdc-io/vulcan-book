@@ -8,9 +8,9 @@
 <link href="../external_models/" rel="prev"/>
 <link href="../../model_kinds/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Managed - DataOS Vulcan</title>
-<link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1064,39 +1064,63 @@
 <h1 id="managed">Managed<a class="headerlink" href="#managed" title="Link to this section">¶</a></h1>
 <p>Most Vulcan models manage their own data, you run <code>vulcan run</code>, and Vulcan updates the tables. Managed models are different: the database engine handles data updates automatically in the background.</p>
 <p><strong>How it works:</strong> You define a query, and the engine monitors upstream tables. When source data changes, the engine automatically refreshes your managed table. No manual <code>REFRESH</code> commands needed, it just happens.</p>
-<p><strong>Why use this?</strong> Perfect for scenarios where you need always-fresh data without managing refresh schedules yourself. The engine handles the complexity of incremental updates, change detection, and refresh timing.</p>
-<p><strong>Best use case:</strong> Managed models are typically built on <a href="components/model/types/external_models.md">External Models</a> rather than other Vulcan models. Since Vulcan already keeps its models up to date, the main benefit comes when you're reading from external tables that aren't tracked by Vulcan. The engine keeps your managed table in sync with those external sources automatically.</p>
+<p>Use this for scenarios where you need always-fresh data without managing refresh schedules yourself. The engine handles the complexity of incremental updates, change detection, and refresh timing.</p>
+<p><strong>Best use case:</strong> Managed models are typically built on <a href="../external_models/">External Models</a> rather than other Vulcan models. Since Vulcan already keeps its models up to date, the main benefit comes when you're reading from external tables that aren't tracked by Vulcan. The engine keeps your managed table in sync with those external sources automatically.</p>
 <div class="admonition warning">
 <p class="admonition-title">Python Models Not Supported</p>
-<p>Python models don't support the <code>MANAGED</code> <a href="components/model/types/model_kinds.md">model kind</a>. You'll need to use a SQL model instead.</p>
+<p>Python models don't support the <code>MANAGED</code> <a href="../../model_kinds/">model kind</a>. You'll need to use a SQL model instead.</p>
 </div>
 <h2 id="difference-from-materialized-views">Difference from Materialized Views<a class="headerlink" href="#difference-from-materialized-views" title="Link to this section">¶</a></h2>
-<p>You might be wondering: "What's the difference between a managed model and a materialized view?" Good question!</p>
-<p>Vulcan already supports <a href="../../model_kinds.md#materialized-views">materialized views</a>, but they have limitations:</p>
+<p>What's the difference between a managed model and a materialized view?</p>
+<p>Vulcan already supports <a href="../../model_kinds/#materialized-views">materialized views</a>, but they have limitations:</p>
 <ul>
-<li>Some engines only allow materialized views from a single base table</li>
-<li>Materialized views aren't automatically refreshed, you need to run <code>REFRESH MATERIALIZED VIEW</code> manually</li>
-<li>You're responsible for scheduling refreshes</li>
+<li>
+<p>Some engines only allow materialized views from a single base table</p>
+</li>
+<li>
+<p>Materialized views aren't automatically refreshed, you need to run <code>REFRESH MATERIALIZED VIEW</code> manually</p>
+</li>
+<li>
+<p>You're responsible for scheduling refreshes</p>
+</li>
 </ul>
-<p><strong>Managed models are different:</strong>
-- ✅ <strong>Automatic updates</strong> - The engine refreshes data when source tables change
-- ✅ <strong>Smart refresh</strong> - The engine understands your query and can do incremental or full refreshes as needed
-- ✅ <strong>No manual commands</strong> - Everything happens in the background</p>
+<p><strong>Managed models are different:</strong></p>
+<ul>
+<li>
+<p><strong>Automatic updates</strong> - The engine refreshes data when source tables change</p>
+</li>
+<li>
+<p><strong>Smart refresh</strong> - The engine understands your query and can do incremental or full refreshes as needed</p>
+</li>
+<li>
+<p><strong>No manual commands</strong> - Everything happens in the background</p>
+</li>
+</ul>
 <p><strong>In some engines, there's no difference</strong> (they're the same thing). In others, managed models give you more automation and flexibility.</p>
 <h2 id="lifecycle-in-vulcan">Lifecycle in Vulcan<a class="headerlink" href="#lifecycle-in-vulcan" title="Link to this section">¶</a></h2>
 <p>Managed models follow the same lifecycle as other Vulcan models:</p>
 <ul>
-<li>Virtual environments create pointers to model snapshots</li>
-<li>Model changes create new snapshots</li>
-<li>Upstream changes trigger new snapshots</li>
-<li>You can deploy and rollback like any other model</li>
-<li>Snapshots get cleaned up when TTL expires</li>
+<li>
+<p>Virtual environments create pointers to model snapshots</p>
+</li>
+<li>
+<p>Model changes create new snapshots</p>
+</li>
+<li>
+<p>Upstream changes trigger new snapshots</p>
+</li>
+<li>
+<p>You can deploy and rollback like any other model</p>
+</li>
+<li>
+<p>Snapshots get cleaned up when TTL expires</p>
+</li>
 </ul>
 <p><strong>Cost consideration:</strong> Managed models usually cost more than regular tables. For example, Snowflake charges extra for Dynamic Tables. To save money, Vulcan uses regular tables for dev previews (in forward-only plans) and only creates managed tables when deploying to production.</p>
 <div class="admonition warning">
 <p class="admonition-title">Dev vs Prod Differences</p>
 <p>Since dev uses regular tables and prod uses managed tables, it's possible to write a query that works in dev but fails in prod. This happens if you use features available to regular tables but not managed tables.</p>
-<p>We think the cost savings are worth it, but if this causes issues, <a href="https://tobikodata.com/slack">let us know</a>!</p>
+<p>We think the cost savings are worth it, but if this causes issues, let us know!</p>
 </div>
 <h2 id="supported-engines">Supported Engines<a class="headerlink" href="#supported-engines" title="Link to this section">¶</a></h2>
 <p>Currently, Vulcan supports managed models on:</p>
@@ -1109,12 +1133,12 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../../configurations/engines/snowflake.md">Snowflake</a></td>
+<td><a href="../../../../configurations/engines/snowflake/snowflake/">Snowflake</a></td>
 <td><a href="https://docs.snowflake.com/en/user-guide/dynamic-tables-intro">Dynamic Tables</a></td>
 </tr>
 </tbody>
 </table>
-<p>To create a managed model, use the <a href="components/model/types/model_kinds.md#managed"><code>MANAGED</code></a> model kind. More engines are coming soon!</p>
+<p>To create a managed model, use the <a href="../../model_kinds/#managed"><code>MANAGED</code></a> model kind.</p>
 <h3 id="snowflake">Snowflake<a class="headerlink" href="#snowflake" title="Link to this section">¶</a></h3>
 <p>On Snowflake, managed models are implemented as <a href="https://docs.snowflake.com/en/user-guide/dynamic-tables-intro">Dynamic Tables</a>. Dynamic Tables automatically refresh when their source data changes, which is exactly what managed models need.</p>
 <p>Here's how you'd create one:</p>
@@ -1169,7 +1193,7 @@
 </div>
 <h4 id="table-properties">Table Properties<a class="headerlink" href="#table-properties" title="Link to this section">¶</a></h4>
 <p>Dynamic Tables have properties that control refresh frequency, initial data population, retention, and more. You can find the complete list in the <a href="https://docs.snowflake.com/sql-reference/sql/create-dynamic-table">Snowflake documentation</a>.</p>
-<p>In Vulcan, you set these properties using <a href="components/model/overview.md#physical_properties"><code>physical_properties</code></a> in your model definition. Here are the key ones:</p>
+<p>In Vulcan, you set these properties using <a href="../../overview/#physical_properties"><code>physical_properties</code></a> in your model definition. Here are the key ones:</p>
 <table>
 <thead>
 <tr>
@@ -1294,8 +1318,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

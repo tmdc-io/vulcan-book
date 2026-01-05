@@ -8,9 +8,9 @@
 <link href="../models/" rel="prev"/>
 <link href="../data_quality/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Incremental by Time - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1202,7 +1202,7 @@
 <a class="md-nav__link" href="#time-column-must-be-utc">
 <span class="md-ellipsis">
       
-        ⚠️ Time Column Must Be UTC
+        Time Column Must Be UTC
       
     </span>
 </a>
@@ -1211,7 +1211,7 @@
 <a class="md-nav__link" href="#always-include-where-clause">
 <span class="md-ellipsis">
       
-        ✅ Always Include WHERE Clause
+        Always Include WHERE Clause
       
     </span>
 </a>
@@ -1220,7 +1220,7 @@
 <a class="md-nav__link" href="#set-a-start-date">
 <span class="md-ellipsis">
       
-        ✅ Set a Start Date
+        Set a Start Date
       
     </span>
 </a>
@@ -1229,7 +1229,7 @@
 <a class="md-nav__link" href="#choose-appropriate-batch_size">
 <span class="md-ellipsis">
       
-        ✅ Choose Appropriate batch_size
+        Choose Appropriate batch_size
       
     </span>
 </a>
@@ -1699,7 +1699,7 @@
 <a class="md-nav__link" href="#time-column-must-be-utc">
 <span class="md-ellipsis">
       
-        ⚠️ Time Column Must Be UTC
+        Time Column Must Be UTC
       
     </span>
 </a>
@@ -1708,7 +1708,7 @@
 <a class="md-nav__link" href="#always-include-where-clause">
 <span class="md-ellipsis">
       
-        ✅ Always Include WHERE Clause
+        Always Include WHERE Clause
       
     </span>
 </a>
@@ -1717,7 +1717,7 @@
 <a class="md-nav__link" href="#set-a-start-date">
 <span class="md-ellipsis">
       
-        ✅ Set a Start Date
+        Set a Start Date
       
     </span>
 </a>
@@ -1726,7 +1726,7 @@
 <a class="md-nav__link" href="#choose-appropriate-batch_size">
 <span class="md-ellipsis">
       
-        ✅ Choose Appropriate batch_size
+        Choose Appropriate batch_size
       
     </span>
 </a>
@@ -1783,7 +1783,7 @@
 <hr/>
 <h2 id="why-use-incremental-models">Why Use Incremental Models?<a class="headerlink" href="#why-use-incremental-models" title="Link to this section">¶</a></h2>
 <h3 id="the-problem-full-refreshes-are-expensive">The Problem: Full Refreshes Are Expensive<a class="headerlink" href="#the-problem-full-refreshes-are-expensive" title="Link to this section">¶</a></h3>
-<p>Imagine you have a table with sales data from the last year (365 days). Every time you run a <code>FULL</code> model, it processes <strong>all 365 days</strong>. That's a lot of work, especially when you only need to process today's data!</p>
+<p>If you have a table with sales data from the last year (365 days), every time you run a <code>FULL</code> model, it processes all 365 days. This is inefficient when you only need to process today's data.</p>
 <pre class="mermaid"><code>flowchart LR
     subgraph "🔄 FULL Model - Every Run"
         FULL[FULL Model Run]
@@ -1851,7 +1851,7 @@
     style DATA2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000</code></pre>
 <p><em>[Screenshot: Visual showing incremental model processing only Day 365]</em></p>
 <p><strong>Result:</strong> 50x faster and 50x cheaper! 🎉 </p>
-<p>That's the power of incremental models. You're only processing what you need, when you need it. Pretty cool, right?</p>
+<p>Incremental models process only what you need, when you need it.</p>
 <hr/>
 <h2 id="how-incremental-models-work">How Incremental Models Work<a class="headerlink" href="#how-incremental-models-work" title="Link to this section">¶</a></h2>
 <p>Incremental models use <strong>time intervals</strong> to track what's been processed. Think of it like a calendar where Vulcan checks off each day. It knows what's done and what still needs work.</p>
@@ -1900,14 +1900,18 @@
 <h3 id="step-1-vulcan-checks-whats-already-done">Step 1: Vulcan Checks What's Already Done<a class="headerlink" href="#step-1-vulcan-checks-whats-already-done" title="Link to this section">¶</a></h3>
 <p>When you run <code>vulcan run</code>, Vulcan looks at your state database and asks:</p>
 <ul>
-<li>"What dates have I already processed?" - These are done, skip them</li>
-<li>"What dates are missing?" - These need work, process them</li>
+<li>
+<p>"What dates have I already processed?" - These are done, skip them</p>
+</li>
+<li>
+<p>"What dates are missing?" - These need work, process them</p>
+</li>
 </ul>
 <p>It's like checking your to-do list, you only work on what's not done yet.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>State Database Check:
-</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>✅ Jan 1-7:   Already processed
-</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>✅ Jan 8-14:  Already processed  
-</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>❌ Jan 15-21: Missing - needs processing
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>Jan 1-7:   Already processed
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>Jan 8-14:  Already processed  
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>Jan 15-21: Missing - needs processing
 </span></code></pre></div>
 <p><em>[Screenshot: Visual diagram showing state database check with processed vs missing intervals]</em></p>
 <h3 id="step-2-vulcan-processes-only-missing-intervals">Step 2: Vulcan Processes Only Missing Intervals<a class="headerlink" href="#step-2-vulcan-processes-only-missing-intervals" title="Link to this section">¶</a></h3>
@@ -1942,9 +1946,11 @@
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>Today: Jan 3, 2025 at 2pm
 </span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>
 </span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>Intervals:
-</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>- Jan 1: ✅ Complete (full day passed)
-</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>- Jan 2: ✅ Complete (full day passed)
-</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>- Jan 3: ⏳ In progress (day not finished yet)
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>- Jan 1: Complete (full day passed)
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>- Jan 2: Complete (full day passed)
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>- Jan 3: In progress (day not finished yet)
 </span></code></pre></div>
 <p><em>[Screenshot: Calendar view showing daily intervals with Jan 1-2 complete, Jan 3 in progress]</em></p>
 <h3 id="weekly-intervals-example">Weekly Intervals Example<a class="headerlink" href="#weekly-intervals-example" title="Link to this section">¶</a></h3>
@@ -1960,9 +1966,11 @@
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>Today: Jan 15, 2025
 </span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a>
 </span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>Intervals:
-</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a>- Week 1 (Jan 1-7):   ✅ Complete
-</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>- Week 2 (Jan 8-14):  ✅ Complete
-</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a>- Week 3 (Jan 15-21): ⏳ In progress
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a>- Week 1 (Jan 1-7):   Complete
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a>- Week 2 (Jan 8-14):  Complete
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a>- Week 3 (Jan 15-21): In progress
 </span></code></pre></div>
 <p><em>[Screenshot: Calendar view showing weekly intervals]</em></p>
 <h3 id="how-vulcan-tracks-intervals">How Vulcan Tracks Intervals<a class="headerlink" href="#how-vulcan-tracks-intervals" title="Link to this section">¶</a></h3>
@@ -2002,13 +2010,15 @@
 </ol>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>First Plan (Jan 15, 2025):
 </span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>- Calculates: 3 weeks of intervals
-</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>- Processes: All 3 weeks
-</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a>- Records: "Weeks 1-3 processed"
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a>- Processes: All 3 weeks
 </span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a>
-</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a>State Database:
-</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a>✅ Week 1 (Jan 1-7)
-</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a>✅ Week 2 (Jan 8-14)
-</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a>✅ Week 3 (Jan 15-21)
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a>- Records: "Weeks 1-3 processed"
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a>State Database:
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a>Week 1 (Jan 1-7)
+</span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a>Week 2 (Jan 8-14)
+</span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a>Week 3 (Jan 15-21)
 </span></code></pre></div>
 <p><em>[Screenshot: Visual showing first plan calculating and processing all intervals]</em></p>
 <p>When you run <code>vulcan run</code> later, Vulcan:</p>
@@ -2064,15 +2074,18 @@
 </ol>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>Second Run (Jan 22, 2025):
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>- Calculates: 4 weeks total
-</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>- Already processed: Weeks 1-3
-</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a>- Missing: Week 4 (Jan 22-28)
-</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>- Processes: Only Week 4
-</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a>
-</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a>State Database:
-</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a>✅ Week 1 (Jan 1-7)
-</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a>✅ Week 2 (Jan 8-14)
-</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a>✅ Week 3 (Jan 15-21)
-</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a>✅ Week 4 (Jan 22-28) ← NEW
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a>- Already processed: Weeks 1-3
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a>- Missing: Week 4 (Jan 22-28)
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a>- Processes: Only Week 4
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a>State Database:
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a>Week 1 (Jan 1-7)
+</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a>Week 2 (Jan 8-14)
+</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a>Week 3 (Jan 15-21)
+</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a>Week 4 (Jan 22-28) ← NEW
 </span></code></pre></div>
 <p><em>[Screenshot: Visual showing second run processing only new Week 4]</em></p>
 <hr/>
@@ -2118,10 +2131,14 @@
 <h4 id="2-where-clause-with-macros">2. WHERE Clause with Macros<a class="headerlink" href="#2-where-clause-with-macros" title="Link to this section">¶</a></h4>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span>
 </span></code></pre></div>
-<p><strong>What it does:</strong> Filters data to only the time range being processed. This is crucial, without it, you'd process all your data every time!</p>
+<p><strong>What it does:</strong> Filters data to only the time range being processed. Without it, you'd process all your data every time.</p>
 <ul>
-<li><code>@start_ds</code> = Start date of the interval (e.g., '2025-01-15')</li>
-<li><code>@end_ds</code> = End date of the interval (e.g., '2025-01-21')</li>
+<li>
+<p><code>@start_ds</code> = Start date of the interval (e.g., '2025-01-15')</p>
+</li>
+<li>
+<p><code>@end_ds</code> = End date of the interval (e.g., '2025-01-21')</p>
+</li>
 </ul>
 <p>Vulcan automatically replaces these with the correct dates! You don't have to figure out what dates to process, Vulcan does that for you.</p>
 <p><em>[Screenshot: Code highlighting WHERE clause with macros, showing how they're replaced]</em></p>
@@ -2224,16 +2241,24 @@
 <p><em>[Screenshot: Comparison showing FULL vs INCREMENTAL changes]</em></p>
 <hr/>
 <h2 id="understanding-the-where-clause">Understanding the WHERE Clause<a class="headerlink" href="#understanding-the-where-clause" title="Link to this section">¶</a></h2>
-<p>You might wonder: "Why do I need a WHERE clause if Vulcan adds one automatically?" That's a great question! The answer is that they serve different purposes.</p>
+<p>You might wonder: "Why do I need a WHERE clause if Vulcan adds one automatically?" They serve different purposes.</p>
 <h3 id="two-where-clauses-two-purposes">Two WHERE Clauses, Two Purposes<a class="headerlink" href="#two-where-clauses-two-purposes" title="Link to this section">¶</a></h3>
 <p>Vulcan actually uses <strong>two</strong> WHERE clauses:</p>
 <h4 id="1-your-models-where-clause">1. Your Model's WHERE Clause<a class="headerlink" href="#1-your-models-where-clause" title="Link to this section">¶</a></h4>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span>
 </span></code></pre></div>
-<p><strong>Purpose:</strong> Filters data <strong>read into</strong> the model
-- Only reads necessary data from upstream tables - this is a performance optimization
-- Saves processing time and resources - why read data you're not going to use?
-- You control this in your SQL - you write this WHERE clause</p>
+<p><strong>Purpose:</strong> Filters data <strong>read into</strong> the model</p>
+<ul>
+<li>
+<p>Only reads necessary data from upstream tables - this is a performance optimization</p>
+</li>
+<li>
+<p>Saves processing time and resources - why read data you're not going to use?</p>
+</li>
+<li>
+<p>You control this in your SQL - you write this WHERE clause</p>
+</li>
+</ul>
 <p>This is your optimization. Without it, you'd read all the data from upstream tables, even though you only need a small date range.</p>
 <p><em>[Screenshot: Visual showing model WHERE clause filtering input data]</em></p>
 <h4 id="2-vulcans-automatic-where-clause">2. Vulcan's Automatic WHERE Clause<a class="headerlink" href="#2-vulcans-automatic-where-clause" title="Link to this section">¶</a></h4>
@@ -2241,17 +2266,29 @@
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="c1">-- Vulcan adds this automatically:</span>
 </span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span>
 </span></code></pre></div>
-<p><strong>Purpose:</strong> Filters data <strong>output by</strong> the model
-- Prevents data leakage (ensures no rows outside the time range) - this is a safety check
-- Safety mechanism - even if your SQL has a bug, Vulcan makes sure you don't output wrong dates
-- Vulcan controls this automatically - you don't write this one, Vulcan adds it</p>
+<p><strong>Purpose:</strong> Filters data <strong>output by</strong> the model</p>
+<ul>
+<li>
+<p>Prevents data leakage (ensures no rows outside the time range) - this is a safety check</p>
+</li>
+<li>
+<p>Safety mechanism - even if your SQL has a bug, Vulcan makes sure you don't output wrong dates</p>
+</li>
+<li>
+<p>Vulcan controls this automatically - you don't write this one, Vulcan adds it</p>
+</li>
+</ul>
 <p>This is Vulcan's safety net. It makes sure that even if your WHERE clause has a bug, you can't accidentally output data for the wrong time period.</p>
 <p><em>[Screenshot: Visual showing Vulcan's automatic WHERE clause filtering output]</em></p>
 <h3 id="why-both-are-needed">Why Both Are Needed<a class="headerlink" href="#why-both-are-needed" title="Link to this section">¶</a></h3>
 <p>Here's why you need both:</p>
 <ul>
-<li><strong>Your WHERE clause:</strong> Optimizes performance by reading less data - makes your queries faster</li>
-<li><strong>Vulcan's WHERE clause:</strong> Ensures correctness by preventing data leakage - makes sure your data is right</li>
+<li>
+<p><strong>Your WHERE clause:</strong> Optimizes performance by reading less data - makes your queries faster</p>
+</li>
+<li>
+<p><strong>Vulcan's WHERE clause:</strong> Ensures correctness by preventing data leakage - makes sure your data is right</p>
+</li>
 </ul>
 <p><strong>Always include the WHERE clause in your model SQL!</strong> It's not optional, Vulcan needs it to know what time range to process, and it makes your queries way more efficient.</p>
 <p><em>[Screenshot: Side-by-side comparison showing both WHERE clauses and their purposes]</em></p>
@@ -2262,21 +2299,41 @@
 <p>Use when you've <strong>changed a model</strong>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
 </span></code></pre></div>
-<p><strong>What it does:</strong>
-- Detects model changes
-- Shows what will be affected
-- Backfills missing intervals
-- Applies changes to the environment</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>
+<p>Detects model changes</p>
+</li>
+<li>
+<p>Shows what will be affected</p>
+</li>
+<li>
+<p>Backfills missing intervals</p>
+</li>
+<li>
+<p>Applies changes to the environment</p>
+</li>
+</ul>
 <p><em>[Screenshot: Plan command output showing model changes]</em></p>
 <h3 id="vulcan-run-for-scheduled-execution"><code>vulcan run</code> - For Scheduled Execution<a class="headerlink" href="#vulcan-run-for-scheduled-execution" title="Link to this section">¶</a></h3>
 <p>Use when <strong>no models have changed</strong>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>vulcan<span class="w"> </span>run
 </span></code></pre></div>
-<p><strong>What it does:</strong>
-- Checks each model's <code>cron</code> schedule
-- Processes only models that are due
-- Processes only missing intervals
-- Fast and efficient</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>
+<p>Checks each model's <code>cron</code> schedule</p>
+</li>
+<li>
+<p>Processes only models that are due</p>
+</li>
+<li>
+<p>Processes only missing intervals</p>
+</li>
+<li>
+<p>Fast and efficient</p>
+</li>
+</ul>
 <p><em>[Screenshot: Run command output showing scheduled execution]</em></p>
 <h3 id="how-cron-schedules-work">How Cron Schedules Work<a class="headerlink" href="#how-cron-schedules-work" title="Link to this section">¶</a></h3>
 <p>Each model has a <code>cron</code> parameter that determines how often it should run:</p>
@@ -2357,8 +2414,8 @@
 </ol>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>vulcan run at 2pm on Jan 15:
 </span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a>
-</span><span id="__span-23-3"><a href="#__codelineno-23-3" id="__codelineno-23-3" name="__codelineno-23-3"></a>✅ daily_sales (@daily):   Last run 24h ago → Due, process!
-</span><span id="__span-23-4"><a href="#__codelineno-23-4" id="__codelineno-23-4" name="__codelineno-23-4"></a>⏭️ weekly_sales (@weekly): Last run 2 days ago → Not due, skip
+</span><span id="__span-23-3"><a href="#__codelineno-23-3" id="__codelineno-23-3" name="__codelineno-23-3"></a>daily_sales (@daily):   Last run 24h ago → Due, process!
+</span><span id="__span-23-4"><a href="#__codelineno-23-4" id="__codelineno-23-4" name="__codelineno-23-4"></a>weekly_sales (@weekly): Last run 2 days ago → Not due, skip
 </span></code></pre></div>
 <p><em>[Screenshot: Visual showing cron evaluation logic]</em></p>
 <hr/>
@@ -2405,26 +2462,54 @@
 </span><span id="__span-24-6"><a href="#__codelineno-24-6" id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-24-7"><a href="#__codelineno-24-7" id="__codelineno-24-7" name="__codelineno-24-7"></a><span class="p">);</span>
 </span></code></pre></div>
-<p><strong>Without batch_size (default):</strong>
-- Processes all missing intervals in one job
-- Example: 12 weeks = 1 job</p>
-<p><strong>With batch_size:</strong>
-- Divides intervals into batches
-- Example: 12 weeks ÷ 4 = 3 jobs</p>
+<p><strong>Without batch_size (default):</strong></p>
+<ul>
+<li>
+<p>Processes all missing intervals in one job</p>
+</li>
+<li>
+<p>Example: 12 weeks = 1 job</p>
+</li>
+</ul>
+<p><strong>With batch_size:</strong></p>
+<ul>
+<li>
+<p>Divides intervals into batches</p>
+</li>
+<li>
+<p>Example: 12 weeks ÷ 4 = 3 jobs</p>
+</li>
+</ul>
 <p><em>[Screenshot: Visual comparison showing batch processing vs single job]</em></p>
-<p><strong>When to use batches:</strong>
-- ✅ Large datasets that might timeout
-- ✅ Need better progress tracking
-- ✅ Want to parallelize processing</p>
-<p><strong>When not to use batches:</strong>
-- ✅ Small datasets (&lt; 1GB)
-- ✅ Fast queries (&lt; 1 minute)
-- ✅ Simple transformations</p>
+<p><strong>When to use batches:</strong></p>
+<ul>
+<li>
+<p>Large datasets that might timeout</p>
+</li>
+<li>
+<p>Need better progress tracking</p>
+</li>
+<li>
+<p>Want to parallelize processing</p>
+</li>
+</ul>
+<p><strong>When not to use batches:</strong></p>
+<ul>
+<li>
+<p>Small datasets (&lt; 1GB)</p>
+</li>
+<li>
+<p>Fast queries (&lt; 1 minute)</p>
+</li>
+<li>
+<p>Simple transformations</p>
+</li>
+</ul>
 <hr/>
 <h2 id="forward-only-models">Forward-Only Models<a class="headerlink" href="#forward-only-models" title="Link to this section">¶</a></h2>
-<p>Sometimes you have models so large that rebuilding them is impossible. Forward-only models solve this. They're perfect for those massive tables where a full backfill would take days or cost a fortune.</p>
+<p>Sometimes you have models so large that rebuilding them is impossible. Forward-only models solve this. Use them for massive tables where a full backfill would take days or cost too much.</p>
 <h3 id="what-are-forward-only-models">What Are Forward-Only Models?<a class="headerlink" href="#what-are-forward-only-models" title="Link to this section">¶</a></h3>
-<p>Forward-only models <strong>never rebuild historical data</strong>. Changes are only applied going forward in time. Think of it like a train, once it's left the station (historical data is processed), you can't go back and change it. You can only change what happens going forward.</p>
+<p>Forward-only models never rebuild historical data. Changes are only applied going forward in time. Once historical data is processed, you can't go back and change it. You can only change what happens going forward.</p>
 <pre class="mermaid"><code>flowchart TB
     subgraph "Regular Model Change"
         REG_CHANGE["Breaking Change Detected"]
@@ -2461,14 +2546,30 @@
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Visual comparison showing regular rebuild vs forward-only]</em></p>
 <h3 id="when-to-use-forward-only">When to Use Forward-Only<a class="headerlink" href="#when-to-use-forward-only" title="Link to this section">¶</a></h3>
-<p>✅ <strong>Use forward-only when:</strong>
-- Tables are too large to rebuild - if a full backfill would take forever or cost too much
-- Historical data can't be reprocessed - maybe the source data is gone or too expensive to reprocess
-- You only care about future data - if historical data is "good enough" and you just need new data to be correct</p>
-<p>❌ <strong>Don't use forward-only when:</strong>
-- You need to fix historical data - forward-only won't help you fix the past
-- Schema changes affect past data - if your change affects how historical data should look, you need a full rebuild
-- You want full data consistency - forward-only means historical and new data might have different schemas</p>
+<p><strong>Use forward-only when:</strong></p>
+<ul>
+<li>
+<p>Tables are too large to rebuild - if a full backfill would take forever or cost too much</p>
+</li>
+<li>
+<p>Historical data can't be reprocessed - maybe the source data is gone or too expensive to reprocess</p>
+</li>
+<li>
+<p>You only care about future data - if historical data is "good enough" and you just need new data to be correct</p>
+</li>
+</ul>
+<p><strong>Don't use forward-only when:</strong></p>
+<ul>
+<li>
+<p>You need to fix historical data - forward-only won't help you fix the past</p>
+</li>
+<li>
+<p>Schema changes affect past data - if your change affects how historical data should look, you need a full rebuild</p>
+</li>
+<li>
+<p>You want full data consistency - forward-only means historical and new data might have different schemas</p>
+</li>
+</ul>
 <p>It's a trade-off: you get speed and cost savings, but you lose the ability to fix historical data. Make sure that's a trade-off you're okay with!</p>
 <h3 id="making-a-model-forward-only">Making a Model Forward-Only<a class="headerlink" href="#making-a-model-forward-only" title="Link to this section">¶</a></h3>
 <p>Add <code>forward_only true</code> to your model:</p>
@@ -2514,9 +2615,15 @@
     style BEFORE1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
     style AFTER1 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000</code></pre>
 <ul>
-<li>❌ Dropping a column</li>
-<li>❌ Renaming a column  </li>
-<li>❌ Changing data type (could cause data loss)</li>
+<li>
+<p>Dropping a column</p>
+</li>
+<li>
+<p>Renaming a column</p>
+</li>
+<li>
+<p>Changing data type (could cause data loss)</p>
+</li>
 </ul>
 <p><strong>Example:</strong>
 </p><div class="language-sql highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="c1">-- Before</span>
@@ -2547,8 +2654,12 @@
     style BEFORE2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
     style AFTER2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000</code></pre>
 <ul>
-<li>✅ Adding a new column</li>
-<li>✅ Changing data type (compatible, e.g., INT → STRING)</li>
+<li>
+<p>Adding a new column</p>
+</li>
+<li>
+<p>Changing data type (compatible, e.g., INT → STRING)</p>
+</li>
 </ul>
 <p><strong>Example:</strong>
 </p><div class="language-sql highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="c1">-- Before</span>
@@ -2570,11 +2681,21 @@
 </span><span id="__span-31-8"><a href="#__codelineno-31-8" id="__codelineno-31-8" name="__codelineno-31-8"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-31-9"><a href="#__codelineno-31-9" id="__codelineno-31-9" name="__codelineno-31-9"></a><span class="p">);</span>
 </span></code></pre></div>
-<p><strong>Options:</strong>
-- <code>error</code> - Stop and raise an error (default for destructive)
-- <code>warn</code> - Log a warning but continue
-- <code>allow</code> - Silently proceed (default for additive)
-- <code>ignore</code> - Skip the check entirely (dangerous!)</p>
+<p><strong>Options:</strong></p>
+<ul>
+<li>
+<p><code>error</code> - Stop and raise an error (default for destructive)</p>
+</li>
+<li>
+<p><code>warn</code> - Log a warning but continue</p>
+</li>
+<li>
+<p><code>allow</code> - Silently proceed (default for additive)</p>
+</li>
+<li>
+<p><code>ignore</code> - Skip the check entirely (dangerous!)</p>
+</li>
+</ul>
 <p><em>[Screenshot: Code showing schema change configuration options]</em></p>
 <h3 id="common-patterns">Common Patterns<a class="headerlink" href="#common-patterns" title="Link to this section">¶</a></h3>
 <h4 id="strict-schema-control">Strict Schema Control<a class="headerlink" href="#strict-schema-control" title="Link to this section">¶</a></h4>
@@ -2618,53 +2739,82 @@
 <p><em>[Screenshot: Production safety example]</em></p>
 <hr/>
 <h2 id="important-notes">Important Notes<a class="headerlink" href="#important-notes" title="Link to this section">¶</a></h2>
-<h3 id="time-column-must-be-utc">⚠️ Time Column Must Be UTC<a class="headerlink" href="#time-column-must-be-utc" title="Link to this section">¶</a></h3>
+<h3 id="time-column-must-be-utc">Time Column Must Be UTC<a class="headerlink" href="#time-column-must-be-utc" title="Link to this section">¶</a></h3>
 <p>Always use UTC timezone for your <code>time_column</code>:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a><span class="c1">-- ✅ Good: UTC timezone</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a><span class="c1">-- Good: UTC timezone</span>
 </span><span id="__span-35-2"><a href="#__codelineno-35-2" id="__codelineno-35-2" name="__codelineno-35-2"></a><span class="n">time_column</span><span class="w"> </span><span class="n">order_date_utc</span>
 </span><span id="__span-35-3"><a href="#__codelineno-35-3" id="__codelineno-35-3" name="__codelineno-35-3"></a>
-</span><span id="__span-35-4"><a href="#__codelineno-35-4" id="__codelineno-35-4" name="__codelineno-35-4"></a><span class="c1">-- ❌ Bad: Local timezone</span>
+</span><span id="__span-35-4"><a href="#__codelineno-35-4" id="__codelineno-35-4" name="__codelineno-35-4"></a><span class="c1">-- Bad: Local timezone</span>
 </span><span id="__span-35-5"><a href="#__codelineno-35-5" id="__codelineno-35-5" name="__codelineno-35-5"></a><span class="n">time_column</span><span class="w"> </span><span class="n">order_date_local</span>
 </span></code></pre></div>
-<p><strong>Why?</strong> Ensures correct interval calculations and proper interaction with Vulcan's scheduler. If you use local timezones, you'll run into issues with daylight saving time changes, timezone differences, and interval calculations. UTC is the standard for a reason, it's consistent everywhere.</p>
+<p><strong>Why?</strong> Ensures correct interval calculations and proper interaction with Vulcan's scheduler. If you use local timezones, you'll run into issues with daylight saving time changes, timezone differences, and interval calculations. UTC is consistent everywhere.</p>
 <p><em>[Screenshot: Visual warning about UTC requirement]</em></p>
-<h3 id="always-include-where-clause">✅ Always Include WHERE Clause<a class="headerlink" href="#always-include-where-clause" title="Link to this section">¶</a></h3>
+<h3 id="always-include-where-clause">Always Include WHERE Clause<a class="headerlink" href="#always-include-where-clause" title="Link to this section">¶</a></h3>
 <p>Your model SQL <strong>must</strong> include a WHERE clause with <code>@start_ds</code> and <code>@end_ds</code>:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a><span class="c1">-- ✅ Required - This tells Vulcan what time range to process</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a><span class="c1">-- Required - This tells Vulcan what time range to process</span>
 </span><span id="__span-36-2"><a href="#__codelineno-36-2" id="__codelineno-36-2" name="__codelineno-36-2"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span>
 </span><span id="__span-36-3"><a href="#__codelineno-36-3" id="__codelineno-36-3" name="__codelineno-36-3"></a>
-</span><span id="__span-36-4"><a href="#__codelineno-36-4" id="__codelineno-36-4" name="__codelineno-36-4"></a><span class="c1">-- ❌ Missing WHERE clause - Don't do this!</span>
-</span><span id="__span-36-5"><a href="#__codelineno-36-5" id="__codelineno-36-5" name="__codelineno-36-5"></a><span class="c1">-- WHERE clause is required!</span>
+</span><span id="__span-36-4"><a href="#__codelineno-36-4" id="__codelineno-36-4" name="__codelineno-36-4"></a><span class="c1">-- Missing WHERE clause - Don't do this</span>
+</span><span id="__span-36-5"><a href="#__codelineno-36-5" id="__codelineno-36-5" name="__codelineno-36-5"></a>
+</span><span id="__span-36-6"><a href="#__codelineno-36-6" id="__codelineno-36-6" name="__codelineno-36-6"></a><span class="c1">-- WHERE clause is required</span>
 </span></code></pre></div>
 <p>Without this WHERE clause, Vulcan won't know what time range to process, and your queries will be inefficient (or fail entirely). Always include it!</p>
 <p><em>[Screenshot: Code showing required WHERE clause]</em></p>
-<h3 id="set-a-start-date">✅ Set a Start Date<a class="headerlink" href="#set-a-start-date" title="Link to this section">¶</a></h3>
+<h3 id="set-a-start-date">Set a Start Date<a class="headerlink" href="#set-a-start-date" title="Link to this section">¶</a></h3>
 <p>Always specify when your data begins:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="k">start</span><span class="w"> </span><span class="s1">'2025-01-01'</span><span class="w">  </span><span class="c1">-- Start processing from this date</span>
 </span></code></pre></div>
 <p>This tells Vulcan where to start backfilling. If your data goes back to 2020 but you only want to process from 2025, set the start date to 2025-01-01. Vulcan will backfill from this date when you first create the model.</p>
 <p><em>[Screenshot: Code showing start date configuration]</em></p>
-<h3 id="choose-appropriate-batch_size">✅ Choose Appropriate batch_size<a class="headerlink" href="#choose-appropriate-batch_size" title="Link to this section">¶</a></h3>
+<h3 id="choose-appropriate-batch_size">Choose Appropriate batch_size<a class="headerlink" href="#choose-appropriate-batch_size" title="Link to this section">¶</a></h3>
 <ul>
-<li>Start with <code>batch_size 1</code> for small datasets - process one interval at a time</li>
-<li>Increase for larger datasets that might timeout - if processing all intervals at once times out, batch them</li>
-<li>Monitor performance to find the sweet spot - too small and you have too many jobs, too large and jobs timeout</li>
+<li>
+<p>Start with <code>batch_size 1</code> for small datasets - process one interval at a time</p>
+</li>
+<li>
+<p>Increase for larger datasets that might timeout - if processing all intervals at once times out, batch them</p>
+</li>
+<li>
+<p>Monitor performance to find the right balance. Too small and you have too many jobs. Too large and jobs timeout.</p>
+</li>
 </ul>
-<p>The default is to process all missing intervals in one job. If that works for you, great! If not, use <code>batch_size</code> to break it up.</p>
+<p>The default is to process all missing intervals in one job. If that doesn't work for you, use <code>batch_size</code> to break it up.</p>
 <p><em>[Screenshot: Visual guide for choosing batch_size]</em></p>
 <hr/>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">¶</a></h2>
-<p><strong>Incremental by time models:</strong>
-- ✅ Only process new or missing time intervals
-- ✅ Much faster and cheaper than full refreshes
-- ✅ Perfect for time-based data (orders, events, transactions)
-- ✅ Require a time column and WHERE clause
-- ✅ Use cron schedules to control execution frequency</p>
-<p><strong>Key concepts:</strong>
-- <strong>Intervals:</strong> Time periods (days, weeks, hours) that Vulcan tracks
-- <strong>Backfill:</strong> Processing historical intervals when first creating a model
-- <strong>Cron:</strong> Schedule that determines how often a model runs
-- <strong>Forward-only:</strong> Models that never rebuild historical data</p>
+<p><strong>Incremental by time models:</strong></p>
+<ul>
+<li>
+<p>Only process new or missing time intervals</p>
+</li>
+<li>
+<p>Faster and cheaper than full refreshes</p>
+</li>
+<li>
+<p>Use for time-based data (orders, events, transactions)</p>
+</li>
+<li>
+<p>Require a time column and WHERE clause</p>
+</li>
+<li>
+<p>Use cron schedules to control execution frequency</p>
+</li>
+</ul>
+<p><strong>Key concepts:</strong></p>
+<ul>
+<li>
+<p><strong>Intervals:</strong> Time periods (days, weeks, hours) that Vulcan tracks</p>
+</li>
+<li>
+<p><strong>Backfill:</strong> Processing historical intervals when first creating a model</p>
+</li>
+<li>
+<p><strong>Cron:</strong> Schedule that determines how often a model runs</p>
+</li>
+<li>
+<p><strong>Forward-only:</strong> Models that never rebuild historical data</p>
+</li>
+</ul>
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
@@ -2736,8 +2886,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

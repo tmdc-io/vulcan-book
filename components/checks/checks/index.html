@@ -8,9 +8,9 @@
 <link href="../../audits/audits/" rel="prev"/>
 <link href="../../semantics/overview/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Checks - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1770,14 +1770,26 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="checks">Checks<a class="headerlink" href="#checks" title="Link to this section">¶</a></h1>
-<p>Quality checks are validation rules that monitor your data quality over time without blocking your modelss. Think of them as your data's health checkup, they'll warn you when something looks off, but they won't stop the show.</p>
+<p>Quality checks are validation rules that monitor your data quality over time without blocking your models. They warn you when something looks off, but they don't stop execution.</p>
 <p>Unlike <a href="../../audits/audits/">audits</a> (which block models execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.</p>
-<p><strong>What makes checks special:</strong>
-- Configured in simple YAML files in the <code>checks/</code> directory
-- Don't block modelss (your models keep running even if checks fail)
-- Track historical patterns and trends
-- Support complex statistical analysis
-- Integrate with Activity API for monitoring and alerting</p>
+<p><strong>What makes checks special:</strong></p>
+<ul>
+<li>
+<p>Configured in simple YAML files in the <code>checks/</code> directory</p>
+</li>
+<li>
+<p>Don't block models (your models keep running even if checks fail)</p>
+</li>
+<li>
+<p>Track historical patterns and trends</p>
+</li>
+<li>
+<p>Support complex statistical analysis</p>
+</li>
+<li>
+<p>Integrate with Activity API for monitoring and alerting</p>
+</li>
+</ul>
 <h2 id="checks-vs-audits-vs-profiles">Checks vs Audits vs Profiles<a class="headerlink" href="#checks-vs-audits-vs-profiles" title="Link to this section">¶</a></h2>
 <p>Before we dive in, let's clear up the confusion around these three data quality mechanisms. They all serve different purposes, and understanding when to use each one will save you headaches later.</p>
 <table>
@@ -1835,7 +1847,7 @@
 </tbody>
 </table>
 <p><strong>The Three-Layer Strategy:</strong></p>
-<p>Think of it like a security system for your data:</p>
+<p>A layered approach to data quality:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>┌─────────────────────────────────────────┐
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>│  AUDITS (Critical - Blocks models)   │
 </span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>│  • Primary keys must be unique          │
@@ -1857,42 +1869,71 @@
 </span><span id="__span-0-19"><a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a>│  • Detect data drift                    │
 </span><span id="__span-0-20"><a href="#__codelineno-0-20" id="__codelineno-0-20" name="__codelineno-0-20"></a>└─────────────────────────────────────────┘
 </span></code></pre></div>
-<p><strong>Why this matters:</strong> Audits are your bouncers, they stop bad data at the door. Checks are your security cameras, they watch for problems but don't interfere. Profiles are your data scientists, they observe patterns and help you understand what's normal.</p>
+<p>Audits stop bad data at the door. Checks watch for problems but don't interfere. Profiles observe patterns and help you understand what's normal.</p>
 <h2 id="when-to-use-checks">When to Use Checks<a class="headerlink" href="#when-to-use-checks" title="Link to this section">¶</a></h2>
-<p>✅ <strong>Use Quality Checks for:</strong></p>
+<p><strong>Use Quality Checks for:</strong></p>
 <ul>
-<li>Monitoring data quality trends over time (is completeness getting worse?)</li>
-<li>Statistical anomaly detection (did revenue suddenly spike?)</li>
-<li>Cross-model validation (do orders match customers?)</li>
-<li>Non-critical validation (warnings, not blockers)</li>
-<li>Complex validation requiring historical context</li>
-<li>Building data quality dashboards</li>
+<li>
+<p>Monitoring data quality trends over time (is completeness getting worse?)</p>
+</li>
+<li>
+<p>Statistical anomaly detection (did revenue suddenly spike?)</p>
+</li>
+<li>
+<p>Cross-model validation (do orders match customers?)</p>
+</li>
+<li>
+<p>Non-critical validation (warnings, not blockers)</p>
+</li>
+<li>
+<p>Complex validation requiring historical context</p>
+</li>
+<li>
+<p>Building data quality dashboards</p>
+</li>
 </ul>
-<p>❌ <strong>Use Audits Instead for:</strong></p>
+<p><strong>Use Audits Instead for:</strong></p>
 <ul>
-<li>Critical business rules that must pass (revenue can't be negative)</li>
-<li>Model-specific validation (runs inline with the model)</li>
-<li>Simple SQL assertions</li>
-<li>Blocking invalid data from flowing downstream</li>
+<li>
+<p>Critical business rules that must pass (revenue can't be negative)</p>
+</li>
+<li>
+<p>Model-specific validation (runs inline with the model)</p>
+</li>
+<li>
+<p>Simple SQL assertions</p>
+</li>
+<li>
+<p>Blocking invalid data from flowing downstream</p>
+</li>
 </ul>
-<p>❌ <strong>Use Profiles Instead for:</strong></p>
+<p><strong>Use Profiles Instead for:</strong></p>
 <ul>
-<li>Understanding data characteristics (what does this column look like?)</li>
-<li>Discovering patterns (not validation)</li>
-<li>Detecting data drift over time</li>
-<li>Informing which checks/audits to add</li>
+<li>
+<p>Understanding data characteristics (what does this column look like?)</p>
+</li>
+<li>
+<p>Discovering patterns (not validation)</p>
+</li>
+<li>
+<p>Detecting data drift over time</p>
+</li>
+<li>
+<p>Informing which checks/audits to add</p>
+</li>
 </ul>
 <p><strong>Example: Revenue validation strategy</strong></p>
 <p>Here's how you'd layer all three for a revenue table:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1">-- AUDIT (Critical - blocks if fails)</span>
-</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="c1">-- This stops the models if revenue is invalid</span>
-</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">revenue</span><span class="p">,</span>
-</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="n">not_null</span><span class="p">(</span><span class="n">columns</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="n">revenue</span><span class="p">)),</span>
-</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="n">accepted_range</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">revenue</span><span class="p">,</span><span class="w"> </span><span class="n">min_v</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">max_v</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">100000000</span><span class="p">)</span>
-</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="p">);</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="c1">-- This stops the models if revenue is invalid</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">revenue</span><span class="p">,</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="n">not_null</span><span class="p">(</span><span class="n">columns</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="n">revenue</span><span class="p">)),</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">    </span><span class="n">accepted_range</span><span class="p">(</span><span class="k">column</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">revenue</span><span class="p">,</span><span class="w"> </span><span class="n">min_v</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">max_v</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">100000000</span><span class="p">)</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="p">);</span>
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1"># CHECK (Monitoring - warns if unusual)</span>
 </span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="c1"># This watches for anomalies but doesn't block</span>
@@ -1905,11 +1946,12 @@
 </span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">row_count_drop_alert</span>
 </span></code></pre></div>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">-- PROFILE (Observation - tracks over time)</span>
-</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="c1">-- This just watches and records what it sees</span>
-</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">revenue</span><span class="p">,</span>
-</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">  </span><span class="n">profiles</span><span class="w"> </span><span class="p">(</span><span class="n">revenue</span><span class="p">,</span><span class="w"> </span><span class="n">order_count</span><span class="p">,</span><span class="w"> </span><span class="n">customer_tier</span><span class="p">)</span>
-</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="p">);</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="c1">-- This just watches and records what it sees</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">revenue</span><span class="p">,</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">  </span><span class="n">profiles</span><span class="w"> </span><span class="p">(</span><span class="n">revenue</span><span class="p">,</span><span class="w"> </span><span class="n">order_count</span><span class="p">,</span><span class="w"> </span><span class="n">customer_tier</span><span class="p">)</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="p">);</span>
 </span></code></pre></div>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Link to this section">¶</a></h2>
 <h3 id="your-first-check">Your First Check<a class="headerlink" href="#your-first-check" title="Link to this section">¶</a></h3>
@@ -1928,14 +1970,14 @@
 <p>Checks and profiles run automatically when models are executed, either through a <strong>plan</strong> or <strong>run</strong> command. Here's what the execution output looks like:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>Check<span class="w"> </span>Executions<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="w"> </span>Models<span class="o">)</span>
 </span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>└──<span class="w"> </span>hello.subscriptions
-</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span>├──<span class="w"> </span>✓<span class="w"> </span>completeness<span class="w"> </span><span class="o">(</span><span class="m">4</span>/4<span class="o">)</span>
-</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span>├──<span class="w"> </span>✓<span class="w"> </span>uniqueness<span class="w"> </span><span class="o">(</span><span class="m">1</span>/1<span class="o">)</span>
-</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span>└──<span class="w"> </span>✓<span class="w"> </span>validity<span class="w"> </span><span class="o">(</span><span class="m">3</span>/3<span class="o">)</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span>├──<span class="w"> </span>completeness<span class="w"> </span><span class="o">(</span><span class="m">4</span>/4<span class="o">)</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span>├──<span class="w"> </span>uniqueness<span class="w"> </span><span class="o">(</span><span class="m">1</span>/1<span class="o">)</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span>└──<span class="w"> </span>validity<span class="w"> </span><span class="o">(</span><span class="m">3</span>/3<span class="o">)</span>
 </span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a>
 </span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a>Profiled<span class="w"> </span><span class="m">1</span><span class="w"> </span>model<span class="w"> </span><span class="o">(</span><span class="m">3</span><span class="w"> </span>columns<span class="o">)</span>:
-</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">  </span>✓<span class="w"> </span>warehouse.hello.subscriptions:<span class="w"> </span><span class="m">3</span><span class="w"> </span>columns
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">  </span>warehouse.hello.subscriptions:<span class="w"> </span><span class="m">3</span><span class="w"> </span>columns
 </span></code></pre></div>
-<p>Pretty straightforward, right? Now let's look at some common patterns you'll want to use.</p>
+<p>Here are common patterns you'll use:</p>
 <h3 id="common-check-patterns">Common Check Patterns<a class="headerlink" href="#common-check-patterns" title="Link to this section">¶</a></h3>
 <p>Here are the patterns you'll use most often. Copy these, tweak them for your tables, and you're good to go!</p>
 <h4 id="pattern-1-completeness-checks">Pattern 1: Completeness Checks<a class="headerlink" href="#pattern-1-completeness-checks" title="Link to this section">¶</a></h4>
@@ -1973,7 +2015,7 @@
 </span><span id="__span-7-16"><a href="#__codelineno-7-16" id="__codelineno-7-16" name="__codelineno-7-16"></a><span class="w">            </span><span class="no">FROM analytics.users</span>
 </span><span id="__span-7-17"><a href="#__codelineno-7-17" id="__codelineno-7-17" name="__codelineno-7-17"></a><span class="w">            </span><span class="no">WHERE age &lt; 0 OR age &gt; 120</span>
 </span></code></pre></div>
-<p>The <code>failed rows</code> check type is super flexible, you can write any SQL query. If it returns rows, the check fails and captures those rows as samples so you can see what went wrong.</p>
+<p>The <code>failed rows</code> check type is flexible. You can write any SQL query. If it returns rows, the check fails and captures those rows as samples.</p>
 <h4 id="pattern-3-uniqueness-checks">Pattern 3: Uniqueness Checks<a class="headerlink" href="#pattern-3-uniqueness-checks" title="Link to this section">¶</a></h4>
 <p>Ensure no duplicates:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nt">checks</span><span class="p">:</span>
@@ -1997,7 +2039,7 @@
 </span><span id="__span-9-7"><a href="#__codelineno-9-7" id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">anomaly detection for avg(revenue)</span><span class="p">:</span>
 </span><span id="__span-9-8"><a href="#__codelineno-9-8" id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue_anomaly</span>
 </span></code></pre></div>
-<p>This is where checks get really cool. Anomaly detection learns from historical data and flags when something looks unusual. It needs to run a few times first to build up a baseline, but after that it's pretty smart about spotting problems.</p>
+<p>Anomaly detection learns from historical data and flags when something looks unusual. It needs to run a few times first to build up a baseline, then it detects problems.</p>
 <h4 id="pattern-5-change-monitoring">Pattern 5: Change Monitoring<a class="headerlink" href="#pattern-5-change-monitoring" title="Link to this section">¶</a></h4>
 <p>Track changes over time:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nt">checks</span><span class="p">:</span>
@@ -2021,10 +2063,18 @@
 </span><span id="__span-11-7"><a href="#__codelineno-11-7" id="__codelineno-11-7" name="__codelineno-11-7"></a>│   └── cross_model.yml     # Checks spanning multiple tables
 </span><span id="__span-11-8"><a href="#__codelineno-11-8" id="__codelineno-11-8" name="__codelineno-11-8"></a>└── config.yaml
 </span></code></pre></div>
-<p><strong>File naming:</strong>
-- Must end with <code>.yml</code> or <code>.yaml</code>
-- The name doesn't matter (Vulcan reads all files in the directory)
-- Organize by domain or table for clarity, whatever helps you find things</p>
+<p><strong>File naming:</strong></p>
+<ul>
+<li>
+<p>Must end with <code>.yml</code> or <code>.yaml</code></p>
+</li>
+<li>
+<p>The name doesn't matter (Vulcan reads all files in the directory)</p>
+</li>
+<li>
+<p>Organize by domain or table for clarity, whatever helps you find things</p>
+</li>
+</ul>
 <h3 id="basic-check-syntax">Basic Check Syntax<a class="headerlink" href="#basic-check-syntax" title="Link to this section">¶</a></h3>
 <p>Here's the basic structure of a check:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nt">checks</span><span class="p">:</span>
@@ -2048,15 +2098,17 @@
 </span><span id="__span-13-8"><a href="#__codelineno-13-8" id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="w">            </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
 </span><span id="__span-13-9"><a href="#__codelineno-13-9" id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="w">            </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">critical</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">daily</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
-<p>The <code>name</code> field is required and should be descriptive. The <code>attributes</code> section is optional but super useful for documentation and filtering.</p>
+<p>The <code>name</code> field is required and should be descriptive. The <code>attributes</code> section is optional but useful for documentation and filtering.</p>
 <h3 id="data-quality-dimensions">Data Quality Dimensions<a class="headerlink" href="#data-quality-dimensions" title="Link to this section">¶</a></h3>
 <p>Checks are organized by <strong>8 standard dimensions</strong> (based on ODPS v3.1). Each dimension focuses on a different aspect of data quality:</p>
 <h4 id="1-completeness">1. Completeness<a class="headerlink" href="#1-completeness" title="Link to this section">¶</a></h4>
 <p>No missing required data. This is probably the most common dimension you'll use.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="nt">completeness</span><span class="p">:</span>
 </span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">missing_count(customer_id) = 0</span>
-</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">missing_percent(email) &lt; 5</span>
-</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">row_count &gt; 1000</span>
+</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">missing_percent(email) &lt; 5</span>
+</span><span id="__span-14-5"><a href="#__codelineno-14-5" id="__codelineno-14-5" name="__codelineno-14-5"></a>
+</span><span id="__span-14-6"><a href="#__codelineno-14-6" id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">row_count &gt; 1000</span>
 </span></code></pre></div>
 <h4 id="2-validity">2. Validity<a class="headerlink" href="#2-validity" title="Link to this section">¶</a></h4>
 <p>Data conforms to format/syntax. Is that email actually an email? Is that date in the right format?</p>
@@ -2070,7 +2122,8 @@
 <p>Data matches reality. Is the average age reasonable? Is revenue in the expected range?</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="nt">accuracy</span><span class="p">:</span>
 </span><span id="__span-16-2"><a href="#__codelineno-16-2" id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anomaly detection for avg(revenue)</span>
-</span><span id="__span-16-3"><a href="#__codelineno-16-3" id="__codelineno-16-3" name="__codelineno-16-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg(age) between 18 and 65</span>
+</span><span id="__span-16-3"><a href="#__codelineno-16-3" id="__codelineno-16-3" name="__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a href="#__codelineno-16-4" id="__codelineno-16-4" name="__codelineno-16-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg(age) between 18 and 65</span>
 </span></code></pre></div>
 <h4 id="4-consistency">4. Consistency<a class="headerlink" href="#4-consistency" title="Link to this section">¶</a></h4>
 <p>Data agrees across sources. Do orders match customers? Are totals consistent?</p>
@@ -2086,17 +2139,19 @@
 <p>No duplicates. Is that email really unique? Can customers have multiple orders per day?</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="nt">uniqueness</span><span class="p">:</span>
 </span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duplicate_count(email) = 0</span>
-</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duplicate_count(order_id) = 0</span>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duplicate_count(order_id) = 0</span>
 </span></code></pre></div>
 <h4 id="6-timeliness">6. Timeliness<a class="headerlink" href="#6-timeliness" title="Link to this section">¶</a></h4>
 <p>Data is current. Is the data fresh? Are updates happening on time?</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="nt">timeliness</span><span class="p">:</span>
 </span><span id="__span-19-2"><a href="#__codelineno-19-2" id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">change for row_count &gt;= -30%</span>
-</span><span id="__span-19-3"><a href="#__codelineno-19-3" id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">failed rows</span><span class="p">:</span>
-</span><span id="__span-19-4"><a href="#__codelineno-19-4" id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="w">      </span><span class="nt">fail query</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-</span><span id="__span-19-5"><a href="#__codelineno-19-5" id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="w">        </span><span class="no">SELECT *</span>
-</span><span id="__span-19-6"><a href="#__codelineno-19-6" id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="w">        </span><span class="no">FROM orders</span>
-</span><span id="__span-19-7"><a href="#__codelineno-19-7" id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="w">        </span><span class="no">WHERE updated_at &lt; CURRENT_DATE - INTERVAL '7 days'</span>
+</span><span id="__span-19-3"><a href="#__codelineno-19-3" id="__codelineno-19-3" name="__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a href="#__codelineno-19-4" id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">failed rows</span><span class="p">:</span>
+</span><span id="__span-19-5"><a href="#__codelineno-19-5" id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="w">      </span><span class="nt">fail query</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-19-6"><a href="#__codelineno-19-6" id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="w">        </span><span class="no">SELECT *</span>
+</span><span id="__span-19-7"><a href="#__codelineno-19-7" id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="w">        </span><span class="no">FROM orders</span>
+</span><span id="__span-19-8"><a href="#__codelineno-19-8" id="__codelineno-19-8" name="__codelineno-19-8"></a><span class="w">        </span><span class="no">WHERE updated_at &lt; CURRENT_DATE - INTERVAL '7 days'</span>
 </span></code></pre></div>
 <h4 id="7-conformity">7. Conformity<a class="headerlink" href="#7-conformity" title="Link to this section">¶</a></h4>
 <p>Follows standards. Does the zip code have the right format? Are codes valid?</p>
@@ -2135,7 +2190,7 @@
 </span><span id="__span-23-9"><a href="#__codelineno-23-9" id="__codelineno-23-9" name="__codelineno-23-9"></a><span class="w">    </span><span class="nt">completeness</span><span class="p">:</span>
 </span><span id="__span-23-10"><a href="#__codelineno-23-10" id="__codelineno-23-10" name="__codelineno-23-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">row_count &gt; 500</span>
 </span></code></pre></div>
-<p>This lets you have different expectations for different regions, which is pretty common in real-world scenarios.</p>
+<p>This lets you have different expectations for different regions.</p>
 <h3 id="check-attributes">Check Attributes<a class="headerlink" href="#check-attributes" title="Link to this section">¶</a></h3>
 <p>Add metadata to your checks to make them easier to manage and understand:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="nt">checks</span><span class="p">:</span>
@@ -2151,12 +2206,24 @@
 </span><span id="__span-24-11"><a href="#__codelineno-24-11" id="__codelineno-24-11" name="__codelineno-24-11"></a><span class="w">            </span><span class="nt">jira</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATA-1234</span>
 </span><span id="__span-24-12"><a href="#__codelineno-24-12" id="__codelineno-24-12" name="__codelineno-24-12"></a><span class="w">            </span><span class="nt">sla</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">hour"</span>
 </span></code></pre></div>
-<p><strong>Standard attributes:</strong>
-- <code>description</code> - Human-readable explanation (super helpful for your teammates)
-- <code>severity</code> - <code>error</code> (default) or <code>warning</code> (warnings are less urgent)
-- <code>tags</code> - List of tags for filtering/organization (find all "critical" checks easily)
-- <code>owner</code> - Team or person responsible (who do I call when this fails?)
-- Custom attributes - Any key-value pairs (add whatever metadata you need)</p>
+<p><strong>Standard attributes:</strong></p>
+<ul>
+<li>
+<p><code>description</code> - Human-readable explanation</p>
+</li>
+<li>
+<p><code>severity</code> - <code>error</code> (default) or <code>warning</code> (warnings are less urgent)</p>
+</li>
+<li>
+<p><code>tags</code> - List of tags for filtering/organization (find all "critical" checks easily)</p>
+</li>
+<li>
+<p><code>owner</code> - Team or person responsible (who do I call when this fails?)</p>
+</li>
+<li>
+<p>Custom attributes - Any key-value pairs (add whatever metadata you need)</p>
+</li>
+</ul>
 <h2 id="built-in-check-types">Built-in Check Types<a class="headerlink" href="#built-in-check-types" title="Link to this section">¶</a></h2>
 <p>Vulcan provides several built-in check types that cover most common scenarios. Let's walk through them:</p>
 <h3 id="missing-data-checks">Missing Data Checks<a class="headerlink" href="#missing-data-checks" title="Link to this section">¶</a></h3>
@@ -2179,10 +2246,10 @@
 </span><span id="__span-26-5"><a href="#__codelineno-26-5" id="__codelineno-26-5" name="__codelineno-26-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">missing_percent(optional_field) &lt; 50</span><span class="p">:</span>
 </span><span id="__span-26-6"><a href="#__codelineno-26-6" id="__codelineno-26-6" name="__codelineno-26-6"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optional_field_half_complete</span>
 </span></code></pre></div>
-<p>This is handy when table sizes vary, 5% missing might be fine for a million-row table but concerning for a hundred-row table.</p>
+<p>This is useful when table sizes vary. 5% missing might be fine for a million-row table but concerning for a hundred-row table.</p>
 <h3 id="row-count-checks">Row Count Checks<a class="headerlink" href="#row-count-checks" title="Link to this section">¶</a></h3>
 <h4 id="row_count"><code>row_count</code><a class="headerlink" href="#row_count" title="Link to this section">¶</a></h4>
-<p>Total rows in table. Great for ensuring you have enough data:</p>
+<p>Total rows in table. Use this to ensure you have enough data:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="nt">completeness</span><span class="p">:</span>
 </span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">row_count &gt; 1000</span><span class="p">:</span>
 </span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sufficient_data</span>
@@ -2233,11 +2300,21 @@
 </span><span id="__span-31-9"><a href="#__codelineno-31-9" id="__codelineno-31-9" name="__codelineno-31-9"></a><span class="w">      </span><span class="nt">attributes</span><span class="p">:</span>
 </span><span id="__span-31-10"><a href="#__codelineno-31-10" id="__codelineno-31-10" name="__codelineno-31-10"></a><span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Revenue</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">between</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">10M"</span>
 </span></code></pre></div>
-<p><strong>How it works:</strong>
-- <code>fail query</code> - A SELECT statement that returns invalid rows
-- <code>samples limit</code> - How many example rows to capture when the check fails (default: 5)
-- Returns empty = check passes (no invalid rows found)
-- Returns rows = check fails (captures samples so you can see what's wrong)</p>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>
+<p><code>fail query</code> - A SELECT statement that returns invalid rows</p>
+</li>
+<li>
+<p><code>samples limit</code> - How many example rows to capture when the check fails (default: 5)</p>
+</li>
+<li>
+<p>Returns empty = check passes (no invalid rows found)</p>
+</li>
+<li>
+<p>Returns rows = check fails (captures samples so you can see what's wrong)</p>
+</li>
+</ul>
 <p><strong>Complex validation:</strong></p>
 <p>You can get fancy with joins and CTEs:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="nt">validity</span><span class="p">:</span>
@@ -2277,7 +2354,7 @@
 </span><span id="__span-34-5"><a href="#__codelineno-34-5" id="__codelineno-34-5" name="__codelineno-34-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percentile(revenue, 95) &lt; 50000</span><span class="p p-Indicator">:</span>
 </span><span id="__span-34-6"><a href="#__codelineno-34-6" id="__codelineno-34-6" name="__codelineno-34-6"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue_95th_percentile_check</span>
 </span></code></pre></div>
-<p>These are great for detecting when your data distribution changes unexpectedly.</p>
+<p>These detect when your data distribution changes unexpectedly.</p>
 <h3 id="anomaly-detection">Anomaly Detection<a class="headerlink" href="#anomaly-detection" title="Link to this section">¶</a></h3>
 <h4 id="ml-based-anomaly-detection">ML-based anomaly detection<a class="headerlink" href="#ml-based-anomaly-detection" title="Link to this section">¶</a></h4>
 <p>This is where checks get really powerful. Anomaly detection uses historical check results to learn what's normal and flag unusual patterns:</p>
@@ -2298,10 +2375,18 @@
 2. Builds a statistical model (mean, standard deviation, trends)
 3. Compares current value to expected range
 4. Flags significant deviations (typically &gt; 3 standard deviations)</p>
-<p><strong>Requirements:</strong>
-- Needs historical data (runs multiple times to build a baseline)
-- Works best with regular schedules (daily, hourly)
-- More accurate after 30+ data points (the more history, the better)</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>
+<p>Needs historical data (runs multiple times to build a baseline)</p>
+</li>
+<li>
+<p>Works best with regular schedules (daily, hourly)</p>
+</li>
+<li>
+<p>More accurate after 30+ data points (the more history, the better)</p>
+</li>
+</ul>
 <p>So if you're setting up anomaly detection, be patient, it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.</p>
 <h3 id="change-over-time-checks">Change Over Time Checks<a class="headerlink" href="#change-over-time-checks" title="Link to this section">¶</a></h3>
 <h4 id="monitor-changes-compared-to-previous-run">Monitor changes compared to previous run<a class="headerlink" href="#monitor-changes-compared-to-previous-run" title="Link to this section">¶</a></h4>
@@ -2321,11 +2406,19 @@
 <p><strong>Change calculation:</strong>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a>change = (current_value - previous_value) / previous_value * 100
 </span></code></pre></div><p></p>
-<p><strong>Examples:</strong>
-- <code>change &gt;= -30%</code> - Alert if metric drops more than 30% (negative change)
-- <code>change &gt;= 10%</code> - Alert if metric grows more than 10% (positive change)
-- <code>change between -10% and 10%</code> - Alert if metric changes more than 10% either way</p>
-<p>This is super useful for catching sudden changes that might indicate a problem (or an opportunity!).</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>
+<p><code>change &gt;= -30%</code> - Alert if metric drops more than 30% (negative change)</p>
+</li>
+<li>
+<p><code>change &gt;= 10%</code> - Alert if metric grows more than 10% (positive change)</p>
+</li>
+<li>
+<p><code>change between -10% and 10%</code> - Alert if metric changes more than 10% either way</p>
+</li>
+</ul>
+<p>This catches sudden changes that might indicate a problem or an opportunity.</p>
 <h2 id="data-profiling">Data Profiling<a class="headerlink" href="#data-profiling" title="Link to this section">¶</a></h2>
 <h3 id="what-is-profiling">What is Profiling?<a class="headerlink" href="#what-is-profiling" title="Link to this section">¶</a></h3>
 <p><strong>Profiles automatically collect statistical metrics about your data over time.</strong></p>
@@ -2338,21 +2431,47 @@
 </span><span id="__span-38-6"><a href="#__codelineno-38-6" id="__codelineno-38-6" name="__codelineno-38-6"></a><span class="p">);</span>
 </span></code></pre></div>
 <p><strong>What gets profiled:</strong></p>
-<p><strong>Table-level metrics:</strong>
-- Row count</p>
-<p><strong>Column-level metrics (all columns):</strong>
-- Null count &amp; percentage
-- Distinct count
-- Duplicate count
-- Uniqueness percentage</p>
-<p><strong>Numeric columns:</strong>
-- Min, max, avg, sum
-- Standard deviation, variance
-- Histogram buckets</p>
-<p><strong>Text columns:</strong>
-- Min, max, avg length
-- Most frequent values</p>
-<p>Think of profiles as your data's health records, they track how things change over time so you can spot trends and drift.</p>
+<p><strong>Table-level metrics:</strong></p>
+<ul>
+<li>Row count</li>
+</ul>
+<p><strong>Column-level metrics (all columns):</strong></p>
+<ul>
+<li>
+<p>Null count &amp; percentage</p>
+</li>
+<li>
+<p>Distinct count</p>
+</li>
+<li>
+<p>Duplicate count</p>
+</li>
+<li>
+<p>Uniqueness percentage</p>
+</li>
+</ul>
+<p><strong>Numeric columns:</strong></p>
+<ul>
+<li>
+<p>Min, max, avg, sum</p>
+</li>
+<li>
+<p>Standard deviation, variance</p>
+</li>
+<li>
+<p>Histogram buckets</p>
+</li>
+</ul>
+<p><strong>Text columns:</strong></p>
+<ul>
+<li>
+<p>Min, max, avg length</p>
+</li>
+<li>
+<p>Most frequent values</p>
+</li>
+</ul>
+<p>Profiles track how things change over time so you can spot trends and drift.</p>
 <h3 id="profile-configuration">Profile Configuration<a class="headerlink" href="#profile-configuration" title="Link to this section">¶</a></h3>
 <p>Enable profiling in your MODEL definition:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-39-1"><a href="#__codelineno-39-1" id="__codelineno-39-1" name="__codelineno-39-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
@@ -2438,7 +2557,7 @@
 </span><span id="__span-40-8"><a href="#__codelineno-40-8" id="__codelineno-40-8" name="__codelineno-40-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">profiled_at</span><span class="w"> </span><span class="k">DESC</span>
 </span><span id="__span-40-9"><a href="#__codelineno-40-9" id="__codelineno-40-9" name="__codelineno-40-9"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Last 30 days</span>
 </span></code></pre></div>
-<p>This shows you a time series of missing values, which is great for spotting trends.</p>
+<p>This shows you a time series of missing values for spotting trends.</p>
 <h4 id="monitor-data-drift">Monitor data drift<a class="headerlink" href="#monitor-data-drift" title="Link to this section">¶</a></h4>
 <p>Compare current values to historical averages:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-41-1"><a href="#__codelineno-41-1" id="__codelineno-41-1" name="__codelineno-41-1"></a><span class="k">WITH</span><span class="w"> </span><span class="n">latest_profile</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
@@ -2517,10 +2636,14 @@
 </span><span id="__span-43-11"><a href="#__codelineno-43-11" id="__codelineno-43-11" name="__codelineno-43-11"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">to_timestamp</span><span class="p">(</span><span class="n">profiled_at</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="k">CURRENT_DATE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">'30 days'</span><span class="p">;</span>
 </span><span id="__span-43-12"><a href="#__codelineno-43-12" id="__codelineno-43-12" name="__codelineno-43-12"></a>
 </span><span id="__span-43-13"><a href="#__codelineno-43-13" id="__codelineno-43-13" name="__codelineno-43-13"></a><span class="c1">-- Results:</span>
-</span><span id="__span-43-14"><a href="#__codelineno-43-14" id="__codelineno-43-14" name="__codelineno-43-14"></a><span class="c1">-- min_revenue: 45000</span>
-</span><span id="__span-43-15"><a href="#__codelineno-43-15" id="__codelineno-43-15" name="__codelineno-43-15"></a><span class="c1">-- max_revenue: 75000</span>
-</span><span id="__span-43-16"><a href="#__codelineno-43-16" id="__codelineno-43-16" name="__codelineno-43-16"></a><span class="c1">-- typical_revenue: 58000</span>
-</span><span id="__span-43-17"><a href="#__codelineno-43-17" id="__codelineno-43-17" name="__codelineno-43-17"></a><span class="c1">-- revenue_stddev: 6000</span>
+</span><span id="__span-43-14"><a href="#__codelineno-43-14" id="__codelineno-43-14" name="__codelineno-43-14"></a>
+</span><span id="__span-43-15"><a href="#__codelineno-43-15" id="__codelineno-43-15" name="__codelineno-43-15"></a><span class="c1">-- min_revenue: 45000</span>
+</span><span id="__span-43-16"><a href="#__codelineno-43-16" id="__codelineno-43-16" name="__codelineno-43-16"></a>
+</span><span id="__span-43-17"><a href="#__codelineno-43-17" id="__codelineno-43-17" name="__codelineno-43-17"></a><span class="c1">-- max_revenue: 75000</span>
+</span><span id="__span-43-18"><a href="#__codelineno-43-18" id="__codelineno-43-18" name="__codelineno-43-18"></a>
+</span><span id="__span-43-19"><a href="#__codelineno-43-19" id="__codelineno-43-19" name="__codelineno-43-19"></a><span class="c1">-- typical_revenue: 58000</span>
+</span><span id="__span-43-20"><a href="#__codelineno-43-20" id="__codelineno-43-20" name="__codelineno-43-20"></a>
+</span><span id="__span-43-21"><a href="#__codelineno-43-21" id="__codelineno-43-21" name="__codelineno-43-21"></a><span class="c1">-- revenue_stddev: 6000</span>
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-44-1"><a href="#__codelineno-44-1" id="__codelineno-44-1" name="__codelineno-44-1"></a><span class="c1"># Step 3: Create checks based on observed patterns</span>
 </span><span id="__span-44-2"><a href="#__codelineno-44-2" id="__codelineno-44-2" name="__codelineno-44-2"></a><span class="nt">checks</span><span class="p">:</span>
@@ -2536,32 +2659,78 @@
 </span></code></pre></div>
 <p>Now your checks are informed by actual data patterns, not guesses. Much better!</p>
 <h3 id="profile-best-practices">Profile Best Practices<a class="headerlink" href="#profile-best-practices" title="Link to this section">¶</a></h3>
-<p>✅ <strong>DO:</strong>
-- Profile high-value production tables (the ones that matter)
-- Profile columns used in downstream analysis (if it's important, profile it)
-- Use profiles to understand new data sources (what does this data look like?)
-- Query profiles to detect data drift (is something changing?)
-- Use profiles to inform check thresholds (data-driven thresholds are better)</p>
-<p>❌ <strong>DON'T:</strong>
-- Profile sensitive/PII columns (privacy risk, be careful!)
-- Profile every column (performance overhead, pick what matters)
-- Profile temporary/experimental models (waste of resources)
-- Use profiles as a replacement for checks (they serve different purposes)
-- Profile very high-frequency models (storage cost adds up)</p>
-<p><strong>When to use profiles:</strong>
-- Building new models (understand the data first)
-- Monitoring production tables (watch for changes)
-- Detecting data drift (is the data changing?)
-- Informing audit/check strategy (what should we check?)
-- Debugging data quality issues (what's normal vs abnormal?)</p>
-<p><strong>When to skip profiles:</strong>
-- Temporary models (they won't be around long)
-- Models with sensitive data (privacy concerns)
-- Very high-frequency models (&gt; 100 runs/day, storage costs)
-- Models where you only need pass/fail validation (profiles are overkill)</p>
+<p><strong>DO:</strong></p>
+<ul>
+<li>
+<p>Profile high-value production tables (the ones that matter)</p>
+</li>
+<li>
+<p>Profile columns used in downstream analysis (if it's important, profile it)</p>
+</li>
+<li>
+<p>Use profiles to understand new data sources (what does this data look like?)</p>
+</li>
+<li>
+<p>Query profiles to detect data drift (is something changing?)</p>
+</li>
+<li>
+<p>Use profiles to inform check thresholds (data-driven thresholds are better)</p>
+</li>
+</ul>
+<p><strong>DON'T:</strong></p>
+<ul>
+<li>
+<p>Profile sensitive/PII columns (privacy risk, be careful)</p>
+</li>
+<li>
+<p>Profile every column (performance overhead, pick what matters)</p>
+</li>
+<li>
+<p>Profile temporary/experimental models (waste of resources)</p>
+</li>
+<li>
+<p>Use profiles as a replacement for checks (they serve different purposes)</p>
+</li>
+<li>
+<p>Profile very high-frequency models (storage cost adds up)</p>
+</li>
+</ul>
+<p><strong>When to use profiles:</strong></p>
+<ul>
+<li>
+<p>Building new models (understand the data first)</p>
+</li>
+<li>
+<p>Monitoring production tables (watch for changes)</p>
+</li>
+<li>
+<p>Detecting data drift (is the data changing?)</p>
+</li>
+<li>
+<p>Informing audit/check strategy (what should we check?)</p>
+</li>
+<li>
+<p>Debugging data quality issues (what's normal vs abnormal?)</p>
+</li>
+</ul>
+<p><strong>When to skip profiles:</strong></p>
+<ul>
+<li>
+<p>Temporary models (they won't be around long)</p>
+</li>
+<li>
+<p>Models with sensitive data (privacy concerns)</p>
+</li>
+<li>
+<p>Very high-frequency models (&gt; 100 runs/day, storage costs)</p>
+</li>
+<li>
+<p>Models where you only need pass/fail validation (profiles are overkill)</p>
+</li>
+</ul>
 <h2 id="advanced-patterns">Advanced Patterns<a class="headerlink" href="#advanced-patterns" title="Link to this section">¶</a></h2>
 <h3 id="cross-model-validation">Cross-Model Validation<a class="headerlink" href="#cross-model-validation" title="Link to this section">¶</a></h3>
-<p>Validate relationships between models. This is super useful for ensuring referential integrity:</p>
+<p>Validate relationships between models. This ensures referential integrity:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a><span class="c1"># checks/cross_model.yml</span>
 </span><span id="__span-45-2"><a href="#__codelineno-45-2" id="__codelineno-45-2" name="__codelineno-45-2"></a><span class="nt">checks</span><span class="p">:</span>
 </span><span id="__span-45-3"><a href="#__codelineno-45-3" id="__codelineno-45-3" name="__codelineno-45-3"></a><span class="w">  </span><span class="nt">analytics.orders</span><span class="p">:</span>
@@ -2658,14 +2827,14 @@
 <p>Pick whatever works for your team. The important thing is consistency, if everyone knows where to find things, life is easier.</p>
 <h3 id="naming-conventions">Naming Conventions<a class="headerlink" href="#naming-conventions" title="Link to this section">¶</a></h3>
 <p><strong>Use descriptive names:</strong></p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-50-1"><a href="#__codelineno-50-1" id="__codelineno-50-1" name="__codelineno-50-1"></a><span class="c1"># ❌ Bad - what does "check1" tell you?</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-50-1"><a href="#__codelineno-50-1" id="__codelineno-50-1" name="__codelineno-50-1"></a><span class="c1"># Bad - what does "check1" tell you?</span>
 </span><span id="__span-50-2"><a href="#__codelineno-50-2" id="__codelineno-50-2" name="__codelineno-50-2"></a><span class="nt">checks</span><span class="p">:</span>
 </span><span id="__span-50-3"><a href="#__codelineno-50-3" id="__codelineno-50-3" name="__codelineno-50-3"></a><span class="w">  </span><span class="nt">analytics.customers</span><span class="p">:</span>
 </span><span id="__span-50-4"><a href="#__codelineno-50-4" id="__codelineno-50-4" name="__codelineno-50-4"></a><span class="w">    </span><span class="nt">completeness</span><span class="p">:</span>
 </span><span id="__span-50-5"><a href="#__codelineno-50-5" id="__codelineno-50-5" name="__codelineno-50-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">missing_count(email) = 0</span><span class="p">:</span>
 </span><span id="__span-50-6"><a href="#__codelineno-50-6" id="__codelineno-50-6" name="__codelineno-50-6"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check1</span>
 </span><span id="__span-50-7"><a href="#__codelineno-50-7" id="__codelineno-50-7" name="__codelineno-50-7"></a>
-</span><span id="__span-50-8"><a href="#__codelineno-50-8" id="__codelineno-50-8" name="__codelineno-50-8"></a><span class="c1"># ✅ Good - clear and descriptive</span>
+</span><span id="__span-50-8"><a href="#__codelineno-50-8" id="__codelineno-50-8" name="__codelineno-50-8"></a><span class="c1"># Good - clear and descriptive</span>
 </span><span id="__span-50-9"><a href="#__codelineno-50-9" id="__codelineno-50-9" name="__codelineno-50-9"></a><span class="nt">checks</span><span class="p">:</span>
 </span><span id="__span-50-10"><a href="#__codelineno-50-10" id="__codelineno-50-10" name="__codelineno-50-10"></a><span class="w">  </span><span class="nt">analytics.customers</span><span class="p">:</span>
 </span><span id="__span-50-11"><a href="#__codelineno-50-11" id="__codelineno-50-11" name="__codelineno-50-11"></a><span class="w">    </span><span class="nt">completeness</span><span class="p">:</span>
@@ -2674,13 +2843,27 @@
 </span><span id="__span-50-14"><a href="#__codelineno-50-14" id="__codelineno-50-14" name="__codelineno-50-14"></a><span class="w">          </span><span class="nt">attributes</span><span class="p">:</span>
 </span><span id="__span-50-15"><a href="#__codelineno-50-15" id="__codelineno-50-15" name="__codelineno-50-15"></a><span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"All</span><span class="nv"> </span><span class="s">customers</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">email</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">marketing"</span>
 </span></code></pre></div>
-<p><strong>Naming pattern:</strong>
-- <code>&lt;dimension&gt;_&lt;what&gt;_&lt;constraint&gt;</code> or <code>&lt;what&gt;_&lt;constraint&gt;</code>
-- Examples:
-  - <code>completeness_email_required</code> or <code>no_missing_emails</code>
-  - <code>validity_email_format</code> or <code>valid_email_format</code>
-  - <code>uniqueness_email_no_duplicates</code> or <code>unique_emails</code>
-  - <code>timeliness_order_within_24hrs</code> or <code>orders_update_daily</code></p>
+<p><strong>Naming pattern:</strong></p>
+<ul>
+<li>
+<p><code>&lt;dimension&gt;_&lt;what&gt;_&lt;constraint&gt;</code> or <code>&lt;what&gt;_&lt;constraint&gt;</code></p>
+</li>
+<li>
+<p>Examples:</p>
+</li>
+<li>
+<p><code>completeness_email_required</code> or <code>no_missing_emails</code></p>
+</li>
+<li>
+<p><code>validity_email_format</code> or <code>valid_email_format</code></p>
+</li>
+<li>
+<p><code>uniqueness_email_no_duplicates</code> or <code>unique_emails</code></p>
+</li>
+<li>
+<p><code>timeliness_order_within_24hrs</code> or <code>orders_update_daily</code></p>
+</li>
+</ul>
 <p>The key is that someone reading the name should understand what it checks without looking at the code.</p>
 <h3 id="threshold-selection">Threshold Selection<a class="headerlink" href="#threshold-selection" title="Link to this section">¶</a></h3>
 <p><strong>Start conservative, adjust based on data:</strong></p>
@@ -2720,14 +2903,15 @@
 <h3 id="integration-strategy">Integration Strategy<a class="headerlink" href="#integration-strategy" title="Link to this section">¶</a></h3>
 <p><strong>Layer validation:</strong></p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-53-1"><a href="#__codelineno-53-1" id="__codelineno-53-1" name="__codelineno-53-1"></a><span class="c1">-- LAYER 1: Audits (critical - blocks)</span>
-</span><span id="__span-53-2"><a href="#__codelineno-53-2" id="__codelineno-53-2" name="__codelineno-53-2"></a><span class="c1">-- Stop bad data at the door</span>
-</span><span id="__span-53-3"><a href="#__codelineno-53-3" id="__codelineno-53-3" name="__codelineno-53-3"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-53-4"><a href="#__codelineno-53-4" id="__codelineno-53-4" name="__codelineno-53-4"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">orders</span><span class="p">,</span>
-</span><span id="__span-53-5"><a href="#__codelineno-53-5" id="__codelineno-53-5" name="__codelineno-53-5"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-53-6"><a href="#__codelineno-53-6" id="__codelineno-53-6" name="__codelineno-53-6"></a><span class="w">    </span><span class="n">not_null</span><span class="p">(</span><span class="n">columns</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">customer_id</span><span class="p">)),</span>
-</span><span id="__span-53-7"><a href="#__codelineno-53-7" id="__codelineno-53-7" name="__codelineno-53-7"></a><span class="w">    </span><span class="n">unique_values</span><span class="p">(</span><span class="n">columns</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">order_id</span><span class="p">))</span>
-</span><span id="__span-53-8"><a href="#__codelineno-53-8" id="__codelineno-53-8" name="__codelineno-53-8"></a><span class="w">  </span><span class="p">)</span>
-</span><span id="__span-53-9"><a href="#__codelineno-53-9" id="__codelineno-53-9" name="__codelineno-53-9"></a><span class="p">);</span>
+</span><span id="__span-53-2"><a href="#__codelineno-53-2" id="__codelineno-53-2" name="__codelineno-53-2"></a>
+</span><span id="__span-53-3"><a href="#__codelineno-53-3" id="__codelineno-53-3" name="__codelineno-53-3"></a><span class="c1">-- Stop bad data at the door</span>
+</span><span id="__span-53-4"><a href="#__codelineno-53-4" id="__codelineno-53-4" name="__codelineno-53-4"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-53-5"><a href="#__codelineno-53-5" id="__codelineno-53-5" name="__codelineno-53-5"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">orders</span><span class="p">,</span>
+</span><span id="__span-53-6"><a href="#__codelineno-53-6" id="__codelineno-53-6" name="__codelineno-53-6"></a><span class="w">  </span><span class="n">assertions</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-53-7"><a href="#__codelineno-53-7" id="__codelineno-53-7" name="__codelineno-53-7"></a><span class="w">    </span><span class="n">not_null</span><span class="p">(</span><span class="n">columns</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">customer_id</span><span class="p">)),</span>
+</span><span id="__span-53-8"><a href="#__codelineno-53-8" id="__codelineno-53-8" name="__codelineno-53-8"></a><span class="w">    </span><span class="n">unique_values</span><span class="p">(</span><span class="n">columns</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">order_id</span><span class="p">))</span>
+</span><span id="__span-53-9"><a href="#__codelineno-53-9" id="__codelineno-53-9" name="__codelineno-53-9"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-53-10"><a href="#__codelineno-53-10" id="__codelineno-53-10" name="__codelineno-53-10"></a><span class="p">);</span>
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-54-1"><a href="#__codelineno-54-1" id="__codelineno-54-1" name="__codelineno-54-1"></a><span class="c1"># LAYER 2: Checks (monitoring - warns)</span>
 </span><span id="__span-54-2"><a href="#__codelineno-54-2" id="__codelineno-54-2" name="__codelineno-54-2"></a><span class="c1"># Watch for problems but don't block</span>
@@ -2742,11 +2926,12 @@
 </span><span id="__span-54-11"><a href="#__codelineno-54-11" id="__codelineno-54-11" name="__codelineno-54-11"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count_stable</span>
 </span></code></pre></div>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-55-1"><a href="#__codelineno-55-1" id="__codelineno-55-1" name="__codelineno-55-1"></a><span class="c1">-- LAYER 3: Profiles (observe - tracks)</span>
-</span><span id="__span-55-2"><a href="#__codelineno-55-2" id="__codelineno-55-2" name="__codelineno-55-2"></a><span class="c1">-- Just watch and learn</span>
-</span><span id="__span-55-3"><a href="#__codelineno-55-3" id="__codelineno-55-3" name="__codelineno-55-3"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-55-4"><a href="#__codelineno-55-4" id="__codelineno-55-4" name="__codelineno-55-4"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">orders</span><span class="p">,</span>
-</span><span id="__span-55-5"><a href="#__codelineno-55-5" id="__codelineno-55-5" name="__codelineno-55-5"></a><span class="w">  </span><span class="n">profiles</span><span class="w"> </span><span class="p">(</span><span class="n">order_count</span><span class="p">,</span><span class="w"> </span><span class="n">revenue</span><span class="p">,</span><span class="w"> </span><span class="n">customer_tier</span><span class="p">)</span>
-</span><span id="__span-55-6"><a href="#__codelineno-55-6" id="__codelineno-55-6" name="__codelineno-55-6"></a><span class="p">);</span>
+</span><span id="__span-55-2"><a href="#__codelineno-55-2" id="__codelineno-55-2" name="__codelineno-55-2"></a>
+</span><span id="__span-55-3"><a href="#__codelineno-55-3" id="__codelineno-55-3" name="__codelineno-55-3"></a><span class="c1">-- Just watch and learn</span>
+</span><span id="__span-55-4"><a href="#__codelineno-55-4" id="__codelineno-55-4" name="__codelineno-55-4"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-55-5"><a href="#__codelineno-55-5" id="__codelineno-55-5" name="__codelineno-55-5"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">orders</span><span class="p">,</span>
+</span><span id="__span-55-6"><a href="#__codelineno-55-6" id="__codelineno-55-6" name="__codelineno-55-6"></a><span class="w">  </span><span class="n">profiles</span><span class="w"> </span><span class="p">(</span><span class="n">order_count</span><span class="p">,</span><span class="w"> </span><span class="n">revenue</span><span class="p">,</span><span class="w"> </span><span class="n">customer_tier</span><span class="p">)</span>
+</span><span id="__span-55-7"><a href="#__codelineno-55-7" id="__codelineno-55-7" name="__codelineno-55-7"></a><span class="p">);</span>
 </span></code></pre></div>
 <p>This three-layer approach gives you comprehensive data quality coverage: audits stop problems, checks warn about issues, and profiles help you understand what's normal.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">¶</a></h2>
@@ -2767,12 +2952,12 @@
 </span><span id="__span-57-6"><a href="#__codelineno-57-6" id="__codelineno-57-6" name="__codelineno-57-6"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">executed_at</span><span class="w"> </span><span class="k">DESC</span>
 </span><span id="__span-57-7"><a href="#__codelineno-57-7" id="__codelineno-57-7" name="__codelineno-57-7"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
 </span></code></pre></div>
-<p>This shows you actual rows that failed, which is super helpful for debugging.</p>
+<p>This shows you actual rows that failed for debugging.</p>
 <h3 id="performance-issues">Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this section">¶</a></h3>
 <h4 id="slow-check-queries">Slow check queries<a class="headerlink" href="#slow-check-queries" title="Link to this section">¶</a></h4>
 <p><strong>Problem:</strong> Check takes too long to run</p>
 <p><strong>Solution 1: Add filters</strong></p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-58-1"><a href="#__codelineno-58-1" id="__codelineno-58-1" name="__codelineno-58-1"></a><span class="c1"># ❌ Slow - scans entire table</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-58-1"><a href="#__codelineno-58-1" id="__codelineno-58-1" name="__codelineno-58-1"></a><span class="c1"># Slow - scans entire table</span>
 </span><span id="__span-58-2"><a href="#__codelineno-58-2" id="__codelineno-58-2" name="__codelineno-58-2"></a><span class="nt">checks</span><span class="p">:</span>
 </span><span id="__span-58-3"><a href="#__codelineno-58-3" id="__codelineno-58-3" name="__codelineno-58-3"></a><span class="w">  </span><span class="nt">analytics.orders</span><span class="p">:</span>
 </span><span id="__span-58-4"><a href="#__codelineno-58-4" id="__codelineno-58-4" name="__codelineno-58-4"></a><span class="w">    </span><span class="nt">validity</span><span class="p">:</span>
@@ -2781,7 +2966,7 @@
 </span><span id="__span-58-7"><a href="#__codelineno-58-7" id="__codelineno-58-7" name="__codelineno-58-7"></a><span class="w">            </span><span class="no">SELECT * FROM analytics.orders</span>
 </span><span id="__span-58-8"><a href="#__codelineno-58-8" id="__codelineno-58-8" name="__codelineno-58-8"></a><span class="w">            </span><span class="no">WHERE email NOT LIKE '%@%'</span>
 </span><span id="__span-58-9"><a href="#__codelineno-58-9" id="__codelineno-58-9" name="__codelineno-58-9"></a>
-</span><span id="__span-58-10"><a href="#__codelineno-58-10" id="__codelineno-58-10" name="__codelineno-58-10"></a><span class="c1"># ✅ Fast - filters to recent data</span>
+</span><span id="__span-58-10"><a href="#__codelineno-58-10" id="__codelineno-58-10" name="__codelineno-58-10"></a><span class="c1"># Fast - filters to recent data</span>
 </span><span id="__span-58-11"><a href="#__codelineno-58-11" id="__codelineno-58-11" name="__codelineno-58-11"></a><span class="nt">checks</span><span class="p">:</span>
 </span><span id="__span-58-12"><a href="#__codelineno-58-12" id="__codelineno-58-12" name="__codelineno-58-12"></a><span class="w">  </span><span class="nt">analytics.orders</span><span class="p">:</span>
 </span><span id="__span-58-13"><a href="#__codelineno-58-13" id="__codelineno-58-13" name="__codelineno-58-13"></a><span class="w">    </span><span class="nt">filter</span><span class="p">:</span><span class="w"> </span><span class="s">"order_date</span><span class="nv"> </span><span class="s">&gt;=</span><span class="nv"> </span><span class="s">CURRENT_DATE</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">INTERVAL</span><span class="nv"> </span><span class="s">'30</span><span class="nv"> </span><span class="s">days'"</span>
@@ -2801,13 +2986,13 @@
 <h3 id="false-positives">False Positives<a class="headerlink" href="#false-positives" title="Link to this section">¶</a></h3>
 <h4 id="threshold-too-strict">Threshold too strict<a class="headerlink" href="#threshold-too-strict" title="Link to this section">¶</a></h4>
 <p><strong>Problem:</strong> Check fails during normal variance</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-60-1"><a href="#__codelineno-60-1" id="__codelineno-60-1" name="__codelineno-60-1"></a><span class="c1"># ❌ Too strict - exact match is unrealistic</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-60-1"><a href="#__codelineno-60-1" id="__codelineno-60-1" name="__codelineno-60-1"></a><span class="c1"># Too strict - exact match is unrealistic</span>
 </span><span id="__span-60-2"><a href="#__codelineno-60-2" id="__codelineno-60-2" name="__codelineno-60-2"></a><span class="nt">checks</span><span class="p">:</span>
 </span><span id="__span-60-3"><a href="#__codelineno-60-3" id="__codelineno-60-3" name="__codelineno-60-3"></a><span class="w">  </span><span class="nt">analytics.orders</span><span class="p">:</span>
 </span><span id="__span-60-4"><a href="#__codelineno-60-4" id="__codelineno-60-4" name="__codelineno-60-4"></a><span class="w">    </span><span class="nt">completeness</span><span class="p">:</span>
 </span><span id="__span-60-5"><a href="#__codelineno-60-5" id="__codelineno-60-5" name="__codelineno-60-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">row_count = 10000</span><span class="w">  </span><span class="c1"># Exact match</span>
 </span><span id="__span-60-6"><a href="#__codelineno-60-6" id="__codelineno-60-6" name="__codelineno-60-6"></a>
-</span><span id="__span-60-7"><a href="#__codelineno-60-7" id="__codelineno-60-7" name="__codelineno-60-7"></a><span class="c1"># ✅ Allow variance - more realistic</span>
+</span><span id="__span-60-7"><a href="#__codelineno-60-7" id="__codelineno-60-7" name="__codelineno-60-7"></a><span class="c1"># Allow variance - more realistic</span>
 </span><span id="__span-60-8"><a href="#__codelineno-60-8" id="__codelineno-60-8" name="__codelineno-60-8"></a><span class="nt">checks</span><span class="p">:</span>
 </span><span id="__span-60-9"><a href="#__codelineno-60-9" id="__codelineno-60-9" name="__codelineno-60-9"></a><span class="w">  </span><span class="nt">analytics.orders</span><span class="p">:</span>
 </span><span id="__span-60-10"><a href="#__codelineno-60-10" id="__codelineno-60-10" name="__codelineno-60-10"></a><span class="w">    </span><span class="nt">completeness</span><span class="p">:</span>
@@ -2825,29 +3010,63 @@
 </span></code></pre></div>
 <p>Anomaly detection learns what's normal and adapts to variance, which reduces false positives.</p>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">¶</a></h2>
-<p>Quality checks provide a comprehensive way to monitor data quality over time without blocking your modelss. Here's what we covered:</p>
+<p>Quality checks provide a comprehensive way to monitor data quality over time without blocking your models. Here's what we covered:</p>
 <h3 id="core-concepts">Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this section">¶</a></h3>
 <p><strong>1. Quality Checks</strong>
-- YAML-configured validation rules
-- Non-blocking (don't stop modelss)
-- Track trends over time
-- Integrate with Activity API</p>
+- YAML-configured validation rules</p>
+<ul>
+<li>
+<p>Non-blocking (don't stop models)</p>
+</li>
+<li>
+<p>Track trends over time</p>
+</li>
+<li>
+<p>Integrate with Activity API</p>
+</li>
+</ul>
 <p><strong>2. Check Types</strong>
-- Missing data checks (<code>missing_count</code>, <code>missing_percent</code>)
-- Row count checks (<code>row_count</code>)
-- Duplicate checks (<code>duplicate_count</code>)
-- Failed rows (SQL-based, super flexible)
-- Anomaly detection (ML-based, learns from history)
-- Change monitoring (compare to previous runs)</p>
+- Missing data checks (<code>missing_count</code>, <code>missing_percent</code>)</p>
+<ul>
+<li>
+<p>Row count checks (<code>row_count</code>)</p>
+</li>
+<li>
+<p>Duplicate checks (<code>duplicate_count</code>)</p>
+</li>
+<li>
+<p>Failed rows (SQL-based, flexible)</p>
+</li>
+<li>
+<p>Anomaly detection (ML-based, learns from history)</p>
+</li>
+<li>
+<p>Change monitoring (compare to previous runs)</p>
+</li>
+</ul>
 <p><strong>3. Data Profiling</strong>
-- Automatic statistical metric collection
-- Stored in <code>_check_profiles</code> table
-- Observe patterns without validation
-- Inform check threshold selection</p>
+- Automatic statistical metric collection</p>
+<ul>
+<li>
+<p>Stored in <code>_check_profiles</code> table</p>
+</li>
+<li>
+<p>Observe patterns without validation</p>
+</li>
+<li>
+<p>Inform check threshold selection</p>
+</li>
+</ul>
 <p><strong>4. Data Quality Strategy</strong>
-- <strong>Audits</strong> - Critical, blocking (stop bad data)
-- <strong>Checks</strong> - Monitoring, non-blocking (watch for problems)
-- <strong>Profiles</strong> - Observation, tracking (understand what's normal)</p>
+- <strong>Audits</strong> - Critical, blocking (stop bad data)</p>
+<ul>
+<li>
+<p><strong>Checks</strong> - Monitoring, non-blocking (watch for problems)</p>
+</li>
+<li>
+<p><strong>Profiles</strong> - Observation, tracking (understand what's normal)</p>
+</li>
+</ul>
 <p>Remember: start simple, use profiles to understand your data, then create checks based on what you learn. And don't forget, checks are there to help you, not stress you out. If a check is giving you too many false positives, adjust the threshold or switch to anomaly detection. The goal is better data quality, not perfect check scores.</p>
 </article>
 </div>
@@ -2915,8 +3134,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

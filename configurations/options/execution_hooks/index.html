@@ -8,9 +8,9 @@
 <link href="../variables/" rel="prev"/>
 <link href="../notifications/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Execution Hooks - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1261,9 +1261,9 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="execution-hooks">Execution Hooks<a class="headerlink" href="#execution-hooks" title="Link to this section">¶</a></h1>
-<p>Execution hooks let you run SQL statements or macros automatically at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands. Think of them as a way to automate all those setup and cleanup tasks you'd otherwise have to do manually. They're super powerful for things like setting up temporary tables, granting permissions, logging pipeline runs, or cleaning up after yourself.</p>
+<p>Run SQL statements or macros automatically at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands. Automate setup and cleanup tasks: create temporary tables, grant permissions, log pipeline runs, clean up after execution.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h2>
-<p>Here's the basic idea: you've got two hooks that run at different times:</p>
+<p>Two hooks run at different times:</p>
 <table>
 <thead>
 <tr>
@@ -1285,7 +1285,7 @@
 </tr>
 </tbody>
 </table>
-<p>The <code>before_all</code> hook runs once at the very beginning, before Vulcan starts processing any models. Use it for setup tasks. The <code>after_all</code> hook runs once at the very end, after all models have been processed. Use it for cleanup or post-processing tasks.</p>
+<p>The <code>before_all</code> hook runs once at the beginning, before Vulcan processes any models. Use it for setup tasks. The <code>after_all</code> hook runs once at the end, after all models are processed. Use it for cleanup or post-processing.</p>
 <h2 id="basic-configuration">Basic Configuration<a class="headerlink" href="#basic-configuration" title="Link to this section">¶</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
@@ -1296,13 +1296,17 @@
 <span class="normal"><a href="#__codelineno-0-4">4</a></span>
 <span class="normal"><a href="#__codelineno-0-5">5</a></span>
 <span class="normal"><a href="#__codelineno-0-6">6</a></span>
-<span class="normal"><a href="#__codelineno-0-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">before_all</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span>
+<span class="normal"><a href="#__codelineno-0-8">8</a></span>
+<span class="normal"><a href="#__codelineno-0-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">before_all</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CREATE TABLE IF NOT EXISTS audit_log (model VARCHAR, started_at TIMESTAMP)</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INSERT INTO audit_log VALUES ('pipeline', CURRENT_TIMESTAMP)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="nt">after_all</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@grant_select_privileges()"</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UPDATE audit_log SET completed_at = CURRENT_TIMESTAMP WHERE model = 'pipeline'</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INSERT INTO audit_log VALUES ('pipeline', CURRENT_TIMESTAMP)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="nt">after_all</span><span class="p">:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@grant_select_privileges()"</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UPDATE audit_log SET completed_at = CURRENT_TIMESTAMP WHERE model = 'pipeline'</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 </div>
 <div class="tabbed-block">
@@ -1334,7 +1338,7 @@
 </div>
 </div>
 <h2 id="using-macros-in-hooks">Using Macros in Hooks<a class="headerlink" href="#using-macros-in-hooks" title="Link to this section">¶</a></h2>
-<p>Hooks can execute Vulcan macros using the <code>@macro_name()</code> syntax, which is super powerful because macros have access to runtime context. This means your hooks can be dynamic, they can see what views were created, what schemas are being used, and what environment you're running in. This makes it possible to write hooks that adapt to your actual pipeline state.</p>
+<p>Hooks execute Vulcan macros using the <code>@macro_name()</code> syntax. Macros have access to runtime context, so hooks can be dynamic. They see what views were created, what schemas are used, and what environment you're running in. Write hooks that adapt to your pipeline state.</p>
 <h3 id="available-context-variables">Available Context Variables<a class="headerlink" href="#available-context-variables" title="Link to this section">¶</a></h3>
 <p>Macros invoked in hooks have access to:</p>
 <table>
@@ -1371,7 +1375,7 @@
 <hr/>
 <h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Link to this section">¶</a></h2>
 <h3 id="1-granting-privileges-on-views">1. Granting Privileges on Views<a class="headerlink" href="#1-granting-privileges-on-views" title="Link to this section">¶</a></h3>
-<p>If you're creating lots of views and need to grant permissions on all of them, doing it model-by-model gets tedious fast. Instead, use <code>after_all</code> to grant access to all views in one go. This is much cleaner and easier to maintain:</p>
+<p>Creating many views and granting permissions model-by-model gets tedious. Use <code>after_all</code> to grant access to all views at once:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">macros/privileges.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
@@ -1401,10 +1405,10 @@
 </span></code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Preventing Name Replacement</p>
-<p>That <code>/* sqlglot.meta replace=false */</code> comment is important! It tells Vulcan not to replace the view name with the physical table name during SQL rendering. Without it, Vulcan might try to be helpful and swap in the underlying table name, which would break your GRANT statement.</p>
+<p>The <code>/* sqlglot.meta replace=false */</code> comment tells Vulcan not to replace the view name with the physical table name during SQL rendering. Without it, Vulcan might swap in the underlying table name, which breaks your GRANT statement.</p>
 </div>
 <h3 id="2-environment-specific-execution">2. Environment-Specific Execution<a class="headerlink" href="#2-environment-specific-execution" title="Link to this section">¶</a></h3>
-<p>Sometimes you want different behavior in different environments. Maybe you only want to grant certain permissions in production, or you want to run cleanup tasks only in development. The <code>@IF</code> macro lets you conditionally execute statements based on the current environment:</p>
+<p>Use different behavior in different environments. Grant certain permissions only in production. Run cleanup tasks only in development. The <code>@IF</code> macro conditionally executes statements based on the current environment:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">config.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
 <span class="normal"><a href="#__codelineno-4-3">3</a></span>
@@ -1458,7 +1462,7 @@
 </span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a>    <span class="p">]</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="3-audit-logging">3. Audit Logging<a class="headerlink" href="#3-audit-logging" title="Link to this section">¶</a></h3>
-<p>Want to keep track of when your pipeline runs and how long it takes? Audit logging is a great use case for hooks. You can log the start time in <code>before_all</code> and the completion time in <code>after_all</code>:</p>
+<p>Track when your pipeline runs and how long it takes. Log the start time in <code>before_all</code> and the completion time in <code>after_all</code>:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">config.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
@@ -1532,16 +1536,22 @@
 </span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23"></a>    <span class="p">]</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="4-schema-and-database-setup">4. Schema and Database Setup<a class="headerlink" href="#4-schema-and-database-setup" title="Link to this section">¶</a></h3>
-<p>Before your models can run, you need to make sure all the schemas they depend on actually exist. Instead of creating them manually or remembering to create them in a specific order, let <code>before_all</code> handle it automatically:</p>
+<p>Before models run, ensure all schemas they depend on exist. Instead of creating them manually or remembering the order, let <code>before_all</code> handle it:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">config.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
 <span class="normal"><a href="#__codelineno-8-2">2</a></span>
 <span class="normal"><a href="#__codelineno-8-3">3</a></span>
 <span class="normal"><a href="#__codelineno-8-4">4</a></span>
-<span class="normal"><a href="#__codelineno-8-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nt">before_all</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-8-5">5</a></span>
+<span class="normal"><a href="#__codelineno-8-6">6</a></span>
+<span class="normal"><a href="#__codelineno-8-7">7</a></span>
+<span class="normal"><a href="#__codelineno-8-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nt">before_all</span><span class="p">:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CREATE SCHEMA IF NOT EXISTS staging</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CREATE SCHEMA IF NOT EXISTS analytics</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CREATE SCHEMA IF NOT EXISTS reporting</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@setup_external_tables()"</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CREATE SCHEMA IF NOT EXISTS analytics</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CREATE SCHEMA IF NOT EXISTS reporting</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@setup_external_tables()"</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">macros/setup.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
@@ -1578,7 +1588,7 @@
 </span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17"></a>    <span class="p">]</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="5-data-quality-gates">5. Data Quality Gates<a class="headerlink" href="#5-data-quality-gates" title="Link to this section">¶</a></h3>
-<p>Want to make sure your source data is good before you start processing? You can use <code>before_all</code> to run validation checks. If the checks fail, the pipeline stops before wasting time processing bad data:</p>
+<p>Validate source data before processing. Use <code>before_all</code> to run validation checks. If checks fail, the pipeline stops before processing bad data:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">config.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
 <span class="normal"><a href="#__codelineno-10-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nt">before_all</span><span class="p">:</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@validate_source_data()"</span>
@@ -1620,7 +1630,7 @@
 </span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18"></a>    <span class="p">]</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="6-refresh-materialized-views">6. Refresh Materialized Views<a class="headerlink" href="#6-refresh-materialized-views" title="Link to this section">¶</a></h3>
-<p>If you have materialized views that depend on your Vulcan models, you'll want to refresh them after your models update. Instead of remembering to do it manually, let <code>after_all</code> handle it automatically:</p>
+<p>If materialized views depend on your Vulcan models, refresh them after models update. Let <code>after_all</code> handle it:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">config.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
 <span class="normal"><a href="#__codelineno-12-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nt">after_all</span><span class="p">:</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@refresh_materialized_views()"</span>
@@ -1656,7 +1666,7 @@
 </span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a>    <span class="p">]</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="7-notification-integration">7. Notification Integration<a class="headerlink" href="#7-notification-integration" title="Link to this section">¶</a></h3>
-<p>Want to notify your team when the pipeline finishes? You can use <code>after_all</code> to send notifications. This example logs to a table, but you could easily extend it to call an external API or send emails:</p>
+<p>Notify your team when the pipeline finishes. Use <code>after_all</code> to send notifications. This example logs to a table. Extend it to call an external API or send emails:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><th class="filename" colspan="2"><span class="filename">config.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
 <span class="normal"><a href="#__codelineno-14-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="nt">after_all</span><span class="p">:</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"@notify_completion()"</span>
@@ -1719,33 +1729,23 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <hr/>
 <h2 id="execution-order">Execution Order<a class="headerlink" href="#execution-order" title="Link to this section">¶</a></h2>
-<pre class="mermaid"><code>graph TD
+<pre class="mermaid"><code>graph LR
     A[Start] --&gt; B[before_all]
     B --&gt; C[Process Models]
     C --&gt; D[after_all]
-    D --&gt; E[Complete]</code></pre>
+    D --&gt; E[Complete]
+
+    style B fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style E fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px</code></pre>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
-<p>Here are some tips to help you write hooks that are reliable and maintainable:</p>
-<ol>
-<li>
-<p><strong>Use macros for complex logic</strong> - If your hook logic is getting complicated, move it to a Python macro. This keeps your YAML config clean and makes the logic easier to test and maintain.</p>
-</li>
-<li>
-<p><strong>Make hooks idempotent</strong> - Hooks might run multiple times (maybe a plan fails and gets retried), so make sure they're safe to run repeatedly. Use <code>IF NOT EXISTS</code>, <code>ON CONFLICT</code>, or similar patterns to handle this gracefully.</p>
-</li>
-<li>
-<p><strong>Use environment checks</strong> - Not everything should run in every environment. Use <code>@IF(@this_env = 'prod', ...)</code> to gate production-only operations so you don't accidentally run them in development.</p>
-</li>
-<li>
-<p><strong>Handle failures gracefully</strong> - Think about what happens if a hook fails. Will it break your entire pipeline? Use transactions where appropriate, and make sure failures are handled in a way that makes sense for your use case.</p>
-</li>
-<li>
-<p><strong>Document your hooks</strong> - Add comments explaining why each hook exists and what it does. Future you (and your teammates) will thank you.</p>
-</li>
-<li>
-<p><strong>Test in development first</strong> - Always test hooks in a development environment before running them in production. Hooks run automatically, so mistakes can be costly!</p>
-</li>
-</ol>
+<p>Use macros for complex logic. If hook logic gets complicated, move it to a Python macro. Keeps your YAML config clean and makes the logic easier to test and maintain.</p>
+<p>Make hooks idempotent. Hooks might run multiple times if a plan fails and gets retried. Make sure they're safe to run repeatedly. Use <code>IF NOT EXISTS</code>, <code>ON CONFLICT</code>, or similar patterns.</p>
+<p>Use environment checks. Not everything should run in every environment. Use <code>@IF(@this_env = 'prod', ...)</code> to gate production-only operations so you don't accidentally run them in development.</p>
+<p>Handle failures gracefully. Think about what happens if a hook fails. Will it break your entire pipeline? Use transactions where appropriate, and handle failures appropriately.</p>
+<p>Document your hooks. Add comments explaining why each hook exists and what it does.</p>
+<p>Test in development first. Always test hooks in a development environment before running them in production. Hooks run automatically, so mistakes can be costly.</p>
 <h2 id="comparison-with-model-level-hooks">Comparison with Model-Level Hooks<a class="headerlink" href="#comparison-with-model-level-hooks" title="Link to this section">¶</a></h2>
 <p>You might be wondering: when should I use execution hooks versus model-level hooks? Here's the difference:</p>
 <table>
@@ -1779,8 +1779,8 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Use execution hooks</strong> (<code>before_all</code>/<code>after_all</code>) for operations that apply to your entire pipeline, things like setting up audit tables, granting permissions on all views, or sending completion notifications.</p>
-<p><strong>Use model-level hooks</strong> (<code>pre_statements</code>/<code>post_statements</code>) for operations that are specific to individual models, things like creating temporary tables that only one model needs, or running model-specific validations.</p>
+<p>Use execution hooks (<code>before_all</code>/<code>after_all</code>) for operations that apply to your entire pipeline: setting up audit tables, granting permissions on all views, sending completion notifications.</p>
+<p>Use model-level hooks (<code>pre_statements</code>/<code>post_statements</code>) for operations specific to individual models: creating temporary tables that only one model needs, running model-specific validations.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1847,8 +1847,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

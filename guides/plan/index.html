@@ -8,9 +8,9 @@
 <link href="../get-started/docker/" rel="prev"/>
 <link href="../plan_guide/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Plan - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -2102,18 +2102,28 @@
 <h2 id="what-is-a-plan">What is a Plan?<a class="headerlink" href="#what-is-a-plan" title="Link to this section">¶</a></h2>
 <p>A <strong>plan</strong> is Vulcan's way of comparing your local project state with a target environment and determining what changes need to be applied. Before any model changes take effect, Vulcan creates a plan that shows:</p>
 <ul>
-<li><strong>Added models</strong> - New models to be created</li>
-<li><strong>Removed models</strong> - Models to be deleted</li>
-<li><strong>Modified models</strong> - Changes to existing models (with diffs)</li>
-<li><strong>Indirectly affected models</strong> - Downstream models that depend on changed models</li>
-<li><strong>Backfill requirements</strong> - Date ranges that need data reprocessing</li>
+<li>
+<p><strong>Added models</strong> - New models to be created</p>
+</li>
+<li>
+<p><strong>Removed models</strong> - Models to be deleted</p>
+</li>
+<li>
+<p><strong>Modified models</strong> - Changes to existing models (with diffs)</p>
+</li>
+<li>
+<p><strong>Indirectly affected models</strong> - Downstream models that depend on changed models</p>
+</li>
+<li>
+<p><strong>Backfill requirements</strong> - Date ranges that need data reprocessing</p>
+</li>
 </ul>
 <p>Plans allow you to review and verify all changes before they're applied to your data warehouse.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
 <p>Before following this guide, ensure you have:</p>
 <ol>
-<li><strong>Orders360 example project</strong> set up (see <a href="../../examples/overview/">Examples Overview</a>)</li>
-<li><strong>Docker environment</strong> running (see <a href="../get-started/docker.md">Docker Quickstart</a>)</li>
+<li><strong>Orders360 example project</strong> set up (see <a href="../../examples/overview.md">Examples Overview</a>)</li>
+<li><strong>Docker environment</strong> running (see <a href="../get-started/docker/">Docker Quickstart</a>)</li>
 <li><strong>Vulcan CLI</strong> accessible via <code>vulcan</code> command or <code>vulcan.bat</code> (Windows)</li>
 </ol>
 <h2 id="scenario-1-first-plan-initializing-production">Scenario 1: First Plan - Initializing Production<a class="headerlink" href="#scenario-1-first-plan-initializing-production" title="Link to this section">¶</a></h2>
@@ -2123,7 +2133,7 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>vulcan<span class="w"> </span>info
 </span></code></pre></div>
 <p><strong>Expected Output:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>Connection: ✅ Connected
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>Connection: Connected
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>Models: 4
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>Macros: 0
 </span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>Tests: 2
@@ -2159,9 +2169,15 @@
 <p><em>[Screenshot: First plan output showing all models to be added]</em></p>
 <h3 id="understanding-the-output">Understanding the Output<a class="headerlink" href="#understanding-the-output" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong><code>prod</code> environment will be initialized</strong>: This is your first plan, so Vulcan is creating the production environment</li>
-<li><strong>Added models</strong>: All 4 models are new and will be created</li>
-<li><strong>Backfill dates</strong>: Each model needs data from its start date (2025-01-01) to the current date</li>
+<li>
+<p><strong><code>prod</code> environment will be initialized</strong>: This is your first plan, so Vulcan is creating the production environment</p>
+</li>
+<li>
+<p><strong>Added models</strong>: All 4 models are new and will be created</p>
+</li>
+<li>
+<p><strong>Backfill dates</strong>: Each model needs data from its start date (2025-01-01) to the current date</p>
+</li>
 </ul>
 <h3 id="step-3-apply-the-plan">Step 3: Apply the Plan<a class="headerlink" href="#step-3-apply-the-plan" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> and press Enter to apply the plan:</p>
@@ -2234,9 +2250,15 @@
 <h3 id="step-3-review-dependencies">Step 3: Review Dependencies<a class="headerlink" href="#step-3-review-dependencies" title="Link to this section">¶</a></h3>
 <p>Notice that:</p>
 <ul>
-<li>Only the new model appears in the plan</li>
-<li>The upstream model (<code>sales.daily_sales</code>) is not affected because adding a downstream model doesn't change upstream data</li>
-<li>Backfill is needed from the model's start date</li>
+<li>
+<p>Only the new model appears in the plan</p>
+</li>
+<li>
+<p>The upstream model (<code>sales.daily_sales</code>) is not affected because adding a downstream model doesn't change upstream data</p>
+</li>
+<li>
+<p>Backfill is needed from the model's start date</p>
+</li>
 </ul>
 <h3 id="step-4-apply-the-plan">Step 4: Apply the Plan<a class="headerlink" href="#step-4-apply-the-plan" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply:</p>
@@ -2311,19 +2333,37 @@
 <p><em>[Screenshot: Plan showing non-breaking change with diff]</em></p>
 <h3 id="understanding-non-breaking-changes">Understanding Non-Breaking Changes<a class="headerlink" href="#understanding-non-breaking-changes" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>Directly Modified</strong>: The model you changed</li>
-<li><strong>Non-breaking</strong>: Vulcan automatically detected this as non-breaking because:</li>
-<li>You added a new column</li>
-<li>Existing columns weren't modified</li>
-<li>Downstream models aren't affected (they don't use this column yet)</li>
-<li><strong>Backfill required</strong>: The modified model needs to be backfilled to populate the new column</li>
+<li>
+<p><strong>Directly Modified</strong>: The model you changed</p>
+</li>
+<li>
+<p><strong>Non-breaking</strong>: Vulcan automatically detected this as non-breaking because:</p>
+</li>
+<li>
+<p>You added a new column</p>
+</li>
+<li>
+<p>Existing columns weren't modified</p>
+</li>
+<li>
+<p>Downstream models aren't affected (they don't use this column yet)</p>
+</li>
+<li>
+<p><strong>Backfill required</strong>: The modified model needs to be backfilled to populate the new column</p>
+</li>
 </ul>
 <h3 id="step-3-check-downstream-models">Step 3: Check Downstream Models<a class="headerlink" href="#step-3-check-downstream-models" title="Link to this section">¶</a></h3>
 <p>Notice that <code>sales.weekly_sales</code> (which depends on <code>daily_sales</code>) is <strong>not</strong> listed. This is because:</p>
 <ul>
-<li>The change is non-breaking</li>
-<li>Downstream models don't need to be reprocessed</li>
-<li>They'll automatically see the new column once <code>daily_sales</code> is backfilled</li>
+<li>
+<p>The change is non-breaking</p>
+</li>
+<li>
+<p>Downstream models don't need to be reprocessed</p>
+</li>
+<li>
+<p>They'll automatically see the new column once <code>daily_sales</code> is backfilled</p>
+</li>
 </ul>
 <h3 id="step-4-apply-the-plan_1">Step 4: Apply the Plan<a class="headerlink" href="#step-4-apply-the-plan_1" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply:</p>
@@ -2401,12 +2441,24 @@
 <p><em>[Screenshot: Plan showing breaking change with downstream impact]</em></p>
 <h3 id="understanding-breaking-changes">Understanding Breaking Changes<a class="headerlink" href="#understanding-breaking-changes" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>Directly Modified</strong>: <code>sales.daily_sales</code> - the model you changed</li>
-<li><strong>Breaking</strong>: Vulcan detected this as breaking because:</li>
-<li>You added a WHERE clause that filters data</li>
-<li>Existing data may now be invalid (rows that should be filtered out)</li>
-<li><strong>Indirectly Modified</strong>: <code>sales.weekly_sales</code> - downstream model affected</li>
-<li><strong>Cascading backfill</strong>: Both models need to be reprocessed</li>
+<li>
+<p><strong>Directly Modified</strong>: <code>sales.daily_sales</code> - the model you changed</p>
+</li>
+<li>
+<p><strong>Breaking</strong>: Vulcan detected this as breaking because:</p>
+</li>
+<li>
+<p>You added a WHERE clause that filters data</p>
+</li>
+<li>
+<p>Existing data may now be invalid (rows that should be filtered out)</p>
+</li>
+<li>
+<p><strong>Indirectly Modified</strong>: <code>sales.weekly_sales</code> - downstream model affected</p>
+</li>
+<li>
+<p><strong>Cascading backfill</strong>: Both models need to be reprocessed</p>
+</li>
 </ul>
 <h3 id="step-3-apply-the-plan_1">Step 3: Apply the Plan<a class="headerlink" href="#step-3-apply-the-plan_1" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply:</p>
@@ -2505,10 +2557,18 @@
 <p><em>[Screenshot: Dev environment models being backfilled]</em></p>
 <h3 id="understanding-dev-environments">Understanding Dev Environments<a class="headerlink" href="#understanding-dev-environments" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>Isolated namespace</strong>: Models are prefixed with <code>__dev</code> (e.g., <code>sales__dev.daily_sales</code>)</li>
-<li><strong>Separate tables</strong>: Dev environment has its own physical tables</li>
-<li><strong>Limited backfill</strong>: Only recent data was processed (2025-01-10 to 2025-01-15)</li>
-<li><strong>Production unaffected</strong>: Production data remains unchanged</li>
+<li>
+<p><strong>Isolated namespace</strong>: Models are prefixed with <code>__dev</code> (e.g., <code>sales__dev.daily_sales</code>)</p>
+</li>
+<li>
+<p><strong>Separate tables</strong>: Dev environment has its own physical tables</p>
+</li>
+<li>
+<p><strong>Limited backfill</strong>: Only recent data was processed (2025-01-10 to 2025-01-15)</p>
+</li>
+<li>
+<p><strong>Production unaffected</strong>: Production data remains unchanged</p>
+</li>
 </ul>
 <h3 id="step-6-query-dev-environment">Step 6: Query Dev Environment<a class="headerlink" href="#step-6-query-dev-environment" title="Link to this section">¶</a></h3>
 <p>You can query the dev environment to verify changes:</p>
@@ -2577,10 +2637,18 @@
 <p><em>[Screenshot: Forward-only plan showing preview backfill]</em></p>
 <h3 id="understanding-forward-only-plans">Understanding Forward-Only Plans<a class="headerlink" href="#understanding-forward-only-plans" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>Forward-only category</strong>: Automatically assigned</li>
-<li><strong>Preview backfill</strong>: Only processes the latest interval for preview</li>
-<li><strong>Virtual Update</strong>: No new physical table created</li>
-<li><strong>Reuses existing table</strong>: Production will use the same physical table</li>
+<li>
+<p><strong>Forward-only category</strong>: Automatically assigned</p>
+</li>
+<li>
+<p><strong>Preview backfill</strong>: Only processes the latest interval for preview</p>
+</li>
+<li>
+<p><strong>Virtual Update</strong>: No new physical table created</p>
+</li>
+<li>
+<p><strong>Reuses existing table</strong>: Production will use the same physical table</p>
+</li>
 </ul>
 <h3 id="step-3-apply-forward-only-plan">Step 3: Apply Forward-Only Plan<a class="headerlink" href="#step-3-apply-forward-only-plan" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply:</p>
@@ -2597,9 +2665,15 @@
 <p><em>[Screenshot: Forward-only plan applied with minimal backfill]</em></p>
 <h3 id="benefits-of-forward-only">Benefits of Forward-Only<a class="headerlink" href="#benefits-of-forward-only" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>Fast</strong>: Only processes latest interval</li>
-<li><strong>Cost-effective</strong>: No full backfill required</li>
-<li><strong>Safe for production</strong>: Reuses existing tables</li>
+<li>
+<p><strong>Fast</strong>: Only processes latest interval</p>
+</li>
+<li>
+<p><strong>Cost-effective</strong>: No full backfill required</p>
+</li>
+<li>
+<p><strong>Safe for production</strong>: Reuses existing tables</p>
+</li>
 </ul>
 <hr/>
 <h2 id="scenario-7-restatement-plans">Scenario 7: Restatement Plans<a class="headerlink" href="#scenario-7-restatement-plans" title="Link to this section">¶</a></h2>
@@ -2632,9 +2706,15 @@
 <p><em>[Screenshot: Restatement plan showing date range]</em></p>
 <h3 id="understanding-restatement">Understanding Restatement<a class="headerlink" href="#understanding-restatement" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>No model changes</strong>: Model definition unchanged</li>
-<li><strong>Cascading restatement</strong>: Downstream models (<code>weekly_sales</code>) also need restatement</li>
-<li><strong>Date range</strong>: Only specified dates will be reprocessed</li>
+<li>
+<p><strong>No model changes</strong>: Model definition unchanged</p>
+</li>
+<li>
+<p><strong>Cascading restatement</strong>: Downstream models (<code>weekly_sales</code>) also need restatement</p>
+</li>
+<li>
+<p><strong>Date range</strong>: Only specified dates will be reprocessed</p>
+</li>
 </ul>
 <h3 id="step-3-apply-restatement-plan">Step 3: Apply Restatement Plan<a class="headerlink" href="#step-3-apply-restatement-plan" title="Link to this section">¶</a></h3>
 <p>Type <code>y</code> to apply:</p>
@@ -2652,9 +2732,15 @@
 <p><em>[Screenshot: Restatement plan execution]</em></p>
 <h3 id="use-cases-for-restatement">Use Cases for Restatement<a class="headerlink" href="#use-cases-for-restatement" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>Upstream data correction</strong>: Raw data was fixed, need to reprocess</li>
-<li><strong>Bug fixes</strong>: Found an issue in data processing logic (after fixing the model)</li>
-<li><strong>Data refresh</strong>: Need to refresh specific date ranges</li>
+<li>
+<p><strong>Upstream data correction</strong>: Raw data was fixed, need to reprocess</p>
+</li>
+<li>
+<p><strong>Bug fixes</strong>: Found an issue in data processing logic (after fixing the model)</p>
+</li>
+<li>
+<p><strong>Data refresh</strong>: Need to refresh specific date ranges</p>
+</li>
 </ul>
 <hr/>
 <h2 id="scenario-8-plan-with-explain-flag">Scenario 8: Plan with Explain Flag<a class="headerlink" href="#scenario-8-plan-with-explain-flag" title="Link to this section">¶</a></h2>
@@ -2690,24 +2776,36 @@
 <h3 id="understanding-explained-plans">Understanding Explained Plans<a class="headerlink" href="#understanding-explained-plans" title="Link to this section">¶</a></h3>
 <p>The explain output shows three main phases:</p>
 <ol>
-<li>
-<p><strong>Validation &amp; Table Creation</strong>: 
-   - Dry runs each model query
-   - Creates physical tables if needed
-   - Shows mapping: <code>model_name -&gt; physical_table_name</code></p>
-</li>
-<li>
-<p><strong>Backfill</strong>:
-   - Shows which models will be backfilled
-   - Indicates backfill type (full refresh vs incremental)
-   - Lists audits that will run</p>
-</li>
-<li>
-<p><strong>Virtual Layer Update</strong>:
-   - Shows how views will be created/updated
-   - Maps virtual layer names to physical tables</p>
-</li>
+<li><strong>Validation &amp; Table Creation</strong>: 
+   - Dry runs each model query</li>
 </ol>
+<ul>
+<li>
+<p>Creates physical tables if needed</p>
+</li>
+<li>
+<p>Shows mapping: <code>model_name -&gt; physical_table_name</code></p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>Backfill</strong>:
+   - Shows which models will be backfilled</li>
+</ol>
+<ul>
+<li>
+<p>Indicates backfill type (full refresh vs incremental)</p>
+</li>
+<li>
+<p>Lists audits that will run</p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>Virtual Layer Update</strong>:
+   - Shows how views will be created/updated</li>
+</ol>
+<ul>
+<li>Maps virtual layer names to physical tables</li>
+</ul>
 <hr/>
 <h2 id="common-plan-scenarios-summary">Common Plan Scenarios Summary<a class="headerlink" href="#common-plan-scenarios-summary" title="Link to this section">¶</a></h2>
 <table>
@@ -2774,10 +2872,18 @@
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../../references/plans/">Plans Concepts</a> for deeper understanding</li>
-<li>Explore <a href="../../references/environments/">Environments</a> for managing multiple environments</li>
-<li>Read about <a href="../../components/model/model_kinds/">Model Kinds</a> to understand different model types</li>
-<li>Set up <a href="../../configurations/options/notifications/">Notifications</a> to monitor plan execution</li>
+<li>
+<p>Learn about <a href="../../references/plans/">Plans Concepts</a> for deeper understanding</p>
+</li>
+<li>
+<p>Explore <a href="../../references/environments/">Environments</a> for managing multiple environments</p>
+</li>
+<li>
+<p>Read about <a href="../../components/model/model_kinds/">Model Kinds</a> to understand different model types</p>
+</li>
+<li>
+<p>Set up <a href="../../configurations/options/notifications/">Notifications</a> to monitor plan execution</p>
+</li>
 </ul>
 </article>
 </div>
@@ -2845,8 +2951,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

@@ -6,9 +6,9 @@
 <meta content="DataOS Vulcan Team" name="author"/>
 <link href="https://tmdc-io.github.io/vulcan-docs/guides/get-started/zip-window/vulcan-project/" rel="canonical"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Vulcan Docker Quickstart - Windows - DataOS Vulcan</title>
-<link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -217,7 +217,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -976,37 +976,63 @@
 <p>This package contains all the Docker Compose files and Windows batch scripts needed to get started with Vulcan using Docker on Windows.</p>
 <h2 id="contents">Contents<a class="headerlink" href="#contents" title="Link to this section">¶</a></h2>
 <ul>
-<li><code>docker/docker-compose.infra.yml</code> - Infrastructure services (statestore, MinIO)</li>
-<li><code>docker/docker-compose.warehouse.yml</code> - Warehouse database (PostgreSQL)</li>
-<li><code>docker/docker-compose.vulcan.yml</code> - Vulcan API and transpiler services</li>
-<li><code>setup.bat</code> - Setup script to start all infrastructure</li>
-<li><code>vulcan.bat</code> - Wrapper script to run Vulcan CLI commands</li>
-<li><code>start-vulcan-api.bat</code> - Start Vulcan API services</li>
-<li><code>stop-all.bat</code> - Stop all services</li>
-<li><code>clean.bat</code> - Stop all services and remove volumes</li>
+<li>
+<p><code>docker/docker-compose.infra.yml</code> - Infrastructure services (statestore, MinIO)</p>
+</li>
+<li>
+<p><code>docker/docker-compose.warehouse.yml</code> - Warehouse database (PostgreSQL)</p>
+</li>
+<li>
+<p><code>docker/docker-compose.vulcan.yml</code> - Vulcan API and transpiler services</p>
+</li>
+<li>
+<p><code>setup.bat</code> - Setup script to start all infrastructure</p>
+</li>
+<li>
+<p><code>vulcan.bat</code> - Wrapper script to run Vulcan CLI commands</p>
+</li>
+<li>
+<p><code>start-vulcan-api.bat</code> - Start Vulcan API services</p>
+</li>
+<li>
+<p><code>stop-all.bat</code> - Stop all services</p>
+</li>
+<li>
+<p><code>clean.bat</code> - Stop all services and remove volumes</p>
+</li>
 </ul>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
 <ul>
-<li>Docker Desktop for Windows installed and running</li>
-<li>At least 4GB of available RAM</li>
+<li>
+<p>Docker Desktop for Windows installed and running</p>
+</li>
+<li>
+<p>At least 4GB of available RAM</p>
+</li>
 </ul>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Link to this section">¶</a></h2>
 <ol>
-<li>
-<p><strong>Run the setup script:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>setup.bat
+<li><strong>Run the setup script:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>setup.bat
 </span></code></pre></div>
    This will:
-   - Create the Docker network
-   - Start statestore (PostgreSQL) on port 5431
-   - Start MinIO object storage on ports 9000 and 9001
-   - Start warehouse database (PostgreSQL) on port 5433<p></p>
+   - Create the Docker network</li>
+</ol>
+<ul>
+<li>
+<p>Start statestore (PostgreSQL) on port 5431</p>
 </li>
 <li>
-<p><strong>Access Vulcan:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan.bat
-</span></code></pre></div><p></p>
+<p>Start MinIO object storage on ports 9000 and 9001</p>
 </li>
+<li>
+<p>Start warehouse database (PostgreSQL) on port 5433</p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>Access Vulcan:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan.bat
+</span></code></pre></div></li>
 <li>
 <p><strong>Initialize your project:</strong>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>vulcan.bat init
@@ -1050,7 +1076,8 @@
 </span><span id="__span-3-34"><a href="#__codelineno-3-34" id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-3-35"><a href="#__codelineno-3-35" id="__codelineno-3-35" name="__codelineno-3-35"></a><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-3-36"><a href="#__codelineno-3-36" id="__codelineno-3-36" name="__codelineno-3-36"></a><span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ambiguousorinvalidcolumn</span>
-</span><span id="__span-3-37"><a href="#__codelineno-3-37" id="__codelineno-3-37" name="__codelineno-3-37"></a><span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidselectstarexpansion</span>
+</span><span id="__span-3-37"><a href="#__codelineno-3-37" id="__codelineno-3-37" name="__codelineno-3-37"></a>
+</span><span id="__span-3-38"><a href="#__codelineno-3-38" id="__codelineno-3-38" name="__codelineno-3-38"></a><span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidselectstarexpansion</span>
 </span></code></pre></div><p></p>
 </li>
 <li>
@@ -1061,19 +1088,37 @@
 </ol>
 <h2 id="available-scripts">Available Scripts<a class="headerlink" href="#available-scripts" title="Link to this section">¶</a></h2>
 <ul>
-<li><code>setup.bat</code> - Create network and start all infrastructure</li>
-<li><code>start-vulcan-api.bat</code> - Start Vulcan API services</li>
-<li><code>stop-all.bat</code> - Stop all services</li>
-<li><code>clean.bat</code> - Stop all services and remove volumes</li>
+<li>
+<p><code>setup.bat</code> - Create network and start all infrastructure</p>
+</li>
+<li>
+<p><code>start-vulcan-api.bat</code> - Start Vulcan API services</p>
+</li>
+<li>
+<p><code>stop-all.bat</code> - Stop all services</p>
+</li>
+<li>
+<p><code>clean.bat</code> - Stop all services and remove volumes</p>
+</li>
 </ul>
 <h2 id="service-ports">Service Ports<a class="headerlink" href="#service-ports" title="Link to this section">¶</a></h2>
 <ul>
-<li><strong>Statestore</strong>: 5431</li>
-<li><strong>Warehouse</strong>: 5433</li>
-<li><strong>MinIO API</strong>: 9000</li>
-<li><strong>MinIO Console</strong>: 9001 (admin/password)</li>
-<li><strong>Vulcan API</strong>: 8000
-```</li>
+<li>
+<p><strong>Statestore</strong>: 5431</p>
+</li>
+<li>
+<p><strong>Warehouse</strong>: 5433</p>
+</li>
+<li>
+<p><strong>MinIO API</strong>: 9000</p>
+</li>
+<li>
+<p><strong>MinIO Console</strong>: 9001 (admin/password)</p>
+</li>
+<li>
+<p><strong>Vulcan API</strong>: 8000
+```</p>
+</li>
 </ul>
 </article>
 </div>
@@ -1113,8 +1158,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

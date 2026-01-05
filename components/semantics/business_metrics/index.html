@@ -8,9 +8,9 @@
 <link href="../models/" rel="prev"/>
 <link href="../../advanced-features/macros/overview/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Business Metrics - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1316,22 +1316,36 @@
 <article class="md-content__inner md-typeset">
 <h1 id="business-metrics">Business Metrics<a class="headerlink" href="#business-metrics" title="Link to this section">¶</a></h1>
 <p>Business metrics are where your semantic layer really shines. They combine measures (the calculations) with dimensions (the attributes) and time (the when) to create complete analytical definitions that are ready for time-series analysis.</p>
-<p>Think of it this way: semantic models give you the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can actually analyze over time. They're pre-configured for dashboards, reports, and APIs, no SQL required.</p>
+<p>Semantic models provide the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can analyze over time. They're pre-configured for dashboards, reports, and APIs, no SQL required.</p>
 <h2 id="what-are-business-metrics">What are business metrics?<a class="headerlink" href="#what-are-business-metrics" title="Link to this section">¶</a></h2>
 <p>Business metrics are complete analytical definitions that:</p>
 <ul>
-<li><strong>Combine measures with time</strong>: Let you analyze trends at different time granularities (daily, weekly, monthly, etc.)</li>
-<li><strong>Include dimensions</strong>: Enable slicing and dicing by business attributes (customer tier, region, product category, etc.)</li>
-<li><strong>Ready for analysis</strong>: Pre-configured so they can power dashboards, reports, and APIs directly</li>
-<li><strong>Examples</strong>: <code>monthly_revenue_by_tier</code>, <code>daily_active_users</code>, <code>customer_acquisition_trend</code></li>
+<li>
+<p><strong>Combine measures with time</strong>: Let you analyze trends at different time granularities (daily, weekly, monthly, etc.)</p>
+</li>
+<li>
+<p><strong>Include dimensions</strong>: Enable slicing and dicing by business attributes (customer tier, region, product category, etc.)</p>
+</li>
+<li>
+<p><strong>Ready for analysis</strong>: Pre-configured so they can power dashboards, reports, and APIs directly</p>
+</li>
+<li>
+<p><strong>Examples</strong>: <code>monthly_revenue_by_tier</code>, <code>daily_active_users</code>, <code>customer_acquisition_trend</code></p>
+</li>
 </ul>
 <p>They're the bridge between your technical data models and the business questions people actually want to answer.</p>
 <h2 id="basic-structure">Basic structure<a class="headerlink" href="#basic-structure" title="Link to this section">¶</a></h2>
 <p>A business metric brings together three things:</p>
 <ul>
-<li><strong>Measure</strong>: The calculation you want to perform (like <code>orders.total_revenue</code>)</li>
-<li><strong>Time</strong>: The time dimension for your analysis (like <code>orders.order_date</code>)</li>
-<li><strong>Dimensions</strong>: Optional attributes for grouping and filtering (like <code>customers.customer_tier</code>)</li>
+<li>
+<p><strong>Measure</strong>: The calculation you want to perform (like <code>orders.total_revenue</code>)</p>
+</li>
+<li>
+<p><strong>Time</strong>: The time dimension for your analysis (like <code>orders.order_date</code>)</p>
+</li>
+<li>
+<p><strong>Dimensions</strong>: Optional attributes for grouping and filtering (like <code>customers.customer_tier</code>)</p>
+</li>
 </ul>
 <p>Here's the simplest possible metric:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">metrics</span><span class="p">:</span>
@@ -1358,14 +1372,21 @@
 </span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
 </span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span><span class="w">      </span><span class="c1"># Group by tier</span>
-</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.country</span><span class="w">            </span><span class="c1"># And country</span>
-</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Revenue</span><span class="nv"> </span><span class="s">trends</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">tier</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">country"</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.country</span><span class="w">            </span><span class="c1"># And country</span>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Revenue</span><span class="nv"> </span><span class="s">trends</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">tier</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">country"</span>
 </span></code></pre></div>
 <p>Now you can answer questions like:</p>
 <ul>
-<li>What's our revenue by tier over time?</li>
-<li>How does revenue vary by country?</li>
-<li>What's the revenue breakdown by tier and country together?</li>
+<li>
+<p>What's our revenue by tier over time?</p>
+</li>
+<li>
+<p>How does revenue vary by country?</p>
+</li>
+<li>
+<p>What's the revenue breakdown by tier and country together?</p>
+</li>
 </ul>
 <p>The dimensions give you flexibility to analyze the metric from different angles.</p>
 <h2 id="cross-model-metrics">Cross-model metrics<a class="headerlink" href="#cross-model-metrics" title="Link to this section">¶</a></h2>
@@ -1376,28 +1397,31 @@
 </span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span><span class="w">            </span><span class="c1"># From orders</span>
 </span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.category</span><span class="w">              </span><span class="c1"># From products</span>
-</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.brand</span>
-</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span><span class="w">        </span><span class="c1"># From customers</span>
-</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.region</span>
-</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Product</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">segmented</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">demographics"</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.brand</span>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span><span class="w">        </span><span class="c1"># From customers</span>
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.region</span>
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Product</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">segmented</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">demographics"</span>
 </span></code></pre></div>
 <p>This metric pulls the measure from <code>orders</code>, time from <code>orders</code>, product dimensions from <code>products</code>, and customer dimensions from <code>customers</code>. As long as you've defined the proper joins between these semantic models, Vulcan will handle the cross-model logic for you.</p>
 <p><strong>Important:</strong> Make sure your semantic models have the right joins defined, or cross-model metrics won't work.</p>
 <h2 id="reference-format">Reference format<a class="headerlink" href="#reference-format" title="Link to this section">¶</a></h2>
 <p>Always use <strong>dot notation</strong> with semantic model aliases when referencing measures, dimensions, and time:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1"># ✅ Good: Use aliases</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1"># Good: Use aliases</span>
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span><span class="w">     </span><span class="c1"># alias.measure_name</span>
 </span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span><span class="w">           </span><span class="c1"># alias.column_name</span>
 </span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span><span class="w">       </span><span class="c1"># alias.column_name</span>
 </span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="c1"># ❌ Bad: Don't use physical names</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="c1"># Bad: Don't use physical names</span>
 </span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics.fact_orders.revenue</span>
 </span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_date</span><span class="w">  </span><span class="c1"># Missing alias</span>
 </span></code></pre></div>
 <p>The dot notation (<code>orders.total_revenue</code>) tells Vulcan which semantic model to look in and what to reference. Physical table names won't work here, you need the semantic aliases.</p>
 <h2 id="time-granularity">Time granularity<a class="headerlink" href="#time-granularity" title="Link to this section">¶</a></h2>
-<p>One of the coolest things about metrics is that you define them once, then query them at any time granularity you want:</p>
+<p>Define metrics once, then query them at any time granularity:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nt">metrics</span><span class="p">:</span>
 </span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span><span class="nt">revenue_trends</span><span class="p">:</span>
 </span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span>
@@ -1406,11 +1430,21 @@
 </span></code></pre></div>
 <p>The same metric can be queried with different granularities:</p>
 <ul>
-<li>Daily: <code>granularity=day</code></li>
-<li>Weekly: <code>granularity=week</code></li>
-<li>Monthly: <code>granularity=month</code></li>
-<li>Quarterly: <code>granularity=quarter</code></li>
-<li>Yearly: <code>granularity=year</code></li>
+<li>
+<p>Daily: <code>granularity=day</code></p>
+</li>
+<li>
+<p>Weekly: <code>granularity=week</code></p>
+</li>
+<li>
+<p>Monthly: <code>granularity=month</code></p>
+</li>
+<li>
+<p>Quarterly: <code>granularity=quarter</code></p>
+</li>
+<li>
+<p>Yearly: <code>granularity=year</code></p>
+</li>
 </ul>
 <p>You don't need separate metric definitions for each granularity, just change the query parameter.</p>
 <h2 id="complete-example">Complete example<a class="headerlink" href="#complete-example" title="Link to this section">¶</a></h2>
@@ -1429,54 +1463,76 @@
 </span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.signup_date</span>
 </span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.signup_channel</span>
-</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span>
-</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.country</span>
-</span><span id="__span-6-17"><a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Customer</span><span class="nv"> </span><span class="s">acquisition</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">channel,</span><span class="nv"> </span><span class="s">tier,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">geography"</span>
-</span><span id="__span-6-18"><a href="#__codelineno-6-18" id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">acquisition</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">growth</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">customer</span><span class="p p-Indicator">]</span>
-</span><span id="__span-6-19"><a href="#__codelineno-6-19" id="__codelineno-6-19" name="__codelineno-6-19"></a>
-</span><span id="__span-6-20"><a href="#__codelineno-6-20" id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="w">  </span><span class="c1"># Cross-model metric</span>
-</span><span id="__span-6-21"><a href="#__codelineno-6-21" id="__codelineno-6-21" name="__codelineno-6-21"></a><span class="w">  </span><span class="nt">product_performance</span><span class="p">:</span>
-</span><span id="__span-6-22"><a href="#__codelineno-6-22" id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span>
-</span><span id="__span-6-23"><a href="#__codelineno-6-23" id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
-</span><span id="__span-6-24"><a href="#__codelineno-6-24" id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
-</span><span id="__span-6-25"><a href="#__codelineno-6-25" id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.category</span>
-</span><span id="__span-6-26"><a href="#__codelineno-6-26" id="__codelineno-6-26" name="__codelineno-6-26"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.brand</span>
-</span><span id="__span-6-27"><a href="#__codelineno-6-27" id="__codelineno-6-27" name="__codelineno-6-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span>
-</span><span id="__span-6-28"><a href="#__codelineno-6-28" id="__codelineno-6-28" name="__codelineno-6-28"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Product</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">category,</span><span class="nv"> </span><span class="s">brand,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">segment"</span>
-</span><span id="__span-6-29"><a href="#__codelineno-6-29" id="__codelineno-6-29" name="__codelineno-6-29"></a><span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">revenue</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">products</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">segmentation</span><span class="p p-Indicator">]</span>
+</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a>
+</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span>
+</span><span id="__span-6-17"><a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a>
+</span><span id="__span-6-18"><a href="#__codelineno-6-18" id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.country</span>
+</span><span id="__span-6-19"><a href="#__codelineno-6-19" id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Customer</span><span class="nv"> </span><span class="s">acquisition</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">channel,</span><span class="nv"> </span><span class="s">tier,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">geography"</span>
+</span><span id="__span-6-20"><a href="#__codelineno-6-20" id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">acquisition</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">growth</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">customer</span><span class="p p-Indicator">]</span>
+</span><span id="__span-6-21"><a href="#__codelineno-6-21" id="__codelineno-6-21" name="__codelineno-6-21"></a>
+</span><span id="__span-6-22"><a href="#__codelineno-6-22" id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="w">  </span><span class="c1"># Cross-model metric</span>
+</span><span id="__span-6-23"><a href="#__codelineno-6-23" id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="w">  </span><span class="nt">product_performance</span><span class="p">:</span>
+</span><span id="__span-6-24"><a href="#__codelineno-6-24" id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span>
+</span><span id="__span-6-25"><a href="#__codelineno-6-25" id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
+</span><span id="__span-6-26"><a href="#__codelineno-6-26" id="__codelineno-6-26" name="__codelineno-6-26"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
+</span><span id="__span-6-27"><a href="#__codelineno-6-27" id="__codelineno-6-27" name="__codelineno-6-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.category</span>
+</span><span id="__span-6-28"><a href="#__codelineno-6-28" id="__codelineno-6-28" name="__codelineno-6-28"></a>
+</span><span id="__span-6-29"><a href="#__codelineno-6-29" id="__codelineno-6-29" name="__codelineno-6-29"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.brand</span>
+</span><span id="__span-6-30"><a href="#__codelineno-6-30" id="__codelineno-6-30" name="__codelineno-6-30"></a>
+</span><span id="__span-6-31"><a href="#__codelineno-6-31" id="__codelineno-6-31" name="__codelineno-6-31"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span>
+</span><span id="__span-6-32"><a href="#__codelineno-6-32" id="__codelineno-6-32" name="__codelineno-6-32"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Product</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">category,</span><span class="nv"> </span><span class="s">brand,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">segment"</span>
+</span><span id="__span-6-33"><a href="#__codelineno-6-33" id="__codelineno-6-33" name="__codelineno-6-33"></a><span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">revenue</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">products</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">segmentation</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
 <p>Notice how each metric has a clear purpose, good description, and relevant tags. The tags help organize and discover metrics later.</p>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Link to this section">¶</a></h2>
 <h3 id="time-series-analysis">Time-series analysis<a class="headerlink" href="#time-series-analysis" title="Link to this section">¶</a></h3>
 <p>Metrics are built for analyzing trends over time:</p>
 <ul>
-<li><strong>Flexible granularity</strong>: Query the same metric at different time intervals without redefinition</li>
-<li><strong>Consistent definitions</strong>: Same calculation logic applies across all time periods</li>
-<li><strong>Trend analysis</strong>: Built-in support for comparing periods (month-over-month, year-over-year, etc.)</li>
+<li>
+<p><strong>Flexible granularity</strong>: Query the same metric at different time intervals without redefinition</p>
+</li>
+<li>
+<p><strong>Consistent definitions</strong>: Same calculation logic applies across all time periods</p>
+</li>
+<li>
+<p><strong>Trend analysis</strong>: Built-in support for comparing periods (month-over-month, year-over-year, etc.)</p>
+</li>
 </ul>
 <h3 id="self-service-analytics">Self-service analytics<a class="headerlink" href="#self-service-analytics" title="Link to this section">¶</a></h3>
 <p>Business users can query metrics without writing SQL:</p>
 <ul>
-<li><strong>Simple API</strong>: Query metrics by name with a time range and dimensions</li>
-<li><strong>Consistent results</strong>: Same metric definition is used everywhere, so everyone gets the same answer</li>
-<li><strong>No SQL required</strong>: Complex joins and aggregations are abstracted away</li>
+<li>
+<p><strong>Simple API</strong>: Query metrics by name with a time range and dimensions</p>
+</li>
+<li>
+<p><strong>Consistent results</strong>: Same metric definition is used everywhere, so everyone gets the same answer</p>
+</li>
+<li>
+<p><strong>No SQL required</strong>: Complex joins and aggregations are abstracted away</p>
+</li>
 </ul>
 <h3 id="single-source-of-truth">Single source of truth<a class="headerlink" href="#single-source-of-truth" title="Link to this section">¶</a></h3>
 <p>Centralized metric definitions mean:</p>
 <ul>
-<li><strong>Define once</strong>: Create metric definitions in YAML files</li>
-<li><strong>Use everywhere</strong>: Same metrics power dashboards, reports, and APIs</li>
-<li><strong>Version controlled</strong>: Metric definitions live alongside your code, so changes are tracked</li>
+<li>
+<p><strong>Define once</strong>: Create metric definitions in YAML files</p>
+</li>
+<li>
+<p><strong>Use everywhere</strong>: Same metrics power dashboards, reports, and APIs</p>
+</li>
+<li>
+<p><strong>Version controlled</strong>: Metric definitions live alongside your code, so changes are tracked</p>
+</li>
 </ul>
 <h2 id="best-practices">Best practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <h3 id="descriptive-names">Descriptive names<a class="headerlink" href="#descriptive-names" title="Link to this section">¶</a></h3>
 <p>Make your metric names self-explanatory:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1"># ✅ Good: Self-explanatory</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1"># Good: Self-explanatory</span>
 </span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nt">metrics</span><span class="p">:</span>
 </span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">  </span><span class="nt">monthly_revenue_by_tier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">  </span><span class="nt">daily_active_users</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a>
-</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="c1"># ❌ Bad: Vague</span>
+</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="c1"># Bad: Vague</span>
 </span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="nt">metrics</span><span class="p">:</span>
 </span><span id="__span-7-8"><a href="#__codelineno-7-8" id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="w">  </span><span class="nt">metric_1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </span><span id="__span-7-9"><a href="#__codelineno-7-9" id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
@@ -1484,22 +1540,24 @@
 <p>Good names make it obvious what the metric measures and how it's broken down.</p>
 <h3 id="include-essential-dimensions">Include essential dimensions<a class="headerlink" href="#include-essential-dimensions" title="Link to this section">¶</a></h3>
 <p>Think about what business questions people will want to answer, and include those dimensions:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="c1"># ✅ Good: Key business dimensions</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="c1"># Good: Key business dimensions</span>
 </span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nt">metrics</span><span class="p">:</span>
 </span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">  </span><span class="nt">revenue_analysis</span><span class="p">:</span>
 </span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span>
 </span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
 </span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">    </span><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.customer_tier</span>
-</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.region</span>
-</span><span id="__span-8-9"><a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.category</span>
+</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a>
+</span><span id="__span-8-9"><a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers.region</span>
 </span><span id="__span-8-10"><a href="#__codelineno-8-10" id="__codelineno-8-10" name="__codelineno-8-10"></a>
-</span><span id="__span-8-11"><a href="#__codelineno-8-11" id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="c1"># ❌ Too few: Limited analysis</span>
-</span><span id="__span-8-12"><a href="#__codelineno-8-12" id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="nt">metrics</span><span class="p">:</span>
-</span><span id="__span-8-13"><a href="#__codelineno-8-13" id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="w">  </span><span class="nt">revenue</span><span class="p">:</span>
-</span><span id="__span-8-14"><a href="#__codelineno-8-14" id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span>
-</span><span id="__span-8-15"><a href="#__codelineno-8-15" id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
-</span><span id="__span-8-16"><a href="#__codelineno-8-16" id="__codelineno-8-16" name="__codelineno-8-16"></a><span class="w">    </span><span class="c1"># Missing dimensions - can't slice and dice!</span>
+</span><span id="__span-8-11"><a href="#__codelineno-8-11" id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">products.category</span>
+</span><span id="__span-8-12"><a href="#__codelineno-8-12" id="__codelineno-8-12" name="__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a href="#__codelineno-8-13" id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="c1"># Too few: Limited analysis</span>
+</span><span id="__span-8-14"><a href="#__codelineno-8-14" id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="nt">metrics</span><span class="p">:</span>
+</span><span id="__span-8-15"><a href="#__codelineno-8-15" id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="w">  </span><span class="nt">revenue</span><span class="p">:</span>
+</span><span id="__span-8-16"><a href="#__codelineno-8-16" id="__codelineno-8-16" name="__codelineno-8-16"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.total_revenue</span>
+</span><span id="__span-8-17"><a href="#__codelineno-8-17" id="__codelineno-8-17" name="__codelineno-8-17"></a><span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders.order_date</span>
+</span><span id="__span-8-18"><a href="#__codelineno-8-18" id="__codelineno-8-18" name="__codelineno-8-18"></a><span class="w">    </span><span class="c1"># Missing dimensions - can't slice and dice!</span>
 </span></code></pre></div>
 <p>Dimensions are what make metrics useful. Without them, you can only see the overall trend, not the breakdowns that drive business decisions.</p>
 <h3 id="document-business-context">Document business context<a class="headerlink" href="#document-business-context" title="Link to this section">¶</a></h3>
@@ -1525,9 +1583,15 @@
 <p>The semantic layer provides the foundation (the building blocks), and metrics add the time-series analytical capabilities (the finished product).</p>
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../models/">Semantic Models</a> that provide the foundation for metrics</li>
-<li>See the <a href="../overview/">Semantics Overview</a> for the complete picture</li>
-<li>Explore metric definitions in your project's <code>semantics/</code> directory</li>
+<li>
+<p>Learn about <a href="../models/">Semantic Models</a> that provide the foundation for metrics</p>
+</li>
+<li>
+<p>See the <a href="../overview/">Semantics Overview</a> for the complete picture</p>
+</li>
+<li>
+<p>Explore metric definitions in your project's <code>semantics/</code> directory</p>
+</li>
 </ul>
 </article>
 </div>
@@ -1595,8 +1659,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

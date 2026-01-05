@@ -8,9 +8,9 @@
 <link href="../data_quality/" rel="prev"/>
 <link href="../transpiling_semantics/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Model Selection - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1442,16 +1442,22 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="model-selection">Model Selection<a class="headerlink" href="#model-selection" title="Link to this section">¶</a></h1>
-<p>This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. This is super useful when you only want to test or apply changes to a subset of your models, without processing everything.</p>
-<p>In large projects, model selection can save you a ton of time. Instead of waiting for all models to process, you can focus on just what you're working on.</p>
+<p>This guide explains how to select specific models to include in a Vulcan plan using the Orders360 example project. Use this when you want to test or apply changes to a subset of your models without processing everything.</p>
+<p>In large projects, model selection saves time. Instead of waiting for all models to process, focus on what you're working on.</p>
 <p><strong>Note:</strong> The selector syntax described below is also used for the Vulcan <code>plan</code> <a href="../../references/plans/#destructive-changes"><code>--allow-destructive-model</code> and <code>--allow-additive-model</code> selectors</a>.</p>
 <hr/>
 <h2 id="background">Background<a class="headerlink" href="#background" title="Link to this section">¶</a></h2>
 <p>A Vulcan <a href="../../references/plans/">plan</a> automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.</p>
-<p>In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything. It's like saying "just process these models, ignore the rest."</p>
-<p><strong>Key Concept:</strong>
-- <strong>Directly Modified</strong>: Models you changed in your code - these are the ones you actually edited
-- <strong>Indirectly Modified</strong>: Downstream models affected by your changes - these depend on what you changed, so they need to be reprocessed too</p>
+<p>In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything.</p>
+<p><strong>Key Concept:</strong></p>
+<ul>
+<li>
+<p><strong>Directly Modified</strong>: Models you changed in your code - these are the ones you actually edited</p>
+</li>
+<li>
+<p><strong>Indirectly Modified</strong>: Downstream models affected by your changes - these depend on what you changed, so they need to be reprocessed too</p>
+</li>
+</ul>
 <p>Understanding this distinction helps you understand what model selection is doing. You're filtering which directly modified models to include, and Vulcan automatically figures out the indirect ones.</p>
 <p><em>[Screenshot: Visual showing directly vs indirectly modified models]</em></p>
 <hr/>
@@ -1478,10 +1484,18 @@
     style RAW_PRODUCTS fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
     style DAILY_SALES fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
     style WEEKLY_SALES fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000</code></pre>
-<p><strong>Dependency Flow:</strong>
-- <code>raw.raw_orders</code> → <code>sales.daily_sales</code> → <code>sales.weekly_sales</code>
-- Changing <code>raw.raw_orders</code> affects <code>daily_sales</code> (indirectly modified) - because daily_sales reads from raw_orders
-- Changing <code>daily_sales</code> affects <code>weekly_sales</code> (indirectly modified) - because weekly_sales reads from daily_sales</p>
+<p><strong>Dependency Flow:</strong></p>
+<ul>
+<li>
+<p><code>raw.raw_orders</code> → <code>sales.daily_sales</code> → <code>sales.weekly_sales</code></p>
+</li>
+<li>
+<p>Changing <code>raw.raw_orders</code> affects <code>daily_sales</code> (indirectly modified) - because daily_sales reads from raw_orders</p>
+</li>
+<li>
+<p>Changing <code>daily_sales</code> affects <code>weekly_sales</code> (indirectly modified) - because weekly_sales reads from daily_sales</p>
+</li>
+</ul>
 <p>This is important! When you select a model, Vulcan automatically includes its downstream dependencies. You can't process <code>weekly_sales</code> without processing <code>daily_sales</code> first, because <code>weekly_sales</code> depends on it.</p>
 <p><em>[Screenshot: Orders360 project structure showing model files]</em></p>
 <hr/>
@@ -1507,11 +1521,19 @@
 </span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="c1"># Select all models containing "daily"</span>
 </span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"*daily*"</span>
 </span></code></pre></div>
-<p><strong>Examples:</strong>
-- <code>"raw.*"</code> matches <code>raw.raw_customers</code>, <code>raw.raw_orders</code>, <code>raw.raw_products</code> - all models in the raw schema
-- <code>"sales.*_sales"</code> matches <code>sales.daily_sales</code>, <code>sales.weekly_sales</code> - all models ending with _sales in the sales schema
-- <code>"*.daily_sales"</code> matches <code>sales.daily_sales</code> - matches daily_sales in any schema</p>
-<p>Wildcards are super useful when you want to select a group of related models without listing them all individually.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>
+<p><code>"raw.*"</code> matches <code>raw.raw_customers</code>, <code>raw.raw_orders</code>, <code>raw.raw_products</code> - all models in the raw schema</p>
+</li>
+<li>
+<p><code>"sales.*_sales"</code> matches <code>sales.daily_sales</code>, <code>sales.weekly_sales</code> - all models ending with _sales in the sales schema</p>
+</li>
+<li>
+<p><code>"*.daily_sales"</code> matches <code>sales.daily_sales</code> - matches daily_sales in any schema</p>
+</li>
+</ul>
+<p>Wildcards let you select a group of related models without listing them all individually.</p>
 <p><em>[Screenshot: Plan output showing wildcard selection results]</em></p>
 <h3 id="tag-selection">Tag Selection<a class="headerlink" href="#tag-selection" title="Link to this section">¶</a></h3>
 <p>Select models by tags using <code>tag:tag_name</code>:</p>
@@ -1529,8 +1551,12 @@
 <h3 id="upstreamdownstream-selection">Upstream/Downstream Selection<a class="headerlink" href="#upstreamdownstream-selection" title="Link to this section">¶</a></h3>
 <p>Use <code>+</code> to include upstream or downstream models:</p>
 <ul>
-<li><code>+model_name</code> = Include upstream models (dependencies)</li>
-<li><code>model_name+</code> = Include downstream models (dependents)</li>
+<li>
+<p><code>+model_name</code> = Include upstream models (dependencies)</p>
+</li>
+<li>
+<p><code>model_name+</code> = Include downstream models (dependents)</p>
+</li>
 </ul>
 <pre class="mermaid"><code>flowchart LR
     subgraph "Model Dependencies"
@@ -1574,18 +1600,32 @@
 </span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="c1"># Select changed models + upstream</span>
 </span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+git:feature"</span>
 </span></code></pre></div>
-<p><strong>What it includes:</strong>
-- Untracked files (new models) - models you've created but haven't committed yet
-- Uncommitted changes - models you've modified but haven't committed
-- Committed changes different from target branch - models that differ between your branch and the target (like <code>main</code>)</p>
-<p>This is really handy for feature branches! You can select all models you've changed in your feature branch without having to list them manually.</p>
+<p><strong>What it includes:</strong></p>
+<ul>
+<li>
+<p>Untracked files (new models) - models you've created but haven't committed yet</p>
+</li>
+<li>
+<p>Uncommitted changes - models you've modified but haven't committed</p>
+</li>
+<li>
+<p>Committed changes different from target branch - models that differ between your branch and the target (like <code>main</code>)</p>
+</li>
+</ul>
+<p>Use this for feature branches. Select all models you've changed in your feature branch without listing them manually.</p>
 <p><em>[Screenshot: Plan output showing git-based selection]</em></p>
 <h3 id="complex-selections">Complex Selections<a class="headerlink" href="#complex-selections" title="Link to this section">¶</a></h3>
 <p>Combine conditions with logical operators:</p>
 <ul>
-<li><code>&amp;</code> (AND): Both conditions must be true</li>
-<li><code>|</code> (OR): Either condition must be true</li>
-<li><code>^</code> (NOT): Negates a condition</li>
+<li>
+<p><code>&amp;</code> (AND): Both conditions must be true</p>
+</li>
+<li>
+<p><code>|</code> (OR): Either condition must be true</p>
+</li>
+<li>
+<p><code>^</code> (NOT): Negates a condition</p>
+</li>
 </ul>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1"># Models with finance tag that don't have deprecated tag</span>
 </span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"(tag:finance &amp; ^tag:deprecated)"</span>
@@ -1606,8 +1646,12 @@
 <h3 id="example-setup">Example Setup<a class="headerlink" href="#example-setup" title="Link to this section">¶</a></h3>
 <p>We've modified two models:</p>
 <ul>
-<li><code>raw.raw_orders</code> (directly modified)</li>
-<li><code>sales.daily_sales</code> (directly modified)</li>
+<li>
+<p><code>raw.raw_orders</code> (directly modified)</p>
+</li>
+<li>
+<p><code>sales.daily_sales</code> (directly modified)</p>
+</li>
 </ul>
 <p>The dependency chain:
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>raw.raw_orders → sales.daily_sales → sales.weekly_sales
@@ -1632,9 +1676,15 @@
 </span><span id="__span-10-12"><a href="#__codelineno-10-12" id="__codelineno-10-12" name="__codelineno-10-12"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing all modified models]</em></p>
-<p><strong>What Happened:</strong>
-- Both directly modified models are included - you changed both, so both are in the plan
-- <code>weekly_sales</code> is indirectly modified (depends on <code>daily_sales</code>) - even though you didn't change weekly_sales, it depends on daily_sales, so it needs to be reprocessed</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p>Both directly modified models are included - you changed both, so both are in the plan</p>
+</li>
+<li>
+<p><code>weekly_sales</code> is indirectly modified (depends on <code>daily_sales</code>) - even though you didn't change weekly_sales, it depends on daily_sales, so it needs to be reprocessed</p>
+</li>
+</ul>
 <p>This is the default behavior, Vulcan includes everything that's affected. Model selection lets you narrow this down.</p>
 <h3 id="select-single-model">Select Single Model<a class="headerlink" href="#select-single-model" title="Link to this section">¶</a></h3>
 <p>Select only <code>sales.daily_sales</code>:</p>
@@ -1650,10 +1700,18 @@
 </span><span id="__span-12-7"><a href="#__codelineno-12-7" id="__codelineno-12-7" name="__codelineno-12-7"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing only daily_sales selected]</em></p>
-<p><strong>What Happened:</strong>
-- <code>raw.raw_orders</code> is excluded (not selected) - you changed it, but you didn't select it, so it's not in the plan
-- <code>daily_sales</code> is included (directly modified) - you selected it, so it's in the plan
-- <code>weekly_sales</code> is included (indirectly modified, downstream of <code>daily_sales</code>) - it depends on daily_sales, so Vulcan automatically includes it</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p><code>raw.raw_orders</code> is excluded (not selected) - you changed it, but you didn't select it, so it's not in the plan</p>
+</li>
+<li>
+<p><code>daily_sales</code> is included (directly modified) - you selected it, so it's in the plan</p>
+</li>
+<li>
+<p><code>weekly_sales</code> is included (indirectly modified, downstream of <code>daily_sales</code>) - it depends on daily_sales, so Vulcan automatically includes it</p>
+</li>
+</ul>
 <p>Notice how Vulcan automatically includes downstream models. You can't process daily_sales without processing weekly_sales, because weekly_sales depends on it.</p>
 <h3 id="select-with-upstream-indicator">Select with Upstream Indicator<a class="headerlink" href="#select-with-upstream-indicator" title="Link to this section">¶</a></h3>
 <p>Select <code>daily_sales</code> and include its upstream dependencies:</p>
@@ -1670,10 +1728,18 @@
 </span><span id="__span-14-8"><a href="#__codelineno-14-8" id="__codelineno-14-8" name="__codelineno-14-8"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing upstream selection]</em></p>
-<p><strong>What Happened:</strong>
-- <code>raw.raw_orders</code> is included (upstream of <code>daily_sales</code>)
-- <code>daily_sales</code> is included (selected)
-- <code>weekly_sales</code> is included (downstream of <code>daily_sales</code>)</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p><code>raw.raw_orders</code> is included (upstream of <code>daily_sales</code>)</p>
+</li>
+<li>
+<p><code>daily_sales</code> is included (selected)</p>
+</li>
+<li>
+<p><code>weekly_sales</code> is included (downstream of <code>daily_sales</code>)</p>
+</li>
+</ul>
 <h3 id="select-with-downstream-indicator">Select with Downstream Indicator<a class="headerlink" href="#select-with-downstream-indicator" title="Link to this section">¶</a></h3>
 <p>Select <code>daily_sales</code> and include its downstream dependencies:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales+"</span>
@@ -1689,10 +1755,18 @@
 </span><span id="__span-16-8"><a href="#__codelineno-16-8" id="__codelineno-16-8" name="__codelineno-16-8"></a>    (none)
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing downstream selection]</em></p>
-<p><strong>What Happened:</strong>
-- <code>daily_sales</code> is included (selected)
-- <code>weekly_sales</code> is included (downstream, now directly modified)
-- <code>raw.raw_orders</code> is excluded (not selected)</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p><code>daily_sales</code> is included (selected)</p>
+</li>
+<li>
+<p><code>weekly_sales</code> is included (downstream, now directly modified)</p>
+</li>
+<li>
+<p><code>raw.raw_orders</code> is excluded (not selected)</p>
+</li>
+</ul>
 <h3 id="select-with-wildcard">Select with Wildcard<a class="headerlink" href="#select-with-wildcard" title="Link to this section">¶</a></h3>
 <p>Select all models matching a pattern:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.*_sales"</span>
@@ -1707,10 +1781,18 @@
 </span><span id="__span-18-7"><a href="#__codelineno-18-7" id="__codelineno-18-7" name="__codelineno-18-7"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing wildcard selection]</em></p>
-<p><strong>What Happened:</strong>
-- <code>sales.daily_sales</code> matches the pattern (selected)
-- <code>sales.weekly_sales</code> matches the pattern but is indirectly modified
-- <code>raw.raw_orders</code> doesn't match (excluded)</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p><code>sales.daily_sales</code> matches the pattern (selected)</p>
+</li>
+<li>
+<p><code>sales.weekly_sales</code> matches the pattern but is indirectly modified</p>
+</li>
+<li>
+<p><code>raw.raw_orders</code> doesn't match (excluded)</p>
+</li>
+</ul>
 <h3 id="select-with-tags">Select with Tags<a class="headerlink" href="#select-with-tags" title="Link to this section">¶</a></h3>
 <p>If models have tags, select by tag:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:seed"</span>
@@ -1726,9 +1808,15 @@
 </span><span id="__span-20-8"><a href="#__codelineno-20-8" id="__codelineno-20-8" name="__codelineno-20-8"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing tag-based selection]</em></p>
-<p><strong>What Happened:</strong>
-- <code>raw.raw_orders</code> has <code>seed</code> tag (selected)
-- Downstream models are indirectly modified</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p><code>raw.raw_orders</code> has <code>seed</code> tag (selected)</p>
+</li>
+<li>
+<p>Downstream models are indirectly modified</p>
+</li>
+</ul>
 <h3 id="select-with-git-changes">Select with Git Changes<a class="headerlink" href="#select-with-git-changes" title="Link to this section">¶</a></h3>
 <p>Select models changed in a git branch:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"git:feature"</span>
@@ -1743,9 +1831,15 @@
 </span><span id="__span-22-7"><a href="#__codelineno-22-7" id="__codelineno-22-7" name="__codelineno-22-7"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing git-based selection]</em></p>
-<p><strong>What Happened:</strong>
-- Only models changed in <code>feature</code> branch are selected
-- Downstream models are included automatically</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p>Only models changed in <code>feature</code> branch are selected</p>
+</li>
+<li>
+<p>Downstream models are included automatically</p>
+</li>
+</ul>
 <hr/>
 <h2 id="backfill-selection">Backfill Selection<a class="headerlink" href="#backfill-selection" title="Link to this section">¶</a></h2>
 <p>By default, Vulcan backfills all models in a plan. You can limit which models are backfilled using <code>--backfill-model</code>.</p>
@@ -1779,11 +1873,19 @@
     style SELECT fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
     style BACKFILL fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
     style RESULT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000</code></pre>
-<p><strong>Key Points:</strong>
-- <code>--select-model</code> determines which models appear in the plan - this is about what's in the plan
-- <code>--backfill-model</code> determines which models are actually backfilled - this is about what gets processed
-- Upstream models are always backfilled (required for downstream models) - if you backfill weekly_sales, you need daily_sales first</p>
-<p>This separation is really useful! You can see what would be affected (select-model) but only actually process what you need (backfill-model). Great for testing!</p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>
+<p><code>--select-model</code> determines which models appear in the plan - this is about what's in the plan</p>
+</li>
+<li>
+<p><code>--backfill-model</code> determines which models are actually backfilled - this is about what gets processed</p>
+</li>
+<li>
+<p>Upstream models are always backfilled (required for downstream models) - if you backfill weekly_sales, you need daily_sales first</p>
+</li>
+</ul>
+<p>This separation lets you see what would be affected (select-model) but only process what you need (backfill-model). Useful for testing.</p>
 <p><em>[Screenshot: Visual diagram explaining backfill selection]</em></p>
 <h3 id="backfill-examples">Backfill Examples<a class="headerlink" href="#backfill-examples" title="Link to this section">¶</a></h3>
 <h4 id="no-backfill-selection-default">No Backfill Selection (Default)<a class="headerlink" href="#no-backfill-selection-default" title="Link to this section">¶</a></h4>
@@ -1805,10 +1907,16 @@
 </span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a>└── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing only daily_sales needs backfill]</em></p>
-<p><strong>What Happened:</strong>
-- <code>weekly_sales</code> is excluded from backfill - it's in the plan, but it won't be processed
-- Only <code>daily_sales</code> will be processed - just what you selected</p>
-<p>This is super useful in development! You can see what would be affected, but only process what you're actually testing. Saves time and compute costs.</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p><code>weekly_sales</code> is excluded from backfill - it's in the plan, but it won't be processed</p>
+</li>
+<li>
+<p>Only <code>daily_sales</code> will be processed - just what you selected</p>
+</li>
+</ul>
+<p>Use this in development. See what would be affected, but only process what you're actually testing. Saves time and compute costs.</p>
 <h4 id="backfill-with-upstream">Backfill with Upstream<a class="headerlink" href="#backfill-with-upstream" title="Link to this section">¶</a></h4>
 <p>When you backfill a model, its upstream dependencies are automatically included:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--backfill-model<span class="w"> </span><span class="s2">"sales.weekly_sales"</span>
@@ -1819,10 +1927,18 @@
 </span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a>└── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
 </span></code></pre></div><p></p>
 <p><em>[Screenshot: Plan output showing upstream models included in backfill]</em></p>
-<p><strong>What Happened:</strong>
-- <code>weekly_sales</code> is selected for backfill - you want to process this one
-- <code>raw.raw_orders</code> is automatically included (upstream dependency) - weekly_sales depends on daily_sales, which depends on raw_orders, so Vulcan includes it
-- <code>daily_sales</code> is excluded (not upstream of <code>weekly_sales</code>) - wait, that doesn't seem right...</p>
+<p><strong>What Happened:</strong></p>
+<ul>
+<li>
+<p><code>weekly_sales</code> is selected for backfill - you want to process this one</p>
+</li>
+<li>
+<p><code>raw.raw_orders</code> is automatically included (upstream dependency) - weekly_sales depends on daily_sales, which depends on raw_orders, so Vulcan includes it</p>
+</li>
+<li>
+<p><code>daily_sales</code> is excluded (not upstream of <code>weekly_sales</code>) - wait, that doesn't seem right...</p>
+</li>
+</ul>
 <p>Actually, this example might be incorrect. If weekly_sales depends on daily_sales, then daily_sales should be included as an upstream dependency. The key point is: Vulcan automatically includes upstream dependencies when you backfill a model.</p>
 <hr/>
 <h2 id="visual-selection-guide">Visual Selection Guide<a class="headerlink" href="#visual-selection-guide" title="Link to this section">¶</a></h2>
@@ -1880,7 +1996,7 @@
 <p><strong>Include Dependencies</strong>: Use <code>+</code> when you need upstream/downstream models
    </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+sales.daily_sales+"</span>
 </span></code></pre></div>
-   The <code>+</code> syntax is really powerful. Use it when you need the full dependency chain.<p></p>
+   The <code>+</code> syntax includes the full dependency chain. Use it when you need all dependencies.<p></p>
 </li>
 <li>
 <p><strong>Limit Backfill</strong>: Use <code>--backfill-model</code> to save time in development
@@ -1892,21 +2008,41 @@
 <p><strong>Use Tags</strong>: Organize models with tags for easier selection
    </p><div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:reporting"</span>
 </span></code></pre></div>
-   Tags are a great way to organize models. If you tag related models, you can select them all at once.<p></p>
+   Tags organize models. If you tag related models, you can select them all at once.<p></p>
 </li>
 </ol>
 <hr/>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">¶</a></h2>
-<p><strong>Model Selection:</strong>
-- ✅ Filter which models appear in a plan
-- ✅ Use wildcards, tags, and git changes
-- ✅ Include upstream/downstream with <code>+</code>
-- ✅ Combine with logical operators</p>
-<p><strong>Backfill Selection:</strong>
-- ✅ Limit which models are actually backfilled
-- ✅ Upstream models are always included
-- ✅ Only works in development environments
-- ✅ Saves time when testing specific models</p>
+<p><strong>Model Selection:</strong></p>
+<ul>
+<li>
+<p>Filter which models appear in a plan</p>
+</li>
+<li>
+<p>Use wildcards, tags, and git changes</p>
+</li>
+<li>
+<p>Include upstream/downstream with <code>+</code></p>
+</li>
+<li>
+<p>Combine with logical operators</p>
+</li>
+</ul>
+<p><strong>Backfill Selection:</strong></p>
+<ul>
+<li>
+<p>Limit which models are actually backfilled</p>
+</li>
+<li>
+<p>Upstream models are always included</p>
+</li>
+<li>
+<p>Only works in development environments</p>
+</li>
+<li>
+<p>Saves time when testing specific models</p>
+</li>
+</ul>
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
@@ -1978,8 +2114,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

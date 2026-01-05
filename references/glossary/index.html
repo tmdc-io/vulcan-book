@@ -6,9 +6,9 @@
 <meta content="DataOS Vulcan Team" name="author"/>
 <link href="https://tmdc-io.github.io/vulcan-docs/references/glossary/" rel="canonical"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Glossary - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -217,7 +217,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1205,9 +1205,9 @@
 <h2 id="catalog">Catalog<a class="headerlink" href="#catalog" title="Link to this section">¶</a></h2>
 <p>A catalog is a collection of schemas. A schema is a collection of database objects such as tables and views.</p>
 <h2 id="cicd">CI/CD<a class="headerlink" href="#cicd" title="Link to this section">¶</a></h2>
-<p>An engineering process that combines both Continuous Integration (automated code creation and testing) and Continuous Delivery (deployment of code and tests) in a manner that is scalable, reliable, and secure. Vulcan accomplishes this with <a href="tests.md">tests</a> and <a href="audits.md">audits</a>.</p>
+<p>A process that combines Continuous Integration (automated code creation and testing) and Continuous Delivery (deployment of code and tests). Vulcan implements this with <a href="../../components/tests/tests.md">tests</a> and <a href="../../components/audits/audits.md">audits</a>.</p>
 <h2 id="cte">CTE<a class="headerlink" href="#cte" title="Link to this section">¶</a></h2>
-<p>A Common Table Expression is a temporary named result set created from a SELECT statement, which can then be used in a subsequent SELECT statement. For more information, refer to <a href="tests.md">tests</a>.</p>
+<p>A Common Table Expression is a temporary named result set created from a SELECT statement, which can then be used in a subsequent SELECT statement. For more information, see <a href="../../components/tests/tests.md">tests</a>.</p>
 <h2 id="dag">DAG<a class="headerlink" href="#dag" title="Link to this section">¶</a></h2>
 <p>Directed Acyclic Graph. In this type of graph, objects are represented as nodes with relationships that show the dependencies between them; as such, the relationships are directed, meaning there is no way for data to travel through the graph in a loop that can circle back to the starting point. Vulcan uses a DAG to keep track of a project's models. This allows Vulcan to easily determine a model's lineage and to identify upstream and downstream dependencies.</p>
 <h2 id="data-modeling">Data modeling<a class="headerlink" href="#data-modeling" title="Link to this section">¶</a></h2>
@@ -1229,7 +1229,7 @@
 <h2 id="idempotency">Idempotency<a class="headerlink" href="#idempotency" title="Link to this section">¶</a></h2>
 <p>The property that, given a particular operation, the same outputs will be produced when given the same inputs no matter how many times the operation is applied.</p>
 <h2 id="incremental-loads">Incremental Loads<a class="headerlink" href="#incremental-loads" title="Link to this section">¶</a></h2>
-<p>Incremental loads are a type of data refresh that only updates the data that has changed since the last refresh. This is significantly faster and more efficient than a full refresh loads. Vulcan encourages developers to incrementally load when possible by offering easy to use variables and macros to help define your incremental models. See <a href="models/model_kinds.md">Model Kinds</a> for more information.</p>
+<p>Incremental loads update only data that changed since the last refresh. This is faster and more efficient than full refreshes. Vulcan provides variables and macros to help define incremental models. See <a href="../../components/model/model_kinds.md">Model Kinds</a> for more information.</p>
 <h2 id="indirect-modification">Indirect Modification<a class="headerlink" href="#indirect-modification" title="Link to this section">¶</a></h2>
 <p>A change to model's upstream dependency and not to the model itself like a <a href="#direct-modification">Direct Modification</a>.</p>
 <h2 id="integration">Integration<a class="headerlink" href="#integration" title="Link to this section">¶</a></h2>
@@ -1241,7 +1241,7 @@
 <h2 id="plan-summaries">Plan Summaries<a class="headerlink" href="#plan-summaries" title="Link to this section">¶</a></h2>
 <p>An upcoming feature that allows users to see a summary of changes applied to a given environment.</p>
 <h2 id="semantic-understanding">Semantic Understanding<a class="headerlink" href="#semantic-understanding" title="Link to this section">¶</a></h2>
-<p>Vulcan, by leveraging <a href="https://github.com/tobymao/sqlglot">SQLGlot</a>, understands the full meaning of a SQL model. That means it can not only validate that what is written is valid SQL but also transpile (convert) that SQL into other engine dialects if needed.</p>
+<p>Vulcan understands the full meaning of a SQL model. It validates that SQL is valid and can transpile SQL into other engine dialects when needed.</p>
 <h2 id="slowly-changing-dimension-scd">Slowly Changing Dimension (SCD)<a class="headerlink" href="#slowly-changing-dimension-scd" title="Link to this section">¶</a></h2>
 <p>A dimension (in a data warehouse, typically a dataset) containing relatively static data that can change slowly but unpredictably, rather than on a regular schedule. Some examples of typical slowly changing dimensions are places and products.</p>
 <h2 id="table">Table<a class="headerlink" href="#table" title="Link to this section">¶</a></h2>
@@ -1251,13 +1251,13 @@
 <h2 id="view">View<a class="headerlink" href="#view" title="Link to this section">¶</a></h2>
 <p>A view is the result of a SQL query on a database.</p>
 <h2 id="virtual-environments">Virtual Environments<a class="headerlink" href="#virtual-environments" title="Link to this section">¶</a></h2>
-<p>Vulcan's unique approach to environment that allows it to provide both environment isolation and the ability to share tables across environments. This is done in a way to ensure data consistency and accuracy. See <a href="../plans/#plan-application">plan application</a> for more information.</p>
+<p>Vulcan's approach to environments that provides both environment isolation and the ability to share tables across environments. This ensures data consistency and accuracy. See <a href="../plans/#plan-application">plan application</a> for more information.</p>
 <h2 id="virtual-layer">Virtual Layer<a class="headerlink" href="#virtual-layer" title="Link to this section">¶</a></h2>
 <p>The virtual layer is Vulcan's abstraction layer over the <a href="#physical-layer">physical layer and physical data storage</a>. While the physical layer consists of tables where data is actually stored, the virtual layer consists of views that expose tables in the underlying physical layer. Most users should only interact with the virtual layer when building models or querying data.</p>
 <h2 id="virtual-update">Virtual Update<a class="headerlink" href="#virtual-update" title="Link to this section">¶</a></h2>
-<p>Term used to describe a plan that can be applied without having to load any additional data or build any additional tables. See <a href="../plans/#virtual-update">Virtual Update</a> for more information.</p>
+<p>A plan that can be applied without loading additional data or building additional tables. See <a href="../plans/#virtual-update">Virtual Update</a> for more information.</p>
 <h2 id="virtual-preview">Virtual Preview<a class="headerlink" href="#virtual-preview" title="Link to this section">¶</a></h2>
-<p>Term used to describe the ability to create an environment without having to build any additional tables. By comparing the version of models in the repo against what currently exists, Vulcan can create an environment that exactly represents what is in the repo by just updating views.</p>
+<p>The ability to create an environment without building additional tables. By comparing model versions in the repo against what currently exists, Vulcan creates an environment that matches the repo by updating views.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1296,8 +1296,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

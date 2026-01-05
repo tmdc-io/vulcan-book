@@ -8,9 +8,9 @@
 <link href="../signals/" rel="prev"/>
 <link href="../../../guides/get-started/docker/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Custom materializations - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1277,31 +1277,45 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="custom-materializations">Custom materializations<a class="headerlink" href="#custom-materializations" title="Link to this section">¶</a></h1>
-<p>Vulcan comes with a variety of <a href="../../model/model_kinds.md">model kinds</a> that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?</p>
+<p>Vulcan comes with a variety of <a href="../../model/model_kinds/">model kinds</a> that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?</p>
 <p>Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in, they let you write your own Python code to control exactly how your models get materialized.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advanced Feature</p>
-<p>Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If you're considering this path, we'd love to hear from you in our <a href="https://tobikodata.com/community.html">community slack</a>. If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.</p>
+<p>Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.</p>
 </div>
 <h2 id="what-is-a-materialization">What is a materialization?<a class="headerlink" href="#what-is-a-materialization" title="Link to this section">¶</a></h2>
-<p>Think of a materialization as the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to actually get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.</p>
-<p>Some materializations are straightforward. For example, a <code>FULL</code> model kind completely replaces the table each time it runs, so its materialization is essentially just <code>CREATE OR REPLACE TABLE [name] AS [your query]</code>. Simple!</p>
+<p>A materialization is the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.</p>
+<p>Some materializations are straightforward. For example, a <code>FULL</code> model kind completely replaces the table each time it runs, so its materialization is essentially just <code>CREATE OR REPLACE TABLE [name] AS [your query]</code>.</p>
 <p>Other materializations are more complex. An <code>INCREMENTAL_BY_TIME_RANGE</code> model needs to figure out which time intervals to process, query only that data, and then merge it into the existing table. That requires more logic.</p>
 <p>The materialization logic can also vary by SQL engine. PostgreSQL doesn't support <code>CREATE OR REPLACE TABLE</code>, so <code>FULL</code> models on Postgres use <code>DROP</code> then <code>CREATE</code> instead. Vulcan handles all these engine-specific details for built-in model kinds, but with custom materializations, you're in control.</p>
 <h2 id="how-custom-materializations-work">How custom materializations work<a class="headerlink" href="#how-custom-materializations-work" title="Link to this section">¶</a></h2>
-<p>Custom materializations are like creating your own model kind. You define them in Python, give them a name, and then reference that name in your model's <code>MODEL</code> block. They can even accept configuration arguments that you pass in from your model definition.</p>
+<p>Custom materializations are like creating your own model kind. You define them in Python, give them a name, and then reference that name in your model's <code>MODEL</code> block. They can accept configuration arguments that you pass in from your model definition.</p>
 <p>Here's what every custom materialization needs:</p>
 <ul>
-<li><strong>Python code</strong>: Written as a Python class</li>
-<li><strong>Base class</strong>: Must inherit from Vulcan's <code>CustomMaterialization</code> class</li>
-<li><strong>Insert method</strong>: At minimum, you need to implement the <code>insert</code> method</li>
-<li><strong>Auto-loading</strong>: Vulcan automatically discovers materializations in your <code>materializations/</code> directory</li>
+<li>
+<p><strong>Python code</strong>: Written as a Python class</p>
+</li>
+<li>
+<p><strong>Base class</strong>: Must inherit from Vulcan's <code>CustomMaterialization</code> class</p>
+</li>
+<li>
+<p><strong>Insert method</strong>: At minimum, you need to implement the <code>insert</code> method</p>
+</li>
+<li>
+<p><strong>Auto-loading</strong>: Vulcan automatically discovers materializations in your <code>materializations/</code> directory</p>
+</li>
 </ul>
 <p>You can also:</p>
 <ul>
-<li>Override other methods from <code>MaterializableStrategy</code> or <code>EngineAdapter</code> classes</li>
-<li>Execute arbitrary SQL using the engine adapter</li>
-<li>Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a <a href="../../model/types/python_models.md">Python model</a> instead)</li>
+<li>
+<p>Override other methods from <code>MaterializableStrategy</code> or <code>EngineAdapter</code> classes</p>
+</li>
+<li>
+<p>Execute arbitrary SQL using the engine adapter</p>
+</li>
+<li>
+<p>Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a <a href="../../model/types/python_models/">Python model</a> instead)</p>
+</li>
 </ul>
 <p>Vulcan will automatically load any Python files in your project's <code>materializations/</code> directory. Or, if you prefer, you can package your materialization as a <a href="#python-packaging">Python package</a> and install it like any other dependency.</p>
 <h2 id="creating-a-custom-materialization">Creating a custom materialization<a class="headerlink" href="#creating-a-custom-materialization" title="Link to this section">¶</a></h2>
@@ -1862,8 +1876,12 @@
 <p>When Vulcan loads your materialization, it inspects the type signature for generic parameters that are subclasses of <code>CustomKind</code>. If it finds one, it uses your subclass when building <code>model.kind</code> instead of the default.</p>
 <p>Why would you want this? Two main benefits:</p>
 <ul>
-<li><strong>Early validation</strong>: Your <code>primary_key</code> validation happens at load time, not evaluation time. Issues get caught before you even create a plan.</li>
-<li><strong>Type safety</strong>: <code>model.kind</code> resolves to your custom kind object, so you get access to extra properties without additional validation.</li>
+<li>
+<p><strong>Early validation</strong>: Your <code>primary_key</code> validation happens at load time, not evaluation time. Issues get caught before you even create a plan.</p>
+</li>
+<li>
+<p><strong>Type safety</strong>: <code>model.kind</code> resolves to your custom kind object, so you get access to extra properties without additional validation.</p>
+</li>
 </ul>
 <h2 id="sharing-custom-materializations">Sharing custom materializations<a class="headerlink" href="#sharing-custom-materializations" title="Link to this section">¶</a></h2>
 <p>Once you've built a custom materialization, you'll probably want to use it across multiple projects. You have a couple of options.</p>
@@ -1961,8 +1979,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

@@ -8,9 +8,9 @@
 <link href="../model_selection/" rel="prev"/>
 <link href="../../cli-command/cli/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Transpiling Semantics - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1850,17 +1850,25 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="transpiling-semantics">Transpiling Semantics<a class="headerlink" href="#transpiling-semantics" title="Link to this section">¶</a></h1>
-<p>The <code>vulcan transpile</code> command converts semantic queries into executable SQL, allowing you to preview, debug, and validate semantic logic before execution.</p>
-<p>Think of transpilation as a translator, it takes your semantic layer queries (which are business-friendly) and converts them into the SQL that your database actually understands. Pretty neat, right?</p>
+<p>The <code>vulcan transpile</code> command converts semantic queries into executable SQL. Use it to preview, debug, and validate semantic logic before execution.</p>
+<p>Transpilation converts semantic layer queries (business-friendly) into SQL that your database understands.</p>
 <h2 id="what-is-transpilation">What is Transpilation?<a class="headerlink" href="#what-is-transpilation" title="Link to this section">¶</a></h2>
-<p>Transpilation transforms semantic layer queries into database-specific SQL. It's like having a translator that speaks both "business language" (semantic queries) and "database language" (SQL).</p>
+<p>Transpilation transforms semantic layer queries into database-specific SQL. It converts "business language" (semantic queries) into "database language" (SQL).</p>
 <ul>
-<li><strong>Semantic SQL → Native SQL</strong>: Converts semantic SQL queries with <code>MEASURE()</code> functions into standard SQL - takes your business-friendly queries and makes them database-ready</li>
-<li><strong>REST API Payload → Native SQL</strong>: Converts JSON query payloads into executable SQL statements - perfect for API-driven applications</li>
-<li><strong>Validation</strong>: Catches errors before query execution - find problems before they hit production</li>
-<li><strong>Debugging</strong>: Inspect the generated SQL to understand query behavior - see exactly what your semantic queries are doing under the hood</li>
+<li>
+<p><strong>Semantic SQL → Native SQL</strong>: Converts semantic SQL queries with <code>MEASURE()</code> functions into standard SQL - takes your business-friendly queries and makes them database-ready</p>
+</li>
+<li>
+<p><strong>REST API Payload → Native SQL</strong>: Converts JSON query payloads into executable SQL statements. Use for API-driven applications.</p>
+</li>
+<li>
+<p><strong>Validation</strong>: Catches errors before query execution - find problems before they hit production</p>
+</li>
+<li>
+<p><strong>Debugging</strong>: Inspect the generated SQL to understand query behavior - see exactly what your semantic queries are doing under the hood</p>
+</li>
 </ul>
-<p>Why is this useful? Well, semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap!</p>
+<p>Semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap.</p>
 <h2 id="basic-structure">Basic Structure<a class="headerlink" href="#basic-structure" title="Link to this section">¶</a></h2>
 <h3 id="semantic-sql-query-structure">Semantic SQL Query Structure<a class="headerlink" href="#semantic-sql-query-structure" title="Link to this section">¶</a></h3>
 <p>Semantic SQL queries follow standard SQL syntax with semantic layer extensions:</p>
@@ -1877,12 +1885,24 @@
 </span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="w">                         </span><span class="o">#</span><span class="w"> </span><span class="n">Optional</span><span class="p">:</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="k">result</span><span class="w"> </span><span class="k">set</span>
 </span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">OFFSET</span><span class="w"> </span><span class="mi">0</span><span class="w">                          </span><span class="o">#</span><span class="w"> </span><span class="n">Optional</span><span class="p">:</span><span class="w"> </span><span class="n">pagination</span><span class="w"> </span><span class="k">offset</span>
 </span></code></pre></div>
-<p><strong>Key Components:</strong>
-- <code>alias.dimension_name</code> — Reference dimensions using semantic model alias
-- <code>MEASURE(measure_name)</code> — Required wrapper for measures to apply aggregation
-- <code>FROM alias</code> — Use semantic model alias, not physical model name
-- <code>CROSS JOIN</code> — Join syntax (join conditions automatically inferred)
-- <code>segment_name = true</code> — Segments only support <code>= true</code>, not <code>= false</code></p>
+<p><strong>Key Components:</strong></p>
+<ul>
+<li>
+<p><code>alias.dimension_name</code>: Reference dimensions using semantic model alias</p>
+</li>
+<li>
+<p><code>MEASURE(measure_name)</code>: Required wrapper for measures to apply aggregation</p>
+</li>
+<li>
+<p><code>FROM alias</code>: Use semantic model alias, not physical model name</p>
+</li>
+<li>
+<p><code>CROSS JOIN</code>: Join syntax (join conditions automatically inferred)</p>
+</li>
+<li>
+<p><code>segment_name = true</code>: Segments only support <code>= true</code>, not <code>= false</code></p>
+</li>
+</ul>
 <h3 id="rest-api-payload-structure">REST API Payload Structure<a class="headerlink" href="#rest-api-payload-structure" title="Link to this section">¶</a></h3>
 <p>REST API queries use JSON payloads with semantic query definitions:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="p">{</span>
@@ -1912,13 +1932,27 @@
 </span><span id="__span-1-25"><a href="#__codelineno-1-25" id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">  </span><span class="nt">"ttl_minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="w">                                  </span><span class="err">#</span><span class="w"> </span><span class="err">Op</span><span class="kc">t</span><span class="err">io</span><span class="kc">nal</span><span class="p">:</span><span class="w"> </span><span class="err">cache</span><span class="w"> </span><span class="err">dura</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="w"> </span><span class="err">mi</span><span class="kc">nutes</span>
 </span><span id="__span-1-26"><a href="#__codelineno-1-26" id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><strong>Key Components:</strong>
-- <code>measures</code> — Array of fully qualified measure names: <code>"alias.measure_name"</code>
-- <code>dimensions</code> — Array of fully qualified dimension names: <code>"alias.dimension_name"</code>
-- <code>segments</code> — Array of segment names (no alias prefix needed)
-- <code>timeDimensions</code> — Array of objects with <code>dimension</code>, <code>dateRange</code>, and <code>granularity</code>
-- <code>filters</code> — Array of filter objects with <code>member</code>, <code>operator</code>, and <code>values</code>
-- <code>order</code> — Object mapping member names to sort direction (<code>"asc"</code> or <code>"desc"</code>)</p>
+<p><strong>Key Components:</strong></p>
+<ul>
+<li>
+<p><code>measures</code>: Array of fully qualified measure names: <code>"alias.measure_name"</code></p>
+</li>
+<li>
+<p><code>dimensions</code>: Array of fully qualified dimension names: <code>"alias.dimension_name"</code></p>
+</li>
+<li>
+<p><code>segments</code>: Array of segment names (no alias prefix needed)</p>
+</li>
+<li>
+<p><code>timeDimensions</code>: Array of objects with <code>dimension</code>, <code>dateRange</code>, and <code>granularity</code></p>
+</li>
+<li>
+<p><code>filters</code>: Array of filter objects with <code>member</code>, <code>operator</code>, and <code>values</code></p>
+</li>
+<li>
+<p><code>order</code>: Object mapping member names to sort direction (<code>"asc"</code> or <code>"desc"</code>)</p>
+</li>
+</ul>
 <h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this section">¶</a></h2>
 <h3 id="transpiling-semantic-sql-queries">Transpiling Semantic SQL Queries<a class="headerlink" href="#transpiling-semantic-sql-queries" title="Link to this section">¶</a></h3>
 <p>Convert semantic SQL queries to native SQL:</p>
@@ -1936,19 +1970,33 @@
 </span></code></pre></div>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>--format</code> (required) — Output format: <code>sql</code> or <code>json</code></li>
-<li><code>"&lt;query&gt;"</code> (required) — The semantic query to transpile</li>
-<li>For SQL format: Semantic SQL query string</li>
-<li>For JSON format: JSON query payload string</li>
+<li>
+<p><code>--format</code> (required): Output format: <code>sql</code> or <code>json</code></p>
+</li>
+<li>
+<p><code>"&lt;query&gt;"</code> (required): The semantic query to transpile</p>
+</li>
+<li>
+<p>For SQL format: Semantic SQL query string</p>
+</li>
+<li>
+<p>For JSON format: JSON query payload string</p>
+</li>
 </ul>
 <h3 id="advanced-options">Advanced Options<a class="headerlink" href="#advanced-options" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"&lt;query&gt;"</span><span class="w"> </span><span class="o">[</span>--disable-post-processing<span class="o">]</span>
 </span></code></pre></div>
 <p><strong>Options:</strong></p>
 <ul>
-<li><code>--disable-post-processing</code> — Enable pushdown mode for CTE support and advanced SQL features</li>
-<li><strong>Default</strong>: Post-processing enabled (CTEs not supported)</li>
-<li><strong>With flag</strong>: Pushdown enabled (CTEs supported, no pre-aggregations)</li>
+<li>
+<p><code>--disable-post-processing</code>: Enable pushdown mode for CTE support and advanced SQL features</p>
+</li>
+<li>
+<p><strong>Default</strong>: Post-processing enabled (CTEs not supported)</p>
+</li>
+<li>
+<p><strong>With flag</strong>: Pushdown enabled (CTEs supported, no pre-aggregations)</p>
+</li>
 </ul>
 <h2 id="transpiling-semantic-sql">Transpiling Semantic SQL<a class="headerlink" href="#transpiling-semantic-sql" title="Link to this section">¶</a></h2>
 <h3 id="basic-query">Basic Query<a class="headerlink" href="#basic-query" title="Link to this section">¶</a></h3>
@@ -2093,49 +2141,87 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="c1"># Create SQL reference from semantic queries</span>
 </span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"</span>
 </span></code></pre></div>
-<p>This is great for documentation! You can show both the semantic query (easy to understand) and the generated SQL (what actually runs).</p>
+<p>Use this for documentation. Show both the semantic query (easy to understand) and the generated SQL (what actually runs).</p>
 <h2 id="common-errors-and-solutions">Common Errors and Solutions<a class="headerlink" href="#common-errors-and-solutions" title="Link to this section">¶</a></h2>
 <h3 id="error-unknown-member-x">Error: "Unknown member: X"<a class="headerlink" href="#error-unknown-member-x" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Member doesn't exist in semantic model or is misspelled.</p>
-<p><strong>Solution:</strong>
-- Verify member exists in your semantic model - check your semantic model definitions
-- Check spelling and casing (case-sensitive) - <code>users.plan_type</code> is different from <code>users.Plan_Type</code>
-- Use fully qualified format: <code>alias.member_name</code> - always include the alias prefix</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>Verify member exists in your semantic model - check your semantic model definitions</p>
+</li>
+<li>
+<p>Check spelling and casing (case-sensitive) - <code>users.plan_type</code> is different from <code>users.Plan_Type</code></p>
+</li>
+<li>
+<p>Use fully qualified format: <code>alias.member_name</code> - always include the alias prefix</p>
+</li>
+</ul>
 <p>This error usually means you've made a typo or the member doesn't exist yet. Double-check your semantic model!</p>
 <h3 id="error-measure-not-found-x">Error: "Measure not found: X"<a class="headerlink" href="#error-measure-not-found-x" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Measure referenced without proper qualification or doesn't exist.</p>
-<p><strong>Solution:</strong>
-- Use <code>MEASURE(measure_name)</code> wrapper for SQL format - measures need the MEASURE() wrapper in SQL
-- Use fully qualified format: <code>alias.measure_name</code> for JSON format - JSON format uses dot notation
-- Verify measure is defined in semantic model - make sure the measure actually exists</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>Use <code>MEASURE(measure_name)</code> wrapper for SQL format - measures need the MEASURE() wrapper in SQL</p>
+</li>
+<li>
+<p>Use fully qualified format: <code>alias.measure_name</code> for JSON format - JSON format uses dot notation</p>
+</li>
+<li>
+<p>Verify measure is defined in semantic model - make sure the measure actually exists</p>
+</li>
+</ul>
 <p>The format differs between SQL and JSON, so make sure you're using the right syntax for each!</p>
 <h3 id="error-model-not-found-x">Error: "Model not found: X"<a class="headerlink" href="#error-model-not-found-x" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Alias doesn't match any semantic model.</p>
-<p><strong>Solution:</strong>
-- Check semantic model aliases in your <code>semantics/</code> directory
-- Verify alias spelling and casing
-- Ensure semantic models are properly defined</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>Check semantic model aliases in your <code>semantics/</code> directory</p>
+</li>
+<li>
+<p>Verify alias spelling and casing</p>
+</li>
+<li>
+<p>Ensure semantic models are properly defined</p>
+</li>
+</ul>
 <h3 id="error-invalid-json-format">Error: "Invalid JSON format"<a class="headerlink" href="#error-invalid-json-format" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> JSON payload is malformed.</p>
-<p><strong>Solution:</strong>
-- Validate JSON syntax
-- Ensure proper quoting of strings
-- Check array and object structure</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>Validate JSON syntax</p>
+</li>
+<li>
+<p>Ensure proper quoting of strings</p>
+</li>
+<li>
+<p>Check array and object structure</p>
+</li>
+</ul>
 <h3 id="error-projection-references-non-aggregate-values">Error: "Projection references non-aggregate values"<a class="headerlink" href="#error-projection-references-non-aggregate-values" title="Link to this section">¶</a></h3>
 <p><strong>Cause:</strong> Non-aggregated columns not in GROUP BY, or measures missing MEASURE() wrapper.</p>
-<p><strong>Solution:</strong>
-- Add all non-aggregated columns to GROUP BY - if you select a column, it needs to be in GROUP BY (unless it's aggregated)
-- Use MEASURE() wrapper for all measures in SQL format - measures must be wrapped in MEASURE()</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>Add all non-aggregated columns to GROUP BY - if you select a column, it needs to be in GROUP BY (unless it's aggregated)</p>
+</li>
+<li>
+<p>Use MEASURE() wrapper for all measures in SQL format - measures must be wrapped in MEASURE()</p>
+</li>
+</ul>
 <p>This is a SQL rule, you can't mix aggregated and non-aggregated columns without GROUP BY. The error is telling you exactly what's wrong!</p>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <h3 id="validate-before-execution">Validate Before Execution<a class="headerlink" href="#validate-before-execution" title="Link to this section">¶</a></h3>
 <p>Always transpile queries before running them in production. It's like checking your work before turning it in:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="c1"># ✅ Good: Validate first</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="c1"># Good: Validate first</span>
 </span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
 </span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="c1"># Review output, then execute - make sure the SQL looks right</span>
 </span><span id="__span-32-4"><a href="#__codelineno-32-4" id="__codelineno-32-4" name="__codelineno-32-4"></a>
-</span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="c1"># ❌ Bad: Execute without validation</span>
-</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="c1"># Direct execution without checking generated SQL - don't do this!</span>
+</span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="c1"># Bad: Execute without validation</span>
+</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="c1"># Direct execution without checking generated SQL - don't do this</span>
 </span></code></pre></div>
 <p>Transpilation catches errors early. Use it!</p>
 <h3 id="use-transpilation-for-debugging">Use Transpilation for Debugging<a class="headerlink" href="#use-transpilation-for-debugging" title="Link to this section">¶</a></h3>
@@ -2161,8 +2247,12 @@
 <h3 id="choose-appropriate-mode">Choose Appropriate Mode<a class="headerlink" href="#choose-appropriate-mode" title="Link to this section">¶</a></h3>
 <p>Select post-processing or pushdown mode based on needs:</p>
 <ul>
-<li><strong>Post-processing (default)</strong>: Use for queries that benefit from pre-aggregations and caching</li>
-<li><strong>Pushdown (<code>--disable-post-processing</code>)</strong>: Use when you need CTEs or complex SQL structures</li>
+<li>
+<p><strong>Post-processing (default)</strong>: Use for queries that benefit from pre-aggregations and caching</p>
+</li>
+<li>
+<p><strong>Pushdown (<code>--disable-post-processing</code>)</strong>: Use when you need CTEs or complex SQL structures</p>
+</li>
 </ul>
 <h2 id="integration-with-development-workflow">Integration with Development Workflow<a class="headerlink" href="#integration-with-development-workflow" title="Link to this section">¶</a></h2>
 <h3 id="pre-commit-validation">Pre-commit Validation<a class="headerlink" href="#pre-commit-validation" title="Link to this section">¶</a></h3>
@@ -2183,9 +2273,15 @@
 </span></code></pre></div>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../../semantics/models.md">Semantic Models</a> that define the queryable members</li>
-<li>Explore <a href="../../semantics/business_metrics.md">Business Metrics</a> for time-series analysis</li>
-<li>See the <a href="components/semantics/index.md">Semantics Overview</a> for the complete picture</li>
+<li>
+<p>Learn about <a href="../../components/semantics/models/">Semantic Models</a> that define the queryable members</p>
+</li>
+<li>
+<p>Explore <a href="../../components/semantics/business_metrics/">Business Metrics</a> for time-series analysis</p>
+</li>
+<li>
+<p>See the <a href="../../components/semantics/overview/">Semantics Overview</a> for the complete picture</p>
+</li>
 </ul>
 </article>
 </div>
@@ -2253,8 +2349,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

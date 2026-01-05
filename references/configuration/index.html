@@ -6,9 +6,9 @@
 <meta content="DataOS Vulcan Team" name="author"/>
 <link href="https://tmdc-io.github.io/vulcan-docs/references/configuration/" rel="canonical"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Vulcan configuration - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -217,7 +217,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1120,12 +1120,12 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="vulcan-configuration">Vulcan configuration<a class="headerlink" href="#vulcan-configuration" title="Link to this section">¶</a></h1>
-<p>This page lists Vulcan configuration options and their parameters. Learn more about Vulcan configuration in the <a href="../../configurations/overview/">configuration overview</a>.</p>
-<p>Configuration options for model definitions are listed in the <a href="../model_configuration/">model configuration reference page</a>.</p>
+<p>This page lists all Vulcan configuration options and their parameters. For an overview of Vulcan configuration, see the <a href="../../configurations/overview/">configuration overview</a>.</p>
+<p>Model-specific configuration options are listed in the <a href="../model_configuration/">model configuration reference</a>.</p>
 <h2 id="root-configurations">Root configurations<a class="headerlink" href="#root-configurations" title="Link to this section">¶</a></h2>
-<p>A Vulcan project configuration consists of root level parameters within which other parameters are defined.</p>
-<p>Two important root level parameters are <a href="#gateways"><code>gateways</code></a> and <a href="#gatewayconnection-defaults">gateway/connection defaults</a>, which have their own sections below.</p>
-<p>This section describes the other root level configuration parameters.</p>
+<p>A Vulcan project configuration contains root-level parameters that define other parameters.</p>
+<p>The main root-level parameters are <a href="#gateways"><code>gateways</code></a> and <a href="#gatewayconnection-defaults">gateway/connection defaults</a>, which have their own sections below.</p>
+<p>This section covers the other root-level configuration parameters.</p>
 <h3 id="projects">Projects<a class="headerlink" href="#projects" title="Link to this section">¶</a></h3>
 <p>Configuration options for Vulcan project directories.</p>
 <table>
@@ -1165,7 +1165,7 @@
 </tbody>
 </table>
 <h3 id="database-physical-layer">Database (Physical Layer)<a class="headerlink" href="#database-physical-layer" title="Link to this section">¶</a></h3>
-<p>Configuration options for how Vulcan manages database objects in the <a href="../glossary/#physical-layer">physical layer</a>.</p>
+<p>Configuration options for how Vulcan manages database objects in the <a href="../glossary/#physical-layer">physical layer</a>. The physical layer stores actual data in database tables.</p>
 <table>
 <thead>
 <tr>
@@ -1203,7 +1203,7 @@
 </tbody>
 </table>
 <h3 id="environments-virtual-layer">Environments (Virtual Layer)<a class="headerlink" href="#environments-virtual-layer" title="Link to this section">¶</a></h3>
-<p>Configuration options for how Vulcan manages environment creation and promotion in the <a href="../glossary/#virtual-layer">virtual layer</a>.</p>
+<p>Configuration options for how Vulcan manages environment creation and promotion in the <a href="../glossary/#virtual-layer">virtual layer</a>. The virtual layer provides views over physical tables.</p>
 <table>
 <thead>
 <tr>
@@ -1292,8 +1292,13 @@
 <p>The <code>model_defaults</code> key is <strong>required</strong> and must contain a value for the <code>dialect</code> key.</p>
 <p>See all the keys allowed in <code>model_defaults</code> at the <a href="../model_configuration/#model-defaults">model configuration reference page</a>.</p>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h3>
-<p>The <code>variables</code> key can be used to provide values for user-defined variables, accessed using the <a href="components/advanced-features/macros/built_in.md#global-variables"><code>@VAR</code> macro function</a> in SQL model definitions, <a href="components/model/types/python_models.md#user-defined-variables"><code>context.var</code> method</a> in Python model definitions, and <a href="components/advanced-features/macros/built_in.md#accessing-global-variable-values"><code>evaluator.var</code> method</a> in Python macro functions.</p>
-<p>The <code>variables</code> key consists of a mapping of variable names to their values - see an example on the <a href="components/advanced-features/macros/built_in.md#global-variables">Vulcan macros concepts page</a>. Note that keys are case insensitive.</p>
+<p>The <code>variables</code> key provides values for user-defined variables. Access them using:</p>
+<ul>
+<li><a href="../../components/advanced-features/macros/built_in.md#global-variables"><code>@VAR</code> macro function</a> in SQL model definitions</li>
+<li><a href="../../components/model/types/python_models.md#user-defined-variables"><code>context.var</code> method</a> in Python model definitions</li>
+<li><a href="../../components/advanced-features/macros/built_in.md#accessing-global-variable-values"><code>evaluator.var</code> method</a> in Python macro functions</li>
+</ul>
+<p>The <code>variables</code> key maps variable names to their values. See examples on the <a href="../../components/advanced-features/macros/built_in.md#global-variables">macros page</a>. Variable names are case-insensitive.</p>
 <p>Global variable values may be any of the data types in the table below or lists or dictionaries containing those types.</p>
 <table>
 <thead>
@@ -1314,7 +1319,7 @@
 </tbody>
 </table>
 <h3 id="before_all-after_all">Before_all / after_all<a class="headerlink" href="#before_all-after_all" title="Link to this section">¶</a></h3>
-<p>The <code>before_all</code> and <code>after_all</code> keys can be used to specify lists of SQL statements and/or Vulcan macros that are executed at the start and end, respectively, of the <code>vulcan plan</code> and <code>vulcan run</code> commands. For more information and examples, see <a href="../../configurations/options/execution_hooks/">Execution Hooks</a>.</p>
+<p>The <code>before_all</code> and <code>after_all</code> keys specify lists of SQL statements and Vulcan macros that run at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands. For more information and examples, see <a href="../../configurations/options/execution_hooks/">Execution Hooks</a>.</p>
 <table>
 <thead>
 <tr>
@@ -1353,31 +1358,31 @@
 <tbody>
 <tr>
 <td><code>auto_categorize_changes</code></td>
-<td>Indicates whether Vulcan should attempt to automatically <a href="../../guides/plan/#change-categories">categorize</a> model changes during plan creation per each model source type</td>
+<td>Whether Vulcan automatically <a href="../../guides/plan/#change-categories">categorizes</a> model changes during plan creation per model source type</td>
 <td style="text-align: center;">dict[string, string]</td>
 <td style="text-align: center;">N</td>
 </tr>
 <tr>
 <td><code>include_unmodified</code></td>
-<td>Indicates whether to create views for all models in the target development environment or only for modified ones (Default: False)</td>
+<td>Whether to create views for all models in the target development environment or only for modified ones (Default: False)</td>
 <td style="text-align: center;">boolean</td>
 <td style="text-align: center;">N</td>
 </tr>
 <tr>
 <td><code>auto_apply</code></td>
-<td>Indicates whether to automatically apply a new plan after creation (Default: False)</td>
+<td>Whether to automatically apply a new plan after creation (Default: False)</td>
 <td style="text-align: center;">boolean</td>
 <td style="text-align: center;">N</td>
 </tr>
 <tr>
 <td><code>forward_only</code></td>
-<td>Indicates whether the plan should be <a href="guides/plan.md#forward-only-plans">forward-only</a> (Default: False)</td>
+<td>Whether the plan should be <a href="../../guides/plan/#forward-only-plans">forward-only</a> (Default: False)</td>
 <td style="text-align: center;">boolean</td>
 <td style="text-align: center;">N</td>
 </tr>
 <tr>
 <td><code>enable_preview</code></td>
-<td>Indicates whether to enable <a href="guides/plan.md#data-preview-for-forward-only-changes">data preview</a> for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)</td>
+<td>Whether to enable <a href="../../guides/plan/#data-preview-for-forward-only-changes">data preview</a> for forward-only models when targeting a development environment (Default: True, except for dbt projects where the target engine does not support cloning)</td>
 <td style="text-align: center;">Boolean</td>
 <td style="text-align: center;">N</td>
 </tr>
@@ -1402,7 +1407,7 @@
 </tbody>
 </table>
 <h2 id="run">Run<a class="headerlink" href="#run" title="Link to this section">¶</a></h2>
-<p>Configuration for the <code>vulcan run</code> command. Please note that this is only applicable when configured with the <a href="#builtin">builtin</a> scheduler.</p>
+<p>Configuration for the <code>vulcan run</code> command. This only applies when using the <a href="#builtin">builtin</a> scheduler.</p>
 <table>
 <thead>
 <tr>
@@ -1516,8 +1521,8 @@
 </tbody>
 </table>
 <h2 id="gateways">Gateways<a class="headerlink" href="#gateways" title="Link to this section">¶</a></h2>
-<p>The <code>gateways</code> dictionary defines how Vulcan should connect to the data warehouse, state backend, test backend, and scheduler.</p>
-<p>It takes one or more named <code>gateway</code> configuration keys, each of which can define its own connections. <strong>Gateway names are case-insensitive</strong> - Vulcan normalizes all gateway names to lowercase during configuration validation, allowing you to use any case when referencing gateways. A named gateway does not need to specify all four components and will use defaults if any are omitted - more information is provided about <a href="#gatewayconnection-defaults">gateway defaults</a> below.</p>
+<p>The <code>gateways</code> dictionary defines how Vulcan connects to the data warehouse, state backend, test backend, and scheduler.</p>
+<p>You can define one or more named gateway configurations, each with its own connections. Gateway names are case-insensitive. Vulcan normalizes all gateway names to lowercase during configuration validation. A gateway doesn't need to specify all four components. It uses defaults if any are omitted. See <a href="#gatewayconnection-defaults">gateway defaults</a> below.</p>
 <p>For example, a project might configure the <code>gate1</code> and <code>gate2</code> gateways:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
@@ -1658,14 +1663,14 @@
 <li><a href="../integrations/engines/snowflake/">Snowflake</a></li>
 </ul>
 <h3 id="scheduler">Scheduler<a class="headerlink" href="#scheduler" title="Link to this section">¶</a></h3>
-<p>Identifies which scheduler backend to use. The scheduler backend is used both for storing metadata and for executing <a href="guides/plan.md">plans</a>.</p>
-<p>By default, the scheduler type is set to <code>builtin</code> and uses the gateway's connection to store metadata.</p>
-<p>Below is the list of configuration options specific to each corresponding scheduler type. Find additional details in the <a href="../../configurations/overview/#scheduler">configuration overview</a>.</p>
+<p>Specifies which scheduler backend to use. The scheduler stores metadata and executes <a href="../../guides/plan/">plans</a>.</p>
+<p>By default, the scheduler type is <code>builtin</code> and uses the gateway's connection to store metadata.</p>
+<p>Configuration options for each scheduler type are listed below. For more details, see the <a href="../../configurations/overview/#scheduler">configuration overview</a>.</p>
 <h4 id="builtin">Builtin<a class="headerlink" href="#builtin" title="Link to this section">¶</a></h4>
 <p><strong>Type:</strong> <code>builtin</code></p>
 <p>No configuration options are supported by this scheduler type.</p>
 <h2 id="gatewayconnection-defaults">Gateway/connection defaults<a class="headerlink" href="#gatewayconnection-defaults" title="Link to this section">¶</a></h2>
-<p>The default gateway and connection keys specify what should happen when gateways or connections are not explicitly specified. Find additional details in the <a href="../../configurations/overview/#gateways">configuration overview</a>.</p>
+<p>Default gateway and connection keys specify what happens when gateways or connections aren't explicitly specified. For more details, see the <a href="../../configurations/overview/#gateways">configuration overview</a>.</p>
 <h3 id="default-gateway">Default gateway<a class="headerlink" href="#default-gateway" title="Link to this section">¶</a></h3>
 <p>If a configuration contains multiple gateways, Vulcan will use the first one in the <code>gateways</code> dictionary by default. The <code>default_gateway</code> key is used to specify a different gateway name as the Vulcan default.</p>
 <table>
@@ -1725,7 +1730,7 @@
 <li>Pass the <code>--debug</code> flag between the CLI command and the subcommand. For example, <code>vulcan --debug plan</code>.</li>
 <li>Set the <code>VULCAN_DEBUG</code> environment variable to one of the following values: "1", "true", "t", "yes" or "y".</li>
 </ul>
-<p>Enabling this mode ensures that full backtraces are printed when using CLI. The default log level is set to <code>DEBUG</code> when this mode is enabled.</p>
+<p>Enabling debug mode prints full backtraces in the CLI. The log level is set to <code>DEBUG</code> when debug mode is enabled.</p>
 <p>Example enabling debug mode for the CLI command <code>vulcan plan</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">Bash</label><label for="__tabbed_1_2">MS Powershell</label><label for="__tabbed_1_3">MS CMD</label></div>
 <div class="tabbed-content">
@@ -1768,8 +1773,8 @@ It accepts the following values, which will cause Vulcan to behave as if it were
 - `debugger` (Debugging output)
 - `ci` (CI/CD or other non-interactive environment) -->
 <h2 id="parallel-loading">Parallel loading<a class="headerlink" href="#parallel-loading" title="Link to this section">¶</a></h2>
-<p>Vulcan by default uses all of your cores when loading models and snapshots. It takes advantage of <code>fork</code> which is not available on Windows. The default is to use the same number of workers as cores on your machine if fork is available.</p>
-<p>You can override this setting by setting the environment variable <code>MAX_FORK_WORKERS</code>. A value of 1 will disable forking and load things sequentially.</p>
+<p>Vulcan uses all available cores when loading models and snapshots. It uses <code>fork</code>, which isn't available on Windows. By default, it uses the same number of workers as cores if fork is available.</p>
+<p>Override this by setting the <code>MAX_FORK_WORKERS</code> environment variable. Set it to <code>1</code> to disable forking and load sequentially.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1808,8 +1813,8 @@ It accepts the following values, which will cause Vulcan to behave as if it were
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

@@ -8,9 +8,9 @@
 <link href="../.." rel="prev"/>
 <link href="../options/model_defaults/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Overview - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -218,10 +218,10 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#quick-start-example">
+<a class="md-nav__link" href="#example-configuration">
 <span class="md-ellipsis">
       
-        Quick Start Example
+        Example Configuration
       
     </span>
 </a>
@@ -264,10 +264,10 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#model-defaults-required">
+<a class="md-nav__link" href="#model-defaults">
 <span class="md-ellipsis">
       
-        Model Defaults (Required)
+        Model Defaults
       
     </span>
 </a>
@@ -369,7 +369,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1082,10 +1082,10 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#quick-start-example">
+<a class="md-nav__link" href="#example-configuration">
 <span class="md-ellipsis">
       
-        Quick Start Example
+        Example Configuration
       
     </span>
 </a>
@@ -1128,10 +1128,10 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#model-defaults-required">
+<a class="md-nav__link" href="#model-defaults">
 <span class="md-ellipsis">
       
-        Model Defaults (Required)
+        Model Defaults
       
     </span>
 </a>
@@ -1228,15 +1228,19 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>Every Vulcan project needs a configuration file that tells Vulcan how to connect to your data warehouse, manage environments, and handle model execution. Think of it as the control center for your entire data pipeline, it's where you define connections, set defaults, and configure optional features like linting and notifications.</p>
+<p>Your Vulcan project needs a configuration file. It tells Vulcan how to connect to your data warehouse, where to store state, and what defaults to use for your models. Without it, Vulcan doesn't know where your data lives or how to run your transformations.</p>
 <h2 id="configuration-file">Configuration File<a class="headerlink" href="#configuration-file" title="Link to this section">¶</a></h2>
-<p>You'll need a configuration file in your project root directory. You've got two options:</p>
+<p>Create a configuration file in your project root. Choose one:</p>
 <ul>
-<li><strong><code>config.yaml</code></strong> - YAML format (recommended for most users). It's simple, readable, and perfect for most use cases.</li>
-<li><strong><code>config.py</code></strong> - Python format (for advanced use cases). Use this if you need dynamic configuration or want to programmatically generate settings.</li>
+<li>
+<p><code>config.yaml</code>: YAML format. Use this for most projects. Simple and readable.</p>
+</li>
+<li>
+<p><code>config.py</code>: Python format. Use this if you need dynamic configuration or want to generate settings programmatically.</p>
+</li>
 </ul>
-<h2 id="quick-start-example">Quick Start Example<a class="headerlink" href="#quick-start-example" title="Link to this section">¶</a></h2>
-<p>Here's a practical example of a Vulcan configuration file:</p>
+<h2 id="example-configuration">Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this section">¶</a></h2>
+<p>Here's what a typical configuration file looks like:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
@@ -1273,7 +1277,8 @@
 <span class="normal"><a href="#__codelineno-0-34">34</a></span>
 <span class="normal"><a href="#__codelineno-0-35">35</a></span>
 <span class="normal"><a href="#__codelineno-0-36">36</a></span>
-<span class="normal"><a href="#__codelineno-0-37">37</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># Project metadata</span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># Project metadata</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders360</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="nt">tenant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Daily sales analytics pipeline</span>
@@ -1309,7 +1314,8 @@
 </span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ambiguousorinvalidcolumn</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidselectstarexpansion</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidselectstarexpansion</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="configuration-structure">Configuration Structure<a class="headerlink" href="#configuration-structure" title="Link to this section">¶</a></h2>
 <pre class="mermaid"><code>graph TB
@@ -1327,7 +1333,7 @@
     Options --&gt; Format[format]</code></pre>
 <h2 id="configuration-sections">Configuration Sections<a class="headerlink" href="#configuration-sections" title="Link to this section">¶</a></h2>
 <h3 id="project-settings">Project Settings<a class="headerlink" href="#project-settings" title="Link to this section">¶</a></h3>
-<p>These are basic metadata fields that help identify your project. They're useful for organization and documentation, but they don't affect how Vulcan runs.</p>
+<p>Metadata fields that identify your project. They don't affect how Vulcan runs, but they're useful for organization.</p>
 <table>
 <thead>
 <tr>
@@ -1349,13 +1355,13 @@
 </tr>
 <tr>
 <td><code>description</code></td>
-<td>Human-readable project description</td>
+<td>Project description</td>
 <td style="text-align: center;">string</td>
 </tr>
 </tbody>
 </table>
 <h3 id="gateways">Gateways<a class="headerlink" href="#gateways" title="Link to this section">¶</a></h3>
-<p>Gateways are how Vulcan connects to your data warehouse, state backend, and other services. You can define multiple gateways for different environments (like dev, staging, and prod), each with its own connection settings. This gives you flexibility to use different databases or configurations per environment.</p>
+<p>Gateways define how Vulcan connects to your data warehouse and state backend. Define multiple gateways for different environments: dev, staging, prod. Each gateway has its own connection settings.</p>
 <table>
 <thead>
 <tr>
@@ -1392,33 +1398,37 @@
 </tr>
 </tbody>
 </table>
-<p>→ See <a href="../../references/configuration.md#gateways">Configuration Reference</a> for detailed gateway options.</p>
-<h3 id="model-defaults-required">Model Defaults (Required)<a class="headerlink" href="#model-defaults-required" title="Link to this section">¶</a></h3>
-<p>The <code>model_defaults</code> section is <strong>required</strong>, you can't skip it! At minimum, you need to specify the <code>dialect</code> key, which tells Vulcan what SQL dialect your models use. The other defaults are optional but super helpful because they apply to all your models automatically, saving you from repeating the same settings in every model file.</p>
+<p>See <a href="../../references/configuration/#gateways">Configuration Reference</a> for detailed gateway options.</p>
+<h3 id="model-defaults">Model Defaults<a class="headerlink" href="#model-defaults" title="Link to this section">¶</a></h3>
+<p>The <code>model_defaults</code> section is required. At minimum, specify <code>dialect</code> to tell Vulcan what SQL dialect your models use. Other defaults are optional but apply to all models automatically, so you don't repeat the same settings in every model file.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w">     </span><span class="c1"># Required</span>
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data-team</span>
 </span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
 </span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'@daily'</span>
 </span></code></pre></div>
-<p>→ See <a href="../options/model_defaults/">Model Defaults</a> for all available options.</p>
+<p>See <a href="../options/model_defaults/">Model Defaults</a> for all available options.</p>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h3>
-<p>Manage environment variables, <code>.env</code> files, and configuration overrides. This is where you'll store sensitive information like passwords and API keys securely, without hardcoding them in your config files. You can also use variables to override configuration values dynamically.</p>
-<p>→ See <a href="../options/variables/">Variables</a> for details.</p>
+<p>Store sensitive information like passwords and API keys without hardcoding them. Use environment variables, <code>.env</code> files, or configuration overrides. Variables also let you override configuration values dynamically.</p>
+<p>See <a href="../options/variables/">Variables</a> for details.</p>
 <h3 id="execution-hooks">Execution Hooks<a class="headerlink" href="#execution-hooks" title="Link to this section">¶</a></h3>
-<p>Run SQL statements automatically at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands. This is super useful for things like setting up temporary tables, granting permissions, or cleaning up after runs. You can use <code>before_all</code> for setup tasks and <code>after_all</code> for cleanup or post-processing.</p>
-<p>→ See <a href="../options/execution_hooks/">Execution Hooks</a> for detailed examples and use cases.</p>
+<p>Run SQL statements automatically at the start and end of <code>vulcan plan</code> and <code>vulcan run</code> commands. Use <code>before_all</code> for setup tasks like creating temporary tables or granting permissions. Use <code>after_all</code> for cleanup or post-processing.</p>
+<p>See <a href="../options/execution_hooks/">Execution Hooks</a> for detailed examples and use cases.</p>
 <h3 id="linter">Linter<a class="headerlink" href="#linter" title="Link to this section">¶</a></h3>
-<p>Enable automatic code quality checks that run whenever you create a plan or run the lint command. This helps catch common mistakes and enforce coding standards across your team. You can use built-in rules or create custom ones that match your team's preferences.</p>
-<p>→ See <a href="../options/linter/">Linter</a> for rules and custom linter configuration.</p>
+<p>Automatic code quality checks that run when you create a plan or run the lint command. Catches common mistakes and enforces coding standards. Use built-in rules or create custom ones.</p>
+<p>See <a href="../options/linter/">Linter</a> for rules and custom linter configuration.</p>
 <h3 id="notifications">Notifications<a class="headerlink" href="#notifications" title="Link to this section">¶</a></h3>
-<p>Set up alerts via Slack or email so you know when important things happen in your pipeline. You can get notified when plans start or finish, when runs complete, or when audits fail. This keeps your team in the loop without having to constantly check the pipeline status.</p>
-<p>→ See <a href="../options/notifications/">Notifications</a> for Slack webhooks, API, and email setup.</p>
+<p>Set up alerts via Slack or email. Get notified when plans start or finish, when runs complete, or when audits fail.</p>
+<p>See <a href="../options/notifications/">Notifications</a> for Slack webhooks, API, and email setup.</p>
 <h2 id="supported-engines">Supported Engines<a class="headerlink" href="#supported-engines" title="Link to this section">¶</a></h2>
-<p>Vulcan works with a variety of data warehouses, so you can use it with whatever infrastructure you already have:</p>
+<p>Vulcan works with these data warehouses:</p>
 <ul>
-<li><strong><a href="../../references/integrations/engines/postgres.md">PostgreSQL</a></strong> - Open-source relational database</li>
-<li><strong><a href="../../references/integrations/engines/snowflake.md">Snowflake</a></strong> - Cloud data warehouse</li>
+<li>
+<p><a href="../../references/integrations/engines/postgres/">PostgreSQL</a></p>
+</li>
+<li>
+<p><a href="../../references/integrations/engines/snowflake/">Snowflake</a></p>
+</li>
 </ul>
 <h2 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this section">¶</a></h2>
 <table>
@@ -1430,7 +1440,7 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../../references/configuration.md">Configuration Reference</a></td>
+<td><a href="../../references/configuration/">Configuration Reference</a></td>
 <td>Complete list of all configuration parameters</td>
 </tr>
 <tr>
@@ -1456,24 +1466,11 @@
 </tbody>
 </table>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
-<p>Here are some tips to help you get the most out of your Vulcan configuration:</p>
-<ol>
-<li>
-<p><strong>Use environment variables</strong> for sensitive data like passwords and API keys. This keeps secrets out of your config files and makes it easier to manage different environments.</p>
-</li>
-<li>
-<p><strong>Set meaningful defaults</strong> in <code>model_defaults</code> to reduce boilerplate. If most of your models use the same dialect, start date, or cron schedule, set it once here instead of repeating it everywhere.</p>
-</li>
-<li>
-<p><strong>Enable linting</strong> to catch common errors early in development. It's much easier to fix issues before they make it to production.</p>
-</li>
-<li>
-<p><strong>Separate state connection</strong> from your data warehouse for better isolation. This prevents state operations from interfering with your data processing and gives you more flexibility.</p>
-</li>
-<li>
-<p><strong>Use multiple gateways</strong> for different environments (dev, staging, prod). This lets you test changes safely before deploying to production, and you can use different database configurations for each environment.</p>
-</li>
-</ol>
+<p>Use environment variables for sensitive data like passwords and API keys. Keeps secrets out of your config files and makes it easier to manage different environments.</p>
+<p>Set meaningful defaults in <code>model_defaults</code> to reduce boilerplate. If most of your models use the same dialect, start date, or cron schedule, set it once here instead of repeating it everywhere.</p>
+<p>Enable linting to catch common errors early in development. Fix issues before they make it to production.</p>
+<p>Separate state connection from your data warehouse for better isolation. Prevents state operations from interfering with your data processing.</p>
+<p>Use multiple gateways for different environments: dev, staging, prod. Test changes safely before deploying to production. Use different database configurations for each environment.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1499,13 +1496,13 @@
               </div>
 </div>
 </a>
-<a aria-label="Next: Model defaults" class="md-footer__link md-footer__link--next" href="../options/model_defaults/">
+<a aria-label="Next: Model Defaults" class="md-footer__link md-footer__link--next" href="../options/model_defaults/">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 Next
               </span>
 <div class="md-ellipsis">
-                Model defaults
+                Model Defaults
               </div>
 </div>
 <div class="md-footer__button md-icon">
@@ -1540,8 +1537,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

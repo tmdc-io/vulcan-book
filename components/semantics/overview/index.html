@@ -8,9 +8,9 @@
 <link href="../../checks/checks/" rel="prev"/>
 <link href="../models/" rel="next"/>
 <link href="../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Overview - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1153,32 +1153,54 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>The semantic layer is like a translator between your technical data models and your business users. It takes your SQL tables and makes them understandable to people who don't write SQL, turning <code>analytics.daily_revenue_metrics</code> into "Monthly Revenue by Customer Tier" that anyone can query.</p>
-<p>Think of it this way: your models are the engine (they do the work), and the semantic layer is the dashboard (it makes things usable). It adds business context, consistent definitions, and a friendly interface so people can actually use your data.</p>
+<p>The semantic layer translates technical data models into business-friendly interfaces. It takes your SQL tables and makes them understandable to people who don't write SQL, turning <code>analytics.daily_revenue_metrics</code> into "Monthly Revenue by Customer Tier" that anyone can query.</p>
+<p>Your models are the engine (they do the work), and the semantic layer is the dashboard (it makes things usable). It adds business context, consistent definitions, and a friendly interface so people can use your data.</p>
 <h2 id="what-is-the-semantic-layer">What is the Semantic Layer?<a class="headerlink" href="#what-is-the-semantic-layer" title="Link to this section">¶</a></h2>
 <p>The semantic layer bridges the gap between "here's a table with columns" and "here's what this means for the business." It provides a consistent, business-friendly interface to your data that enables self-service analytics while keeping a single source of truth for your business logic.</p>
-<p>Without a semantic layer, every time someone wants to analyze revenue, they have to remember which table has it, what the column is called, how to join it with other tables, and how to calculate it correctly. With a semantic layer, they just ask for "revenue" and it works. Pretty cool, right?</p>
+<p>Without a semantic layer, every time someone wants to analyze revenue, they have to remember which table has it, what the column is called, how to join it with other tables, and how to calculate it correctly. With a semantic layer, they ask for "revenue" and it works.</p>
 <h3 id="key-benefits">Key Benefits<a class="headerlink" href="#key-benefits" title="Link to this section">¶</a></h3>
 <p>The semantic layer helps everyone in your organization work with data more effectively:</p>
 <p><strong>For Developers:</strong></p>
 <ul>
-<li>✅ <strong>Define metrics once, use everywhere</strong> - Write the calculation once, use it in dashboards, APIs, and reports</li>
-<li>✅ <strong>Version-controlled business logic</strong> - Your metric definitions live in code, so changes are tracked and reviewable</li>
-<li>✅ <strong>Consistent calculations</strong> - No more "which revenue calculation should I use?", there's one definition</li>
+<li>
+<p><strong>Define metrics once, use everywhere</strong> - Write the calculation once, use it in dashboards, APIs, and reports</p>
+</li>
+<li>
+<p><strong>Version-controlled business logic</strong> - Your metric definitions live in code, so changes are tracked and reviewable</p>
+</li>
+<li>
+<p><strong>Consistent calculations</strong> - No more "which revenue calculation should I use?", there's one definition</p>
+</li>
 </ul>
 <p><strong>For Business Users:</strong></p>
 <ul>
-<li>✅ <strong>Self-service analytics</strong> - Query data without writing SQL (or even knowing what SQL is)</li>
-<li>✅ <strong>Consistent metric definitions</strong> - Everyone uses the same definition of "revenue" or "active users"</li>
-<li>✅ <strong>Trusted, validated data</strong> - Metrics are defined by the data team, so you know they're correct</li>
-<li>✅ <strong>Works everywhere</strong> - Use the same metrics in Tableau, Power BI, Python, or APIs</li>
+<li>
+<p><strong>Self-service analytics</strong> - Query data without writing SQL (or even knowing what SQL is)</p>
+</li>
+<li>
+<p><strong>Consistent metric definitions</strong> - Everyone uses the same definition of "revenue" or "active users"</p>
+</li>
+<li>
+<p><strong>Trusted, validated data</strong> - Metrics are defined by the data team, so you know they're correct</p>
+</li>
+<li>
+<p><strong>Works everywhere</strong> - Use the same metrics in Tableau, Power BI, Python, or APIs</p>
+</li>
 </ul>
 <p><strong>For Organizations:</strong></p>
 <ul>
-<li>✅ <strong>Single source of truth</strong> - One place where "revenue" is defined, not scattered across 20 different dashboards</li>
-<li>✅ <strong>Faster time to insights</strong> - Business users can answer questions themselves instead of waiting for the data team</li>
-<li>✅ <strong>Reduced data team bottleneck</strong> - Less "can you build me a dashboard?" requests</li>
-<li>✅ <strong>Better data governance</strong> - Centralized definitions make it easier to audit and maintain data quality</li>
+<li>
+<p><strong>Single source of truth</strong> - One place where "revenue" is defined, not scattered across 20 different dashboards</p>
+</li>
+<li>
+<p><strong>Faster time to insights</strong> - Business users can answer questions themselves instead of waiting for the data team</p>
+</li>
+<li>
+<p><strong>Reduced data team bottleneck</strong> - Less "can you build me a dashboard?" requests</p>
+</li>
+<li>
+<p><strong>Better data governance</strong> - Centralized definitions make it easier to audit and maintain data quality</p>
+</li>
 </ul>
 <h2 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Link to this section">¶</a></h2>
 <p>The semantic layer has two main pieces that work together. Think of them as building blocks, you start with semantic models, then build metrics on top.</p>
@@ -1186,11 +1208,21 @@
 <p>Semantic models are like wrappers around your Vulcan models. They take your technical tables and expose them in a business-friendly way. For detailed information, check out the <a href="../models/">Semantic Models</a> documentation.</p>
 <p>Here's what semantic models do:</p>
 <ul>
-<li><strong>Map physical models</strong> - Reference your Vulcan models from the <code>models/</code> directory</li>
-<li><strong>Expose dimensions</strong> - All model columns automatically become dimensions (things you can filter and group by)</li>
-<li><strong>Define measures</strong> - Aggregated calculations like <code>SUM(amount)</code> or <code>COUNT(*)</code></li>
-<li><strong>Create segments</strong> - Reusable filter conditions (like "high-value customers" or "active users")</li>
-<li><strong>Establish joins</strong> - Relationships between models so you can analyze across tables</li>
+<li>
+<p><strong>Map physical models</strong> - Reference your Vulcan models from the <code>models/</code> directory</p>
+</li>
+<li>
+<p><strong>Expose dimensions</strong> - All model columns automatically become dimensions (things you can filter and group by)</p>
+</li>
+<li>
+<p><strong>Define measures</strong> - Aggregated calculations like <code>SUM(amount)</code> or <code>COUNT(*)</code></p>
+</li>
+<li>
+<p><strong>Create segments</strong> - Reusable filter conditions (like "high-value customers" or "active users")</p>
+</li>
+<li>
+<p><strong>Establish joins</strong> - Relationships between models so you can analyze across tables</p>
+</li>
 </ul>
 <p>Here's a simple example:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">models</span><span class="p">:</span>
@@ -1201,15 +1233,23 @@
 </span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">count</span>
 </span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">        </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="s">"COUNT(*)"</span>
 </span></code></pre></div>
-<p>This takes your <code>analytics.customers</code> model and exposes a <code>total_customers</code> measure that anyone can use. Pretty straightforward! Now business users can query "total customers" without knowing which table it comes from or how to write the SQL.</p>
+<p>This takes your <code>analytics.customers</code> model and exposes a <code>total_customers</code> measure that anyone can use. Business users can query "total customers" without knowing which table it comes from or how to write the SQL.</p>
 <h3 id="business-metrics">Business Metrics<a class="headerlink" href="#business-metrics" title="Link to this section">¶</a></h3>
 <p>Business metrics combine measures with dimensions and time to create complete analytical definitions. They're like pre-built queries that are ready to use. Learn more in the <a href="../business_metrics/">Business Metrics</a> guide.</p>
 <p>Here's what makes metrics powerful:</p>
 <ul>
-<li><strong>Time-series analysis</strong> - Metrics include time dimensions so you can see trends over time</li>
-<li><strong>Flexible granularity</strong> - Query the same metric at different time intervals (day, week, month, etc.)</li>
-<li><strong>Multi-dimensional</strong> - Slice and dice by business attributes (customer tier, region, product category, etc.)</li>
-<li><strong>Ready for dashboards</strong> - Pre-configured for visualization tools</li>
+<li>
+<p><strong>Time-series analysis</strong> - Metrics include time dimensions so you can see trends over time</p>
+</li>
+<li>
+<p><strong>Flexible granularity</strong> - Query the same metric at different time intervals (day, week, month, etc.)</p>
+</li>
+<li>
+<p><strong>Multi-dimensional</strong> - Slice and dice by business attributes (customer tier, region, product category, etc.)</p>
+</li>
+<li>
+<p><strong>Ready for dashboards</strong> - Pre-configured for visualization tools</p>
+</li>
 </ul>
 <p>Here's what a metric looks like:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">metrics</span><span class="p">:</span>
@@ -1221,11 +1261,17 @@
 </span></code></pre></div>
 <p>This creates a <code>monthly_revenue</code> metric that:</p>
 <ul>
-<li>Uses the <code>total_revenue</code> measure from the orders model</li>
-<li>Groups by <code>order_date</code> (time dimension)</li>
-<li>Can be sliced by <code>customer_tier</code> (business dimension)</li>
+<li>
+<p>Uses the <code>total_revenue</code> measure from the orders model</p>
+</li>
+<li>
+<p>Groups by <code>order_date</code> (time dimension)</p>
+</li>
+<li>
+<p>Can be sliced by <code>customer_tier</code> (business dimension)</p>
+</li>
 </ul>
-<p>Now anyone can query "monthly revenue by customer tier" without writing SQL! They just reference the metric name, and Vulcan handles all the complexity behind the scenes.</p>
+<p>Anyone can query "monthly revenue by customer tier" without writing SQL. They reference the metric name, and Vulcan handles the complexity.</p>
 <h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Link to this section">¶</a></h2>
 <p>Setting up your semantic layer is straightforward. Here's the workflow:</p>
 <ol>
@@ -1256,7 +1302,7 @@
 <h2 id="integration-with-models">Integration with Models<a class="headerlink" href="#integration-with-models" title="Link to this section">¶</a></h2>
 <p>Here's the key insight: <strong>Model columns automatically become dimensions.</strong> The semantic layer adds measures, segments, joins, and metrics on top of your existing models. It builds on what you already have, it doesn't replace anything.</p>
 <p>When you're designing Vulcan models, keep the semantic layer in mind:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">-- ✅ Good: Clean column names, business-friendly</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">-- Good: Clean column names, business-friendly</span>
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">customers</span><span class="p">);</span>
 </span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="k">SELECT</span>
 </span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="n">customer_id</span><span class="p">,</span>
@@ -1267,20 +1313,34 @@
 </span></code></pre></div>
 <p>This model will automatically expose:</p>
 <ul>
-<li><code>customer_tier</code> as a dimension (filter by tier, group by tier)</li>
-<li><code>signup_date</code> as a time dimension (analyze trends over time)</li>
-<li><code>total_spent</code> as a dimension (create segments like "high-value customers")</li>
+<li>
+<p><code>customer_tier</code> as a dimension (filter by tier, group by tier)</p>
+</li>
+<li>
+<p><code>signup_date</code> as a time dimension (analyze trends over time)</p>
+</li>
+<li>
+<p><code>total_spent</code> as a dimension (create segments like "high-value customers")</p>
+</li>
 </ul>
 <p>Then you can add measures and metrics on top. The semantic layer builds on your models, it doesn't replace them. Your models stay exactly as they are; the semantic layer just makes them more accessible.</p>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
-<p>Ready to dive in? Here's where to go next:</p>
+<p>Next steps:</p>
 <ul>
-<li><strong><a href="../models/">Semantic Models</a></strong> - Learn how to map physical models to business concepts</li>
-<li><strong><a href="../business_metrics/">Business Metrics</a></strong> - Create time-series analytical definitions</li>
-<li><strong><a href="../../../guides/transpiling_semantics/">Transpiling Semantic Queries</a></strong> - See how semantic queries get converted to SQL</li>
-<li><strong>Check your project</strong> - Look at the <code>semantics/</code> directory in your Vulcan project for examples</li>
+<li>
+<p><strong><a href="../models/">Semantic Models</a></strong> - Map physical models to business concepts</p>
+</li>
+<li>
+<p><strong><a href="../business_metrics/">Business Metrics</a></strong> - Create time-series analytical definitions</p>
+</li>
+<li>
+<p><strong><a href="../../../guides/transpiling_semantics/">Transpiling Semantic Queries</a></strong> - See how semantic queries get converted to SQL</p>
+</li>
+<li>
+<p><strong>Check your project</strong> - Look at the <code>semantics/</code> directory in your Vulcan project for examples</p>
+</li>
 </ul>
-<p>The semantic layer makes your data accessible to everyone, not just SQL experts. Start with semantic models, add some measures, then build metrics. Before you know it, your business users will be answering their own questions!</p>
+<p>The semantic layer makes your data accessible to everyone, not just SQL experts. Start with semantic models, add measures, then build metrics.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1347,8 +1407,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

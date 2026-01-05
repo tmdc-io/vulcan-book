@@ -7,9 +7,9 @@
 <link href="https://tmdc-io.github.io/vulcan-docs/" rel="canonical"/>
 <link href="configurations/overview/" rel="next"/>
 <link href="assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>DataOS Vulcan</title>
-<link href="assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -173,6 +173,15 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#what-you-get">
+<span class="md-ellipsis">
+      
+        What you get
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#getting-started">
 <span class="md-ellipsis">
       
@@ -247,7 +256,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -951,6 +960,15 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#what-you-get">
+<span class="md-ellipsis">
+      
+        What you get
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#getting-started">
 <span class="md-ellipsis">
       
@@ -967,18 +985,66 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="about">About<a class="headerlink" href="#about" title="Link to this section">¶</a></h1>
-<p>Vulcan is a complete stack for building data products. Think of it as your all-in-one toolkit for transforming data. It's designed for data teams who want to move fast without breaking things.</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="assets/images/new_architecture_image.png"><img alt="Vulcan Architecture Diagram" src="assets/images/new_architecture_image.png"/></a></p>
-<ul>
-<li><strong>Write in SQL or Python</strong>: Use whichever language you're comfortable with (or both!)</li>
-<li><strong>Visibility and control</strong>: Know exactly what's happening in your pipelines, at any scale</li>
-<li><strong>Ship without errors</strong>: Built-in validation and testing help catch problems before they reach production</li>
-<li><strong>Works at any size</strong>: From small projects to enterprise-scale data platforms</li>
-</ul>
+<p>Stop guessing why your production pipeline failed at 3 AM. Vulcan is a complete stack for building data products that gives you visibility into what's happening at every step, with built-in validation that blocks bad data before it hits production.</p>
+<p>You write SQL or Python models in your Vulcan project. Most teams start with SQL for transformations, then add Python models when they hit logic that's painful to express in SQL: calling external APIs, running machine learning models, or handling complex business rules. Mix both in the same project. Vulcan handles CI/CD, testing, data quality, and API generation. Same stack whether you're processing thousands or billions of rows.</p>
+<pre class="mermaid"><code>graph LR
+    subgraph VulcanStack [THE VULCAN STACK]
+        Start[Write SQL or Python Models] --&gt; Linter[Linter: Code Safety]
+
+        Linter --&gt; ModelCore((Model Definition))
+
+        ModelCore --&gt; Tests[Automated Tests&lt;br/&gt;validate if desired output&lt;br/&gt;can be achieved]
+        Tests --&gt; Signals[Signals&lt;br/&gt;validate if dependencies&lt;br/&gt;are met]
+        Signals --&gt; ModelCore
+
+        ModelCore --&gt; AC[Assertions &amp; Checks&lt;br/&gt;validate data quality]
+        AC --&gt; Semantics[Semantics: &lt;br&gt; Dimensions &amp; Metrics]
+    end
+
+    Semantics --&gt; APIs[Automatic APIs: &lt;br&gt; REST &amp; Graph]
+    Semantics --&gt; Warehouse[(Postgres or Snowflake)]
+
+    APIs --&gt; Products[Production Data Products]
+    Warehouse --&gt; Products
+
+    style VulcanStack fill:#f0f4f8,stroke:#01579b,stroke-width:2px
+    style Products fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style Semantics fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style ModelCore fill:#e1f5fe,stroke:#0277bd,stroke-width:2px</code></pre>
+<details>
+<summary>How to read this diagram</summary>
+
+Read the diagram left to right. Here's what each part does:
+    <br/>
+- Write SQL or Python models in your `models/` directory. Most teams start with SQL, then add Python when they hit logic that's painful in SQL: API calls, machine learning, or complex business rules.
+    <br/>
+- Linter catches syntax errors before your code runs. This stops bad SQL or Python from hitting your warehouse.
+    <br/>
+- Model Definition is where your validated model becomes a defined entity. This is the central hub where the validation loop happens.
+    <br/>
+- Automated Tests run first to check if your model can produce the desired output. This happens before any data processing.
+    <br/>
+- Signals check if all dependencies are met. If a model depends on upstream data or external services, signals verify they're available. Only then does the loop feed back to Model Definition.
+    <br/>
+- Assertions and Checks validate data quality. Bad data gets blocked here, before it reaches your semantic layer or warehouse.
+    <br/>
+- Semantics layer only powers up after models pass validation. This is where you define business metrics and dimensions. It's your single source of truth, but only because everything feeding it has been validated.
+    <br/>
+- Automatic APIs generate from your semantic layer. REST, Python, and Graph APIs appear without manual code. Business users get self-service analytics, developers get programmatic access.
+    <br/>
+- Postgres or Snowflake receives error-free data. The validation loop ensures only clean data reaches production.
+    <br/>
+- Production Data Products are what business users and developers actually access. Everything flows here after passing through the validation gauntlet.
+
+
+</details>
+<h2 id="what-you-get">What you get<a class="headerlink" href="#what-you-get" title="Link to this section">¶</a></h2>
+<p><strong>SQL or Python</strong>: Write transformations in either language, or mix both in the same project. Use SQL for heavy-lifting transformations, switch to Python for complex logic. No new languages to learn.</p>
+<p><strong>Visibility and control</strong>: The linter catches syntax errors before deployment. CLI commands show you exactly what's running, what's queued, and what failed. You intercept errors in your Postgres or Snowflake environment before they trigger notifications. See what breaks before you break it.</p>
+<p><strong>Ship without errors</strong>: Assertions block bad data at the door. Tests run locally without touching your warehouse, so you get fast feedback without warehouse costs. CI/CD plans changes and shows you the full impact before deploying. Review what changed, approve when ready, roll back if something goes wrong.</p>
+<p>Why bother with <strong>Semantic Models</strong>? Because it's the difference between a messy data warehouse and a single source of truth for your entire business metrics. Define metrics and dimensions once in your semantic layer. Vulcan generates REST, Python, and Graph APIs automatically. No manual API code needed. Business users get self-service analytics through the semantic layer, developers get programmatic access through the APIs.</p>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Link to this section">¶</a></h2>
-<p>Ready to dive in? The <a href="guides/get-started/docker/">quickstart guide</a> will have you up and running in minutes. It walks you through setting up Vulcan and creating your first Vulcan project.</p>
-<p>Once you've got Vulcan running, you'll find guides and examples throughout this documentation to help you build exactly what you need.</p>
-<p>Welcome aboard!</p>
+<p>The <a href="guides/get-started/docker/">quickstart guide</a> walks you through setting up Vulcan and creating your first project. By the end, you'll have implemented your first audit or data quality check. That's the difference between just installing Vulcan and actually getting value from it.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1032,8 +1098,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

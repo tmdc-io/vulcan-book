@@ -8,9 +8,9 @@
 <link href="../variables/" rel="prev"/>
 <link href="../jinja/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Built In - DataOS Vulcan</title>
-<link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1632,7 +1632,7 @@
 <p>Vulcan macros are different. They're built specifically for SQL, and they understand what your SQL actually means. Instead of just swapping strings, Vulcan macros analyze your SQL using the <a href="https://github.com/tobymao/sqlglot">sqlglot</a> library to build a semantic representation of your query. Then they modify that representation. This means they can do things templating systems can't, like knowing whether something is a column name or a string literal, or understanding the structure of your query.</p>
 <p>Plus, you can write macro logic in Python, which gives you way more power than simple string substitution.</p>
 <h3 id="how-vulcan-macros-work">How Vulcan macros work<a class="headerlink" href="#how-vulcan-macros-work" title="Link to this section">¶</a></h3>
-<p>This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's super helpful when you're debugging something that's not working as expected. Feel free to skip it and come back later if you need to.</p>
+<p>This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's helpful when you're debugging something that's not working as expected.</p>
 <p>The critical distinction between the Vulcan macro approach and templating systems is the role string substitution plays. In templating systems, string substitution is the entire and only point.</p>
 <p>In Vulcan, string substitution is just one step toward modifying the semantic representation of the SQL query. <em>Vulcan macros work by building and modifying the semantic representation of the SQL query.</em></p>
 <p>After processing all the non-SQL text, it uses the substituted values to modify the semantic representation of the query to its final state.</p>
@@ -1644,9 +1644,15 @@
 <li>
 <p>Examine the placeholder values to classify them as one of the following types:</p>
 <ul>
-<li>Creation of user-defined macro variables with the <code>@DEF</code> operator (see more about <a href="#user-defined-variables">user-defined macro variables</a>)</li>
-<li>Macro variables: <a href="../variables/">Vulcan pre-defined</a>, <a href="#local-variables">user-defined local</a>, and <a href="#global-variables">user-defined global</a></li>
-<li>Macro functions, both <a href="#macro-operators">Vulcan's</a> and <a href="#user-defined-macro-functions">user-defined</a></li>
+<li>
+<p>Creation of user-defined macro variables with the <code>@DEF</code> operator (see more about <a href="#user-defined-variables">user-defined macro variables</a>)</p>
+</li>
+<li>
+<p>Macro variables: <a href="../variables/">Vulcan pre-defined</a>, <a href="#local-variables">user-defined local</a>, and <a href="#global-variables">user-defined global</a></p>
+</li>
+<li>
+<p>Macro functions, both <a href="#macro-operators">Vulcan's</a> and <a href="#user-defined-macro-functions">user-defined</a></p>
+</li>
 </ul>
 </li>
 <li>
@@ -1663,8 +1669,12 @@
 <p>Vulcan always incorporates macro variable values into the semantic representation of a SQL query (step 5 above). To do that, it infers the role each macro variable value plays in the query.</p>
 <p>For context, two commonly used types of string in SQL are:</p>
 <ul>
-<li>String literals, which represent text values and are surrounded by single quotes, such as <code>'the_string'</code></li>
-<li>Identifiers, which reference database objects like column, table, alias, and function names<ul>
+<li>
+<p>String literals, which represent text values and are surrounded by single quotes, such as <code>'the_string'</code></p>
+</li>
+<li>
+<p>Identifiers, which reference database objects like column, table, alias, and function names</p>
+<ul>
 <li>They may be unquoted or quoted with double quotes, backticks, or brackets, depending on the SQL dialect</li>
 </ul>
 </li>
@@ -1697,14 +1707,18 @@
 <p>Vulcan supports four kinds of user-defined macro variables: <a href="#global-variables">global</a>, <a href="#gateway-variables">gateway</a>, <a href="#blueprint-variables">blueprint</a>, and <a href="#local-variables">local</a>.</p>
 <p>Here's how they're organized:</p>
 <ul>
-<li><strong>Global and gateway variables</strong> are defined in your project configuration file and can be used in any model</li>
-<li><strong>Blueprint and local variables</strong> are defined in a specific model and only work in that model</li>
+<li>
+<p><strong>Global and gateway variables</strong> are defined in your project configuration file and can be used in any model</p>
+</li>
+<li>
+<p><strong>Blueprint and local variables</strong> are defined in a specific model and only work in that model</p>
+</li>
 </ul>
 <p>What happens if you have variables with the same name at different levels? The most specific one wins. Local variables override blueprint or gateway variables, gateway variables override global variables, and so on. This lets you set defaults globally but override them when needed.</p>
 <h3 id="global-variables">Global variables<a class="headerlink" href="#global-variables" title="Link to this section">¶</a></h3>
-<p>Global variables live in your project configuration file under the <a href="../../../../references/configuration.md#variables"><code>variables</code> key</a>. They're perfect for values you want to use across multiple models.</p>
+<p>Global variables live in your project configuration file under the <a href="../../../../references/configuration/#variables"><code>variables</code> key</a>. They're perfect for values you want to use across multiple models.</p>
 <p>You can store numbers (<code>int</code>, <code>float</code>), booleans (<code>bool</code>), strings (<code>str</code>), or even lists and dictionaries containing these types.</p>
-<p>Access them in your models using either <code>@VAR_NAME</code> (the simple syntax) or <code>@VAR('var_name')</code> (the function syntax). The function syntax is handy because you can provide a default value as the second argument, useful if the variable might not be defined.</p>
+<p>Access them in your models using either <code>@VAR_NAME</code> (the simple syntax) or <code>@VAR('var_name')</code> (the function syntax). The function syntax lets you provide a default value as the second argument, useful if the variable might not be defined.</p>
 <p>For example, this Vulcan configuration key defines six variables of different data types:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">YAML</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
@@ -1903,7 +1917,7 @@
 <li>All <code>@DEF</code> uses must come after the <code>MODEL</code> statement and before the SQL query</li>
 <li>Each <code>@DEF</code> use must end with a semi-colon <code>;</code></li>
 </ol>
-<p>For example, consider the following model <code>vulcan_example.full_model</code> from the <a href="components/guides/get-started/docker.md">Vulcan quickstart guide</a>:</p>
+<p>For example, consider the following model <code>vulcan_example.full_model</code> from the <a href="../../../../guides/get-started/docker/">Vulcan quickstart guide</a>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
@@ -2205,19 +2219,39 @@
 <p>The value to return if the condition is <code>FALSE</code> is optional - if it is not provided and the condition is <code>FALSE</code>, then the macro has no effect on the resulting query.</p>
 <p>The logical condition should be written <em>in SQL</em> and is evaluated with <a href="https://github.com/tobymao/sqlglot">SQLGlot's</a> SQL executor. It supports the following operators:</p>
 <ul>
-<li>Equality: <code>=</code> for equals, <code>!=</code> or <code>&lt;&gt;</code> for not equals</li>
-<li>Comparison: <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>,</li>
-<li>Between: <code>[number] BETWEEN [low number] AND [high number]</code></li>
-<li>Membership: <code>[item] IN ([comma-separated list of items])</code></li>
+<li>
+<p>Equality: <code>=</code> for equals, <code>!=</code> or <code>&lt;&gt;</code> for not equals</p>
+</li>
+<li>
+<p>Comparison: <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>,</p>
+</li>
+<li>
+<p>Between: <code>[number] BETWEEN [low number] AND [high number]</code></p>
+</li>
+<li>
+<p>Membership: <code>[item] IN ([comma-separated list of items])</code></p>
+</li>
 </ul>
 <p>For example, the following simple conditions are all valid SQL and evaluate to <code>TRUE</code>:</p>
 <ul>
-<li><code>'a' = 'a'</code></li>
-<li><code>'a' != 'b'</code></li>
-<li><code>0 &lt; 1</code></li>
-<li><code>1 &gt;= 1</code></li>
-<li><code>2 BETWEEN 1 AND 3</code></li>
-<li><code>'a' IN ('a', 'b')</code></li>
+<li>
+<p><code>'a' = 'a'</code></p>
+</li>
+<li>
+<p><code>'a' != 'b'</code></p>
+</li>
+<li>
+<p><code>0 &lt; 1</code></p>
+</li>
+<li>
+<p><code>1 &gt;= 1</code></p>
+</li>
+<li>
+<p><code>2 BETWEEN 1 AND 3</code></p>
+</li>
+<li>
+<p><code>'a' IN ('a', 'b')</code></p>
+</li>
 </ul>
 <p><code>@IF</code> can be used to modify any part of a SQL query. For example, this query conditionally includes <code>sensitive_col</code> in the query results:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-32-1">1</a></span>
@@ -2395,12 +2429,24 @@
 <p>If the column data types are known, the resulting query <code>CAST</code>s columns to their data type in the source table. Otherwise, the columns will be listed without any casting.</p>
 <p><code>@STAR</code> supports the following arguments, in this order:</p>
 <ul>
-<li><code>relation</code>: The relation/table whose columns are being selected</li>
-<li><code>alias</code> (optional): The alias of the relation (if it has one)</li>
-<li><code>exclude</code> (optional): A list of columns to exclude</li>
-<li><code>prefix</code> (optional): A string to use as a prefix for all selected column names</li>
-<li><code>suffix</code> (optional): A string to use as a suffix for all selected column names</li>
-<li><code>quote_identifiers</code> (optional): Whether to quote the resulting identifiers, defaults to true</li>
+<li>
+<p><code>relation</code>: The relation/table whose columns are being selected</p>
+</li>
+<li>
+<p><code>alias</code> (optional): The alias of the relation (if it has one)</p>
+</li>
+<li>
+<p><code>exclude</code> (optional): A list of columns to exclude</p>
+</li>
+<li>
+<p><code>prefix</code> (optional): A string to use as a prefix for all selected column names</p>
+</li>
+<li>
+<p><code>suffix</code> (optional): A string to use as a suffix for all selected column names</p>
+</li>
+<li>
+<p><code>quote_identifiers</code> (optional): Whether to quote the resulting identifiers, defaults to true</p>
+</li>
 </ul>
 <p><strong>NOTE</strong>: the <code>exclude</code> argument used to be named <code>except_</code>. The latter is still supported but we discourage its use because it will be deprecated in the future.</p>
 <p>Like all Vulcan macro functions, omitting an argument when calling <code>@STAR</code> requires passing subsequent arguments with their name and the special <code>:=</code> keyword operator. For example, we might omit the <code>alias</code> argument with <code>@STAR(foo, exclude := [c])</code>. Learn more about macro function arguments <a href="#positional-and-keyword-arguments">below</a>.</p>
@@ -2432,10 +2478,18 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Note these aspects of the rendered query:</p>
 <ul>
-<li>Each column is <code>CAST</code> to its data type in the table <code>foo</code> (e.g., <code>a</code> to <code>TEXT</code>)</li>
-<li>Each column selection uses the alias <code>bar</code> (e.g., <code>"bar"."a"</code>)</li>
-<li>Column <code>c</code> is not present because it was passed to <code>@STAR</code>'s <code>exclude</code> argument</li>
-<li>Each column alias is prefixed with <code>baz_</code> and suffixed with <code>_qux</code> (e.g., <code>"baz_a_qux"</code>)</li>
+<li>
+<p>Each column is <code>CAST</code> to its data type in the table <code>foo</code> (e.g., <code>a</code> to <code>TEXT</code>)</p>
+</li>
+<li>
+<p>Each column selection uses the alias <code>bar</code> (e.g., <code>"bar"."a"</code>)</p>
+</li>
+<li>
+<p>Column <code>c</code> is not present because it was passed to <code>@STAR</code>'s <code>exclude</code> argument</p>
+</li>
+<li>
+<p>Each column alias is prefixed with <code>baz_</code> and suffixed with <code>_qux</code> (e.g., <code>"baz_a_qux"</code>)</p>
+</li>
 </ul>
 <p>Now consider a more complex example that provides different prefixes to <code>a</code> and <code>b</code> than to <code>d</code> and includes an explicit column <code>my_column</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-45-1">1</a></span>
@@ -2463,9 +2517,15 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Note these aspects of the rendered query:</p>
 <ul>
-<li>Columns <code>a</code> and <code>b</code> have the prefix <code>"ab_pre_"</code> , while column <code>d</code> has the prefix <code>"d_pre_"</code></li>
-<li>Column <code>c</code> is not present because it was passed to the <code>exclude</code> argument in both <code>@STAR</code> calls</li>
-<li><code>my_column</code> is present in the query</li>
+<li>
+<p>Columns <code>a</code> and <code>b</code> have the prefix <code>"ab_pre_"</code> , while column <code>d</code> has the prefix <code>"d_pre_"</code></p>
+</li>
+<li>
+<p>Column <code>c</code> is not present because it was passed to the <code>exclude</code> argument in both <code>@STAR</code> calls</p>
+</li>
+<li>
+<p><code>my_column</code> is present in the query</p>
+</li>
 </ul>
 <h3 id="generate_surrogate_key"><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/GENERATE_SURROGATE_KEY" title="GitHub User: GENERATE_SURROGATE_KEY">@GENERATE_SURROGATE_KEY</a><a class="headerlink" href="#generate_surrogate_key" title="Link to this section">¶</a></h3>
 <p><code>@GENERATE_SURROGATE_KEY</code> generates a surrogate key from a set of columns. The surrogate key is a sequence of alphanumeric digits returned by a hash function, such as <a href="https://en.wikipedia.org/wiki/MD5"><code>MD5</code></a>, on the concatenated column values.</p>
@@ -2590,8 +2650,12 @@ would be rendered as:<p></p>
 <p>If the first argument is not a boolean condition, it's treated as the <code>UNION</code> "type": either <code>'DISTINCT'</code> (removing duplicated rows) or <code>'ALL'</code> (returning all rows). Subsequent arguments are the tables to be combined.</p>
 <p>Let's assume that:</p>
 <ul>
-<li><code>foo</code> is a table that contains three columns: <code>a</code> (<code>INT</code>), <code>b</code> (<code>TEXT</code>), <code>c</code> (<code>TEXT</code>)</li>
-<li><code>bar</code> is a table that contains three columns: <code>a</code> (<code>INT</code>), <code>b</code> (<code>INT</code>), <code>c</code> (<code>TEXT</code>)</li>
+<li>
+<p><code>foo</code> is a table that contains three columns: <code>a</code> (<code>INT</code>), <code>b</code> (<code>TEXT</code>), <code>c</code> (<code>TEXT</code>)</p>
+</li>
+<li>
+<p><code>bar</code> is a table that contains three columns: <code>a</code> (<code>INT</code>), <code>b</code> (<code>INT</code>), <code>c</code> (<code>TEXT</code>)</p>
+</li>
 </ul>
 <p>Then, the following expression:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-57-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1"></a><span class="o">@</span><span class="k">UNION</span><span class="p">(</span><span class="s1">'distinct'</span><span class="p">,</span><span class="w"> </span><span class="n">foo</span><span class="p">,</span><span class="w"> </span><span class="n">bar</span><span class="p">)</span>
@@ -2656,11 +2720,21 @@ would be rendered as:<p></p>
 <p><code>@HAVERSINE_DISTANCE</code> returns the <a href="https://en.wikipedia.org/wiki/Haversine_formula">haversine distance</a> between two geographic points.</p>
 <p>It supports the following arguments, in this order:</p>
 <ul>
-<li><code>lat1</code>: Latitude of the first point</li>
-<li><code>lon1</code>: Longitude of the first point</li>
-<li><code>lat2</code>: Latitude of the second point</li>
-<li><code>lon2</code>: Longitude of the second point</li>
-<li><code>unit</code> (optional): The measurement unit, currently only <code>'mi'</code> (miles, default) and <code>'km'</code> (kilometers) are supported</li>
+<li>
+<p><code>lat1</code>: Latitude of the first point</p>
+</li>
+<li>
+<p><code>lon1</code>: Longitude of the first point</p>
+</li>
+<li>
+<p><code>lat2</code>: Latitude of the second point</p>
+</li>
+<li>
+<p><code>lon2</code>: Longitude of the second point</p>
+</li>
+<li>
+<p><code>unit</code> (optional): The measurement unit, currently only <code>'mi'</code> (miles, default) and <code>'km'</code> (kilometers) are supported</p>
+</li>
 </ul>
 <p>Vulcan macro operators do not accept named arguments. For example, <code>@HAVERSINE_DISTANCE(lat1=lat_column)</code> will error.</p>
 <p>For example, the following query:</p>
@@ -2681,17 +2755,39 @@ would be rendered as:<p></p>
 <p><code>@PIVOT</code> returns a set of columns as a result of pivoting an input column on the specified values. This operation is sometimes described a pivoting from a "long" format (multiple values in a single column) to a "wide" format (one value in each of multiple columns).</p>
 <p>It supports the following arguments, in this order:</p>
 <ul>
-<li><code>column</code>: The column to pivot</li>
-<li><code>values</code>: The values to use for pivoting (one column is created for each value in <code>values</code>)</li>
-<li><code>alias</code> (optional): Whether to create aliases for the resulting columns, defaults to true</li>
-<li><code>agg</code> (optional): The aggregation function to use, defaults to <code>SUM</code></li>
-<li><code>cmp</code> (optional): The comparison operator to use for comparing the column values, defaults to <code>=</code></li>
-<li><code>prefix</code> (optional): A prefix to use for all aliases</li>
-<li><code>suffix</code> (optional): A suffix to use for all aliases</li>
-<li><code>then_value</code> (optional): The value to be used if the comparison succeeds, defaults to <code>1</code></li>
-<li><code>else_value</code> (optional): The value to be used if the comparison fails, defaults to <code>0</code></li>
-<li><code>quote</code> (optional): Whether to quote the resulting aliases, defaults to true</li>
-<li><code>distinct</code> (optional): Whether to apply a <code>DISTINCT</code> clause for the aggregation function, defaults to false</li>
+<li>
+<p><code>column</code>: The column to pivot</p>
+</li>
+<li>
+<p><code>values</code>: The values to use for pivoting (one column is created for each value in <code>values</code>)</p>
+</li>
+<li>
+<p><code>alias</code> (optional): Whether to create aliases for the resulting columns, defaults to true</p>
+</li>
+<li>
+<p><code>agg</code> (optional): The aggregation function to use, defaults to <code>SUM</code></p>
+</li>
+<li>
+<p><code>cmp</code> (optional): The comparison operator to use for comparing the column values, defaults to <code>=</code></p>
+</li>
+<li>
+<p><code>prefix</code> (optional): A prefix to use for all aliases</p>
+</li>
+<li>
+<p><code>suffix</code> (optional): A suffix to use for all aliases</p>
+</li>
+<li>
+<p><code>then_value</code> (optional): The value to be used if the comparison succeeds, defaults to <code>1</code></p>
+</li>
+<li>
+<p><code>else_value</code> (optional): The value to be used if the comparison fails, defaults to <code>0</code></p>
+</li>
+<li>
+<p><code>quote</code> (optional): Whether to quote the resulting aliases, defaults to true</p>
+</li>
+<li>
+<p><code>distinct</code> (optional): Whether to apply a <code>DISTINCT</code> clause for the aggregation function, defaults to false</p>
+</li>
 </ul>
 <p>Like all Vulcan macro functions, omitting an argument when calling <code>@PIVOT</code> requires passing subsequent arguments with their name and the special <code>:=</code> keyword operator. For example, we might omit the <code>agg</code> argument with <code>@PIVOT(status, ['cancelled', 'completed'], cmp := '&lt;')</code>. Learn more about macro function arguments <a href="#positional-and-keyword-arguments">below</a>.</p>
 <p>For example, the following query:</p>
@@ -2722,9 +2818,15 @@ would be rendered as:<p></p>
 <p><code>@DEDUPLICATE</code> is used to deduplicate rows in a table based on the specified partition and order columns with a window function.</p>
 <p>It supports the following arguments, in this order:</p>
 <ul>
-<li><code>relation</code>: The table or CTE name to deduplicate</li>
-<li><code>partition_by</code>: column names, or expressions to use to identify a window of rows out of which to select one as the deduplicated row</li>
-<li><code>order_by</code>: A list of strings representing the ORDER BY clause, optional - you can add nulls ordering like this: ['<column_name> desc nulls last']</column_name></li>
+<li>
+<p><code>relation</code>: The table or CTE name to deduplicate</p>
+</li>
+<li>
+<p><code>partition_by</code>: column names, or expressions to use to identify a window of rows out of which to select one as the deduplicated row</p>
+</li>
+<li>
+<p><code>order_by</code>: A list of strings representing the ORDER BY clause, optional - you can add nulls ordering like this: ['<column_name> desc nulls last']</column_name></p>
+</li>
 </ul>
 <p>For example, the following query:
 </p><div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-68-1">1</a></span>
@@ -2762,9 +2864,15 @@ would be rendered as:<p></p>
 <p><code>@DATE_SPINE</code> returns the SQL required to build a date spine. The spine will include the start_date (if it is aligned to the datepart), AND it will include the end_date. This is different from the <a href="https://github.com/dbt-labs/dbt-utils?tab=readme-ov-file#date_spine-source"><code>date_spine</code></a> macro in <code>dbt-utils</code> which will NOT include the end_date. It's typically used to join in unique, hard-coded, date ranges to with other tables/views, so people don't have to constantly adjust date ranges in <code>where</code> clauses across many SQL models.</p>
 <p>It supports the following arguments, in this order:</p>
 <ul>
-<li><code>datepart</code>: The datepart to use for the date spine - day, week, month, quarter, year</li>
-<li><code>start_date</code>: The start date for the date spine in format YYYY-MM-DD</li>
-<li><code>end_date</code>: The end date for the date spine in format YYYY-MM-DD</li>
+<li>
+<p><code>datepart</code>: The datepart to use for the date spine - day, week, month, quarter, year</p>
+</li>
+<li>
+<p><code>start_date</code>: The start date for the date spine in format YYYY-MM-DD</p>
+</li>
+<li>
+<p><code>end_date</code>: The end date for the date spine in format YYYY-MM-DD</p>
+</li>
 </ul>
 <p>For example, the following query:
 </p><div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-70-1">1</a></span>
@@ -2797,37 +2905,54 @@ would be rendered as:<p></p>
 </span><span id="__span-71-9"><a id="__codelineno-71-9" name="__codelineno-71-9"></a><span class="k">FROM</span><span class="w"> </span><span class="ss">"discount_promotion_dates"</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">"discount_promotion_dates"</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Note: This is DuckDB SQL and other dialects will be transpiled accordingly.
-- Recursive CTEs (common table expressions) will be used for <code>Redshift / MySQL / MSSQL</code>.
-- For <code>MSSQL</code> in particular, there's a recursion limit of approximately 100. If this becomes a problem, you can add an <code>OPTION (MAXRECURSION 0)</code> clause after the date spine macro logic to remove the limit. This applies for long date ranges.</p>
+- Recursive CTEs (common table expressions) will be used for <code>Redshift / MySQL / MSSQL</code>.</p>
+<ul>
+<li>For <code>MSSQL</code> in particular, there's a recursion limit of approximately 100. If this becomes a problem, you can add an <code>OPTION (MAXRECURSION 0)</code> clause after the date spine macro logic to remove the limit. This applies for long date ranges.</li>
+</ul>
 <h3 id="resolve_template"><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/RESOLVE_TEMPLATE" title="GitHub User: RESOLVE_TEMPLATE">@RESOLVE_TEMPLATE</a><a class="headerlink" href="#resolve_template" title="Link to this section">¶</a></h3>
 <p><code>@resolve_template</code> is a helper macro intended to be used in situations where you need to gain access to the <em>components</em> of the physical object name. It's intended for use in the following situations:</p>
 <ul>
-<li>Providing explicit control over table locations on a per-model basis for engines that decouple storage and compute (such as Athena, Trino, Spark etc)</li>
-<li>Generating references to engine-specific metadata tables that are derived from the physical table name, such as the <a href="https://trino.io/docs/current/connector/iceberg.html#metadata-tables"><code>&lt;table&gt;$properties</code></a> metadata table in Trino.</li>
+<li>
+<p>Providing explicit control over table locations on a per-model basis for engines that decouple storage and compute (such as Athena, Trino, Spark etc)</p>
+</li>
+<li>
+<p>Generating references to engine-specific metadata tables that are derived from the physical table name, such as the <a href="https://trino.io/docs/current/connector/iceberg.html#metadata-tables"><code>&lt;table&gt;$properties</code></a> metadata table in Trino.</p>
+</li>
 </ul>
 <p>Under the hood, it uses the <code>@this_model</code> variable so it can only be used during the <code>creating</code> and <code>evaluation</code> <a href="../variables/#runtime-variables">runtime stages</a>. Attempting to use it at the <code>loading</code> runtime stage will result in a no-op.</p>
 <p>The <code>@resolve_template</code> macro supports the following arguments:</p>
 <ul>
-<li><code>template</code> - The string template to render into an AST node</li>
-<li><code>mode</code> - What type of SQLGlot AST node to return after rendering the template. Valid values are <code>literal</code> or <code>table</code>. Defaults to <code>literal</code>.</li>
+<li>
+<p><code>template</code> - The string template to render into an AST node</p>
+</li>
+<li>
+<p><code>mode</code> - What type of SQLGlot AST node to return after rendering the template. Valid values are <code>literal</code> or <code>table</code>. Defaults to <code>literal</code>.</p>
+</li>
 </ul>
 <p>The <code>template</code> can contain the following placeholders that will be substituted:</p>
 <ul>
-<li><code>@{catalog_name}</code> - The name of the catalog, eg <code>datalake</code></li>
-<li><code>@{schema_name}</code> - The name of the physical schema that Vulcan is using for the model version table, eg <code>vulcan__landing</code></li>
-<li><code>@{table_name}</code> - The name of the physical table that Vulcan is using for the model version, eg <code>landing__customers__2517971505</code></li>
+<li>
+<p><code>@{catalog_name}</code> - The name of the catalog, eg <code>datalake</code></p>
+</li>
+<li>
+<p><code>@{schema_name}</code> - The name of the physical schema that Vulcan is using for the model version table, eg <code>vulcan__landing</code></p>
+</li>
+<li>
+<p><code>@{table_name}</code> - The name of the physical table that Vulcan is using for the model version, eg <code>landing__customers__2517971505</code></p>
+</li>
 </ul>
 <p>Note the use of the curly brace syntax <code>@{}</code> in the template placeholders - learn more <a href="#embedding-variables-in-strings">above</a>.</p>
 <p>The <code>@resolve_template</code> macro can be used in a <code>MODEL</code> block:</p>
-<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-72-1">1</a></span>
-<span class="normal"><a href="#__codelineno-72-2">2</a></span>
-<span class="normal"><a href="#__codelineno-72-3">3</a></span>
-<span class="normal"><a href="#__codelineno-72-4">4</a></span>
-<span class="normal"><a href="#__codelineno-72-5">5</a></span>
-<span class="normal"><a href="#__codelineno-72-6">6</a></span>
-<span class="normal"><a href="#__codelineno-72-7">7</a></span>
-<span class="normal"><a href="#__codelineno-72-8">8</a></span>
-<span class="normal"><a href="#__codelineno-72-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-72-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-72-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-72-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-72-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-72-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-72-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-72-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-72-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-72-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-72-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-72-2"><a id="__codelineno-72-2" name="__codelineno-72-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">datalake</span><span class="p">.</span><span class="n">landing</span><span class="p">.</span><span class="n">customers</span><span class="p">,</span>
 </span><span id="__span-72-3"><a id="__codelineno-72-3" name="__codelineno-72-3"></a><span class="w">  </span><span class="p">...</span>
 </span><span id="__span-72-4"><a id="__codelineno-72-4" name="__codelineno-72-4"></a><span class="w">  </span><span class="n">physical_properties</span><span class="w"> </span><span class="p">(</span>
@@ -2835,7 +2960,8 @@ would be rendered as:<p></p>
 </span></span><span id="__span-72-6"><a id="__codelineno-72-6" name="__codelineno-72-6"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-72-7"><a id="__codelineno-72-7" name="__codelineno-72-7"></a><span class="p">);</span>
 </span><span id="__span-72-8"><a id="__codelineno-72-8" name="__codelineno-72-8"></a><span class="c1">-- CREATE TABLE "datalake"."vulcan__landing"."landing__customers__2517971505" ...</span>
-</span><span id="__span-72-9"><a id="__codelineno-72-9" name="__codelineno-72-9"></a><span class="c1">-- WITH (location = 's3://warehouse-data/datalake/prod/vulcan__landing/landing__customers__2517971505')</span>
+</span><span id="__span-72-9"><a id="__codelineno-72-9" name="__codelineno-72-9"></a>
+</span><span id="__span-72-10"><a id="__codelineno-72-10" name="__codelineno-72-10"></a><span class="c1">-- WITH (location = 's3://warehouse-data/datalake/prod/vulcan__landing/landing__customers__2517971505')</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>And also within a query, using <code>mode := 'table'</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-73-1">1</a></span>
@@ -2861,13 +2987,27 @@ would be rendered as:<p></p>
 <h3 id="sql-clause-operators">SQL clause operators<a class="headerlink" href="#sql-clause-operators" title="Link to this section">¶</a></h3>
 <p>Vulcan's macro system has six operators that correspond to different clauses in SQL syntax. They are:</p>
 <ul>
-<li><code>@WITH</code>: common table expression <code>WITH</code> clause</li>
-<li><code>@JOIN</code>: table <code>JOIN</code> clause(s)</li>
-<li><code>@WHERE</code>: filtering <code>WHERE</code> clause</li>
-<li><code>@GROUP_BY</code>: grouping <code>GROUP BY</code> clause</li>
-<li><code>@HAVING</code>: group by filtering <code>HAVING</code> clause</li>
-<li><code>@ORDER_BY</code>: ordering <code>ORDER BY</code> clause</li>
-<li><code>@LIMIT</code>: limiting <code>LIMIT</code> clause</li>
+<li>
+<p><code>@WITH</code>: common table expression <code>WITH</code> clause</p>
+</li>
+<li>
+<p><code>@JOIN</code>: table <code>JOIN</code> clause(s)</p>
+</li>
+<li>
+<p><code>@WHERE</code>: filtering <code>WHERE</code> clause</p>
+</li>
+<li>
+<p><code>@GROUP_BY</code>: grouping <code>GROUP BY</code> clause</p>
+</li>
+<li>
+<p><code>@HAVING</code>: group by filtering <code>HAVING</code> clause</p>
+</li>
+<li>
+<p><code>@ORDER_BY</code>: ordering <code>ORDER BY</code> clause</p>
+</li>
+<li>
+<p><code>@LIMIT</code>: limiting <code>LIMIT</code> clause</p>
+</li>
 </ul>
 <p>Each of these operators is used to dynamically add the code for its corresponding clause to a model's SQL query.</p>
 <h4 id="how-sql-clause-operators-work">How SQL clause operators work<a class="headerlink" href="#how-sql-clause-operators-work" title="Link to this section">¶</a></h4>
@@ -3123,8 +3263,12 @@ would be rendered as:<p></p>
 <p>Macro functions let you write reusable logic that you can call from multiple models. Instead of copying the same code everywhere, you define it once and reuse it.</p>
 <p>Vulcan supports macro functions in two languages:</p>
 <ul>
-<li><strong>SQL functions</strong> use the <a href="../jinja/#user-defined-macro-functions">Jinja templating system</a></li>
-<li><strong>Python functions</strong> use SQLGlot and give you way more power, you can do complex operations that go beyond what variables and operators can handle alone</li>
+<li>
+<p><strong>SQL functions</strong> use the <a href="../jinja/#user-defined-macro-functions">Jinja templating system</a></p>
+</li>
+<li>
+<p><strong>Python functions</strong> use SQLGlot and give you way more power, you can do complex operations that go beyond what variables and operators can handle alone</p>
+</li>
 </ul>
 <h3 id="python-macro-functions">Python macro functions<a class="headerlink" href="#python-macro-functions" title="Link to this section">¶</a></h3>
 <h4 id="setup">Setup<a class="headerlink" href="#setup" title="Link to this section">¶</a></h4>
@@ -3260,9 +3404,15 @@ would be rendered as:<p></p>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This macro can be called with one or more arguments. For example:</p>
 <ul>
-<li><code>@add_args(1)</code> returns 1</li>
-<li><code>@add_args(1, 2)</code> returns 3</li>
-<li><code>@add_args(1, 2, 3)</code> returns 6</li>
+<li>
+<p><code>@add_args(1)</code> returns 1</p>
+</li>
+<li>
+<p><code>@add_args(1, 2)</code> returns 3</p>
+</li>
+<li>
+<p><code>@add_args(1, 2, 3)</code> returns 6</p>
+</li>
 </ul>
 <h4 id="returning-more-than-one-value">Returning more than one value<a class="headerlink" href="#returning-more-than-one-value" title="Link to this section">¶</a></h4>
 <p>Macro functions are a convenient way to tidy model code by creating multiple outputs from one function call. Python macro functions do this by returning a list of strings or SQLGlot expressions.</p>
@@ -3273,9 +3423,15 @@ would be rendered as:<p></p>
 <li>
 <p>Each of its entries will be parsed by SQLGlot. Different inputs are parsed into different SQLGlot expressions:</p>
 <ul>
-<li>Numbers are parsed into <a href="https://sqlglot.com/sqlglot/expressions.html#Literal"><code>Literal</code> expressions</a></li>
-<li>Quoted strings are parsed into <a href="https://sqlglot.com/sqlglot/expressions.html#Literal"><code>Literal</code> expressions</a></li>
-<li>Unquoted strings are parsed into <a href="https://sqlglot.com/sqlglot/expressions.html#Column"><code>Column</code> expressions</a></li>
+<li>
+<p>Numbers are parsed into <a href="https://sqlglot.com/sqlglot/expressions.html#Literal"><code>Literal</code> expressions</a></p>
+</li>
+<li>
+<p>Quoted strings are parsed into <a href="https://sqlglot.com/sqlglot/expressions.html#Literal"><code>Literal</code> expressions</a></p>
+</li>
+<li>
+<p>Unquoted strings are parsed into <a href="https://sqlglot.com/sqlglot/expressions.html#Column"><code>Column</code> expressions</a></p>
+</li>
 </ul>
 </li>
 <li>
@@ -3401,8 +3557,12 @@ would be rendered as:<p></p>
 <li>
 <p>The <em>fully qualified</em> name</p>
 <ul>
-<li>If the model name is of the form <code>schema.table</code>, Vulcan determines the correct catalog and adds it, like <code>catalog.schema.table</code></li>
-<li>Vulcan quotes each component of the name using the SQL engine's quoting and case-sensitivity rules, like <code>"catalog"."schema"."table"</code></li>
+<li>
+<p>If the model name is of the form <code>schema.table</code>, Vulcan determines the correct catalog and adds it, like <code>catalog.schema.table</code></p>
+</li>
+<li>
+<p>Vulcan quotes each component of the name using the SQL engine's quoting and case-sensitivity rules, like <code>"catalog"."schema"."table"</code></p>
+</li>
 </ul>
 </li>
 <li>
@@ -3444,10 +3604,18 @@ would be rendered as:<p></p>
 <li>
 <p><code>promoting</code> runtime stage: <code>this_model</code> resolves to the virtual layer view name</p>
 <ul>
-<li>Example<ul>
-<li>Model name is <code>db.test_model</code></li>
-<li><code>plan</code> is running in the <code>dev</code> environment</li>
-<li><code>this_model</code> resolves to <code>"catalog"."db__dev"."test_model"</code> (note the <code>__dev</code> suffix in the schema name)</li>
+<li>
+<p>Example</p>
+<ul>
+<li>
+<p>Model name is <code>db.test_model</code></p>
+</li>
+<li>
+<p><code>plan</code> is running in the <code>dev</code> environment</p>
+</li>
+<li>
+<p><code>this_model</code> resolves to <code>"catalog"."db__dev"."test_model"</code> (note the <code>__dev</code> suffix in the schema name)</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -3455,10 +3623,18 @@ would be rendered as:<p></p>
 <li>
 <p>All other runtime stages: <code>this_model</code> resolves to the physical table name</p>
 <ul>
-<li>Example<ul>
-<li>Model name is <code>db.test_model</code></li>
-<li><code>plan</code> is running in any environment</li>
-<li><code>this_model</code> resolves to <code>"catalog"."vulcan__project"."project__test_model__684351896"</code></li>
+<li>
+<p>Example</p>
+<ul>
+<li>
+<p>Model name is <code>db.test_model</code></p>
+</li>
+<li>
+<p><code>plan</code> is running in any environment</p>
+</li>
+<li>
+<p><code>this_model</code> resolves to <code>"catalog"."vulcan__project"."project__test_model__684351896"</code></p>
+</li>
 </ul>
 </li>
 </ul>
@@ -3547,9 +3723,15 @@ would be rendered as:<p></p>
 <p>Note that <code>columns_to_types</code> expects an <em>unquoted model name</em>, such as <code>schema.parent</code>. Since macro arguments without type annotations are SQLGlot expressions, the macro code must extract meaningful information from them. For instance, the lookup key in the above macro definition is extracted by generating the SQL code for <code>model_name</code> using the <code>sql()</code> method.</p>
 <p>Accessing the schema of an upstream model can be useful for various reasons. For example:</p>
 <ul>
-<li>Renaming columns so that downstream consumers are not tightly coupled to external or source tables</li>
-<li>Selecting only a subset of columns that satisfy some criteria (e.g. columns whose names start with a specific prefix)</li>
-<li>Applying transformations to columns, such as masking PII or computing various statistics based on the column types</li>
+<li>
+<p>Renaming columns so that downstream consumers are not tightly coupled to external or source tables</p>
+</li>
+<li>
+<p>Selecting only a subset of columns that satisfy some criteria (e.g. columns whose names start with a specific prefix)</p>
+</li>
+<li>
+<p>Applying transformations to columns, such as masking PII or computing various statistics based on the column types</p>
+</li>
 </ul>
 <p>Thus, leveraging <code>columns_to_types</code> can also enable one to write code according to the <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a> principle, as a single macro function can implement the transformations instead of creating a different macro for each model of interest.</p>
 <p>Note: there may be models whose schema is not available when the project is being loaded, in which case a special placeholder column will be returned, aptly named: <code>__schema_unavailable_at_load__</code>. In some cases, the macro's implementation will need to account for this placeholder in order to avoid issues due to the schema being unavailable.</p>
@@ -3697,23 +3879,51 @@ would be rendered as:<p></p>
 <h4 id="supported-types">Supported Types<a class="headerlink" href="#supported-types" title="Link to this section">¶</a></h4>
 <p>Vulcan supports common Python types for typed macros including:</p>
 <ul>
-<li><code>str</code> -- This handles string literals and basic identifiers, but won't coerce anything more complicated.</li>
-<li><code>int</code></li>
-<li><code>float</code></li>
-<li><code>bool</code></li>
-<li><code>datetime.datetime</code></li>
-<li><code>datetime.date</code></li>
-<li><code>SQL</code> -- When you want the SQL string representation of the argument that's passed in</li>
-<li><code>list[T]</code> - where <code>T</code> is any supported type including sqlglot expressions</li>
-<li><code>tuple[T]</code> - where <code>T</code> is any supported type including sqlglot expressions</li>
-<li><code>T1 | T2 | ...</code> - where <code>T1</code>, <code>T2</code>, etc. are any supported types including sqlglot expressions</li>
+<li>
+<p><code>str</code> -- This handles string literals and basic identifiers, but won't coerce anything more complicated.</p>
+</li>
+<li>
+<p><code>int</code></p>
+</li>
+<li>
+<p><code>float</code></p>
+</li>
+<li>
+<p><code>bool</code></p>
+</li>
+<li>
+<p><code>datetime.datetime</code></p>
+</li>
+<li>
+<p><code>datetime.date</code></p>
+</li>
+<li>
+<p><code>SQL</code> -- When you want the SQL string representation of the argument that's passed in</p>
+</li>
+<li>
+<p><code>list[T]</code> - where <code>T</code> is any supported type including sqlglot expressions</p>
+</li>
+<li>
+<p><code>tuple[T]</code> - where <code>T</code> is any supported type including sqlglot expressions</p>
+</li>
+<li>
+<p><code>T1 | T2 | ...</code> - where <code>T1</code>, <code>T2</code>, etc. are any supported types including sqlglot expressions</p>
+</li>
 </ul>
 <p>We also support SQLGlot expressions as type hints, allowing you to ensure inputs are coerced to the desired SQL AST node your intending on working with. Some useful examples include:</p>
 <ul>
-<li><code>exp.Table</code></li>
-<li><code>exp.Column</code></li>
-<li><code>exp.Literal</code></li>
-<li><code>exp.Identifier</code></li>
+<li>
+<p><code>exp.Table</code></p>
+</li>
+<li>
+<p><code>exp.Column</code></p>
+</li>
+<li>
+<p><code>exp.Literal</code></p>
+</li>
+<li>
+<p><code>exp.Identifier</code></p>
+</li>
 </ul>
 <p>While these might be obvious examples, you can effectively coerce an input into <em>any</em> SQLGlot expression type, which can be useful for more complex macros. When coercing to more complex types, you will almost certainly need to pass a string literal since expression to expression coercion is limited. When a string literal is passed to a macro that hints at a SQLGlot expression, the string will be parsed using SQLGlot and coerced to the correct type. Failure to coerce to the correct type will result in the original expression being passed to the macro and a warning being logged for the user to address as-needed.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-132-1">1</a></span>
@@ -3847,8 +4057,8 @@ would be rendered as:<p></p>
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

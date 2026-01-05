@@ -8,9 +8,9 @@
 <link href="../../properties/" rel="prev"/>
 <link href="../python_models/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>SQL - DataOS Vulcan</title>
-<link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1268,10 +1268,10 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="sql">SQL<a class="headerlink" href="#sql" title="Link to this section">¶</a></h1>
-<p>SQL models are Vulcan's bread and butter, they're the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.</p>
-<p><strong>Why SQL models?</strong> They're simple, powerful, and work with any SQL database. Most of your data transformations will probably be SQL models.</p>
+<p>SQL models are the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.</p>
+<p>SQL models are simple, powerful, and work with any SQL database. Most of your data transformations will be SQL models.</p>
 <h2 id="sql-based-definition">SQL-Based Definition<a class="headerlink" href="#sql-based-definition" title="Link to this section">¶</a></h2>
-<p>SQL-based models are the most common type. They're designed to feel like regular SQL, but with superpowers.</p>
+<p>SQL-based models are the most common type. They use regular SQL with additional Vulcan features.</p>
 <p><strong>Structure:</strong> A SQL model file has these parts (in order):</p>
 <ol>
 <li>The <code>MODEL</code> DDL (metadata and configuration)</li>
@@ -1327,13 +1327,17 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="model-ddl"><code>MODEL</code> DDL<a class="headerlink" href="#model-ddl" title="Link to this section">¶</a></h3>
 <p>The <code>MODEL</code> DDL is where you define your model's metadata, name, kind, schedule, owner, and more. It must be the first statement in your SQL file.</p>
-<p>Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the <a href="../../overview/#model-properties">Model Properties</a> documentation.</p>
+<p>The <code>MODEL</code> DDL tells Vulcan everything it needs to know about your model. For a complete list of all available properties, see the <a href="../../properties/">Model Properties</a> documentation.</p>
 <h3 id="optional-prepost-statements">Optional Pre/Post-Statements<a class="headerlink" href="#optional-prepost-statements" title="Link to this section">¶</a></h3>
-<p>Pre-statements run before your query, post-statements run after. They're perfect for setup, cleanup, and optimization tasks.</p>
+<p>Pre-statements run before your query, post-statements run after. Use them for setup, cleanup, and optimization tasks.</p>
 <p><strong>Common use cases:</strong></p>
 <ul>
-<li>Pre-statements: Set session parameters, load UDFs, cache tables</li>
-<li>Post-statements: Create indexes, run data quality checks, set retention policies</li>
+<li>
+<p>Pre-statements: Set session parameters, load UDFs, cache tables</p>
+</li>
+<li>
+<p>Post-statements: Create indexes, run data quality checks, set retention policies</p>
+</li>
 </ul>
 <p><strong>Important:</strong> Pre/post-statements must end with semicolons. If you have post-statements, your main query must also end with a semicolon (so Vulcan knows where the query ends).</p>
 <div class="admonition warning">
@@ -1466,8 +1470,12 @@
 <h3 id="the-model-query">The Model Query<a class="headerlink" href="#the-model-query" title="Link to this section">¶</a></h3>
 <p>Your model must contain a standalone query. This can be:</p>
 <ul>
-<li>A single <code>SELECT</code> statement</li>
-<li>Multiple <code>SELECT</code> statements combined with <code>UNION</code>, <code>INTERSECT</code>, or <code>EXCEPT</code></li>
+<li>
+<p>A single <code>SELECT</code> statement</p>
+</li>
+<li>
+<p>Multiple <code>SELECT</code> statements combined with <code>UNION</code>, <code>INTERSECT</code>, or <code>EXCEPT</code></p>
+</li>
 </ul>
 <p>The result of this query becomes your model's table or view data. Pretty straightforward!</p>
 <h3 id="sql-model-blueprinting">SQL Model Blueprinting<a class="headerlink" href="#sql-model-blueprinting" title="Link to this section">¶</a></h3>
@@ -1612,9 +1620,15 @@
 <h2 id="python-based-definition">Python-Based Definition<a class="headerlink" href="#python-based-definition" title="Link to this section">¶</a></h2>
 <p>You can also define SQL models using Python! This is useful when:</p>
 <ul>
-<li>Your query is too complex for clean SQL</li>
-<li>You need heavy dynamic logic (would require lots of macros)</li>
-<li>You want to generate SQL programmatically</li>
+<li>
+<p>Your query is too complex for clean SQL</p>
+</li>
+<li>
+<p>You need heavy dynamic logic (would require lots of macros)</p>
+</li>
+<li>
+<p>You want to generate SQL programmatically</p>
+</li>
 </ul>
 <p><strong>How it works:</strong> You write Python code that generates SQL, and Vulcan executes it. You still get SQL models (they run SQL queries), but you write them in Python.</p>
 <p>For the complete guide on Python-based SQL models, including the <code>@model</code> decorator, execution context, and examples, see the <a href="../python_models/">Python Models</a> page.</p>
@@ -1723,8 +1737,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

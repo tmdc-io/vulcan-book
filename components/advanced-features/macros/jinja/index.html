@@ -8,9 +8,9 @@
 <link href="../built_in/" rel="prev"/>
 <link href="../../signals/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Jinja - DataOS Vulcan</title>
-<link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -219,7 +219,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1214,7 +1214,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="jinja">Jinja<a class="headerlink" href="#jinja" title="Link to this section">¶</a></h1>
-<p>Vulcan supports macros from the <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a> templating system. If you're already familiar with Jinja (maybe from dbt or other tools), you'll feel right at home here.</p>
+<p>Vulcan supports macros from the <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a> templating system. If you're already familiar with Jinja (maybe from dbt or other tools), you can use it here.</p>
 <p>Jinja works differently than Vulcan's native macros. While Vulcan macros understand the semantic structure of your SQL, Jinja macros are pure string substitution, they assemble SQL text by replacing placeholders, without building a semantic representation of the query.</p>
 <div class="admonition note">
 <p class="admonition-title">dbt compatibility</p>
@@ -1223,9 +1223,15 @@
 <h2 id="the-basics">The basics<a class="headerlink" href="#the-basics" title="Link to this section">¶</a></h2>
 <p>Jinja uses curly braces <code>{}</code> to mark macro code. The second character after the opening brace tells Jinja what to do:</p>
 <ul>
-<li><code>{{...}}</code> - <strong>Expressions</strong>: These get replaced with values in your rendered SQL. Use them for variables and function calls.</li>
-<li><code>{%...%}</code> - <strong>Statements</strong>: These control flow and logic. Use them for <code>if</code> statements, <code>for</code> loops, and setting variables.</li>
-<li><code>{#...#}</code> - <strong>Comments</strong>: These are stripped out and won't appear in your final SQL.</li>
+<li>
+<p><code>{{...}}</code> - <strong>Expressions</strong>: These get replaced with values in your rendered SQL. Use them for variables and function calls.</p>
+</li>
+<li>
+<p><code>{%...%}</code> - <strong>Statements</strong>: These control flow and logic. Use them for <code>if</code> statements, <code>for</code> loops, and setting variables.</p>
+</li>
+<li>
+<p><code>{#...#}</code> - <strong>Comments</strong>: These are stripped out and won't appear in your final SQL.</p>
+</li>
 </ul>
 <p>Since Jinja syntax isn't valid SQL, you need to wrap your Jinja queries in special blocks so Vulcan knows to process them. For queries, use <code>JINJA_QUERY_BEGIN; ...; JINJA_END;</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
@@ -1434,10 +1440,18 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>A few things to notice:</p>
 <ul>
-<li>The values in the list are quoted: <code>['car', 'truck', 'bus']</code></li>
-<li>When you use <code>{{ vehicle_type }}</code> in the <code>CASE WHEN</code>, you need quotes around it: <code>'{{ vehicle_type }}'</code></li>
-<li>When you use it in an identifier name like <code>vehicle_{{ vehicle_type }}</code>, no quotes needed</li>
-<li>There's a trailing comma after the <code>CASE WHEN</code> line, Vulcan's semantic understanding will remove it automatically</li>
+<li>
+<p>The values in the list are quoted: <code>['car', 'truck', 'bus']</code></p>
+</li>
+<li>
+<p>When you use <code>{{ vehicle_type }}</code> in the <code>CASE WHEN</code>, you need quotes around it: <code>'{{ vehicle_type }}'</code></p>
+</li>
+<li>
+<p>When you use it in an identifier name like <code>vehicle_{{ vehicle_type }}</code>, no quotes needed</p>
+</li>
+<li>
+<p>There's a trailing comma after the <code>CASE WHEN</code> line, Vulcan's semantic understanding will remove it automatically</p>
+</li>
 </ul>
 <p>This renders to:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
@@ -1651,8 +1665,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });

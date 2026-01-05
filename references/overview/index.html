@@ -6,9 +6,9 @@
 <meta content="DataOS Vulcan Team" name="author"/>
 <link href="https://tmdc-io.github.io/vulcan-docs/references/overview/" rel="canonical"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Overview - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -217,7 +217,7 @@
 <span class="md-ellipsis">
     
   
-    Model defaults
+    Model Defaults
   
 
     
@@ -1008,46 +1008,45 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h1>
-<p>This page provides a conceptual overview of what Vulcan does and how its components fit together.</p>
+<p>This page explains what Vulcan does and how its components work together.</p>
 <h2 id="what-vulcan-is">What Vulcan is<a class="headerlink" href="#what-vulcan-is" title="Link to this section">¶</a></h2>
-<p>Vulcan is a Python framework that automates everything needed to run a scalable data transformation platform. Vulcan works with a variety of execution engines.</p>
-<p>It was created with a focus on both data and organizational scale and works regardless of your data warehouse or SQL engine's capabilities.</p>
-<p>You can use Vulcan with the <a href="../reference/cli.md">CLI</a>.</p>
+<p>Vulcan is a Python framework that automates data transformation workflows. It works with multiple execution engines and scales with your data and organization size.</p>
+<p>You control Vulcan through the <a href="../../getting_started/cli.md">CLI</a>.</p>
 <h2 id="how-vulcan-works">How Vulcan works<a class="headerlink" href="#how-vulcan-works" title="Link to this section">¶</a></h2>
 <h3 id="create-models">Create models<a class="headerlink" href="#create-models" title="Link to this section">¶</a></h3>
-<p>You begin by writing your business logic in SQL or Python. A model consists of code that populates a single table or view, along with metadata properties such as the model's name.</p>
+<p>You write business logic in SQL or Python. Each model contains code that populates a single table or view, plus metadata like the model name.</p>
 <h3 id="make-a-plan">Make a plan<a class="headerlink" href="#make-a-plan" title="Link to this section">¶</a></h3>
-<p>Creating new models or changing existing models can have dramatic downstream effects in large data systems. Complex interdependencies between models make it challenging to determine the implications of changes to even a single model.</p>
-<p>Beyond understanding the logical implications of a change, you also need to understand the computations required to implement the change <em>before</em> you expend the time and resources to actually perform the computations.</p>
-<p>Vulcan automatically identifies all affected models and the computations a change entails by creating a "Vulcan plan." When you execute the <a href="../reference/cli.md#plan"><code>plan</code> command</a>, Vulcan generates the plan <em>for the environment specified in the command</em> (e.g., dev, test, prod).</p>
-<p>The plan conveys the full scope of a change's effects in the environment by automatically identifying both directly and indirectly-impacted models. This gives a holistic view of all impacts a change will have.</p>
+<p>Changing models in large data systems affects downstream dependencies. Interdependencies make it hard to see the full impact of a single model change.</p>
+<p>You need to understand both the logical impact and the computational cost before running the changes.</p>
+<p>Vulcan creates a plan that identifies all affected models and required computations. When you run <a href="../../getting_started/cli.md#plan"><code>vulcan plan</code></a>, Vulcan generates the plan for the environment you specify (dev, test, prod).</p>
+<p>The plan shows the full scope of changes by identifying directly and indirectly affected models. You see all impacts before applying changes.</p>
 <p>Learn more about <a href="../plans/">plans</a>.</p>
 <h4 id="apply-the-plan">Apply the plan<a class="headerlink" href="#apply-the-plan" title="Link to this section">¶</a></h4>
-<p>After using <a href="../reference/cli.md#plan"><code>plan</code></a> to understand the impacts of a change in an environment, Vulcan offers to execute the computations by <a href="../plans/#plan-application"><code>apply</code></a>ing the plan. However, you must provide additional information that determines the scope of what computations are executed.</p>
-<p>The computations needed to apply a Vulcan plan are determined by both the code changes reflected in the plan and the backfill parameters you specify.</p>
-<p>"Backfilling" is the process of updating existing data to align with your changed models. For example, if your model change alters a calculation, then all existing data based on the old calculation method will be inaccurate once the new model is deployed. Backfilling entails re-calculating the existing fields whose calculation method has now changed.</p>
-<p>Most business data is temporal — each data fact was collected at a specific moment in time. The scale of backfill computations is directly tied to how much historical data must be re-calculated.</p>
-<p>The Vulcan plan automatically determines which models and dates require backfill due to your changes. Based on this information, you specify the dates for which backfills will occur before you apply the plan.</p>
+<p>After reviewing a plan, you apply it to execute the computations. You specify the scope of computations to run.</p>
+<p>The computations depend on both the code changes in the plan and the backfill parameters you set.</p>
+<p>Backfilling updates existing data to match your changed models. If a model change alters a calculation, existing data becomes inaccurate. Backfilling recalculates those fields.</p>
+<p>Most business data is temporal. Each data point has a timestamp. Backfill cost depends on how much historical data needs recalculation.</p>
+<p>The plan identifies which models and dates need backfill. You specify the date ranges for backfill before applying the plan.</p>
 <h4 id="build-a-virtual-environment">Build a Virtual Environment<a class="headerlink" href="#build-a-virtual-environment" title="Link to this section">¶</a></h4>
-<p>Development activities for complex data systems should occur in a non-production environment so that errors can be detected before being deployed in production systems.</p>
-<p>One challenge with using multiple data environments is that backfill and other computations must happen twice — once for the non-production, and again for the production environment. This process consumes time and computing resources, resulting in delays and extra costs.</p>
-<p>Vulcan solves this problem by maintaining a record of all model versions and their changes. It uses this record to determine when computations executed in a non-production environment generate outputs identical to what they would generate in the production environment.</p>
-<p>Vulcan uses its knowledge of equivalent outputs to create a <strong>Virtual Environment</strong>. It does this by replacing references to outdated tables in the production environment with references to newly computed tables in the non-production environment. It effectively promotes views and tables from non-production to production, but <em>without computation or data movement</em>.</p>
-<p>Because Vulcan uses virtual environments instead of re-computing everything in the production environment, promoting changes to production is quick and has no downtime.</p>
+<p>Test changes in non-production environments before deploying to production.</p>
+<p>Using multiple environments usually means running backfills twice: once in non-production, again in production. This doubles time and compute costs.</p>
+<p>Vulcan tracks all model versions and changes. It detects when non-production computations produce identical outputs to production.</p>
+<p>Vulcan creates a Virtual Environment by replacing references to outdated production tables with references to newly computed non-production tables. It promotes views and tables from non-production to production without recomputation or data movement.</p>
+<p>Promoting changes to production is fast and has no downtime.</p>
 <h2 id="test-your-code-and-data">Test your code and data<a class="headerlink" href="#test-your-code-and-data" title="Link to this section">¶</a></h2>
-<p>Bad data is worse than no data. The best way to keep bad data out of your system is by testing your transformation code and results.</p>
-<h3 id="tests"><a href="./tests.md">Tests</a><a class="headerlink" href="#tests" title="Link to this section">¶</a></h3>
-<p>Vulcan "tests" are similar to unit tests in software development, where the unit is a single model. Vulcan tests validate model <em>code</em> — you specify the input data and expected output, then Vulcan runs the test and compares the expected and actual output.</p>
-<p>Vulcan automatically runs tests when you apply a <code>plan</code>, or you can run them on demand with the <a href="../reference/cli.md#test"><code>test</code> command</a>.</p>
-<h3 id="audits"><a href="./audits.md">Audits</a><a class="headerlink" href="#audits" title="Link to this section">¶</a></h3>
-<p>In contrast to tests, Vulcan "audits" validate the results of model code applied to your actual data.</p>
-<p>You create audits by writing SQL queries that should return 0 rows. For example, an audit query to ensure <code>your_field</code> has no <code>NULL</code> values would include <code>WHERE your_field IS NULL</code>. If any NULLs are detected, the query will return at least one row and the audit will fail.</p>
-<p>Audits are flexible — they can be tied to a specific model's contents, or you can use <a href="./macros/overview.md">macros</a> to create audits that are usable by multiple models. Vulcan also includes pre-made audits for common use cases, such as detecting NULL or duplicated values.</p>
-<p>You specify which audits should run for a model by including them in the model's metadata properties. To apply them globally across your project, include them in the model defaults configuration.</p>
-<p>Vulcan automatically runs audits when you apply a <code>plan</code> to an environment, or you can run them on demand with the <a href="../reference/cli.md#audit"><code>audit</code> command</a>.</p>
+<p>Bad data causes more problems than missing data. Test your transformation code and results to prevent bad data.</p>
+<h3 id="tests">Tests<a class="headerlink" href="#tests" title="Link to this section">¶</a></h3>
+<p>Vulcan tests work like unit tests, where each model is a unit. Tests validate model code. You specify input data and expected output. Vulcan runs the test and compares expected and actual output.</p>
+<p>Vulcan runs tests automatically when you apply a plan. You can also run them with <a href="../../getting_started/cli.md#test"><code>vulcan test</code></a>.</p>
+<h3 id="audits">Audits<a class="headerlink" href="#audits" title="Link to this section">¶</a></h3>
+<p>Audits validate the results of model code applied to your actual data.</p>
+<p>You write SQL queries that should return 0 rows. For example, to ensure <code>your_field</code> has no NULL values, include <code>WHERE your_field IS NULL</code>. If NULLs exist, the query returns rows and the audit fails.</p>
+<p>Audits can target specific models or use <a href="../../components/advanced-features/macros/overview.md">macros</a> for reusable audits. Vulcan includes built-in audits for common cases like detecting NULL or duplicate values.</p>
+<p>Specify audits in model metadata properties. To apply them globally, add them to model defaults configuration.</p>
+<p>Vulcan runs audits automatically when you apply a plan to an environment. You can also run them with <a href="../../getting_started/cli.md#audit"><code>vulcan audit</code></a>.</p>
 <h2 id="infrastructure-and-orchestration">Infrastructure and orchestration<a class="headerlink" href="#infrastructure-and-orchestration" title="Link to this section">¶</a></h2>
-<p>Every company's data infrastructure is different. Vulcan is flexible with regard to which engines and orchestration frameworks you use — its only requirement is access to the target SQL/analytics engine.</p>
-<p>Vulcan keeps track of model versions and processed data intervals using your existing infrastructure. Vulcan it automatically creates a <code>vulcan</code> schema in your data warehouse for its internal metadata.</p>
+<p>Vulcan works with any SQL or analytics engine. It only needs access to the target engine.</p>
+<p>Vulcan tracks model versions and processed data intervals using your existing infrastructure. It creates a <code>vulcan</code> schema in your data warehouse for internal metadata.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1086,8 +1085,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
 document$.subscribe(()=>{ lightbox.reload(); });
