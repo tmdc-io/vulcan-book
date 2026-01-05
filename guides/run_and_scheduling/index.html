@@ -774,23 +774,11 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../plan/">
-<span class="md-ellipsis">
-    
-  
-    Plan
-  
-
-    
-  </span>
-</a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="../plan_guide/">
 <span class="md-ellipsis">
     
   
-    Plan 2.0
+    Plan
   
 
     
@@ -1455,60 +1443,60 @@
 <h2 id="run-and-scheduler-architecture">Run and Scheduler Architecture<a class="headerlink" href="#run-and-scheduler-architecture" title="Link to this section">¶</a></h2>
 <p>The following diagram illustrates how Vulcan's run system works with cron-based scheduling:</p>
 <pre class="mermaid"><code>graph TB
-    subgraph "⏰ Scheduler Triggers"
-        CRON[🔄 Cron Job / CI/CD&lt;br/&gt;Runs periodically]
-        MANUAL[👤 Manual Execution&lt;br/&gt;vulcan run]
+    subgraph "Scheduler Triggers"
+        CRON[Cron Job / CI/CD&lt;br/&gt;Runs periodically]
+        MANUAL[Manual Execution&lt;br/&gt;vulcan run]
     end
 
-    subgraph "🔍 Run Process"
-        START[⚡ vulcan run&lt;br/&gt;Command starts]
-        CHECK[🔎 Check for missing intervals&lt;br/&gt;Compare with state]
-        CRON_CHECK[📅 Check cron schedules&lt;br/&gt;Which models are due?]
-        FILTER[🔽 Filter models&lt;br/&gt;Only process due intervals]
+    subgraph "Run Process"
+        START[vulcan run&lt;br/&gt;Command starts]
+        CHECK[Check for missing intervals&lt;br/&gt;Compare with state]
+        CRON_CHECK[Check cron schedules&lt;br/&gt;Which models are due?]
+        FILTER[Filter models&lt;br/&gt;Only process due intervals]
     end
 
-    subgraph "📊 Model Execution"
-        M1[📈 sales.daily_sales&lt;br/&gt;cron: @daily&lt;br/&gt;Due: ✅]
-        M2[📊 sales.weekly_sales&lt;br/&gt;cron: @weekly&lt;br/&gt;Due: ❌]
-        M3[📉 sales.monthly_sales&lt;br/&gt;cron: @monthly&lt;br/&gt;Due: ❌]
+    subgraph "Model Execution"
+        M1[sales.daily_sales&lt;br/&gt;cron: @daily&lt;br/&gt;Due: Yes]
+        M2[sales.weekly_sales&lt;br/&gt;cron: @weekly&lt;br/&gt;Due: No]
+        M3[sales.monthly_sales&lt;br/&gt;cron: @monthly&lt;br/&gt;Due: No]
     end
 
-    subgraph "💾 State Management"
-        STATE[🗄️ State Database&lt;br/&gt;Tracks processed intervals]
-        UPDATE[📝 Update State&lt;br/&gt;Mark intervals as processed]
+    subgraph "State Management"
+        STATE[State Database&lt;br/&gt;Tracks processed intervals]
+        UPDATE[Update State&lt;br/&gt;Mark intervals as processed]
     end
 
-    subgraph "⚙️ Execution Flow"
-        EXEC1[🔄 Execute daily_sales&lt;br/&gt;Process missing intervals]
-        EXEC2[⏭️ Skip weekly_sales&lt;br/&gt;Not due yet]
-        EXEC3[⏭️ Skip monthly_sales&lt;br/&gt;Not due yet]
+    subgraph "Execution Flow"
+        EXEC1[Execute daily_sales&lt;br/&gt;Process missing intervals]
+        EXEC2[Skip weekly_sales&lt;br/&gt;Not due yet]
+        EXEC3[Skip monthly_sales&lt;br/&gt;Not due yet]
     end
 
-    subgraph "✅ Results"
-        SUCCESS[✅ Run Complete&lt;br/&gt;Intervals processed]
-        LOG[📋 Log Results&lt;br/&gt;Execution summary]
+    subgraph "Results"
+        SUCCESS[Run Complete&lt;br/&gt;Intervals processed]
+        LOG[Log Results&lt;br/&gt;Execution summary]
     end
 
-    CRON --&gt;|"⏰ Scheduled"| START
-    MANUAL --&gt;|"👤 Triggered"| START
-    START --&gt;|"🔍"| CHECK
-    CHECK --&gt;|"📊"| CRON_CHECK
-    CRON_CHECK --&gt;|"📅"| FILTER
-    FILTER --&gt;|"✅ Due"| M1
-    FILTER --&gt;|"❌ Not due"| M2
-    FILTER --&gt;|"❌ Not due"| M3
+    CRON --&gt;|"Scheduled"| START
+    MANUAL --&gt;|"Triggered"| START
+    START --&gt;|"to"| CHECK
+    CHECK --&gt;|"to"| CRON_CHECK
+    CRON_CHECK --&gt;|"to"| FILTER
+    FILTER --&gt;|"Due"| M1
+    FILTER --&gt;|"Not due"| M2
+    FILTER --&gt;|"Not due"| M3
 
-    M1 --&gt;|"🔄"| EXEC1
-    M2 --&gt;|"⏭️"| EXEC2
-    M3 --&gt;|"⏭️"| EXEC3
+    M1 --&gt;|"to"| EXEC1
+    M2 --&gt;|"to"| EXEC2
+    M3 --&gt;|"to"| EXEC3
 
-    EXEC1 --&gt;|"💾"| STATE
-    EXEC2 -.-&gt;|"⏭️"| STATE
-    EXEC3 -.-&gt;|"⏭️"| STATE
+    EXEC1 --&gt;|"to"| STATE
+    EXEC2 -.-&gt;|"Skip"| STATE
+    EXEC3 -.-&gt;|"Skip"| STATE
 
-    STATE --&gt;|"📝"| UPDATE
-    UPDATE --&gt;|"✅"| SUCCESS
-    SUCCESS --&gt;|"📋"| LOG
+    STATE --&gt;|"to"| UPDATE
+    UPDATE --&gt;|"to"| SUCCESS
+    SUCCESS --&gt;|"to"| LOG
 
     style CRON fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style START fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
@@ -1610,28 +1598,28 @@
 <h2 id="how-run-works">How Run Works<a class="headerlink" href="#how-run-works" title="Link to this section">¶</a></h2>
 <p>The <code>vulcan run</code> command processes missing data intervals for models that haven't changed:</p>
 <pre class="mermaid"><code>flowchart TD
-    START[⚡ vulcan run&lt;br/&gt;Command starts] --&gt; CHECK{🔍 Check model&lt;br/&gt;definitions}
+    START[vulcan run&lt;br/&gt;Command starts] --&gt; CHECK{Check model&lt;br/&gt;definitions}
 
-    CHECK --&gt;|"❌ Changed"| ERROR[🚫 Error: Use 'vulcan plan'&lt;br/&gt;to apply changes first]
-    CHECK --&gt;|"✅ No changes"| STATE[📊 Query state database&lt;br/&gt;Get processed intervals]
+    CHECK --&gt;|"Changed"| ERROR[Error: Use 'vulcan plan'&lt;br/&gt;to apply changes first]
+    CHECK --&gt;|"No changes"| STATE[Query state database&lt;br/&gt;Get processed intervals]
 
-    STATE --&gt; CRON[📅 Check cron schedules&lt;br/&gt;Which models are due?]
+    STATE --&gt; CRON[Check cron schedules&lt;br/&gt;Which models are due?]
 
-    CRON --&gt; FILTER{🔽 Filter models&lt;br/&gt;by cron schedule}
+    CRON --&gt; FILTER{Filter models&lt;br/&gt;by cron schedule}
 
-    FILTER --&gt;|"✅ Due"| EXEC1[🔄 Execute Model 1&lt;br/&gt;Process missing intervals]
-    FILTER --&gt;|"✅ Due"| EXEC2[🔄 Execute Model 2&lt;br/&gt;Process missing intervals]
-    FILTER --&gt;|"❌ Not due"| SKIP1[⏭️ Skip Model 3&lt;br/&gt;Not due yet]
-    FILTER --&gt;|"❌ Not due"| SKIP2[⏭️ Skip Model 4&lt;br/&gt;Not due yet]
+    FILTER --&gt;|"Due"| EXEC1[Execute Model 1&lt;br/&gt;Process missing intervals]
+    FILTER --&gt;|"Due"| EXEC2[Execute Model 2&lt;br/&gt;Process missing intervals]
+    FILTER --&gt;|"Not due"| SKIP1[Skip Model 3&lt;br/&gt;Not due yet]
+    FILTER --&gt;|"Not due"| SKIP2[Skip Model 4&lt;br/&gt;Not due yet]
 
-    EXEC1 --&gt; UPDATE[💾 Update state database&lt;br/&gt;Mark intervals as processed]
+    EXEC1 --&gt; UPDATE[Update state database&lt;br/&gt;Mark intervals as processed]
     EXEC2 --&gt; UPDATE
-    SKIP1 -.-&gt;|"⏭️"| UPDATE
-    SKIP2 -.-&gt;|"⏭️"| UPDATE
+    SKIP1 -.-&gt;|"Skip"| UPDATE
+    SKIP2 -.-&gt;|"Skip"| UPDATE
 
-    UPDATE --&gt; SUCCESS[✅ Run complete&lt;br/&gt;Summary output]
+    UPDATE --&gt; SUCCESS[Run complete&lt;br/&gt;Summary output]
 
-    ERROR --&gt; END[❌ Exit with error]
+    ERROR --&gt; END[Exit with error]
     SUCCESS --&gt; END
 
     style START fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
@@ -1770,85 +1758,85 @@
 <p>The <code>vulcan run</code> command doesn't run continuously - it executes once and exits. For production, you need to schedule it to run periodically. This is where automation comes in, you'll set up cron jobs, CI/CD pipelines, or Kubernetes CronJobs to trigger <code>run</code> on a schedule.</p>
 <h3 id="built-in-scheduler-architecture">Built-in Scheduler Architecture<a class="headerlink" href="#built-in-scheduler-architecture" title="Link to this section">¶</a></h3>
 <pre class="mermaid"><code>graph TB
-    subgraph "🔄 Automation Layer - Triggers"
-        CRON[⏰ Cron Job&lt;br/&gt;Schedule: Every hour&lt;br/&gt;Example: 0 * * * *]
-        CI[🚀 CI/CD Pipeline&lt;br/&gt;GitHub Actions / GitLab CI&lt;br/&gt;Scheduled workflows]
-        K8S[☸️ Kubernetes CronJob&lt;br/&gt;Container orchestration&lt;br/&gt;K8s native scheduling]
-        MANUAL[👤 Manual Trigger&lt;br/&gt;Developer runs manually&lt;br/&gt;vulcan run]
+    subgraph "Automation Layer - Triggers"
+        CRON[Cron Job&lt;br/&gt;Schedule: Every hour&lt;br/&gt;Example: 0 * * * *]
+        CI[CI/CD Pipeline&lt;br/&gt;GitHub Actions / GitLab CI&lt;br/&gt;Scheduled workflows]
+        K8S[Kubernetes CronJob&lt;br/&gt;Container orchestration&lt;br/&gt;K8s native scheduling]
+        MANUAL[Manual Trigger&lt;br/&gt;Developer runs manually&lt;br/&gt;vulcan run]
     end
 
-    subgraph "⚡ Vulcan Run Command"
+    subgraph "Vulcan Run Command"
         RUN[vulcan run&lt;br/&gt;Command starts]
-        VALIDATE[✅ Validate Models&lt;br/&gt;Check for changes&lt;br/&gt;Error if modified]
-        QUERY[🔍 Query State Database&lt;br/&gt;Get execution history&lt;br/&gt;Read processed intervals]
+        VALIDATE[Validate Models&lt;br/&gt;Check for changes&lt;br/&gt;Error if modified]
+        QUERY[Query State Database&lt;br/&gt;Get execution history&lt;br/&gt;Read processed intervals]
     end
 
-    subgraph "💾 State Database"
-        STATE[🗄️ State Storage&lt;br/&gt;PostgreSQL / SQL Engine&lt;br/&gt;Transaction-safe storage]
+    subgraph "State Database"
+        STATE[State Storage&lt;br/&gt;PostgreSQL / SQL Engine&lt;br/&gt;Transaction-safe storage]
 
-        subgraph "📊 State Tables"
-            INTERVALS[📋 Processed Intervals&lt;br/&gt;model_name, start_ds, end_ds&lt;br/&gt;status: completed]
-            CRON_STATE[⏰ Cron Execution State&lt;br/&gt;model_name, last_run_time&lt;br/&gt;next_run_time]
-            MODEL_STATE[🔷 Model State&lt;br/&gt;model_name, fingerprint&lt;br/&gt;environment, version]
+        subgraph "State Tables"
+            INTERVALS[Processed Intervals&lt;br/&gt;model_name, start_ds, end_ds&lt;br/&gt;status: completed]
+            CRON_STATE[Cron Execution State&lt;br/&gt;model_name, last_run_time&lt;br/&gt;next_run_time]
+            MODEL_STATE[Model State&lt;br/&gt;model_name, fingerprint&lt;br/&gt;environment, version]
         end
     end
 
-    subgraph "📅 Cron Evaluation Engine"
-        CRON_CHECK[📅 Evaluate Cron Schedules&lt;br/&gt;Compare current time&lt;br/&gt;with last execution]
-        CALC[🧮 Calculate Missing Intervals&lt;br/&gt;Determine what's due&lt;br/&gt;Based on cron + state]
-        FILTER[🔽 Filter Models&lt;br/&gt;Only select due models&lt;br/&gt;Skip not-due models]
+    subgraph "Cron Evaluation Engine"
+        CRON_CHECK[Evaluate Cron Schedules&lt;br/&gt;Compare current time&lt;br/&gt;with last execution]
+        CALC[Calculate Missing Intervals&lt;br/&gt;Determine what's due&lt;br/&gt;Based on cron + state]
+        FILTER[Filter Models&lt;br/&gt;Only select due models&lt;br/&gt;Skip not-due models]
     end
 
-    subgraph "📊 Model Execution Queue"
-        QUEUE[📋 Execution Queue&lt;br/&gt;Ordered by dependencies&lt;br/&gt;Upstream first]
-        EXEC1[🔄 Execute Hourly Model&lt;br/&gt;@hourly - Due ✅&lt;br/&gt;Process missing intervals]
-        EXEC2[🔄 Execute Daily Model&lt;br/&gt;@daily - Due ✅&lt;br/&gt;Process missing intervals]
-        SKIP[⏭️ Skip Weekly Model&lt;br/&gt;@weekly - Not due ❌&lt;br/&gt;Wait for next week]
+    subgraph "Model Execution Queue"
+        QUEUE[Execution Queue&lt;br/&gt;Ordered by dependencies&lt;br/&gt;Upstream first]
+        EXEC1[Execute Hourly Model&lt;br/&gt;@hourly - Due&lt;br/&gt;Process missing intervals]
+        EXEC2[Execute Daily Model&lt;br/&gt;@daily - Due&lt;br/&gt;Process missing intervals]
+        SKIP[Skip Weekly Model&lt;br/&gt;@weekly - Not due&lt;br/&gt;Wait for next week]
     end
 
-    subgraph "💾 Update State"
-        UPDATE[📝 Update State Database&lt;br/&gt;Mark intervals processed&lt;br/&gt;Update cron state]
-        COMMIT[✅ Commit Transaction&lt;br/&gt;Ensure consistency&lt;br/&gt;Rollback on error]
+    subgraph "Update State"
+        UPDATE[Update State Database&lt;br/&gt;Mark intervals processed&lt;br/&gt;Update cron state]
+        COMMIT[Commit Transaction&lt;br/&gt;Ensure consistency&lt;br/&gt;Rollback on error]
     end
 
-    subgraph "📊 Results &amp; Logging"
-        LOG[📋 Log Execution&lt;br/&gt;Summary output&lt;br/&gt;Success/failure status]
-        NOTIFY[🔔 Notifications&lt;br/&gt;Optional: Slack/Email&lt;br/&gt;On success/failure]
+    subgraph "Results &amp; Logging"
+        LOG[Log Execution&lt;br/&gt;Summary output&lt;br/&gt;Success/failure status]
+        NOTIFY[Notifications&lt;br/&gt;Optional: Slack/Email&lt;br/&gt;On success/failure]
     end
 
-    CRON --&gt;|"⏰ Scheduled trigger"| RUN
-    CI --&gt;|"🚀 Pipeline trigger"| RUN
-    K8S --&gt;|"☸️ K8s trigger"| RUN
-    MANUAL --&gt;|"👤 Manual trigger"| RUN
+    CRON --&gt;|"Scheduled trigger"| RUN
+    CI --&gt;|"Pipeline trigger"| RUN
+    K8S --&gt;|"K8s trigger"| RUN
+    MANUAL --&gt;|"Manual trigger"| RUN
 
-    RUN --&gt;|"1️⃣ Validate"| VALIDATE
-    VALIDATE --&gt;|"2️⃣ Query state"| QUERY
-    QUERY --&gt;|"📊 Read"| STATE
+    RUN --&gt;|"1. Validate"| VALIDATE
+    VALIDATE --&gt;|"2. Query state"| QUERY
+    QUERY --&gt;|"Read"| STATE
 
-    STATE --&gt;|"📋 Intervals"| INTERVALS
-    STATE --&gt;|"⏰ Cron state"| CRON_STATE
-    STATE --&gt;|"🔷 Model state"| MODEL_STATE
+    STATE --&gt;|"Intervals"| INTERVALS
+    STATE --&gt;|"Cron state"| CRON_STATE
+    STATE --&gt;|"Model state"| MODEL_STATE
 
-    INTERVALS --&gt;|"🔎 Compare"| CRON_CHECK
-    CRON_STATE --&gt;|"📅 Check schedule"| CRON_CHECK
-    MODEL_STATE --&gt;|"🔷 Get models"| CRON_CHECK
+    INTERVALS --&gt;|"Compare"| CRON_CHECK
+    CRON_STATE --&gt;|"Check schedule"| CRON_CHECK
+    MODEL_STATE --&gt;|"Get models"| CRON_CHECK
 
-    CRON_CHECK --&gt;|"📅 Evaluate"| CALC
-    CALC --&gt;|"🧮 Calculate"| FILTER
+    CRON_CHECK --&gt;|"Evaluate"| CALC
+    CALC --&gt;|"Calculate"| FILTER
 
-    FILTER --&gt;|"✅ Due models"| QUEUE
-    FILTER -.-&gt;|"❌ Skip"| SKIP
+    FILTER --&gt;|"Due models"| QUEUE
+    FILTER -.-&gt;|"Skip"| SKIP
 
-    QUEUE --&gt;|"🔄 Execute"| EXEC1
-    QUEUE --&gt;|"🔄 Execute"| EXEC2
+    QUEUE --&gt;|"Execute"| EXEC1
+    QUEUE --&gt;|"Execute"| EXEC2
 
-    EXEC1 --&gt;|"💾 Update"| UPDATE
-    EXEC2 --&gt;|"💾 Update"| UPDATE
-    SKIP -.-&gt;|"⏭️ No update"| UPDATE
+    EXEC1 --&gt;|"Update"| UPDATE
+    EXEC2 --&gt;|"Update"| UPDATE
+    SKIP -.-&gt;|"No update"| UPDATE
 
-    UPDATE --&gt;|"💾 Commit"| COMMIT
-    COMMIT --&gt;|"✅ Success"| LOG
-    LOG --&gt;|"🔔 Optional"| NOTIFY
+    UPDATE --&gt;|"Commit"| COMMIT
+    COMMIT --&gt;|"Success"| LOG
+    LOG --&gt;|"Optional"| NOTIFY
 
     style CRON fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style CI fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
@@ -1963,22 +1951,22 @@
 <h3 id="determining-run-frequency">Determining Run Frequency<a class="headerlink" href="#determining-run-frequency" title="Link to this section">¶</a></h3>
 <p>Set your automation frequency based on your most frequent model's <code>cron</code>:</p>
 <pre class="mermaid"><code>graph TD
-    subgraph "📊 Model Cron Schedules"
-        H[⏰ Hourly Model&lt;br/&gt;cron: @hourly]
-        D[📅 Daily Model&lt;br/&gt;cron: @daily]
-        W[📆 Weekly Model&lt;br/&gt;cron: @weekly]
+    subgraph "Model Cron Schedules"
+        H[Hourly Model&lt;br/&gt;cron: @hourly]
+        D[Daily Model&lt;br/&gt;cron: @daily]
+        W[Weekly Model&lt;br/&gt;cron: @weekly]
     end
 
-    subgraph "🔄 Automation Frequency"
-        AUTO_H[⏰ Run every hour&lt;br/&gt;vulcan run]
-        AUTO_D[📅 Run daily&lt;br/&gt;vulcan run]
-        AUTO_W[📆 Run weekly&lt;br/&gt;vulcan run]
+    subgraph "Automation Frequency"
+        AUTO_H[Run every hour&lt;br/&gt;vulcan run]
+        AUTO_D[Run daily&lt;br/&gt;vulcan run]
+        AUTO_W[Run weekly&lt;br/&gt;vulcan run]
     end
 
-    subgraph "✅ Execution Result"
-        RESULT1[✅ Hourly: Runs every time&lt;br/&gt;✅ Daily: Runs when due&lt;br/&gt;✅ Weekly: Runs when due]
-        RESULT2[⏭️ Hourly: Skipped&lt;br/&gt;✅ Daily: Runs when due&lt;br/&gt;✅ Weekly: Runs when due]
-        RESULT3[⏭️ Hourly: Skipped&lt;br/&gt;⏭️ Daily: Skipped&lt;br/&gt;✅ Weekly: Runs when due]
+    subgraph "Execution Result"
+        RESULT1[Hourly: Runs every time&lt;br/&gt;Daily: Runs when due&lt;br/&gt;Weekly: Runs when due]
+        RESULT2[Hourly: Skipped&lt;br/&gt;Daily: Runs when due&lt;br/&gt;Weekly: Runs when due]
+        RESULT3[Hourly: Skipped&lt;br/&gt;Daily: Skipped&lt;br/&gt;Weekly: Runs when due]
     end
 
     H --&gt;|"Requires"| AUTO_H
@@ -2118,7 +2106,7 @@
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: Plan 2.0" class="md-footer__link md-footer__link--prev" href="../plan_guide/">
+<a aria-label="Previous: Plan" class="md-footer__link md-footer__link--prev" href="../plan_guide/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -2127,7 +2115,7 @@
                 Previous
               </span>
 <div class="md-ellipsis">
-                Plan 2.0
+                Plan
               </div>
 </div>
 </a>

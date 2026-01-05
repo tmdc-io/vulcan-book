@@ -5,11 +5,11 @@
 <meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
 <meta content="DataOS Vulcan Team" name="author"/>
 <link href="https://tmdc-io.github.io/vulcan-docs/guides/plan_guide/" rel="canonical"/>
-<link href="../plan/" rel="prev"/>
+<link href="../get-started/docker/" rel="prev"/>
 <link href="../run_and_scheduling/" rel="next"/>
 <link href="../../assets/images/vulcan.svg" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
-<title>Plan 2.0 - DataOS Vulcan</title>
+<title>Plan - DataOS Vulcan</title>
 <link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -33,7 +33,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#plan-20">
+<a class="md-skip" href="#plan">
           Skip to content
         </a>
 </div>
@@ -57,7 +57,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Plan 2.0
+              Plan
             
           </span>
 </div>
@@ -773,25 +773,13 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../plan/">
-<span class="md-ellipsis">
-    
-  
-    Plan
-  
-
-    
-  </span>
-</a>
-</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
 <span class="md-ellipsis">
     
   
-    Plan 2.0
+    Plan
   
 
     
@@ -802,7 +790,7 @@
 <span class="md-ellipsis">
     
   
-    Plan 2.0
+    Plan
   
 
     
@@ -827,25 +815,25 @@
 <a class="md-nav__link" href="#what-youll-see-in-a-plan">
 <span class="md-ellipsis">
       
-        What you’ll see in a plan
+        What you'll see in a plan
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#how-plan-works-the-lifecycle">
+<a class="md-nav__link" href="#how-plan-works">
 <span class="md-ellipsis">
       
-        How plan works (the lifecycle)
+        How plan works
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#change-types-how-to-read-what-changed">
+<a class="md-nav__link" href="#change-types">
 <span class="md-ellipsis">
       
-        Change types (how to read “what changed”)
+        Change types
       
     </span>
 </a>
@@ -1067,25 +1055,25 @@
 <a class="md-nav__link" href="#what-youll-see-in-a-plan">
 <span class="md-ellipsis">
       
-        What you’ll see in a plan
+        What you'll see in a plan
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#how-plan-works-the-lifecycle">
+<a class="md-nav__link" href="#how-plan-works">
 <span class="md-ellipsis">
       
-        How plan works (the lifecycle)
+        How plan works
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#change-types-how-to-read-what-changed">
+<a class="md-nav__link" href="#change-types">
 <span class="md-ellipsis">
       
-        Change types (how to read “what changed”)
+        Change types
       
     </span>
 </a>
@@ -1191,47 +1179,58 @@
 </ol>
 </nav>
 <article class="md-content__inner md-typeset">
-<h1 id="plan-20">Plan 2.0<a class="headerlink" href="#plan-20" title="Link to this section">¶</a></h1>
-<p><code>vulcan plan</code> is the “pause and review” step before changes take effect in an environment. It shows you <strong>what changed</strong>, <strong>what will be recomputed</strong>, and <strong>what will be promoted</strong> into the environment’s virtual layer.</p>
-<p>It’s not just about model SQL. Vulcan plan also tracks changes to:</p>
+<h1 id="plan">Plan<a class="headerlink" href="#plan" title="Link to this section">¶</a></h1>
+<p><code>vulcan plan</code> shows you what changed, what will be recomputed, and what will be promoted into an environment's virtual layer before changes take effect.</p>
+<p>Vulcan plan tracks changes to:</p>
 <ul>
-<li><strong>Semantics and metrics</strong> (so business definitions stay consistent)</li>
-<li><strong>Assertions, checks, and profiles</strong> (so data quality stays visible and predictable)</li>
+<li><strong>Semantics and metrics</strong> (keeps business definitions consistent)</li>
+<li><strong>Assertions, checks, and profiles</strong> (keeps data quality visible and predictable)</li>
+<li><strong>Model SQL and Python</strong> (transformation logic)</li>
 </ul>
 <h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Link to this section">¶</a></h2>
 <p>Create a plan:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span><span class="o">[</span>environment<span class="w"> </span>name<span class="o">]</span>
 </span></code></pre></div>
 <p>If you omit the environment name, Vulcan plans against <code>prod</code>.</p>
-<h2 id="what-youll-see-in-a-plan">What you’ll see in a plan<a class="headerlink" href="#what-youll-see-in-a-plan" title="Link to this section">¶</a></h2>
-<p>A typical plan summary includes:</p>
+<h2 id="what-youll-see-in-a-plan">What you'll see in a plan<a class="headerlink" href="#what-youll-see-in-a-plan" title="Link to this section">¶</a></h2>
+<p>A plan summary includes:</p>
 <ul>
 <li><strong>What changed</strong>: added/removed/direct/indirect/metadata updates across models and related definitions</li>
 <li><strong>Impact classification</strong>: breaking vs non-breaking (auto-identified)</li>
 <li><strong>Backfill window</strong>: which models need intervals executed</li>
-<li><strong>Apply stages</strong>: executing model batches → updating virtual layer → non-blocking quality signals</li>
+<li><strong>Apply stages</strong>: executing model batches, updating virtual layer, running non-blocking quality signals</li>
 </ul>
-<p>If you want a walkthrough with screenshots and CLI snippets, see <a href="../plan/">Plan</a>. For the deep dive (environments, snapshots, forward-only, restatements), see <a href="../../references/plans/">Plans</a>.</p>
-<h2 id="how-plan-works-the-lifecycle">How plan works (the lifecycle)<a class="headerlink" href="#how-plan-works-the-lifecycle" title="Link to this section">¶</a></h2>
-<p>Here’s the end-to-end flow Vulcan follows:</p>
+<p>For a walkthrough with screenshots and CLI snippets, see <a href="../plan/">Plan</a>. For details on environments, snapshots, forward-only plans, and restatements, see <a href="../../references/plans/">Plans</a>.</p>
+<h2 id="how-plan-works">How plan works<a class="headerlink" href="#how-plan-works" title="Link to this section">¶</a></h2>
+<p>Vulcan follows this flow:</p>
 <ol>
-<li><strong>Diff scope</strong>: compare local project state to the target environment (models, standalone assertions, semantics, metrics, checks, metadata).</li>
-<li><strong>Plan type</strong>: determine whether this is a backfill plan vs a virtual update (and whether forward-only / restatement options apply).</li>
-<li><strong>Categorize impact</strong>: auto-identify breaking vs non-breaking and propagate impact to indirectly impacted objects.</li>
-<li><strong>Compute intervals</strong>: compute the time ranges that must be executed.</li>
-<li><strong>Apply</strong>:
+<li>
+<p><strong>Diff scope</strong>: Compare local project state to the target environment (models, standalone assertions, semantics, metrics, checks, metadata).</p>
+</li>
+<li>
+<p><strong>Plan type</strong>: Determine whether this is a backfill plan or a virtual update (and whether forward-only or restatement options apply).</p>
+</li>
+<li>
+<p><strong>Categorize impact</strong>: Auto-identify breaking vs non-breaking and propagate impact to indirectly impacted objects.</p>
+</li>
+<li>
+<p><strong>Compute intervals</strong>: Compute the time ranges that must be executed.</p>
+</li>
+<li>
+<p><strong>Apply</strong>:
    - Create model variants (snapshots)
    - Execute model batches (backfill) if needed
    - Update the virtual layer (promote)
-   - Run non-blocking quality signals (checks + profiles)</li>
+   - Run non-blocking quality signals (checks and profiles)</p>
+</li>
 </ol>
-<h2 id="change-types-how-to-read-what-changed">Change types (how to read “what changed”)<a class="headerlink" href="#change-types-how-to-read-what-changed" title="Link to this section">¶</a></h2>
-<p>Vulcan reports changes using a few consistent buckets. You’ll see these for models, and often for semantics/metrics/checks/assertions too.</p>
+<h2 id="change-types">Change types<a class="headerlink" href="#change-types" title="Link to this section">¶</a></h2>
+<p>Vulcan reports changes using consistent categories. You'll see these for models, and often for semantics, metrics, checks, and assertions.</p>
 <ul>
 <li><strong>Added</strong>: exists locally, not in the environment (new object will be created/registered).</li>
 <li><strong>Removed</strong>: exists in the environment, removed from local project (will be removed from the environment).</li>
 <li><strong>Directly modified</strong>: you edited the object itself (model SQL/Python, semantics YAML, check YAML, Assertion SQL).</li>
-<li><strong>Indirectly impacted</strong>: you didn’t edit the object, but something it depends on changed (common for downstream models, and also for semantics/metrics/checks that reference a changed model/column).</li>
+<li><strong>Indirectly impacted</strong>: You didn't edit the object, but something it depends on changed. Common for downstream models, and for semantics, metrics, checks that reference a changed model or column.</li>
 <li><strong>Metadata-only</strong>: description/tags/ownership/config changes that don’t require historical recomputation.</li>
 </ul>
 <div class="admonition example">
@@ -1240,16 +1239,16 @@
 <ul>
 <li><code>sales.daily_sales</code> is <strong>directly modified</strong></li>
 <li>Downstream models are <strong>indirectly impacted</strong></li>
-<li>A metric or check referencing the renamed column is <strong>indirectly impacted</strong> (it may fail validation until you update it)</li>
+<li>A metric or check referencing the renamed column is <strong>indirectly impacted</strong>. It may fail validation until you update it.</li>
 </ul>
 </div>
 <h2 id="change-categories-breaking-vs-non-breaking">Change categories (breaking vs non-breaking)<a class="headerlink" href="#change-categories-breaking-vs-non-breaking" title="Link to this section">¶</a></h2>
 <p>Vulcan identifies breaking vs non-breaking automatically during plan creation (and may prompt only in ambiguous cases).</p>
 <h3 id="breaking">Breaking<a class="headerlink" href="#breaking" title="Link to this section">¶</a></h3>
-<p>Breaking means the change can alter results in a way that downstream models/consumers must reflect.</p>
+<p>Breaking means the change can alter results in a way that downstream models and consumers must reflect.</p>
 <ul>
-<li><strong>For models</strong>: backfill cascades downstream (more expensive, safest).</li>
-<li><strong>For semantics/metrics/checks</strong>: definitions may become invalid or meaningfully change for consumers.</li>
+<li><strong>For models</strong>: Backfill cascades downstream. More expensive, but safest.</li>
+<li><strong>For semantics, metrics, checks</strong>: Definitions may become invalid or meaningfully change for consumers.</li>
 </ul>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
@@ -1259,10 +1258,10 @@
 </span></code></pre></div>
 </div>
 <h3 id="non-breaking">Non-breaking<a class="headerlink" href="#non-breaking" title="Link to this section">¶</a></h3>
-<p>Non-breaking means the change is additive or non-functional in a way that doesn’t invalidate downstream dependencies.</p>
+<p>Non-breaking means the change is additive or non-functional in a way that doesn't invalidate downstream dependencies.</p>
 <ul>
-<li><strong>For models</strong>: only the directly modified model needs backfill.</li>
-<li><strong>For semantics/metrics/checks</strong>: additive updates (new metric, new check, updated description) don’t break existing consumers.</li>
+<li><strong>For models</strong>: Only the directly modified model needs backfill.</li>
+<li><strong>For semantics, metrics, checks</strong>: Additive updates (new metric, new check, updated description) don't break existing consumers.</li>
 </ul>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
@@ -1277,13 +1276,13 @@
 </div>
 <h2 id="snapshots-model-variants-and-fingerprinting">Snapshots (model variants) and fingerprinting<a class="headerlink" href="#snapshots-model-variants-and-fingerprinting" title="Link to this section">¶</a></h2>
 <p>Whenever a <strong>model definition</strong> changes, Vulcan creates a <strong>snapshot</strong>: a record of that model at a point in time. A snapshot contains everything needed to evaluate and render the model query, including macro definitions and global variables at the time the snapshot was created, and it tracks which time intervals have data.</p>
-<p>Snapshots have unique <strong>fingerprints</strong> derived from their models. Vulcan uses fingerprints to decide whether an existing physical table can be reused or whether the model must be backfilled. Because Vulcan understands SQL with SQLGlot, superficial edits (like formatting) won’t generate a new fingerprint.</p>
+<p>Snapshots have unique fingerprints derived from their models. Vulcan uses fingerprints to decide whether an existing physical table can be reused or whether the model must be backfilled. Vulcan understands SQL, so superficial edits like formatting won't generate a new fingerprint.</p>
 <h2 id="physical-tables-virtual-layer-and-environments">Physical tables, virtual layer, and environments<a class="headerlink" href="#physical-tables-virtual-layer-and-environments" title="Link to this section">¶</a></h2>
-<p>Here’s the mental model:</p>
+<p>How these components work together:</p>
 <ul>
-<li><strong>Physical layer</strong>: versioned physical tables hold the data for a specific snapshot.</li>
-<li><strong>Virtual layer</strong>: environment views point to the correct physical tables.</li>
-<li><strong>Environment</strong>: essentially “a set of references” to model snapshots (and therefore to physical tables).</li>
+<li><strong>Physical layer</strong>: Versioned physical tables hold the data for a specific snapshot.</li>
+<li><strong>Virtual layer</strong>: Environment views point to the correct physical tables.</li>
+<li><strong>Environment</strong>: A set of references to model snapshots (and therefore to physical tables).</li>
 </ul>
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../../assets/images/vulcan_plan_snapshot_flow.png"><img alt="Virtual vs physical layers: how snapshots change when you update a model" src="../../assets/images/vulcan_plan_snapshot_flow.png"/></a></p>
 <h2 id="backfill-vs-virtual-update">Backfill vs virtual update<a class="headerlink" href="#backfill-vs-virtual-update" title="Link to this section">¶</a></h2>
@@ -1308,11 +1307,11 @@
 <p>How it works:</p>
 <ul>
 <li><strong>Cascading backfill</strong>: selected models and downstream models are reprocessed.</li>
-<li><strong>Selectors</strong>: select by name, wildcard, or tag — see <a href="../model_selection/">Model selection</a>.</li>
+<li><strong>Selectors</strong>: Select by name, wildcard, or tag. See <a href="../model_selection/">Model selection</a>.</li>
 <li><strong>External models</strong>: restating an external model triggers downstream backfills (the external model itself is metadata-only).</li>
 <li><strong>Disable restatement</strong>: set <code>disable_restatement: true</code> to prevent restatement for a model.</li>
 </ul>
-<p>Prod vs dev behavior differs: restating <code>prod</code> can clear affected intervals in other environments’ state to prevent stale data being promoted later. For details, see <a href="../../references/plans/">Plans</a>.</p>
+<p>Prod vs dev behavior differs. Restating <code>prod</code> can clear affected intervals in other environments' state to prevent stale data being promoted later. For details, see <a href="../../references/plans/">Plans</a>.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
@@ -1325,7 +1324,7 @@
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: Plan" class="md-footer__link md-footer__link--prev" href="../plan/">
+<a aria-label="Previous: Get Started" class="md-footer__link md-footer__link--prev" href="../get-started/docker/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -1334,7 +1333,7 @@
                 Previous
               </span>
 <div class="md-ellipsis">
-                Plan
+                Get Started
               </div>
 </div>
 </a>
