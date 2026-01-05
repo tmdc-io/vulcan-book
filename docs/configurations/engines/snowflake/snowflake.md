@@ -37,53 +37,8 @@ Here are all the connection parameters you can use when setting up a Snowflake g
 | `private_key_path`       | The path to the private key file to use for authentication                      | string | N        |
 | `private_key_passphrase` | The passphrase to decrypt the private key (if encrypted)                        | string | N        |
 
-## Authentication Methods
-
-### SSO Authorization
-
-Use the `externalbrowser` authenticator for Single Sign-On:
-
-```yaml
-gateways:
-  snowflake:
-    connection:
-      type: snowflake
-      account: your-account-id
-      user: your-username
-      authenticator: externalbrowser
-      warehouse: COMPUTE_WH
-      database: DEMO
-```
-
-### OAuth Authorization
-
-Use the `oauth` authenticator with an access token:
-
-```yaml
-gateways:
-  snowflake:
-    connection:
-      type: snowflake
-      account: your-account-id
-      user: your-username
-      authenticator: oauth
-      token: {{ env_var('SNOWFLAKE_OAUTH_TOKEN') }}
-```
-
-### Private Key Authorization
-
-Use a private key file for authentication:
-
-```yaml
-gateways:
-  snowflake:
-    connection:
-      type: snowflake
-      account: your-account-id
-      user: your-username
-      private_key_path: /path/to/private_key.p8
-      private_key_passphrase: {{ env_var('SNOWFLAKE_KEY_PASSPHRASE') }}
-```
-
 !!! note
-    The `private_key_passphrase` is only required if your private key was encrypted with a passphrase.
+    The `account` identifier format is `<org-name>-<account-name>` (e.g., `myorg-myaccount`). Find it in your Snowflake URL.
+
+!!! warning
+    Always use environment variables for sensitive credentials: `password: {{ env_var('SNOWFLAKE_PASSWORD') }}`
