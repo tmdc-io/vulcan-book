@@ -8,84 +8,84 @@ The following diagram illustrates how Vulcan's plan system works, showing the re
 
 ```mermaid
 graph TB
-    subgraph "📁 Local Project"
-        LP[📝 Local Project Files<br/>Your SQL/Python Models]
-        M1[📊 Model: daily_sales v1]
-        M2[📊 Model: weekly_sales v1]
+    subgraph "Local Project"
+        LP[Local Project Files<br/>Your SQL/Python Models]
+        M1[Model: daily_sales v1]
+        M2[Model: weekly_sales v1]
     end
 
-    subgraph "🔍 Plan Creation"
-        PC[⚡ vulcan plan]
-        COMP[🔎 Compare Local vs Environment]
-        CAT[🏷️ Categorize Changes<br/>🔴 Breaking / 🟢 Non-breaking]
-        PLAN[📋 Plan Generated<br/>Ready for Review]
+    subgraph "Plan Creation"
+        PC[vulcan plan]
+        COMP[Compare Local vs Environment]
+        CAT[Categorize Changes<br/>Breaking / Non-breaking]
+        PLAN[Plan Generated<br/>Ready for Review]
     end
 
-    subgraph "🔀 Model Variants & Snapshots"
-        MV1[🔷 Model Variant 1<br/>daily_sales__hash1]
-        MV2[🔷 Model Variant 2<br/>daily_sales__hash2]
-        MV3[🔷 Model Variant 3<br/>weekly_sales__hash1]
-        SNAP1[📸 Snapshot 1<br/>🔑 Fingerprint: hash1]
-        SNAP2[📸 Snapshot 2<br/>🔑 Fingerprint: hash2]
-        SNAP3[📸 Snapshot 3<br/>🔑 Fingerprint: hash3]
+    subgraph "Model Variants & Snapshots"
+        MV1[Model Variant 1<br/>daily_sales__hash1]
+        MV2[Model Variant 2<br/>daily_sales__hash2]
+        MV3[Model Variant 3<br/>weekly_sales__hash1]
+        SNAP1[Snapshot 1<br/>Fingerprint: hash1]
+        SNAP2[Snapshot 2<br/>Fingerprint: hash2]
+        SNAP3[Snapshot 3<br/>Fingerprint: hash3]
     end
 
-    subgraph "💾 Physical Layer"
-        PT1[🗄️ Physical Table 1<br/>db.vulcan__sales.daily_sales__hash1]
-        PT2[🗄️ Physical Table 2<br/>db.vulcan__sales.daily_sales__hash2]
-        PT3[🗄️ Physical Table 3<br/>db.vulcan__sales.weekly_sales__hash1]
+    subgraph "Physical Layer"
+        PT1[Physical Table 1<br/>db.vulcan__sales.daily_sales__hash1]
+        PT2[Physical Table 2<br/>db.vulcan__sales.daily_sales__hash2]
+        PT3[Physical Table 3<br/>db.vulcan__sales.weekly_sales__hash1]
     end
 
-    subgraph "👁️ Virtual Layer"
-        VL1[🔍 View: sales.daily_sales]
-        VL2[🔍 View: sales.weekly_sales]
+    subgraph "Virtual Layer"
+        VL1[View: sales.daily_sales]
+        VL2[View: sales.weekly_sales]
     end
 
-    subgraph "🌍 Environments"
-        PROD[🚀 Production Environment<br/>References Variant 1 & 3]
-        DEV[🧪 Dev Environment<br/>References Variant 2 & 3]
+    subgraph "Environments"
+        PROD[Production Environment<br/>References Variant 1 & 3]
+        DEV[Dev Environment<br/>References Variant 2 & 3]
     end
 
-    subgraph "⚙️ Backfill Process"
-        BF[🔄 Backfill Execution]
-        INC[📈 Incremental Backfill]
-        FULL[🔄 Full Refresh]
+    subgraph "Backfill Process"
+        BF[Backfill Execution]
+        INC[Incremental Backfill]
+        FULL[Full Refresh]
     end
 
-    LP -->|"📤"| M1
-    LP -->|"📤"| M2
-    M1 -->|"➡️"| PC
-    M2 -->|"➡️"| PC
-    PC -->|"🔍"| COMP
-    COMP -->|"🏷️"| CAT
-    CAT -->|"✅"| PLAN
-    PLAN -->|"✨"| MV1
-    PLAN -->|"✨"| MV2
-    PLAN -->|"✨"| MV3
+    LP -->|"to"| M1
+    LP -->|"to"| M2
+    M1 -->|"to"| PC
+    M2 -->|"to"| PC
+    PC -->|"to"| COMP
+    COMP -->|"to"| CAT
+    CAT -->|"to"| PLAN
+    PLAN -->|"to"| MV1
+    PLAN -->|"to"| MV2
+    PLAN -->|"to"| MV3
     
-    MV1 -->|"🔗"| SNAP1
-    MV2 -->|"🔗"| SNAP2
-    MV3 -->|"🔗"| SNAP3
+    MV1 -->|"to"| SNAP1
+    MV2 -->|"to"| SNAP2
+    MV3 -->|"to"| SNAP3
     
-    SNAP1 -->|"💾"| PT1
-    SNAP2 -->|"💾"| PT2
-    SNAP3 -->|"💾"| PT3
+    SNAP1 -->|"to"| PT1
+    SNAP2 -->|"to"| PT2
+    SNAP3 -->|"to"| PT3
     
-    PT1 -->|"👁️"| VL1
-    PT2 -->|"👁️"| VL1
-    PT3 -->|"👁️"| VL2
+    PT1 -->|"to"| VL1
+    PT2 -->|"to"| VL1
+    PT3 -->|"to"| VL2
     
-    PROD -->|"🔗"| MV1
-    PROD -->|"🔗"| MV3
-    DEV -->|"🔗"| MV2
-    DEV -->|"🔗"| MV3
+    PROD -->|"to"| MV1
+    PROD -->|"to"| MV3
+    DEV -->|"to"| MV2
+    DEV -->|"to"| MV3
     
-    PLAN -->|"⚙️"| BF
-    BF -->|"📈"| INC
-    BF -->|"🔄"| FULL
-    INC -->|"💾"| PT1
-    INC -->|"💾"| PT2
-    FULL -->|"💾"| PT3
+    PLAN -->|"to"| BF
+    BF -->|"to"| INC
+    BF -->|"to"| FULL
+    INC -->|"to"| PT1
+    INC -->|"to"| PT2
+    FULL -->|"to"| PT3
 
     style LP fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style PC fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000

@@ -10,60 +10,60 @@ The following diagram illustrates how Vulcan's run system works with cron-based 
 
 ```mermaid
 graph TB
-    subgraph "⏰ Scheduler Triggers"
-        CRON[🔄 Cron Job / CI/CD<br/>Runs periodically]
-        MANUAL[👤 Manual Execution<br/>vulcan run]
+    subgraph "Scheduler Triggers"
+        CRON[Cron Job / CI/CD<br/>Runs periodically]
+        MANUAL[Manual Execution<br/>vulcan run]
     end
 
-    subgraph "🔍 Run Process"
-        START[⚡ vulcan run<br/>Command starts]
-        CHECK[🔎 Check for missing intervals<br/>Compare with state]
-        CRON_CHECK[📅 Check cron schedules<br/>Which models are due?]
-        FILTER[🔽 Filter models<br/>Only process due intervals]
+    subgraph "Run Process"
+        START[vulcan run<br/>Command starts]
+        CHECK[Check for missing intervals<br/>Compare with state]
+        CRON_CHECK[Check cron schedules<br/>Which models are due?]
+        FILTER[Filter models<br/>Only process due intervals]
     end
 
-    subgraph "📊 Model Execution"
-        M1[📈 sales.daily_sales<br/>cron: @daily<br/>Due: ✅]
-        M2[📊 sales.weekly_sales<br/>cron: @weekly<br/>Due: ❌]
-        M3[📉 sales.monthly_sales<br/>cron: @monthly<br/>Due: ❌]
+    subgraph "Model Execution"
+        M1[sales.daily_sales<br/>cron: @daily<br/>Due: Yes]
+        M2[sales.weekly_sales<br/>cron: @weekly<br/>Due: No]
+        M3[sales.monthly_sales<br/>cron: @monthly<br/>Due: No]
     end
 
-    subgraph "💾 State Management"
-        STATE[🗄️ State Database<br/>Tracks processed intervals]
-        UPDATE[📝 Update State<br/>Mark intervals as processed]
+    subgraph "State Management"
+        STATE[State Database<br/>Tracks processed intervals]
+        UPDATE[Update State<br/>Mark intervals as processed]
     end
 
-    subgraph "⚙️ Execution Flow"
-        EXEC1[🔄 Execute daily_sales<br/>Process missing intervals]
-        EXEC2[⏭️ Skip weekly_sales<br/>Not due yet]
-        EXEC3[⏭️ Skip monthly_sales<br/>Not due yet]
+    subgraph "Execution Flow"
+        EXEC1[Execute daily_sales<br/>Process missing intervals]
+        EXEC2[Skip weekly_sales<br/>Not due yet]
+        EXEC3[Skip monthly_sales<br/>Not due yet]
     end
 
-    subgraph "✅ Results"
-        SUCCESS[✅ Run Complete<br/>Intervals processed]
-        LOG[📋 Log Results<br/>Execution summary]
+    subgraph "Results"
+        SUCCESS[Run Complete<br/>Intervals processed]
+        LOG[Log Results<br/>Execution summary]
     end
 
-    CRON -->|"⏰ Scheduled"| START
-    MANUAL -->|"👤 Triggered"| START
-    START -->|"🔍"| CHECK
-    CHECK -->|"📊"| CRON_CHECK
-    CRON_CHECK -->|"📅"| FILTER
-    FILTER -->|"✅ Due"| M1
-    FILTER -->|"❌ Not due"| M2
-    FILTER -->|"❌ Not due"| M3
+    CRON -->|"Scheduled"| START
+    MANUAL -->|"Triggered"| START
+    START -->|"to"| CHECK
+    CHECK -->|"to"| CRON_CHECK
+    CRON_CHECK -->|"to"| FILTER
+    FILTER -->|"Due"| M1
+    FILTER -->|"Not due"| M2
+    FILTER -->|"Not due"| M3
     
-    M1 -->|"🔄"| EXEC1
-    M2 -->|"⏭️"| EXEC2
-    M3 -->|"⏭️"| EXEC3
+    M1 -->|"to"| EXEC1
+    M2 -->|"to"| EXEC2
+    M3 -->|"to"| EXEC3
     
-    EXEC1 -->|"💾"| STATE
-    EXEC2 -.->|"⏭️"| STATE
-    EXEC3 -.->|"⏭️"| STATE
+    EXEC1 -->|"to"| STATE
+    EXEC2 -.->|"Skip"| STATE
+    EXEC3 -.->|"Skip"| STATE
     
-    STATE -->|"📝"| UPDATE
-    UPDATE -->|"✅"| SUCCESS
-    SUCCESS -->|"📋"| LOG
+    STATE -->|"to"| UPDATE
+    UPDATE -->|"to"| SUCCESS
+    SUCCESS -->|"to"| LOG
 
     style CRON fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style START fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
@@ -142,28 +142,28 @@ The `vulcan run` command processes missing data intervals for models that haven'
 
 ```mermaid
 flowchart TD
-    START[⚡ vulcan run<br/>Command starts] --> CHECK{🔍 Check model<br/>definitions}
+    START[vulcan run<br/>Command starts] --> CHECK{Check model<br/>definitions}
     
-    CHECK -->|"❌ Changed"| ERROR[🚫 Error: Use 'vulcan plan'<br/>to apply changes first]
-    CHECK -->|"✅ No changes"| STATE[📊 Query state database<br/>Get processed intervals]
+    CHECK -->|"Changed"| ERROR[Error: Use 'vulcan plan'<br/>to apply changes first]
+    CHECK -->|"No changes"| STATE[Query state database<br/>Get processed intervals]
     
-    STATE --> CRON[📅 Check cron schedules<br/>Which models are due?]
+    STATE --> CRON[Check cron schedules<br/>Which models are due?]
     
-    CRON --> FILTER{🔽 Filter models<br/>by cron schedule}
+    CRON --> FILTER{Filter models<br/>by cron schedule}
     
-    FILTER -->|"✅ Due"| EXEC1[🔄 Execute Model 1<br/>Process missing intervals]
-    FILTER -->|"✅ Due"| EXEC2[🔄 Execute Model 2<br/>Process missing intervals]
-    FILTER -->|"❌ Not due"| SKIP1[⏭️ Skip Model 3<br/>Not due yet]
-    FILTER -->|"❌ Not due"| SKIP2[⏭️ Skip Model 4<br/>Not due yet]
+    FILTER -->|"Due"| EXEC1[Execute Model 1<br/>Process missing intervals]
+    FILTER -->|"Due"| EXEC2[Execute Model 2<br/>Process missing intervals]
+    FILTER -->|"Not due"| SKIP1[Skip Model 3<br/>Not due yet]
+    FILTER -->|"Not due"| SKIP2[Skip Model 4<br/>Not due yet]
     
-    EXEC1 --> UPDATE[💾 Update state database<br/>Mark intervals as processed]
+    EXEC1 --> UPDATE[Update state database<br/>Mark intervals as processed]
     EXEC2 --> UPDATE
-    SKIP1 -.->|"⏭️"| UPDATE
-    SKIP2 -.->|"⏭️"| UPDATE
+    SKIP1 -.->|"Skip"| UPDATE
+    SKIP2 -.->|"Skip"| UPDATE
     
-    UPDATE --> SUCCESS[✅ Run complete<br/>Summary output]
+    UPDATE --> SUCCESS[Run complete<br/>Summary output]
     
-    ERROR --> END[❌ Exit with error]
+    ERROR --> END[Exit with error]
     SUCCESS --> END
 
     style START fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
@@ -346,85 +346,85 @@ The `vulcan run` command doesn't run continuously - it executes once and exits. 
 
 ```mermaid
 graph TB
-    subgraph "🔄 Automation Layer - Triggers"
-        CRON[⏰ Cron Job<br/>Schedule: Every hour<br/>Example: 0 * * * *]
-        CI[🚀 CI/CD Pipeline<br/>GitHub Actions / GitLab CI<br/>Scheduled workflows]
-        K8S[☸️ Kubernetes CronJob<br/>Container orchestration<br/>K8s native scheduling]
-        MANUAL[👤 Manual Trigger<br/>Developer runs manually<br/>vulcan run]
+    subgraph "Automation Layer - Triggers"
+        CRON[Cron Job<br/>Schedule: Every hour<br/>Example: 0 * * * *]
+        CI[CI/CD Pipeline<br/>GitHub Actions / GitLab CI<br/>Scheduled workflows]
+        K8S[Kubernetes CronJob<br/>Container orchestration<br/>K8s native scheduling]
+        MANUAL[Manual Trigger<br/>Developer runs manually<br/>vulcan run]
     end
 
-    subgraph "⚡ Vulcan Run Command"
+    subgraph "Vulcan Run Command"
         RUN[vulcan run<br/>Command starts]
-        VALIDATE[✅ Validate Models<br/>Check for changes<br/>Error if modified]
-        QUERY[🔍 Query State Database<br/>Get execution history<br/>Read processed intervals]
+        VALIDATE[Validate Models<br/>Check for changes<br/>Error if modified]
+        QUERY[Query State Database<br/>Get execution history<br/>Read processed intervals]
     end
 
-    subgraph "💾 State Database"
-        STATE[🗄️ State Storage<br/>PostgreSQL / SQL Engine<br/>Transaction-safe storage]
+    subgraph "State Database"
+        STATE[State Storage<br/>PostgreSQL / SQL Engine<br/>Transaction-safe storage]
         
-        subgraph "📊 State Tables"
-            INTERVALS[📋 Processed Intervals<br/>model_name, start_ds, end_ds<br/>status: completed]
-            CRON_STATE[⏰ Cron Execution State<br/>model_name, last_run_time<br/>next_run_time]
-            MODEL_STATE[🔷 Model State<br/>model_name, fingerprint<br/>environment, version]
+        subgraph "State Tables"
+            INTERVALS[Processed Intervals<br/>model_name, start_ds, end_ds<br/>status: completed]
+            CRON_STATE[Cron Execution State<br/>model_name, last_run_time<br/>next_run_time]
+            MODEL_STATE[Model State<br/>model_name, fingerprint<br/>environment, version]
         end
     end
 
-    subgraph "📅 Cron Evaluation Engine"
-        CRON_CHECK[📅 Evaluate Cron Schedules<br/>Compare current time<br/>with last execution]
-        CALC[🧮 Calculate Missing Intervals<br/>Determine what's due<br/>Based on cron + state]
-        FILTER[🔽 Filter Models<br/>Only select due models<br/>Skip not-due models]
+    subgraph "Cron Evaluation Engine"
+        CRON_CHECK[Evaluate Cron Schedules<br/>Compare current time<br/>with last execution]
+        CALC[Calculate Missing Intervals<br/>Determine what's due<br/>Based on cron + state]
+        FILTER[Filter Models<br/>Only select due models<br/>Skip not-due models]
     end
 
-    subgraph "📊 Model Execution Queue"
-        QUEUE[📋 Execution Queue<br/>Ordered by dependencies<br/>Upstream first]
-        EXEC1[🔄 Execute Hourly Model<br/>@hourly - Due ✅<br/>Process missing intervals]
-        EXEC2[🔄 Execute Daily Model<br/>@daily - Due ✅<br/>Process missing intervals]
-        SKIP[⏭️ Skip Weekly Model<br/>@weekly - Not due ❌<br/>Wait for next week]
+    subgraph "Model Execution Queue"
+        QUEUE[Execution Queue<br/>Ordered by dependencies<br/>Upstream first]
+        EXEC1[Execute Hourly Model<br/>@hourly - Due<br/>Process missing intervals]
+        EXEC2[Execute Daily Model<br/>@daily - Due<br/>Process missing intervals]
+        SKIP[Skip Weekly Model<br/>@weekly - Not due<br/>Wait for next week]
     end
 
-    subgraph "💾 Update State"
-        UPDATE[📝 Update State Database<br/>Mark intervals processed<br/>Update cron state]
-        COMMIT[✅ Commit Transaction<br/>Ensure consistency<br/>Rollback on error]
+    subgraph "Update State"
+        UPDATE[Update State Database<br/>Mark intervals processed<br/>Update cron state]
+        COMMIT[Commit Transaction<br/>Ensure consistency<br/>Rollback on error]
     end
 
-    subgraph "📊 Results & Logging"
-        LOG[📋 Log Execution<br/>Summary output<br/>Success/failure status]
-        NOTIFY[🔔 Notifications<br/>Optional: Slack/Email<br/>On success/failure]
+    subgraph "Results & Logging"
+        LOG[Log Execution<br/>Summary output<br/>Success/failure status]
+        NOTIFY[Notifications<br/>Optional: Slack/Email<br/>On success/failure]
     end
 
-    CRON -->|"⏰ Scheduled trigger"| RUN
-    CI -->|"🚀 Pipeline trigger"| RUN
-    K8S -->|"☸️ K8s trigger"| RUN
-    MANUAL -->|"👤 Manual trigger"| RUN
+    CRON -->|"Scheduled trigger"| RUN
+    CI -->|"Pipeline trigger"| RUN
+    K8S -->|"K8s trigger"| RUN
+    MANUAL -->|"Manual trigger"| RUN
     
-    RUN -->|"1️⃣ Validate"| VALIDATE
-    VALIDATE -->|"2️⃣ Query state"| QUERY
-    QUERY -->|"📊 Read"| STATE
+    RUN -->|"1. Validate"| VALIDATE
+    VALIDATE -->|"2. Query state"| QUERY
+    QUERY -->|"Read"| STATE
     
-    STATE -->|"📋 Intervals"| INTERVALS
-    STATE -->|"⏰ Cron state"| CRON_STATE
-    STATE -->|"🔷 Model state"| MODEL_STATE
+    STATE -->|"Intervals"| INTERVALS
+    STATE -->|"Cron state"| CRON_STATE
+    STATE -->|"Model state"| MODEL_STATE
     
-    INTERVALS -->|"🔎 Compare"| CRON_CHECK
-    CRON_STATE -->|"📅 Check schedule"| CRON_CHECK
-    MODEL_STATE -->|"🔷 Get models"| CRON_CHECK
+    INTERVALS -->|"Compare"| CRON_CHECK
+    CRON_STATE -->|"Check schedule"| CRON_CHECK
+    MODEL_STATE -->|"Get models"| CRON_CHECK
     
-    CRON_CHECK -->|"📅 Evaluate"| CALC
-    CALC -->|"🧮 Calculate"| FILTER
+    CRON_CHECK -->|"Evaluate"| CALC
+    CALC -->|"Calculate"| FILTER
     
-    FILTER -->|"✅ Due models"| QUEUE
-    FILTER -.->|"❌ Skip"| SKIP
+    FILTER -->|"Due models"| QUEUE
+    FILTER -.->|"Skip"| SKIP
     
-    QUEUE -->|"🔄 Execute"| EXEC1
-    QUEUE -->|"🔄 Execute"| EXEC2
+    QUEUE -->|"Execute"| EXEC1
+    QUEUE -->|"Execute"| EXEC2
     
-    EXEC1 -->|"💾 Update"| UPDATE
-    EXEC2 -->|"💾 Update"| UPDATE
-    SKIP -.->|"⏭️ No update"| UPDATE
+    EXEC1 -->|"Update"| UPDATE
+    EXEC2 -->|"Update"| UPDATE
+    SKIP -.->|"No update"| UPDATE
     
-    UPDATE -->|"💾 Commit"| COMMIT
-    COMMIT -->|"✅ Success"| LOG
-    LOG -->|"🔔 Optional"| NOTIFY
+    UPDATE -->|"Commit"| COMMIT
+    COMMIT -->|"Success"| LOG
+    LOG -->|"Optional"| NOTIFY
 
     style CRON fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style CI fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
@@ -551,22 +551,22 @@ Set your automation frequency based on your most frequent model's `cron`:
 
 ```mermaid
 graph TD
-    subgraph "📊 Model Cron Schedules"
-        H[⏰ Hourly Model<br/>cron: @hourly]
-        D[📅 Daily Model<br/>cron: @daily]
-        W[📆 Weekly Model<br/>cron: @weekly]
+    subgraph "Model Cron Schedules"
+        H[Hourly Model<br/>cron: @hourly]
+        D[Daily Model<br/>cron: @daily]
+        W[Weekly Model<br/>cron: @weekly]
     end
 
-    subgraph "🔄 Automation Frequency"
-        AUTO_H[⏰ Run every hour<br/>vulcan run]
-        AUTO_D[📅 Run daily<br/>vulcan run]
-        AUTO_W[📆 Run weekly<br/>vulcan run]
+    subgraph "Automation Frequency"
+        AUTO_H[Run every hour<br/>vulcan run]
+        AUTO_D[Run daily<br/>vulcan run]
+        AUTO_W[Run weekly<br/>vulcan run]
     end
 
-    subgraph "✅ Execution Result"
-        RESULT1[✅ Hourly: Runs every time<br/>✅ Daily: Runs when due<br/>✅ Weekly: Runs when due]
-        RESULT2[⏭️ Hourly: Skipped<br/>✅ Daily: Runs when due<br/>✅ Weekly: Runs when due]
-        RESULT3[⏭️ Hourly: Skipped<br/>⏭️ Daily: Skipped<br/>✅ Weekly: Runs when due]
+    subgraph "Execution Result"
+        RESULT1[Hourly: Runs every time<br/>Daily: Runs when due<br/>Weekly: Runs when due]
+        RESULT2[Hourly: Skipped<br/>Daily: Runs when due<br/>Weekly: Runs when due]
+        RESULT3[Hourly: Skipped<br/>Daily: Skipped<br/>Weekly: Runs when due]
     end
 
     H -->|"Requires"| AUTO_H

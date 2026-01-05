@@ -8,55 +8,55 @@ The following diagram illustrates the complete plan lifecycle, from local change
 
 ```mermaid
 flowchart TD
-    subgraph "1️⃣ Local Development"
-        A[👨‍💻 Developer modifies model files<br/>📝 Edit SQL/Python models]
-        B[📁 Local project state<br/>✨ Your changes ready]
+    subgraph "1. Local Development"
+        A[Developer modifies model files<br/>Edit SQL/Python models]
+        B[Local project state<br/>Your changes ready]
     end
 
-    subgraph "2️⃣ Plan Creation"
-        C[⚡ vulcan plan<br/>🚀 Command execution]
-        D[🔎 Compare local vs environment<br/>📊 State comparison]
-        E{🔍 Changes detected?}
-        F[📋 Generate plan summary<br/>✨ Plan ready for review]
-        G[🏷️ Change categorization<br/>🔴 Breaking / 🟢 Non-breaking / 🟡 Forward-only]
+    subgraph "2. Plan Creation"
+        C[vulcan plan<br/>Command execution]
+        D[Compare local vs environment<br/>State comparison]
+        E{Changes detected?}
+        F[Generate plan summary<br/>Plan ready for review]
+        G[Change categorization<br/>Breaking / Non-breaking / Forward-only]
     end
 
-    subgraph "3️⃣ Plan Review"
-        H[👀 Review plan output<br/>📊 Check changes & impacts]
-        I{✅ Apply plan?}
-        J[❌ Cancel<br/>🚫 No changes applied]
+    subgraph "3. Plan Review"
+        H[Review plan output<br/>Check changes & impacts]
+        I{Apply plan?}
+        J[Cancel<br/>No changes applied]
     end
 
-    subgraph "4️⃣ Plan Application"
-        K[🔷 Create model variants<br/>🔑 With unique fingerprints]
-        L[🗄️ Create physical tables<br/>💾 In data warehouse]
-        M[🔄 Backfill data<br/>📈 Process historical data]
-        N[👁️ Update virtual layer<br/>🔍 Create/update views]
-        O[🌍 Update environment references<br/>🔗 Point to new variants]
+    subgraph "4. Plan Application"
+        K[Create model variants<br/>With unique fingerprints]
+        L[Create physical tables<br/>In data warehouse]
+        M[Backfill data<br/>Process historical data]
+        N[Update virtual layer<br/>Create/update views]
+        O[Update environment references<br/>Point to new variants]
     end
 
-    subgraph "5️⃣ Result"
-        P[✅ Environment updated<br/>🎉 Changes deployed]
-        Q[🔍 Models accessible via views<br/>📊 Ready for queries]
+    subgraph "5. Result"
+        P[Environment updated<br/>Changes deployed]
+        Q[Models accessible via views<br/>Ready for queries]
     end
 
-    A -->|"📤"| B
-    B -->|"➡️"| C
-    C -->|"🔍"| D
-    D -->|"🔎"| E
-    E -->|"✅ Yes"| F
-    E -->|"❌ No"| P
-    F -->|"🏷️"| G
-    G -->|"📋"| H
-    H -->|"👀"| I
-    I -->|"✅ Yes"| K
-    I -->|"❌ No"| J
-    K -->|"🔷"| L
-    L -->|"💾"| M
-    M -->|"🔄"| N
-    N -->|"👁️"| O
-    O -->|"🔗"| P
-    P -->|"✨"| Q
+    A -->|"to"| B
+    B -->|"to"| C
+    C -->|"to"| D
+    D -->|"to"| E
+    E -->|"Yes"| F
+    E -->|"No"| P
+    F -->|"to"| G
+    G -->|"to"| H
+    H -->|"to"| I
+    I -->|"Yes"| K
+    I -->|"No"| J
+    K -->|"to"| L
+    L -->|"to"| M
+    M -->|"to"| N
+    N -->|"to"| O
+    O -->|"to"| P
+    P -->|"to"| Q
 
     style A fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style C fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
@@ -72,24 +72,24 @@ flowchart TD
 
 ```mermaid
 graph LR
-    subgraph "📋 Plan Contents"
-        PC1[➕ Added Models<br/>✨ New models to create]
-        PC2[➖ Removed Models<br/>🗑️ Models to delete]
-        PC3[✏️ Modified Models<br/>📝 With diffs]
-        PC4[🔗 Indirectly Affected<br/>📊 Downstream models]
-        PC5[📅 Backfill Requirements<br/>📆 Date ranges]
+    subgraph "Plan Contents"
+        PC1[Added Models<br/>New models to create]
+        PC2[Removed Models<br/>Models to delete]
+        PC3[Modified Models<br/>With diffs]
+        PC4[Indirectly Affected<br/>Downstream models]
+        PC5[Backfill Requirements<br/>Date ranges]
     end
 
-    subgraph "🏷️ Change Types"
-        CT1[🔴 Breaking Change<br/>⚠️ Requires downstream backfill<br/>💥 Cascading impact]
-        CT2[🟢 Non-Breaking Change<br/>✅ Only direct model backfill<br/>🎯 Isolated impact]
-        CT3[🟡 Forward-Only<br/>♻️ Reuses existing tables<br/>💰 Cost-effective]
+    subgraph "Change Types"
+        CT1[Breaking Change<br/>Requires downstream backfill<br/>Cascading impact]
+        CT2[Non-Breaking Change<br/>Only direct model backfill<br/>Isolated impact]
+        CT3[Forward-Only<br/>Reuses existing tables<br/>Cost-effective]
     end
 
-    PC3 -->|"🔴"| CT1
-    PC3 -->|"🟢"| CT2
-    PC3 -->|"🟡"| CT3
-    PC4 -->|"🔴"| CT1
+    PC3 -->|"Breaking"| CT1
+    PC3 -->|"Non-breaking"| CT2
+    PC3 -->|"Forward-only"| CT3
+    PC4 -->|"Breaking"| CT1
 
     style PC1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
     style PC2 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
@@ -134,42 +134,42 @@ The following diagram illustrates how changes propagate through the dependency g
 
 ```mermaid
 graph TD
-    subgraph "📊 Model Dependencies"
-        A[📥 raw.raw_orders<br/>⬆️ Upstream]
-        B[📊 sales.daily_sales<br/>🔄 Midstream]
-        C[📈 sales.weekly_sales<br/>⬇️ Downstream]
-        D[📉 analytics.revenue_report<br/>⬇️ Downstream]
+    subgraph "Model Dependencies"
+        A[raw.raw_orders<br/>Upstream]
+        B[sales.daily_sales<br/>Midstream]
+        C[sales.weekly_sales<br/>Downstream]
+        D[analytics.revenue_report<br/>Downstream]
     end
 
-    subgraph "🟢 Scenario 1: Non-Breaking Change"
-        NB1[➕ Add column to daily_sales<br/>✨ New column added]
-        NB2[✅ Only daily_sales backfilled<br/>🔄 Single model update]
-        NB3[⏭️ weekly_sales NOT affected<br/>✅ No cascade]
-        NB4[⏭️ revenue_report NOT affected<br/>✅ No cascade]
+    subgraph "Scenario 1: Non-Breaking Change"
+        NB1[Add column to daily_sales<br/>New column added]
+        NB2[Only daily_sales backfilled<br/>Single model update]
+        NB3[weekly_sales NOT affected<br/>No cascade]
+        NB4[revenue_report NOT affected<br/>No cascade]
     end
 
-    subgraph "🔴 Scenario 2: Breaking Change"
-        BC1[🔍 Add WHERE clause to daily_sales<br/>⚠️ Filter logic changed]
-        BC2[🔄 daily_sales backfilled<br/>📊 Data reprocessed]
-        BC3[🔄 weekly_sales backfilled<br/>🔴 Indirect Breaking<br/>💥 Cascading impact]
-        BC4[🔄 revenue_report backfilled<br/>🔴 Indirect Breaking<br/>💥 Cascading impact]
+    subgraph "Scenario 2: Breaking Change"
+        BC1[Add WHERE clause to daily_sales<br/>Filter logic changed]
+        BC2[daily_sales backfilled<br/>Data reprocessed]
+        BC3[weekly_sales backfilled<br/>Indirect Breaking<br/>Cascading impact]
+        BC4[revenue_report backfilled<br/>Indirect Breaking<br/>Cascading impact]
     end
 
-    A -->|"📤"| B
-    B -->|"📤"| C
-    B -->|"📤"| D
+    A -->|"to"| B
+    B -->|"to"| C
+    B -->|"to"| D
 
-    NB1 -->|"✏️"| B
-    B -->|"✅"| NB2
-    NB2 -.->|"⏭️ No cascade"| C
-    NB2 -.->|"⏭️ No cascade"| D
+    NB1 -->|"to"| B
+    B -->|"to"| NB2
+    NB2 -.->|"No cascade"| C
+    NB2 -.->|"No cascade"| D
 
-    BC1 -->|"⚠️"| B
-    B -->|"🔄"| BC2
-    BC2 -->|"💥 Cascade"| BC3
-    BC2 -->|"💥 Cascade"| BC4
-    BC3 -->|"🔄"| C
-    BC4 -->|"🔄"| D
+    BC1 -->|"to"| B
+    B -->|"to"| BC2
+    BC2 -->|"Cascade"| BC3
+    BC2 -->|"Cascade"| BC4
+    BC3 -->|"to"| C
+    BC4 -->|"to"| D
 
     style A fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
     style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
@@ -231,43 +231,43 @@ The following diagram shows how model variants, physical tables, and environment
 
 ```mermaid
 graph TB
-    subgraph "📝 Model Definitions"
-        M1[📊 Model: sales.daily_sales<br/>🔢 Version 1<br/>✨ Original]
-        M2[📊 Model: sales.daily_sales<br/>🔢 Version 2 - Modified<br/>✏️ Updated]
+    subgraph "Model Definitions"
+        M1[Model: sales.daily_sales<br/>Version 1<br/>Original]
+        M2[Model: sales.daily_sales<br/>Version 2 - Modified<br/>Updated]
     end
 
-    subgraph "🔷 Model Variants & Snapshots"
-        V1[🔷 Variant 1<br/>🔑 Fingerprint: abc123<br/>📸 Unique snapshot]
-        V2[🔷 Variant 2<br/>🔑 Fingerprint: def456<br/>📸 Unique snapshot]
-        S1[📸 Snapshot 1<br/>🔐 Immutable state]
-        S2[📸 Snapshot 2<br/>🔐 Immutable state]
+    subgraph "Model Variants & Snapshots"
+        V1[Variant 1<br/>Fingerprint: abc123<br/>Unique snapshot]
+        V2[Variant 2<br/>Fingerprint: def456<br/>Unique snapshot]
+        S1[Snapshot 1<br/>Immutable state]
+        S2[Snapshot 2<br/>Immutable state]
     end
 
-    subgraph "💾 Physical Tables"
-        T1[🗄️ Physical Table 1<br/>📦 db.vulcan__sales.daily_sales__abc123<br/>💾 Actual data storage]
-        T2[🗄️ Physical Table 2<br/>📦 db.vulcan__sales.daily_sales__def456<br/>💾 Actual data storage]
+    subgraph "Physical Tables"
+        T1[Physical Table 1<br/>db.vulcan__sales.daily_sales__abc123<br/>Actual data storage]
+        T2[Physical Table 2<br/>db.vulcan__sales.daily_sales__def456<br/>Actual data storage]
     end
 
-    subgraph "👁️ Virtual Layer Views"
-        VL1[🔍 View: sales.daily_sales<br/>👁️ Points to Variant 1<br/>🔗 Reference mapping]
-        VL2[🔍 View: sales.daily_sales<br/>👁️ Points to Variant 2<br/>🔗 Reference mapping]
+    subgraph "Virtual Layer Views"
+        VL1[View: sales.daily_sales<br/>Points to Variant 1<br/>Reference mapping]
+        VL2[View: sales.daily_sales<br/>Points to Variant 2<br/>Reference mapping]
     end
 
-    subgraph "🌍 Environments"
-        PROD[🚀 Production Environment<br/>✅ References Variant 1<br/>🌐 Live production data]
-        DEV[🧪 Dev Environment<br/>🔬 References Variant 2<br/>🧪 Testing environment]
+    subgraph "Environments"
+        PROD[Production Environment<br/>References Variant 1<br/>Live production data]
+        DEV[Dev Environment<br/>References Variant 2<br/>Testing environment]
     end
 
-    M1 -->|"✨"| V1
-    M2 -->|"✏️"| V2
-    V1 -->|"📸"| S1
-    V2 -->|"📸"| S2
-    S1 -->|"💾"| T1
-    S2 -->|"💾"| T2
-    T1 -->|"👁️"| VL1
-    T2 -->|"👁️"| VL2
-    PROD -->|"🔗"| V1
-    DEV -->|"🔗"| V2
+    M1 -->|"to"| V1
+    M2 -->|"to"| V2
+    V1 -->|"to"| S1
+    V2 -->|"to"| S2
+    S1 -->|"to"| T1
+    S2 -->|"to"| T2
+    T1 -->|"to"| VL1
+    T2 -->|"to"| VL2
+    PROD -->|"to"| V1
+    DEV -->|"to"| V2
 
     style M1 fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style M2 fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000

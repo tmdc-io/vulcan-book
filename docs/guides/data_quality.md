@@ -386,9 +386,9 @@ flowchart TB
     end
     
     subgraph "Results"
-        PASS[✅ Pass<br/>Data flows]
-        FAIL[❌ Fail<br/>Pipeline stops]
-        TREND[📊 Trends<br/>Monitor quality]
+        PASS[Pass<br/>Data flows]
+        FAIL[Fail<br/>Pipeline stops]
+        TREND[Trends<br/>Monitor quality]
     end
     
     DEV --> TEST
