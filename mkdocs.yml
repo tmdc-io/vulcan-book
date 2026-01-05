@@ -26,6 +26,7 @@ nav:
         - configurations/engines/postgres/postgres.md
         - configurations/engines/redshift/redshift.md
         - configurations/engines/snowflake/snowflake.md
+        - configurations/engines/spark/spark.md
         - configurations/engines/trino/trino.md
       - CI/CD: ci-cd/ci-cd.md
   - Components:
