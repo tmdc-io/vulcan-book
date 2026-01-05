@@ -4,12 +4,12 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
 <meta content="DataOS Vulcan Team" name="author"/>
-<link href="https://tmdc-io.github.io/vulcan-docs/configurations/engines/databricks/databricks/" rel="canonical"/>
-<link href="../../bigquery/bigquery/" rel="prev"/>
-<link href="../../fabric/fabric/" rel="next"/>
+<link href="https://tmdc-io.github.io/vulcan-docs/configurations/engines/spark/spark/" rel="canonical"/>
+<link href="../../snowflake/snowflake/" rel="prev"/>
+<link href="../../trino/trino/" rel="next"/>
 <link href="../../../../assets/images/vulcan.svg" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
-<title>Databricks - DataOS Vulcan</title>
+<title>Spark - DataOS Vulcan</title>
 <link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -33,7 +33,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#databricks">
+<a class="md-skip" href="#spark">
           Skip to content
         </a>
 </div>
@@ -57,7 +57,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Databricks
+              Spark
             
           </span>
 </div>
@@ -312,20 +312,8 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item md-nav__item--active">
-<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
-<label class="md-nav__link md-nav__link--active" for="__toc">
-<span class="md-ellipsis">
-    
-  
-    Databricks
-  
-
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<a class="md-nav__link md-nav__link--active" href="./">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../databricks/databricks/">
 <span class="md-ellipsis">
     
   
@@ -335,54 +323,6 @@
     
   </span>
 </a>
-<nav aria-label="On this page" class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#localbuilt-in-scheduler">
-<span class="md-ellipsis">
-      
-        Local/Built-in Scheduler
-      
-    </span>
-</a>
-<nav aria-label="Local/Built-in Scheduler" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#prerequisites">
-<span class="md-ellipsis">
-      
-        Prerequisites
-      
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#permissions">
-<span class="md-ellipsis">
-      
-        Permissions
-      
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#connection-options">
-<span class="md-ellipsis">
-      
-        Connection Options
-      
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-</ul>
-</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="../../fabric/fabric/">
@@ -456,8 +396,20 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../spark/spark/">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Spark
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
 <span class="md-ellipsis">
     
   
@@ -467,6 +419,72 @@
     
   </span>
 </a>
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#localbuilt-in-scheduler">
+<span class="md-ellipsis">
+      
+        Local/Built-in Scheduler
+      
+    </span>
+</a>
+<nav aria-label="Local/Built-in Scheduler" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions">
+<span class="md-ellipsis">
+      
+        Permissions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connection-options">
+<span class="md-ellipsis">
+      
+        Connection Options
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#catalog-support">
+<span class="md-ellipsis">
+      
+        Catalog Support
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-images">
+<span class="md-ellipsis">
+      
+        Docker Images
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="../../trino/trino/">
@@ -1103,6 +1121,24 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#catalog-support">
+<span class="md-ellipsis">
+      
+        Catalog Support
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-images">
+<span class="md-ellipsis">
+      
+        Docker Images
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -1138,26 +1174,25 @@
 </ol>
 </nav>
 <article class="md-content__inner md-typeset">
-<h1 id="databricks">Databricks<a class="headerlink" href="#databricks" title="Link to this section">¶</a></h1>
-<p>Databricks is a unified analytics platform built on Apache Spark that provides collaborative notebooks, automated cluster management, and a powerful SQL engine. It's ideal for large-scale data engineering, machine learning, and collaborative analytics. Vulcan integrates with Databricks to manage your data transformations using Unity Catalog and Delta Lake.</p>
+<h1 id="spark">Spark<a class="headerlink" href="#spark" title="Link to this section">¶</a></h1>
+<p>Apache Spark is a unified analytics engine for large-scale data processing. Vulcan integrates with Spark to manage your data transformations with version control and safe deployments.</p>
 <h2 id="localbuilt-in-scheduler">Local/Built-in Scheduler<a class="headerlink" href="#localbuilt-in-scheduler" title="Link to this section">¶</a></h2>
-<p><strong>Engine Adapter Type</strong>: <code>databricks</code></p>
+<p><strong>Engine Adapter Type</strong>: <code>spark</code></p>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h3>
 <ol>
-<li>A Databricks workspace with SQL warehouse or cluster access</li>
-<li>A personal access token or service principal credentials</li>
-<li>The HTTP path to your SQL warehouse or cluster</li>
+<li>A running Spark cluster (standalone, YARN, or Kubernetes)</li>
+<li>Spark 3.x or higher (3.4+ recommended for catalog support)</li>
+<li>Network connectivity to the Spark master node</li>
 </ol>
 <h3 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Link to this section">¶</a></h3>
-<p>Vulcan requires the following Databricks permissions:</p>
+<p>Vulcan requires the following Spark permissions:</p>
 <ul>
-<li><code>USE CATALOG</code> on the target catalog</li>
-<li><code>USE SCHEMA</code> and <code>CREATE SCHEMA</code> on the target schemas</li>
-<li><code>CREATE TABLE</code> and <code>CREATE VIEW</code> on schemas</li>
-<li><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> on tables</li>
+<li>Access to create and manage tables in the configured catalog</li>
+<li>Read/write access to the configured storage (S3, HDFS, etc.)</li>
+<li>Permission to submit Spark applications</li>
 </ul>
 <h3 id="connection-options">Connection Options<a class="headerlink" href="#connection-options" title="Link to this section">¶</a></h3>
-<p>Here are all the connection parameters you can use when setting up a Databricks gateway:</p>
+<p>Here are all the connection parameters you can use when setting up a Spark gateway:</p>
 <table>
 <thead>
 <tr>
@@ -1170,43 +1205,82 @@
 <tbody>
 <tr>
 <td><code>type</code></td>
-<td>Engine type name - must be <code>databricks</code></td>
+<td>Engine type name - must be <code>spark</code></td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;">Y</td>
 </tr>
 <tr>
-<td><code>server_hostname</code></td>
-<td>The Databricks workspace hostname (e.g., <code>adb-xxxxx.azuredatabricks.net</code>)</td>
+<td><code>config_dir</code></td>
+<td>Value to set for <code>SPARK_CONFIG_DIR</code></td>
 <td style="text-align: center;">string</td>
-<td style="text-align: center;">Y</td>
-</tr>
-<tr>
-<td><code>http_path</code></td>
-<td>The HTTP path to the SQL warehouse or cluster</td>
-<td style="text-align: center;">string</td>
-<td style="text-align: center;">Y</td>
-</tr>
-<tr>
-<td><code>access_token</code></td>
-<td>Personal access token or service principal token for authentication</td>
-<td style="text-align: center;">string</td>
-<td style="text-align: center;">Y</td>
+<td style="text-align: center;">N</td>
 </tr>
 <tr>
 <td><code>catalog</code></td>
-<td>The Unity Catalog name to use as the default catalog</td>
+<td>The catalog to use when issuing commands</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: center;">Y</td>
+<td style="text-align: center;">N</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Key/value pairs to set for the Spark Configuration</td>
+<td style="text-align: center;">dict</td>
+<td style="text-align: center;">N</td>
 </tr>
 </tbody>
 </table>
+<h3 id="catalog-support">Catalog Support<a class="headerlink" href="#catalog-support" title="Link to this section">¶</a></h3>
+<p>Vulcan's Spark integration is designed for single catalog usage. All models must be defined with a single catalog.</p>
+<p>If <code>catalog</code> is not set, the behavior depends on the Spark version:</p>
+<table>
+<thead>
+<tr>
+<th>Spark Version</th>
+<th>Default Catalog Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt;= 3.4</td>
+<td>Default catalog determined at runtime</td>
+</tr>
+<tr>
+<td>&lt; 3.4</td>
+<td>Default catalog is <code>spark_catalog</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="docker-images">Docker Images<a class="headerlink" href="#docker-images" title="Link to this section">¶</a></h3>
+<p>The following Docker images are available for running Vulcan with Spark:</p>
+<table>
+<thead>
+<tr>
+<th>Image</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tmdcio/vulcan:0.228.0-spark-01</code></td>
+<td>Main Vulcan API service for Spark</td>
+</tr>
+<tr>
+<td><code>tmdcio/vulcan-transpiler:0.228.0-spark-01</code></td>
+<td>SQL transpiler service</td>
+</tr>
+</tbody>
+</table>
+<p>Pull the images:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan:0.228.0-spark-01
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-transpiler:0.228.0-spark-01
+</span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code>http_path</code> can be found in your Databricks workspace under <strong>SQL Warehouses → [Your Warehouse] → Connection Details</strong>.</p>
+<p>Spark may not be used for the Vulcan state connection. Use a transactional database like PostgreSQL for the <code>state_connection</code>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Never commit your access token to version control. Use environment variables: <code>access_token: {{ env_var('DATABRICKS_TOKEN') }}</code></p>
+<p>Always use environment variables for sensitive credentials in your Spark configuration (S3 keys, database passwords, etc.).</p>
 </div>
 </article>
 </div>
@@ -1220,7 +1294,7 @@
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: BigQuery" class="md-footer__link md-footer__link--prev" href="../../bigquery/bigquery/">
+<a aria-label="Previous: Snowflake" class="md-footer__link md-footer__link--prev" href="../../snowflake/snowflake/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -1229,17 +1303,17 @@
                 Previous
               </span>
 <div class="md-ellipsis">
-                BigQuery
+                Snowflake
               </div>
 </div>
 </a>
-<a aria-label="Next: Microsoft Fabric" class="md-footer__link md-footer__link--next" href="../../fabric/fabric/">
+<a aria-label="Next: Trino" class="md-footer__link md-footer__link--next" href="../../trino/trino/">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 Next
               </span>
 <div class="md-ellipsis">
-                Microsoft Fabric
+                Trino
               </div>
 </div>
 <div class="md-footer__button md-icon">
