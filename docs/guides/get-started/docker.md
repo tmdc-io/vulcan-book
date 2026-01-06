@@ -79,6 +79,8 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     ```bash
     make setup
+    docker compose -f docker/docker-compose.infra.yml up -d
+    docker compose -f docker/docker-compose.warehouse.yml up -d
     ```
     
     This command creates and starts three essential services:
@@ -107,6 +109,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     ```bash
     make vulcan-up
+    docker compose -f docker/docker-compose.vulcan.yml up -d
     ```
     
     This command starts two services:
@@ -351,6 +354,8 @@ When you're done working with Vulcan, you can stop the services to free up syste
     
     ```bash
     make all-down       # Stop all services
+    docker compose -f docker/docker-compose.infra.yml down -v
+    docker compose -f docker/docker-compose.warehouse.yml down -v
     ```
     
     **Stop and Clean Up (Warning: This deletes all data)**
@@ -367,6 +372,7 @@ When you're done working with Vulcan, you can stop the services to free up syste
     
     ```bash
     make vulcan-down     # Stop only Vulcan API services
+    docker compose -f docker/docker-compose.vulcan.yml down -v
     make infra-down      # Stop infrastructure services (statestore, minio)
     make warehouse-down  # Stop warehouse services
     ```
@@ -464,6 +470,13 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
     - **Password**: `password`
     
     The MinIO console allows you to browse buckets, upload files, and manage storage policies.
+
+    **Permission denied**
+
+    Create a .logs folder manually and change the permission 
+    ```bash
+    chmod -R a+w .
+    ```
 
 
 ## Next Steps
