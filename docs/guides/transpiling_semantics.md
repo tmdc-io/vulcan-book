@@ -1,19 +1,22 @@
 # Transpiling Semantics
 
-The `vulcan transpile` command converts semantic queries into executable SQL, allowing you to preview, debug, and validate semantic logic before execution.
+The `vulcan transpile` command converts semantic queries into executable SQL. Use it to preview, debug, and validate semantic logic before execution.
 
-Think of transpilation as a translator, it takes your semantic layer queries (which are business-friendly) and converts them into the SQL that your database actually understands. Pretty neat, right?
+Transpilation converts semantic layer queries (business-friendly) into SQL that your database understands.
 
 ## What is Transpilation?
 
-Transpilation transforms semantic layer queries into database-specific SQL. It's like having a translator that speaks both "business language" (semantic queries) and "database language" (SQL).
+Transpilation transforms semantic layer queries into database-specific SQL. It converts "business language" (semantic queries) into "database language" (SQL).
 
 - **Semantic SQL → Native SQL**: Converts semantic SQL queries with `MEASURE()` functions into standard SQL - takes your business-friendly queries and makes them database-ready
-- **REST API Payload → Native SQL**: Converts JSON query payloads into executable SQL statements - perfect for API-driven applications
+
+- **REST API Payload → Native SQL**: Converts JSON query payloads into executable SQL statements. Use for API-driven applications.
+
 - **Validation**: Catches errors before query execution - find problems before they hit production
+
 - **Debugging**: Inspect the generated SQL to understand query behavior - see exactly what your semantic queries are doing under the hood
 
-Why is this useful? Well, semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap!
+Semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap.
 
 ## Basic Structure
 
@@ -37,11 +40,16 @@ OFFSET 0                          # Optional: pagination offset
 ```
 
 **Key Components:**
-- `alias.dimension_name` — Reference dimensions using semantic model alias
-- `MEASURE(measure_name)` — Required wrapper for measures to apply aggregation
-- `FROM alias` — Use semantic model alias, not physical model name
-- `CROSS JOIN` — Join syntax (join conditions automatically inferred)
-- `segment_name = true` — Segments only support `= true`, not `= false`
+
+- `alias.dimension_name`: Reference dimensions using semantic model alias
+
+- `MEASURE(measure_name)`: Required wrapper for measures to apply aggregation
+
+- `FROM alias`: Use semantic model alias, not physical model name
+
+- `CROSS JOIN`: Join syntax (join conditions automatically inferred)
+
+- `segment_name = true`: Segments only support `= true`, not `= false`
 
 ### REST API Payload Structure
 
@@ -77,12 +85,18 @@ REST API queries use JSON payloads with semantic query definitions:
 ```
 
 **Key Components:**
-- `measures` — Array of fully qualified measure names: `"alias.measure_name"`
-- `dimensions` — Array of fully qualified dimension names: `"alias.dimension_name"`
-- `segments` — Array of segment names (no alias prefix needed)
-- `timeDimensions` — Array of objects with `dimension`, `dateRange`, and `granularity`
-- `filters` — Array of filter objects with `member`, `operator`, and `values`
-- `order` — Object mapping member names to sort direction (`"asc"` or `"desc"`)
+
+- `measures`: Array of fully qualified measure names: `"alias.measure_name"`
+
+- `dimensions`: Array of fully qualified dimension names: `"alias.dimension_name"`
+
+- `segments`: Array of segment names (no alias prefix needed)
+
+- `timeDimensions`: Array of objects with `dimension`, `dateRange`, and `granularity`
+
+- `filters`: Array of filter objects with `member`, `operator`, and `values`
+
+- `order`: Object mapping member names to sort direction (`"asc"` or `"desc"`)
 
 ## Basic Usage
 
@@ -116,9 +130,12 @@ vulcan transpile --format <format> "<query>"
 
 **Parameters:**
 
-- `--format` (required) — Output format: `sql` or `json`
-- `"<query>"` (required) — The semantic query to transpile
+- `--format` (required): Output format: `sql` or `json`
+
+- `"<query>"` (required): The semantic query to transpile
+
   - For SQL format: Semantic SQL query string
+
   - For JSON format: JSON query payload string
 
 ### Advanced Options
@@ -129,8 +146,10 @@ vulcan transpile --format sql "<query>" [--disable-post-processing]
 
 **Options:**
 
-- `--disable-post-processing` — Enable pushdown mode for CTE support and advanced SQL features
+- `--disable-post-processing`: Enable pushdown mode for CTE support and advanced SQL features
+
   - **Default**: Post-processing enabled (CTEs not supported)
+
   - **With flag**: Pushdown enabled (CTEs supported, no pre-aggregations)
 
 ## Transpiling Semantic SQL
@@ -364,7 +383,7 @@ Generate SQL examples for documentation or training. Use transpilation to create
 vulcan transpile --format sql "SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"
 ```
 
-This is great for documentation! You can show both the semantic query (easy to understand) and the generated SQL (what actually runs).
+Use this for documentation. Show both the semantic query (easy to understand) and the generated SQL (what actually runs).
 
 ## Common Errors and Solutions
 
@@ -373,8 +392,11 @@ This is great for documentation! You can show both the semantic query (easy to u
 **Cause:** Member doesn't exist in semantic model or is misspelled.
 
 **Solution:**
+
 - Verify member exists in your semantic model - check your semantic model definitions
+
 - Check spelling and casing (case-sensitive) - `users.plan_type` is different from `users.Plan_Type`
+
 - Use fully qualified format: `alias.member_name` - always include the alias prefix
 
 This error usually means you've made a typo or the member doesn't exist yet. Double-check your semantic model!
@@ -384,8 +406,11 @@ This error usually means you've made a typo or the member doesn't exist yet. Dou
 **Cause:** Measure referenced without proper qualification or doesn't exist.
 
 **Solution:**
+
 - Use `MEASURE(measure_name)` wrapper for SQL format - measures need the MEASURE() wrapper in SQL
+
 - Use fully qualified format: `alias.measure_name` for JSON format - JSON format uses dot notation
+
 - Verify measure is defined in semantic model - make sure the measure actually exists
 
 The format differs between SQL and JSON, so make sure you're using the right syntax for each!
@@ -395,8 +420,11 @@ The format differs between SQL and JSON, so make sure you're using the right syn
 **Cause:** Alias doesn't match any semantic model.
 
 **Solution:**
+
 - Check semantic model aliases in your `semantics/` directory
+
 - Verify alias spelling and casing
+
 - Ensure semantic models are properly defined
 
 
@@ -405,8 +433,11 @@ The format differs between SQL and JSON, so make sure you're using the right syn
 **Cause:** JSON payload is malformed.
 
 **Solution:**
+
 - Validate JSON syntax
+
 - Ensure proper quoting of strings
+
 - Check array and object structure
 
 ### Error: "Projection references non-aggregate values"
@@ -414,7 +445,9 @@ The format differs between SQL and JSON, so make sure you're using the right syn
 **Cause:** Non-aggregated columns not in GROUP BY, or measures missing MEASURE() wrapper.
 
 **Solution:**
+
 - Add all non-aggregated columns to GROUP BY - if you select a column, it needs to be in GROUP BY (unless it's aggregated)
+
 - Use MEASURE() wrapper for all measures in SQL format - measures must be wrapped in MEASURE()
 
 This is a SQL rule, you can't mix aggregated and non-aggregated columns without GROUP BY. The error is telling you exactly what's wrong!
@@ -426,12 +459,12 @@ This is a SQL rule, you can't mix aggregated and non-aggregated columns without 
 Always transpile queries before running them in production. It's like checking your work before turning it in:
 
 ```bash
-# ✅ Good: Validate first
+# Good: Validate first
 vulcan transpile --format sql "SELECT MEASURE(total_users) FROM users"
 # Review output, then execute - make sure the SQL looks right
 
-# ❌ Bad: Execute without validation
-# Direct execution without checking generated SQL - don't do this!
+# Bad: Execute without validation
+# Direct execution without checking generated SQL - don't do this
 ```
 
 Transpilation catches errors early. Use it!
@@ -474,6 +507,7 @@ vulcan transpile --format json '{"query": {"measures": ["users.total_users"]}}'
 Select post-processing or pushdown mode based on needs:
 
 - **Post-processing (default)**: Use for queries that benefit from pre-aggregations and caching
+
 - **Pushdown (`--disable-post-processing`)**: Use when you need CTEs or complex SQL structures
 
 ## Integration with Development Workflow
@@ -508,7 +542,9 @@ vulcan transpile --format sql "SELECT users.industry, MEASURE(total_arr) FROM su
 
 ## Next Steps
 
-- Learn about [Semantic Models](../../semantics/models.md) that define the queryable members
-- Explore [Business Metrics](../../semantics/business_metrics.md) for time-series analysis
-- See the [Semantics Overview](components/semantics/index.md) for the complete picture
+- Learn about [Semantic Models](../components/semantics/models.md) that define the queryable members
+
+- Explore [Business Metrics](../components/semantics/business_metrics.md) for time-series analysis
+
+- See the [Semantics Overview](../components/semantics/overview.md) for the complete picture
 

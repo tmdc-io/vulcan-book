@@ -1,17 +1,17 @@
 # Custom materializations
 
-Vulcan comes with a variety of [model kinds](../../model/model_kinds.md) that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?
+Vulcan comes with a variety of [model kinds](../model/model_kinds.md) that handle the most common ways to evaluate and materialize your data transformations. But what if you need something different?
 
 Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in, they let you write your own Python code to control exactly how your models get materialized.
 
 !!! warning "Advanced Feature"
-    Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If you're considering this path, we'd love to hear from you in our [community slack](https://tobikodata.com/community.html). If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.
+    Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.
 
 ## What is a materialization?
 
-Think of a materialization as the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to actually get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.
+A materialization is the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.
 
-Some materializations are straightforward. For example, a `FULL` model kind completely replaces the table each time it runs, so its materialization is essentially just `CREATE OR REPLACE TABLE [name] AS [your query]`. Simple!
+Some materializations are straightforward. For example, a `FULL` model kind completely replaces the table each time it runs, so its materialization is essentially just `CREATE OR REPLACE TABLE [name] AS [your query]`.
 
 Other materializations are more complex. An `INCREMENTAL_BY_TIME_RANGE` model needs to figure out which time intervals to process, query only that data, and then merge it into the existing table. That requires more logic.
 
@@ -19,20 +19,25 @@ The materialization logic can also vary by SQL engine. PostgreSQL doesn't suppor
 
 ## How custom materializations work
 
-Custom materializations are like creating your own model kind. You define them in Python, give them a name, and then reference that name in your model's `MODEL` block. They can even accept configuration arguments that you pass in from your model definition.
+Custom materializations are like creating your own model kind. You define them in Python, give them a name, and then reference that name in your model's `MODEL` block. They can accept configuration arguments that you pass in from your model definition.
 
 Here's what every custom materialization needs:
 
 - **Python code**: Written as a Python class
+
 - **Base class**: Must inherit from Vulcan's `CustomMaterialization` class
+
 - **Insert method**: At minimum, you need to implement the `insert` method
+
 - **Auto-loading**: Vulcan automatically discovers materializations in your `materializations/` directory
 
 You can also:
 
 - Override other methods from `MaterializableStrategy` or `EngineAdapter` classes
+
 - Execute arbitrary SQL using the engine adapter
-- Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a [Python model](../../model/types/python_models.md) instead)
+
+- Perform Python processing with Pandas or other libraries (though for most cases, you'd want that logic in a [Python model](../model/types/python_models.md) instead)
 
 Vulcan will automatically load any Python files in your project's `materializations/` directory. Or, if you prefer, you can package your materialization as a [Python package](#python-packaging) and install it like any other dependency.
 
@@ -381,6 +386,7 @@ When Vulcan loads your materialization, it inspects the type signature for gener
 Why would you want this? Two main benefits:
 
 - **Early validation**: Your `primary_key` validation happens at load time, not evaluation time. Issues get caught before you even create a plan.
+
 - **Type safety**: `model.kind` resolves to your custom kind object, so you get access to extra properties without additional validation.
 
 ## Sharing custom materializations

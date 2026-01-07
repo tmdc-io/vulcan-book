@@ -1,12 +1,12 @@
 # SQL
 
-SQL models are Vulcan's bread and butter, they're the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.
+SQL models are the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.
 
-**Why SQL models?** They're simple, powerful, and work with any SQL database. Most of your data transformations will probably be SQL models.
+SQL models are simple, powerful, and work with any SQL database. Most of your data transformations will be SQL models.
 
 ## SQL-Based Definition
 
-SQL-based models are the most common type. They're designed to feel like regular SQL, but with superpowers.
+SQL-based models are the most common type. They use regular SQL with additional Vulcan features.
 
 **Structure:** A SQL model file has these parts (in order):
 
@@ -50,15 +50,16 @@ ORDER BY order_date
 
 The `MODEL` DDL is where you define your model's metadata, name, kind, schedule, owner, and more. It must be the first statement in your SQL file.
 
-Think of it as the "header" that tells Vulcan everything it needs to know about your model. For a complete list of all available properties, check out the [Model Properties](../overview.md#model-properties) documentation.
+The `MODEL` DDL tells Vulcan everything it needs to know about your model. For a complete list of all available properties, see the [Model Properties](../properties.md) documentation.
 
 ### Optional Pre/Post-Statements
 
-Pre-statements run before your query, post-statements run after. They're perfect for setup, cleanup, and optimization tasks.
+Pre-statements run before your query, post-statements run after. Use them for setup, cleanup, and optimization tasks.
 
 **Common use cases:**
 
 - Pre-statements: Set session parameters, load UDFs, cache tables
+
 - Post-statements: Create indexes, run data quality checks, set retention policies
 
 **Important:** Pre/post-statements must end with semicolons. If you have post-statements, your main query must also end with a semicolon (so Vulcan knows where the query ends).
@@ -161,6 +162,7 @@ ON_VIRTUAL_UPDATE_END;
 Your model must contain a standalone query. This can be:
 
 - A single `SELECT` statement
+
 - Multiple `SELECT` statements combined with `UNION`, `INTERSECT`, or `EXCEPT`
 
 The result of this query becomes your model's table or view data. Pretty straightforward!
@@ -274,7 +276,9 @@ FROM vulcan_demo.fct_daily_sales
 You can also define SQL models using Python! This is useful when:
 
 - Your query is too complex for clean SQL
+
 - You need heavy dynamic logic (would require lots of macros)
+
 - You want to generate SQL programmatically
 
 **How it works:** You write Python code that generates SQL, and Vulcan executes it. You still get SQL models (they run SQL queries), but you write them in Python.

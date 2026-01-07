@@ -2,19 +2,23 @@
 
 Tests are your safety net for data transformations. Just like software engineers write unit tests to catch bugs before they ship, you can write tests to verify that your models transform data correctly, catching problems before they reach production and cause headaches.
 
-Think of tests as executable documentation. They show exactly how your model should behave with specific inputs, and they'll yell at you if something changes unexpectedly. Unlike [audits](../audits/audits.md) (which check data quality at runtime), tests verify the *logic* of your models against predefined inputs and expected outputs.
+Tests are executable documentation. They show exactly how your model should behave with specific inputs, and they fail if something changes unexpectedly. Unlike [audits](../audits/audits.md) (which check data quality at runtime), tests verify the logic of your models against predefined inputs and expected outputs.
 
 ## Why Testing Matters
 
-Data modelss are tricky beasts. Small errors can snowball into significant business impacts. A small change in one model can cascade into big problems downstream. Here's why testing is worth your time:
+Data models are tricky beasts. Small errors can snowball into significant business impacts. A small change in one model can cascade into big problems downstream. Here's why testing is worth your time:
 
 - **Catch breaking changes** - Refactor with confidence knowing tests will flag unintended behavior changes
+
 - **Document expected behavior** - Tests serve as executable specifications (better than comments that get outdated!)
+
 - **Faster debugging** - When something breaks, tests pinpoint exactly which transformation failed
+
 - **Data quality assurance** - Verify that aggregations, joins, and calculations produce correct results
+
 - **Confidence in changes** - Make updates knowing you'll catch regressions before they hit production
 
-Tests run either on demand (like in CI/CD modelss) or automatically when you create a new [plan](guides/plan.md). Either way, they're there to help you sleep better at night.
+Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new [plan](../../guides/plan.md).
 
 ## Creating Tests
 
@@ -23,7 +27,9 @@ Tests live in YAML files in the `tests/` folder of your project. The filename mu
 At minimum, a test needs three things:
 
 - **model** - Which model you're testing
+
 - **inputs** - Mock data for upstream dependencies (what goes in)
+
 - **outputs** - Expected results from the model's query (what should come out)
 
 Let's start with a simple example.
@@ -93,11 +99,14 @@ test_daily_sales_aggregation:
 This test gives the model three orders (two on March 15, one on March 16) and checks that:
 
 - Orders are correctly grouped by date
+
 - `total_orders` counts distinct orders per day (should be 2 for March 15, 1 for March 16)
+
 - `total_revenue` sums the amounts correctly (50 + 75 = 125 for March 15)
+
 - `last_order_id` returns the maximum order ID per day (O002 for March 15, O003 for March 16)
 
-Pretty straightforward! If any of these expectations don't match, the test fails and tells you what went wrong.
+If any of these expectations don't match, the test fails and tells you what went wrong.
 
 ### Testing Models with Multiple Dependencies
 
@@ -109,7 +118,9 @@ test_full_model_basic:
   description: |
     Validates aggregates and averages:
     - DISTINCT order counting
+
     - SUM(quantity * unit_price)
+
     - avg_order_value = total_spent / total_orders, or NULL when total_orders = 0
 
   inputs:
@@ -182,8 +193,11 @@ test_full_model_basic:
 Notice how we're providing mock data for all three upstream tables. The test verifies that the model correctly:
 
 - Joins customers with orders and order items
+
 - Counts distinct orders per customer
+
 - Calculates total spent (quantity × unit_price summed across all items)
+
 - Handles division by zero (Charlie has no orders, so avg_order_value should be NULL)
 
 The comments in the YAML help explain the test data, which makes it easier to understand what's being tested.
@@ -278,7 +292,7 @@ The `vars` section tells Vulcan what time range to use when running the model. T
 
 ### Testing CTEs
 
-You can also test individual CTEs (Common Table Expressions) within your model. This is super useful for debugging complex queries step by step.
+You can also test individual CTEs (Common Table Expressions) within your model. This is useful for debugging complex queries step by step.
 
 Say you have a model with a CTE:
 
@@ -347,7 +361,7 @@ inputs:
         order_date: '2025-01-01'
 ```
 
-This is great for small datasets and when you want everything in one place.
+This works well for small datasets and when you want everything in one place.
 
 ### CSV Format
 
@@ -406,7 +420,7 @@ outputs:
         total_spent: 325
 ```
 
-This is super handy when you have a table with 50 columns but only care about testing a few of them.
+This is useful when you have a table with 50 columns but only care about testing a few of them.
 
 **Apply partial matching globally:**
 
@@ -458,7 +472,7 @@ vulcan test tests/test_daily_sales.yaml::test_daily_sales_aggregation
 vulcan test tests/test_*
 ```
 
-The `::` syntax lets you run a specific test from a file, which is handy when you're debugging a single failing test.
+The `::` syntax lets you run a specific test from a file when debugging a single failing test.
 
 ### Example Output
 
@@ -520,7 +534,7 @@ When a test fails, you might want to inspect the actual data that was created. U
 vulcan test --preserve-fixtures
 ```
 
-Fixtures are created as views in a schema named `vulcan_test_<random_ID>`. You can query these views directly to see what data was actually produced, which is super helpful for debugging.
+Fixtures are created as views in a schema named `vulcan_test_<random_ID>`. You can query these views directly to see what data was actually produced for debugging.
 
 ### Type Mismatches
 
@@ -728,8 +742,11 @@ Set values for macro variables used in your model:
 ```
 
 **Special variables:**
+
 - `start` - Overrides `@start_ds` for incremental models
+
 - `end` - Overrides `@end_ds` for incremental models  
+
 - `execution_time` - Overrides `@execution_ds` and makes `CURRENT_TIMESTAMP`/`CURRENT_DATE` return fixed values
 
-These are super useful for testing incremental models and making time-dependent tests deterministic.
+These are useful for testing incremental models and making time-dependent tests deterministic.

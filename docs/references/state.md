@@ -1,30 +1,30 @@
 # State
 
-Vulcan stores information about your project in a state database that is usually separate from your main warehouse.
+Vulcan stores project information in a state database, usually separate from your main warehouse.
 
-The Vulcan state database contains:
+The state database contains:
 
-- Information about every [Model Version](./models/overview.md) in your project (query, loaded intervals, dependencies)
+- Information about every [model version](../../components/model/overview.md) in your project (query, loaded intervals, dependencies)
 - A list of every [Virtual Data Environment](./environments.md) in the project
 - Which model versions are [promoted](./plans.md#plan-application) into each [Virtual Data Environment](./environments.md)
-- Information about any [auto restatements](./models/overview.md#auto_restatement_cron) present in your project
-- Other metadata about your project such as current Vulcan / SQLGlot version
+- Information about any [auto restatements](../../components/model/overview.md#auto_restatement_cron) in your project
+- Other metadata such as current Vulcan and SQLGlot versions
 
-The state database is how Vulcan "remembers" what it's done before so it can compute a minimum set of operations to apply changes instead of rebuilding everything every time. It's also how Vulcan tracks what historical data has already been backfilled for [incremental models](./models/model_kinds.md#incremental_by_time_range) so you dont need to add branching logic into the model query to handle this.
+The state database lets Vulcan remember what it's done before, so it computes the minimum set of operations to apply changes instead of rebuilding everything each time. It also tracks which historical data has already been backfilled for [incremental models](../../components/model/model_kinds.md#incremental_by_time_range), so you don't need branching logic in model queries.
 
 !!! info "State database performance"
 
-    The workload against the state database is an OLTP workload that requires transaction support in order to work correctly.
+    The state database workload is OLTP and requires transaction support.
 
-    For the best experience, we recommend databases designed for OLTP workloads such as [PostgreSQL](../integrations/engines/postgres.md).
+    Use databases designed for OLTP workloads such as [PostgreSQL](./integrations/engines/postgres.md).
 
-    Using your warehouse OLAP database to store state is supported for proof-of-concept projects but is not suitable for production and **will** lead to poor performance and consistency.
+    Using your warehouse OLAP database for state works for proof-of-concept projects but isn't suitable for production. It leads to poor performance and consistency.
 
-    For more information on engines suitable for the Vulcan state database, see the [configuration guide](../guides/configuration.md#state-connection).
+    For more information on engines suitable for the Vulcan state database, see the [configuration guide](../../configurations/overview.md#gateways).
 
 ## Exporting / Importing State
 
-Vulcan supports exporting the state database to a `.json` file. From there, you can inspect the file with any tool that can read text files. You can also pass the file around and import it back in to a Vulcan project running elsewhere.
+Vulcan exports the state database to a `.json` file. You can inspect the file with any text editor or tool. You can also transfer the file and import it into another Vulcan project.
 
 ### Exporting state
 
@@ -95,7 +95,7 @@ You can export a specific environment like so:
 $ vulcan state export --environment my_dev -o my_dev_state.json
 ```
 
-Note that every snapshot that is part of the environment will be exported, not just the differences from `prod`. The reason for this is so that the environment can be fully imported elsewhere without any assumptions about which snapshots are already present in state.
+Every snapshot that is part of the environment is exported, not just differences from `prod`. This lets you import the environment elsewhere without assuming which snapshots already exist in state.
 
 #### Local state
 
@@ -105,18 +105,17 @@ You can export local state like so:
 $ vulcan state export --local -o local_state.json
 ```
 
-This essentially just exports the state of the local context which includes local changes that have not been applied to any virtual data environments.
+This exports the state of the local context, including local changes that haven't been applied to any virtual data environments.
 
-Therefore, a local state export will only have `snapshots` populated. `environments` will be empty because virtual data environments are only present in the warehouse / remote state. In addition, the file is marked as **not importable** so it cannot be used with a subsequent `vulcan state import` command.
+A local state export only has `snapshots` populated. `environments` is empty because virtual data environments exist only in the warehouse or remote state. The file is marked as **not importable**, so you can't use it with `vulcan state import`.
 
 ### Importing state
 
 !!! warning "Back up your state database first!"
 
-    Please ensure you have created an independent backup of your state database in case something goes wrong during the state import.
+    Create an independent backup of your state database before importing state.
 
-    Vulcan tries to wrap the state import in a transaction but some database engines do not support transactions against DDL which means
-    a import error has the potential to leave the state database in an inconsistent state.
+    Vulcan tries to wrap the state import in a transaction, but some database engines don't support transactions against DDL. An import error can leave the state database in an inconsistent state.
 
 Vulcan can import a state file into the state database like so:
 
@@ -149,9 +148,9 @@ Importing environments ━━━━━━━━━━━━━━━━━━━
 State imported successfully from 'state.json'
 ```
 
-Note that the state database structure needs to be present and up to date, so run `vulcan migrate` before running `vulcan state import` if you get a version mismatch error.
+The state database structure must be present and up to date. Run `vulcan migrate` before `vulcan state import` if you get a version mismatch error.
 
-If you have a partial state export, perhaps for a single environment - you can merge it in by omitting the `--replace` parameter:
+To merge a partial state export (for example, a single environment), omit the `--replace` parameter:
 
 ```bash
 $ vulcan state import -i state.json
@@ -170,7 +169,7 @@ State imported successfully from 'state.json'
 
 ### Specific gateways
 
-If your project has [multiple gateways](../guides/configuration.md#gateways) with different state connections per gateway, you can target the [state_connection](../guides/configuration.md#state-connection) of a specific gateway like so:
+If your project has [multiple gateways](../../configurations/overview.md#gateways) with different state connections per gateway, target a specific gateway's state connection like this:
 
 ```bash
 # state export
@@ -182,7 +181,7 @@ $ vulcan --gateway <gateway> state import -i state.json
 
 ## Version Compatibility
 
-When importing state, the state file must have been produced with the same major and minor version of Vulcan that is being used to import it.
+When importing state, the state file must have been produced with the same major and minor Vulcan version you're using to import it.
 
 If you attempt to import state with an incompatible version, you will get the following error:
 
@@ -197,12 +196,12 @@ Please upgrade/downgrade your Vulcan version to match the state file before perf
 
 ### Upgrading a state file
 
-You can upgrade a state file produced by an old Vulcan version to be compatible with a newer Vulcan version by:
+Upgrade a state file from an old Vulcan version to be compatible with a newer version:
 
-- Loading it into a local database using the older Vulcan version
-- Installing the newer Vulcan version
-- Running `vulcan migrate` to upgrade the state within the local database
-- Running `vulcan state export` to export it back out again. The new export is now compatible with the newer version of Vulcan.
+1. Load it into a local database using the older Vulcan version
+2. Install the newer Vulcan version
+3. Run `vulcan migrate` to upgrade the state in the local database
+4. Run `vulcan state export` to export it again. The new export is compatible with the newer Vulcan version.
 
 Below is an example of how to upgrade a state file created with Vulcan `0.164.1` to be compatible with Vulcan `0.165.1`.
 
@@ -232,11 +231,11 @@ gateways:
       database: ./state-migration.duckdb
 ```
 
-The goal here is to define just enough config for Vulcan to be able to use a local database to run the state export/import commands. Vulcan still needs to inherit things like the `model_defaults` from your project in order to migrate state correctly which is why we have not used an isolated directory.
+Define just enough config for Vulcan to use a local database for state export/import commands. Vulcan still needs to inherit `model_defaults` from your project to migrate state correctly, which is why we haven't used an isolated directory.
 
 !!! warning
 
-    From here on, be sure to specify `--gateway migration` to all Vulcan commands or you run the risk of accidentally clobbering any state on your main gateway
+    From here on, specify `--gateway migration` to all Vulcan commands or you risk accidentally overwriting state on your main gateway.
 
 You can now import your state export using the same version of Vulcan it was created with:
 
@@ -248,8 +247,7 @@ You can now import your state export using the same version of Vulcan it was cre
 State imported successfully from 'state.json'
 ```
 
-Now we have the state imported, we can upgrade Vulcan and export the state from the new version.
-The new version was printed in the original error message, eg `You are running '0.165.1'`
+With the state imported, upgrade Vulcan and export the state from the new version. The new version was printed in the original error message, for example `You are running '0.165.1'`.
 
 To upgrade Vulcan, simply install the new version:
 

@@ -10,24 +10,24 @@ See the [models guide](./models.md) for general model information or the [model 
 
 ### The Problem: Full Refreshes Are Expensive
 
-Imagine you have a table with sales data from the last year (365 days). Every time you run a `FULL` model, it processes **all 365 days**. That's a lot of work, especially when you only need to process today's data!
+If you have a table with sales data from the last year (365 days), every time you run a `FULL` model, it processes all 365 days. This is inefficient when you only need to process today's data.
 
 ```mermaid
 flowchart LR
-    subgraph "🔄 FULL Model - Every Run"
+    subgraph "FULL Model - Every Run"
         FULL[FULL Model Run]
         PROCESS[Process ALL 365 Days]
-        DAY1[Day 1 ✅]
-        DAY2[Day 2 ✅]
-        DAY3[Day 3 ✅]
+        DAY1[Day 1]
+        DAY2[Day 2]
+        DAY3[Day 3]
         DOTS[...]
-        DAY365[Day 365 ✅]
+        DAY365[Day 365]
     end
     
-    subgraph "📊 Results"
-        TIME1[⏱️ Time: 10 minutes]
-        COST1[💰 Cost: $10]
-        DATA1[📦 All 365 days]
+    subgraph "Results"
+        TIME1[Time: 10 minutes]
+        COST1[Cost: $10]
+        DATA1[All 365 days]
     end
     
     FULL --> PROCESS
@@ -56,17 +56,17 @@ With incremental models, Vulcan only processes **new or missing** days:
 
 ```mermaid
 flowchart LR
-    subgraph "⚡ INCREMENTAL Model - Every Run"
+    subgraph "INCREMENTAL Model - Every Run"
         INCR[INCREMENTAL Model Run]
         CHECK[Check State Database]
-        SKIP[Skip Days 1-364 ✅]
-        PROCESS_NEW[Process Day 365 Only 🔄]
+        SKIP[Skip Days 1-364]
+        PROCESS_NEW[Process Day 365 Only]
     end
     
-    subgraph "📊 Results"
-        TIME2[⏱️ Time: 30 seconds]
-        COST2[💰 Cost: $0.20]
-        DATA2[📦 Only Day 365]
+    subgraph "Results"
+        TIME2[Time: 30 seconds]
+        COST2[Cost: $0.20]
+        DATA2[Only Day 365]
     end
     
     INCR --> CHECK
@@ -88,9 +88,9 @@ flowchart LR
 
 *[Screenshot: Visual showing incremental model processing only Day 365]*
 
-**Result:** 50x faster and 50x cheaper! 🎉 
+**Result:** 50x faster and 50x cheaper! 
 
-That's the power of incremental models. You're only processing what you need, when you need it. Pretty cool, right?
+Incremental models process only what you need, when you need it.
 
 ---
 
@@ -100,21 +100,21 @@ Incremental models use **time intervals** to track what's been processed. Think 
 
 ```mermaid
 flowchart TB
-    subgraph "🔄 Incremental Processing Flow"
+    subgraph "Incremental Processing Flow"
         START[vulcan run]
-        CHECK[🔍 Check State Database<br/>What's already processed?]
+        CHECK[Check State Database<br/>What's already processed?]
         
-        subgraph "📊 State Database"
-            PROCESSED1[✅ Jan 1-7: Processed]
-            PROCESSED2[✅ Jan 8-14: Processed]
-            MISSING[❌ Jan 15-21: Missing]
+        subgraph "State Database"
+            PROCESSED1[Jan 1-7: Processed]
+            PROCESSED2[Jan 8-14: Processed]
+            MISSING[Jan 15-21: Missing]
         end
         
-        CALC[📅 Calculate Missing Intervals<br/>Jan 15-21 needs processing]
-        SET_MACROS[🔧 Set Macros<br/>@start_ds = '2025-01-15'<br/>@end_ds = '2025-01-21']
-        QUERY[💾 Run Query<br/>WHERE order_date BETWEEN @start_ds AND @end_ds]
-        INSERT[📥 Insert Results<br/>Into weekly_sales table]
-        UPDATE[💾 Update State<br/>Mark Jan 15-21 as processed]
+        CALC[Calculate Missing Intervals<br/>Jan 15-21 needs processing]
+        SET_MACROS[Set Macros<br/>@start_ds = '2025-01-15'<br/>@end_ds = '2025-01-21']
+        QUERY[Run Query<br/>WHERE order_date BETWEEN @start_ds AND @end_ds]
+        INSERT[Insert Results<br/>Into weekly_sales table]
+        UPDATE[Update State<br/>Mark Jan 15-21 as processed]
     end
     
     START --> CHECK
@@ -148,15 +148,16 @@ flowchart TB
 When you run `vulcan run`, Vulcan looks at your state database and asks:
 
 - "What dates have I already processed?" - These are done, skip them
+
 - "What dates are missing?" - These need work, process them
 
 It's like checking your to-do list, you only work on what's not done yet.
 
 ```
 State Database Check:
-✅ Jan 1-7:   Already processed
-✅ Jan 8-14:  Already processed  
-❌ Jan 15-21: Missing - needs processing
+Jan 1-7:   Already processed
+Jan 8-14:  Already processed  
+Jan 15-21: Missing - needs processing
 ```
 
 *[Screenshot: Visual diagram showing state database check with processed vs missing intervals]*
@@ -182,7 +183,7 @@ WHERE order_date BETWEEN '2025-01-15' AND '2025-01-21'
 The processed data is inserted into your table, and Vulcan records that these dates are now complete. Next time you run, it'll know these dates are done and skip them. Efficient!
 
 ```
-✅ Jan 15-21: Now processed and recorded
+Jan 15-21: Now processed and recorded
 ```
 
 *[Screenshot: Visual showing data insertion and state update]*
@@ -212,9 +213,11 @@ Model Start: Jan 1, 2025
 Today: Jan 3, 2025 at 2pm
 
 Intervals:
-- Jan 1: ✅ Complete (full day passed)
-- Jan 2: ✅ Complete (full day passed)
-- Jan 3: ⏳ In progress (day not finished yet)
+- Jan 1: Complete (full day passed)
+
+- Jan 2: Complete (full day passed)
+
+- Jan 3: In progress (day not finished yet)
 ```
 
 *[Screenshot: Calendar view showing daily intervals with Jan 1-2 complete, Jan 3 in progress]*
@@ -238,9 +241,11 @@ Model Start: Jan 1, 2025
 Today: Jan 15, 2025
 
 Intervals:
-- Week 1 (Jan 1-7):   ✅ Complete
-- Week 2 (Jan 8-14):  ✅ Complete
-- Week 3 (Jan 15-21): ⏳ In progress
+- Week 1 (Jan 1-7):   Complete
+
+- Week 2 (Jan 8-14):  Complete
+
+- Week 3 (Jan 15-21): In progress
 ```
 
 *[Screenshot: Calendar view showing weekly intervals]*
@@ -251,16 +256,16 @@ When you first run `vulcan plan` on an incremental model, Vulcan:
 
 ```mermaid
 flowchart TB
-    subgraph "📅 First Plan - Jan 15, 2025"
+    subgraph "First Plan - Jan 15, 2025"
         PLAN1[vulcan plan dev]
-        CALC1[📊 Calculate Intervals<br/>From start to now<br/>3 weeks total]
-        PROCESS1[🔄 Process All Intervals<br/>Backfill everything]
-        RECORD1[💾 Record in State DB<br/>Weeks 1-3 processed]
+        CALC1[Calculate Intervals<br/>From start to now<br/>3 weeks total]
+        PROCESS1[Process All Intervals<br/>Backfill everything]
+        RECORD1[Record in State DB<br/>Weeks 1-3 processed]
         
-        subgraph "💾 State Database After Plan"
-            W1[✅ Week 1: Jan 1-7]
-            W2[✅ Week 2: Jan 8-14]
-            W3[✅ Week 3: Jan 15-21]
+        subgraph "State Database After Plan"
+            W1[Week 1: Jan 1-7]
+            W2[Week 2: Jan 8-14]
+            W3[Week 3: Jan 15-21]
         end
     end
     
@@ -287,13 +292,15 @@ flowchart TB
 ```
 First Plan (Jan 15, 2025):
 - Calculates: 3 weeks of intervals
+
 - Processes: All 3 weeks
+
 - Records: "Weeks 1-3 processed"
 
 State Database:
-✅ Week 1 (Jan 1-7)
-✅ Week 2 (Jan 8-14)
-✅ Week 3 (Jan 15-21)
+Week 1 (Jan 1-7)
+Week 2 (Jan 8-14)
+Week 3 (Jan 15-21)
 ```
 
 *[Screenshot: Visual showing first plan calculating and processing all intervals]*
@@ -302,26 +309,26 @@ When you run `vulcan run` later, Vulcan:
 
 ```mermaid
 flowchart TB
-    subgraph "⚡ Second Run - Jan 22, 2025"
+    subgraph "Second Run - Jan 22, 2025"
         RUN2[vulcan run]
-        CALC2[📊 Calculate Intervals<br/>From start to now<br/>4 weeks total]
-        CHECK[🔍 Check State DB<br/>What's already processed?]
+        CALC2[Calculate Intervals<br/>From start to now<br/>4 weeks total]
+        CHECK[Check State DB<br/>What's already processed?]
         
-        subgraph "💾 Current State"
-            W1_EXIST[✅ Week 1: Jan 1-7]
-            W2_EXIST[✅ Week 2: Jan 8-14]
-            W3_EXIST[✅ Week 3: Jan 15-21]
-            W4_MISS[❌ Week 4: Jan 22-28]
+        subgraph "Current State"
+            W1_EXIST[Week 1: Jan 1-7]
+            W2_EXIST[Week 2: Jan 8-14]
+            W3_EXIST[Week 3: Jan 15-21]
+            W4_MISS[Week 4: Jan 22-28]
         end
         
-        PROCESS2[🔄 Process Only Week 4<br/>Skip Weeks 1-3]
-        RECORD2[💾 Update State DB<br/>Week 4 now processed]
+        PROCESS2[Process Only Week 4<br/>Skip Weeks 1-3]
+        RECORD2[Update State DB<br/>Week 4 now processed]
         
-        subgraph "💾 Updated State"
-            W1_NEW[✅ Week 1: Jan 1-7]
-            W2_NEW[✅ Week 2: Jan 8-14]
-            W3_NEW[✅ Week 3: Jan 15-21]
-            W4_NEW[✅ Week 4: Jan 22-28]
+        subgraph "Updated State"
+            W1_NEW[Week 1: Jan 1-7]
+            W2_NEW[Week 2: Jan 8-14]
+            W3_NEW[Week 3: Jan 15-21]
+            W4_NEW[Week 4: Jan 22-28]
         end
     end
     
@@ -355,15 +362,18 @@ flowchart TB
 ```
 Second Run (Jan 22, 2025):
 - Calculates: 4 weeks total
+
 - Already processed: Weeks 1-3
+
 - Missing: Week 4 (Jan 22-28)
+
 - Processes: Only Week 4
 
 State Database:
-✅ Week 1 (Jan 1-7)
-✅ Week 2 (Jan 8-14)
-✅ Week 3 (Jan 15-21)
-✅ Week 4 (Jan 22-28) ← NEW
+Week 1 (Jan 1-7)
+Week 2 (Jan 8-14)
+Week 3 (Jan 15-21)
+Week 4 (Jan 22-28) ← NEW
 ```
 
 *[Screenshot: Visual showing second run processing only new Week 4]*
@@ -405,7 +415,7 @@ SELECT
   SUM(total_amount)::FLOAT AS total_revenue,
   AVG(total_amount)::FLOAT AS avg_order_value
 FROM sales.daily_sales
-WHERE order_date BETWEEN @start_ds AND @end_ds  -- 🔍 Filter by time range
+WHERE order_date BETWEEN @start_ds AND @end_ds  -- Filter by time range
 GROUP BY DATE_TRUNC('week', order_date)
 ORDER BY order_date
 ```
@@ -432,9 +442,10 @@ kind INCREMENTAL_BY_TIME_RANGE (
 WHERE order_date BETWEEN @start_ds AND @end_ds
 ```
 
-**What it does:** Filters data to only the time range being processed. This is crucial, without it, you'd process all your data every time!
+**What it does:** Filters data to only the time range being processed. Without it, you'd process all your data every time.
 
 - `@start_ds` = Start date of the interval (e.g., '2025-01-15')
+
 - `@end_ds` = End date of the interval (e.g., '2025-01-21')
 
 Vulcan automatically replaces these with the correct dates! You don't have to figure out what dates to process, Vulcan does that for you.
@@ -567,7 +578,7 @@ ORDER BY order_date
 
 ## Understanding the WHERE Clause
 
-You might wonder: "Why do I need a WHERE clause if Vulcan adds one automatically?" That's a great question! The answer is that they serve different purposes.
+You might wonder: "Why do I need a WHERE clause if Vulcan adds one automatically?" They serve different purposes.
 
 ### Two WHERE Clauses, Two Purposes
 
@@ -580,8 +591,11 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 ```
 
 **Purpose:** Filters data **read into** the model
+
 - Only reads necessary data from upstream tables - this is a performance optimization
+
 - Saves processing time and resources - why read data you're not going to use?
+
 - You control this in your SQL - you write this WHERE clause
 
 This is your optimization. Without it, you'd read all the data from upstream tables, even though you only need a small date range.
@@ -598,8 +612,11 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 ```
 
 **Purpose:** Filters data **output by** the model
+
 - Prevents data leakage (ensures no rows outside the time range) - this is a safety check
+
 - Safety mechanism - even if your SQL has a bug, Vulcan makes sure you don't output wrong dates
+
 - Vulcan controls this automatically - you don't write this one, Vulcan adds it
 
 This is Vulcan's safety net. It makes sure that even if your WHERE clause has a bug, you can't accidentally output data for the wrong time period.
@@ -611,6 +628,7 @@ This is Vulcan's safety net. It makes sure that even if your WHERE clause has a 
 Here's why you need both:
 
 - **Your WHERE clause:** Optimizes performance by reading less data - makes your queries faster
+
 - **Vulcan's WHERE clause:** Ensures correctness by preventing data leakage - makes sure your data is right
 
 **Always include the WHERE clause in your model SQL!** It's not optional, Vulcan needs it to know what time range to process, and it makes your queries way more efficient.
@@ -632,9 +650,13 @@ vulcan plan dev
 ```
 
 **What it does:**
+
 - Detects model changes
+
 - Shows what will be affected
+
 - Backfills missing intervals
+
 - Applies changes to the environment
 
 *[Screenshot: Plan command output showing model changes]*
@@ -648,9 +670,13 @@ vulcan run
 ```
 
 **What it does:**
+
 - Checks each model's `cron` schedule
+
 - Processes only models that are due
+
 - Processes only missing intervals
+
 - Fast and efficient
 
 *[Screenshot: Run command output showing scheduled execution]*
@@ -661,13 +687,13 @@ Each model has a `cron` parameter that determines how often it should run:
 
 ```mermaid
 flowchart LR
-    subgraph "⏰ Cron Schedules"
+    subgraph "Cron Schedules"
         DAILY[@daily<br/>Every 24 hours]
         WEEKLY[@weekly<br/>Every 7 days]
         HOURLY[@hourly<br/>Every 1 hour]
     end
     
-    subgraph "📊 Example Models"
+    subgraph "Example Models"
         M1[sales.daily_sales<br/>cron: @daily]
         M2[sales.weekly_sales<br/>cron: @weekly]
     end
@@ -710,20 +736,20 @@ When you run `vulcan run`:
 
 ```mermaid
 flowchart TB
-    subgraph "🔄 vulcan run Execution"
+    subgraph "vulcan run Execution"
         RUN[vulcan run<br/>at 2pm on Jan 15]
         
-        subgraph "📋 Model Evaluation"
+        subgraph "Model Evaluation"
             CHECK1[Check daily_sales<br/>cron: @daily<br/>Last run: 24h ago]
             CHECK2[Check weekly_sales<br/>cron: @weekly<br/>Last run: 2 days ago]
         end
         
-        subgraph "✅ Decision"
-            DUE1[✅ Due!<br/>Process daily_sales]
-            SKIP[⏭️ Not due<br/>Skip weekly_sales]
+        subgraph "Decision"
+            DUE1[Due!<br/>Process daily_sales]
+            SKIP[Not due<br/>Skip weekly_sales]
         end
         
-        EXEC1[🔄 Execute daily_sales<br/>Process missing intervals]
+        EXEC1[Execute daily_sales<br/>Process missing intervals]
     end
     
     RUN --> CHECK1
@@ -749,8 +775,8 @@ flowchart TB
 ```
 vulcan run at 2pm on Jan 15:
 
-✅ daily_sales (@daily):   Last run 24h ago → Due, process!
-⏭️ weekly_sales (@weekly): Last run 2 days ago → Not due, skip
+daily_sales (@daily):   Last run 24h ago → Due, process!
+weekly_sales (@weekly): Last run 2 days ago → Not due, skip
 ```
 
 *[Screenshot: Visual showing cron evaluation logic]*
@@ -808,34 +834,44 @@ MODEL (
 ```
 
 **Without batch_size (default):**
+
 - Processes all missing intervals in one job
+
 - Example: 12 weeks = 1 job
 
 **With batch_size:**
+
 - Divides intervals into batches
+
 - Example: 12 weeks ÷ 4 = 3 jobs
 
 *[Screenshot: Visual comparison showing batch processing vs single job]*
 
 **When to use batches:**
-- ✅ Large datasets that might timeout
-- ✅ Need better progress tracking
-- ✅ Want to parallelize processing
+
+- Large datasets that might timeout
+
+- Need better progress tracking
+
+- Want to parallelize processing
 
 **When not to use batches:**
-- ✅ Small datasets (< 1GB)
-- ✅ Fast queries (< 1 minute)
-- ✅ Simple transformations
+
+- Small datasets (< 1GB)
+
+- Fast queries (< 1 minute)
+
+- Simple transformations
 
 ---
 
 ## Forward-Only Models
 
-Sometimes you have models so large that rebuilding them is impossible. Forward-only models solve this. They're perfect for those massive tables where a full backfill would take days or cost a fortune.
+Sometimes you have models so large that rebuilding them is impossible. Forward-only models solve this. Use them for massive tables where a full backfill would take days or cost too much.
 
 ### What Are Forward-Only Models?
 
-Forward-only models **never rebuild historical data**. Changes are only applied going forward in time. Think of it like a train, once it's left the station (historical data is processed), you can't go back and change it. You can only change what happens going forward.
+Forward-only models never rebuild historical data. Changes are only applied going forward in time. Once historical data is processed, you can't go back and change it. You can only change what happens going forward.
 
 ```mermaid
 flowchart TB
@@ -882,14 +918,20 @@ Breaking change → Only apply to new dates going forward
 
 ### When to Use Forward-Only
 
-✅ **Use forward-only when:**
+**Use forward-only when:**
+
 - Tables are too large to rebuild - if a full backfill would take forever or cost too much
+
 - Historical data can't be reprocessed - maybe the source data is gone or too expensive to reprocess
+
 - You only care about future data - if historical data is "good enough" and you just need new data to be correct
 
-❌ **Don't use forward-only when:**
+**Don't use forward-only when:**
+
 - You need to fix historical data - forward-only won't help you fix the past
+
 - Schema changes affect past data - if your change affects how historical data should look, you need a full rebuild
+
 - You want full data consistency - forward-only means historical and new data might have different schemas
 
 It's a trade-off: you get speed and cost savings, but you lose the ability to fix historical data. Make sure that's a trade-off you're okay with!
@@ -957,9 +999,11 @@ flowchart LR
     style AFTER1 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
 ```
 
-- ❌ Dropping a column
-- ❌ Renaming a column  
-- ❌ Changing data type (could cause data loss)
+- Dropping a column
+
+- Renaming a column
+
+- Changing data type (could cause data loss)
 
 **Example:**
 ```sql
@@ -997,8 +1041,9 @@ flowchart LR
     style AFTER2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
 ```
 
-- ✅ Adding a new column
-- ✅ Changing data type (compatible, e.g., INT → STRING)
+- Adding a new column
+
+- Changing data type (compatible, e.g., INT → STRING)
 
 **Example:**
 ```sql
@@ -1028,9 +1073,13 @@ MODEL (
 ```
 
 **Options:**
+
 - `error` - Stop and raise an error (default for destructive)
+
 - `warn` - Log a warning but continue
+
 - `allow` - Silently proceed (default for additive)
+
 - `ignore` - Skip the check entirely (dangerous!)
 
 *[Screenshot: Code showing schema change configuration options]*
@@ -1095,39 +1144,40 @@ MODEL (
 
 ## Important Notes
 
-### ⚠️ Time Column Must Be UTC
+### Time Column Must Be UTC
 
 Always use UTC timezone for your `time_column`:
 
 ```sql
--- ✅ Good: UTC timezone
+-- Good: UTC timezone
 time_column order_date_utc
 
--- ❌ Bad: Local timezone
+-- Bad: Local timezone
 time_column order_date_local
 ```
 
-**Why?** Ensures correct interval calculations and proper interaction with Vulcan's scheduler. If you use local timezones, you'll run into issues with daylight saving time changes, timezone differences, and interval calculations. UTC is the standard for a reason, it's consistent everywhere.
+**Why?** Ensures correct interval calculations and proper interaction with Vulcan's scheduler. If you use local timezones, you'll run into issues with daylight saving time changes, timezone differences, and interval calculations. UTC is consistent everywhere.
 
 *[Screenshot: Visual warning about UTC requirement]*
 
-### ✅ Always Include WHERE Clause
+### Always Include WHERE Clause
 
 Your model SQL **must** include a WHERE clause with `@start_ds` and `@end_ds`:
 
 ```sql
--- ✅ Required - This tells Vulcan what time range to process
+-- Required - This tells Vulcan what time range to process
 WHERE order_date BETWEEN @start_ds AND @end_ds
 
--- ❌ Missing WHERE clause - Don't do this!
--- WHERE clause is required!
+-- Missing WHERE clause - Don't do this
+
+-- WHERE clause is required
 ```
 
 Without this WHERE clause, Vulcan won't know what time range to process, and your queries will be inefficient (or fail entirely). Always include it!
 
 *[Screenshot: Code showing required WHERE clause]*
 
-### ✅ Set a Start Date
+### Set a Start Date
 
 Always specify when your data begins:
 
@@ -1139,13 +1189,15 @@ This tells Vulcan where to start backfilling. If your data goes back to 2020 but
 
 *[Screenshot: Code showing start date configuration]*
 
-### ✅ Choose Appropriate batch_size
+### Choose Appropriate batch_size
 
 - Start with `batch_size 1` for small datasets - process one interval at a time
-- Increase for larger datasets that might timeout - if processing all intervals at once times out, batch them
-- Monitor performance to find the sweet spot - too small and you have too many jobs, too large and jobs timeout
 
-The default is to process all missing intervals in one job. If that works for you, great! If not, use `batch_size` to break it up.
+- Increase for larger datasets that might timeout - if processing all intervals at once times out, batch them
+
+- Monitor performance to find the right balance. Too small and you have too many jobs. Too large and jobs timeout.
+
+The default is to process all missing intervals in one job. If that doesn't work for you, use `batch_size` to break it up.
 
 *[Screenshot: Visual guide for choosing batch_size]*
 
@@ -1154,16 +1206,25 @@ The default is to process all missing intervals in one job. If that works for yo
 ## Summary
 
 **Incremental by time models:**
-- ✅ Only process new or missing time intervals
-- ✅ Much faster and cheaper than full refreshes
-- ✅ Perfect for time-based data (orders, events, transactions)
-- ✅ Require a time column and WHERE clause
-- ✅ Use cron schedules to control execution frequency
+
+- Only process new or missing time intervals
+
+- Faster and cheaper than full refreshes
+
+- Use for time-based data (orders, events, transactions)
+
+- Require a time column and WHERE clause
+
+- Use cron schedules to control execution frequency
 
 **Key concepts:**
+
 - **Intervals:** Time periods (days, weeks, hours) that Vulcan tracks
+
 - **Backfill:** Processing historical intervals when first creating a model
+
 - **Cron:** Schedule that determines how often a model runs
+
 - **Forward-only:** Models that never rebuild historical data
 
 ---

@@ -8,84 +8,84 @@ The following diagram illustrates how Vulcan's plan system works, showing the re
 
 ```mermaid
 graph TB
-    subgraph "📁 Local Project"
-        LP[📝 Local Project Files<br/>Your SQL/Python Models]
-        M1[📊 Model: daily_sales v1]
-        M2[📊 Model: weekly_sales v1]
+    subgraph "Local Project"
+        LP[Local Project Files<br/>Your SQL/Python Models]
+        M1[Model: daily_sales v1]
+        M2[Model: weekly_sales v1]
     end
 
-    subgraph "🔍 Plan Creation"
-        PC[⚡ vulcan plan]
-        COMP[🔎 Compare Local vs Environment]
-        CAT[🏷️ Categorize Changes<br/>🔴 Breaking / 🟢 Non-breaking]
-        PLAN[📋 Plan Generated<br/>Ready for Review]
+    subgraph "Plan Creation"
+        PC[vulcan plan]
+        COMP[Compare Local vs Environment]
+        CAT[Categorize Changes<br/>Breaking / Non-breaking]
+        PLAN[Plan Generated<br/>Ready for Review]
     end
 
-    subgraph "🔀 Model Variants & Snapshots"
-        MV1[🔷 Model Variant 1<br/>daily_sales__hash1]
-        MV2[🔷 Model Variant 2<br/>daily_sales__hash2]
-        MV3[🔷 Model Variant 3<br/>weekly_sales__hash1]
-        SNAP1[📸 Snapshot 1<br/>🔑 Fingerprint: hash1]
-        SNAP2[📸 Snapshot 2<br/>🔑 Fingerprint: hash2]
-        SNAP3[📸 Snapshot 3<br/>🔑 Fingerprint: hash3]
+    subgraph "Model Variants & Snapshots"
+        MV1[Model Variant 1<br/>daily_sales__hash1]
+        MV2[Model Variant 2<br/>daily_sales__hash2]
+        MV3[Model Variant 3<br/>weekly_sales__hash1]
+        SNAP1[Snapshot 1<br/>Fingerprint: hash1]
+        SNAP2[Snapshot 2<br/>Fingerprint: hash2]
+        SNAP3[Snapshot 3<br/>Fingerprint: hash3]
     end
 
-    subgraph "💾 Physical Layer"
-        PT1[🗄️ Physical Table 1<br/>db.vulcan__sales.daily_sales__hash1]
-        PT2[🗄️ Physical Table 2<br/>db.vulcan__sales.daily_sales__hash2]
-        PT3[🗄️ Physical Table 3<br/>db.vulcan__sales.weekly_sales__hash1]
+    subgraph "Physical Layer"
+        PT1[Physical Table 1<br/>db.vulcan__sales.daily_sales__hash1]
+        PT2[Physical Table 2<br/>db.vulcan__sales.daily_sales__hash2]
+        PT3[Physical Table 3<br/>db.vulcan__sales.weekly_sales__hash1]
     end
 
-    subgraph "👁️ Virtual Layer"
-        VL1[🔍 View: sales.daily_sales]
-        VL2[🔍 View: sales.weekly_sales]
+    subgraph "Virtual Layer"
+        VL1[View: sales.daily_sales]
+        VL2[View: sales.weekly_sales]
     end
 
-    subgraph "🌍 Environments"
-        PROD[🚀 Production Environment<br/>References Variant 1 & 3]
-        DEV[🧪 Dev Environment<br/>References Variant 2 & 3]
+    subgraph "Environments"
+        PROD[Production Environment<br/>References Variant 1 & 3]
+        DEV[Dev Environment<br/>References Variant 2 & 3]
     end
 
-    subgraph "⚙️ Backfill Process"
-        BF[🔄 Backfill Execution]
-        INC[📈 Incremental Backfill]
-        FULL[🔄 Full Refresh]
+    subgraph "Backfill Process"
+        BF[Backfill Execution]
+        INC[Incremental Backfill]
+        FULL[Full Refresh]
     end
 
-    LP -->|"📤"| M1
-    LP -->|"📤"| M2
-    M1 -->|"➡️"| PC
-    M2 -->|"➡️"| PC
-    PC -->|"🔍"| COMP
-    COMP -->|"🏷️"| CAT
-    CAT -->|"✅"| PLAN
-    PLAN -->|"✨"| MV1
-    PLAN -->|"✨"| MV2
-    PLAN -->|"✨"| MV3
+    LP -->|"to"| M1
+    LP -->|"to"| M2
+    M1 -->|"to"| PC
+    M2 -->|"to"| PC
+    PC -->|"to"| COMP
+    COMP -->|"to"| CAT
+    CAT -->|"to"| PLAN
+    PLAN -->|"to"| MV1
+    PLAN -->|"to"| MV2
+    PLAN -->|"to"| MV3
     
-    MV1 -->|"🔗"| SNAP1
-    MV2 -->|"🔗"| SNAP2
-    MV3 -->|"🔗"| SNAP3
+    MV1 -->|"to"| SNAP1
+    MV2 -->|"to"| SNAP2
+    MV3 -->|"to"| SNAP3
     
-    SNAP1 -->|"💾"| PT1
-    SNAP2 -->|"💾"| PT2
-    SNAP3 -->|"💾"| PT3
+    SNAP1 -->|"to"| PT1
+    SNAP2 -->|"to"| PT2
+    SNAP3 -->|"to"| PT3
     
-    PT1 -->|"👁️"| VL1
-    PT2 -->|"👁️"| VL1
-    PT3 -->|"👁️"| VL2
+    PT1 -->|"to"| VL1
+    PT2 -->|"to"| VL1
+    PT3 -->|"to"| VL2
     
-    PROD -->|"🔗"| MV1
-    PROD -->|"🔗"| MV3
-    DEV -->|"🔗"| MV2
-    DEV -->|"🔗"| MV3
+    PROD -->|"to"| MV1
+    PROD -->|"to"| MV3
+    DEV -->|"to"| MV2
+    DEV -->|"to"| MV3
     
-    PLAN -->|"⚙️"| BF
-    BF -->|"📈"| INC
-    BF -->|"🔄"| FULL
-    INC -->|"💾"| PT1
-    INC -->|"💾"| PT2
-    FULL -->|"💾"| PT3
+    PLAN -->|"to"| BF
+    BF -->|"to"| INC
+    BF -->|"to"| FULL
+    INC -->|"to"| PT1
+    INC -->|"to"| PT2
+    FULL -->|"to"| PT3
 
     style LP fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
     style PC fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
@@ -116,9 +116,13 @@ graph TB
 A **plan** is Vulcan's way of comparing your local project state with a target environment and determining what changes need to be applied. Before any model changes take effect, Vulcan creates a plan that shows:
 
 - **Added models** - New models to be created
+
 - **Removed models** - Models to be deleted
+
 - **Modified models** - Changes to existing models (with diffs)
+
 - **Indirectly affected models** - Downstream models that depend on changed models
+
 - **Backfill requirements** - Date ranges that need data reprocessing
 
 Plans allow you to review and verify all changes before they're applied to your data warehouse.
@@ -127,8 +131,8 @@ Plans allow you to review and verify all changes before they're applied to your 
 
 Before following this guide, ensure you have:
 
-1. **Orders360 example project** set up (see [Examples Overview](../examples/overview.md))
-2. **Docker environment** running (see [Docker Quickstart](../get-started/docker.md))
+1. **Orders360 example project** set up (see [Examples Overview](../../examples/overview.md))
+2. **Docker environment** running (see [Docker Quickstart](./get-started/docker.md))
 3. **Vulcan CLI** accessible via `vulcan` command or `vulcan.bat` (Windows)
 
 ## Scenario 1: First Plan - Initializing Production
@@ -145,7 +149,7 @@ vulcan info
 
 **Expected Output:**
 ```
-Connection: ✅ Connected
+Connection: Connected
 Models: 4
 Macros: 0
 Tests: 2
@@ -191,7 +195,9 @@ Apply - Backfill Tables [y/n]:
 ### Understanding the Output
 
 - **`prod` environment will be initialized**: This is your first plan, so Vulcan is creating the production environment
+
 - **Added models**: All 4 models are new and will be created
+
 - **Backfill dates**: Each model needs data from its start date (2025-01-01) to the current date
 
 ### Step 3: Apply the Plan
@@ -288,7 +294,9 @@ Apply - Backfill Tables [y/n]:
 Notice that:
 
 - Only the new model appears in the plan
+
 - The upstream model (`sales.daily_sales`) is not affected because adding a downstream model doesn't change upstream data
+
 - Backfill is needed from the model's start date
 
 ### Step 4: Apply the Plan
@@ -385,10 +393,15 @@ Apply - Backfill Tables [y/n]:
 ### Understanding Non-Breaking Changes
 
 - **Directly Modified**: The model you changed
+
 - **Non-breaking**: Vulcan automatically detected this as non-breaking because:
+
   - You added a new column
+
   - Existing columns weren't modified
+
   - Downstream models aren't affected (they don't use this column yet)
+
 - **Backfill required**: The modified model needs to be backfilled to populate the new column
 
 ### Step 3: Check Downstream Models
@@ -396,7 +409,9 @@ Apply - Backfill Tables [y/n]:
 Notice that `sales.weekly_sales` (which depends on `daily_sales`) is **not** listed. This is because:
 
 - The change is non-breaking
+
 - Downstream models don't need to be reprocessed
+
 - They'll automatically see the new column once `daily_sales` is backfilled
 
 ### Step 4: Apply the Plan
@@ -496,10 +511,15 @@ Apply - Backfill Tables [y/n]:
 ### Understanding Breaking Changes
 
 - **Directly Modified**: `sales.daily_sales` - the model you changed
+
 - **Breaking**: Vulcan detected this as breaking because:
+
   - You added a WHERE clause that filters data
+
   - Existing data may now be invalid (rows that should be filtered out)
+
 - **Indirectly Modified**: `sales.weekly_sales` - downstream model affected
+
 - **Cascading backfill**: Both models need to be reprocessed
 
 ### Step 3: Apply the Plan
@@ -641,8 +661,11 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 ### Understanding Dev Environments
 
 - **Isolated namespace**: Models are prefixed with `__dev` (e.g., `sales__dev.daily_sales`)
+
 - **Separate tables**: Dev environment has its own physical tables
+
 - **Limited backfill**: Only recent data was processed (2025-01-10 to 2025-01-15)
+
 - **Production unaffected**: Production data remains unchanged
 
 ### Step 6: Query Dev Environment
@@ -734,8 +757,11 @@ Apply - Virtual Update [y/n]:
 ### Understanding Forward-Only Plans
 
 - **Forward-only category**: Automatically assigned
+
 - **Preview backfill**: Only processes the latest interval for preview
+
 - **Virtual Update**: No new physical table created
+
 - **Reuses existing table**: Production will use the same physical table
 
 ### Step 3: Apply Forward-Only Plan
@@ -761,7 +787,9 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 ### Benefits of Forward-Only
 
 - **Fast**: Only processes latest interval
+
 - **Cost-effective**: No full backfill required
+
 - **Safe for production**: Reuses existing tables
 
 ---
@@ -811,7 +839,9 @@ Apply - Backfill Tables [y/n]:
 ### Understanding Restatement
 
 - **No model changes**: Model definition unchanged
+
 - **Cascading restatement**: Downstream models (`weekly_sales`) also need restatement
+
 - **Date range**: Only specified dates will be reprocessed
 
 ### Step 3: Apply Restatement Plan
@@ -838,7 +868,9 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 ### Use Cases for Restatement
 
 - **Upstream data correction**: Raw data was fixed, need to reprocess
+
 - **Bug fixes**: Found an issue in data processing logic (after fixing the model)
+
 - **Data refresh**: Need to refresh specific date ranges
 
 ---
@@ -887,16 +919,21 @@ The explain output shows three main phases:
 
 1. **Validation & Table Creation**: 
    - Dry runs each model query
+
    - Creates physical tables if needed
+
    - Shows mapping: `model_name -> physical_table_name`
 
 2. **Backfill**:
    - Shows which models will be backfilled
+
    - Indicates backfill type (full refresh vs incremental)
+
    - Lists audits that will run
 
 3. **Virtual Layer Update**:
    - Shows how views will be created/updated
+
    - Maps virtual layer names to physical tables
 
 ---
@@ -930,7 +967,10 @@ The explain output shows three main phases:
 ## Next Steps
 
 - Learn about [Plans Concepts](../references/plans.md) for deeper understanding
+
 - Explore [Environments](../references/environments.md) for managing multiple environments
+
 - Read about [Model Kinds](../components/model/model_kinds.md) to understand different model types
+
 - Set up [Notifications](../configurations/options/notifications.md) to monitor plan execution
 

@@ -1,28 +1,35 @@
 # Python
 
-SQL is great, but sometimes you need Python. Maybe you're doing machine learning, calling external APIs, or implementing complex business logic that's painful to express in SQL.
+Sometimes you need Python instead of SQL. Use Python models for machine learning, calling external APIs, or implementing complex business logic that's difficult to express in SQL.
 
-Vulcan has first-class support for Python models. As long as your function returns a Pandas, Spark, Bigframe, or Snowpark DataFrame, you can do whatever you want in Python. No restrictions!
+Vulcan supports Python models. As long as your function returns a Pandas, Spark, Bigframe, or Snowpark DataFrame, you can use Python.
 
 **When to use Python models:**
-- Machine learning modelss
-- API integrations
+
+- Building machine learning workflows
+
+- Integrating with external APIs
+
 - Complex transformations that are easier in Python
+
 - Data processing that benefits from Python libraries
 
 
 !!! info "Unsupported Model Kinds"
 
-Python models don't support these [model kinds](components/model/types/model_kinds.md). If you need one of these, use a SQL model instead:
-    
-    - `VIEW` - Views need to be SQL
-    - `SEED` - Seed models load CSV files (SQL only)
-    - `MANAGED` - Managed models require SQL
-    - `EMBEDDED` - Embedded models inject SQL subqueries
+    Python models don't support these [model kinds](../model_kinds.md). If you need one of these, use a SQL model instead:
+        
+        - `VIEW` - Views need to be SQL
+
+        - `SEED` - Seed models load CSV files (SQL only)
+
+        - `MANAGED` - Managed models require SQL
+
+        - `EMBEDDED` - Embedded models inject SQL subqueries
 
 ## Definition
 
-Creating a Python model is straightforward: add a `.py` file to your `models/` directory and define an `execute` function. That's it!
+Create a Python model by adding a `.py` file to your `models/` directory and defining an `execute` function.
 
 Here's what a basic Python model looks like:
 
@@ -77,16 +84,20 @@ def execute(
 The `@model` decorator captures your model's metadata (just like the `MODEL` DDL in SQL models). You specify column names and types in the `columns` argument, this is required because Vulcan needs to create the table before your function runs.
 
 **Function signature:** Your `execute` function receives:
+
 - `context: ExecutionContext` - For running queries and getting time intervals
+
 - `start`, `end` - Time range for incremental models
+
 - `execution_time` - When the model is running
+
 - `**kwargs` - Any other runtime variables
 
-**Return types:** You can return Pandas, PySpark, Bigframe, or Snowpark DataFrames. If your output is huge, you can also use Python generators to return data in chunks (great for memory management).
+**Return types:** You can return Pandas, PySpark, Bigframe, or Snowpark DataFrames. If your output is large, you can also use Python generators to return data in chunks for memory management.
 
 ## `@model` Specification
 
-The `@model` decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc. they all work the same way.
+The `@model` decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc. They all work the same way.
 
 Python model `kind`s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the [models configuration reference page](../../../references/model_configuration.md#model-kind-properties).
 
@@ -102,21 +113,32 @@ from vulcan import ModelKindName
 )
 ```
 
-All model kind properties are documented in the [model configuration reference](../../../../references/model_configuration.md#model-kind-properties).
+All model kind properties are documented in the [model configuration reference](../../../references/model_configuration.md#model-kind-properties).
 
 Supported `kind` dictionary `name` values are:
 
 - `ModelKindName.VIEW`
+
 - `ModelKindName.FULL`
+
 - `ModelKindName.SEED`
+
 - `ModelKindName.INCREMENTAL_BY_TIME_RANGE`
+
 - `ModelKindName.INCREMENTAL_BY_UNIQUE_KEY`
+
 - `ModelKindName.INCREMENTAL_BY_PARTITION`
+
 - `ModelKindName.SCD_TYPE_2_BY_TIME`
+
 - `ModelKindName.SCD_TYPE_2_BY_COLUMN`
+
 - `ModelKindName.EMBEDDED`
+
 - `ModelKindName.CUSTOM`
+
 - `ModelKindName.MANAGED`
+
 - `ModelKindName.EXTERNAL`
 
 ## Execution Context
@@ -136,7 +158,7 @@ table = context.resolve_table("vulcan_demo.products")
 df = context.fetchdf(f"SELECT * FROM {table}")
 ```
 
-**Best practice:** Make your models [idempotent](components/model/glossary.md#idempotency), running them multiple times should produce the same result. This makes debugging and restatements much easier.
+**Best practice:** Make your models [idempotent](../../../references/glossary.md#idempotency), running them multiple times should produce the same result. This makes debugging and restatements much easier.
 
 ```python linenums="1"
 df = context.fetchdf("SELECT * FROM vulcan_demo.products")
@@ -155,7 +177,7 @@ You can pass SQL strings, SQLGlot expressions, or macro calls as lists to `pre_s
 
     Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.
 
-**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../../references/model_configuration.md#model-defaults).
+**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
 
 ``` python linenums="1" hl_lines="8-12"
 @model(
@@ -268,7 +290,7 @@ def execute(
 
 ## Dependencies
 
-In order to fetch data from an upstream model, you first get the table name using `context`'s `resolve_table` method. This returns the appropriate table name for the current runtime [environment](components/model/environments.md):
+In order to fetch data from an upstream model, you first get the table name using `context`'s `resolve_table` method. This returns the appropriate table name for the current runtime [environment](../../../references/environments.md):
 
 ```python linenums="1"
 table = context.resolve_table("vulcan_demo.products")
@@ -318,7 +340,7 @@ def execute(
     return context.fetchdf(query)
 ```
 
-You can use [global variables](../../../../references/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
+You can use [global variables](../../../references/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
 
 ```python linenums="1"
 @model(
@@ -356,7 +378,7 @@ def execute(
 
 ## User-defined variables
 
-[User-defined global variables](../../../../references/configuration.md#variables) can be accessed from within the Python model with the `context.var` method.
+[User-defined global variables](../../../references/configuration.md#variables) can be accessed from within the Python model with the `context.var` method.
 
 For example, this model access the user-defined variables `var` and `var_with_default`. It specifies a default value of `default_value` if `variable_with_default` resolves to a missing value.
 
@@ -446,7 +468,7 @@ def entrypoint(
     )
 ```
 
-**Important:** Notice the `@{customer}` syntax in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal). Learn more about this syntax [here](../../../advanced-features/macros/built_in.md#embedding-variables-in-strings).
+**Important:** Notice the `@{customer}` syntax in the model name. The curly braces tell Vulcan to treat the variable value as a SQL identifier (not a string literal). Learn more about this syntax [here](../../advanced-features/macros/built_in.md#embedding-variables-in-strings).
 
 **Dynamic blueprints:** You can generate blueprints dynamically using macros. This is handy when your blueprint list comes from external sources (like CSV files or API calls):
 
@@ -520,7 +542,7 @@ Here are some practical examples showing different ways to use Python models.
 
 ### Basic
 
-A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](components/model/types/overview.md#model-properties) work the same as SQL models, just use Python syntax.
+A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](../overview.md#model-properties) work the same as SQL models, just use Python syntax.
 
 ```python linenums="1"
 import typing as t
@@ -771,6 +793,6 @@ def execute(
 
 ## Serialization
 
-Vulcan executes Python models locally (wherever Vulcan is running) using a custom [serialization framework](../architecture/serialization.md). This means your Python code runs on your machine or CI/CD environment, not in the database.
+Vulcan executes Python models locally (wherever Vulcan is running) using a custom serialization framework. This means your Python code runs on your machine or CI/CD environment, not in the database.
 
 **Why this matters:** You have full access to Python libraries, can make API calls, do ML processing, etc. The database just receives the final DataFrame.

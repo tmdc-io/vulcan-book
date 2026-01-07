@@ -1,6 +1,6 @@
 # Jinja
 
-Vulcan supports macros from the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating system. If you're already familiar with Jinja (maybe from dbt or other tools), you'll feel right at home here.
+Vulcan supports macros from the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating system. If you're already familiar with Jinja (maybe from dbt or other tools), you can use it here.
 
 Jinja works differently than Vulcan's native macros. While Vulcan macros understand the semantic structure of your SQL, Jinja macros are pure string substitution, they assemble SQL text by replacing placeholders, without building a semantic representation of the query.
 
@@ -12,7 +12,9 @@ Jinja works differently than Vulcan's native macros. While Vulcan macros underst
 Jinja uses curly braces `{}` to mark macro code. The second character after the opening brace tells Jinja what to do:
 
 - `{{...}}` - **Expressions**: These get replaced with values in your rendered SQL. Use them for variables and function calls.
+
 - `{%...%}` - **Statements**: These control flow and logic. Use them for `if` statements, `for` loops, and setting variables.
+
 - `{#...#}` - **Comments**: These are stripped out and won't appear in your final SQL.
 
 Since Jinja syntax isn't valid SQL, you need to wrap your Jinja queries in special blocks so Vulcan knows to process them. For queries, use `JINJA_QUERY_BEGIN; ...; JINJA_END;`:
@@ -188,8 +190,11 @@ JINJA_END;
 A few things to notice:
 
 - The values in the list are quoted: `['car', 'truck', 'bus']`
+
 - When you use `{{ vehicle_type }}` in the `CASE WHEN`, you need quotes around it: `'{{ vehicle_type }}'`
+
 - When you use it in an identifier name like `vehicle_{{ vehicle_type }}`, no quotes needed
+
 - There's a trailing comma after the `CASE WHEN` line, Vulcan's semantic understanding will remove it automatically
 
 This renders to:

@@ -1,12 +1,12 @@
-# Model defaults
+# Model Defaults
 
-The `model_defaults` key is **required** and must contain a value for the `dialect` key. 
+The `model_defaults` section is required. You must specify a value for the `dialect` key.
 
-All supported `model_defaults` keys are listed in the [models configuration reference page](../../references/model_configuration.md#model-defaults).
+All supported `model_defaults` keys are listed in the [models configuration reference](../../references/model_configuration.md#model-defaults).
 
-## Basic configuration
+## Basic Configuration
 
-Example configuration:
+Example:
 
 === "YAML"
 
@@ -31,17 +31,17 @@ Example configuration:
     )
     ```
 
-The default model kind is `VIEW` unless overridden with the `kind` key. For more information on model kinds, refer to [model concepts page](../../components/model/model_kinds.md).
+The default model kind is `VIEW` unless you override it with the `kind` key. See [model kinds](../../components/model/model_kinds.md) for more information.
 
-## Identifier resolution
+## Identifier Resolution
 
-When a SQL engine receives a query such as `SELECT id FROM "some_table"`, it eventually needs to understand what database objects the identifiers `id` and `"some_table"` correspond to. This process is usually referred to as identifier (or name) resolution.
+When a SQL engine receives a query like `SELECT id FROM "some_table"`, it needs to understand what database objects the identifiers `id` and `"some_table"` correspond to. This is identifier resolution.
 
-Different SQL dialects implement different rules when resolving identifiers in queries. For example, certain identifiers may be treated as case-sensitive (e.g. if they're quoted), and a case-insensitive identifier is usually either lowercased or uppercased, before the engine actually looks up what object it corresponds to.
+Different SQL dialects resolve identifiers differently. Some identifiers are case-sensitive if quoted. Case-insensitive identifiers are usually lowercased or uppercased before the engine looks up the object.
 
-Vulcan analyzes model queries so that it can extract useful information from them, such as computing Column-Level Lineage. To facilitate this analysis, it _normalizes_ and _quotes_ all identifiers in those queries, [respecting each dialect's resolution rules](https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier).
+Vulcan analyzes model queries to extract information like column-level lineage. To do this, it normalizes and quotes all identifiers in queries, [respecting each dialect's resolution rules](https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier).
 
-The "normalization strategy", i.e. whether case-insensitive identifiers are lowercased or uppercased, is configurable per dialect. For example, to treat all identifiers as case-sensitive in a BigQuery project, one can do:
+The normalization strategy determines whether case-insensitive identifiers are lowercased or uppercased. You can configure this per dialect. To treat all identifiers as case-sensitive in a BigQuery project:
 
 === "YAML"
 
@@ -50,13 +50,13 @@ The "normalization strategy", i.e. whether case-insensitive identifiers are lowe
       dialect: "bigquery,normalization_strategy=case_sensitive"
     ```
 
-This may be useful in cases where the name casing needs to be preserved, since then Vulcan won't be able to normalize them.
+This is useful when you need to preserve name casing, since Vulcan won't normalize them.
 
-See [here](https://sqlglot.com/sqlglot/dialects/dialect.html#NormalizationStrategy) to learn more about the supported normalization strategies.
+See [normalization strategies](https://sqlglot.com/sqlglot/dialects/dialect.html#NormalizationStrategy) for all supported options.
 
-## Gateway-specific model defaults
+## Gateway-Specific Model Defaults
 
-You can also define gateway specific `model_defaults` in the `gateways` section, which override the global defaults for that gateway.
+Define gateway-specific `model_defaults` in the `gateways` section. These override the global defaults for that gateway.
 
 ```yaml linenums="1" hl_lines="6 14"
 gateways:
@@ -76,13 +76,13 @@ model_defaults:
   start: 2025-02-05
 ```
 
-This allows you to tailor the behavior of models for each gateway without affecting the global `model_defaults`.
+This lets you customize model behavior for each gateway without affecting global `model_defaults`.
 
-For example, in some SQL engines identifiers like table and column names are case-sensitive, but they are case-insensitive in other engines. By default, a project that uses both types of engines would need to ensure the models for each engine aligned with the engine's normalization behavior, which makes project maintenance and debugging more challenging.
+Some SQL engines treat table and column names as case-sensitive. Others treat them as case-insensitive. If your project uses both types of engines, models need to align with each engine's normalization behavior, which makes maintenance and debugging harder.
 
-Gateway-specific `model_defaults` allow you to change how Vulcan performs identifier normalization *by engine* to align the different engines' behavior.
+Gateway-specific `model_defaults` let you change how Vulcan performs identifier normalization per engine to align their behavior.
 
-In the example above, the project's default dialect is `snowflake` (line 14). The `redshift` gateway configuration overrides that global default dialect with `"snowflake,normalization_strategy=case_insensitive"` (line 6).
+In the example above, the project's default dialect is `snowflake` (line 14). The `redshift` gateway overrides that with `"snowflake,normalization_strategy=case_insensitive"` (line 6).
 
-That value tells Vulcan that the `redshift` gateway's models will be written in the Snowflake SQL dialect (so need to be transpiled from Snowflake to Redshift), but that the resulting Redshift SQL should treat identifiers as case-insensitive to match Snowflake's behavior.
+This tells Vulcan that the `redshift` gateway's models are written in Snowflake SQL dialect (so they need to be transpiled from Snowflake to Redshift), but the resulting Redshift SQL should treat identifiers as case-insensitive to match Snowflake's behavior.
 
