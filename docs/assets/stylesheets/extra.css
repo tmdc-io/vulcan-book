@@ -34,6 +34,40 @@ body {
     fill: currentColor;
 }
 
+/* Logo for light mode (dark logo) */
+[data-md-color-scheme="default"] .md-header__button.md-logo img {
+    opacity: 0;
+}
+
+[data-md-color-scheme="default"] .md-header__button.md-logo::before {
+    content: "";
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-image: url("../images/D_logo_dark-32px.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+}
+
+/* Logo for dark mode (light logo) */
+[data-md-color-scheme="slate"] .md-header__button.md-logo img {
+    opacity: 0;
+}
+
+[data-md-color-scheme="slate"] .md-header__button.md-logo::before {
+    content: "";
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-image: url("../images/D_logo_light-32px.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+}
+
 .md-typeset h1 {
     color: inherit;
 }
@@ -1923,12 +1957,50 @@ html .md-footer-meta.md-typeset a:hover {
   }
 }
 
+.md-header__button.md-logo {
+  position: relative;
+}
+
 .md-header__button.md-logo img,
 .md-header__button.md-logo svg {
   fill: currentcolor;
   display: block;
   height: 1.2rem;
   width: auto
+}
+
+/* Logo for light mode (dark logo) */
+[data-md-color-scheme="default"] .md-header__button.md-logo img {
+  opacity: 0;
+}
+
+[data-md-color-scheme="default"] .md-header__button.md-logo::before {
+  content: "";
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-image: url("../images/D_logo_dark-32px.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+}
+
+/* Logo for dark mode (light logo) */
+[data-md-color-scheme="slate"] .md-header__button.md-logo img {
+  opacity: 0;
+}
+
+[data-md-color-scheme="slate"] .md-header__button.md-logo::before {
+  content: "";
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-image: url("../images/D_logo_light-32px.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
 }
 
 @media screen and (min-width: 60em) {
@@ -2147,6 +2219,10 @@ html .md-footer-meta.md-typeset a:hover {
   width: auto
 }
 
+.md-nav__title .md-nav__button.md-logo {
+  position: relative;
+}
+
 .md-nav__title .md-nav__button.md-logo img,
 .md-nav__title .md-nav__button.md-logo svg {
   fill: currentcolor;
@@ -2155,6 +2231,42 @@ html .md-footer-meta.md-typeset a:hover {
   max-width: 100%;
   object-fit: contain;
   width: auto
+}
+
+/* Sidebar logo for light mode (dark logo) */
+[data-md-color-scheme="default"] .md-nav__title .md-nav__button.md-logo img {
+  opacity: 0;
+}
+
+[data-md-color-scheme="default"] .md-nav__title .md-nav__button.md-logo::before {
+  content: "";
+  display: block;
+  height: 2.4rem;
+  width: auto;
+  max-width: 100%;
+  background-image: url("../images/D_logo_dark-32px.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+}
+
+/* Sidebar logo for dark mode (light logo) */
+[data-md-color-scheme="slate"] .md-nav__title .md-nav__button.md-logo img {
+  opacity: 0;
+}
+
+[data-md-color-scheme="slate"] .md-nav__title .md-nav__button.md-logo::before {
+  content: "";
+  display: block;
+  height: 2.4rem;
+  width: auto;
+  max-width: 100%;
+  background-image: url("../images/D_logo_light-32px.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
 }
 
 .md-nav__list {

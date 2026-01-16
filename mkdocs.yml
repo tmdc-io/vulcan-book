@@ -79,7 +79,7 @@ nav:
 theme:
   name: material
   custom_dir: overrides
-  logo: assets/images/vulcan-white.svg
+  logo: assets/images/D_logo_dark-32px.png
   favicon: assets/images/vulcan.svg
   font:
     text: Inter
