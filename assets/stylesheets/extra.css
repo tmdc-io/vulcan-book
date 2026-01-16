@@ -38,25 +38,113 @@ body {
     color: inherit;
 }
 
- .md-header {
+/* Light mode navbar styles */
+[data-md-color-scheme="default"] .md-header,
+.md-header {
     background-color: #fff;
-    box-shadow: 0 1px 0 rgb(0 0 0 / 10%) !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    color: #000;
 }
+[data-md-color-scheme="default"] .md-header-nav__button,
 .md-header-nav__button {
-    color: #000 !important;
+    color: #000;
     display:flex;
 }
+[data-md-color-scheme="default"] .md-header__button,
+.md-header__button {
+    color: #000;
+}
+[data-md-color-scheme="default"] .md-header__title,
+.md-header__title {
+    color: #000;
+}
+[data-md-color-scheme="default"] .md-header__topic,
+.md-header__topic {
+    color: #000;
+}
+[data-md-color-scheme="default"] .md-header__ellipsis,
+.md-header__ellipsis {
+    color: #000;
+}
+[data-md-color-scheme="default"] .md-header__source,
+.md-header__source {
+    color: #000;
+}
 @media screen and (min-width: 60em) {
+    [data-md-color-scheme="default"] .md-search__form,
+    .md-search__form {
+        background-color: #f5f5f5;
+        border-radius: .1rem;
+    }
+    [data-md-color-scheme="default"] .md-search__form:hover,
+    .md-search__form:hover {
+        background-color: #e8e8e8;
+    }
+    [data-md-color-scheme="default"] .md-search__input,
     .md-search__input {
-        background-color: #fff;
-        border: 1px solid #eee;
-        color: #000 !important;
+        background-color: transparent;
+        border: none;
+        color: #000;
     }
+    [data-md-color-scheme="default"] .md-search__input::placeholder,
+    .md-search__input::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+    }
+    [data-md-color-scheme="default"] .md-search__input+.md-search__icon,
     .md-search__input+.md-search__icon {
-        color: #000 !important;
+        color: rgba(0, 0, 0, 0.7);
     }
-    .md-search__input~.md-search__icon, .md-search__input::placeholder {
-        color: #000 !important;
+    [data-md-color-scheme="default"] .md-search__input~.md-search__icon,
+    .md-search__input~.md-search__icon {
+        color: rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* Dark mode navbar styles */
+[data-md-color-scheme="slate"] .md-header {
+    background-color: #000;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+[data-md-color-scheme="slate"] .md-header-nav__button {
+    color: #fff;
+}
+[data-md-color-scheme="slate"] .md-header__button {
+    color: #fff;
+}
+[data-md-color-scheme="slate"] .md-header__title {
+    color: #fff;
+}
+[data-md-color-scheme="slate"] .md-header__topic {
+    color: #fff;
+}
+[data-md-color-scheme="slate"] .md-header__ellipsis {
+    color: #fff;
+}
+[data-md-color-scheme="slate"] .md-header__source {
+    color: #fff;
+}
+@media screen and (min-width: 60em) {
+    [data-md-color-scheme="slate"] .md-search__form {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: .1rem;
+    }
+    [data-md-color-scheme="slate"] .md-search__form:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+    [data-md-color-scheme="slate"] .md-search__input {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+    }
+    [data-md-color-scheme="slate"] .md-search__input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    [data-md-color-scheme="slate"] .md-search__input+.md-search__icon {
+        color: rgba(255, 255, 255, 0.7);
+    }
+    [data-md-color-scheme="slate"] .md-search__input~.md-search__icon {
+        color: rgba(255, 255, 255, 0.7);
     }
 } 
 
@@ -1751,9 +1839,9 @@ html .md-footer-meta.md-typeset a:hover {
 }
 
 .md-header {
-  background-color: var(--md-primary-fg-color);
-  box-shadow: 0 0 .2rem #0000, 0 .2rem .4rem #0000;
-  color: var(--md-primary-bg-color);
+  background-color: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  color: #000;
   display: block;
   left: 0;
   position: -webkit-sticky;
@@ -1761,6 +1849,12 @@ html .md-footer-meta.md-typeset a:hover {
   right: 0;
   top: 0;
   z-index: 4
+}
+
+[data-md-color-scheme="slate"] .md-header {
+  background-color: #000;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
 @media print {
@@ -1775,8 +1869,12 @@ html .md-footer-meta.md-typeset a:hover {
 }
 
 .md-header--shadow {
-  box-shadow: 0 0 .2rem rgba(0, 0, 0, 0.045), 0 .2rem .4rem rgba(0, 0, 0, 0.045);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
   transition: transform .25s cubic-bezier(.1, .7, .1, 1), box-shadow .25s
+}
+
+[data-md-color-scheme="slate"] .md-header--shadow {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .md-header__inner {
@@ -1786,7 +1884,7 @@ html .md-footer-meta.md-typeset a:hover {
 }
 
 .md-header__button {
-  color: currentcolor;
+  color: #000;
   cursor: pointer;
   margin: .2rem;
   outline-color: var(--md-accent-fg-color);
@@ -1795,6 +1893,10 @@ html .md-footer-meta.md-typeset a:hover {
   transition: opacity .25s;
   vertical-align: middle;
   z-index: 1
+}
+
+[data-md-color-scheme="slate"] .md-header__button {
+  color: #fff;
 }
 
 .md-header__button:hover {
@@ -1854,7 +1956,12 @@ html .md-footer-meta.md-typeset a:hover {
   max-width: 100%;
   position: absolute;
   transition: transform .4s cubic-bezier(.1, .7, .1, 1), opacity .15s;
-  white-space: nowrap
+  white-space: nowrap;
+  color: #000;
+}
+
+[data-md-color-scheme="slate"] .md-header__topic {
+  color: #fff;
 }
 
 .md-header__topic+.md-header__topic {
@@ -1893,7 +2000,12 @@ html .md-footer-meta.md-typeset a:hover {
   flex-grow: 1;
   font-size: .9rem;
   height: 2.4rem;
-  line-height: 2.4rem
+  line-height: 2.4rem;
+  color: #000;
+}
+
+[data-md-color-scheme="slate"] .md-header__title {
+  color: #fff;
 }
 
 .md-header__title--active .md-header__topic {
@@ -1952,7 +2064,8 @@ html .md-footer-meta.md-typeset a:hover {
   .md-header__source {
     display: block;
     max-width: 11.7rem;
-    width: 11.7rem
+    width: 11.7rem;
+    color: #000;
   }
 }
 
@@ -2692,7 +2805,7 @@ html .md-footer-meta.md-typeset a:hover {
   font-size: .7rem;
   margin: 0 .8rem;
   overflow: auto;
-  padding-top: 1.4rem
+  padding-top: 1.2rem
 }
 
 @media screen and (min-width: 76.25em) {
@@ -3025,13 +3138,21 @@ html .md-footer-meta.md-typeset a:hover {
 
 @media screen and (min-width: 60em) {
   .md-search__form {
-    background-color: #e7e7e740;
+    background-color: #f5f5f5;
     border-radius: .1rem;
     height: 1.8rem
   }
 
   .md-search__form:hover {
-    background-color: #e7e7e780;
+    background-color: #e8e8e8;
+  }
+
+  [data-md-color-scheme="slate"] .md-search__form {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  [data-md-color-scheme="slate"] .md-search__form:hover {
+    background-color: rgba(255, 255, 255, 0.15);
   }
 }
 
@@ -3098,11 +3219,19 @@ html .md-footer-meta.md-typeset a:hover {
   }
 
   .md-search__input::placeholder {
-    color: var(--md-primary-bg-color--light)
+    color: rgba(0, 0, 0, 0.5)
+  }
+
+  [data-md-color-scheme="slate"] .md-search__input::placeholder {
+    color: rgba(255, 255, 255, 0.5)
   }
 
   .md-search__input+.md-search__icon {
-    color: var(--md-primary-bg-color)
+    color: rgba(0, 0, 0, 0.7)
+  }
+
+  [data-md-color-scheme="slate"] .md-search__input+.md-search__icon {
+    color: rgba(255, 255, 255, 0.7)
   }
 
   [data-md-toggle=search]:checked~.md-header .md-search__input {
@@ -3780,7 +3909,7 @@ html .md-footer-meta.md-typeset a:hover {
 
 .md-sidebar__scrollwrap:focus-within,
 .md-sidebar__scrollwrap:hover {
-  scrollbar-color: var(--md-primary-fg-color) #0000
+  scrollbar-color: var(--md-accent-fg-color) #0000
 }
 
 .md-sidebar__scrollwrap:focus-within::-webkit-scrollbar-thumb,
@@ -6586,43 +6715,36 @@ html .md-typeset .footnote-ref {
 
 :root>* {
   --md-mermaid-font-family: var(--md-text-font-family), sans-serif;
-  --md-mermaid-edge-color: var(--md-code-fg-color);
+  --md-mermaid-edge-color: #36464e;
   --md-mermaid-node-bg-color: var(--md-accent-fg-color--transparent);
   --md-mermaid-node-fg-color: var(--md-accent-fg-color);
-  --md-mermaid-label-bg-color: var(--md-default-bg-color);
-  --md-mermaid-label-fg-color: var(--md-code-fg-color)
+  --md-mermaid-label-bg-color: #fff;
+  --md-mermaid-label-fg-color: #36464e
+}
+
+/* Keep Mermaid code text and arrow colors consistent in dark mode */
+[data-md-color-scheme="slate"] {
+  --md-mermaid-label-fg-color: #36464e;
+  --md-mermaid-edge-color: #36464e;
+  --md-mermaid-label-bg-color: #fff
 }
 
 .mermaid {
   line-height: normal;
-  margin: 0.25em 0;
-  display: inline-block;
-  width: 100%;
-  font-size: 14px;
-}
-
-.md-typeset .mermaid {
-  font-size: 16px;
-  margin: 0.25em 0;
+  margin: 1em 0;
+  background-color: #fff;
+  padding: 1em;
+  border-radius: 0.2rem;
 }
 
 /* Mermaid Zoom Functionality Styles */
 .mermaid-zoom-wrapper {
   position: relative;
-  margin: 0.25em 0;
+  margin: 1em 0;
   border-radius: 0.2rem;
-  overflow: visible;
-  background: var(--md-default-bg-color);
+  overflow: hidden;
+  background: #fff;
   border: 1px solid var(--md-default-fg-color--lightest);
-  width: 100%;
-  display: inline-block;
-  padding: 0.5em;
-}
-
-.mermaid-zoom-wrapper .mermaid {
-  width: 100%;
-  display: block;
-  margin: 0;
 }
 
 .mermaid-zoom-wrapper.zoomed {
@@ -6632,33 +6754,22 @@ html .md-typeset .footnote-ref {
   right: 0;
   bottom: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.9);
   border: none;
   border-radius: 0;
-}
-
-.mermaid-zoom-wrapper.zoomed .mermaid {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .mermaid-zoom-container {
   position: relative;
   overflow: auto;
+  max-height: 600px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }
 
 .mermaid-zoom-wrapper.zoomed .mermaid-zoom-container {
   max-height: 100vh;
   height: 100vh;
   cursor: grab;
-  padding: 40px;
 }
 
 .mermaid-zoom-wrapper.zoomed .mermaid-zoom-container:active {
@@ -6714,11 +6825,6 @@ html .md-typeset .footnote-ref {
   cursor: pointer;
   font-size: 1.2rem;
   transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  min-height: 40px;
 }
 
 .zoom-control-btn:hover {
