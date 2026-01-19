@@ -62,6 +62,22 @@ The downloaded file will have the following structure:
 }
 ```
 
+### Docker Images
+
+The following Docker images are available for running Vulcan with BigQuery:
+
+| Image | Description |
+|-------|-------------|
+| `tmdcio/vulcan-bigquery:0.228.1` | Main Vulcan API service for BigQuery |
+| `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
+
+Pull the images:
+
+```bash
+docker pull tmdcio/vulcan-bigquery:0.228.1
+docker pull tmdcio/vulcan-transpiler:0.228.1.1
+```
+
 !!! note
     The `BigQuery Data Editor` and `BigQuery Job User` roles together provide the minimum permissions required for Vulcan to operate.
 

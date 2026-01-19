@@ -84,6 +84,10 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     docker network create vulcan
     docker compose -f docker/docker-compose.infra.yml up -d
     docker compose -f docker/docker-compose.warehouse.yml up -d
+    or
+    docker network create vulcan
+    docker compose -f docker/docker-compose.infra.yml up -d
+    docker compose -f docker/docker-compose.warehouse.yml up -d
     ```
     
     This command creates and starts three essential services:
@@ -112,6 +116,8 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     ```bash
     make vulcan-up
+    or
+    docker compose -f docker/docker-compose.vulcan.yml up -d
     or
     docker compose -f docker/docker-compose.vulcan.yml up -d
     ```
@@ -379,6 +385,9 @@ When you're done working with Vulcan, you can stop the services to free up syste
     or
     docker compose -f docker/docker-compose.infra.yml down -v
     docker compose -f docker/docker-compose.warehouse.yml down -v
+    or
+    docker compose -f docker/docker-compose.infra.yml down -v
+    docker compose -f docker/docker-compose.warehouse.yml down -v
     ```
     
     **Stop and Clean Up (Warning: This deletes all data)**
@@ -395,6 +404,8 @@ When you're done working with Vulcan, you can stop the services to free up syste
     
     ```bash
     make vulcan-down     # Stop only Vulcan API services
+    or
+    docker compose -f docker/docker-compose.vulcan.yml down -v
     or
     docker compose -f docker/docker-compose.vulcan.yml down -v
     make infra-down      # Stop infrastructure services (statestore, minio)
@@ -504,6 +515,7 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
     ```bash
     chmod -R a+w .
     ```
+
 
 ## Next Steps
 

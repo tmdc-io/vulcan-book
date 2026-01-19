@@ -35,6 +35,22 @@ Here are all the connection parameters you can use when setting up a Trino gatew
 | `password`    | The password for Trino authentication (if password authentication is enabled) | string | N        |
 | `roles`       | Role to use for queries (if role-based access control is enabled)        | dict   | N        |
 
+### Docker Images
+
+The following Docker images are available for running Vulcan with Trino:
+
+| Image | Description |
+|-------|-------------|
+| `tmdcio/vulcan-trino:0.228.1` | Main Vulcan API service for Trino |
+| `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
+
+Pull the images:
+
+```bash
+docker pull tmdcio/vulcan-trino:0.228.1
+docker pull tmdcio/vulcan-transpiler:0.228.1.1
+```
+
 !!! note
     Use `http_scheme: https` for secure connections in production environments.
 
