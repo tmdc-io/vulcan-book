@@ -35,6 +35,22 @@ Here are all the connection parameters you can use when setting up a SQL Server 
 | `concurrent_tasks`           | Maximum number of concurrent tasks (default: `4`)                               | int    | N        |
 | `trust_server_certificate`   | Whether to trust the server certificate without validation (default: `false`)   | bool   | N        |
 
+### Docker Images
+
+The following Docker images are available for running Vulcan with SQL Server:
+
+| Image | Description |
+|-------|-------------|
+| `tmdcio/vulcan-mssql:0.228.1` | Main Vulcan API service for SQL Server |
+| `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
+
+Pull the images:
+
+```bash
+docker pull tmdcio/vulcan-mssql:0.228.1
+docker pull tmdcio/vulcan-transpiler:0.228.1.1
+```
+
 !!! note
     The `dialect` for SQL Server models should be set to `tsql` (Transact-SQL), not `mssql`.
 

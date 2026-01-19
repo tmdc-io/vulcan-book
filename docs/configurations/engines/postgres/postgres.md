@@ -44,16 +44,14 @@ The following Docker images are available for running Vulcan with PostgreSQL:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-postgres:0.228.1` | Main Vulcan API service for PostgreSQL |
-| `tmdcio/vulcan-transpiler:0.228.1` | SQL transpiler service |
-| `tmdcio/vulcan-graphql:0.228.1` | GraphQL API service |
+| `tmdcio/vulcan-postgres:0.228.1.3` | Main Vulcan API service for PostgreSQL |
+| `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-postgres:0.228.1
-docker pull tmdcio/vulcan-transpiler:0.228.1
-docker pull tmdcio/vulcan-graphql:0.228.1
+docker pull tmdcio/vulcan-postgres:0.228.1.3
+docker pull tmdcio/vulcan-transpiler:0.228.1.1
 ```
 
 !!! note

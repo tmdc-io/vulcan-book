@@ -47,14 +47,14 @@ The following Docker images are available for running Vulcan with Spark:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan:0.228.0-spark-01` | Main Vulcan API service for Spark |
-| `tmdcio/vulcan-transpiler:0.228.0-spark-01` | SQL transpiler service |
+| `tmdcio/vulcan-spark:0.228.1.1` | Main Vulcan API service for Spark |
+| `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan:0.228.0-spark-01
-docker pull tmdcio/vulcan-transpiler:0.228.0-spark-01
+docker pull tmdcio/vulcan-spark:0.228.1.1
+docker pull tmdcio/vulcan-transpiler:0.228.1.1
 ```
 
 !!! note
