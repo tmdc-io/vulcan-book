@@ -450,6 +450,15 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-images">
+<span class="md-ellipsis">
+      
+        Docker Images
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -1041,6 +1050,18 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="../../../../glossary/">
+<span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="../../../../faq/">
 <span class="md-ellipsis">
     
@@ -1099,6 +1120,15 @@
 <span class="md-ellipsis">
       
         Connection Options
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-images">
+<span class="md-ellipsis">
+      
+        Docker Images
       
     </span>
 </a>
@@ -1235,6 +1265,30 @@
 </tr>
 </tbody>
 </table>
+<h3 id="docker-images">Docker Images<a class="headerlink" href="#docker-images" title="Link to this section">¶</a></h3>
+<p>The following Docker images are available for running Vulcan with Snowflake:</p>
+<table>
+<thead>
+<tr>
+<th>Image</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tmdcio/vulcan-snowflake:0.228.1.6</code></td>
+<td>Main Vulcan API service for Snowflake</td>
+</tr>
+<tr>
+<td><code>tmdcio/vulcan-transpiler:0.228.1.1</code></td>
+<td>SQL transpiler service</td>
+</tr>
+</tbody>
+</table>
+<p>Pull the images:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-snowflake:0.228.1.6
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-transpiler:0.228.1.1
+</span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code>account</code> identifier format is <code>&lt;org-name&gt;-&lt;account-name&gt;</code> (e.g., <code>myorg-myaccount</code>). Find it in your Snowflake URL.</p>

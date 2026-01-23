@@ -1055,6 +1055,18 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="../../../glossary/">
+<span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="../../../faq/">
 <span class="md-ellipsis">
     
@@ -1219,6 +1231,10 @@
 </span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
 </span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>up<span class="w"> </span>-d
 </span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>up<span class="w"> </span>-d
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>or
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>up<span class="w"> </span>-d
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>up<span class="w"> </span>-d
 </span></code></pre></div>
 <p>This command creates and starts three essential services:</p>
 <ul>
@@ -1233,6 +1249,10 @@
 </li>
 </ul>
 <p><strong>Note</strong>: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.</p>
+<div class="admonition note">
+<p class="admonition-title">State Connection Default</p>
+<p>By default, you should use Postgres for your state connection. When configuring your <code>config.yaml</code>, set <code>state_connection</code> to use Postgres. This ensures reliable state management and is the recommended approach for most projects.</p>
+</div>
 <p><strong>Step 3: Configure Vulcan CLI Access</strong></p>
 <p>Create an alias to access the Vulcan CLI easily:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev-02 vulcan"</span>
@@ -1243,6 +1263,8 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>make<span class="w"> </span>vulcan-up
 </span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>or
 </span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>up<span class="w"> </span>-d
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a>or
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>up<span class="w"> </span>-d
 </span></code></pre></div>
 <p>This command starts two services:</p>
 <ul>
@@ -1280,6 +1302,10 @@
 </li>
 </ul>
 <p><strong>Note</strong>: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.</p>
+<div class="admonition note">
+<p class="admonition-title">State Connection Default</p>
+<p>By default, you should use Postgres for your state connection. When configuring your <code>config.yaml</code>, set <code>state_connection</code> to use Postgres. This ensures reliable state management and is the recommended approach for most projects.</p>
+</div>
 <p><strong>Step 3: Access Vulcan CLI</strong></p>
 <p>Use the provided batch script to access the Vulcan CLI:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>vulcan.bat
@@ -1475,6 +1501,9 @@
 </span><span id="__span-20-2"><a href="#__codelineno-20-2" id="__codelineno-20-2" name="__codelineno-20-2"></a>or
 </span><span id="__span-20-3"><a href="#__codelineno-20-3" id="__codelineno-20-3" name="__codelineno-20-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>down<span class="w"> </span>-v
 </span><span id="__span-20-4"><a href="#__codelineno-20-4" id="__codelineno-20-4" name="__codelineno-20-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>down<span class="w"> </span>-v
+</span><span id="__span-20-5"><a href="#__codelineno-20-5" id="__codelineno-20-5" name="__codelineno-20-5"></a>or
+</span><span id="__span-20-6"><a href="#__codelineno-20-6" id="__codelineno-20-6" name="__codelineno-20-6"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>down<span class="w"> </span>-v
+</span><span id="__span-20-7"><a href="#__codelineno-20-7" id="__codelineno-20-7" name="__codelineno-20-7"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>down<span class="w"> </span>-v
 </span></code></pre></div>
 <p><strong>Stop and Clean Up (Warning: This deletes all data)</strong></p>
 <p>To stop all services and remove volumes (this will delete all data):</p>
@@ -1485,8 +1514,10 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>make<span class="w"> </span>vulcan-down<span class="w">     </span><span class="c1"># Stop only Vulcan API services</span>
 </span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>or
 </span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>down<span class="w"> </span>-v
-</span><span id="__span-22-4"><a href="#__codelineno-22-4" id="__codelineno-22-4" name="__codelineno-22-4"></a>make<span class="w"> </span>infra-down<span class="w">      </span><span class="c1"># Stop infrastructure services (statestore, minio)</span>
-</span><span id="__span-22-5"><a href="#__codelineno-22-5" id="__codelineno-22-5" name="__codelineno-22-5"></a>make<span class="w"> </span>warehouse-down<span class="w">  </span><span class="c1"># Stop warehouse services</span>
+</span><span id="__span-22-4"><a href="#__codelineno-22-4" id="__codelineno-22-4" name="__codelineno-22-4"></a>or
+</span><span id="__span-22-5"><a href="#__codelineno-22-5" id="__codelineno-22-5" name="__codelineno-22-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>down<span class="w"> </span>-v
+</span><span id="__span-22-6"><a href="#__codelineno-22-6" id="__codelineno-22-6" name="__codelineno-22-6"></a>make<span class="w"> </span>infra-down<span class="w">      </span><span class="c1"># Stop infrastructure services (statestore, minio)</span>
+</span><span id="__span-22-7"><a href="#__codelineno-22-7" id="__codelineno-22-7" name="__codelineno-22-7"></a>make<span class="w"> </span>warehouse-down<span class="w">  </span><span class="c1"># Stop warehouse services</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
