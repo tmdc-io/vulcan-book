@@ -73,6 +73,7 @@ nav:
       # - Table Creation Guide:
   - CLI Commands: cli-command/cli.md
   - Cookbook: cookbook/index.md
+  - Glossary: glossary.md
   - FAQ: faq/index.md
  
 

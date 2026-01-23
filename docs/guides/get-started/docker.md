@@ -99,6 +99,9 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     - **minio-init**: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.
     
     **Note**: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.
+
+    !!! note "State Connection Default"
+        By default, you should use Postgres for your state connection. When configuring your `config.yaml`, set `state_connection` to use Postgres. This ensures reliable state management and is the recommended approach for most projects.
     
     **Step 3: Configure Vulcan CLI Access**
     
@@ -163,6 +166,9 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     - **minio-init**: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.
     
     **Note**: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.
+
+    !!! note "State Connection Default"
+        By default, you should use Postgres for your state connection. When configuring your `config.yaml`, set `state_connection` to use Postgres. This ensures reliable state management and is the recommended approach for most projects.
     
     **Step 3: Access Vulcan CLI**
     

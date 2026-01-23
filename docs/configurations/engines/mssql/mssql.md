@@ -41,13 +41,13 @@ The following Docker images are available for running Vulcan with SQL Server:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-mssql:0.228.1` | Main Vulcan API service for SQL Server |
+| `tmdcio/vulcan-mssql:0.228.1.6` | Main Vulcan API service for SQL Server |
 | `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-mssql:0.228.1
+docker pull tmdcio/vulcan-mssql:0.228.1.6
 docker pull tmdcio/vulcan-transpiler:0.228.1.1
 ```
 

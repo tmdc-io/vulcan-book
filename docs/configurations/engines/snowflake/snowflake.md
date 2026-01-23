@@ -43,13 +43,13 @@ The following Docker images are available for running Vulcan with Snowflake:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-snowflake:0.228.1` | Main Vulcan API service for Snowflake |
+| `tmdcio/vulcan-snowflake:0.228.1.6` | Main Vulcan API service for Snowflake |
 | `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-snowflake:0.228.1
+docker pull tmdcio/vulcan-snowflake:0.228.1.6
 docker pull tmdcio/vulcan-transpiler:0.228.1.1
 ```
 

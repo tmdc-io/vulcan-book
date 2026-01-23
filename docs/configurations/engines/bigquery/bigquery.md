@@ -68,13 +68,13 @@ The following Docker images are available for running Vulcan with BigQuery:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-bigquery:0.228.1` | Main Vulcan API service for BigQuery |
+| `tmdcio/vulcan-bigquery:0.228.1.6` | Main Vulcan API service for BigQuery |
 | `tmdcio/vulcan-transpiler:0.228.1.1` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-bigquery:0.228.1
+docker pull tmdcio/vulcan-bigquery:0.228.1.6
 docker pull tmdcio/vulcan-transpiler:0.228.1.1
 ```
 
