@@ -1476,7 +1476,7 @@
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="c1">-- Post-statement: Clean up the cached table</span>
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="n">UNCACHE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">countries</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Project-level defaults:</strong> You can define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../../references/model_configuration/#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../references/model_configuration.md#model-defaults">model configuration reference</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Statements Run Twice</p>
 </div>
@@ -1522,7 +1522,7 @@
 <h3 id="optional-on-virtual-update-statements">Optional On-Virtual-Update Statements<a class="headerlink" href="#optional-on-virtual-update-statements" title="Link to this section">¶</a></h3>
 <p>On-virtual-update statements run when views are created or updated in the virtual layer. This happens after your model's physical table is created and the view is set up.</p>
 <p><strong>Common use case:</strong> Granting permissions on views so users can query them.</p>
-<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../../references/model_configuration/#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../references/model_configuration.md#model-defaults">model configuration reference</a>.</p>
 <p><strong>Syntax:</strong> Wrap these statements in <code>ON_VIRTUAL_UPDATE_BEGIN;</code> ... <code>ON_VIRTUAL_UPDATE_END;</code> blocks:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-3-2"> 2</a></span>

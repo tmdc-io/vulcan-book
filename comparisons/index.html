@@ -1157,7 +1157,7 @@
 <tr>
 <td><code>SQL semantic validation</code></td>
 <td>❌</td>
-<td><a href="../concepts-old/glossary/#semantic-understanding">✅</a></td>
+<td><a href="concepts-old/glossary.md#semantic-understanding">✅</a></td>
 </tr>
 <tr>
 <td><code>Unit tests</code></td>
@@ -1177,12 +1177,12 @@
 <tr>
 <td><code>Schema contracts</code></td>
 <td>✅</td>
-<td><a href="../guides/plan/">✅</a></td>
+<td><a href="guides/plan.md">✅</a></td>
 </tr>
 <tr>
 <td><code>Data contracts</code></td>
 <td>❌</td>
-<td><a href="../guides/plan/">✅</a></td>
+<td><a href="guides/plan.md">✅</a></td>
 </tr>
 <tr>
 <td>Deployment</td>
@@ -1192,7 +1192,7 @@
 <tr>
 <td><code>Virtual Data Environments</code></td>
 <td>❌</td>
-<td><a href="../concepts-old/environments/">✅</a></td>
+<td><a href="concepts-old/environments.md">✅</a></td>
 </tr>
 <tr>
 <td><code>Open-source CI/CD bot</code></td>
@@ -1273,7 +1273,7 @@
 <p>These steps incur costs to organizations: compute costs to run the models and staff time spent waiting on them to run. Inefficiencies compound rapidly because the steps are repeated so frequently.
 dbt's default full refresh approach leads to the most costly version of this loop: recomputing every model every time.</p>
 <p>Vulcan takes another approach. It examines the code modifications and the dependency structure among the models to determine which models are affected -- and executes only those models. This results in the least costly version of the loop: computing only what is required every time through.</p>
-<p>This enables Vulcan to provide efficient isolated <a href="../guides/plan/#plan-application">Virtual Environments</a>. Environments in dbt cost compute and storage, but creating a development environment in Vulcan is free -- you can quickly access a full replica of any other environment with a single command.</p>
+<p>This enables Vulcan to provide efficient isolated <a href="guides/plan.md#plan-application">Virtual Environments</a>. Environments in dbt cost compute and storage, but creating a development environment in Vulcan is free -- you can quickly access a full replica of any other environment with a single command.</p>
 <p>Additionally, Vulcan ensures that promotion of staging environments to production is predictable and consistent. There is no concept of promotion in dbt, so queries are all rerun when it's time to deploy something. In Vulcan, promotions are simple pointer swaps so there is no wasted compute.</p>
 <h3 id="incremental-models">Incremental models<a class="headerlink" href="#incremental-models" title="Link to this section">¶</a></h3>
 <p>Implementing incremental models is difficult and error-prone in dbt because it does not keep track of state.</p>
@@ -1351,8 +1351,8 @@ dbt's default full refresh approach leads to the most costly version of this loo
 <p>Vulcan's <a href="../components/model/types/python_models/">Python models</a> run locally and can be used with any data warehouse. Breakpoints can be added to debug the model.</p>
 <h3 id="data-contracts">Data contracts<a class="headerlink" href="#data-contracts" title="Link to this section">¶</a></h3>
 <p>dbt offers manually configured schema contracts that will check the model's schema against the yaml schema at runtime. Models can be versioned to allow downstream teams time to migrate to the latest version, at the risk of a fragmented source of truth during the migration period.</p>
-<p>Vulcan provides automatic schema contracts and data contracts via <a href="../guides/plan/"><code>vulcan plan</code></a>, which checks the model's schema and query logic for changes that affect downstream users. <code>vulcan plan</code> will show which models have breaking changes and which downstream models are affected.</p>
-<p>While breaking changes can be rolled out as separate models to allow for a migration period, Vulcan's <a href="../concepts-old/glossary/#virtual-preview">Virtual Preview</a> empowers teams to collaborate on migrations before the changes are deployed to prod, maintaining a single source of truth across the business.</p>
+<p>Vulcan provides automatic schema contracts and data contracts via <a href="guides/plan.md"><code>vulcan plan</code></a>, which checks the model's schema and query logic for changes that affect downstream users. <code>vulcan plan</code> will show which models have breaking changes and which downstream models are affected.</p>
+<p>While breaking changes can be rolled out as separate models to allow for a migration period, Vulcan's <a href="concepts-old/glossary.md#virtual-preview">Virtual Preview</a> empowers teams to collaborate on migrations before the changes are deployed to prod, maintaining a single source of truth across the business.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

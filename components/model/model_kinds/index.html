@@ -2195,7 +2195,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p class="admonition-title">Remember: UTC Timezone</p>
 <p>Your <code>time_column</code> should be in UTC timezone. Learn more about why this matters <a href="#timezones">above</a>.</p>
 </div>
-<p>The time column is used to determine which records will be overwritten during data <a href="../../../guides/plan/#restatement-plans">restatement</a> and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the <code>MODEL</code> DDL <code>kind</code> specification:</p>
+<p>The time column is used to determine which records will be overwritten during data <a href="../../guides/plan.md#restatement-plans">restatement</a> and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the <code>MODEL</code> DDL <code>kind</code> specification:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
 <span class="normal"><a href="#__codelineno-9-2">2</a></span>
 <span class="normal"><a href="#__codelineno-9-3">3</a></span>
@@ -2308,7 +2308,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="idempotency">Idempotency<a class="headerlink" href="#idempotency" title="Link to this section">¶</a></h3>
-<p>Make incremental by time range model queries <a href="../../../references/glossary/#idempotency">idempotent</a> to prevent unexpected results during data <a href="../../../guides/plan/#restatement-plans">restatement</a>.</p>
+<p>Make incremental by time range model queries <a href="../../references/glossary.md#idempotency">idempotent</a> to prevent unexpected results during data <a href="../../guides/plan.md#restatement-plans">restatement</a>.</p>
 <p>Make your incremental by time range queries idempotent. This means running the same query multiple times produces the same result, which prevents surprises during data restatement.</p>
 <p><strong>Watch out:</strong> Your upstream models can affect idempotency. If you reference a FULL model (which rebuilds everything each run), your incremental model becomes non-idempotent because that upstream data changes every time. This is usually fine, but it's good to be aware of.</p>
 <h3 id="materialization-strategy">Materialization strategy<a class="headerlink" href="#materialization-strategy" title="Link to this section">¶</a></h3>
@@ -2372,7 +2372,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <li>There is at most one record associated with each unique key.</li>
 <li>It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their keys match.</li>
 </ul>
-<p>A <a href="../../../references/glossary/#slowly-changing-dimension-scd">Slowly Changing Dimension</a> (SCD) is one approach that fits this description well. See the <a href="#scd-type-2">SCD Type 2</a> model kind for SCD Type 2 models.</p>
+<p>A <a href="../../references/glossary.md#slowly-changing-dimension-scd">Slowly Changing Dimension</a> (SCD) is one approach that fits this description well. See the <a href="#scd-type-2">SCD Type 2</a> model kind for SCD Type 2 models.</p>
 <p>The name of the unique key column must be provided as part of the <code>MODEL</code> DDL, as in this example:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">SQL</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
@@ -2564,7 +2564,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">`</span><span class="n">vulcan</span><span class="o">-</span><span class="k">public</span><span class="o">-</span><span class="n">demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">vulcan__demo</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">demo__incremental_by_unique_key_example__1161945221</span><span class="o">`</span>
 </span></code></pre></div>
 </details>
-<p><strong>Note:</strong> Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are inherently <a href="../../../references/glossary/#idempotency">non-idempotent</a>, which should be taken into consideration during data <a href="../../../guides/plan/#restatement-plans">restatement</a>. As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.</p>
+<p><strong>Note:</strong> Models of the <code>INCREMENTAL_BY_UNIQUE_KEY</code> kind are inherently <a href="../../references/glossary.md#idempotency">non-idempotent</a>, which should be taken into consideration during data <a href="../../guides/plan.md#restatement-plans">restatement</a>. As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.</p>
 <h3 id="unique-key-expressions">Unique Key Expressions<a class="headerlink" href="#unique-key-expressions" title="Link to this section">¶</a></h3>
 <p>You're not limited to column names. You can use SQL expressions when you need to create a key from multiple columns or transform values. Example using <code>COALESCE</code>:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
@@ -3219,7 +3219,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 <p>SCD Type 2 is a model kind that supports <a href="https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row">slowly changing dimensions</a> (SCDs) in your Vulcan project. SCDs are a common pattern in data warehousing that allow you to track changes to records over time.</p>
 <p>Vulcan achieves this by adding a <code>valid_from</code> and <code>valid_to</code> column to your model. The <code>valid_from</code> column is the timestamp that the record became valid (inclusive) and the <code>valid_to</code> column is the timestamp that the record became invalid (exclusive). The <code>valid_to</code> column is set to <code>NULL</code> for the latest record.</p>
 <p>Therefore, you can use these models to not only tell you what the latest value is for a given record but also what the values were anytime in the past. Note that maintaining this history does come at a cost of increased storage and compute and this may not be a good fit for sources that change frequently since the history could get very large.</p>
-<p><strong>Note</strong>: Partial data <a href="../../../guides/plan/#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.</p>
+<p><strong>Note</strong>: Partial data <a href="../../guides/plan.md#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.</p>
 <p>Vulcan supports two ways to detect changes: <strong>By Time</strong> (recommended) or <strong>By Column</strong>. Let's look at both:</p>
 <h3 id="scd-type-2-by-time-recommended">SCD Type 2 By Time (Recommended)<a class="headerlink" href="#scd-type-2-by-time-recommended" title="Link to this section">¶</a></h3>
 <p><strong>By Time</strong> is the recommended approach. It works with source tables that have an "Updated At" timestamp column (like <code>updated_at</code>, <code>modified_at</code>, <code>last_changed</code>).</p>
@@ -4476,7 +4476,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-71-7"><a id="__codelineno-71-7" name="__codelineno-71-7"></a><span class="p">);</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Plan/apply this change to production.
-Then you will want to <a href="../../../guides/plan/#restatement-plans">restate the model</a>.</p>
+Then you will want to <a href="../../guides/plan.md#restatement-plans">restate the model</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Data Loss Warning</p>
 <p>This will permanently remove all historical data. In most cases, you cannot recover it. Make absolutely sure this is what you want!</p>
@@ -4519,7 +4519,7 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 <p class="admonition-title">Should you use this model kind?</p>
 <p>Any model kind can use a partitioned <strong>table</strong> by specifying the <a href="../overview/#partitioned_by"><code>partitioned_by</code> key</a> in the <code>MODEL</code> DDL.</p>
 <p>The "partition" in <code>INCREMENTAL_BY_PARTITION</code> is about how the data is <strong>loaded</strong> when the model runs.</p>
-<p><code>INCREMENTAL_BY_PARTITION</code> models are inherently <a href="../../../references/glossary/#idempotency">non-idempotent</a>, so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.</p>
+<p><code>INCREMENTAL_BY_PARTITION</code> models are inherently <a href="../../references/glossary.md#idempotency">non-idempotent</a>, so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.</p>
 <p>In most scenarios, an <code>INCREMENTAL_BY_TIME_RANGE</code> model can meet your needs and will be easier to manage. The <code>INCREMENTAL_BY_PARTITION</code> model kind should only be used when the data must be loaded by partition (usually for performance reasons).</p>
 </div>
 <p>This model kind is designed for the scenario where data rows should be loaded and updated as a group based on their shared value for the partitioning key.</p>
@@ -4670,7 +4670,7 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 </span></code></pre></div></td></tr></tbody></table></div>
 <div class="admonition warning">
 <p class="admonition-title">Only Full Restatements Supported</p>
-<p>Partial data <a href="../../../guides/plan/#restatement-plans">restatements</a> are used to reprocess part of a table's data (usually a limited time range).</p>
+<p>Partial data <a href="../../guides/plan.md#restatement-plans">restatements</a> are used to reprocess part of a table's data (usually a limited time range).</p>
 <p>Partial data restatement is not supported for <code>INCREMENTAL_BY_PARTITION</code> models. If you restate an <code>INCREMENTAL_BY_PARTITION</code> model, its entire table will be recreated from scratch.</p>
 <p>Restating <code>INCREMENTAL_BY_PARTITION</code> models may lead to data loss and should be performed with care.</p>
 </div>
@@ -4764,7 +4764,7 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 </span><span id="__span-77-43"><a id="__codelineno-77-43" name="__codelineno-77-43"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">user_type</span>
 </span><span id="__span-77-44"><a id="__codelineno-77-44" name="__codelineno-77-44"></a><span class="k">FROM</span><span class="w"> </span><span class="n">product_usage</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Note</strong>: Partial data <a href="../../../guides/plan/#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.</p>
+<p><strong>Note</strong>: Partial data <a href="../../guides/plan.md#restatement-plans">restatement</a> is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.</p>
 <h3 id="materialization-strategy_3">Materialization strategy<a class="headerlink" href="#materialization-strategy_3" title="Link to this section">¶</a></h3>
 <p>Depending on the target engine, models of the <code>INCREMENTAL_BY_PARTITION</code> kind are materialized using the following strategies:</p>
 <table>
@@ -4878,7 +4878,7 @@ Then you will want to <a href="../../../guides/plan/#restatement-plans">restate 
 <p><strong>Note:</strong> Since it's unmanaged, <code>INCREMENTAL_UNMANAGED</code> doesn't support <code>batch_size</code> or <code>batch_concurrency</code> properties. Vulcan just runs your query and appends the results, no batching or concurrency control.</p>
 <div class="admonition warning">
 <p class="admonition-title">Only Full Restatements Supported</p>
-<p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../../../guides/plan/#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>
+<p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../../guides/plan.md#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>
 <p>Be very careful when restating these models!</p>
 </div>
 </article>

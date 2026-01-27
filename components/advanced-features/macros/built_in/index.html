@@ -1812,7 +1812,7 @@
 </ul>
 <p>What happens if you have variables with the same name at different levels? The most specific one wins. Local variables override blueprint or gateway variables, gateway variables override global variables, and so on. This lets you set defaults globally but override them when needed.</p>
 <h3 id="global-variables">Global variables<a class="headerlink" href="#global-variables" title="Link to this section">¶</a></h3>
-<p>Global variables live in your project configuration file under the <a href="../../../../references/configuration/#variables"><code>variables</code> key</a>. They're perfect for values you want to use across multiple models.</p>
+<p>Global variables live in your project configuration file under the <a href="../../../references/configuration.md#variables"><code>variables</code> key</a>. They're perfect for values you want to use across multiple models.</p>
 <p>You can store numbers (<code>int</code>, <code>float</code>), booleans (<code>bool</code>), strings (<code>str</code>), or even lists and dictionaries containing these types.</p>
 <p>Access them in your models using either <code>@VAR_NAME</code> (the simple syntax) or <code>@VAR('var_name')</code> (the function syntax). The function syntax lets you provide a default value as the second argument, useful if the variable might not be defined.</p>
 <p>For example, this Vulcan configuration key defines six variables of different data types:</p>

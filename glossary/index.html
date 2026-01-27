@@ -1195,7 +1195,7 @@
 <tr>
 <td><strong>Backfill</strong></td>
 <td>Loading historical data when you first create a model or after changing logic. Vulcan figures out which intervals need processing.</td>
-<td><a href="../references/plans/">Plans</a></td>
+<td><a href="references/plans.md">Plans</a></td>
 </tr>
 <tr>
 <td><strong>Lookback</strong></td>
@@ -1239,7 +1239,7 @@
 <tr>
 <td><strong>Plan</strong></td>
 <td>Summary of what will change before you deploy. Shows affected models, intervals that need processing, and the full impact of your changes.</td>
-<td><a href="../references/plans/">Plans</a></td>
+<td><a href="references/plans.md">Plans</a></td>
 </tr>
 <tr>
 <td><strong>Run</strong></td>
@@ -1249,17 +1249,17 @@
 <tr>
 <td><strong>Virtual Environment</strong></td>
 <td>Isolated testing space that can share tables when safe. Test changes without touching production, roll back if needed.</td>
-<td><a href="../references/plans/#plan-application">Plans</a></td>
+<td><a href="references/plans.md#plan-application">Plans</a></td>
 </tr>
 <tr>
 <td><strong>Virtual Layer</strong></td>
 <td>Views that point to physical tables. This is what you interact with most of the time, not the raw storage underneath.</td>
-<td><a href="../references/plans/">Plans</a></td>
+<td><a href="references/plans.md">Plans</a></td>
 </tr>
 <tr>
 <td><strong>Physical Layer</strong></td>
 <td>Actual database tables and materialized views where your data lives. Vulcan manages this automatically.</td>
-<td><a href="../references/plans/">Plans</a></td>
+<td><a href="references/plans.md">Plans</a></td>
 </tr>
 </tbody>
 </table>
@@ -1361,19 +1361,27 @@
 <tr>
 <td><strong>DAG</strong></td>
 <td>Directed Acyclic Graph. Structure Vulcan uses to track model dependencies and figure out the correct execution order.</td>
-<td><a href="../references/glossary/#dag">Glossary</a></td>
+<td><a href="references/glossary.md#dag">Glossary</a></td>
 </tr>
 <tr>
 <td><strong>Lineage</strong></td>
 <td>Visualization of how data flows from sources to consumption. See how changes propagate through your pipeline.</td>
-<td><a href="../references/glossary/#lineage">Glossary</a></td>
+<td><a href="references/glossary.md#lineage">Glossary</a></td>
 </tr>
 </tbody>
 </table>
 <hr/>
 <h2 id="how-these-terms-fit-together">How These Terms Fit Together<a class="headerlink" href="#how-these-terms-fit-together" title="Link to this section">¶</a></h2>
 <p>You don't need to memorize everything. Here's how these concepts connect in practice:</p>
-<p><strong>Models define your logic</strong> → <strong>Grain</strong> documents structure → <strong>Model Kind</strong> determines processing → <strong>Cron</strong> sets schedule → <strong>Plan</strong> reviews changes → <strong>Run</strong> processes data → <strong>Assertions</strong> validate quality → <strong>Semantic Layer</strong> exposes business interface → <strong>Dimensions</strong> and <strong>Measures</strong> enable self-service analytics</p>
+<p>→ <strong>Models</strong> define your logic</p>
+<p>→ <strong>Grain</strong> documents structure</p>
+<p>→ <strong>Model Kind</strong> determines processing</p>
+<p>→ <strong>Cron</strong> sets schedule</p>
+<p>→ <strong>Plan</strong> reviews changes</p>
+<p>→ <strong>Run</strong> processes data</p>
+<p>→ <strong>Assertions</strong> validate quality</p>
+<p>→ <strong>Semantic Layer</strong> exposes business interface</p>
+<p>→ <strong>Dimensions</strong> and <strong>Measures</strong> enable self-service analytics</p>
 <p>Each term solves a specific problem. Grain helps with comparisons. References enable automatic joins. Model Kinds optimize performance. The Semantic Layer makes data accessible to non-technical users.</p>
 <hr/>
 <p><em>Click any documentation link above for detailed guides with examples, best practices, and advanced patterns.</em></p>
