@@ -283,8 +283,6 @@ graph TB
     style DEV fill:#ffe082,stroke:#f9a825,stroke-width:3px,color:#000
 ```
 
-![Each model variant gets its own physical table, while environments only contain references to these tables](plans/model_versioning.png)
-
 *Each model variant gets its own physical table while environments only contain references to these tables.*
 
 This unique approach to understanding and applying changes is what enables Vulcan's Virtual Environments. It allows Vulcan to ensure complete isolation between environments while allowing it to share physical data assets between environments when appropriate and safe to do so.

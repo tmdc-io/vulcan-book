@@ -82,7 +82,23 @@ These describe how Vulcan structures and tracks your pipeline.
 
 You don't need to memorize everything. Here's how these concepts connect in practice:
 
-**Models define your logic** → **Grain** documents structure → **Model Kind** determines processing → **Cron** sets schedule → **Plan** reviews changes → **Run** processes data → **Assertions** validate quality → **Semantic Layer** exposes business interface → **Dimensions** and **Measures** enable self-service analytics
+→ **Models** define your logic
+
+→ **Grain** documents structure
+
+→ **Model Kind** determines processing
+
+→ **Cron** sets schedule
+
+→ **Plan** reviews changes
+
+→ **Run** processes data
+
+→ **Assertions** validate quality
+
+→ **Semantic Layer** exposes business interface
+
+→ **Dimensions** and **Measures** enable self-service analytics
 
 Each term solves a specific problem. Grain helps with comparisons. References enable automatic joins. Model Kinds optimize performance. The Semantic Layer makes data accessible to non-technical users.
 
