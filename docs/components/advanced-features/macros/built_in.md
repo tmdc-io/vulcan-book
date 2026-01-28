@@ -108,7 +108,7 @@ What happens if you have variables with the same name at different levels? The m
 
 ### Global variables
 
-Global variables live in your project configuration file under the [`variables` key](../../../references/configuration.md#variables). They're perfect for values you want to use across multiple models.
+Global variables live in your project configuration file under the [`variables` key](../../../configurations/options/variables.md). They're perfect for values you want to use across multiple models.
 
 You can store numbers (`int`, `float`), booleans (`bool`), strings (`str`), or even lists and dictionaries containing these types.
 

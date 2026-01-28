@@ -10,9 +10,9 @@ Before adding a model, ensure that you have:
 
 - [Created your project](./get-started/docker.md) 
 
-- [Applied your first plan](./plan.md#scenario-1-first-plan-initializing-production)
+- [Applied your first plan](./plan_guide.md)
 
-- Working in a [dev environment](../references/environments.md) for testing changes
+- Working in a [dev environment](../glossary.md#execution-terms) for testing changes
 
 ---
 
@@ -720,4 +720,4 @@ Here are some tips to help you work effectively with models:
 
 - Explore [Model Properties](../components/model/properties.md) for advanced configuration
 
-- Read about [Plans](./plan.md) for applying model changes
+- Read about [Plans](./plan_guide.md) for applying model changes

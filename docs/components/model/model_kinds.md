@@ -420,7 +420,7 @@ Vulcan needs to know which column in your model's output represents the timestam
 
     Your `time_column` should be in UTC timezone. Learn more about why this matters [above](#timezones).
 
-The time column is used to determine which records will be overwritten during data [restatement](../../guides/plan.md#restatement-plans) and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the `MODEL` DDL `kind` specification:
+The time column is used to determine which records will be overwritten during data [restatement](../../guides/plan_guide.md#restatement-plans-restate-model) and provides a partition key for engines that support partitioning (such as Apache Spark). The name of the time column is specified in the `MODEL` DDL `kind` specification:
 
 ```sql linenums="1"
 MODEL (
@@ -512,7 +512,7 @@ MODEL (
 ```
 
 ### Idempotency
-Make incremental by time range model queries [idempotent](../../references/glossary.md#idempotency) to prevent unexpected results during data [restatement](../../guides/plan.md#restatement-plans).
+Make incremental by time range model queries [idempotent](../../glossary.md#execution-terms) to prevent unexpected results during data [restatement](../../guides/plan_guide.md#restatement-plans-restate-model).
 
 Make your incremental by time range queries idempotent. This means running the same query multiple times produces the same result, which prevents surprises during data restatement.
 
@@ -551,7 +551,7 @@ This kind is a good fit for datasets that have the following traits:
 * There is at most one record associated with each unique key.
 * It is appropriate to upsert records, so existing records can be overwritten by new arrivals when their keys match.
 
-A [Slowly Changing Dimension](../../references/glossary.md#slowly-changing-dimension-scd) (SCD) is one approach that fits this description well. See the [SCD Type 2](#scd-type-2) model kind for SCD Type 2 models.
+A [Slowly Changing Dimension](../../glossary.md#model-terms) (SCD) is one approach that fits this description well. See the [SCD Type 2](#scd-type-2) model kind for SCD Type 2 models.
 
 The name of the unique key column must be provided as part of the `MODEL` DDL, as in this example:
 
@@ -705,7 +705,7 @@ GROUP BY c.customer_id, c.name
     SELECT * FROM `vulcan-public-demo`.`vulcan__demo`.`demo__incremental_by_unique_key_example__1161945221`
     ```
 
-**Note:** Models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are inherently [non-idempotent](../../references/glossary.md#idempotency), which should be taken into consideration during data [restatement](../../guides/plan.md#restatement-plans). As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.
+**Note:** Models of the `INCREMENTAL_BY_UNIQUE_KEY` kind are inherently [non-idempotent](../../glossary.md#execution-terms), which should be taken into consideration during data [restatement](../../guides/plan_guide.md#restatement-plans-restate-model). As a result, partial data restatement is not supported for this model kind, which means that the entire table will be recreated from scratch if restated.
 
 ### Unique Key Expressions
 
@@ -1244,7 +1244,7 @@ Vulcan achieves this by adding a `valid_from` and `valid_to` column to your mode
 
 Therefore, you can use these models to not only tell you what the latest value is for a given record but also what the values were anytime in the past. Note that maintaining this history does come at a cost of increased storage and compute and this may not be a good fit for sources that change frequently since the history could get very large.
 
-**Note**: Partial data [restatement](../../guides/plan.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.
+**Note**: Partial data [restatement](../../guides/plan_guide.md#restatement-plans-restate-model) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss, so data restatement is disabled for models of this kind by default.
 
 Vulcan supports two ways to detect changes: **By Time** (recommended) or **By Column**. Let's look at both:
 
@@ -1851,7 +1851,7 @@ MODEL (
 ```
 
 Plan/apply this change to production.
-Then you will want to [restate the model](../../guides/plan.md#restatement-plans).
+Then you will want to [restate the model](../../guides/plan_guide.md#restatement-plans-restate-model).
 
 !!! warning "Data Loss Warning"
 
@@ -1886,11 +1886,11 @@ The `MANAGED` model kind is used to create models where the underlying database 
 
 These models don't get updated with new intervals or refreshed when `vulcan run` is called. Responsibility for keeping the *data* up to date falls on the engine.
 
-You can control how the engine creates the managed model by using the [`physical_properties`](./overview.md#physical_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
+You can control how the engine creates the managed model by using the [`physical_properties`](./properties.md#physical_properties) to pass engine-specific parameters for adapter to use when issuing commands to the underlying database.
 
 Due to there being no standard, each vendor has a different implementation with different semantics and different configuration parameters. Therefore, `MANAGED` models are not as portable between database engines as other Vulcan model types. In addition, due to their black-box nature, Vulcan has limited visibility into the integrity and state of the model.
 
-We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](./overview.md#build-a-virtual-environment).
+We would recommend using standard Vulcan model types in the first instance. However, if you do need to use Managed models, you still gain other Vulcan benefits like the ability to use them in [virtual environments](../../guides/plan_guide.md#physical-tables-virtual-layer-and-environments).
 
 See [Managed Models](./types/managed_models.md) for more information on which engines are supported and which properties are available.
 
@@ -1900,11 +1900,11 @@ Models of the `INCREMENTAL_BY_PARTITION` kind are computed incrementally based o
 
 !!! question "Should you use this model kind?"
 
-    Any model kind can use a partitioned **table** by specifying the [`partitioned_by` key](./overview.md#partitioned_by) in the `MODEL` DDL.
+    Any model kind can use a partitioned **table** by specifying the [`partitioned_by` key](./properties.md#partitioned_by) in the `MODEL` DDL.
 
     The "partition" in `INCREMENTAL_BY_PARTITION` is about how the data is **loaded** when the model runs.
 
-    `INCREMENTAL_BY_PARTITION` models are inherently [non-idempotent](../../references/glossary.md#idempotency), so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.
+    `INCREMENTAL_BY_PARTITION` models are inherently [non-idempotent](../../glossary.md#execution-terms), so restatements and other actions can cause data loss. This makes them more complex to manage than other model kinds.
 
     In most scenarios, an `INCREMENTAL_BY_TIME_RANGE` model can meet your needs and will be easier to manage. The `INCREMENTAL_BY_PARTITION` model kind should only be used when the data must be loaded by partition (usually for performance reasons).
 
@@ -2008,7 +2008,7 @@ MODEL (
 
 !!! warning "Only Full Restatements Supported"
 
-    Partial data [restatements](../../guides/plan.md#restatement-plans) are used to reprocess part of a table's data (usually a limited time range).
+    Partial data [restatements](../../guides/plan_guide.md#restatement-plans) are used to reprocess part of a table's data (usually a limited time range).
 
     Partial data restatement is not supported for `INCREMENTAL_BY_PARTITION` models. If you restate an `INCREMENTAL_BY_PARTITION` model, its entire table will be recreated from scratch.
 
@@ -2065,7 +2065,7 @@ SELECT
 FROM product_usage
 ```
 
-**Note**: Partial data [restatement](../../guides/plan.md#restatement-plans) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.
+**Note**: Partial data [restatement](../../guides/plan_guide.md#restatement-plans-restate-model) is not supported for this model kind, which means that the entire table will be recreated from scratch if restated. This may lead to data loss.
 
 ### Materialization strategy
 Depending on the target engine, models of the `INCREMENTAL_BY_PARTITION` kind are materialized using the following strategies:
@@ -2134,6 +2134,6 @@ ORDER BY s.shipped_date DESC
 
 !!! warning "Only Full Restatements Supported"
 
-    Similar to `INCREMENTAL_BY_PARTITION`, attempting to [restate](../../guides/plan.md#restatement-plans) an `INCREMENTAL_UNMANAGED` model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.
+    Similar to `INCREMENTAL_BY_PARTITION`, attempting to [restate](../../guides/plan_guide.md#restatement-plans) an `INCREMENTAL_UNMANAGED` model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.
 
     Be very careful when restating these models!

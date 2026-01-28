@@ -180,11 +180,11 @@ Beyond time, Vulcan provides variables that give you information about the curre
   
   Learn more about using this in [pre/post-statements](../../model/types/sql_models.md#optional-prepost-statements).
 
-- **`@gateway`** - The name of the current [gateway](../../../references/configuration.md#gateways) (your database connection)
+- **`@gateway`** - The name of the current [gateway](../../../configurations/overview.md#gateways) (your database connection)
 
 - **`@this_model`** - The physical table name that the model's view selects from. Useful for creating [generic audits](../../audits/audits.md#generic-audits). When used in [on_virtual_update statements](../../model/types/sql_models.md#optional-on-virtual-update-statements), it contains the qualified view name instead.
 
-- **`@model_kind_name`** - The name of the current model kind (like `'FULL'` or `'INCREMENTAL_BY_TIME_RANGE'`). Useful when you need to control [physical properties in model defaults](../../../references/model_configuration.md#model-defaults) based on the model kind.
+- **`@model_kind_name`** - The name of the current model kind (like `'FULL'` or `'INCREMENTAL_BY_TIME_RANGE'`). Useful when you need to control [physical properties in model defaults](../../../configurations/options/model_defaults.md) based on the model kind.
 
 !!! note "Embedding variables in strings"
     Sometimes you'll see variables written with curly braces like `@{variable}` instead of just `@variable`. They do different things!
@@ -201,12 +201,12 @@ Beyond time, Vulcan provides variables that give you information about the curre
 
 #### Before all and after all variables
 
-These variables are available in [`before_all` and `after_all` statements](../../../references/configuration.md#before_all--after_all), as well as in any macros called within those statements:
+These variables are available in [`before_all` and `after_all` statements](../../../configurations/options/execution_hooks.md), as well as in any macros called within those statements:
 
-- **`@this_env`** - The name of the current [environment](../../../references/environments.md)
+- **`@this_env`** - The name of the current [environment](../../../glossary.md#execution-terms)
 
-- **`@schemas`** - A list of schema names in the [virtual layer](../../../references/glossary.md#virtual-layer) for the current environment
+- **`@schemas`** - A list of schema names in the [virtual layer](../../../glossary.md#execution-terms) for the current environment
 
-- **`@views`** - A list of view names in the [virtual layer](../../../references/glossary.md#virtual-layer) for the current environment
+- **`@views`** - A list of view names in the [virtual layer](../../../glossary.md#execution-terms) for the current environment
 
 These are useful when you need to perform setup or cleanup operations that depend on the environment context.

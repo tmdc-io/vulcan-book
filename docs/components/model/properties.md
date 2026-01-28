@@ -509,7 +509,7 @@ Document your columns! This property lets you add descriptions for each column, 
     ```
 
 !!! warning "Priority"
-    If `column_descriptions` is present, [inline column comments](./overview.md#inline-column-comments) will not be registered.
+    If `column_descriptions` is present, [inline column comments](./overview.md#column-descriptions) will not be registered.
 
 ### columns
 
@@ -1245,10 +1245,10 @@ These properties work with all incremental model kinds. They're your toolkit for
 
 | Property | Description | Type | Default |
 |----------|-------------|:----:|:-------:|
-| `forward_only` | All changes should be [forward-only](../../references/plans.md#forward-only-plans) | `bool` | `false` |
+| `forward_only` | All changes should be [forward-only](../../guides/incremental_by_time.md#forward-only-models) | `bool` | `false` |
 | `on_destructive_change` | Behavior for destructive schema changes | `str` | `error` |
 | `on_additive_change` | Behavior for additive schema changes | `str` | `allow` |
-| `disable_restatement` | Disable [data restatement](../../references/plans.md#restatement-plans) | `bool` | `false` |
+| `disable_restatement` | Disable [data restatement](../../guides/plan_guide.md#restatement-plans-restate-model) | `bool` | `false` |
 | `auto_restatement_cron` | Cron expression for automatic restatement | `str` | - |
 
 **Values for `on_destructive_change` / `on_additive_change`:**
@@ -1712,4 +1712,4 @@ infer_names: true
 
 **When to use:** If your project structure matches your schema structure, this saves you from typing `name` in every model. Pretty convenient!
 
-Learn more in the [configuration guide](../../references/configuration.md#model-naming).
+Learn more in the [configuration guide](../../configurations/overview.md#model-defaults).

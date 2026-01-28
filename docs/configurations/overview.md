@@ -97,7 +97,7 @@ Gateways define how Vulcan connects to your data warehouse and state backend. De
 | `scheduler` | Scheduler configuration | `builtin` |
 | `state_schema` | Schema name for state tables | `vulcan` |
 
-See [Configuration Reference](../references/configuration.md#gateways) for detailed gateway options.
+See [Configuration Reference](./overview.md#gateways) for detailed gateway options.
 
 ### Model Defaults
 
@@ -141,15 +141,15 @@ See [Notifications](./options/notifications.md) for Slack webhooks, API, and ema
 
 Vulcan works with these data warehouses:
 
-- [PostgreSQL](../references/integrations/engines/postgres.md)
+- [PostgreSQL](./engines/postgres/postgres.md)
 
-- [Snowflake](../references/integrations/engines/snowflake.md)
+- [Snowflake](./engines/snowflake/snowflake.md)
 
 ## Configuration Reference
 
 | Topic | Description |
 |-------|-------------|
-| [Configuration Reference](../references/configuration.md) | Complete list of all configuration parameters |
+| [Configuration Reference](./overview.md) | Complete list of all configuration parameters |
 | [Variables](./options/variables.md) | Environment variables and `.env` files |
 | [Model Defaults](./options/model_defaults.md) | Default settings for all models |
 | [Execution Hooks](./options/execution_hooks.md) | `before_all` and `after_all` statements |

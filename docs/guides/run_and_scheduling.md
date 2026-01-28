@@ -649,7 +649,7 @@ By default, Vulcan stores scheduler state in your SQL engine. For production:
 
 - You need better isolation
 
-See [Configuration Guide](../references/configuration.md#gateways) for configuring a separate state database.
+See [Configuration Guide](../configurations/overview.md#gateways) for configuring a separate state database.
 
 ---
 
@@ -689,4 +689,4 @@ Following these practices will help you build reliable, automated data pipelines
 
 ## Next Steps
 
-- Learn about [Plan Guide](../references/plans.md) for applying model changes
+- Learn about [Plan Guide](./plan_guide.md) for applying model changes

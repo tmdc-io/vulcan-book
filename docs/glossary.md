@@ -15,7 +15,7 @@ These control how your models behave and how Vulcan processes them.
 | **Model Kind** | How Vulcan processes your data. FULL rebuilds everything, INCREMENTAL only processes new intervals, VIEW computes on-demand. | [Model Kinds](components/model/model_kinds.md) |
 | **Cron** | Schedule expression that sets when your model runs. Use `@daily` for nightly refreshes or standard cron syntax for custom schedules. | [Model Properties](components/model/properties.md#cron) |
 | **Interval** | A time period Vulcan tracks for incremental models. Each day, week, or hour becomes an interval that gets processed independently. | [Incremental Models](guides/incremental_by_time.md) |
-| **Backfill** | Loading historical data when you first create a model or after changing logic. Vulcan figures out which intervals need processing. | [Plans](references/plans.md) |
+| **Backfill** | Loading historical data when you first create a model or after changing logic. Vulcan figures out which intervals need processing. | [Plans](guides/plan_guide.md) |
 | **Lookback** | How many intervals to reprocess for late-arriving data. Handles events that show up after their time window already passed. | [Model Kinds](components/model/model_kinds.md#incremental_by_time_range) |
 | **Forward-only** | Models that never rebuild historical data. Use when past data is immutable or reprocessing costs too much. | [Model Kinds](components/model/model_kinds.md) |
 | **Owner** | Team or person responsible for a model. Used for notifications and knowing who to contact when something breaks. | [Model Properties](components/model/properties.md#owner) |
@@ -30,11 +30,11 @@ These describe how Vulcan applies changes and processes data.
 
 | Term | Definition | Documentation |
 |------|------------|---------------|
-| **Plan** | Summary of what will change before you deploy. Shows affected models, intervals that need processing, and the full impact of your changes. | [Plans](references/plans.md) |
+| **Plan** | Summary of what will change before you deploy. Shows affected models, intervals that need processing, and the full impact of your changes. | [Plans](guides/plan_guide.md) |
 | **Run** | Scheduled execution that processes new data intervals. Different from plan: plan applies code changes, run handles regular data processing. | [Run and Scheduling](guides/run_and_scheduling.md) |
-| **Virtual Environment** | Isolated testing space that can share tables when safe. Test changes without touching production, roll back if needed. | [Plans](references/plans.md#plan-application) |
-| **Virtual Layer** | Views that point to physical tables. This is what you interact with most of the time, not the raw storage underneath. | [Plans](references/plans.md) |
-| **Physical Layer** | Actual database tables and materialized views where your data lives. Vulcan manages this automatically. | [Plans](references/plans.md) |
+| **Virtual Environment** | Isolated testing space that can share tables when safe. Test changes without touching production, roll back if needed. | [Plans](guides/plan_guide.md#physical-tables-virtual-layer-and-environments) |
+| **Virtual Layer** | Views that point to physical tables. This is what you interact with most of the time, not the raw storage underneath. | [Plans](guides/plan_guide.md) |
+| **Physical Layer** | Actual database tables and materialized views where your data lives. Vulcan manages this automatically. | [Plans](guides/plan_guide.md) |
 
 ---
 
@@ -73,8 +73,8 @@ These describe how Vulcan structures and tracks your pipeline.
 
 | Term | Definition | Documentation |
 |------|------------|---------------|
-| **DAG** | Directed Acyclic Graph. Structure Vulcan uses to track model dependencies and figure out the correct execution order. | [Glossary](references/glossary.md#dag) |
-| **Lineage** | Visualization of how data flows from sources to consumption. See how changes propagate through your pipeline. | [Glossary](references/glossary.md#lineage) |
+| **DAG** | Directed Acyclic Graph. Structure Vulcan uses to track model dependencies and figure out the correct execution order. | [DAG](glossary.md#architecture-terms) |
+| **Lineage** | Visualization of how data flows from sources to consumption. See how changes propagate through your pipeline. | [Lineage](glossary.md#architecture-terms) |
 
 ---
 

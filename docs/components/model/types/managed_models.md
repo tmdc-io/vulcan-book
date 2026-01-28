@@ -110,7 +110,7 @@ FROM raw_events
 
 Dynamic Tables have properties that control refresh frequency, initial data population, retention, and more. You can find the complete list in the [Snowflake documentation](https://docs.snowflake.com/sql-reference/sql/create-dynamic-table).
 
-In Vulcan, you set these properties using [`physical_properties`](../overview.md#physical_properties) in your model definition. Here are the key ones:
+In Vulcan, you set these properties using [`physical_properties`](../properties.md#physical_properties) in your model definition. Here are the key ones:
 
 | Snowflake Property              | Required | Notes
 | ------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -125,4 +125,4 @@ The following Dynamic Table properties can be set directly on the model:
 
 | Snowflake Property | Required   | Notes                                                                                                                                                                   |
 | ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| cluster by         | N          | `clustered_by` is a [standard model property](../overview.md#clustered_by), so set `clustered_by` on the model to add a `CLUSTER BY` clause to the Dynamic Table |
+| cluster by         | N          | `clustered_by` is a [standard model property](../properties.md#clustered_by), so set `clustered_by` on the model to add a `CLUSTER BY` clause to the Dynamic Table |

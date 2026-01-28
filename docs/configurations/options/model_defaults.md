@@ -2,7 +2,7 @@
 
 The `model_defaults` section is required. You must specify a value for the `dialect` key.
 
-All supported `model_defaults` keys are listed in the [models configuration reference](../../references/model_configuration.md#model-defaults).
+All supported `model_defaults` keys are listed in the [models configuration reference](../../components/model/properties.md#model-defaults).
 
 ## Basic Configuration
 

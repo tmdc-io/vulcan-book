@@ -27,7 +27,7 @@ Vulcan stores this metadata as `EXTERNAL` models.
 
 - Vulcan never modifies external tables
 
-The querying model's [`kind`](../../model/model_kinds.md), [`cron`](../../model/overview.md#cron), and previously loaded time intervals determine when Vulcan will query the `EXTERNAL` model.
+The querying model's [`kind`](../../model/model_kinds.md), [`cron`](../properties.md#cron), and previously loaded time intervals determine when Vulcan will query the `EXTERNAL` model.
 
 **When external tables get queried:** Only when a Vulcan model references them. The querying model's `kind`, `cron`, and time intervals determine when the external table is actually queried. Vulcan doesn't proactively query external tables, it only queries them as part of executing your models.
 
@@ -66,7 +66,7 @@ The following sections show you how to create external models for these tables. 
 
 ### Using CLI
 
-Instead of creating the `external_models.yaml` file manually, Vulcan can generate it for you with the [create_external_models](../../../cli-command/cli.md#create_external_models) CLI command.
+Instead of creating the `external_models.yaml` file manually, Vulcan can generate it for you with the [create_external_models](../../../cli-commands/cli.md#create_external_models) CLI command.
 
 The command identifies all external tables referenced in your Vulcan project, fetches their column information from the SQL engine's metadata, and then stores the information in the `external_models.yaml` file.
 
@@ -76,7 +76,7 @@ If Vulcan does not have access to an external table's metadata, the table will b
 
 ### Gateway-specific external models
 
-In some use-cases such as [isolated systems with multiple gateways](../../../guides-old/isolated_systems.md#multiple-gateways), there are external models that only exist on a certain gateway.
+In some use-cases such as [isolated systems with multiple gateways](../../../configurations/overview.md#gateways), there are external models that only exist on a certain gateway.
 
 **Gateway names are case-insensitive in external model configurations.** You can specify the gateway name using any case (e.g., `gateway: dev`, `gateway: DEV`, `gateway: Dev`) and Vulcan will handle the matching correctly.
 
@@ -100,7 +100,7 @@ vulcan create_external_models
 
 ### Gateway-Specific External Models
 
-If you're using [isolated systems with multiple gateways](../../../guides-old/isolated_systems.md#multiple-gateways), you might have external tables that only exist on specific gateways.
+If you're using [isolated systems with multiple gateways](../../../configurations/overview.md#gateways), you might have external tables that only exist on specific gateways.
 
 **Example:** Your model uses a gateway variable to select different databases:
 

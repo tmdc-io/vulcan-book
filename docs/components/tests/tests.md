@@ -18,7 +18,7 @@ Data models are tricky beasts. Small errors can snowball into significant busine
 
 - **Confidence in changes** - Make updates knowing you'll catch regressions before they hit production
 
-Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new [plan](../../guides/plan.md).
+Tests run either on demand (like in CI/CD pipelines) or automatically when you create a new [plan](../../guides/plan_guide.md).
 
 ## Creating Tests
 

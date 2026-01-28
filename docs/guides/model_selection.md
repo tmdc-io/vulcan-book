@@ -4,13 +4,13 @@ This guide explains how to select specific models to include in a Vulcan plan us
 
 In large projects, model selection saves time. Instead of waiting for all models to process, focus on what you're working on.
 
-**Note:** The selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](../references/plans.md#destructive-changes).
+**Note:** The selector syntax described below is also used for the Vulcan `plan` [`--allow-destructive-model` and `--allow-additive-model` selectors](./plan_guide.md).
 
 ---
 
 ## Background
 
-A Vulcan [plan](../references/plans.md) automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.
+A Vulcan [plan](./plan_guide.md) automatically detects changes between your local project and the deployed environment. When applied, it backfills directly modified models and their downstream dependencies.
 
 In large projects, a single model change can impact many downstream models, making plans take a long time. Model selection lets you filter which changes to include, so you can test specific models without processing everything.
 
@@ -697,5 +697,5 @@ Here are some tips to help you use model selection effectively:
 
 ## Next Steps
 
-- Learn about [Plans](../references/plans.md) for understanding plan behavior
+- Learn about [Plans](./plan_guide.md) for understanding plan behavior
 

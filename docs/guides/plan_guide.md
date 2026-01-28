@@ -27,7 +27,7 @@ A plan summary includes:
 - **Backfill window**: which models need intervals executed
 - **Apply stages**: executing model batches, updating virtual layer, running non-blocking quality signals
 
-For a walkthrough with screenshots and CLI snippets, see [Plan](./plan.md). For details on environments, snapshots, forward-only plans, and restatements, see [Plans](../references/plans.md).
+For a walkthrough with screenshots and CLI snippets, see [Plan](./plan_guide.md). For details on environments, snapshots, forward-only plans, and restatements, see [Plans](./plan_guide.md).
 
 ## How plan works
 
@@ -159,5 +159,5 @@ How it works:
 - **External models**: restating an external model triggers downstream backfills (the external model itself is metadata-only).
 - **Disable restatement**: set `disable_restatement: true` to prevent restatement for a model.
 
-Prod vs dev behavior differs. Restating `prod` can clear affected intervals in other environments' state to prevent stale data being promoted later. For details, see [Plans](../references/plans.md).
+Prod vs dev behavior differs. Restating `prod` can clear affected intervals in other environments' state to prevent stale data being promoted later. For details, see [Plans](./plan_guide.md).
 

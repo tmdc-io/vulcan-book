@@ -71,7 +71,7 @@ nav:
       # - Virtual environments Guide:
       # - Vulcan API Guide:
       # - Table Creation Guide:
-  - CLI Commands: cli-command/cli.md
+  - CLI Commands: cli-commands/cli.md
   - Cookbook: cookbook/index.md
   - Glossary: glossary.md
   - FAQ: faq/index.md

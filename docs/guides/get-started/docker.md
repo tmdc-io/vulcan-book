@@ -204,7 +204,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     
     **Step 1: Initialize Your Project**
     
-    Initialize a new Vulcan project: [*Learn more about init*](../../cli-command/cli.md#init){:target="_blank"}
+    Initialize a new Vulcan project: [*Learn more about init*](../../cli-commands/cli.md#init){:target="_blank"}
     
     ```bash
     vulcan init
@@ -234,7 +234,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
 
     **Step 2: Verify Your Setup**
     
-    Check your project configuration and connection status: [*Learn more about info*](../../cli-command/cli.md#info){:target="_blank"}
+    Check your project configuration and connection status: [*Learn more about info*](../../cli-commands/cli.md#info){:target="_blank"}
     
     ```bash
     vulcan info
@@ -252,7 +252,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
 
     **Step 3: Create and Apply Your First Plan**
     
-    Generate a plan for your models: [*Learn more about plan*](../../cli-command/cli.md#plan){:target="_blank"}
+    Generate a plan for your models: [*Learn more about plan*](../../cli-commands/cli.md#plan){:target="_blank"}
     
     ```bash
     vulcan plan
@@ -270,7 +270,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
         
     **Step 4: Query Your Models**
     
-    Execute SQL queries against your models: [*Learn more about fetchdf*](../../cli-command/cli.md#fetchdf){:target="_blank"}
+    Execute SQL queries against your models: [*Learn more about fetchdf*](../../cli-commands/cli.md#fetchdf){:target="_blank"}
     
     ```bash
     vulcan fetchdf "select * from schema.model_name"
@@ -280,7 +280,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
 
     **Step 5: Query Using Semantic Layer**
     
-    Use Vulcan's semantic layer to query your data: [*Learn more about transpile*](../../cli-command/cli.md#transpile){:target="_blank"}
+    Use Vulcan's semantic layer to query your data: [*Learn more about transpile*](../../cli-commands/cli.md#transpile){:target="_blank"}
     
     ```bash
     vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
@@ -292,7 +292,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     
     **Step 1: Initialize Your Project**
     
-    Initialize a new Vulcan project: [*Learn more about init*](../../cli-command/cli.md#init){:target="_blank"}
+    Initialize a new Vulcan project: [*Learn more about init*](../../cli-commands/cli.md#init){:target="_blank"}
     
     ```cmd
     vulcan init
@@ -322,7 +322,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
 
     **Step 2: Verify Your Setup**
     
-    Check your project configuration and connection status: [*Learn more about info*](../../cli-command/cli.md#info){:target="_blank"}
+    Check your project configuration and connection status: [*Learn more about info*](../../cli-commands/cli.md#info){:target="_blank"}
     
     ```cmd
     vulcan info
@@ -340,7 +340,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
 
     **Step 3: Create and Apply Your First Plan**
     
-    Generate a plan for your models: [*Learn more about plan*](../../cli-command/cli.md#plan){:target="_blank"}
+    Generate a plan for your models: [*Learn more about plan*](../../cli-commands/cli.md#plan){:target="_blank"}
     
     ```cmd
     vulcan plan
@@ -358,7 +358,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
         
     **Step 4: Query Your Models**
     
-    Execute SQL queries against your models: [*Learn more about fetchdf*](../../cli-command/cli.md#fetchdf){:target="_blank"}
+    Execute SQL queries against your models: [*Learn more about fetchdf*](../../cli-commands/cli.md#fetchdf){:target="_blank"}
     
     ```cmd
     vulcan fetchdf "select * from schema.model_name"
@@ -368,7 +368,7 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
 
     **Step 5: Query Using Semantic Layer**
     
-    Use Vulcan's semantic layer to query your data: [*Learn more about transpile*](../../cli-command/cli.md#transpile){:target="_blank"}
+    Use Vulcan's semantic layer to query your data: [*Learn more about transpile*](../../cli-commands/cli.md#transpile){:target="_blank"}
     
     ```cmd
     vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
@@ -527,7 +527,7 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
 
 You've set up Vulcan and created your first project. Here are recommended next steps:
 
-- **[Learn more about Vulcan CLI commands](../../cli-command/cli.md){:target="_blank"}** - Explore all available commands and their options
+- **[Learn more about Vulcan CLI commands](../../cli-commands/cli.md){:target="_blank"}** - Explore all available commands and their options
 
 - **[Explore Vulcan concepts](../../components/model/overview.md){:target="_blank"}** - Deep dive into how models work and how to structure your data pipeline
 

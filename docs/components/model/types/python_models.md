@@ -99,7 +99,7 @@ The `@model` decorator captures your model's metadata (just like the `MODEL` DDL
 
 The `@model` decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc. They all work the same way.
 
-Python model `kind`s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the [models configuration reference page](../../../references/model_configuration.md#model-kind-properties).
+Python model `kind`s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the [models configuration reference page](../../../components/model/properties.md).
 
 ```python
 from vulcan import ModelKindName
@@ -113,7 +113,7 @@ from vulcan import ModelKindName
 )
 ```
 
-All model kind properties are documented in the [model configuration reference](../../../references/model_configuration.md#model-kind-properties).
+All model kind properties are documented in the [model configuration reference](../../../components/model/properties.md).
 
 Supported `kind` dictionary `name` values are:
 
@@ -143,7 +143,7 @@ Supported `kind` dictionary `name` values are:
 
 ## Execution Context
 
-Python models can do anything you want, but it is strongly recommended for all models to be [idempotent](../../../references/glossary.md#idempotency). Python models can fetch data from upstream models or even data outside of Vulcan.
+Python models can do anything you want, but it is strongly recommended for all models to be [idempotent](../../../glossary.md#execution-terms). Python models can fetch data from upstream models or even data outside of Vulcan.
 
 **Fetching data:** Use `context.fetchdf()` to run SQL queries and get DataFrames:
 
@@ -158,7 +158,7 @@ table = context.resolve_table("vulcan_demo.products")
 df = context.fetchdf(f"SELECT * FROM {table}")
 ```
 
-**Best practice:** Make your models [idempotent](../../../references/glossary.md#idempotency), running them multiple times should produce the same result. This makes debugging and restatements much easier.
+**Best practice:** Make your models [idempotent](../../../glossary.md#execution-terms), running them multiple times should produce the same result. This makes debugging and restatements much easier.
 
 ```python linenums="1"
 df = context.fetchdf("SELECT * FROM vulcan_demo.products")
@@ -177,7 +177,7 @@ You can pass SQL strings, SQLGlot expressions, or macro calls as lists to `pre_s
 
     Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.
 
-**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
+**Project-level defaults:** You can also define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../configurations/options/model_defaults.md).
 
 ``` python linenums="1" hl_lines="8-12"
 @model(
@@ -259,7 +259,7 @@ On-virtual-update statements run when views are created or updated in the virtua
 
 You can set `on_virtual_update` in the `@model` decorator to a list of SQL strings, SQLGlot expressions, or macro calls.
 
-**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
+**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../configurations/options/model_defaults.md).
 
 ``` python linenums="1" hl_lines="8"
 @model(
@@ -290,7 +290,7 @@ def execute(
 
 ## Dependencies
 
-In order to fetch data from an upstream model, you first get the table name using `context`'s `resolve_table` method. This returns the appropriate table name for the current runtime [environment](../../../references/environments.md):
+In order to fetch data from an upstream model, you first get the table name using `context`'s `resolve_table` method. This returns the appropriate table name for the current runtime [environment](../../../glossary.md#execution-terms):
 
 ```python linenums="1"
 table = context.resolve_table("vulcan_demo.products")
@@ -340,7 +340,7 @@ def execute(
     return context.fetchdf(query)
 ```
 
-You can use [global variables](../../../references/configuration.md#variables) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
+You can use [global variables](../../../configurations/options/variables.md) or [blueprint variables](#python-model-blueprinting) in `resolve_table` calls. Here's how:
 
 ```python linenums="1"
 @model(
@@ -378,7 +378,7 @@ def execute(
 
 ## User-defined variables
 
-[User-defined global variables](../../../references/configuration.md#variables) can be accessed from within the Python model with the `context.var` method.
+[User-defined global variables](../../../configurations/options/variables.md) can be accessed from within the Python model with the `context.var` method.
 
 For example, this model access the user-defined variables `var` and `var_with_default`. It specifies a default value of `default_value` if `variable_with_default` resolves to a missing value.
 
@@ -542,7 +542,7 @@ Here are some practical examples showing different ways to use Python models.
 
 ### Basic
 
-A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](../overview.md#model-properties) work the same as SQL models, just use Python syntax.
+A simple Python model that returns a static Pandas DataFrame. All the [metadata properties](../properties.md) work the same as SQL models, just use Python syntax.
 
 ```python linenums="1"
 import typing as t

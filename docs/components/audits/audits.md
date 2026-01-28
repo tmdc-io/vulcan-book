@@ -2,7 +2,7 @@
 
 Audits stop bad data before it causes problems downstream. They run after every model execution and halt your models if something's wrong.
 
-Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audits run automatically whenever you apply a [plan](../../guides/plan.md). They catch data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.
+Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audits run automatically whenever you apply a [plan](../../guides/plan_guide.md). They catch data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.
 
 All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything: no plan application, no run execution. This prevents bad data from propagating through your entire pipeline.
 
@@ -79,7 +79,7 @@ So an audit failed. Don't panic! Here's how to fix it:
 1. **Find the root cause** - Look at the audit query results. What data failed? Check upstream models and data sources.
 
 2. **Fix the source** - This depends on where the problem came from:
-   - **External data source?** Fix it at the source, then run a [restatement plan](../../guides/plan.md#restatement-plans) on the first Vulcan model that ingests it. This will restate all downstream models automatically.
+   - **External data source?** Fix it at the source, then run a [restatement plan](../../guides/plan_guide.md#restatement-plans) on the first Vulcan model that ingests it. This will restate all downstream models automatically.
 
    - **Vulcan model?** Update the model's logic, then apply the change with a `plan`. Vulcan will automatically re-evaluate all downstream models.
 

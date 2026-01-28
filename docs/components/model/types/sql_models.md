@@ -89,7 +89,7 @@ GROUP BY order_date;
 UNCACHE TABLE countries;
 ```
 
-**Project-level defaults:** You can define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
+**Project-level defaults:** You can define pre/post-statements in `model_defaults` for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the [model configuration reference](../../../configurations/options/model_defaults.md).
 
 !!! warning "Statements Run Twice"
 
@@ -127,7 +127,7 @@ On-virtual-update statements run when views are created or updated in the virtua
 
 **Common use case:** Granting permissions on views so users can query them.
 
-**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../references/model_configuration.md#model-defaults).
+**Project-level defaults:** You can also define on-virtual-update statements at the project level using `model_defaults` in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the [model configuration reference](../../../configurations/options/model_defaults.md).
 
 **Syntax:** Wrap these statements in `ON_VIRTUAL_UPDATE_BEGIN;` ... `ON_VIRTUAL_UPDATE_END;` blocks:
 
@@ -328,7 +328,7 @@ SELECT
 
 Avoid `SELECT *` when possible. It's convenient, but dangerous, if an upstream source adds or removes columns, your model's output changes unexpectedly.
 
-**Best practice:** List every column you need explicitly. If you're querying external sources, use [`create_external_models`](../../../getting_started/cli.md#create_external_models) to capture their schema, or define them as [external models](../model_kinds.md#external).
+**Best practice:** List every column you need explicitly. If you're querying external sources, use [`create_external_models`](../../../cli-commands/cli.md#create_external_models) to capture their schema, or define them as [external models](../model_kinds.md#external).
 
 **Why avoid `SELECT *` on external sources:** It prevents Vulcan from optimizing queries and determining column-level lineage. Define external models instead!
 

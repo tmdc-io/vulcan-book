@@ -4,7 +4,7 @@ Vulcan can send notifications when certain events occur. Configure notifications
 
 ## Notification Targets
 
-Configure notifications with notification targets. Specify targets in a project's [configuration](../../references/configuration.md) file (`config.yml` or `config.py`). You can specify multiple targets for a project.
+Configure notifications with notification targets. Specify targets in a project's [configuration](../overview.md) file (`config.yml` or `config.py`). You can specify multiple targets for a project.
 
 A project can specify both global and user-specific notifications. Each target's notifications are sent for all instances of each [event type](#vulcan-event-types) (for example, notifications for `run` are sent for all of the project's environments), with exceptions for audit failures and when an [override is configured for development](#notifications-during-development).
 
@@ -130,7 +130,7 @@ This example stops all notifications other than those for `User1`:
 
 Vulcan notifications are triggered by events. Specify which events should trigger a notification in the notification target's `notify_on` field.
 
-Notifications are supported for [`plan` application](../../guides/plan.md) start/end/failure, [`run`](../../getting_started/cli.md#run) start/end/failure, and [`audit`](../../components/audits/audits.md) failures.
+Notifications are supported for [`plan` application](../../guides/plan_guide.md) start/end/failure, [`run`](../../cli-commands/cli.md#run) start/end/failure, and [`audit`](../../components/audits/audits.md) failures.
 
 For `plan` and `run` start/end, the target environment name is included in the notification message. For failures, the Python exception or error text is included in the notification message.
 
