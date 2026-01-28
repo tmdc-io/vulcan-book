@@ -1642,7 +1642,7 @@
 <h2 id="advanced-usage">Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this section">¶</a></h2>
 <h3 id="overriding-notification-targets">Overriding Notification Targets<a class="headerlink" href="#overriding-notification-targets" title="Link to this section">¶</a></h3>
 <p>In Python configuration files, configure new notification targets to send custom messages.</p>
-<p>To customize a notification, create a new notification target class as a subclass of one of the three target classes described above (<code>SlackWebhookNotificationTarget</code>, <code>SlackApiNotificationTarget</code>, or <code>BasicSMTPNotificationTarget</code>). See the definitions of these classes on <a href="https://github.com/TobikoData/vulcan/blob/main/vulcan/core/notification_target.py">Github</a>.</p>
+<p>To customize a notification, create a new notification target class as a subclass of one of the three target classes described above (<code>SlackWebhookNotificationTarget</code>, <code>SlackApiNotificationTarget</code>, or <code>BasicSMTPNotificationTarget</code>).</p>
 <p>Each of those notification target classes is a subclass of <code>BaseNotificationTarget</code>, which contains a <code>notify</code> function corresponding to each event type. This table lists the notification functions, along with the contextual information available to them at calling time (e.g., the environment name for start/end events):</p>
 <table>
 <thead>
