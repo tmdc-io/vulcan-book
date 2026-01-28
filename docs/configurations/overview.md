@@ -97,7 +97,7 @@ Gateways define how Vulcan connects to your data warehouse and state backend. De
 | `scheduler` | Scheduler configuration | `builtin` |
 | `state_schema` | Schema name for state tables | `vulcan` |
 
-See [Configuration Reference](./overview.md#gateways) for detailed gateway options.
+<!-- See [Configuration Reference](./overview.md#gateways) for detailed gateway options. -->
 
 ### Model Defaults
 
