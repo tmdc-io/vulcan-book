@@ -426,5 +426,3 @@ Package your materialization using [setuptools entrypoints](https://packaging.py
     ```
 
 Once the package is installed, Vulcan automatically discovers and loads your materialization from the entrypoint list. No manual configuration needed!
-
-For more details on Python packaging, check out the Vulcan GitHub [custom_materializations](https://github.com/TobikoData/vulcan/tree/main/examples/custom_materializations) example.
