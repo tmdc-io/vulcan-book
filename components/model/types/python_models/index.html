@@ -1143,7 +1143,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../cli-command/cli/">
+<a class="md-nav__link" href="../../../../cli-commands/cli/">
 <span class="md-ellipsis">
     
   
@@ -1548,7 +1548,7 @@
 <p><strong>Return types:</strong> You can return Pandas, PySpark, Bigframe, or Snowpark DataFrames. If your output is large, you can also use Python generators to return data in chunks for memory management.</p>
 <h2 id="model-specification"><code>@model</code> Specification<a class="headerlink" href="#model-specification" title="Link to this section">¶</a></h2>
 <p>The <code>@model</code> decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. <code>name</code>, <code>kind</code>, <code>cron</code>, <code>grains</code>, etc. They all work the same way.</p>
-<p>Python model <code>kind</code>s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the <a href="../../../references/model_configuration.md#model-kind-properties">models configuration reference page</a>.</p>
+<p>Python model <code>kind</code>s are specified with a Python dictionary containing the kind's name and arguments. All model kind arguments are listed in the <a href="../../properties/">models configuration reference page</a>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vulcan</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelKindName</span>
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="nd">@model</span><span class="p">(</span>
@@ -1559,7 +1559,7 @@
 </span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>    <span class="p">),</span>
 </span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="p">)</span>
 </span></code></pre></div>
-<p>All model kind properties are documented in the <a href="../../../references/model_configuration.md#model-kind-properties">model configuration reference</a>.</p>
+<p>All model kind properties are documented in the <a href="../../properties/">model configuration reference</a>.</p>
 <p>Supported <code>kind</code> dictionary <code>name</code> values are:</p>
 <ul>
 <li>
@@ -1600,7 +1600,7 @@
 </li>
 </ul>
 <h2 id="execution-context">Execution Context<a class="headerlink" href="#execution-context" title="Link to this section">¶</a></h2>
-<p>Python models can do anything you want, but it is strongly recommended for all models to be <a href="../../../references/glossary.md#idempotency">idempotent</a>. Python models can fetch data from upstream models or even data outside of Vulcan.</p>
+<p>Python models can do anything you want, but it is strongly recommended for all models to be <a href="../../../../glossary/#execution-terms">idempotent</a>. Python models can fetch data from upstream models or even data outside of Vulcan.</p>
 <p><strong>Fetching data:</strong> Use <code>context.fetchdf()</code> to run SQL queries and get DataFrames:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="s2">"SELECT * FROM vulcan_demo.products"</span><span class="p">)</span>
 </span></code></pre></div>
@@ -1608,7 +1608,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">resolve_table</span><span class="p">(</span><span class="s2">"vulcan_demo.products"</span><span class="p">)</span>
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SELECT * FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>Best practice:</strong> Make your models <a href="../../../references/glossary.md#idempotency">idempotent</a>, running them multiple times should produce the same result. This makes debugging and restatements much easier.</p>
+<p><strong>Best practice:</strong> Make your models <a href="../../../../glossary/#execution-terms">idempotent</a>, running them multiple times should produce the same result. This makes debugging and restatements much easier.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="s2">"SELECT * FROM vulcan_demo.products"</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="optional-prepost-statements">Optional Pre/Post-Statements<a class="headerlink" href="#optional-prepost-statements" title="Link to this section">¶</a></h2>
@@ -1620,7 +1620,7 @@
 <p class="admonition-title">Concurrency</p>
 <p>Be careful with pre-statements that create or alter physical tables, if multiple models run concurrently, you could get conflicts. Stick to session settings, UDFs, and temporary objects in pre-statements.</p>
 </div>
-<p><strong>Project-level defaults:</strong> You can also define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../references/model_configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can also define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../../configurations/options/model_defaults/">model configuration reference</a>.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
@@ -1732,7 +1732,7 @@
 <p>On-virtual-update statements run when views are created or updated in the virtual layer. This happens after your model's physical table is created and the view pointing to it is set up.</p>
 <p><strong>Common use case:</strong> Granting permissions on views so users can query them.</p>
 <p>You can set <code>on_virtual_update</code> in the <code>@model</code> decorator to a list of SQL strings, SQLGlot expressions, or macro calls.</p>
-<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../references/model_configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project (including Python models) and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../../configurations/options/model_defaults/">model configuration reference</a>.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
@@ -1778,7 +1778,7 @@
 <p>These statements run at the virtual layer, so table names resolve to view names, not physical table names. For example, in a <code>dev</code> environment, <code>vulcan_demo.model_with_grants</code> and <code>@this_model</code> resolve to <code>vulcan_demo__dev.model_with_grants</code> (the view), not the physical table.</p>
 </div>
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Link to this section">¶</a></h2>
-<p>In order to fetch data from an upstream model, you first get the table name using <code>context</code>'s <code>resolve_table</code> method. This returns the appropriate table name for the current runtime <a href="../../../references/environments.md">environment</a>:</p>
+<p>In order to fetch data from an upstream model, you first get the table name using <code>context</code>'s <code>resolve_table</code> method. This returns the appropriate table name for the current runtime <a href="../../../../glossary/#execution-terms">environment</a>:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
 <span class="normal"><a href="#__codelineno-9-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">resolve_table</span><span class="p">(</span><span class="s2">"vulcan_demo.products"</span><span class="p">)</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SELECT * FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -1857,7 +1857,7 @@
 </span><span id="__span-10-35"><a id="__codelineno-10-35" name="__codelineno-10-35"></a>
 </span><span id="__span-10-36"><a id="__codelineno-10-36" name="__codelineno-10-36"></a>    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>You can use <a href="../../../references/configuration.md#variables">global variables</a> or <a href="#python-model-blueprinting">blueprint variables</a> in <code>resolve_table</code> calls. Here's how:</p>
+<p>You can use <a href="../../../../configurations/options/variables/">global variables</a> or <a href="#python-model-blueprinting">blueprint variables</a> in <code>resolve_table</code> calls. Here's how:</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
 <span class="normal"><a href="#__codelineno-11-2">2</a></span>
 <span class="normal"><a href="#__codelineno-11-3">3</a></span>
@@ -1906,7 +1906,7 @@
 </span></span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="hll">        <span class="k">yield</span> <span class="n">df</span>
 </span></span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="user-defined-variables">User-defined variables<a class="headerlink" href="#user-defined-variables" title="Link to this section">¶</a></h2>
-<p><a href="../../../references/configuration.md#variables">User-defined global variables</a> can be accessed from within the Python model with the <code>context.var</code> method.</p>
+<p><a href="../../../../configurations/options/variables/">User-defined global variables</a> can be accessed from within the Python model with the <code>context.var</code> method.</p>
 <p>For example, this model access the user-defined variables <code>var</code> and <code>var_with_default</code>. It specifies a default value of <code>default_value</code> if <code>variable_with_default</code> resolves to a missing value.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
@@ -2115,7 +2115,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Link to this section">¶</a></h2>
 <p>Here are some practical examples showing different ways to use Python models.</p>
 <h3 id="basic">Basic<a class="headerlink" href="#basic" title="Link to this section">¶</a></h3>
-<p>A simple Python model that returns a static Pandas DataFrame. All the <a href="../../overview/#model-properties">metadata properties</a> work the same as SQL models, just use Python syntax.</p>
+<p>A simple Python model that returns a static Pandas DataFrame. All the <a href="../../properties/">metadata properties</a> work the same as SQL models, just use Python syntax.</p>
 <div class="language-python highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-20-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-20-3"> 3</a></span>

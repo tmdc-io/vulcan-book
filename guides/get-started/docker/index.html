@@ -1031,7 +1031,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../cli-command/cli/">
+<a class="md-nav__link" href="../../../cli-commands/cli/">
 <span class="md-ellipsis">
     
   
@@ -1334,7 +1334,7 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><strong>Step 1: Initialize Your Project</strong></p>
-<p>Initialize a new Vulcan project: <a href="../../../cli-command/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
+<p>Initialize a new Vulcan project: <a href="../../../cli-commands/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>vulcan<span class="w"> </span>init
 </span></code></pre></div>
 <p>When prompted:</p>
@@ -1371,7 +1371,7 @@
 </li>
 </ul>
 <p><strong>Step 2: Verify Your Setup</strong></p>
-<p>Check your project configuration and connection status: <a href="../../../cli-command/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
+<p>Check your project configuration and connection status: <a href="../../../cli-commands/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>vulcan<span class="w"> </span>info
 </span></code></pre></div>
 <p>This command displays:</p>
@@ -1388,7 +1388,7 @@
 </ul>
 <p><strong>Important</strong>: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.</p>
 <p><strong>Step 3: Create and Apply Your First Plan</strong></p>
-<p>Generate a plan for your models: <a href="../../../cli-command/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
+<p>Generate a plan for your models: <a href="../../../cli-commands/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>vulcan<span class="w"> </span>plan
 </span></code></pre></div>
 <p>This command performs three key actions:</p>
@@ -1400,19 +1400,19 @@
 <p>When prompted, enter <code>y</code> to apply the plan and backfill your models with historical data.</p>
 <p><strong>Note</strong>: The backfill process may take a few minutes depending on the amount of historical data to process.</p>
 <p><strong>Step 4: Query Your Models</strong></p>
-<p>Execute SQL queries against your models: <a href="../../../cli-command/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
+<p>Execute SQL queries against your models: <a href="../../../cli-commands/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>vulcan<span class="w"> </span>fetchdf<span class="w"> </span><span class="s2">"select * from schema.model_name"</span>
 </span></code></pre></div>
 <p>This command executes a SQL query and returns the results as a pandas DataFrame.</p>
 <p><strong>Step 5: Query Using Semantic Layer</strong></p>
-<p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-command/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
+<p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-commands/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(measure_name) FROM model"</span>
 </span></code></pre></div>
 <p>This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.</p>
 </div>
 <div class="tabbed-block">
 <p><strong>Step 1: Initialize Your Project</strong></p>
-<p>Initialize a new Vulcan project: <a href="../../../cli-command/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
+<p>Initialize a new Vulcan project: <a href="../../../cli-commands/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan init
 </span></code></pre></div>
 <p>When prompted:</p>
@@ -1449,7 +1449,7 @@
 </li>
 </ul>
 <p><strong>Step 2: Verify Your Setup</strong></p>
-<p>Check your project configuration and connection status: <a href="../../../cli-command/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
+<p>Check your project configuration and connection status: <a href="../../../cli-commands/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>vulcan info
 </span></code></pre></div>
 <p>This command displays:</p>
@@ -1466,7 +1466,7 @@
 </ul>
 <p><strong>Important</strong>: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.</p>
 <p><strong>Step 3: Create and Apply Your First Plan</strong></p>
-<p>Generate a plan for your models: <a href="../../../cli-command/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
+<p>Generate a plan for your models: <a href="../../../cli-commands/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>vulcan plan
 </span></code></pre></div>
 <p>This command performs three key actions:</p>
@@ -1478,12 +1478,12 @@
 <p>When prompted, enter <code>y</code> to apply the plan and backfill your models with historical data.</p>
 <p><strong>Note</strong>: The backfill process may take a few minutes depending on the amount of historical data to process.</p>
 <p><strong>Step 4: Query Your Models</strong></p>
-<p>Execute SQL queries against your models: <a href="../../../cli-command/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
+<p>Execute SQL queries against your models: <a href="../../../cli-commands/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>vulcan fetchdf "select * from schema.model_name"
 </span></code></pre></div>
 <p>This command executes a SQL query and returns the results as a pandas DataFrame.</p>
 <p><strong>Step 5: Query Using Semantic Layer</strong></p>
-<p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-command/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
+<p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-commands/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
 </span></code></pre></div>
 <p>This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.</p>
@@ -1609,7 +1609,7 @@ If it doesn't exist, create it:
 <p>You've set up Vulcan and created your first project. Here are recommended next steps:</p>
 <ul>
 <li>
-<p><strong><a href="../../../cli-command/cli/" target="_blank">Learn more about Vulcan CLI commands</a></strong> - Explore all available commands and their options</p>
+<p><strong><a href="../../../cli-commands/cli/" target="_blank">Learn more about Vulcan CLI commands</a></strong> - Explore all available commands and their options</p>
 </li>
 <li>
 <p><strong><a href="../../../components/model/overview/" target="_blank">Explore Vulcan concepts</a></strong> - Deep dive into how models work and how to structure your data pipeline</p>

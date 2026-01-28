@@ -1017,7 +1017,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../cli-command/cli/">
+<a class="md-nav__link" href="../../../../cli-commands/cli/">
 <span class="md-ellipsis">
     
   
@@ -1382,13 +1382,13 @@
 <p>Learn more about using this in <a href="../../../model/types/sql_models/#optional-prepost-statements">pre/post-statements</a>.</p>
 <ul>
 <li>
-<p><strong><code>@gateway</code></strong> - The name of the current <a href="../../../references/configuration.md#gateways">gateway</a> (your database connection)</p>
+<p><strong><code>@gateway</code></strong> - The name of the current <a href="../../../../configurations/overview/#gateways">gateway</a> (your database connection)</p>
 </li>
 <li>
 <p><strong><code>@this_model</code></strong> - The physical table name that the model's view selects from. Useful for creating <a href="../../../audits/audits/#generic-audits">generic audits</a>. When used in <a href="../../../model/types/sql_models/#optional-on-virtual-update-statements">on_virtual_update statements</a>, it contains the qualified view name instead.</p>
 </li>
 <li>
-<p><strong><code>@model_kind_name</code></strong> - The name of the current model kind (like <code>'FULL'</code> or <code>'INCREMENTAL_BY_TIME_RANGE'</code>). Useful when you need to control <a href="../../../references/model_configuration.md#model-defaults">physical properties in model defaults</a> based on the model kind.</p>
+<p><strong><code>@model_kind_name</code></strong> - The name of the current model kind (like <code>'FULL'</code> or <code>'INCREMENTAL_BY_TIME_RANGE'</code>). Useful when you need to control <a href="../../../../configurations/options/model_defaults/">physical properties in model defaults</a> based on the model kind.</p>
 </li>
 </ul>
 <div class="admonition note">
@@ -1407,16 +1407,16 @@
 <p>Learn more in the <a href="../built_in/#embedding-variables-in-strings">Vulcan macros documentation</a>.</p>
 </div>
 <h4 id="before-all-and-after-all-variables">Before all and after all variables<a class="headerlink" href="#before-all-and-after-all-variables" title="Link to this section">¶</a></h4>
-<p>These variables are available in <a href="../../../references/configuration.md#before_all--after_all"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in any macros called within those statements:</p>
+<p>These variables are available in <a href="../../../../configurations/options/execution_hooks/"><code>before_all</code> and <code>after_all</code> statements</a>, as well as in any macros called within those statements:</p>
 <ul>
 <li>
-<p><strong><code>@this_env</code></strong> - The name of the current <a href="../../../references/environments.md">environment</a></p>
+<p><strong><code>@this_env</code></strong> - The name of the current <a href="../../../../glossary/#execution-terms">environment</a></p>
 </li>
 <li>
-<p><strong><code>@schemas</code></strong> - A list of schema names in the <a href="../../../references/glossary.md#virtual-layer">virtual layer</a> for the current environment</p>
+<p><strong><code>@schemas</code></strong> - A list of schema names in the <a href="../../../../glossary/#execution-terms">virtual layer</a> for the current environment</p>
 </li>
 <li>
-<p><strong><code>@views</code></strong> - A list of view names in the <a href="../../../references/glossary.md#virtual-layer">virtual layer</a> for the current environment</p>
+<p><strong><code>@views</code></strong> - A list of view names in the <a href="../../../../glossary/#execution-terms">virtual layer</a> for the current environment</p>
 </li>
 </ul>
 <p>These are useful when you need to perform setup or cleanup operations that depend on the environment context.</p>

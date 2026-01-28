@@ -1,6 +1,0 @@
-test_incremental_model:
-  model: '"warehouse"."sqlmesh_example"."incremental_model"'
-  inputs:
-    '"warehouse"."vulcan_demo"."seed_model"': []
-  outputs:
-    query: []

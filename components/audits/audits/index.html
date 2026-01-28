@@ -1235,7 +1235,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../cli-command/cli/">
+<a class="md-nav__link" href="../../../cli-commands/cli/">
 <span class="md-ellipsis">
     
   
@@ -1581,7 +1581,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="audits">Audits<a class="headerlink" href="#audits" title="Link to this section">¶</a></h1>
 <p>Audits stop bad data before it causes problems downstream. They run after every model execution and halt your models if something's wrong.</p>
-<p>Unlike <a href="../../tests/tests/">tests</a> (which you run manually to verify logic), audits run automatically whenever you apply a <a href="../../guides/plan.md">plan</a>. They catch data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.</p>
+<p>Unlike <a href="../../tests/tests/">tests</a> (which you run manually to verify logic), audits run automatically whenever you apply a <a href="../../../guides/plan_guide/">plan</a>. They catch data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.</p>
 <p>All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything: no plan application, no run execution. This prevents bad data from propagating through your entire pipeline.</p>
 <p>A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.</p>
 <blockquote>
@@ -1658,7 +1658,7 @@
 </li>
 <li>
 <p><strong>Fix the source</strong> - This depends on where the problem came from:
-   - <strong>External data source?</strong> Fix it at the source, then run a <a href="../../guides/plan.md#restatement-plans">restatement plan</a> on the first Vulcan model that ingests it. This will restate all downstream models automatically.</p>
+   - <strong>External data source?</strong> Fix it at the source, then run a <a href="../../../guides/plan_guide/#restatement-plans">restatement plan</a> on the first Vulcan model that ingests it. This will restate all downstream models automatically.</p>
 </li>
 </ol>
 <ul>

@@ -1053,7 +1053,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../cli-command/cli/">
+<a class="md-nav__link" href="../../../../cli-commands/cli/">
 <span class="md-ellipsis">
     
   
@@ -1260,7 +1260,7 @@
 <p>Vulcan never modifies external tables</p>
 </li>
 </ul>
-<p>The querying model's <a href="../../model_kinds/"><code>kind</code></a>, <a href="../../overview/#cron"><code>cron</code></a>, and previously loaded time intervals determine when Vulcan will query the <code>EXTERNAL</code> model.</p>
+<p>The querying model's <a href="../../model_kinds/"><code>kind</code></a>, <a href="../../properties/#cron"><code>cron</code></a>, and previously loaded time intervals determine when Vulcan will query the <code>EXTERNAL</code> model.</p>
 <p><strong>When external tables get queried:</strong> Only when a Vulcan model references them. The querying model's <code>kind</code>, <code>cron</code>, and time intervals determine when the external table is actually queried. Vulcan doesn't proactively query external tables, it only queries them as part of executing your models.</p>
 <h2 id="creating-external-models">Creating External Models<a class="headerlink" href="#creating-external-models" title="Link to this section">¶</a></h2>
 <p>External models are defined in YAML files. You have two options:</p>
@@ -1290,12 +1290,12 @@
 </span></code></pre></div>
 <p>The following sections show you how to create external models for these tables. You can define all external models in <code>external_models.yaml</code>, or split them across multiple files in the <code>external_models/</code> directory (useful for organization or when Vulcan regenerates the main file).</p>
 <h3 id="using-cli">Using CLI<a class="headerlink" href="#using-cli" title="Link to this section">¶</a></h3>
-<p>Instead of creating the <code>external_models.yaml</code> file manually, Vulcan can generate it for you with the <a href="../../../../cli-command/cli/#create_external_models">create_external_models</a> CLI command.</p>
+<p>Instead of creating the <code>external_models.yaml</code> file manually, Vulcan can generate it for you with the <a href="../../../../cli-commands/cli/#create_external_models">create_external_models</a> CLI command.</p>
 <p>The command identifies all external tables referenced in your Vulcan project, fetches their column information from the SQL engine's metadata, and then stores the information in the <code>external_models.yaml</code> file.</p>
 <p>If Vulcan does not have access to an external table's metadata, the table will be omitted from the file and Vulcan will issue a warning.</p>
 <p><code>create_external_models</code> solely queries SQL engine metadata and does not query external tables themselves.</p>
 <h3 id="gateway-specific-external-models">Gateway-specific external models<a class="headerlink" href="#gateway-specific-external-models" title="Link to this section">¶</a></h3>
-<p>In some use-cases such as <a href="../../../../guides-old/isolated_systems/#multiple-gateways">isolated systems with multiple gateways</a>, there are external models that only exist on a certain gateway.</p>
+<p>In some use-cases such as <a href="../../../../configurations/overview/#gateways">isolated systems with multiple gateways</a>, there are external models that only exist on a certain gateway.</p>
 <p><strong>Gateway names are case-insensitive in external model configurations.</strong> You can specify the gateway name using any case (e.g., <code>gateway: dev</code>, <code>gateway: DEV</code>, <code>gateway: Dev</code>) and Vulcan will handle the matching correctly.</p>
 <p>Consider the following model that queries an external table with a dynamic database based on the current gateway:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan<span class="w"> </span>create_external_models
@@ -1315,7 +1315,7 @@
 <p><strong>Important:</strong> This command only queries metadata (table schemas), not the actual data. It's fast and safe.</p>
 <p><strong>If Vulcan can't access a table's metadata:</strong> That table gets skipped and Vulcan warns you. You'll need to define it manually (see the "Writing YAML by hand" section below).</p>
 <h3 id="gateway-specific-external-models_1">Gateway-Specific External Models<a class="headerlink" href="#gateway-specific-external-models_1" title="Link to this section">¶</a></h3>
-<p>If you're using <a href="../../../../guides-old/isolated_systems/#multiple-gateways">isolated systems with multiple gateways</a>, you might have external tables that only exist on specific gateways.</p>
+<p>If you're using <a href="../../../../configurations/overview/#gateways">isolated systems with multiple gateways</a>, you might have external tables that only exist on specific gateways.</p>
 <p><strong>Example:</strong> Your model uses a gateway variable to select different databases:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">vulcan_demo</span><span class="p">.</span><span class="n">customer_summary</span><span class="p">,</span>

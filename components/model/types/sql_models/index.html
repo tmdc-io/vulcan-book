@@ -1120,7 +1120,7 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../cli-command/cli/">
+<a class="md-nav__link" href="../../../../cli-commands/cli/">
 <span class="md-ellipsis">
     
   
@@ -1476,7 +1476,7 @@
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="c1">-- Post-statement: Clean up the cached table</span>
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="n">UNCACHE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">countries</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p><strong>Project-level defaults:</strong> You can define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../references/model_configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can define pre/post-statements in <code>model_defaults</code> for consistent behavior across all models. Default statements run first, then model-specific ones. Learn more in the <a href="../../../../configurations/options/model_defaults/">model configuration reference</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Statements Run Twice</p>
 </div>
@@ -1522,7 +1522,7 @@
 <h3 id="optional-on-virtual-update-statements">Optional On-Virtual-Update Statements<a class="headerlink" href="#optional-on-virtual-update-statements" title="Link to this section">¶</a></h3>
 <p>On-virtual-update statements run when views are created or updated in the virtual layer. This happens after your model's physical table is created and the view is set up.</p>
 <p><strong>Common use case:</strong> Granting permissions on views so users can query them.</p>
-<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../references/model_configuration.md#model-defaults">model configuration reference</a>.</p>
+<p><strong>Project-level defaults:</strong> You can also define on-virtual-update statements at the project level using <code>model_defaults</code> in your configuration. These will be applied to all models in your project and merged with any model-specific statements. Default statements are executed first, followed by model-specific statements. Learn more about this in the <a href="../../../../configurations/options/model_defaults/">model configuration reference</a>.</p>
 <p><strong>Syntax:</strong> Wrap these statements in <code>ON_VIRTUAL_UPDATE_BEGIN;</code> ... <code>ON_VIRTUAL_UPDATE_END;</code> blocks:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
@@ -1752,7 +1752,7 @@
 <p><strong>Why this matters:</strong> Explicit types make your models more predictable and help Vulcan optimize queries better.</p>
 <h3 id="explicit-selects">Explicit SELECTs<a class="headerlink" href="#explicit-selects" title="Link to this section">¶</a></h3>
 <p>Avoid <code>SELECT *</code> when possible. It's convenient, but dangerous, if an upstream source adds or removes columns, your model's output changes unexpectedly.</p>
-<p><strong>Best practice:</strong> List every column you need explicitly. If you're querying external sources, use <a href="../../../../getting_started/cli/#create_external_models"><code>create_external_models</code></a> to capture their schema, or define them as <a href="../../model_kinds/#external">external models</a>.</p>
+<p><strong>Best practice:</strong> List every column you need explicitly. If you're querying external sources, use <a href="../../../../cli-commands/cli/#create_external_models"><code>create_external_models</code></a> to capture their schema, or define them as <a href="../../model_kinds/#external">external models</a>.</p>
 <p><strong>Why avoid <code>SELECT *</code> on external sources:</strong> It prevents Vulcan from optimizing queries and determining column-level lineage. Define external models instead!</p>
 <h3 id="encoding">Encoding<a class="headerlink" href="#encoding" title="Link to this section">¶</a></h3>
 <p>SQL model files must be UTF-8 encoded. Using other encodings can cause parsing errors or unexpected behavior.</p>
