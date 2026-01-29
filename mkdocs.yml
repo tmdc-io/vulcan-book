@@ -81,7 +81,7 @@ theme:
   name: material
   custom_dir: overrides
   logo: assets/images/D_logo_dark-32px.png
-  favicon: assets/images/vulcan.svg
+  favicon: assets/images/D_logo_dark-32px.png
   font:
     text: Inter
     code: JetBrains Mono
@@ -203,6 +203,7 @@ extra_css:
 
 extra_javascript:
   - assets/javascripts/mermaid-zoom.js
+  - assets/javascripts/favicon-switcher.js
 
 copyright: |
   Copyright &copy; 2025 DataOS Vulcan Team<br>

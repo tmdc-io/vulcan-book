@@ -163,7 +163,7 @@ flowchart TD
     
     UPDATE --> SUCCESS[Run complete<br/>Summary output]
     
-    ERROR --> END[Exit with error]
+    ERROR --> END[Exit]
     SUCCESS --> END
 
     style START fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
