@@ -105,13 +105,64 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     **Step 3: Configure Vulcan CLI Access**
     
-    Create an alias to access the Vulcan CLI easily:
+    Create an alias to access the Vulcan CLI. The alias uses an engine-specific Docker image. **Postgres is shown by default** (recommended for most users). If you're using a different engine, select it from the tabs below:
     
-    ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan:0.225.0-dev-02 vulcan"
-    ```
+    === "Postgres (Default)"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.6 vulcan"
+        ```
+    
+    === "BigQuery"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.6 vulcan"
+        ```
+    
+    === "Databricks"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.6 vulcan"
+        ```
+    
+    === "Fabric"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan"
+        ```
+    
+    === "MSSQL"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan"
+        ```
+    
+    === "MySQL"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan"
+        ```
+    
+    === "Redshift"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan"
+        ```
+    
+    === "Snowflake"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.6 vulcan"
+        ```
+    
+    === "Spark"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"
+        ```
+    
+    === "Trino"
+        ```bash
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"
+        ```
     
     **Note**: This alias is temporary and will be lost when you close your shell session. To make it permanent, add this line to your shell configuration file (`~/.bashrc` for Bash or `~/.zshrc` for Zsh), then restart your terminal or run `source ~/.zshrc` (or `source ~/.bashrc`).
+    
+    !!! tip "Need the latest image version?"
+        Docker image versions are updated regularly. For the most current version and detailed engine configuration, see:
+        
+        [BigQuery](../../configurations/engines/bigquery/bigquery.md#docker-images), [Databricks](../../configurations/engines/databricks/databricks.md#docker-images), [Fabric](../../configurations/engines/fabric/fabric.md#docker-images), [Microsoft SQL](../../configurations/engines/mssql/mssql.md#docker-images), [MySQL](../../configurations/engines/mysql/mysql.md#docker-images), [Postgres](../../configurations/engines/postgres/postgres.md#docker-images), [Redshift](../../configurations/engines/redshift/redshift.md#docker-images), [Snowflake](../../configurations/engines/snowflake/snowflake.md#docker-images), [Spark](../../configurations/engines/spark/spark.md#docker-images), [Trino](../../configurations/engines/trino/trino.md#docker-images).
     
     **Step 4: Start API Services**
     
