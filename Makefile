@@ -16,12 +16,16 @@ install: venv ## Install dependencies from pyproject.toml
 	@$(PIP) install --upgrade pip setuptools
 	@$(PIP) install -e .
 
-serve: venv ## Start development server
+update-images: ## Update Docker image versions in docker.md from engine configs
+	@echo "Updating Docker image versions in docker.md..."
+	@$(PYTHON) scripts/update_docker_images.py
+
+serve: venv update-images ## Start development server
 	@echo "Starting MkDocs server at http://127.0.0.1:7000/"
 	@echo "Note: Access the site at http://127.0.0.1:7000/ (root path) for local development"
 	@$(MKDOCS) serve --dev-addr 127.0.0.1:7000 --livereload
 
-build: venv ## Build static site
+build: venv update-images ## Build static site
 	@$(MKDOCS) build
 
 deploy: venv ## Deploy to GitHub Pages

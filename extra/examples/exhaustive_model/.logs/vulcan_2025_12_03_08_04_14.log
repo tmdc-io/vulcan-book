@@ -1,5 +1,0 @@
-2025-12-03 08:04:14,841 - MainThread - vulcan.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:502)
-2025-12-03 08:04:14,862 - MainThread - vulcan.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:502)
-2025-12-03 08:04:14,862 - MainThread - vulcan.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:502)
-2025-12-03 08:04:14,862 - ThreadPoolExecutor-1_0 - vulcan.core.console - WARNING - Model '"warehouse"."vulcan_demo"."incremental_by_partition"' was not found at /workspace/tests/test_incremental_by_partition.yaml (console.py:2352)
-2025-12-03 08:04:14,947 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:231)

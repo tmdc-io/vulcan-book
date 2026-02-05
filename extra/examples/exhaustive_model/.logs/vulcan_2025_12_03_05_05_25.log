@@ -1,4 +1,0 @@
-2025-12-03 05:05:25,992 - MainThread - vulcan.core.query.transpiler - INFO - Transpiler request start url=http://vulcan-transpiler:4000/transpiler/v1/sql format=sql disable_post_processing=False (transpiler.py:160)
-2025-12-03 05:05:26,483 - MainThread - httpx - INFO - HTTP Request: POST http://vulcan-transpiler:4000/transpiler/v1/sql "HTTP/1.1 200 OK" (_client.py:1740)
-2025-12-03 05:05:26,484 - MainThread - vulcan.core.query.transpiler - INFO - Transpiler response status=200 format=sql (transpiler.py:174)
-2025-12-03 05:05:26,496 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:231)

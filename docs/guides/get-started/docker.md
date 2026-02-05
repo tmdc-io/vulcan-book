@@ -107,62 +107,72 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     Create an alias to access the Vulcan CLI. The alias uses an engine-specific Docker image. **Postgres is shown by default** (recommended for most users). If you're using a different engine, select it from the tabs below:
     
+    !!! note "Automatic Updates"
+        Docker image versions in this section are automatically synchronized with the [engine configuration files](../../configurations/engines/). When engine image versions are updated, this section is automatically updated as well.
+    
     === "Postgres (Default)"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.6 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.8 vulcan"
         ```
+        *Image version from [Postgres engine configuration](../../configurations/engines/postgres/postgres.md#docker-images)*
     
     === "BigQuery"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.6 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.8 vulcan"
         ```
+        *Image version from [BigQuery engine configuration](../../configurations/engines/bigquery/bigquery.md#docker-images)*
     
     === "Databricks"
         ```bash
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.6 vulcan"
         ```
+        *Image version from [Databricks engine configuration](../../configurations/engines/databricks/databricks.md#docker-images)*
     
     === "Fabric"
         ```bash
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan"
         ```
+        *Image version from [Fabric engine configuration](../../configurations/engines/fabric/fabric.md#docker-images)*
     
     === "MSSQL"
         ```bash
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan"
         ```
+        *Image version from [MSSQL engine configuration](../../configurations/engines/mssql/mssql.md#docker-images)*
     
     === "MySQL"
         ```bash
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan"
         ```
+        *Image version from [MySQL engine configuration](../../configurations/engines/mysql/mysql.md#docker-images)*
     
     === "Redshift"
         ```bash
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan"
         ```
+        *Image version from [Redshift engine configuration](../../configurations/engines/redshift/redshift.md#docker-images)*
     
     === "Snowflake"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.6 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.8 vulcan"
         ```
+        *Image version from [Snowflake engine configuration](../../configurations/engines/snowflake/snowflake.md#docker-images)*
     
     === "Spark"
         ```bash
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"
         ```
+        *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*
     
     === "Trino"
         ```bash
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"
         ```
+        *Image version from [Trino engine configuration](../../configurations/engines/trino/trino.md#docker-images)*
     
     **Note**: This alias is temporary and will be lost when you close your shell session. To make it permanent, add this line to your shell configuration file (`~/.bashrc` for Bash or `~/.zshrc` for Zsh), then restart your terminal or run `source ~/.zshrc` (or `source ~/.bashrc`).
     
-    !!! tip "Need the latest image version?"
-        Docker image versions are updated regularly. For the most current version and detailed engine configuration, see:
-        
-        [BigQuery](../../configurations/engines/bigquery/bigquery.md#docker-images), [Databricks](../../configurations/engines/databricks/databricks.md#docker-images), [Fabric](../../configurations/engines/fabric/fabric.md#docker-images), [Microsoft SQL](../../configurations/engines/mssql/mssql.md#docker-images), [MySQL](../../configurations/engines/mysql/mysql.md#docker-images), [Postgres](../../configurations/engines/postgres/postgres.md#docker-images), [Redshift](../../configurations/engines/redshift/redshift.md#docker-images), [Snowflake](../../configurations/engines/snowflake/snowflake.md#docker-images), [Spark](../../configurations/engines/spark/spark.md#docker-images), [Trino](../../configurations/engines/trino/trino.md#docker-images).
+
     
     **Step 4: Start API Services**
     
