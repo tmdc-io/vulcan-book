@@ -103,6 +103,46 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     !!! note "State Connection Default"
         By default, you should use Postgres for your state connection. When configuring your `config.yaml`, set `state_connection` to use Postgres. This ensures reliable state management and is the recommended approach for most projects.
     
+    **Verify Services Are Running**
+    
+    Before proceeding, verify that all required infrastructure services (engine and storage) are up and running.
+    
+    **Check running containers**
+    
+    Use Docker directly to confirm that all containers are running:
+    
+    ```bash
+    docker ps
+    ```
+    
+    You should see containers corresponding to the following services with a status of `Up`:
+    
+    - **statestore** (PostgreSQL) – State storage service
+    - **minio** – Object storage service
+    - **warehouse** (PostgreSQL) – Data warehouse engine
+    
+    If a container is missing from the list or not in an `Up` state, it may have stopped or failed to start.
+    
+    **Validate container logs**
+    
+    To inspect logs for any specific service, use:
+    
+    ```bash
+    docker logs <container_name>
+    ```
+    
+    For example:
+    
+    ```bash
+    docker logs statestore
+    docker logs minio
+    docker logs warehouse
+    ```
+    
+    Review the logs for errors, crash messages, or failed startup checks.
+    
+    Once all containers are running properly and logs look healthy, proceed to the next step.
+    
     **Step 3: Configure Vulcan CLI Access**
     
     Create an alias to access the Vulcan CLI. The alias uses an engine-specific Docker image. **Postgres is shown by default** (recommended for most users). If you're using a different engine, select it from the tabs below:
@@ -230,6 +270,46 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
 
     !!! note "State Connection Default"
         By default, you should use Postgres for your state connection. When configuring your `config.yaml`, set `state_connection` to use Postgres. This ensures reliable state management and is the recommended approach for most projects.
+    
+    **Verify Services Are Running**
+    
+    Before proceeding, verify that all required infrastructure services (engine and storage) are up and running.
+    
+    **Check running containers**
+    
+    Use Docker directly to confirm that all containers are running:
+    
+    ```cmd
+    docker ps
+    ```
+    
+    You should see containers corresponding to the following services with a status of `Up`:
+    
+    - **statestore** (PostgreSQL) – State storage service
+    - **minio** – Object storage service
+    - **warehouse** (PostgreSQL) – Data warehouse engine
+    
+    If a container is missing from the list or not in an `Up` state, it may have stopped or failed to start.
+    
+    **Validate container logs**
+    
+    To inspect logs for any specific service, use:
+    
+    ```cmd
+    docker logs <container_name>
+    ```
+    
+    For example:
+    
+    ```cmd
+    docker logs statestore
+    docker logs minio
+    docker logs warehouse
+    ```
+    
+    Review the logs for errors, crash messages, or failed startup checks.
+    
+    Once all containers are running properly and logs look healthy, proceed to the next step.
     
     **Step 3: Access Vulcan CLI**
     
