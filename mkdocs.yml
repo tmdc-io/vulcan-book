@@ -67,6 +67,7 @@ nav:
       - guides/data_quality.md
       - guides/model_selection.md
       - guides/transpiling_semantics.md
+      - guides/deployment_guide.md
       #- guides/federated_engines.md
       # - Virtual environments Guide:
       # - Vulcan API Guide:
