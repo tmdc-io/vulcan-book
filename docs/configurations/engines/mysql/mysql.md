@@ -51,6 +51,17 @@ docker pull tmdcio/vulcan-mysql:0.228.1.6
 docker pull tmdcio/vulcan-transpiler:0.228.1.8
 ```
 
+### Materialization Strategy
+
+Materialization strategies for MySQL depend on the model kind and engine capabilities. For detailed information about how different model kinds are materialized, see the [model kinds documentation](../../../components/model/model_kinds.md).
+
+**Learn more about materialization strategies:**
+
+- [INCREMENTAL_BY_TIME_RANGE](../../../components/model/model_kinds.md#materialization-strategy)
+- [INCREMENTAL_BY_UNIQUE_KEY](../../../components/model/model_kinds.md#materialization-strategy_1)
+- [INCREMENTAL_BY_PARTITION](../../../components/model/model_kinds.md#materialization-strategy_3)
+- [FULL](../../../components/model/model_kinds.md#materialization-strategy_2)
+
 !!! note
     MySQL 5.7 or higher is recommended. Use the `ssl` option for secure connections in production environments.
 

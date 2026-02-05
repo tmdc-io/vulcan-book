@@ -57,6 +57,24 @@ docker pull tmdcio/vulcan-spark:0.228.1.6
 docker pull tmdcio/vulcan-transpiler:0.228.1.8
 ```
 
+### Materialization Strategy
+
+Spark uses the following materialization strategies depending on the model kind:
+
+| Model Kind | Strategy | Description |
+|------------|----------|-------------|
+| `INCREMENTAL_BY_TIME_RANGE` | INSERT OVERWRITE by time column partition | Vulcan will overwrite the entire partition that corresponds to the time column, rather than deleting and inserting individual records. This approach is more efficient for partitioned data and leverages Spark's native partitioning capabilities. |
+| `INCREMENTAL_BY_UNIQUE_KEY` | Not supported | Spark does not support `INCREMENTAL_BY_UNIQUE_KEY` models. Consider using `INCREMENTAL_BY_TIME_RANGE` or `INCREMENTAL_BY_PARTITION` instead. |
+| `INCREMENTAL_BY_PARTITION` | INSERT OVERWRITE by partitioning key | Vulcan will overwrite the entire partition based on the partitioning key. This leverages Spark's native partitioning for efficient data management. |
+| `FULL` | INSERT OVERWRITE | Vulcan uses Spark's `INSERT OVERWRITE` statement to completely replace the table contents each time. |
+
+**Learn more about materialization strategies:**
+
+- [INCREMENTAL_BY_TIME_RANGE](../../../components/model/model_kinds.md#materialization-strategy)
+- [INCREMENTAL_BY_UNIQUE_KEY](../../../components/model/model_kinds.md#materialization-strategy_1)
+- [INCREMENTAL_BY_PARTITION](../../../components/model/model_kinds.md#materialization-strategy_3)
+- [FULL](../../../components/model/model_kinds.md#materialization-strategy_2)
+
 !!! note
     Spark may not be used for the Vulcan state connection. Use a transactional database like PostgreSQL for the `state_connection`.
 

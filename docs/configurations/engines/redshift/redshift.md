@@ -51,6 +51,24 @@ docker pull tmdcio/vulcan-redshift:0.228.1.6
 docker pull tmdcio/vulcan-transpiler:0.228.1.8
 ```
 
+### Materialization Strategy
+
+Redshift uses the following materialization strategies depending on the model kind:
+
+| Model Kind | Strategy | Description |
+|------------|----------|-------------|
+| `INCREMENTAL_BY_TIME_RANGE` | DELETE by time range, then INSERT | Vulcan will first delete existing records within the target time range, then insert the new data. This ensures data consistency and prevents duplicates when reprocessing time intervals. |
+| `INCREMENTAL_BY_UNIQUE_KEY` | MERGE ON unique key | Vulcan uses Redshift's MERGE statement to update existing records based on the unique key or insert new ones if they don't exist. |
+| `INCREMENTAL_BY_PARTITION` | DELETE by partitioning key, then INSERT | Vulcan will delete existing records matching the partitioning key, then insert the new data. This ensures partition-level consistency when reprocessing data. |
+| `FULL` | DROP TABLE, CREATE TABLE, INSERT | Vulcan drops the existing table, creates a new one, and inserts all data. This completely rebuilds the table from scratch each time. |
+
+**Learn more about materialization strategies:**
+
+- [INCREMENTAL_BY_TIME_RANGE](../../../components/model/model_kinds.md#materialization-strategy)
+- [INCREMENTAL_BY_UNIQUE_KEY](../../../components/model/model_kinds.md#materialization-strategy_1)
+- [INCREMENTAL_BY_PARTITION](../../../components/model/model_kinds.md#materialization-strategy_3)
+- [FULL](../../../components/model/model_kinds.md#materialization-strategy_2)
+
 !!! note
     Use `sslmode: require` or higher for secure connections in production environments.
 
