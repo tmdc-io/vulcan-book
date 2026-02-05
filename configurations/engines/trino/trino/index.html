@@ -499,6 +499,15 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#materialization-strategy">
+<span class="md-ellipsis">
+      
+        Materialization Strategy
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -1149,6 +1158,15 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#materialization-strategy">
+<span class="md-ellipsis">
+      
+        Materialization Strategy
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -1288,6 +1306,15 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-trino:0.228.1.6
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-transpiler:0.228.1.8
 </span></code></pre></div>
+<h3 id="materialization-strategy">Materialization Strategy<a class="headerlink" href="#materialization-strategy" title="Link to this section">¶</a></h3>
+<p>Materialization strategies for Trino depend on the model kind and underlying catalog capabilities (Iceberg, Hive, Delta Lake, etc.). For detailed information about how different model kinds are materialized, see the <a href="../../../../components/model/model_kinds/">model kinds documentation</a>.</p>
+<p><strong>Learn more about materialization strategies:</strong></p>
+<ul>
+<li><a href="../../../../components/model/model_kinds/#materialization-strategy">INCREMENTAL_BY_TIME_RANGE</a></li>
+<li><a href="../../../../components/model/model_kinds/#materialization-strategy_1">INCREMENTAL_BY_UNIQUE_KEY</a></li>
+<li><a href="../../../../components/model/model_kinds/#materialization-strategy_3">INCREMENTAL_BY_PARTITION</a></li>
+<li><a href="../../../../components/model/model_kinds/#materialization-strategy_2">FULL</a></li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Use <code>http_scheme: https</code> for secure connections in production environments.</p>
