@@ -2472,7 +2472,7 @@
 </div>
 </div>
 <h3 id="grain-grains">grain / grains<a class="headerlink" href="#grain-grains" title="Link to this section">¶</a></h3>
-<p>Defines the column(s) that make each row unique. This is like a primary key, it tells Vulcan what identifies a single row in your table.</p>
+<p>In Vulcan, this acts as the primary key. It tells Vulcan what identifies a single row in your table, and defines the column(s) that make each row unique.</p>
 <p><strong>Why this matters:</strong> Tools like <code>table_diff</code> use grains to compare tables. It also helps Vulcan understand your data structure for better optimization and validation.</p>
 <p>You can specify a single grain (<code>grain order_id</code>) or multiple grains (<code>grains (order_id, (customer_id, order_date))</code>).</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">SQL</label><label for="__tabbed_9_2">Python</label></div>
