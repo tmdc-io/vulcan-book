@@ -308,7 +308,6 @@ checks:
           name: <check_name>
           attributes:
             description: <human_readable_description>
-            severity: <warning|error>
             tags: [<tag1>, <tag2>]
 ```
 
@@ -322,7 +321,6 @@ checks:
           name: sufficient_customers
           attributes:
             description: "At least 100 customers expected in production"
-            severity: warning
             tags: [critical, daily]
 ```
 
@@ -475,7 +473,6 @@ checks:
           name: sufficient_revenue_data
           attributes:
             description: "Revenue table must have at least 1000 rows for analysis"
-            severity: error
             tags: [critical, daily, revenue]
             owner: data-team
             jira: DATA-1234

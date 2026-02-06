@@ -367,7 +367,7 @@ Sets the latest date/time your model should process. Uses the same format as `st
 
 ### grain / grains
 
-Defines the column(s) that make each row unique. This is like a primary key, it tells Vulcan what identifies a single row in your table.
+In Vulcan, this acts as the primary key. It tells Vulcan what identifies a single row in your table, and defines the column(s) that make each row unique.
 
 **Why this matters:** Tools like `table_diff` use grains to compare tables. It also helps Vulcan understand your data structure for better optimization and validation.
 

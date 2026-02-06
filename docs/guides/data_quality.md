@@ -233,7 +233,6 @@ checks:
           name: daily_records_exist
           attributes:
             description: "At least one record per day"
-            severity: error
     
       - missing_count(order_date) = 0:
           name: no_missing_dates
@@ -251,7 +250,6 @@ checks:
           samples limit: 10
           attributes:
             description: "Revenue outside expected range"
-            severity: warning
     
     # Accuracy: Anomaly detection
     accuracy:
@@ -259,7 +257,6 @@ checks:
           name: revenue_anomaly
           attributes:
             description: "Detect unusual revenue patterns"
-            severity: warning
       
       - anomaly detection for total_orders:
           name: order_count_anomaly
@@ -283,7 +280,6 @@ checks:
           samples limit: 5
           attributes:
             description: "Daily revenue should match sum of raw orders"
-            severity: error
     
     # Timeliness: Check data freshness
     timeliness:
@@ -291,7 +287,6 @@ checks:
           name: row_count_drop_alert
           attributes:
             description: "Alert if daily records drop more than 20%"
-            severity: warning
 ```
 
 *[Screenshot: Check dashboard showing trends and anomalies]*
@@ -476,20 +471,17 @@ checks:
           name: revenue_anomaly_detection
           attributes:
             description: "Detect statistically unusual revenue"
-            severity: warning
       
       # Trend monitoring
       - change for total_revenue >= 50%:
           name: revenue_spike_alert
           attributes:
             description: "Alert if revenue increases >50% day-over-day"
-            severity: warning
       
       - change for total_revenue <= -30%:
           name: revenue_drop_alert
           attributes:
             description: "Alert if revenue drops >30% day-over-day"
-            severity: error
     
     consistency:
       # Cross-model validation (non-blocking)
@@ -509,7 +501,6 @@ checks:
           samples limit: 5
           attributes:
             description: "Monitor revenue consistency (wider tolerance than audit)"
-            severity: warning
 ```
 
 **Why Both?**
