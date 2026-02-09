@@ -28,7 +28,22 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date
+  grains (order_date),
+  tags ('silver', 'sales', 'aggregation'),
+  terms ('sales.daily_metrics', 'analytics.sales_summary'),
+  description 'Daily sales summary with order counts and revenue',
+  column_descriptions (
+    order_date = 'Date of the sales transactions',
+    total_orders = 'Total number of orders for the day',
+    total_revenue = 'Total revenue for the day',
+    last_order_id = 'Last order ID processed for the day'
+  ),
+  column_tags (
+    order_date = ('dimension', 'grain', 'date'),
+    total_orders = ('measure', 'count'),
+    total_revenue = ('measure', 'financial'),
+    last_order_id = ('dimension', 'identifier')
+  )
 );
 
 /*

@@ -14,7 +14,7 @@ The DDL defines the model metadata. The DML contains the transformation logic.
 
 ## Model Structure
 
-You can write models in SQL or Python. Both work the same way conceptually, they just look different. Let's see both:
+You can write models in SQL or Python. Both work the same way conceptually; they just look different. Let's see both:
 
 === "SQL Model"
 
@@ -23,7 +23,22 @@ You can write models in SQL or Python. Both work the same way conceptually, they
       name sales.daily_sales,
       kind FULL,
       cron '@daily',
-      grain order_date
+      grains (order_date),
+      tags ('silver', 'sales', 'aggregation'),
+      terms ('sales.daily_metrics', 'analytics.sales_summary'),
+      description 'Daily sales summary with order counts and revenue',
+      column_descriptions (
+        order_date = 'Date of the sales transactions',
+        total_orders = 'Total number of orders for the day',
+        total_revenue = 'Total revenue for the day',
+        last_order_id = 'Last order ID processed for the day'
+      ),
+      column_tags (
+        order_date = ('dimension', 'grain', 'date'),
+        total_orders = ('measure', 'count'),
+        total_revenue = ('measure', 'financial'),
+        last_order_id = ('dimension', 'identifier')
+      )
     );
 
     SELECT
@@ -38,9 +53,9 @@ You can write models in SQL or Python. Both work the same way conceptually, they
 
     **Breaking it down:**
 
-    - **Lines 1-6**: The DDL (`MODEL` block) - tells Vulcan this is a daily sales model that runs every day
+    - **Lines 1-21**: The DDL (`MODEL` block) - tells Vulcan this is a daily sales model with metadata, tags, and column documentation
 
-    - **Lines 8-17**: The DML (`SELECT` query) - the actual transformation that aggregates orders by date
+    - **Lines 23-31**: The DML (`SELECT` query) - the actual transformation that aggregates orders by date
 
 === "Python Model"
 
@@ -63,6 +78,21 @@ You can write models in SQL or Python. Both work the same way conceptually, they
       grains=["order_date"],
       depends_on=["raw.raw_orders"],
       cron='@daily',
+      tags=["silver", "sales", "aggregation"],
+      terms=["sales.daily_metrics", "analytics.sales_summary"],
+      description="Daily sales summary with order counts and revenue",
+      column_descriptions={
+        "order_date": "Date of the sales transactions",
+        "total_orders": "Total number of orders for the day",
+        "total_revenue": "Total revenue for the day",
+        "last_order_id": "Last order ID processed for the day",
+      },
+      column_tags={
+        "order_date": ["dimension", "grain", "date"],
+        "total_orders": ["measure", "count"],
+        "total_revenue": ["measure", "financial"],
+        "last_order_id": ["dimension", "identifier"],
+      },
     )
     def execute(
       context: ExecutionContext,
@@ -88,9 +118,9 @@ You can write models in SQL or Python. Both work the same way conceptually, they
 
     **Breaking it down:**
 
-    - **Lines 7-20**: The DDL (`@model` decorator) - same metadata as SQL, just Python syntax
+    - **Lines 7-34**: The DDL (`@model` decorator) - same metadata as SQL with tags, terms, and column documentation
 
-    - **Lines 21-40**: The DML (function body) - runs the SQL and returns a DataFrame
+    - **Lines 35-54**: The DML (function body) - runs the SQL and returns a DataFrame
 
 Both formats do the same thing. Choose the one you prefer.
 
@@ -107,7 +137,10 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date
+  grains (order_date),
+  tags ('silver', 'sales'),
+  terms ('sales.daily_metrics'),
+  description 'Daily sales summary'
 );
 ```
 
@@ -119,7 +152,13 @@ This tells Vulcan:
 
 - **`cron`** - When to run it (`@daily` means every day)
 
-- **`grain`** - What makes each row unique (in this case, `order_date`)
+- **`grains`** - What makes each row unique (uses tuple syntax with parentheses)
+
+- **`tags`** - Labels for categorization (uses tuple syntax)
+
+- **`terms`** - Business glossary terms using dot notation
+
+- **`description`** - Human-readable description of the model
 
 ### Common Properties
 
@@ -130,12 +169,14 @@ Here are the properties you'll use most often:
 | `name` | Fully qualified model name (schema.table) | `sales.daily_sales` |
 | `kind` | Materialization strategy | `FULL`, `INCREMENTAL`, `VIEW` |
 | `cron` | When to run (scheduling) | `'@daily'`, `'0 0 * * *'` |
-| `grain` | Column(s) that make rows unique | `order_date` or `(customer_id, order_date)` |
+| `grains` | Column(s) that make rows unique | `(order_date)` or `(customer_id, order_date)` |
 | `owner` | Who owns this model (for governance) | `analytics_team` |
 | `description` | Human-readable description | `'Daily sales aggregates'` |
+| `tags` | Labels for organizing models | `('gold', 'analytics', 'customer')` |
+| `terms` | Business glossary terms | `('customer.rfm_analysis')` |
 
 !!! info "More DDL Properties"
-    There are more properties available beyond these common ones. Check out the [Model Properties](./properties.md) reference for the complete list of all available model properties and their configurations.
+    There are more properties available beyond these common ones, including `column_descriptions`, `column_tags`, and `column_terms` for column-level metadata. Check out the [Model Properties](./properties.md) reference for the complete list of all available model properties and their configurations.
 
 ## DML: The SELECT Query
 
@@ -222,18 +263,18 @@ SELECT
 
 If you forget an alias, Vulcan's formatter will add one automatically when it renders your SQL. But it's better to be explicit, you'll know what the column is called!
 
-#### Column Descriptions
+#### Column Metadata
 
-Document your columns! There are two ways to do this:
+Document and categorize your columns using column-level metadata properties. There are several options:
 
-**Option 1: In the DDL (Recommended)**
+**Column Descriptions (Recommended)**
 
 ```sql linenums="1" hl_lines="7-12"
 MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date,
+  grains (order_date),
   description 'Aggregated daily sales metrics',
   column_descriptions (
     order_date = 'The date of the sales transactions',
@@ -245,6 +286,35 @@ MODEL (
 ```
 
 This keeps all your documentation in one place, in the MODEL block.
+
+**Column Tags and Terms**
+
+Beyond descriptions, you can also add tags and business glossary terms to columns:
+
+```sql linenums="1" hl_lines="7-18"
+MODEL (
+  name gold_v1.rfm_customer_segmentation,
+  kind FULL,
+  cron '@daily',
+  grains (customer_id),
+  description 'RFM customer segmentation model',
+  column_tags (
+    customer_id = ('primary_key', 'identifier', 'grain'),
+    customer_name = ('dimension', 'label', 'pii'),
+    email = ('dimension', 'pii', 'contact'),
+    rfm_score = ('measure', 'score', 'composite')
+  ),
+  column_terms (
+    customer_id = ('customer.customer_id', 'identity.customer_id'),
+    rfm_score = ('analytics.rfm_score', 'segmentation.rfm_composite')
+  )
+);
+```
+
+- **`column_tags`** - Categorize columns by role (`dimension`, `measure`), sensitivity (`pii`), or purpose
+- **`column_terms`** - Link columns to business glossary terms for semantic understanding
+
+See [Model Properties](./properties.md#column_tags) for detailed documentation on all column-level metadata options.
 
 !!! note "Priority"
     If you use `column_descriptions` in the DDL, Vulcan will use those and ignore any inline comments in your query. DDL descriptions take priority, so if you define descriptions in both places, the DDL version wins.
@@ -258,7 +328,7 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date
+  grains (order_date)
 );
 
 SELECT
@@ -311,28 +381,37 @@ Unlike SQL models (where Vulcan figures out dependencies automatically), Python 
 
 This is because Vulcan can't parse your Python code to find `FROM` clauses and joins. You need to tell it what this model depends on.
 
-#### Column Descriptions
+#### Column Metadata
 
-Python models can't use inline comments for column descriptions. Instead, specify them in the decorator:
+Python models can't use inline comments for column descriptions. Instead, specify them in the decorator using `column_descriptions`, `column_tags`, and `column_terms`:
 
-```python linenums="1" hl_lines="8-13"
+```python linenums="1" hl_lines="8-21"
 @model(
-    "sales.daily_sales_py",
+    "gold_v1.rfm_customer_segmentation",
     columns={
-        "order_date": "timestamp",
-        "total_orders": "int",
-        "total_revenue": "decimal(18,2)",
+        "customer_id": "int",
+        "customer_name": "string",
+        "rfm_score": "int",
     },
     column_descriptions={
-        "order_date": "The date of sales transactions",
-        "total_orders": "Number of orders placed on this date",
-        "total_revenue": "Total revenue for the day",
+        "customer_id": "Unique identifier for each customer",
+        "customer_name": "Customer full name",
+        "rfm_score": "Combined RFM score (111-555)",
+    },
+    column_tags={
+        "customer_id": ["primary_key", "identifier", "grain"],
+        "customer_name": ["dimension", "label", "pii"],
+        "rfm_score": ["measure", "score", "composite"],
+    },
+    column_terms={
+        "customer_id": ["customer.customer_id", "identity.customer_id"],
+        "rfm_score": ["analytics.rfm_score", "segmentation.rfm_composite"],
     },
 )
 ```
 
 !!! warning "Column name validation"
-    Vulcan will error if you put a column name in `column_descriptions` that doesn't exist in `columns`. This prevents typos and keeps things consistent, if you describe a column, it better exist!
+    Vulcan will error if you put a column name in `column_descriptions`, `column_tags`, or `column_terms` that doesn't exist in `columns`. This prevents typos and keeps things consistent, if you describe a column, it better exist!
 
 #### Return Type
 

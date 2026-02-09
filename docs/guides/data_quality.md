@@ -167,7 +167,10 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date,
+  grains (order_date),
+  tags ('silver', 'sales', 'aggregation'),
+  terms ('sales.daily_metrics'),
+  description 'Daily sales summary with order counts and revenue',
   assertions (
     -- Audit: Critical validations
     not_null(columns := (order_date, total_orders, total_revenue)),

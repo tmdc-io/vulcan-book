@@ -120,6 +120,19 @@ description: <Description .... >
 tags:
   - <tag1>
   - <tag2>
+
+terms:
+  - glossary.<term1>
+  - glossary.<term2>
+
+metadata:
+  domain: <business-domain>
+  use_cases:
+    - <use-case-1>
+    - <use-case-2>
+  limitations:
+    - <limitation-1>
+    - <limitation-2>
 ```
 
 #### Model Defaults
@@ -165,6 +178,21 @@ tags:
   - snowflake
   - user_engagement
   - device_analytics
+
+terms:
+  - glossary.data_product
+  - glossary.analytics_platform
+  - glossary.user_engagement
+
+metadata:
+  domain: product_analytics
+  use_cases:
+    - User engagement tracking and analysis
+    - Device usage analytics
+    - Session and activity monitoring
+  limitations:
+    - Data available from 2025 onwards
+    - Refreshes daily at midnight UTC
 
 model_defaults:
   dialect: snowflake

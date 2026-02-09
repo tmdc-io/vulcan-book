@@ -15,10 +15,36 @@ Create a configuration file in your project root. Choose one:
 Here's what a typical configuration file looks like:
 
 ```yaml linenums="1"
-# Project metadata
-name: orders360
-tenant: sales
-description: Daily sales analytics pipeline
+# Project identity
+name: orders-analytics
+display_name: Orders Analytics Platform
+tenant: engineering
+description: Orders Analytics is a centralized data product delivering clean, trusted insights across the full order lifecycle.
+
+# Classification
+tags:
+  - e-commerce
+  - retail
+  - sales_analytics
+  - customer_analytics
+  - postgres
+
+terms:
+  - glossary.data_product
+  - glossary.analytics_platform
+  - glossary.sales_operations
+
+# Metadata
+metadata:
+  domain: sales_operations
+  use_cases:
+    - Daily and weekly sales reporting
+    - Customer segmentation and RFM analysis
+    - Sales funnel conversion tracking
+    - Product performance analytics
+  limitations:
+    - Demo dataset with synthetic data (100 customers, 1000 orders)
+    - Historical data from November 2025 onwards
 
 # Gateway Connection
 gateways:
@@ -51,7 +77,6 @@ linter:
   enabled: true
   rules:
     - ambiguousorinvalidcolumn
-
     - invalidselectstarexpansion
 ```
 
@@ -61,29 +86,80 @@ linter:
 graph TB
     Config[config.yaml]
     Config --> Project[Project Settings]
+    Config --> Metadata[Metadata]
     Config --> Gateways[Gateways]
     Config --> ModelDefaults[Model Defaults]
     Config --> Options[Optional Features]
+    Project --> Name[name, display_name, tenant]
+    Project --> Desc[description]
+    Project --> Tags[tags, terms]
+    Metadata --> Domain[domain]
+    Metadata --> UseCases[use_cases]
+    Metadata --> Limitations[limitations]
     Gateways --> Connection[connection]
     Gateways --> StateConn[state_connection]
     Gateways --> TestConn[test_connection]
     Options --> Linter[linter]
     Options --> Notifications[notifications]
     Options --> Variables[variables]
-    Options --> Format[format]
 ```
 
 ## Configuration Sections
 
 ### Project Settings
 
-Metadata fields that identify your project. They don't affect how Vulcan runs, but they're useful for organization.
+Metadata fields that identify your project. They don't affect how Vulcan runs, but they're useful for organization and discovery.
 
-| Option | Description | Type |
-|--------|-------------|:----:|
-| `name` | Project name | string |
-| `tenant` | Tenant or organization name | string |
-| `description` | Project description | string |
+| Option | Description | Type | Required |
+|--------|-------------|:----:|:--------:|
+| `name` | Project identifier (used internally) | string | Yes |
+| `tenant` | Tenant or organization name | string | Yes |
+| `description` | Project description | string | No |
+| `display_name` | Human-readable project name for UI/docs | string | No |
+| `tags` | Labels for categorization and filtering | array of string | No |
+| `terms` | Business glossary terms using dot notation (e.g., `glossary.data_product`) | array of string | No |
+
+```yaml
+# Project identity
+name: orders-analytics
+display_name: Orders Analytics Platform
+tenant: engineering
+description: Orders Analytics delivers insights across the full order lifecycle.
+
+# Classification
+tags:
+  - e-commerce
+  - retail
+  - sales_analytics
+
+terms:
+  - glossary.data_product
+  - glossary.analytics_platform
+  - glossary.sales_operations
+```
+
+### Metadata
+
+Metadata fields provide additional context about your project's purpose and scope. Use these to document what your project does, where it applies, and any known constraints.
+
+| Option | Description | Type | Required |
+|--------|-------------|:----:|:--------:|
+| `domain` | Business domain or data area (e.g., sales_operations, marketing, finance) | string | No |
+| `use_cases` | List of primary use cases or business problems this project addresses | array of string | No |
+| `limitations` | List of known constraints, caveats, or edge cases to be aware of | array of string | No |
+
+```yaml
+# Metadata
+metadata:
+  domain: sales_operations
+  use_cases:
+    - Daily and weekly sales reporting
+    - Customer segmentation and RFM analysis
+    - Sales funnel conversion tracking
+  limitations:
+    - Demo dataset with synthetic data (100 customers, 1000 orders)
+    - Historical data from November 2025 onwards
+```
 
 ### Gateways
 

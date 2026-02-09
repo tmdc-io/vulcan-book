@@ -61,7 +61,7 @@ In addition to specifying a time column in the `MODEL` DDL, the model's query mu
       cron '@daily',
 
       -- Good documentation for the primary key
-      grain transaction_id,
+      grains (transaction_id),
 
       -- How do I test this data?
 
@@ -912,7 +912,7 @@ This example specifies a `FULL` model kind:
       name demo.full_model_example,
       kind FULL,
       cron '@daily',
-      grain item_id,
+      grains (item_id),
     );
 
     SELECT
@@ -1192,7 +1192,7 @@ MODEL (
         item_id INT64,
         event_date DATE
       ),
-      grain (id, event_date)
+      grains (id, event_date)
     )
     ```
 

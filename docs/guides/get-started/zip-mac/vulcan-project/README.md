@@ -49,22 +49,42 @@ This package contains all the Docker Compose files and configuration needed to g
 
 4. **Update your `config.yaml`** to match the Docker setup:
    ```yaml
-   # Project metadata
-   name: orders360
-   tenant: sales
-   description: Daily sales analytics pipeline
+   # Project identity
+   name: orders-analytics
+   display_name: Orders Analytics Platform
+   tenant: engineering
+   description: Orders Analytics delivers insights across the full order lifecycle.
+
+   # Classification
+   tags:
+     - postgres
+     - sales_analytics
+     - demo
+
+   terms:
+     - glossary.data_product
+     - glossary.sales_operations
+
+   # Metadata
+   metadata:
+     domain: sales_operations
+     use_cases:
+       - Daily sales reporting
+       - Customer analytics
+     limitations:
+       - Demo dataset with synthetic data
 
    # Gateway Connection
    gateways:
-   default:
-      connection:
+     default:
+       connection:
          type: postgres
          host: warehouse
          port: 5432
          database: warehouse
          user: vulcan
          password: vulcan
-      state_connection:
+       state_connection:
          type: postgres
          host: statestore
          port: 5432
@@ -76,17 +96,16 @@ This package contains all the Docker Compose files and configuration needed to g
 
    # Model Defaults (required)
    model_defaults:
-   dialect: postgres
-   start: 2024-01-01
-   cron: '@daily'
+     dialect: postgres
+     start: 2024-01-01
+     cron: '@daily'
 
    # Linting Rules
    linter:
-   enabled: true
-   rules:
-      - ambiguousorinvalidcolumn
-
-      - invalidselectstarexpansion
+     enabled: true
+     rules:
+       - ambiguousorinvalidcolumn
+       - invalidselectstarexpansion
    ```
 
 5. **Create and apply your first plan:**

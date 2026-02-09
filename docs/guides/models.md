@@ -34,13 +34,28 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date,
+  grains (order_date),
+  tags (
+    'silver',
+    'sales',
+    'aggregation'
+  ),
+  terms (
+    'sales.daily_metrics',
+    'analytics.sales_summary'
+  ),
   description 'Daily sales summary with order counts and revenue',
   column_descriptions (
     order_date = 'Date of the sales',
     total_orders = 'Total number of orders for the day',
     total_revenue = 'Total revenue for the day',
     last_order_id = 'Last order ID processed for the day'
+  ),
+  column_tags (
+    order_date = ('dimension', 'grain', 'date'),
+    total_orders = ('measure', 'count'),
+    total_revenue = ('measure', 'financial'),
+    last_order_id = ('dimension', 'identifier')
   ),
   assertions (
     unique_values(columns := (order_date)),
@@ -91,7 +106,8 @@ MODEL (
   ),
   start '2025-01-01',
   cron '@weekly',
-  grain [order_date],
+  grains (order_date),
+  tags ('silver', 'sales', 'aggregation'),
   description 'Weekly aggregated sales metrics'
 );
 
@@ -178,7 +194,9 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date,
+  grains (order_date),
+  tags ('silver', 'sales', 'aggregation'),
+  terms ('sales.daily_metrics', 'analytics.sales_summary'),
   description 'Daily sales summary with order counts and revenue',
   column_descriptions (
     order_date = 'Date of the sales',
@@ -186,6 +204,13 @@ MODEL (
     total_revenue = 'Total revenue for the day',
     last_order_id = 'Last order ID processed for the day',
     avg_order_value = 'Average order value for the day'  -- NEW COLUMN DESCRIPTION
+  ),
+  column_tags (
+    order_date = ('dimension', 'grain', 'date'),
+    total_orders = ('measure', 'count'),
+    total_revenue = ('measure', 'financial'),
+    avg_order_value = ('measure', 'financial'),
+    last_order_id = ('dimension', 'identifier')
   ),
   assertions (
     unique_values(columns := (order_date)),
@@ -666,13 +691,21 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date,
+  grains (order_date),
+  tags ('silver', 'sales', 'aggregation'),
+  terms ('sales.daily_metrics', 'analytics.sales_summary'),
   description 'Daily sales summary with order counts and revenue',
   column_descriptions (
     order_date = 'Date of the sales',
     total_orders = 'Total number of orders for the day',
     total_revenue = 'Total revenue for the day',
     last_order_id = 'Last order ID processed for the day'
+  ),
+  column_tags (
+    order_date = ('dimension', 'grain', 'date'),
+    total_orders = ('measure', 'count'),
+    total_revenue = ('measure', 'financial'),
+    last_order_id = ('dimension', 'identifier')
   ),
   assertions (
     unique_values(columns := (order_date)),

@@ -18,14 +18,17 @@ This page is a complete reference for all available properties. It covers what e
 | `interval_unit` | Temporal granularity of data intervals | `str` | N |
 | `start` | Earliest date/time to process | `str` \| `int` | N |
 | `end` | Latest date/time to process | `str` \| `int` | N |
-| `grain` | Column(s) defining row uniqueness | `str` \| `array` | N |
-| `grains` | Multiple unique key definitions | `array` | N |
+| `grain` | Column(s) defining row uniqueness | `str` \| `tuple` | N |
+| `grains` | Multiple unique key definitions | `tuple` | N |
 | `owner` | Model owner for governance | `str` | N |
 | `description` | Model description (registered as table comment) | `str` | N |
+| `tags` | Labels for organizing and categorizing models | `tuple[str]` | N |
+| `terms` | Business glossary terms for semantic linking | `tuple[str]` | N |
 | `column_descriptions` | Column-level comments | `dict` | N |
+| `column_tags` | Column-level tags for categorization | `dict` | N |
+| `column_terms` | Column-level business glossary terms | `dict` | N |
 | `columns` | Explicit column names and types | `array` | N |
 | `dialect` | SQL dialect of the model | `str` | N |
-| `tags` | Labels for organizing models | `array[str]` | N |
 | `assertions`  | Audits to run after model evaluation | `array` | N |
 | `profiles` | Columns to track statistical metrics over time | `array` | N |
 | `depends_on` | Explicit model dependencies | `array[str]` | N |
@@ -371,7 +374,7 @@ In Vulcan, this acts as the primary key. It tells Vulcan what identifies a singl
 
 **Why this matters:** Tools like `table_diff` use grains to compare tables. It also helps Vulcan understand your data structure for better optimization and validation.
 
-You can specify a single grain (`grain order_id`) or multiple grains (`grains (order_id, (customer_id, order_date))`).
+You can specify a single grain or multiple grains using the tuple syntax with parentheses.
 
 === "SQL"
 
@@ -379,13 +382,13 @@ You can specify a single grain (`grain order_id`) or multiple grains (`grains (o
     -- Single column grain
     MODEL (
       name sales.daily_sales,
-      grain order_date,
+      grains (order_date),
     );
     
     -- Composite grain
     MODEL (
       name sales.customer_daily,
-      grain (customer_id, order_date),
+      grains (customer_id, order_date),
     );
     
     -- Multiple grains
@@ -511,6 +514,115 @@ Document your columns! This property lets you add descriptions for each column, 
 !!! warning "Priority"
     If `column_descriptions` is present, [inline column comments](./overview.md#column-descriptions) will not be registered.
 
+### column_tags
+
+Assign tags to individual columns for categorization, governance, and discovery. Column tags help classify columns by their role, sensitivity, or purpose.
+
+**Common column tag categories:**
+
+- **Role tags:** `primary_key`, `identifier`, `grain`, `dimension`, `measure`
+- **Sensitivity tags:** `pii`, `confidential`, `contact`
+- **Domain tags:** `financial`, `metric`, `score`, `label`
+
+=== "SQL"
+
+    ```sql
+    MODEL (
+      name gold_v1.rfm_customer_segmentation,
+      column_tags (
+        customer_id = (
+          'primary_key',
+          'identifier',
+          'grain'
+        ),
+        customer_name = ('dimension', 'label', 'pii'),
+        email = ('dimension', 'pii', 'contact'),
+        region_name = ('dimension', 'label'),
+        monetary_value = (
+          'measure',
+          'financial',
+          'rfm_component'
+        ),
+        rfm_score = (
+          'measure',
+          'score',
+          'composite'
+        ),
+        rfm_segment = (
+          'dimension',
+          'classification',
+          'label'
+        )
+      )
+    );
+    ```
+
+=== "Python"
+
+    ```python
+    @model(
+        "gold_v1.rfm_customer_segmentation",
+        column_tags={
+            "customer_id": ["primary_key", "identifier", "grain"],
+            "customer_name": ["dimension", "label", "pii"],
+            "email": ["dimension", "pii", "contact"],
+            "region_name": ["dimension", "label"],
+            "monetary_value": ["measure", "financial", "rfm_component"],
+            "rfm_score": ["measure", "score", "composite"],
+            "rfm_segment": ["dimension", "classification", "label"],
+        },
+    )
+    ```
+
+!!! tip "PII Tracking"
+    Use the `pii` tag on columns containing personally identifiable information. This helps with data governance, compliance audits, and access control policies.
+
+### column_terms
+
+Link individual columns to business glossary terms. Column terms connect technical column names to business vocabulary, enabling better discovery and semantic understanding.
+
+**Format:** Use dot notation for hierarchical terms like `domain.concept` (e.g., `customer.customer_id`, `analytics.rfm_score`).
+
+=== "SQL"
+
+    ```sql
+    MODEL (
+      name gold_v1.rfm_customer_segmentation,
+      column_terms (
+        customer_id = (
+          'customer.customer_id',
+          'identity.customer_id'
+        ),
+        rfm_score = (
+          'analytics.rfm_score',
+          'segmentation.rfm_composite'
+        ),
+        rfm_segment = (
+          'customer.segment',
+          'analytics.customer_classification'
+        ),
+        monetary_value = (
+          'customer.ltv',
+          'finance.customer_lifetime_value'
+        )
+      )
+    );
+    ```
+
+=== "Python"
+
+    ```python
+    @model(
+        "gold_v1.rfm_customer_segmentation",
+        column_terms={
+            "customer_id": ["customer.customer_id", "identity.customer_id"],
+            "rfm_score": ["analytics.rfm_score", "segmentation.rfm_composite"],
+            "rfm_segment": ["customer.segment", "analytics.customer_classification"],
+            "monetary_value": ["customer.ltv", "finance.customer_lifetime_value"],
+        },
+    )
+    ```
+
 ### columns
 
 Explicitly defines your model's column names and data types. When you use this, Vulcan won't try to infer types from your query, it'll use exactly what you specify.
@@ -579,14 +691,27 @@ Specifies the SQL dialect your model uses. Defaults to whatever you set in `mode
 
 ### tags
 
-Labels for organizing and filtering models.
+Labels for organizing, filtering, and categorizing models. Tags help you group related models and can be used for filtering in CLI commands and organizing your project.
+
+**Common tag categories:**
+
+- **Layer tags:** `gold`, `silver`, `bronze` for data lake layers
+- **Domain tags:** `analytics`, `customer`, `sales`, `finance`
+- **Purpose tags:** `reporting`, `segmentation`, `aggregation`
+- **Sensitivity tags:** `pii`, `confidential`, `public`
 
 === "SQL"
 
     ```sql
     MODEL (
-      name sales.daily_sales,
-      tags ['sales', 'daily', 'core'],
+      name gold_v1.rfm_customer_segmentation,
+      tags (
+        'gold',
+        'analytics',
+        'customer',
+        'rfm',
+        'segmentation'
+      )
     );
     ```
 
@@ -594,8 +719,35 @@ Labels for organizing and filtering models.
 
     ```python
     @model(
-        "sales.daily_sales",
-        tags=["sales", "daily", "core"],
+        "gold_v1.rfm_customer_segmentation",
+        tags=["gold", "analytics", "customer", "rfm", "segmentation"],
+    )
+    ```
+
+### terms
+
+Business glossary terms that link your model to semantic definitions. Terms provide a bridge between technical model names and business vocabulary, making it easier to discover and understand models.
+
+**Format:** Use dot notation for hierarchical terms like `domain.concept` (e.g., `customer.rfm_analysis`, `analytics.customer_segmentation`).
+
+=== "SQL"
+
+    ```sql
+    MODEL (
+      name gold_v1.rfm_customer_segmentation,
+      terms (
+        'customer.rfm_analysis',
+        'analytics.customer_segmentation'
+      )
+    );
+    ```
+
+=== "Python"
+
+    ```python
+    @model(
+        "gold_v1.rfm_customer_segmentation",
+        terms=["customer.rfm_analysis", "analytics.customer_segmentation"],
     )
     ```
 

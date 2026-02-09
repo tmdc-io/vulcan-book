@@ -189,7 +189,7 @@ Once you've created your materialization, using it is straightforward. In your m
       kind CUSTOM (
         materialization 'simple_custom'
       ),
-      grain (customer_id)
+      grains (customer_id)
     );
 
     SELECT
@@ -225,7 +225,7 @@ Once you've created your materialization, using it is straightforward. In your m
             name=ModelKindName.CUSTOM,
             materialization="simple_custom",
         ),
-        grain=["customer_id"],
+        grains=["customer_id"],
         depends_on=["vulcan_demo.customers", "vulcan_demo.orders", "vulcan_demo.order_items"],
     )
     def execute(

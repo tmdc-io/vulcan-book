@@ -165,7 +165,7 @@ measures:
 
 Even though `enterprise_revenue` is defined on the `orders` model, it filters by `customers.customer_tier` from the joined `customers` model. Vulcan handles the join logic automatically.
 
-### Proxy dimensions
+<!-- ### Proxy dimensions
 
 Proxy dimensions let you expose measures from joined models as dimensions on the current model. This is useful when you want to filter or group by aggregated values from other models:
 
@@ -187,7 +187,7 @@ dimensions:
 
 - Use the format `model_alias.measure_name`
 
-Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL.
+Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL. -->
 
 ## Complete example
 

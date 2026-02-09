@@ -43,7 +43,9 @@ MODEL (
   name sales.daily_sales,
   kind FULL,
   cron '@daily',
-  grain order_date
+  grains (order_date),
+  tags ('silver', 'sales', 'aggregation'),
+  description 'Daily sales summary with order counts and revenue'
 );
 
 SELECT

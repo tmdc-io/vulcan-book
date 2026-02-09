@@ -633,7 +633,7 @@ MODEL (
   name vulcan_example.full_model,
   kind FULL,
   cron '@daily',
-  grain item_id,
+  grains (item_id),
   audits (assert_positive_order_ids),
 );
 
