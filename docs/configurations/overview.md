@@ -215,11 +215,20 @@ See [Notifications](./options/notifications.md) for Slack webhooks, API, and ema
 
 ## Supported Engines
 
-Vulcan works with these data warehouses:
+Vulcan works with these data warehouses and compute engines:
 
-- [PostgreSQL](./engines/postgres/postgres.md)
-
-- [Snowflake](./engines/snowflake/snowflake.md)
+| Engine | Status |
+|--------|:------:|
+| [PostgreSQL](./engines/postgres/postgres.md) | Available |
+| [Snowflake](./engines/snowflake/snowflake.md) | Available |
+| [BigQuery](./engines/bigquery/bigquery.md) | Available |
+| [Databricks](./engines/databricks/databricks.md) | WIP |
+| [Redshift](./engines/redshift/redshift.md) | WIP |
+| [Spark](./engines/spark/spark.md) | WIP |
+| [Trino](./engines/trino/trino.md) | WIP |
+| [Microsoft Fabric](./engines/fabric/fabric.md) | WIP |
+| [SQL Server](./engines/mssql/mssql.md) | WIP |
+| [MySQL](./engines/mysql/mysql.md) | WIP |
 
 ## Configuration Reference
 
