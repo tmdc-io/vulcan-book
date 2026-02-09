@@ -346,15 +346,6 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#configuration-reference">
-<span class="md-ellipsis">
-      
-        Configuration Reference
-      
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#best-practices">
 <span class="md-ellipsis">
       
@@ -1327,15 +1318,6 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#configuration-reference">
-<span class="md-ellipsis">
-      
-        Configuration Reference
-      
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#best-practices">
 <span class="md-ellipsis">
       
@@ -1678,14 +1660,34 @@
 </tr>
 </tbody>
 </table>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1"># Gateway Connection</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DB_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-3-14"><a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-3-15"><a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-3-16"><a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-3-17"><a href="#__codelineno-3-17" id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATE_DB_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-3-18"><a href="#__codelineno-3-18" id="__codelineno-3-18" name="__codelineno-3-18"></a>
+</span><span id="__span-3-19"><a href="#__codelineno-3-19" id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span></code></pre></div>
 <!-- See [Configuration Reference](./overview.md#gateways) for detailed gateway options. -->
 <h3 id="model-defaults">Model Defaults<a class="headerlink" href="#model-defaults" title="Link to this section">¶</a></h3>
 <p>The <code>model_defaults</code> section is required. At minimum, specify <code>dialect</code> to tell Vulcan what SQL dialect your models use. Other defaults are optional but apply to all models automatically, so you don't repeat the same settings in every model file.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
-</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w">     </span><span class="c1"># Required</span>
-</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data-team</span>
-</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
-</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'@daily'</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="w">     </span><span class="c1"># Required</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data-team</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'@daily'</span>
 </span></code></pre></div>
 <p>See <a href="../options/model_defaults/">Model Defaults</a> for all available options.</p>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this section">¶</a></h3>
@@ -1701,50 +1703,67 @@
 <p>Set up alerts via Slack or email. Get notified when plans start or finish, when runs complete, or when audits fail.</p>
 <p>See <a href="../options/notifications/">Notifications</a> for Slack webhooks, API, and email setup.</p>
 <h2 id="supported-engines">Supported Engines<a class="headerlink" href="#supported-engines" title="Link to this section">¶</a></h2>
-<p>Vulcan works with these data warehouses:</p>
-<ul>
-<li>
-<p><a href="../engines/postgres/postgres/">PostgreSQL</a></p>
-</li>
-<li>
-<p><a href="../engines/snowflake/snowflake/">Snowflake</a></p>
-</li>
-</ul>
-<h2 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this section">¶</a></h2>
+<p>Vulcan works with these data warehouses and compute engines:</p>
 <table>
 <thead>
 <tr>
-<th>Topic</th>
-<th>Description</th>
+<th>Engine</th>
+<th style="text-align: center;">Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="./">Configuration Reference</a></td>
-<td>Complete list of all configuration parameters</td>
+<td><a href="../engines/postgres/postgres/">PostgreSQL</a></td>
+<td style="text-align: center;">Available</td>
 </tr>
 <tr>
-<td><a href="../options/variables/">Variables</a></td>
-<td>Environment variables and <code>.env</code> files</td>
+<td><a href="../engines/snowflake/snowflake/">Snowflake</a></td>
+<td style="text-align: center;">Available</td>
 </tr>
 <tr>
-<td><a href="../options/model_defaults/">Model Defaults</a></td>
-<td>Default settings for all models</td>
+<td><a href="../engines/bigquery/bigquery/">BigQuery</a></td>
+<td style="text-align: center;">Available</td>
 </tr>
 <tr>
-<td><a href="../options/execution_hooks/">Execution Hooks</a></td>
-<td><code>before_all</code> and <code>after_all</code> statements</td>
+<td><a href="../engines/databricks/databricks/">Databricks</a></td>
+<td style="text-align: center;">WIP</td>
 </tr>
 <tr>
-<td><a href="../options/linter/">Linter</a></td>
-<td>Code quality rules and custom linters</td>
+<td><a href="../engines/redshift/redshift/">Redshift</a></td>
+<td style="text-align: center;">WIP</td>
 </tr>
 <tr>
-<td><a href="../options/notifications/">Notifications</a></td>
-<td>Slack and email notification setup</td>
+<td><a href="../engines/spark/spark/">Spark</a></td>
+<td style="text-align: center;">WIP</td>
+</tr>
+<tr>
+<td><a href="../engines/trino/trino/">Trino</a></td>
+<td style="text-align: center;">WIP</td>
+</tr>
+<tr>
+<td><a href="../engines/fabric/fabric/">Microsoft Fabric</a></td>
+<td style="text-align: center;">WIP</td>
+</tr>
+<tr>
+<td><a href="../engines/mssql/mssql/">SQL Server</a></td>
+<td style="text-align: center;">WIP</td>
+</tr>
+<tr>
+<td><a href="../engines/mysql/mysql/">MySQL</a></td>
+<td style="text-align: center;">WIP</td>
 </tr>
 </tbody>
 </table>
+<!-- ## Configuration Reference
+
+| Topic | Description |
+|-------|-------------|
+| [Configuration Reference](./overview.md) | Complete list of all configuration parameters |
+| [Variables](./options/variables.md) | Environment variables and `.env` files |
+| [Model Defaults](./options/model_defaults.md) | Default settings for all models |
+| [Execution Hooks](./options/execution_hooks.md) | `before_all` and `after_all` statements |
+| [Linter](./options/linter.md) | Code quality rules and custom linters |
+| [Notifications](./options/notifications.md) | Slack and email notification setup | -->
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <p>Use environment variables for sensitive data like passwords and API keys. Keeps secrets out of your config files and makes it easier to manage different environments.</p>
 <p>Set meaningful defaults in <code>model_defaults</code> to reduce boilerplate. If most of your models use the same dialect, start date, or cron schedule, set it once here instead of repeating it everywhere.</p>
