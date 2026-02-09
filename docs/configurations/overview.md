@@ -173,6 +173,28 @@ Gateways define how Vulcan connects to your data warehouse and state backend. De
 | `scheduler` | Scheduler configuration | `builtin` |
 | `state_schema` | Schema name for state tables | `vulcan` |
 
+```yaml
+# Gateway Connection
+gateways:
+  default:
+    connection:
+      type: postgres
+      host: warehouse
+      port: 5432
+      database: warehouse
+      user: vulcan
+      password: "{{ env_var('DB_PASSWORD') }}"
+    state_connection:
+      type: postgres
+      host: statestore
+      port: 5432
+      database: statestore
+      user: vulcan
+      password: "{{ env_var('STATE_DB_PASSWORD') }}"
+
+default_gateway: default
+```
+
 <!-- See [Configuration Reference](./overview.md#gateways) for detailed gateway options. -->
 
 ### Model Defaults
@@ -230,7 +252,7 @@ Vulcan works with these data warehouses and compute engines:
 | [SQL Server](./engines/mssql/mssql.md) | WIP |
 | [MySQL](./engines/mysql/mysql.md) | WIP |
 
-## Configuration Reference
+<!-- ## Configuration Reference
 
 | Topic | Description |
 |-------|-------------|
@@ -239,7 +261,7 @@ Vulcan works with these data warehouses and compute engines:
 | [Model Defaults](./options/model_defaults.md) | Default settings for all models |
 | [Execution Hooks](./options/execution_hooks.md) | `before_all` and `after_all` statements |
 | [Linter](./options/linter.md) | Code quality rules and custom linters |
-| [Notifications](./options/notifications.md) | Slack and email notification setup |
+| [Notifications](./options/notifications.md) | Slack and email notification setup | -->
 
 ## Best Practices
 
