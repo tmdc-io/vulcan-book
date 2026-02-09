@@ -3,6 +3,7 @@
 Statements let you run SQL commands at specific points during model execution. You can run code before your query, after it completes, or when views are created.
 
 **Why use statements?** They're perfect for:
+
 - Setting session parameters (timeouts, memory limits)
 
 - Loading UDFs or creating temporary tables
