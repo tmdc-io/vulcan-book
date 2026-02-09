@@ -1832,7 +1832,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-1-25"><a href="#__codelineno-1-25" id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">  </span><span class="n">cron</span><span class="w"> </span><span class="s1">'@daily'</span><span class="p">,</span>
 </span><span id="__span-1-26"><a href="#__codelineno-1-26" id="__codelineno-1-26" name="__codelineno-1-26"></a>
 </span><span id="__span-1-27"><a href="#__codelineno-1-27" id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">  </span><span class="c1">-- Good documentation for the primary key</span>
-</span><span id="__span-1-28"><a href="#__codelineno-1-28" id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">  </span><span class="n">grain</span><span class="w"> </span><span class="n">transaction_id</span><span class="p">,</span>
+</span><span id="__span-1-28"><a href="#__codelineno-1-28" id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">transaction_id</span><span class="p">),</span>
 </span><span id="__span-1-29"><a href="#__codelineno-1-29" id="__codelineno-1-29" name="__codelineno-1-29"></a>
 </span><span id="__span-1-30"><a href="#__codelineno-1-30" id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">  </span><span class="c1">-- How do I test this data?</span>
 </span><span id="__span-1-31"><a href="#__codelineno-1-31" id="__codelineno-1-31" name="__codelineno-1-31"></a>
@@ -2890,7 +2890,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">demo</span><span class="p">.</span><span class="n">full_model_example</span><span class="p">,</span>
 </span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="k">FULL</span><span class="p">,</span>
 </span><span id="__span-31-4"><a href="#__codelineno-31-4" id="__codelineno-31-4" name="__codelineno-31-4"></a><span class="w">  </span><span class="n">cron</span><span class="w"> </span><span class="s1">'@daily'</span><span class="p">,</span>
-</span><span id="__span-31-5"><a href="#__codelineno-31-5" id="__codelineno-31-5" name="__codelineno-31-5"></a><span class="w">  </span><span class="n">grain</span><span class="w"> </span><span class="n">item_id</span><span class="p">,</span>
+</span><span id="__span-31-5"><a href="#__codelineno-31-5" id="__codelineno-31-5" name="__codelineno-31-5"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">item_id</span><span class="p">),</span>
 </span><span id="__span-31-6"><a href="#__codelineno-31-6" id="__codelineno-31-6" name="__codelineno-31-6"></a><span class="p">);</span>
 </span><span id="__span-31-7"><a href="#__codelineno-31-7" id="__codelineno-31-7" name="__codelineno-31-7"></a>
 </span><span id="__span-31-8"><a href="#__codelineno-31-8" id="__codelineno-31-8" name="__codelineno-31-8"></a><span class="k">SELECT</span>
@@ -3217,7 +3217,7 @@ In addition to specifying a time column in the <code>MODEL</code> DDL, the model
 </span><span id="__span-45-8"><a href="#__codelineno-45-8" id="__codelineno-45-8" name="__codelineno-45-8"></a><span class="w">    </span><span class="n">item_id</span><span class="w"> </span><span class="n">INT64</span><span class="p">,</span>
 </span><span id="__span-45-9"><a href="#__codelineno-45-9" id="__codelineno-45-9" name="__codelineno-45-9"></a><span class="w">    </span><span class="n">event_date</span><span class="w"> </span><span class="nb">DATE</span>
 </span><span id="__span-45-10"><a href="#__codelineno-45-10" id="__codelineno-45-10" name="__codelineno-45-10"></a><span class="w">  </span><span class="p">),</span>
-</span><span id="__span-45-11"><a href="#__codelineno-45-11" id="__codelineno-45-11" name="__codelineno-45-11"></a><span class="w">  </span><span class="n">grain</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">event_date</span><span class="p">)</span>
+</span><span id="__span-45-11"><a href="#__codelineno-45-11" id="__codelineno-45-11" name="__codelineno-45-11"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">event_date</span><span class="p">)</span>
 </span><span id="__span-45-12"><a href="#__codelineno-45-12" id="__codelineno-45-12" name="__codelineno-45-12"></a><span class="p">)</span>
 </span></code></pre></div>
 <p>Vulcan will execute this SQL to create a versioned table in the physical layer. Note that the table's version fingerprint, <code>3038173937</code>, is part of the table name.</p>

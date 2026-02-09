@@ -1705,7 +1705,7 @@
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="n">CUSTOM</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">    </span><span class="n">materialization</span><span class="w"> </span><span class="s1">'simple_custom'</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">  </span><span class="p">),</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">  </span><span class="n">grain</span><span class="w"> </span><span class="p">(</span><span class="n">customer_id</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">  </span><span class="n">grains</span><span class="w"> </span><span class="p">(</span><span class="n">customer_id</span><span class="p">)</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="p">);</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="k">SELECT</span>
@@ -1784,7 +1784,7 @@
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a>        <span class="n">name</span><span class="o">=</span><span class="n">ModelKindName</span><span class="o">.</span><span class="n">CUSTOM</span><span class="p">,</span>
 </span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a>        <span class="n">materialization</span><span class="o">=</span><span class="s2">"simple_custom"</span><span class="p">,</span>
 </span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a>    <span class="p">),</span>
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a>    <span class="n">grain</span><span class="o">=</span><span class="p">[</span><span class="s2">"customer_id"</span><span class="p">],</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a>    <span class="n">grains</span><span class="o">=</span><span class="p">[</span><span class="s2">"customer_id"</span><span class="p">],</span>
 </span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a>    <span class="n">depends_on</span><span class="o">=</span><span class="p">[</span><span class="s2">"vulcan_demo.customers"</span><span class="p">,</span> <span class="s2">"vulcan_demo.orders"</span><span class="p">,</span> <span class="s2">"vulcan_demo.order_items"</span><span class="p">],</span>
 </span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="p">)</span>
 </span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span>

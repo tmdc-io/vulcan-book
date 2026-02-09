@@ -798,15 +798,6 @@
     </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#proxy-dimensions">
-<span class="md-ellipsis">
-      
-        Proxy dimensions
-      
-    </span>
-</a>
-</li>
 </ul>
 </nav>
 </li>
@@ -1300,15 +1291,6 @@
     </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#proxy-dimensions">
-<span class="md-ellipsis">
-      
-        Proxy dimensions
-      
-    </span>
-</a>
-</li>
 </ul>
 </nav>
 </li>
@@ -1548,29 +1530,28 @@
 </span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Revenue</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Enterprise</span><span class="nv"> </span><span class="s">customers"</span>
 </span></code></pre></div>
 <p>Even though <code>enterprise_revenue</code> is defined on the <code>orders</code> model, it filters by <code>customers.customer_tier</code> from the joined <code>customers</code> model. Vulcan handles the join logic automatically.</p>
-<h3 id="proxy-dimensions">Proxy dimensions<a class="headerlink" href="#proxy-dimensions" title="Link to this section">¶</a></h3>
-<p>Proxy dimensions let you expose measures from joined models as dimensions on the current model. This is useful when you want to filter or group by aggregated values from other models:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nt">dimensions</span><span class="p">:</span>
-</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="nt">proxies</span><span class="p">:</span>
-</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plan_average_monthly_price</span>
-</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">      </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subscription_plans.avg_monthly_price</span>
-</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plan_average_annual_price</span>
-</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">      </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subscription_plans.avg_annual_price</span>
+<!-- ### Proxy dimensions
+
+Proxy dimensions let you expose measures from joined models as dimensions on the current model. This is useful when you want to filter or group by aggregated values from other models:
+
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">dimensions</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">proxies</span><span class="p">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plan_average_monthly_price</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">      </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subscription_plans.avg_monthly_price</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plan_average_annual_price</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subscription_plans.avg_annual_price</span>
 </span></code></pre></div>
-<p><strong>Requirements:</strong></p>
-<ul>
-<li>
-<p>The referenced model must be joined to the current model</p>
-</li>
-<li>
-<p>The measure must exist on the target model</p>
-</li>
-<li>
-<p>Use the format <code>model_alias.measure_name</code></p>
-</li>
-</ul>
-<p>Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL.</p>
+
+**Requirements:**
+
+- The referenced model must be joined to the current model
+
+- The measure must exist on the target model
+
+- Use the format `model_alias.measure_name`
+
+Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL. -->
 <h2 id="complete-example">Complete example<a class="headerlink" href="#complete-example" title="Link to this section">¶</a></h2>
 <p>Here's a complete semantic model definition that brings it all together:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nt">models</span><span class="p">:</span>
