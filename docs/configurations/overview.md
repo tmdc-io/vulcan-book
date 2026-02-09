@@ -114,10 +114,11 @@ Metadata fields that identify your project. They don't affect how Vulcan runs, b
 |--------|-------------|:----:|:--------:|
 | `name` | Project identifier (used internally) | string | Yes |
 | `tenant` | Tenant or organization name | string | Yes |
-| `description` | Project description | string | No |
+| `description` | Project description | string | Yes |
 | `display_name` | Human-readable project name for UI/docs | string | No |
 | `tags` | Labels for categorization and filtering | array of string | No |
 | `terms` | Business glossary terms using dot notation (e.g., `glossary.data_product`) | array of string | No |
+| `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
 
 ```yaml
 # Project identity
@@ -165,13 +166,14 @@ metadata:
 
 Gateways define how Vulcan connects to your data warehouse and state backend. Define multiple gateways for different environments: dev, staging, prod. Each gateway has its own connection settings.
 
-| Component | Description | Default |
-|-----------|-------------|---------|
-| `connection` | Primary data warehouse connection | Required |
-| `state_connection` | Where Vulcan stores internal state | Uses `connection` |
-| `test_connection` | Connection for running tests | Uses `connection` |
-| `scheduler` | Scheduler configuration | `builtin` |
-| `state_schema` | Schema name for state tables | `vulcan` |
+| Component | Description | Type | Required |
+|-----------|-------------|:----:|:--------:|
+| `connection` | Primary data warehouse connection | object | Yes |
+| `state_connection` | Where Vulcan stores internal state | object | No |
+| `test_connection` | Connection for running tests | object | No |
+| `scheduler` | Scheduler configuration | object | No |
+| `state_schema` | Schema name for state tables | string | No |
+
 
 ```yaml
 # Gateway Connection
@@ -252,16 +254,178 @@ Vulcan works with these data warehouses and compute engines:
 | [SQL Server](./engines/mssql/mssql.md) | WIP |
 | [MySQL](./engines/mysql/mysql.md) | WIP |
 
-<!-- ## Configuration Reference
+## Complete Configuration Reference
 
-| Topic | Description |
-|-------|-------------|
-| [Configuration Reference](./overview.md) | Complete list of all configuration parameters |
-| [Variables](./options/variables.md) | Environment variables and `.env` files |
-| [Model Defaults](./options/model_defaults.md) | Default settings for all models |
-| [Execution Hooks](./options/execution_hooks.md) | `before_all` and `after_all` statements |
-| [Linter](./options/linter.md) | Code quality rules and custom linters |
-| [Notifications](./options/notifications.md) | Slack and email notification setup | -->
+This table lists all available configuration keys in `config.yaml`. Click the links for detailed documentation.
+
+### Project Identity & Metadata
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `name` | Project identifier (used for resource naming) | string | **Yes** | - | - |
+| `tenant` | Tenant or organization name (used for isolation) | string | **Yes** | - | - |
+| `description` | Project description and purpose | string | **Yes** | - | - |
+| `display_name` | Human-readable name for UI/docs | string | No | `null` | - |
+| `tags` | Labels for categorization and filtering | array | No | `[]` | - |
+| `terms` | Business glossary terms (e.g., `glossary.data_product`) | array | No | `[]` | - |
+| `metadata` | Project metadata (domain, use_cases, limitations) | object | No | `null` | [See above](#metadata) |
+| `metadata.domain` | Business domain (sales, marketing, finance, etc.) | string | No | `null` | - |
+| `metadata.use_cases` | List of primary use cases this project addresses | array | No | `[]` | - |
+| `metadata.limitations` | Known constraints or caveats | array | No | `[]` | - |
+
+### Gateway & Connection Configuration
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `gateways` | Gateway configurations for different environments | object | **Yes*** | `{"": {}}` | [See above](#gateways) |
+| `gateways.<name>.connection` | Primary data warehouse connection | object | **Yes** | - | [Engines](./engines/postgres/postgres.md) |
+| `gateways.<name>.state_connection` | Where Vulcan stores internal state | object | No | Uses `connection` | - |
+| `gateways.<name>.test_connection` | Connection for running unit tests | object | No | DuckDB | - |
+| `gateways.<name>.scheduler` | Scheduler configuration | object | No | `builtin` | - |
+| `gateways.<name>.state_schema` | Schema name for state tables | string | No | `vulcan`** | - |
+| `gateways.<name>.variables` | Gateway-specific variables | object | No | `{}` | [Variables](./options/variables.md) |
+| `default_gateway` | Name of the default gateway | string | No | `""` | - |
+| `default_connection` | Root-level default connection | object | No | `null` | - |
+| `default_test_connection` | Root-level default test connection | object | No | DuckDB | - |
+| `default_scheduler` | Root-level default scheduler | object | No | `builtin` | - |
+
+\* At least one gateway with a `connection` is required.  
+\** With root-level `state` connection, defaults to `{tenant}_{name}` (normalized).
+
+### Model Configuration
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `model_defaults` | Default values applied to all models | object | **Yes*** | `{}` | [Model Defaults](./options/model_defaults.md) |
+| `model_defaults.dialect` | SQL dialect (postgres, snowflake, bigquery, etc.) | string | **Yes** | - | [Model Defaults](./options/model_defaults.md) |
+| `model_defaults.owner` | Default owner for all models | string | No | `null` | - |
+| `model_defaults.start` | Default start date for backfilling | string | No | Inferred | - |
+| `model_defaults.cron` | Default cron schedule (e.g., `@daily`) | string | No | `null` | - |
+| `model_defaults.kind` | Default model kind (FULL, INCREMENTAL, etc.) | string/object | No | `VIEW` | - |
+| `model_defaults.interval_unit` | Temporal granularity of data intervals | string | No | From cron | - |
+| `model_defaults.batch_concurrency` | Max concurrent batches for incremental models | integer | No | `1` | - |
+| `model_defaults.table_format` | Table format (iceberg, delta, hudi) | string | No | `null` | - |
+| `model_defaults.storage_format` | Storage format (parquet, orc) | string | No | `null` | - |
+| `model_defaults.on_destructive_change` | Action on destructive schema changes | string | No | `error` | - |
+| `model_defaults.on_additive_change` | Action on additive schema changes | string | No | `apply` | - |
+| `model_defaults.physical_properties` | Properties for physical tables/views | object | No | `{}` | - |
+| `model_defaults.virtual_properties` | Properties for virtual layer views | object | No | `{}` | - |
+| `model_defaults.session_properties` | Engine-specific session properties | object | No | `{}` | - |
+| `model_defaults.audits` | Audit/assertion functions for all models | array | No | `[]` | - |
+| `model_defaults.optimize_query` | Whether to optimize SQL queries | boolean | No | `true` | - |
+| `model_defaults.allow_partials` | Whether models can process incomplete intervals | boolean | No | `false` | - |
+| `model_defaults.enabled` | Whether models are enabled by default | boolean | No | `true` | - |
+| `model_defaults.pre_statements` | SQL statements executed before model runs | array | No | `null` | - |
+| `model_defaults.post_statements` | SQL statements executed after model runs | array | No | `null` | - |
+
+\* The `model_defaults.dialect` field is required.
+
+### Variables & Environment
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `variables` | Root-level variables for models/macros | object | No | `{}` | [Variables](./options/variables.md) |
+| `env_vars` | Environment variable overrides | object | No | `{}` | [Variables](./options/variables.md) |
+
+### Execution Hooks
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `before_all` | SQL statements executed at start of plan/run | array | No | `null` | [Execution Hooks](./options/execution_hooks.md) |
+| `after_all` | SQL statements executed at end of plan/run | array | No | `null` | [Execution Hooks](./options/execution_hooks.md) |
+
+### Code Quality & Linting
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `linter` | Linting configuration | object | No | `{enabled: false}` | [Linter](./options/linter.md) |
+| `linter.enabled` | Enable or disable linting | boolean | No | `false` | [Linter](./options/linter.md) |
+| `linter.rules` | List of rules to enforce (error level) | array | No | `[]` | [Linter](./options/linter.md) |
+| `linter.warn_rules` | List of rules to warn about | array | No | `[]` | [Linter](./options/linter.md) |
+
+### Notifications & Users
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `notification_targets` | List of notification targets (Slack, email, console) | array | No | `[]` | [Notifications](./options/notifications.md) |
+| `users` | List of users for approvals/notifications | array | No | `[]` | - |
+| `username` | Single user to receive notifications | string | No | `""` | - |
+
+### Environment & Schema Management
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `default_target_environment` | Default environment for plan/run commands | string | No | `prod` | - |
+| `snapshot_ttl` | Time before unused snapshots are deleted | string | No | `in 1 week` | - |
+| `environment_ttl` | Time before dev environments are deleted | string | No | `in 1 week` | - |
+| `pinned_environments` | Environments not deleted by janitor | array | No | `[]` | - |
+| `physical_schema_mapping` | Map model patterns to physical schema names | object | No | `{}` | - |
+| `environment_suffix_target` | Where to append environment name | string | No | `schema` | - |
+| `environment_catalog_mapping` | Map environments to catalog names | object | No | `{}` | - |
+| `physical_table_naming_convention` | How to name tables at physical layer | string | No | `full` | - |
+| `virtual_environment_mode` | How to handle environments | string | No | `full` | - |
+| `gateway_managed_virtual_layer` | Whether gateways manage virtual layer | boolean | No | `false` | - |
+
+### Project Management
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `ignore_patterns` | Glob patterns for files to ignore | array | No | Standard list | - |
+| `time_column_format` | Default format for model time columns | string | No | `%Y-%m-%d` | - |
+| `infer_python_dependencies` | Auto-detect Python package requirements | boolean | No | `true` | - |
+| `log_limit` | Default number of logs to keep | integer | No | `20` | - |
+| `cache_dir` | Directory to store SQLMesh cache | string | No | `.cache` | - |
+| `loader` | Loader class for loading project files | class | No | `SqlMeshLoader` | - |
+| `loader_kwargs` | Arguments to pass to loader instance | object | No | `{}` | - |
+
+### Command Configuration
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `format` | SQL formatting options | object | No | Default | - |
+| `ui` | UI server configuration | object | No | Default | - |
+| `plan` | Plan command configuration | object | No | Default | - |
+| `migration` | Migration configuration | object | No | Default | - |
+| `run` | Run command configuration | object | No | Default | - |
+| `janitor` | Cleanup task configuration | object | No | Default | - |
+| `cicd_bot` | CI/CD bot configuration | object | No | `null` | - |
+
+### Integrations & External Services
+
+| Configuration Key | Description | Type | Required | Default | Documentation |
+|-------------------|-------------|:----:|:--------:|---------|---------------|
+| `dbt` | DBT-specific configuration | object | No | `null` | - |
+| `object_store` | Object storage for query results | object | No | `null` | - |
+| `transpiler` | External transpiler service | object | No | Default | - |
+| `graphql` | GraphQL API configuration | object | No | Default | - |
+| `state` | Root-level state connection (production) | object | No | `null` | - |
+| `pgq` | PostgreSQL Queue for async jobs | object | No | Default | - |
+| `analytics` | CloudEvents telemetry configuration | object | No | `{enabled: false}` | - |
+| `openlineage` | OpenLineage data lineage integration | object | No | `null` | - |
+| `heimdall` | Authentication service configuration | object | No | `{enabled: false}` | - |
+
+### Minimal Valid Configuration
+
+The absolute minimum configuration required to start:
+
+```yaml
+name: my-project
+tenant: my-org
+description: My project description
+
+gateways:
+  default:
+    connection:
+      type: postgres
+      host: localhost
+      port: 5432
+      database: mydb
+      user: myuser
+      password: mypass
+
+model_defaults:
+  dialect: postgres
+```
 
 ## Best Practices
 
