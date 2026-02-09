@@ -3,12 +3,13 @@
 {% block extrahead %}
   {{ super() }}
   
-  {# Favicon links - static HTML for link preview services #}
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ 'assets/images/D_logo_dark-32px.png' | url }}">
-  <link rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: dark)" href="{{ 'assets/images/D_logo_light-32px.png' | url }}">
+  {# Favicon links - comprehensive for all platforms including Notion #}
+  <link rel="icon" href="{{ config.site_url }}/assets/images/D_logo_dark-32px.png" type="image/png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ config.site_url }}/assets/images/D_logo_dark-32px.png">
+  <link rel="shortcut icon" href="{{ config.site_url }}/assets/images/D_logo_dark-32px.png" type="image/png">
   
   {# Apple touch icon #}
-  <link rel="apple-touch-icon" sizes="32x32" href="{{ 'assets/images/D_logo_dark-32px.png' | url }}">
+  <link rel="apple-touch-icon" sizes="32x32" href="{{ config.site_url }}/assets/images/D_logo_dark-32px.png">
   
   {# Open Graph meta tags for link previews (no image to avoid broken previews) #}
   <meta property="og:type" content="website">
