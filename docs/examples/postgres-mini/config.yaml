@@ -1,0 +1,84 @@
+name: orders360
+tenant: marketing
+description: This DataOS example data product shows a minimal setup for a PostgreSQL-based data pipeline.
+linter:
+  enabled: false
+  warn_rules:
+    - preferassertions  # Yellow warning, doesn't block
+    - nomissingaudits
+
+object_store:
+  provider: minio
+  bucket: warehouse
+  base_path: queries
+  compression: snappy
+  presigned_url_expiry_mins: 60  # URLs valid for 1 hour
+  credentials:
+    endpoint_url: http://127.0.0.1:9000
+    access_key_id: admin
+    secret_access_key: password
+    region: us-east-1
+
+
+model_defaults:
+  dialect: postgres
+  cron: '*/5 * * * *'  # Every 5 minutes
+
+gateways:
+  default:
+    connection:
+      type: postgres
+      host: 127.0.0.1
+      port: 5433
+      user: vulcan
+      password: vulcan
+      database: warehouse
+
+    # State sync - use PostgreSQL (recommended for production)
+    state_connection:
+      type: postgres
+      host: 127.0.0.1
+      port: 5431
+      user: vulcan
+      password: vulcan
+      database: statestore
+
+    # State schema name
+    state_schema: orders360
+# notification_targets:
+#   - type: console
+#     notify_on:
+#       - plan_change
+#       - run_start
+#       - run_end
+#       - audit_failure
+#       - migration_start
+#       - migration_end
+#       - migration_failure
+#       - check_start
+#       - check_end
+#       - check_failure
+#       - apply_failure
+#       - apply_start
+#       - apply_end
+#   - type: cloudevents
+#     url: https://whc4b8d6ac5059dc3a81.free.beeceptor.com
+#     source: /vulcan/orders360
+#     timeout: 1000
+#     notify_on:
+#       - plan_change
+#       - run_start
+#       - run_end
+#       - audit_failure
+#       - migration_start
+#       - migration_end
+#       - migration_failure
+#       - check_start
+#       - check_end
+#       - check_failure
+#       - apply_failure
+#       - apply_start
+#       - apply_end
+
+# transpiler:
+  # base_url: http://vulcan-transpiler:4000/transpiler  

@@ -254,7 +254,7 @@ Vulcan works with these data warehouses and compute engines:
 | [SQL Server](./engines/mssql/mssql.md) | WIP |
 | [MySQL](./engines/mysql/mysql.md) | WIP |
 
-## Complete Configuration Reference
+## Configuration Reference
 
 This table lists all available configuration keys in `config.yaml`. Click the links for detailed documentation.
 
