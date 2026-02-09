@@ -214,6 +214,8 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/tmdc-io/vulcan-book
+  # Disable social cards to prevent broken preview images when sharing links
+  generator: false
   # analytics:
   #   provider: google
   #   property: G-JXQ1R227VS
