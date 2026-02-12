@@ -28,10 +28,10 @@ serve: venv update-images ## Start development server
 build: venv update-images ## Build static site
 	@$(MKDOCS) build
 
-deploy: venv ## Deploy to GitHub Pages
+deploy: venv update-images ## Deploy to GitHub Pages
 	@echo "Deploying to GitHub Pages..."
 	@$(MKDOCS) gh-deploy --force --ignore-version
-	@echo "Deployed to GitHub Pages!$(NC)"
+	@echo "Deployed to GitHub Pages!"
 
 clean: ## Clean generated files
 	@rm -rf site/ .cache

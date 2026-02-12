@@ -152,19 +152,19 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     === "Postgres (Default)"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.8 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.10 vulcan"
         ```
         *Image version from [Postgres engine configuration](../../configurations/engines/postgres/postgres.md#docker-images)*
     
     === "BigQuery"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.8 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.10 vulcan"
         ```
         *Image version from [BigQuery engine configuration](../../configurations/engines/bigquery/bigquery.md#docker-images)*
     
     === "Databricks"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.6 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.10 vulcan"
         ```
         *Image version from [Databricks engine configuration](../../configurations/engines/databricks/databricks.md#docker-images)*
     
@@ -194,7 +194,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     === "Snowflake"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.8 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.10 vulcan"
         ```
         *Image version from [Snowflake engine configuration](../../configurations/engines/snowflake/snowflake.md#docker-images)*
     

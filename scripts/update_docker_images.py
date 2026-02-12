@@ -72,20 +72,20 @@ def update_docker_md(docker_md_path: Path, versions: Dict[str, str]) -> bool:
     
     # Update each engine's alias command
     for engine_name, engine_info in ENGINE_MAPPING.items():
-        display_name = engine_info["display"]
         version = versions.get(engine_name)
         
         if not version:
             print(f"Warning: No version found for {engine_name}, skipping update")
             continue
         
-        # Pattern to match the alias command for this engine
-        # Matches: alias vulcan="docker run ... tmdcio/vulcan-{engine}:{old_version} vulcan"
-        pattern = (
-            rf'(=== "{re.escape(display_name)}"\s+```bash\s+alias vulcan="docker run -it --network=vulcan --rm -v \.:/workspace tmdcio/vulcan-{re.escape(engine_name)}:)([\d.]+)( vulcan"\s+```)'
-        )
+        # Simple pattern to match the Docker image version in alias commands
+        # Matches: tmdcio/vulcan-{engine}:{old_version} vulcan"
+        pattern = rf'(tmdcio/vulcan-{re.escape(engine_name)}:)([\d.]+)( vulcan")'
         
         def replace_version(match):
+            old_version = match.group(2)
+            if old_version != version:
+                print(f"  Updating {engine_name}: {old_version} -> {version}")
             return f'{match.group(1)}{version}{match.group(3)}'
         
         content = re.sub(pattern, replace_version, content)
