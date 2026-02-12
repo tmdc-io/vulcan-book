@@ -42,13 +42,13 @@ The following Docker images are available for running Vulcan with Redshift:
 | Image | Description |
 |-------|-------------|
 | `tmdcio/vulcan-redshift:0.228.1.6` | Main Vulcan API service for Redshift |
-| `tmdcio/vulcan-transpiler:0.228.1.8` | SQL transpiler service |
+| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
 docker pull tmdcio/vulcan-redshift:0.228.1.6
-docker pull tmdcio/vulcan-transpiler:0.228.1.8
+docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
 
 ### Materialization Strategy
