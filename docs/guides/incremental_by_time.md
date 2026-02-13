@@ -48,6 +48,8 @@ flowchart LR
     style DATA1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
 ```
 
+<!-- *[Screenshot: Visual showing FULL model processing all 365 days]* -->
+
 ### The Solution: Only Process What's New
 
 With incremental models, Vulcan only processes **new or missing** days:
@@ -83,6 +85,8 @@ flowchart LR
     style COST2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
     style DATA2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
 ```
+
+<!-- *[Screenshot: Visual showing incremental model processing only Day 365]* -->
 
 **Result:** 50x faster and 50x cheaper! 
 
@@ -156,6 +160,8 @@ Jan 8-14:  Already processed
 Jan 15-21: Missing - needs processing
 ```
 
+<!-- *[Screenshot: Visual diagram showing state database check with processed vs missing intervals]* -->
+
 ### Step 2: Vulcan Processes Only Missing Intervals
 
 Vulcan then processes only the missing dates. It sets up the macros (`@start_ds` and `@end_ds`) and runs your query for just that time range:
@@ -170,6 +176,8 @@ SELECT ... FROM daily_sales
 WHERE order_date BETWEEN '2025-01-15' AND '2025-01-21'
 ```
 
+<!-- *[Screenshot: Visual showing how @start_ds and @end_ds are used in the query]* -->
+
 ### Step 3: Results Are Inserted
 
 The processed data is inserted into your table, and Vulcan records that these dates are now complete. Next time you run, it'll know these dates are done and skip them. Efficient!
@@ -177,6 +185,8 @@ The processed data is inserted into your table, and Vulcan records that these da
 ```
 Jan 15-21: Now processed and recorded
 ```
+
+<!-- *[Screenshot: Visual showing data insertion and state update]* -->
 
 ---
 
@@ -210,6 +220,8 @@ Intervals:
 - Jan 3: In progress (day not finished yet)
 ```
 
+<!-- *[Screenshot: Calendar view showing daily intervals with Jan 1-2 complete, Jan 3 in progress]* -->
+
 ### Weekly Intervals Example
 
 For a weekly model (`cron '@weekly'`), each week is one interval:
@@ -235,6 +247,8 @@ Intervals:
 
 - Week 3 (Jan 15-21): In progress
 ```
+
+<!-- *[Screenshot: Calendar view showing weekly intervals]* -->
 
 ### How Vulcan Tracks Intervals
 
@@ -288,6 +302,8 @@ Week 1 (Jan 1-7)
 Week 2 (Jan 8-14)
 Week 3 (Jan 15-21)
 ```
+
+<!-- *[Screenshot: Visual showing first plan calculating and processing all intervals]* -->
 
 When you run `vulcan run` later, Vulcan:
 
@@ -360,6 +376,8 @@ Week 3 (Jan 15-21)
 Week 4 (Jan 22-28) ← NEW
 ```
 
+<!-- *[Screenshot: Visual showing second run processing only new Week 4]* -->
+
 ---
 
 ## Creating an Incremental Model
@@ -371,6 +389,8 @@ Let's create a weekly sales aggregation model for Orders360.
 ```bash
 touch models/sales/weekly_sales.sql
 ```
+
+<!-- *[Screenshot: File explorer showing new weekly_sales.sql file]* -->
 
 ### Step 2: Define the Model
 
@@ -400,6 +420,8 @@ GROUP BY DATE_TRUNC('week', order_date)
 ORDER BY order_date
 ```
 
+<!-- *[Screenshot: Code editor showing complete weekly_sales.sql model]* -->
+
 ### Key Components Explained
 
 #### 1. Time Column Declaration
@@ -411,6 +433,8 @@ kind INCREMENTAL_BY_TIME_RANGE (
 ```
 
 **What it does:** Tells Vulcan which column contains the timestamp/date for each row. This is how Vulcan knows how to filter and group your data by time.
+
+<!-- *[Screenshot: Code highlighting time_column declaration]* -->
 
 #### 2. WHERE Clause with Macros
 
@@ -426,6 +450,8 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 
 Vulcan automatically replaces these with the correct dates! You don't have to figure out what dates to process, Vulcan does that for you.
 
+<!-- *[Screenshot: Code highlighting WHERE clause with macros, showing how they're replaced]* -->
+
 #### 3. Start Date
 
 ```sql
@@ -433,6 +459,8 @@ start '2025-01-01'
 ```
 
 **What it does:** Tells Vulcan when your data begins. Vulcan will backfill from this date when you first create the model, processing all historical data up to today.
+
+<!-- *[Screenshot: Code highlighting start date]* -->
 
 ### Step 3: Apply the Model
 
@@ -460,6 +488,8 @@ Models needing backfill (missing dates):
 Apply - Backfill Tables [y/n]: y
 ```
 
+<!-- *[Screenshot: Plan output showing weekly_sales model to be added]* -->
+
 Vulcan will process each week incrementally:
 
 ```
@@ -472,6 +502,8 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 ✔ Model batches executed
 ✔ Plan applied successfully
 ```
+
+<!-- *[Screenshot: Backfill progress showing each week being processed]* -->
 
 ---
 
@@ -518,6 +550,8 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
+<!-- *[Screenshot: daily_sales.sql file showing complete model]* -->
+
 **To make this incremental**, you would:
 
 1. Change `kind FULL` to `kind INCREMENTAL_BY_TIME_RANGE`
@@ -546,6 +580,8 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
+<!-- *[Screenshot: Comparison showing FULL vs INCREMENTAL changes]* -->
+
 ---
 
 ## Understanding the WHERE Clause
@@ -572,6 +608,8 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 
 This is your optimization. Without it, you'd read all the data from upstream tables, even though you only need a small date range.
 
+<!-- *[Screenshot: Visual showing model WHERE clause filtering input data]* -->
+
 #### 2. Vulcan's Automatic WHERE Clause
 
 Vulcan automatically adds another filter on the output:
@@ -591,6 +629,8 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 
 This is Vulcan's safety net. It makes sure that even if your WHERE clause has a bug, you can't accidentally output data for the wrong time period.
 
+<!-- *[Screenshot: Visual showing Vulcan's automatic WHERE clause filtering output]* -->
+
 ### Why Both Are Needed
 
 Here's why you need both:
@@ -600,6 +640,8 @@ Here's why you need both:
 - **Vulcan's WHERE clause:** Ensures correctness by preventing data leakage - makes sure your data is right
 
 **Always include the WHERE clause in your model SQL!** It's not optional, Vulcan needs it to know what time range to process, and it makes your queries way more efficient.
+
+<!-- *[Screenshot: Side-by-side comparison showing both WHERE clauses and their purposes]* -->
 
 ---
 
@@ -625,6 +667,8 @@ vulcan plan dev
 
 - Applies changes to the environment
 
+<!-- *[Screenshot: Plan command output showing model changes]* -->
+
 ### `vulcan run` - For Scheduled Execution
 
 Use when **no models have changed**:
@@ -642,6 +686,8 @@ vulcan run
 - Processes only missing intervals
 
 - Fast and efficient
+
+<!-- *[Screenshot: Run command output showing scheduled execution]* -->
 
 ### How Cron Schedules Work
 
@@ -692,6 +738,8 @@ MODEL (
 );
 ```
 
+<!-- *[Screenshot: Visual showing cron schedules for daily vs weekly models]* -->
+
 When you run `vulcan run`:
 
 ```mermaid
@@ -738,6 +786,8 @@ vulcan run at 2pm on Jan 15:
 daily_sales (@daily):   Last run 24h ago → Due, process!
 weekly_sales (@weekly): Last run 2 days ago → Not due, skip
 ```
+
+<!-- *[Screenshot: Visual showing cron evaluation logic]* -->
 
 ---
 
@@ -802,6 +852,8 @@ MODEL (
 - Divides intervals into batches
 
 - Example: 12 weeks ÷ 4 = 3 jobs
+
+<!-- *[Screenshot: Visual comparison showing batch processing vs single job]* -->
 
 **When to use batches:**
 
@@ -870,6 +922,8 @@ Breaking change → Rebuild entire table (all dates)
 Breaking change → Only apply to new dates going forward
 ```
 
+<!-- *[Screenshot: Visual comparison showing regular rebuild vs forward-only]* -->
+
 ### When to Use Forward-Only
 
 **Use forward-only when:**
@@ -904,6 +958,8 @@ MODEL (
 );
 ```
 
+<!-- *[Screenshot: Code showing forward_only configuration]* -->
+
 ### Forward-Only Plans
 
 You can also make a specific plan forward-only:
@@ -913,6 +969,8 @@ vulcan plan dev --forward-only
 ```
 
 This treats **all changes in the plan** as forward-only, even if models aren't configured that way.
+
+<!-- *[Screenshot: Plan command with --forward-only flag]* -->
 
 ---
 
@@ -964,6 +1022,8 @@ SELECT order_id, total_amount FROM orders
 SELECT order_id FROM orders
 ```
 
+<!-- *[Screenshot: Visual showing destructive change example]* -->
+
 #### Additive Changes
 
 Changes that **add** new data without removing existing:
@@ -1002,6 +1062,8 @@ SELECT order_id, total_amount FROM orders
 SELECT order_id, total_amount, customer_name FROM orders
 ```
 
+<!-- *[Screenshot: Visual showing additive change example]* -->
+
 ### Controlling Schema Change Behavior
 
 You can control how Vulcan handles schema changes:
@@ -1028,6 +1090,8 @@ MODEL (
 
 - `ignore` - Skip the check entirely (dangerous!)
 
+<!-- *[Screenshot: Code showing schema change configuration options]* -->
+
 ### Common Patterns
 
 #### Strict Schema Control
@@ -1046,6 +1110,8 @@ MODEL (
 );
 ```
 
+<!-- *[Screenshot: Strict schema control example]* -->
+
 #### Development Model
 
 Allow all changes for rapid iteration:
@@ -1062,6 +1128,8 @@ MODEL (
 );
 ```
 
+<!-- *[Screenshot: Development model example]* -->
+
 #### Production Safety
 
 Allow safe changes, warn about risky ones:
@@ -1077,6 +1145,8 @@ MODEL (
   )
 );
 ```
+
+<!-- *[Screenshot: Production safety example]* -->
 
 ---
 
@@ -1096,6 +1166,8 @@ time_column order_date_local
 
 **Why?** Ensures correct interval calculations and proper interaction with Vulcan's scheduler. If you use local timezones, you'll run into issues with daylight saving time changes, timezone differences, and interval calculations. UTC is consistent everywhere.
 
+<!-- *[Screenshot: Visual warning about UTC requirement]* -->
+
 ### Always Include WHERE Clause
 
 Your model SQL **must** include a WHERE clause with `@start_ds` and `@end_ds`:
@@ -1111,6 +1183,8 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 
 Without this WHERE clause, Vulcan won't know what time range to process, and your queries will be inefficient (or fail entirely). Always include it!
 
+<!-- *[Screenshot: Code showing required WHERE clause]* -->
+
 ### Set a Start Date
 
 Always specify when your data begins:
@@ -1121,6 +1195,8 @@ start '2025-01-01'  -- Start processing from this date
 
 This tells Vulcan where to start backfilling. If your data goes back to 2020 but you only want to process from 2025, set the start date to 2025-01-01. Vulcan will backfill from this date when you first create the model.
 
+<!-- *[Screenshot: Code showing start date configuration]* -->
+
 ### Choose Appropriate batch_size
 
 - Start with `batch_size 1` for small datasets - process one interval at a time
@@ -1130,6 +1206,8 @@ This tells Vulcan where to start backfilling. If your data goes back to 2020 but
 - Monitor performance to find the right balance. Too small and you have too many jobs. Too large and jobs timeout.
 
 The default is to process all missing intervals in one job. If that doesn't work for you, use `batch_size` to break it up.
+
+<!-- *[Screenshot: Visual guide for choosing batch_size]* -->
 
 ---
 

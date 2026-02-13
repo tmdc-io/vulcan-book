@@ -46,6 +46,8 @@ Here's a quick guide to help you choose:
 
 The key difference: Audits stop everything if they fail. Checks and tests warn you, so you can investigate without blocking production.
 
+<!-- *[Screenshot: Visual comparison of the three quality tools]* -->
+
 ---
 
 ## Quick Reference
@@ -81,6 +83,8 @@ MODEL (
 
 Think of audits as your bouncer, they check IDs at the door and don't let anyone sketchy in.
 
+<!-- *[Screenshot: Audit failure blocking plan execution]* -->
+
 ### Checks: Quality Monitoring
 
 **Use checks when:** You want to monitor trends and detect anomalies over time. Unlike audits, checks don't block your pipeline, they just keep an eye on things and warn you if something looks off.
@@ -114,6 +118,8 @@ checks:
 
 Checks monitor everything and alert you if something suspicious happens, but they don't stop execution.
 
+<!-- *[Screenshot: Check results showing trends over time]* -->
+
 ### Tests: Logic Validation
 
 **Use tests when:** You need to validate SQL transformations and edge cases. These are your unit tests for SQL, they make sure your logic is correct before you deploy it.
@@ -145,6 +151,8 @@ tests:
 - Use for development. Catch bugs before they make it to production.
 
 Tests run in a controlled environment before production.
+
+<!-- *[Screenshot: Test execution showing pass/fail results]* -->
 
 ---
 
@@ -211,6 +219,8 @@ MODEL (
   )
 );
 ```
+
+<!-- *[Screenshot: Audit failure showing revenue mismatch]* -->
 
 ### Layer 2: Checks (Monitoring)
 
@@ -282,6 +292,8 @@ checks:
             description: "Alert if daily records drop more than 20%"
 ```
 
+<!-- *[Screenshot: Check dashboard showing trends and anomalies]* -->
+
 ### Layer 3: Tests (Logic Validation)
 
 **Why:** Validate SQL logic and edge cases during development. Before you even deploy, you want to make sure your SQL is doing what you think it's doing. Tests catch logic errors early.
@@ -351,6 +363,8 @@ tests:
         total_revenue: 150.00
 ```
 
+<!-- *[Screenshot: Test execution showing all tests passing]* -->
+
 ---
 
 ## How They Work Together
@@ -394,13 +408,20 @@ flowchart TB
 ```
 
 **Execution Order:**
+
 1. **Tests** run during development (validate logic) - catch bugs before deployment
+
 2. **Plan** applies changes to environment - your changes go live
+
 3. **Model** executes transformation - data gets processed
+
 4. **Audits** run immediately (block if fail) - critical validation happens right away
+
 5. **Checks** run (track trends, don't block) - monitoring happens in the background
 
 Tests happen first, then audits catch critical issues, and checks monitor everything. This layered approach provides comprehensive coverage.
+
+<!-- *[Screenshot: Complete workflow showing all three layers]* -->
 
 ---
 
@@ -502,6 +523,8 @@ You might wonder why you need both an audit and a check for revenue. Here's the 
 
 The audit has a tight tolerance (0.01) because it's checking for correctness. The check has a wider tolerance (10.0) because it's looking for trends, not exact matches. Pretty clever, right?
 
+<!-- *[Screenshot: Dashboard showing audit blocks vs check warnings]* -->
+
 ---
 
 ## Running Quality Tools
@@ -518,6 +541,8 @@ vulcan test tests/test_daily_sales.yaml::test_daily_sales_single_order
 vulcan test tests/test_daily*
 ```
 
+<!-- *[Screenshot: Test execution output]* -->
+
 ### Run Audits
 ```bash
 # Run all audits
@@ -526,6 +551,8 @@ vulcan audit
 # Audits also run automatically with plan
 vulcan plan dev
 ```
+
+<!-- *[Screenshot: Audit execution output]* -->
 
 ### Run Checks
 ```bash
@@ -538,6 +565,8 @@ vulcan check --select sales.daily_sales
 # Checks also run automatically with plan/run
 vulcan plan dev
 ```
+
+<!-- *[Screenshot: Check execution output with trends]* -->
 
 ---
 
