@@ -231,7 +231,7 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
-*[Screenshot: daily_sales.sql file showing the added avg_order_value column]*
+<!-- *[Screenshot: daily_sales.sql file showing the added avg_order_value column]* -->
 
 ### Step 2: Evaluate the Model (Optional)
 
