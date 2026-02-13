@@ -1876,7 +1876,8 @@
 </span><span id="__span-0-42"><a href="#__codelineno-0-42" id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-0-43"><a href="#__codelineno-0-43" id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div>
-<!-- *[Screenshot: daily_sales.sql file in editor showing the complete model definition]* -->
+<!--
+-->
 <hr/>
 <h2 id="adding-a-model">Adding a Model<a class="headerlink" href="#adding-a-model" title="Link to this section">¶</a></h2>
 <p>To add a new model to your Orders360 project:</p>
@@ -1884,7 +1885,8 @@
 <p>Create a new file in your <code>models</code> directory. For example, let's add a weekly sales aggregation:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>touch<span class="w"> </span>models/sales/weekly_sales.sql
 </span></code></pre></div>
-<!-- *[Screenshot: File explorer showing models/sales directory structure]* -->
+<!--
+-->
 <h3 id="step-2-define-the-model">Step 2: Define the Model<a class="headerlink" href="#step-2-define-the-model" title="Link to this section">¶</a></h3>
 <p>Edit the file and add your model definition:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
@@ -1909,7 +1911,8 @@
 </span><span id="__span-2-20"><a href="#__codelineno-2-20" id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="o">@</span><span class="n">start_ds</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="o">@</span><span class="n">end_ds</span>
 </span><span id="__span-2-21"><a href="#__codelineno-2-21" id="__codelineno-2-21" name="__codelineno-2-21"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">DATE_TRUNC</span><span class="p">(</span><span class="s1">'week'</span><span class="p">,</span><span class="w"> </span><span class="n">order_date</span><span class="p">)</span>
 </span></code></pre></div>
-<!-- *[Screenshot: weekly_sales.sql file in editor with model definition]* -->
+<!--
+-->
 <h3 id="step-3-check-model-status">Step 3: Check Model Status<a class="headerlink" href="#step-3-check-model-status" title="Link to this section">¶</a></h3>
 <p>Verify your model is detected:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>vulcan<span class="w"> </span>info
@@ -1928,7 +1931,8 @@
 </span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a>  - sales.weekly_sales  ← NEW MODEL
 </span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a>...
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: `vulcan info` output showing the new weekly_sales model]* -->
+<!--
+-->
 <h3 id="step-4-apply-the-model">Step 4: Apply the Model<a class="headerlink" href="#step-4-apply-the-model" title="Link to this section">¶</a></h3>
 <p>Use <code>vulcan plan</code> to apply your new model:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>vulcan<span class="w"> </span>plan
@@ -1949,7 +1953,8 @@
 </span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a>
 </span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a>Apply - Backfill Tables [y/n]:
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Plan output showing new weekly_sales model to be added]* -->
+<!--
+-->
 <p>Type <code>y</code> to apply and backfill the model.</p>
 <hr/>
 <h2 id="editing-an-existing-model">Editing an Existing Model<a class="headerlink" href="#editing-an-existing-model" title="Link to this section">¶</a></h2>
@@ -1996,7 +2001,8 @@
 </span><span id="__span-7-38"><a href="#__codelineno-7-38" id="__codelineno-7-38" name="__codelineno-7-38"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-7-39"><a href="#__codelineno-7-39" id="__codelineno-7-39" name="__codelineno-7-39"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div>
-<!-- *[Screenshot: daily_sales.sql file showing the added avg_order_value column]* -->
+<!--
+-->
 <h3 id="step-2-evaluate-the-model-optional">Step 2: Evaluate the Model (Optional)<a class="headerlink" href="#step-2-evaluate-the-model-optional" title="Link to this section">¶</a></h3>
 <p>Preview the model output without materializing it:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>vulcan<span class="w"> </span>evaluate<span class="w"> </span>sales.daily_sales<span class="w"> </span>--start<span class="o">=</span><span class="m">2025</span>-01-15<span class="w"> </span>--end<span class="o">=</span><span class="m">2025</span>-01-15
@@ -2005,7 +2011,8 @@
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>order_date          total_orders  total_revenue  avg_order_value  last_order_id
 </span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a>2025-01-15 00:00:00           42         1250.50           29.77        ORD-00142
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Evaluate command output showing the new avg_order_value column]* -->
+<!--
+-->
 <p><strong>What Happened?</strong></p>
 <ul>
 <li>
@@ -2050,7 +2057,8 @@
 </span><span id="__span-11-24"><a href="#__codelineno-11-24" id="__codelineno-11-24" name="__codelineno-11-24"></a>
 </span><span id="__span-11-25"><a href="#__codelineno-11-25" id="__codelineno-11-25" name="__codelineno-11-25"></a>Apply - Backfill Tables [y/n]:
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Plan output showing non-breaking change with diff highlighting the new column]* -->
+<!--
+-->
 <p><strong>Understanding the Output:</strong></p>
 <ul>
 <li>
@@ -2076,7 +2084,8 @@
 </span><span id="__span-13-5"><a href="#__codelineno-13-5" id="__codelineno-13-5" name="__codelineno-13-5"></a>✔ Model batches executed
 </span><span id="__span-13-6"><a href="#__codelineno-13-6" id="__codelineno-13-6" name="__codelineno-13-6"></a>✔ Plan applied successfully
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Plan application showing daily_sales being backfilled]* -->
+<!--
+-->
 <hr/>
 <h2 id="making-a-breaking-change">Making a Breaking Change<a class="headerlink" href="#making-a-breaking-change" title="Link to this section">¶</a></h2>
 <p>Breaking changes affect downstream models. Let's see how Vulcan handles this.</p>
@@ -2093,7 +2102,8 @@
 </span><span id="__span-14-9"><a href="#__codelineno-14-9" id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-14-10"><a href="#__codelineno-14-10" id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div>
-<!-- *[Screenshot: daily_sales.sql showing the WHERE clause filter]* -->
+<!--
+-->
 <h3 id="step-2-create-plan">Step 2: Create Plan<a class="headerlink" href="#step-2-create-plan" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
 </span></code></pre></div>
@@ -2126,7 +2136,8 @@
 </span><span id="__span-16-26"><a href="#__codelineno-16-26" id="__codelineno-16-26" name="__codelineno-16-26"></a>
 </span><span id="__span-16-27"><a href="#__codelineno-16-27" id="__codelineno-16-27" name="__codelineno-16-27"></a>Apply - Backfill Tables [y/n]:
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Plan output showing breaking change with downstream impact on weekly_sales]* -->
+<!--
+-->
 <p><strong>Understanding Breaking Changes:</strong></p>
 <ul>
 <li>
@@ -2150,7 +2161,8 @@
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>order_date          total_orders  total_revenue  avg_order_value  last_order_id
 </span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a>2025-01-15 00:00:00           42         1250.50           29.77        ORD-00142
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Evaluate output showing single day results]* -->
+<!--
+-->
 <h3 id="evaluate-multiple-days">Evaluate Multiple Days<a class="headerlink" href="#evaluate-multiple-days" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>vulcan<span class="w"> </span>evaluate<span class="w"> </span>sales.daily_sales<span class="w"> </span>--start<span class="o">=</span><span class="m">2025</span>-01-10<span class="w"> </span>--end<span class="o">=</span><span class="m">2025</span>-01-15
 </span></code></pre></div>
@@ -2163,12 +2175,14 @@
 </span><span id="__span-20-6"><a href="#__codelineno-20-6" id="__codelineno-20-6" name="__codelineno-20-6"></a>2025-01-14 00:00:00           44         1320.50           30.01        ORD-00114
 </span><span id="__span-20-7"><a href="#__codelineno-20-7" id="__codelineno-20-7" name="__codelineno-20-7"></a>2025-01-15 00:00:00           42         1250.50           29.77        ORD-00142
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Evaluate output showing multiple days of data]* -->
+<!--
+-->
 <h3 id="evaluate-with-filters">Evaluate with Filters<a class="headerlink" href="#evaluate-with-filters" title="Link to this section">¶</a></h3>
 <p>Test your model logic with different conditions:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>vulcan<span class="w"> </span>evaluate<span class="w"> </span>sales.daily_sales<span class="w"> </span>--start<span class="o">=</span><span class="m">2025</span>-01-15<span class="w"> </span>--end<span class="o">=</span><span class="m">2025</span>-01-15<span class="w"> </span>--where<span class="w"> </span><span class="s2">"total_amount &gt; 50"</span>
 </span></code></pre></div>
-<!-- *[Screenshot: Evaluate command with WHERE clause filter]* -->
+<!--
+-->
 <p><strong>Use Cases for Evaluate:</strong></p>
 <ul>
 <li>
@@ -2203,7 +2217,8 @@
 </span><span id="__span-22-9"><a href="#__codelineno-22-9" id="__codelineno-22-9" name="__codelineno-22-9"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-22-10"><a href="#__codelineno-22-10" id="__codelineno-22-10" name="__codelineno-22-10"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div>
-<!-- *[Screenshot: daily_sales.sql with WHERE clause removed/commented out]* -->
+<!--
+-->
 <h3 id="step-2-apply-reverted-plan">Step 2: Apply Reverted Plan<a class="headerlink" href="#step-2-apply-reverted-plan" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
 </span></code></pre></div>
@@ -2229,7 +2244,8 @@
 </span><span id="__span-24-19"><a href="#__codelineno-24-19" id="__codelineno-24-19" name="__codelineno-24-19"></a>
 </span><span id="__span-24-20"><a href="#__codelineno-24-20" id="__codelineno-24-20" name="__codelineno-24-20"></a>Apply - Virtual Update [y/n]: y
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Plan showing reverted change with diff]* -->
+<!--
+-->
 <p><strong>Virtual Update:</strong></p>
 <ul>
 <li>
@@ -2258,7 +2274,8 @@
 </span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a>Successfully Ran 2 tests against postgres
 </span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a>----------------------------------------------------------------------
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Plan output showing tests passed]* -->
+<!--
+-->
 <h3 id="manual-validation-options">Manual Validation Options<a class="headerlink" href="#manual-validation-options" title="Link to this section">¶</a></h3>
 <ol>
 <li>
@@ -2277,14 +2294,16 @@
 </span></code></pre></div><p></p>
 </li>
 </ol>
-<!-- *[Screenshot: Test execution showing all tests passing]* -->
+<!--
+-->
 <hr/>
 <h2 id="deleting-a-model">Deleting a Model<a class="headerlink" href="#deleting-a-model" title="Link to this section">¶</a></h2>
 <p>To remove a model from your project:</p>
 <h3 id="step-1-delete-model-file">Step 1: Delete Model File<a class="headerlink" href="#step-1-delete-model-file" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>rm<span class="w"> </span>models/sales/weekly_sales.sql
 </span></code></pre></div>
-<!-- *[Screenshot: File explorer showing weekly_sales.sql deleted]* -->
+<!--
+-->
 <h3 id="step-2-delete-associated-tests-if-any">Step 2: Delete Associated Tests (if any)<a class="headerlink" href="#step-2-delete-associated-tests-if-any" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a>rm<span class="w"> </span>tests/test_weekly_sales.yaml
 </span></code></pre></div>
@@ -2304,7 +2323,8 @@
 </span><span id="__span-32-10"><a href="#__codelineno-32-10" id="__codelineno-32-10" name="__codelineno-32-10"></a>
 </span><span id="__span-32-11"><a href="#__codelineno-32-11" id="__codelineno-32-11" name="__codelineno-32-11"></a>Apply - Virtual Update [y/n]: y
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Plan output showing weekly_sales as removed]* -->
+<!--
+-->
 <p>Type <code>y</code> to apply the deletion.</p>
 <p><strong>Expected Output:</strong>
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a>Virtually Updating 'dev' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 0:00:00
@@ -2312,7 +2332,8 @@
 </span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a>The target environment has been updated successfully
 </span><span id="__span-33-4"><a href="#__codelineno-33-4" id="__codelineno-33-4" name="__codelineno-33-4"></a>Virtual Update executed successfully
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Virtual update completing successfully]* -->
+<!--
+-->
 <h3 id="step-4-apply-to-production">Step 4: Apply to Production<a class="headerlink" href="#step-4-apply-to-production" title="Link to this section">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a>vulcan<span class="w"> </span>plan
 </span></code></pre></div>
@@ -2325,7 +2346,8 @@
 </span><span id="__span-35-6"><a href="#__codelineno-35-6" id="__codelineno-35-6" name="__codelineno-35-6"></a>
 </span><span id="__span-35-7"><a href="#__codelineno-35-7" id="__codelineno-35-7" name="__codelineno-35-7"></a>Apply - Virtual Update [y/n]: y
 </span></code></pre></div><p></p>
-<!-- *[Screenshot: Production plan showing model removal]* -->
+<!--
+-->
 <hr/>
 <h2 id="model-examples-from-orders360">Model Examples from Orders360<a class="headerlink" href="#model-examples-from-orders360" title="Link to this section">¶</a></h2>
 <h3 id="seed-model-raw-orders">Seed Model: Raw Orders<a class="headerlink" href="#seed-model-raw-orders" title="Link to this section">¶</a></h3>
@@ -2357,7 +2379,8 @@
 </span><span id="__span-36-26"><a href="#__codelineno-36-26" id="__codelineno-36-26" name="__codelineno-36-26"></a><span class="w">  </span><span class="n">grain</span><span class="w"> </span><span class="n">order_id</span>
 </span><span id="__span-36-27"><a href="#__codelineno-36-27" id="__codelineno-36-27" name="__codelineno-36-27"></a><span class="p">);</span>
 </span></code></pre></div>
-<!-- *[Screenshot: raw_orders.sql seed model file]* -->
+<!--
+-->
 <h3 id="transformation-model-daily-sales">Transformation Model: Daily Sales<a class="headerlink" href="#transformation-model-daily-sales" title="Link to this section">¶</a></h3>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="n">MODEL</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">sales</span><span class="p">.</span><span class="n">daily_sales</span><span class="p">,</span>
@@ -2396,7 +2419,8 @@
 </span><span id="__span-37-35"><a href="#__codelineno-37-35" id="__codelineno-37-35" name="__codelineno-37-35"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span><span id="__span-37-36"><a href="#__codelineno-37-36" id="__codelineno-37-36" name="__codelineno-37-36"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_date</span>
 </span></code></pre></div>
-<!-- *[Screenshot: daily_sales.sql transformation model file]* -->
+<!--
+-->
 <hr/>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <p>Here are some tips to help you work effectively with models:</p>

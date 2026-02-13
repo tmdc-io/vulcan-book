@@ -1795,7 +1795,6 @@
 </span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>
 </span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>✔ All model batches executed successfully
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: First run output showing new interval processing]</em></p>
 <p><strong>What Happened?</strong>
 - <code>sales.daily_sales</code> has <code>cron: '@daily'</code>, so it runs daily - Vulcan checks if enough time has passed</p>
 <ul>
@@ -1820,7 +1819,6 @@
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>Models to execute:
 </span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>└── sales.daily_sales: 2025-01-17 (1 interval)
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Daily run showing only daily model executed]</em></p>
 <h3 id="weekly-model-execution">Weekly Model Execution<a class="headerlink" href="#weekly-model-execution" title="Link to this section">¶</a></h3>
 <p>After 7 days, both daily and weekly models run:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>vulcan<span class="w"> </span>run
@@ -1837,7 +1835,6 @@
 </span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a>
 </span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a>✔ All model batches executed successfully
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Weekly run showing both daily and weekly models]</em></p>
 <p><strong>Understanding Cron Schedules:</strong></p>
 <ul>
 <li>
@@ -1865,7 +1862,6 @@
 </span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a>
 </span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a>✔ Run completed successfully
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Run output showing no models to execute]</em></p>
 <p>This is normal when running frequently. Nothing to process means everything is up to date. Your automation is working and keeping things current.</p>
 <hr/>
 <h2 id="scenario-4-run-after-model-changes-error-case">Scenario 4: Run After Model Changes (Error Case)<a class="headerlink" href="#scenario-4-run-after-model-changes-error-case" title="Link to this section">¶</a></h2>
@@ -1881,7 +1877,6 @@
 </span><span id="__span-9-6"><a href="#__codelineno-9-6" id="__codelineno-9-6" name="__codelineno-9-6"></a>
 </span><span id="__span-9-7"><a href="#__codelineno-9-7" id="__codelineno-9-7" name="__codelineno-9-7"></a>Please run 'vulcan plan' to apply these changes before using 'vulcan run'.
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Error message when trying to run with model changes]</em></p>
 <p><strong>Workflow</strong>: Always <code>plan</code> first to apply changes, then <code>run</code> for scheduled execution. </p>
 <p>This is the key workflow: use <code>plan</code> when you've changed code, then use <code>run</code> for regular data processing. Don't mix them up!</p>
 <hr/>

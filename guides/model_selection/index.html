@@ -1578,7 +1578,6 @@
 </li>
 </ul>
 <p>Understanding this distinction helps you understand what model selection is doing. You're filtering which directly modified models to include, and Vulcan automatically figures out the indirect ones.</p>
-<p><em>[Screenshot: Visual showing directly vs indirectly modified models]</em></p>
 <hr/>
 <h2 id="understanding-model-dependencies">Understanding Model Dependencies<a class="headerlink" href="#understanding-model-dependencies" title="Link to this section">¶</a></h2>
 <p>Before we dive into selection, let's understand how models relate to each other in Orders360. This will help you understand why selecting one model might include others.</p>
@@ -1616,7 +1615,6 @@
 </li>
 </ul>
 <p>This is important! When you select a model, Vulcan automatically includes its downstream dependencies. You can't process <code>weekly_sales</code> without processing <code>daily_sales</code> first, because <code>weekly_sales</code> depends on it.</p>
-<p><em>[Screenshot: Orders360 project structure showing model files]</em></p>
 <hr/>
 <h2 id="syntax">Syntax<a class="headerlink" href="#syntax" title="Link to this section">¶</a></h2>
 <p>Model selections use the <code>--select-model</code> argument in <code>vulcan plan</code>. You can select models in several ways, by name, pattern, tags, git changes, and more. Let's explore all the options!</p>
@@ -1624,11 +1622,9 @@
 <p>Select a single model by name:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
 </span></code></pre></div>
-<p><em>[Screenshot: Plan output showing only daily_sales selected]</em></p>
 <p>Select multiple models:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span><span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"raw.raw_orders"</span>
 </span></code></pre></div>
-<p><em>[Screenshot: Plan output showing multiple models selected]</em></p>
 <h3 id="wildcard-selection">Wildcard Selection<a class="headerlink" href="#wildcard-selection" title="Link to this section">¶</a></h3>
 <p>Use <code>*</code> to match multiple models:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1"># Select all models starting with "raw."</span>
@@ -1653,7 +1649,6 @@
 </li>
 </ul>
 <p>Wildcards let you select a group of related models without listing them all individually.</p>
-<p><em>[Screenshot: Plan output showing wildcard selection results]</em></p>
 <h3 id="tag-selection">Tag Selection<a class="headerlink" href="#tag-selection" title="Link to this section">¶</a></h3>
 <p>Select models by tags using <code>tag:tag_name</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1"># Select all models with "seed" tag</span>
@@ -1666,7 +1661,6 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"tag:seed"</span>
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="c1"># Selects: raw.raw_orders, raw.raw_customers</span>
 </span></code></pre></div>
-<p><em>[Screenshot: Plan output showing tag-based selection]</em></p>
 <h3 id="upstreamdownstream-selection">Upstream/Downstream Selection<a class="headerlink" href="#upstreamdownstream-selection" title="Link to this section">¶</a></h3>
 <p>Use <code>+</code> to include upstream or downstream models:</p>
 <ul>
@@ -1707,7 +1701,6 @@
 </span><span id="__span-5-14"><a href="#__codelineno-5-14" id="__codelineno-5-14" name="__codelineno-5-14"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"+sales.daily_sales+"</span>
 </span><span id="__span-5-15"><a href="#__codelineno-5-15" id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="c1"># Result: raw.raw_orders, daily_sales, weekly_sales</span>
 </span></code></pre></div>
-<p><em>[Screenshot: Plan outputs showing different selection results]</em></p>
 <h3 id="git-based-selection">Git-Based Selection<a class="headerlink" href="#git-based-selection" title="Link to this section">¶</a></h3>
 <p>Select models changed in a git branch:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1"># Select models changed in feature branch</span>
@@ -1732,7 +1725,6 @@
 </li>
 </ul>
 <p>Use this for feature branches. Select all models you've changed in your feature branch without listing them manually.</p>
-<p><em>[Screenshot: Plan output showing git-based selection]</em></p>
 <h3 id="complex-selections">Complex Selections<a class="headerlink" href="#complex-selections" title="Link to this section">¶</a></h3>
 <p>Combine conditions with logical operators:</p>
 <ul>
@@ -1758,7 +1750,6 @@
 </span><span id="__span-7-10"><a href="#__codelineno-7-10" id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="c1"># Models in sales schema without test tag</span>
 </span><span id="__span-7-11"><a href="#__codelineno-7-11" id="__codelineno-7-11" name="__codelineno-7-11"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"^(tag:test) &amp; sales.*"</span>
 </span></code></pre></div>
-<p><em>[Screenshot: Plan output showing complex selection results]</em></p>
 <hr/>
 <h2 id="examples-with-orders360">Examples with Orders360<a class="headerlink" href="#examples-with-orders360" title="Link to this section">¶</a></h2>
 <p>Let's see how model selection works with the Orders360 project. We'll modify <code>raw.raw_orders</code> and <code>sales.daily_sales</code> to demonstrate different selection scenarios.</p>
@@ -1775,7 +1766,6 @@
 <p>The dependency chain:
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>raw.raw_orders → sales.daily_sales → sales.weekly_sales
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Orders360 project showing modified files]</em></p>
 <h3 id="no-selection-default">No Selection (Default)<a class="headerlink" href="#no-selection-default" title="Link to this section">¶</a></h3>
 <p>Without selection, Vulcan includes all directly modified models and their downstream dependencies:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev
@@ -1794,7 +1784,6 @@
 </span><span id="__span-10-11"><a href="#__codelineno-10-11" id="__codelineno-10-11" name="__codelineno-10-11"></a>└── Indirectly Modified:
 </span><span id="__span-10-12"><a href="#__codelineno-10-12" id="__codelineno-10-12" name="__codelineno-10-12"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing all modified models]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -1818,7 +1807,6 @@
 </span><span id="__span-12-6"><a href="#__codelineno-12-6" id="__codelineno-12-6" name="__codelineno-12-6"></a>└── Indirectly Modified:
 </span><span id="__span-12-7"><a href="#__codelineno-12-7" id="__codelineno-12-7" name="__codelineno-12-7"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing only daily_sales selected]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -1846,7 +1834,6 @@
 </span><span id="__span-14-7"><a href="#__codelineno-14-7" id="__codelineno-14-7" name="__codelineno-14-7"></a>└── Indirectly Modified:
 </span><span id="__span-14-8"><a href="#__codelineno-14-8" id="__codelineno-14-8" name="__codelineno-14-8"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing upstream selection]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -1873,7 +1860,6 @@
 </span><span id="__span-16-7"><a href="#__codelineno-16-7" id="__codelineno-16-7" name="__codelineno-16-7"></a>└── Indirectly Modified:
 </span><span id="__span-16-8"><a href="#__codelineno-16-8" id="__codelineno-16-8" name="__codelineno-16-8"></a>    (none)
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing downstream selection]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -1899,7 +1885,6 @@
 </span><span id="__span-18-6"><a href="#__codelineno-18-6" id="__codelineno-18-6" name="__codelineno-18-6"></a>└── Indirectly Modified:
 </span><span id="__span-18-7"><a href="#__codelineno-18-7" id="__codelineno-18-7" name="__codelineno-18-7"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing wildcard selection]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -1926,7 +1911,6 @@
 </span><span id="__span-20-7"><a href="#__codelineno-20-7" id="__codelineno-20-7" name="__codelineno-20-7"></a>    ├── sales.daily_sales
 </span><span id="__span-20-8"><a href="#__codelineno-20-8" id="__codelineno-20-8" name="__codelineno-20-8"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing tag-based selection]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -1949,7 +1933,6 @@
 </span><span id="__span-22-6"><a href="#__codelineno-22-6" id="__codelineno-22-6" name="__codelineno-22-6"></a>└── Indirectly Modified:
 </span><span id="__span-22-7"><a href="#__codelineno-22-7" id="__codelineno-22-7" name="__codelineno-22-7"></a>    └── sales.weekly_sales
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing git-based selection]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -2005,7 +1988,6 @@
 </li>
 </ul>
 <p>This separation lets you see what would be affected (select-model) but only process what you need (backfill-model). Useful for testing.</p>
-<p><em>[Screenshot: Visual diagram explaining backfill selection]</em></p>
 <h3 id="backfill-examples">Backfill Examples<a class="headerlink" href="#backfill-examples" title="Link to this section">¶</a></h3>
 <h4 id="no-backfill-selection-default">No Backfill Selection (Default)<a class="headerlink" href="#no-backfill-selection-default" title="Link to this section">¶</a></h4>
 <p>All models in the plan are backfilled:</p>
@@ -2016,7 +1998,6 @@
 </span><span id="__span-24-2"><a href="#__codelineno-24-2" id="__codelineno-24-2" name="__codelineno-24-2"></a>├── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
 </span><span id="__span-24-3"><a href="#__codelineno-24-3" id="__codelineno-24-3" name="__codelineno-24-3"></a>└── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing all models needing backfill]</em></p>
 <h4 id="backfill-specific-model">Backfill Specific Model<a class="headerlink" href="#backfill-specific-model" title="Link to this section">¶</a></h4>
 <p>Only backfill <code>daily_sales</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--backfill-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>
@@ -2025,7 +2006,6 @@
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>Models needing backfill (missing dates):
 </span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a>└── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing only daily_sales needs backfill]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -2045,7 +2025,6 @@
 </span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a>├── raw__dev.raw_orders: 2025-01-01 - 2025-01-15
 </span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a>└── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
 </span></code></pre></div><p></p>
-<p><em>[Screenshot: Plan output showing upstream models included in backfill]</em></p>
 <p><strong>What Happened:</strong></p>
 <ul>
 <li>
@@ -2094,7 +2073,6 @@
     style PAT4 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
     style PAT5 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
     style PAT6 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000</code></pre>
-<p><em>[Screenshot: Visual cheat sheet for selection patterns]</em></p>
 <hr/>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <p>Here are some tips to help you use model selection effectively:</p>
