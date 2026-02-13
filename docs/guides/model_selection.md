@@ -22,8 +22,6 @@ In large projects, a single model change can impact many downstream models, maki
 
 Understanding this distinction helps you understand what model selection is doing. You're filtering which directly modified models to include, and Vulcan automatically figures out the indirect ones.
 
-*[Screenshot: Visual showing directly vs indirectly modified models]*
-
 ---
 
 ## Understanding Model Dependencies
@@ -64,8 +62,6 @@ flowchart TD
 
 This is important! When you select a model, Vulcan automatically includes its downstream dependencies. You can't process `weekly_sales` without processing `daily_sales` first, because `weekly_sales` depends on it.
 
-*[Screenshot: Orders360 project structure showing model files]*
-
 ---
 
 ## Syntax
@@ -80,15 +76,11 @@ Select a single model by name:
 vulcan plan dev --select-model "sales.daily_sales"
 ```
 
-*[Screenshot: Plan output showing only daily_sales selected]*
-
 Select multiple models:
 
 ```bash
 vulcan plan dev --select-model "sales.daily_sales" --select-model "raw.raw_orders"
 ```
-
-*[Screenshot: Plan output showing multiple models selected]*
 
 ### Wildcard Selection
 
@@ -115,8 +107,6 @@ vulcan plan dev --select-model "*daily*"
 
 Wildcards let you select a group of related models without listing them all individually.
 
-*[Screenshot: Plan output showing wildcard selection results]*
-
 ### Tag Selection
 
 Select models by tags using `tag:tag_name`:
@@ -135,8 +125,6 @@ vulcan plan dev --select-model "tag:reporting*"
 vulcan plan dev --select-model "tag:seed"
 # Selects: raw.raw_orders, raw.raw_customers
 ```
-
-*[Screenshot: Plan output showing tag-based selection]*
 
 ### Upstream/Downstream Selection
 
@@ -182,8 +170,6 @@ vulcan plan dev --select-model "+sales.daily_sales+"
 # Result: raw.raw_orders, daily_sales, weekly_sales
 ```
 
-*[Screenshot: Plan outputs showing different selection results]*
-
 ### Git-Based Selection
 
 Select models changed in a git branch:
@@ -209,8 +195,6 @@ vulcan plan dev --select-model "+git:feature"
 
 Use this for feature branches. Select all models you've changed in your feature branch without listing them manually.
 
-*[Screenshot: Plan output showing git-based selection]*
-
 ### Complex Selections
 
 Combine conditions with logical operators:
@@ -235,8 +219,6 @@ vulcan plan dev --select-model "(tag:finance & git:main)"
 vulcan plan dev --select-model "^(tag:test) & sales.*"
 ```
 
-*[Screenshot: Plan output showing complex selection results]*
-
 ---
 
 ## Examples with Orders360
@@ -255,8 +237,6 @@ The dependency chain:
 ```
 raw.raw_orders → sales.daily_sales → sales.weekly_sales
 ```
-
-*[Screenshot: Orders360 project showing modified files]*
 
 ### No Selection (Default)
 
@@ -281,8 +261,6 @@ Models:
 └── Indirectly Modified:
     └── sales.weekly_sales
 ```
-
-*[Screenshot: Plan output showing all modified models]*
 
 **What Happened:**
 
@@ -310,8 +288,6 @@ Models:
 └── Indirectly Modified:
     └── sales.weekly_sales
 ```
-
-*[Screenshot: Plan output showing only daily_sales selected]*
 
 **What Happened:**
 
@@ -343,8 +319,6 @@ Models:
     └── sales.weekly_sales
 ```
 
-*[Screenshot: Plan output showing upstream selection]*
-
 **What Happened:**
 
 - `raw.raw_orders` is included (upstream of `daily_sales`)
@@ -373,8 +347,6 @@ Models:
     (none)
 ```
 
-*[Screenshot: Plan output showing downstream selection]*
-
 **What Happened:**
 
 - `daily_sales` is included (selected)
@@ -401,8 +373,6 @@ Models:
 └── Indirectly Modified:
     └── sales.weekly_sales
 ```
-
-*[Screenshot: Plan output showing wildcard selection]*
 
 **What Happened:**
 
@@ -432,8 +402,6 @@ Models:
     └── sales.weekly_sales
 ```
 
-*[Screenshot: Plan output showing tag-based selection]*
-
 **What Happened:**
 
 - `raw.raw_orders` has `seed` tag (selected)
@@ -458,8 +426,6 @@ Models:
 └── Indirectly Modified:
     └── sales.weekly_sales
 ```
-
-*[Screenshot: Plan output showing git-based selection]*
 
 **What Happened:**
 
@@ -518,8 +484,6 @@ flowchart TB
 
 This separation lets you see what would be affected (select-model) but only process what you need (backfill-model). Useful for testing.
 
-*[Screenshot: Visual diagram explaining backfill selection]*
-
 ### Backfill Examples
 
 #### No Backfill Selection (Default)
@@ -537,8 +501,6 @@ Models needing backfill (missing dates):
 └── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
 ```
 
-*[Screenshot: Plan output showing all models needing backfill]*
-
 #### Backfill Specific Model
 
 Only backfill `daily_sales`:
@@ -552,8 +514,6 @@ vulcan plan dev --backfill-model "sales.daily_sales"
 Models needing backfill (missing dates):
 └── sales__dev.daily_sales: 2025-01-01 - 2025-01-15
 ```
-
-*[Screenshot: Plan output showing only daily_sales needs backfill]*
 
 **What Happened:**
 
@@ -577,8 +537,6 @@ Models needing backfill (missing dates):
 ├── raw__dev.raw_orders: 2025-01-01 - 2025-01-15
 └── sales__dev.weekly_sales: 2025-01-01 - 2025-01-15
 ```
-
-*[Screenshot: Plan output showing upstream models included in backfill]*
 
 **What Happened:**
 
@@ -630,8 +588,6 @@ flowchart LR
     style PAT5 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
     style PAT6 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
 ```
-
-*[Screenshot: Visual cheat sheet for selection patterns]*
 
 ---
 

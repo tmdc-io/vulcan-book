@@ -75,7 +75,9 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
-<!-- *[Screenshot: daily_sales.sql file in editor showing the complete model definition]* -->
+<!-- 
+
+ -->
 
 ---
 
@@ -91,7 +93,9 @@ Create a new file in your `models` directory. For example, let's add a weekly sa
 touch models/sales/weekly_sales.sql
 ```
 
-<!-- *[Screenshot: File explorer showing models/sales directory structure]* -->
+<!-- 
+
+ -->
 
 ### Step 2: Define the Model
 
@@ -121,7 +125,9 @@ WHERE order_date BETWEEN @start_ds AND @end_ds
 GROUP BY DATE_TRUNC('week', order_date)
 ```
 
-<!-- *[Screenshot: weekly_sales.sql file in editor with model definition]* -->
+<!-- 
+
+ -->
 
 ### Step 3: Check Model Status
 
@@ -147,7 +153,9 @@ Models: 5
 ...
 ```
 
-<!-- *[Screenshot: `vulcan info` output showing the new weekly_sales model]* -->
+<!-- 
+
+ -->
 
 ### Step 4: Apply the Model
 
@@ -175,7 +183,9 @@ Models needing backfill (missing dates):
 Apply - Backfill Tables [y/n]:
 ```
 
-<!-- *[Screenshot: Plan output showing new weekly_sales model to be added]* -->
+<!-- 
+
+ -->
 
 Type `y` to apply and backfill the model.
 
@@ -231,7 +241,9 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
-<!-- *[Screenshot: daily_sales.sql file showing the added avg_order_value column]* -->
+<!-- 
+
+ -->
 
 ### Step 2: Evaluate the Model (Optional)
 
@@ -247,7 +259,9 @@ order_date          total_orders  total_revenue  avg_order_value  last_order_id
 2025-01-15 00:00:00           42         1250.50           29.77        ORD-00142
 ```
 
-<!-- *[Screenshot: Evaluate command output showing the new avg_order_value column]* -->
+<!-- 
+
+ -->
 
 **What Happened?**
 
@@ -296,7 +310,9 @@ Models needing backfill (missing dates):
 Apply - Backfill Tables [y/n]:
 ```
 
-<!-- *[Screenshot: Plan output showing non-breaking change with diff highlighting the new column]* -->
+<!-- 
+
+ -->
 
 **Understanding the Output:**
 
@@ -326,7 +342,9 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 ✔ Plan applied successfully
 ```
 
-<!-- *[Screenshot: Plan application showing daily_sales being backfilled]* -->
+<!-- 
+
+ -->
 
 ---
 
@@ -351,7 +369,9 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
-<!-- *[Screenshot: daily_sales.sql showing the WHERE clause filter]* -->
+<!-- 
+
+ -->
 
 ### Step 2: Create Plan
 
@@ -390,7 +410,9 @@ Models needing backfill (missing dates):
 Apply - Backfill Tables [y/n]:
 ```
 
-<!-- *[Screenshot: Plan output showing breaking change with downstream impact on weekly_sales]* -->
+<!-- 
+
+ -->
 
 **Understanding Breaking Changes:**
 
@@ -420,7 +442,9 @@ order_date          total_orders  total_revenue  avg_order_value  last_order_id
 2025-01-15 00:00:00           42         1250.50           29.77        ORD-00142
 ```
 
-<!-- *[Screenshot: Evaluate output showing single day results]* -->
+<!-- 
+
+ -->
 
 ### Evaluate Multiple Days
 
@@ -439,7 +463,9 @@ order_date          total_orders  total_revenue  avg_order_value  last_order_id
 2025-01-15 00:00:00           42         1250.50           29.77        ORD-00142
 ```
 
-<!-- *[Screenshot: Evaluate output showing multiple days of data]* -->
+<!-- 
+
+ -->
 
 ### Evaluate with Filters
 
@@ -449,7 +475,9 @@ Test your model logic with different conditions:
 vulcan evaluate sales.daily_sales --start=2025-01-15 --end=2025-01-15 --where "total_amount > 50"
 ```
 
-<!-- *[Screenshot: Evaluate command with WHERE clause filter]* -->
+<!-- 
+
+ -->
 
 **Use Cases for Evaluate:**
 
@@ -486,7 +514,9 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
-<!-- *[Screenshot: daily_sales.sql with WHERE clause removed/commented out]* -->
+<!-- 
+
+ -->
 
 ### Step 2: Apply Reverted Plan
 
@@ -518,7 +548,9 @@ Directly Modified: sales.daily_sales (Breaking)
 Apply - Virtual Update [y/n]: y
 ```
 
-<!-- *[Screenshot: Plan showing reverted change with diff]* -->
+<!-- 
+
+ -->
 
 **Virtual Update:**
 
@@ -551,7 +583,9 @@ Successfully Ran 2 tests against postgres
 ----------------------------------------------------------------------
 ```
 
-<!-- *[Screenshot: Plan output showing tests passed]* -->
+<!-- 
+
+ -->
 
 ### Manual Validation Options
 
@@ -570,7 +604,9 @@ Successfully Ran 2 tests against postgres
    vulcan plan dev
    ```
 
-<!-- *[Screenshot: Test execution showing all tests passing]* -->
+<!-- 
+
+ -->
 
 ---
 
@@ -584,7 +620,9 @@ To remove a model from your project:
 rm models/sales/weekly_sales.sql
 ```
 
-<!-- *[Screenshot: File explorer showing weekly_sales.sql deleted]* -->
+<!-- 
+
+ -->
 
 ### Step 2: Delete Associated Tests (if any)
 
@@ -613,7 +651,9 @@ Models:
 Apply - Virtual Update [y/n]: y
 ```
 
-<!-- *[Screenshot: Plan output showing weekly_sales as removed]* -->
+<!-- 
+
+ -->
 
 Type `y` to apply the deletion.
 
@@ -625,7 +665,9 @@ The target environment has been updated successfully
 Virtual Update executed successfully
 ```
 
-<!-- *[Screenshot: Virtual update completing successfully]* -->
+<!-- 
+
+ -->
 
 ### Step 4: Apply to Production
 
@@ -644,7 +686,9 @@ Models:
 Apply - Virtual Update [y/n]: y
 ```
 
-<!-- *[Screenshot: Production plan showing model removal]* -->
+<!-- 
+
+ -->
 
 ---
 
@@ -682,7 +726,9 @@ MODEL (
 );
 ```
 
-<!-- *[Screenshot: raw_orders.sql seed model file]* -->
+<!-- 
+
+ -->
 
 ### Transformation Model: Daily Sales
 
@@ -725,7 +771,9 @@ GROUP BY order_date
 ORDER BY order_date
 ```
 
-<!-- *[Screenshot: daily_sales.sql transformation model file]* -->
+<!-- 
+
+ -->
 
 ---
 

@@ -251,6 +251,7 @@ Vulcan works with these data warehouses and compute engines:
 | [Microsoft Fabric](./engines/fabric/fabric.md) | WIP |
 | [SQL Server](./engines/mssql/mssql.md) | WIP |
 | [MySQL](./engines/mysql/mysql.md) | WIP |
+| [Lakehouse](./engines/) | Coming Soon |
 
 <!-- ## Configuration Reference
 
