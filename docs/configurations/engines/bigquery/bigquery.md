@@ -62,6 +62,13 @@ The downloaded file will have the following structure:
 }
 ```
 
+### Authentication Methods
+
+- **Service Account** (`service-account`): Requires `keyfile` path to JSON key file
+- **OAuth** (`oauth`): OAuth-based authentication
+- **OAuth Secrets** (`oauth-secrets`): OAuth with secrets
+- **Application Default** (`application-default`): Uses default application credentials
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with BigQuery:

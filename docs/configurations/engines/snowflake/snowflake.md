@@ -37,6 +37,14 @@ Here are all the connection parameters you can use when setting up a Snowflake g
 | `private_key_path`       | The path to the private key file to use for authentication                      | string | N        |
 | `private_key_passphrase` | The passphrase to decrypt the private key (if encrypted)                        | string | N        |
 
+### Authentication Methods
+
+- Username/password authentication (required)
+- OAuth 2.0 token authentication (optional): Use `token` parameter
+- External browser authentication (optional): Use `authenticator: externalbrowser`
+- Private key authentication (optional): Use `private_key_path` and `private_key_passphrase`
+- Role-based authentication (optional): Use `role` parameter
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with Snowflake:

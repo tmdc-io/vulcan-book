@@ -35,6 +35,11 @@ Here are all the connection parameters you can use when setting up a SQL Server 
 | `concurrent_tasks`           | Maximum number of concurrent tasks (default: `4`)                               | int    | N        |
 | `trust_server_certificate`   | Whether to trust the server certificate without validation (default: `false`)   | bool   | N        |
 
+### Authentication Methods
+
+- Username/password authentication (required)
+- Certificate validation (optional): Use `trust_server_certificate` parameter (only set to `true` in development environments)
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with SQL Server:

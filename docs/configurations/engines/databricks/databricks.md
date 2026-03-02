@@ -32,6 +32,11 @@ Here are all the connection parameters you can use when setting up a Databricks 
 | `access_token`    | Personal access token or service principal token for authentication             | string | Y        |
 | `catalog`         | The Unity Catalog name to use as the default catalog                            | string | Y        |
 
+### Authentication Methods
+
+- Personal access token authentication (required): Use `access_token` parameter
+- Service principal token authentication (required): Use `access_token` parameter with service principal token
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with Databricks:

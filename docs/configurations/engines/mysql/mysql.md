@@ -35,6 +35,11 @@ Here are all the connection parameters you can use when setting up a MySQL gatew
 | `charset`  | The character set for the connection (default: `utf8mb4`)       | string | N        |
 | `ssl`      | SSL configuration options for secure connections                | dict   | N        |
 
+### Authentication Methods
+
+- Username/password authentication (required)
+- SSL configuration (optional): Use `ssl` option for secure connections in production environments
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with MySQL:

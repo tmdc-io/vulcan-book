@@ -30,6 +30,11 @@ Here are all the connection parameters you can use when setting up a Spark gatew
 | `catalog`    | The catalog to use when issuing commands                                 | string | N        |
 | `config`     | Key/value pairs to set for the Spark Configuration                       | dict   | N        |
 
+### Authentication Methods
+
+- Configuration-based authentication: Authentication credentials are typically configured through Spark configuration (`config` parameter) or `SPARK_CONFIG_DIR` environment variable
+- Catalog-based authentication: Depends on the underlying catalog (S3, HDFS, etc.) configured in Spark
+
 ### Catalog Support
 
 Vulcan's Spark integration is designed for single catalog usage. All models must be defined with a single catalog.
