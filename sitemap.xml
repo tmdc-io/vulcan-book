@@ -173,6 +173,10 @@
          <lastmod>2026-03-03</lastmod>
     </url>
     <url>
+         <loc>https://tmdc-io.github.io/vulcan-docs/guides/data-product-lifecycle/</loc>
+         <lastmod>2026-03-03</lastmod>
+    </url>
+    <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/data_quality/</loc>
          <lastmod>2026-03-03</lastmod>
     </url>
@@ -202,10 +206,6 @@
     </url>
     <url>
          <loc>https://tmdc-io.github.io/vulcan-docs/guides/transpiling_semantics/</loc>
-         <lastmod>2026-03-03</lastmod>
-    </url>
-    <url>
-         <loc>https://tmdc-io.github.io/vulcan-docs/guides/vulcan-lifecycle/</loc>
          <lastmod>2026-03-03</lastmod>
     </url>
     <url>
