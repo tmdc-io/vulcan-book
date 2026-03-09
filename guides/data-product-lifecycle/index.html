@@ -1841,47 +1841,61 @@
 - Warehouse database on port 5433 - your data warehouse</p>
 <h3 id="step-2-configure-cli-access">Step 2: Configure CLI Access<a class="headerlink" href="#step-2-configure-cli-access" title="Link to this section">¶</a></h3>
 <p>Create an alias to access the Vulcan CLI. The alias uses an engine-specific Docker image. <strong>Postgres is shown by default</strong> (recommended for most users). If you're using a different engine, select it from the tabs below:</p>
+<div class="admonition note">
+<p class="admonition-title">Automatic Updates</p>
+<p>Docker image versions in this section are automatically synchronized with the engine configuration files. When engine image versions are updated, this section is automatically updated as well.</p>
+</div>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:10"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><input id="__tabbed_1_4" name="__tabbed_1" type="radio"/><input id="__tabbed_1_5" name="__tabbed_1" type="radio"/><input id="__tabbed_1_6" name="__tabbed_1" type="radio"/><input id="__tabbed_1_7" name="__tabbed_1" type="radio"/><input id="__tabbed_1_8" name="__tabbed_1" type="radio"/><input id="__tabbed_1_9" name="__tabbed_1" type="radio"/><input id="__tabbed_1_10" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">Postgres (Default)</label><label for="__tabbed_1_2">BigQuery</label><label for="__tabbed_1_3">Databricks</label><label for="__tabbed_1_4">Fabric</label><label for="__tabbed_1_5">MSSQL</label><label for="__tabbed_1_6">MySQL</label><label for="__tabbed_1_7">Redshift</label><label for="__tabbed_1_8">Snowflake</label><label for="__tabbed_1_9">Spark</label><label for="__tabbed_1_10">Trino</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/postgres/postgres.md#docker-images">Postgres engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/bigquery/bigquery.md#docker-images">BigQuery engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/databricks/databricks.md#docker-images">Databricks engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/fabric/fabric.md#docker-images">Fabric engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/mssql/mssql.md#docker-images">MSSQL engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/mysql/mysql.md#docker-images">MySQL engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/redshift/redshift.md#docker-images">Redshift engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/snowflake/snowflake.md#docker-images">Snowflake engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/spark/spark.md#docker-images">Spark engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
+<em>Image version from <a href="../../configurations/engines/trino/trino.md#docker-images">Trino engine configuration</a></em><p></p>
 </div>
 </div>
 </div>

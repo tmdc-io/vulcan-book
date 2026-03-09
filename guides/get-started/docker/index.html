@@ -1509,6 +1509,10 @@
 <p><code>semantics/</code> - Semantic layer definitions (measures, dimensions, etc.)</p>
 </li>
 </ul>
+<div class="admonition important">
+<p class="admonition-title">Configure Your Connection</p>
+<p>After initialization, verify your <code>config.yaml</code> has the correct connection values. Replace the connection values (<code>host</code>, <code>port</code>, <code>database</code>, <code>user</code>, <code>password</code>) with values that match your actual database setup. For Docker setups, use the service names (<code>warehouse</code>, <code>statestore</code>) as hostnames. For local or remote databases, use the actual hostname or IP address.</p>
+</div>
 <p><strong>Step 2: Verify Your Setup</strong></p>
 <p>Check your project configuration and connection status: <a href="../../../cli-commands/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>vulcan<span class="w"> </span>info
@@ -1587,6 +1591,10 @@
 <p><code>semantics/</code> - Semantic layer definitions (measures, dimensions, etc.)</p>
 </li>
 </ul>
+<div class="admonition important">
+<p class="admonition-title">Configure Your Connection</p>
+<p>After initialization, verify your <code>config.yaml</code> has the correct connection values. Replace the connection values (<code>host</code>, <code>port</code>, <code>database</code>, <code>user</code>, <code>password</code>) with values that match your actual database setup. For Docker setups, use the service names (<code>warehouse</code>, <code>statestore</code>) as hostnames. For local or remote databases, use the actual hostname or IP address.</p>
+</div>
 <p><strong>Step 2: Verify Your Setup</strong></p>
 <p>Check your project configuration and connection status: <a href="../../../cli-commands/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a>vulcan info
@@ -1689,24 +1697,70 @@
 <p><strong>Windows</strong>: Docker Desktop → Settings → Resources → Advanced</p>
 </li>
 </ul>
+<p><strong>Invalid Connection Config Error</strong></p>
+<p>If you see an error like:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a href="#__codelineno-41-1" id="__codelineno-41-1" name="__codelineno-41-1"></a>Error: Invalid 'postgres' connection config:
+</span><span id="__span-41-2"><a href="#__codelineno-41-2" id="__codelineno-41-2" name="__codelineno-41-2"></a>  Field 'host': Input should be a valid string
+</span><span id="__span-41-3"><a href="#__codelineno-41-3" id="__codelineno-41-3" name="__codelineno-41-3"></a>  Field 'user': Input should be a valid string
+</span><span id="__span-41-4"><a href="#__codelineno-41-4" id="__codelineno-41-4" name="__codelineno-41-4"></a>  Field 'password': Input should be a valid string
+</span><span id="__span-41-5"><a href="#__codelineno-41-5" id="__codelineno-41-5" name="__codelineno-41-5"></a>  Field 'port': Input should be a valid integer
+</span><span id="__span-41-6"><a href="#__codelineno-41-6" id="__codelineno-41-6" name="__codelineno-41-6"></a>  Field 'database': Input should be a valid string
+</span></code></pre></div>
+<p>This means your <code>config.yaml</code> file is missing or incomplete. You need to create or update your <code>config.yaml</code> file with proper gateway configuration before running <code>vulcan info</code> or other Vulcan commands.</p>
+<p><strong>Solution:</strong></p>
+<ol>
+<li>
+<p><strong>If you haven't initialized your project yet</strong>, run <code>vulcan init</code> first. This creates a <code>config.yaml</code> file with the correct structure.</p>
+</li>
+<li>
+<p><strong>If you already have a project</strong>, ensure your <code>config.yaml</code> file includes a <code>gateways</code> section with all required connection fields. Here's a minimal example for Postgres:</p>
+</li>
+</ol>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-42-2"><a href="#__codelineno-42-2" id="__codelineno-42-2" name="__codelineno-42-2"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-42-3"><a href="#__codelineno-42-3" id="__codelineno-42-3" name="__codelineno-42-3"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
+</span><span id="__span-42-4"><a href="#__codelineno-42-4" id="__codelineno-42-4" name="__codelineno-42-4"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-42-5"><a href="#__codelineno-42-5" id="__codelineno-42-5" name="__codelineno-42-5"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-42-6"><a href="#__codelineno-42-6" id="__codelineno-42-6" name="__codelineno-42-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-42-7"><a href="#__codelineno-42-7" id="__codelineno-42-7" name="__codelineno-42-7"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-42-8"><a href="#__codelineno-42-8" id="__codelineno-42-8" name="__codelineno-42-8"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-42-9"><a href="#__codelineno-42-9" id="__codelineno-42-9" name="__codelineno-42-9"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-42-10"><a href="#__codelineno-42-10" id="__codelineno-42-10" name="__codelineno-42-10"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
+</span><span id="__span-42-11"><a href="#__codelineno-42-11" id="__codelineno-42-11" name="__codelineno-42-11"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-42-12"><a href="#__codelineno-42-12" id="__codelineno-42-12" name="__codelineno-42-12"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-42-13"><a href="#__codelineno-42-13" id="__codelineno-42-13" name="__codelineno-42-13"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-42-14"><a href="#__codelineno-42-14" id="__codelineno-42-14" name="__codelineno-42-14"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-42-15"><a href="#__codelineno-42-15" id="__codelineno-42-15" name="__codelineno-42-15"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-42-16"><a href="#__codelineno-42-16" id="__codelineno-42-16" name="__codelineno-42-16"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-42-17"><a href="#__codelineno-42-17" id="__codelineno-42-17" name="__codelineno-42-17"></a>
+</span><span id="__span-42-18"><a href="#__codelineno-42-18" id="__codelineno-42-18" name="__codelineno-42-18"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-42-19"><a href="#__codelineno-42-19" id="__codelineno-42-19" name="__codelineno-42-19"></a>
+</span><span id="__span-42-20"><a href="#__codelineno-42-20" id="__codelineno-42-20" name="__codelineno-42-20"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-42-21"><a href="#__codelineno-42-21" id="__codelineno-42-21" name="__codelineno-42-21"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span></code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Connection Values</p>
+<p><strong>Important:</strong> Replace the connection values (<code>host</code>, <code>port</code>, <code>database</code>, <code>user</code>, <code>password</code>) with values that match your actual database setup. For Docker setups, use the service names (<code>warehouse</code>, <code>statestore</code>) as hostnames. For local or remote databases, use the actual hostname or IP address.</p>
+</div>
+<p>See the <a href="../../../configurations/overview/">Configuration Overview</a> for detailed information about gateway configuration.</p>
 <p><strong>Network Errors</strong></p>
 <p>If you encounter network-related errors, ensure the <code>vulcan</code> Docker network exists:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">Mac/Linux</label><label for="__tabbed_6_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Check if the network exists:
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-41-1"><a href="#__codelineno-41-1" id="__codelineno-41-1" name="__codelineno-41-1"></a>docker<span class="w"> </span>network<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan
+</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a href="#__codelineno-43-1" id="__codelineno-43-1" name="__codelineno-43-1"></a>docker<span class="w"> </span>network<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan
 </span></code></pre></div>
 If it doesn't exist, create it:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-44-1"><a href="#__codelineno-44-1" id="__codelineno-44-1" name="__codelineno-44-1"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
 </span></code></pre></div><p></p>
 </div>
 <div class="tabbed-block">
 <p>Check if the network exists:
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a href="#__codelineno-43-1" id="__codelineno-43-1" name="__codelineno-43-1"></a>docker network ls | grep vulcan
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a>docker network ls | grep vulcan
 </span></code></pre></div>
 If it doesn't exist, create it:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a href="#__codelineno-44-1" id="__codelineno-44-1" name="__codelineno-44-1"></a>docker network create vulcan
+<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a href="#__codelineno-46-1" id="__codelineno-46-1" name="__codelineno-46-1"></a>docker network create vulcan
 </span></code></pre></div><p></p>
 </div>
 </div>
@@ -1719,11 +1773,11 @@ If it doesn't exist, create it:
 </ol>
 <p><strong>Can't Connect to Services</strong></p>
 <p>If you're unable to connect to Vulcan services, verify that all required services are running:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>ps
-</span><span id="__span-45-2"><a href="#__codelineno-45-2" id="__codelineno-45-2" name="__codelineno-45-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>ps
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-47-1"><a href="#__codelineno-47-1" id="__codelineno-47-1" name="__codelineno-47-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>ps
+</span><span id="__span-47-2"><a href="#__codelineno-47-2" id="__codelineno-47-2" name="__codelineno-47-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>ps
 </span></code></pre></div>
 <p>All services should show as "Up" or "running". If any service shows as "Exited" or "Stopped", check the logs:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-46-1"><a href="#__codelineno-46-1" id="__codelineno-46-1" name="__codelineno-46-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>logs
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-48-1"><a href="#__codelineno-48-1" id="__codelineno-48-1" name="__codelineno-48-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>logs
 </span></code></pre></div>
 <p><strong>Access MinIO Console</strong></p>
 <p>You can access the MinIO console to manage your object storage:</p>
@@ -1741,7 +1795,7 @@ If it doesn't exist, create it:
 <p>The MinIO console allows you to browse buckets, upload files, and manage storage policies.</p>
 <p><strong>Permission denied</strong></p>
 <p>Create a .logs folder manually and change the permission 
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-47-1"><a href="#__codelineno-47-1" id="__codelineno-47-1" name="__codelineno-47-1"></a>chmod<span class="w"> </span>-R<span class="w"> </span>a+w<span class="w"> </span>.
+</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-49-1"><a href="#__codelineno-49-1" id="__codelineno-49-1" name="__codelineno-49-1"></a>chmod<span class="w"> </span>-R<span class="w"> </span>a+w<span class="w"> </span>.
 </span></code></pre></div><p></p>
 </details>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>

@@ -1202,7 +1202,7 @@
 <h2 id="identifier-resolution">Identifier Resolution<a class="headerlink" href="#identifier-resolution" title="Link to this section">¶</a></h2>
 <p>When a SQL engine receives a query like <code>SELECT id FROM "some_table"</code>, it needs to understand what database objects the identifiers <code>id</code> and <code>"some_table"</code> correspond to. This is identifier resolution.</p>
 <p>Different SQL dialects resolve identifiers differently. Some identifiers are case-sensitive if quoted. Case-insensitive identifiers are usually lowercased or uppercased before the engine looks up the object.</p>
-<p>Vulcan analyzes model queries to extract information like column-level lineage. To do this, it normalizes and quotes all identifiers in queries, <a href="https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier">respecting each dialect's resolution rules</a>.</p>
+<p>Vulcan analyzes model queries to extract information like column-level lineage. To do this, it normalizes and quotes all identifiers in queries, respecting each dialect's resolution rules.</p>
 <p>The normalization strategy determines whether case-insensitive identifiers are lowercased or uppercased. You can configure this per dialect. To treat all identifiers as case-sensitive in a BigQuery project:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">YAML</label></div>
 <div class="tabbed-content">
