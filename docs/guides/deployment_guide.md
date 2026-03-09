@@ -214,11 +214,11 @@ notification_targets:
       - check_failure
 
 users:
-  - username: shreya
-    email: shreya.sikarwar@tmdc.io
+  - username: <owner-username>
+    email: <owner-email@example.com>
     type: OWNER
-  - username: rohit
-    email: rohit.raj@tmdc.io
+  - username: <contributor-username>
+    email: <contributor-email@example.com>
     type: CONTRIBUTOR
 ```
 </details>
@@ -338,7 +338,7 @@ tags:
   - user_engagement
   - device_analytics
 spec:
-  runAsUser: "shreyasikarwartmdcio"
+  runAsUser: "<dataos-username>"
   compute: cyclone-compute
   engine: snowflake
   repo:
