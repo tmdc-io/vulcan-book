@@ -8,9 +8,9 @@
 <link href="../model_selection/" rel="prev"/>
 <link href="../deployment_guide/" rel="next"/>
 <link href="../../assets/images/D_logo_dark-32px.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
 <title>Transpiling Semantics - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -1221,6 +1221,100 @@
 </nav>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#transpiling-mysql-payloads">
+<span class="md-ellipsis">
+      
+        Transpiling MySQL Payloads
+      
+    </span>
+</a>
+<nav aria-label="Transpiling MySQL Payloads" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connecting-to-vulcan-mysql">
+<span class="md-ellipsis">
+      
+        Connecting to Vulcan MySQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#discovering-available-models">
+<span class="md-ellipsis">
+      
+        Discovering Available Models
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-query_1">
+<span class="md-ellipsis">
+      
+        Basic Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-dimensions_2">
+<span class="md-ellipsis">
+      
+        Query with Dimensions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-filters_2">
+<span class="md-ellipsis">
+      
+        Query with Filters
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-time-grouping_1">
+<span class="md-ellipsis">
+      
+        Query with Time Grouping
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-joins_1">
+<span class="md-ellipsis">
+      
+        Query with Joins
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#complex-query_1">
+<span class="md-ellipsis">
+      
+        Complex Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exit-session">
+<span class="md-ellipsis">
+      
+        Exit Session
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#use-cases">
 <span class="md-ellipsis">
       
@@ -1742,6 +1836,100 @@
 </nav>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#transpiling-mysql-payloads">
+<span class="md-ellipsis">
+      
+        Transpiling MySQL Payloads
+      
+    </span>
+</a>
+<nav aria-label="Transpiling MySQL Payloads" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connecting-to-vulcan-mysql">
+<span class="md-ellipsis">
+      
+        Connecting to Vulcan MySQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#discovering-available-models">
+<span class="md-ellipsis">
+      
+        Discovering Available Models
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-query_1">
+<span class="md-ellipsis">
+      
+        Basic Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-dimensions_2">
+<span class="md-ellipsis">
+      
+        Query with Dimensions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-filters_2">
+<span class="md-ellipsis">
+      
+        Query with Filters
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-time-grouping_1">
+<span class="md-ellipsis">
+      
+        Query with Time Grouping
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-with-joins_1">
+<span class="md-ellipsis">
+      
+        Query with Joins
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#complex-query_1">
+<span class="md-ellipsis">
+      
+        Complex Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exit-session">
+<span class="md-ellipsis">
+      
+        Exit Session
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#use-cases">
 <span class="md-ellipsis">
       
@@ -2248,29 +2436,218 @@
 </span><span id="__span-27-15"><a href="#__codelineno-27-15" id="__codelineno-27-15" name="__codelineno-27-15"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="ss">"subscriptions"</span><span class="p">.</span><span class="n">arr</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span>
 </span><span id="__span-27-16"><a href="#__codelineno-27-16" id="__codelineno-27-16" name="__codelineno-27-16"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span>
 </span></code></pre></div><p></p>
+<h2 id="transpiling-mysql-payloads">Transpiling MySQL Payloads<a class="headerlink" href="#transpiling-mysql-payloads" title="Link to this section">¶</a></h2>
+<p>The Vulcan MySQL wire protocol service lets you query your semantic layer using any standard MySQL client or BI tool. Semantic queries are transpiled to native SQL on the server side — you write standard SQL against your semantic models, and Vulcan handles the translation.</p>
+<h3 id="connecting-to-vulcan-mysql">Connecting to Vulcan MySQL<a class="headerlink" href="#connecting-to-vulcan-mysql" title="Link to this section">¶</a></h3>
+<p>Connect using any MySQL client:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span>&lt;host&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;port&gt;<span class="w"> </span>-u<span class="w"> </span>&lt;username&gt;<span class="w"> </span>-p<span class="s1">'&lt;api-key&gt;'</span><span class="w"> </span>--enable-cleartext-plugin<span class="w"> </span>&lt;tenant_name&gt;.&lt;data_product_name&gt;
+</span></code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-h &lt;host&gt;</code></td>
+<td>Vulcan MySQL host</td>
+<td><code>127.0.0.1</code> (local) or <code>tcp.my-context.dataos.app</code> (remote)</td>
+</tr>
+<tr>
+<td><code>-P &lt;port&gt;</code></td>
+<td>MySQL port</td>
+<td><code>3307</code> (local) or <code>3306</code> (remote)</td>
+</tr>
+<tr>
+<td><code>-u &lt;username&gt;</code></td>
+<td>Your DataOS username</td>
+<td><code>johndoe</code></td>
+</tr>
+<tr>
+<td><code>-p'&lt;api-key&gt;'</code></td>
+<td>Your DataOS API key (no space after <code>-p</code>)</td>
+<td><code>-p'dG9rZW4xMjM0...'</code></td>
+</tr>
+<tr>
+<td><code>&lt;tenant_name&gt;.&lt;data_product_name&gt;</code></td>
+<td>Database to connect to</td>
+<td><code>marketing.sales_analytics</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example — Local connection:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>-P<span class="w"> </span><span class="m">3307</span><span class="w"> </span>-u<span class="w"> </span>johndoe<span class="w"> </span>-p<span class="s1">'dG9rZW4xMjM0NTY3ODk='</span><span class="w"> </span>--ssl-mode<span class="o">=</span>REQUIRED<span class="w"> </span>--enable-cleartext-plugin
+</span></code></pre></div>
+<p><strong>Example — Remote connection:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span>tcp.my-context.dataos.app<span class="w"> </span>-P<span class="w"> </span><span class="m">3306</span><span class="w"> </span>-u<span class="w"> </span>johndoe<span class="w"> </span>-p<span class="s1">'dG9rZW4xMjM0NTY3ODk='</span><span class="w"> </span>--enable-cleartext-plugin<span class="w"> </span>marketing.sales_analytics
+</span></code></pre></div>
+<p><strong>On successful connection:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a>Welcome to the MySQL monitor.  Commands end with ; or \g.
+</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a>Your MySQL connection id is 42
+</span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a>Server version: 8.0.0 Vulcan MySQL Wire Protocol
+</span><span id="__span-31-4"><a href="#__codelineno-31-4" id="__codelineno-31-4" name="__codelineno-31-4"></a>
+</span><span id="__span-31-5"><a href="#__codelineno-31-5" id="__codelineno-31-5" name="__codelineno-31-5"></a>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</span><span id="__span-31-6"><a href="#__codelineno-31-6" id="__codelineno-31-6" name="__codelineno-31-6"></a>
+</span><span id="__span-31-7"><a href="#__codelineno-31-7" id="__codelineno-31-7" name="__codelineno-31-7"></a>mysql&gt;
+</span></code></pre></div>
+<h3 id="discovering-available-models">Discovering Available Models<a class="headerlink" href="#discovering-available-models" title="Link to this section">¶</a></h3>
+<p>List all available semantic models (tables):</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="p">;</span>
+</span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a><span class="o">+</span><span class="c1">---------------------------+</span>
+</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="o">|</span><span class="w"> </span><span class="n">Tables_in_sales_analytics</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-32-4"><a href="#__codelineno-32-4" id="__codelineno-32-4" name="__codelineno-32-4"></a><span class="o">+</span><span class="c1">---------------------------+</span>
+</span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="o">|</span><span class="w"> </span><span class="n">users</span><span class="w">                     </span><span class="o">|</span>
+</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="o">|</span><span class="w"> </span><span class="n">subscriptions</span><span class="w">             </span><span class="o">|</span>
+</span><span id="__span-32-7"><a href="#__codelineno-32-7" id="__codelineno-32-7" name="__codelineno-32-7"></a><span class="o">|</span><span class="w"> </span><span class="n">orders</span><span class="w">                    </span><span class="o">|</span>
+</span><span id="__span-32-8"><a href="#__codelineno-32-8" id="__codelineno-32-8" name="__codelineno-32-8"></a><span class="o">+</span><span class="c1">---------------------------+</span>
+</span><span id="__span-32-9"><a href="#__codelineno-32-9" id="__codelineno-32-9" name="__codelineno-32-9"></a><span class="mi">3</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">10</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Inspect a model's columns (dimensions and measures):</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DESCRIBE</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span><span id="__span-33-2"><a href="#__codelineno-33-2" id="__codelineno-33-2" name="__codelineno-33-2"></a><span class="o">+</span><span class="c1">----------------+--------------+------+-----+</span>
+</span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a><span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="k">Null</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Key</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-33-4"><a href="#__codelineno-33-4" id="__codelineno-33-4" name="__codelineno-33-4"></a><span class="o">+</span><span class="c1">----------------+--------------+------+-----+</span>
+</span><span id="__span-33-5"><a href="#__codelineno-33-5" id="__codelineno-33-5" name="__codelineno-33-5"></a><span class="o">|</span><span class="w"> </span><span class="n">user_id</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">YES</span><span class="w">  </span><span class="o">|</span><span class="w">     </span><span class="o">|</span>
+</span><span id="__span-33-6"><a href="#__codelineno-33-6" id="__codelineno-33-6" name="__codelineno-33-6"></a><span class="o">|</span><span class="w"> </span><span class="n">plan_type</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">YES</span><span class="w">  </span><span class="o">|</span><span class="w">     </span><span class="o">|</span>
+</span><span id="__span-33-7"><a href="#__codelineno-33-7" id="__codelineno-33-7" name="__codelineno-33-7"></a><span class="o">|</span><span class="w"> </span><span class="n">industry</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">YES</span><span class="w">  </span><span class="o">|</span><span class="w">     </span><span class="o">|</span>
+</span><span id="__span-33-8"><a href="#__codelineno-33-8" id="__codelineno-33-8" name="__codelineno-33-8"></a><span class="o">|</span><span class="w"> </span><span class="n">total_users</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="nb">bigint</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">YES</span><span class="w">  </span><span class="o">|</span><span class="w">     </span><span class="o">|</span>
+</span><span id="__span-33-9"><a href="#__codelineno-33-9" id="__codelineno-33-9" name="__codelineno-33-9"></a><span class="o">+</span><span class="c1">----------------+--------------+------+-----+</span>
+</span><span id="__span-33-10"><a href="#__codelineno-33-10" id="__codelineno-33-10" name="__codelineno-33-10"></a><span class="mi">4</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">08</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="basic-query_1">Basic Query<a class="headerlink" href="#basic-query_1" title="Link to this section">¶</a></h3>
+<p>Query a single measure:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_users</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span><span id="__span-34-2"><a href="#__codelineno-34-2" id="__codelineno-34-2" name="__codelineno-34-2"></a><span class="o">+</span><span class="c1">-------------+</span>
+</span><span id="__span-34-3"><a href="#__codelineno-34-3" id="__codelineno-34-3" name="__codelineno-34-3"></a><span class="o">|</span><span class="w"> </span><span class="n">total_users</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-34-4"><a href="#__codelineno-34-4" id="__codelineno-34-4" name="__codelineno-34-4"></a><span class="o">+</span><span class="c1">-------------+</span>
+</span><span id="__span-34-5"><a href="#__codelineno-34-5" id="__codelineno-34-5" name="__codelineno-34-5"></a><span class="o">|</span><span class="w">        </span><span class="mi">4528</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-34-6"><a href="#__codelineno-34-6" id="__codelineno-34-6" name="__codelineno-34-6"></a><span class="o">+</span><span class="c1">-------------+</span>
+</span><span id="__span-34-7"><a href="#__codelineno-34-7" id="__codelineno-34-7" name="__codelineno-34-7"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">45</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="query-with-dimensions_2">Query with Dimensions<a class="headerlink" href="#query-with-dimensions_2" title="Link to this section">¶</a></h3>
+<p>Query measures grouped by a dimension:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">plan_type</span><span class="p">,</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_users</span><span class="p">)</span>
+</span><span id="__span-35-2"><a href="#__codelineno-35-2" id="__codelineno-35-2" name="__codelineno-35-2"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-35-3"><a href="#__codelineno-35-3" id="__codelineno-35-3" name="__codelineno-35-3"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">plan_type</span><span class="p">;</span>
+</span><span id="__span-35-4"><a href="#__codelineno-35-4" id="__codelineno-35-4" name="__codelineno-35-4"></a><span class="o">+</span><span class="c1">-----------+-------------+</span>
+</span><span id="__span-35-5"><a href="#__codelineno-35-5" id="__codelineno-35-5" name="__codelineno-35-5"></a><span class="o">|</span><span class="w"> </span><span class="n">plan_type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">total_users</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-35-6"><a href="#__codelineno-35-6" id="__codelineno-35-6" name="__codelineno-35-6"></a><span class="o">+</span><span class="c1">-----------+-------------+</span>
+</span><span id="__span-35-7"><a href="#__codelineno-35-7" id="__codelineno-35-7" name="__codelineno-35-7"></a><span class="o">|</span><span class="w"> </span><span class="k">free</span><span class="w">      </span><span class="o">|</span><span class="w">        </span><span class="mi">2841</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-35-8"><a href="#__codelineno-35-8" id="__codelineno-35-8" name="__codelineno-35-8"></a><span class="o">|</span><span class="w"> </span><span class="n">starter</span><span class="w">   </span><span class="o">|</span><span class="w">        </span><span class="mi">1024</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-35-9"><a href="#__codelineno-35-9" id="__codelineno-35-9" name="__codelineno-35-9"></a><span class="o">|</span><span class="w"> </span><span class="n">pro</span><span class="w">       </span><span class="o">|</span><span class="w">         </span><span class="mi">512</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-35-10"><a href="#__codelineno-35-10" id="__codelineno-35-10" name="__codelineno-35-10"></a><span class="o">|</span><span class="w"> </span><span class="n">enterprise</span><span class="o">|</span><span class="w">         </span><span class="mi">151</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-35-11"><a href="#__codelineno-35-11" id="__codelineno-35-11" name="__codelineno-35-11"></a><span class="o">+</span><span class="c1">-----------+-------------+</span>
+</span><span id="__span-35-12"><a href="#__codelineno-35-12" id="__codelineno-35-12" name="__codelineno-35-12"></a><span class="mi">4</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">62</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="query-with-filters_2">Query with Filters<a class="headerlink" href="#query-with-filters_2" title="Link to this section">¶</a></h3>
+<p>Filter results using WHERE conditions:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span>
+</span><span id="__span-36-2"><a href="#__codelineno-36-2" id="__codelineno-36-2" name="__codelineno-36-2"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">subscriptions</span>
+</span><span id="__span-36-3"><a href="#__codelineno-36-3" id="__codelineno-36-3" name="__codelineno-36-3"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="p">;</span>
+</span><span id="__span-36-4"><a href="#__codelineno-36-4" id="__codelineno-36-4" name="__codelineno-36-4"></a><span class="o">+</span><span class="c1">-----------+</span>
+</span><span id="__span-36-5"><a href="#__codelineno-36-5" id="__codelineno-36-5" name="__codelineno-36-5"></a><span class="o">|</span><span class="w"> </span><span class="n">total_arr</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-36-6"><a href="#__codelineno-36-6" id="__codelineno-36-6" name="__codelineno-36-6"></a><span class="o">+</span><span class="c1">-----------+</span>
+</span><span id="__span-36-7"><a href="#__codelineno-36-7" id="__codelineno-36-7" name="__codelineno-36-7"></a><span class="o">|</span><span class="w"> </span><span class="mi">2450000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-36-8"><a href="#__codelineno-36-8" id="__codelineno-36-8" name="__codelineno-36-8"></a><span class="o">+</span><span class="c1">-----------+</span>
+</span><span id="__span-36-9"><a href="#__codelineno-36-9" id="__codelineno-36-9" name="__codelineno-36-9"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">38</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="query-with-time-grouping_1">Query with Time Grouping<a class="headerlink" href="#query-with-time-grouping_1" title="Link to this section">¶</a></h3>
+<p>Group results by time intervals:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">DATE_TRUNC</span><span class="p">(</span><span class="s1">'month'</span><span class="p">,</span><span class="w"> </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">start_date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">month</span><span class="p">,</span>
+</span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w">        </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span>
+</span><span id="__span-37-3"><a href="#__codelineno-37-3" id="__codelineno-37-3" name="__codelineno-37-3"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">subscriptions</span>
+</span><span id="__span-37-4"><a href="#__codelineno-37-4" id="__codelineno-37-4" name="__codelineno-37-4"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">month</span>
+</span><span id="__span-37-5"><a href="#__codelineno-37-5" id="__codelineno-37-5" name="__codelineno-37-5"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">month</span><span class="w"> </span><span class="k">DESC</span>
+</span><span id="__span-37-6"><a href="#__codelineno-37-6" id="__codelineno-37-6" name="__codelineno-37-6"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-37-7"><a href="#__codelineno-37-7" id="__codelineno-37-7" name="__codelineno-37-7"></a><span class="o">+</span><span class="c1">------------+-----------+</span>
+</span><span id="__span-37-8"><a href="#__codelineno-37-8" id="__codelineno-37-8" name="__codelineno-37-8"></a><span class="o">|</span><span class="w"> </span><span class="k">month</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">total_arr</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-37-9"><a href="#__codelineno-37-9" id="__codelineno-37-9" name="__codelineno-37-9"></a><span class="o">+</span><span class="c1">------------+-----------+</span>
+</span><span id="__span-37-10"><a href="#__codelineno-37-10" id="__codelineno-37-10" name="__codelineno-37-10"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">285000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-37-11"><a href="#__codelineno-37-11" id="__codelineno-37-11" name="__codelineno-37-11"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">272000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-37-12"><a href="#__codelineno-37-12" id="__codelineno-37-12" name="__codelineno-37-12"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">268500</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-37-13"><a href="#__codelineno-37-13" id="__codelineno-37-13" name="__codelineno-37-13"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">254000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-37-14"><a href="#__codelineno-37-14" id="__codelineno-37-14" name="__codelineno-37-14"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">241000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-37-15"><a href="#__codelineno-37-15" id="__codelineno-37-15" name="__codelineno-37-15"></a><span class="o">+</span><span class="c1">------------+-----------+</span>
+</span><span id="__span-37-16"><a href="#__codelineno-37-16" id="__codelineno-37-16" name="__codelineno-37-16"></a><span class="mi">5</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">12</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="query-with-joins_1">Query with Joins<a class="headerlink" href="#query-with-joins_1" title="Link to this section">¶</a></h3>
+<p>Join multiple semantic models:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-38-1"><a href="#__codelineno-38-1" id="__codelineno-38-1" name="__codelineno-38-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">industry</span><span class="p">,</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span>
+</span><span id="__span-38-2"><a href="#__codelineno-38-2" id="__codelineno-38-2" name="__codelineno-38-2"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">subscriptions</span>
+</span><span id="__span-38-3"><a href="#__codelineno-38-3" id="__codelineno-38-3" name="__codelineno-38-3"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">CROSS</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-38-4"><a href="#__codelineno-38-4" id="__codelineno-38-4" name="__codelineno-38-4"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">industry</span>
+</span><span id="__span-38-5"><a href="#__codelineno-38-5" id="__codelineno-38-5" name="__codelineno-38-5"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</span><span id="__span-38-6"><a href="#__codelineno-38-6" id="__codelineno-38-6" name="__codelineno-38-6"></a><span class="o">+</span><span class="c1">----------------+-----------+</span>
+</span><span id="__span-38-7"><a href="#__codelineno-38-7" id="__codelineno-38-7" name="__codelineno-38-7"></a><span class="o">|</span><span class="w"> </span><span class="n">industry</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">total_arr</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-38-8"><a href="#__codelineno-38-8" id="__codelineno-38-8" name="__codelineno-38-8"></a><span class="o">+</span><span class="c1">----------------+-----------+</span>
+</span><span id="__span-38-9"><a href="#__codelineno-38-9" id="__codelineno-38-9" name="__codelineno-38-9"></a><span class="o">|</span><span class="w"> </span><span class="n">Technology</span><span class="w">     </span><span class="o">|</span><span class="w">  </span><span class="mi">820000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-38-10"><a href="#__codelineno-38-10" id="__codelineno-38-10" name="__codelineno-38-10"></a><span class="o">|</span><span class="w"> </span><span class="n">Finance</span><span class="w">        </span><span class="o">|</span><span class="w">  </span><span class="mi">645000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-38-11"><a href="#__codelineno-38-11" id="__codelineno-38-11" name="__codelineno-38-11"></a><span class="o">|</span><span class="w"> </span><span class="n">Healthcare</span><span class="w">     </span><span class="o">|</span><span class="w">  </span><span class="mi">480000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-38-12"><a href="#__codelineno-38-12" id="__codelineno-38-12" name="__codelineno-38-12"></a><span class="o">|</span><span class="w"> </span><span class="n">Retail</span><span class="w">         </span><span class="o">|</span><span class="w">  </span><span class="mi">312000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-38-13"><a href="#__codelineno-38-13" id="__codelineno-38-13" name="__codelineno-38-13"></a><span class="o">|</span><span class="w"> </span><span class="n">Education</span><span class="w">      </span><span class="o">|</span><span class="w">  </span><span class="mi">193000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-38-14"><a href="#__codelineno-38-14" id="__codelineno-38-14" name="__codelineno-38-14"></a><span class="o">+</span><span class="c1">----------------+-----------+</span>
+</span><span id="__span-38-15"><a href="#__codelineno-38-15" id="__codelineno-38-15" name="__codelineno-38-15"></a><span class="mi">5</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">34</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="complex-query_1">Complex Query<a class="headerlink" href="#complex-query_1" title="Link to this section">¶</a></h3>
+<p>Combine multiple dimensions, filters, time grouping, and joins:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-39-1"><a href="#__codelineno-39-1" id="__codelineno-39-1" name="__codelineno-39-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">DATE_TRUNC</span><span class="p">(</span><span class="s1">'month'</span><span class="p">,</span><span class="w"> </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">start_date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">month</span><span class="p">,</span>
+</span><span id="__span-39-2"><a href="#__codelineno-39-2" id="__codelineno-39-2" name="__codelineno-39-2"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w">        </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">plan_type</span><span class="p">,</span>
+</span><span id="__span-39-3"><a href="#__codelineno-39-3" id="__codelineno-39-3" name="__codelineno-39-3"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w">        </span><span class="n">users</span><span class="p">.</span><span class="n">industry</span><span class="p">,</span>
+</span><span id="__span-39-4"><a href="#__codelineno-39-4" id="__codelineno-39-4" name="__codelineno-39-4"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w">        </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">),</span>
+</span><span id="__span-39-5"><a href="#__codelineno-39-5" id="__codelineno-39-5" name="__codelineno-39-5"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w">        </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_seats</span><span class="p">)</span>
+</span><span id="__span-39-6"><a href="#__codelineno-39-6" id="__codelineno-39-6" name="__codelineno-39-6"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">subscriptions</span>
+</span><span id="__span-39-7"><a href="#__codelineno-39-7" id="__codelineno-39-7" name="__codelineno-39-7"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">CROSS</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-39-8"><a href="#__codelineno-39-8" id="__codelineno-39-8" name="__codelineno-39-8"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span>
+</span><span id="__span-39-9"><a href="#__codelineno-39-9" id="__codelineno-39-9" name="__codelineno-39-9"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">month</span><span class="p">,</span><span class="w"> </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">plan_type</span><span class="p">,</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">industry</span>
+</span><span id="__span-39-10"><a href="#__codelineno-39-10" id="__codelineno-39-10" name="__codelineno-39-10"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span>
+</span><span id="__span-39-11"><a href="#__codelineno-39-11" id="__codelineno-39-11" name="__codelineno-39-11"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-39-12"><a href="#__codelineno-39-12" id="__codelineno-39-12" name="__codelineno-39-12"></a><span class="o">+</span><span class="c1">------------+-----------+------------+-----------+-------------+</span>
+</span><span id="__span-39-13"><a href="#__codelineno-39-13" id="__codelineno-39-13" name="__codelineno-39-13"></a><span class="o">|</span><span class="w"> </span><span class="k">month</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">plan_type</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">industry</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">total_arr</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">total_seats</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-14"><a href="#__codelineno-39-14" id="__codelineno-39-14" name="__codelineno-39-14"></a><span class="o">+</span><span class="c1">------------+-----------+------------+-----------+-------------+</span>
+</span><span id="__span-39-15"><a href="#__codelineno-39-15" id="__codelineno-39-15" name="__codelineno-39-15"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">enterprise</span><span class="o">|</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">125000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">480</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-16"><a href="#__codelineno-39-16" id="__codelineno-39-16" name="__codelineno-39-16"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">pro</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">Finance</span><span class="w">    </span><span class="o">|</span><span class="w">   </span><span class="mi">98000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">320</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-17"><a href="#__codelineno-39-17" id="__codelineno-39-17" name="__codelineno-39-17"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">enterprise</span><span class="o">|</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">118000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">460</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-18"><a href="#__codelineno-39-18" id="__codelineno-39-18" name="__codelineno-39-18"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">enterprise</span><span class="o">|</span><span class="w"> </span><span class="n">Finance</span><span class="w">    </span><span class="o">|</span><span class="w">   </span><span class="mi">95000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">310</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-19"><a href="#__codelineno-39-19" id="__codelineno-39-19" name="__codelineno-39-19"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">pro</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">Healthcare</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">72000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">240</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-20"><a href="#__codelineno-39-20" id="__codelineno-39-20" name="__codelineno-39-20"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">enterprise</span><span class="o">|</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">112000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">440</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-21"><a href="#__codelineno-39-21" id="__codelineno-39-21" name="__codelineno-39-21"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">pro</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">Finance</span><span class="w">    </span><span class="o">|</span><span class="w">   </span><span class="mi">88000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">290</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-22"><a href="#__codelineno-39-22" id="__codelineno-39-22" name="__codelineno-39-22"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">starter</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">54000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">180</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-23"><a href="#__codelineno-39-23" id="__codelineno-39-23" name="__codelineno-39-23"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">enterprise</span><span class="o">|</span><span class="w"> </span><span class="n">Finance</span><span class="w">    </span><span class="o">|</span><span class="w">   </span><span class="mi">91000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">300</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-24"><a href="#__codelineno-39-24" id="__codelineno-39-24" name="__codelineno-39-24"></a><span class="o">|</span><span class="w"> </span><span class="mi">2024</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">pro</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">Healthcare</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="mi">68000</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">|</span><span class="w">         </span><span class="mi">225</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-39-25"><a href="#__codelineno-39-25" id="__codelineno-39-25" name="__codelineno-39-25"></a><span class="o">+</span><span class="c1">------------+-----------+------------+-----------+-------------+</span>
+</span><span id="__span-39-26"><a href="#__codelineno-39-26" id="__codelineno-39-26" name="__codelineno-39-26"></a><span class="mi">10</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">.</span><span class="mi">18</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="exit-session">Exit Session<a class="headerlink" href="#exit-session" title="Link to this section">¶</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-40-1"><a href="#__codelineno-40-1" id="__codelineno-40-1" name="__codelineno-40-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="n">EXIT</span><span class="p">;</span>
+</span><span id="__span-40-2"><a href="#__codelineno-40-2" id="__codelineno-40-2" name="__codelineno-40-2"></a><span class="n">Bye</span>
+</span></code></pre></div>
 <h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Link to this section">¶</a></h2>
 <h3 id="query-validation">Query Validation<a class="headerlink" href="#query-validation" title="Link to this section">¶</a></h3>
 <p>Validate semantic queries before execution:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="c1"># Check if query syntax is correct</span>
-</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-41-1"><a href="#__codelineno-41-1" id="__codelineno-41-1" name="__codelineno-41-1"></a><span class="c1"># Check if query syntax is correct</span>
+</span><span id="__span-41-2"><a href="#__codelineno-41-2" id="__codelineno-41-2" name="__codelineno-41-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
 </span></code></pre></div>
 <p>If the query is invalid, you'll get an error message indicating the issue. This is way better than finding out at runtime! Catch errors early, fix them, then execute.</p>
 <h3 id="debugging-query-behavior">Debugging Query Behavior<a class="headerlink" href="#debugging-query-behavior" title="Link to this section">¶</a></h3>
 <p>Inspect generated SQL to understand how semantic queries are translated. When queries return unexpected results, transpile them to see what's actually happening:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="c1"># See how measures are aggregated</span>
-</span><span id="__span-29-2"><a href="#__codelineno-29-2" id="__codelineno-29-2" name="__codelineno-29-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a><span class="c1"># See how measures are aggregated</span>
+</span><span id="__span-42-2"><a href="#__codelineno-42-2" id="__codelineno-42-2" name="__codelineno-42-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
 </span></code></pre></div>
 <p>This shows you exactly how Vulcan is interpreting your semantic query. Sometimes the generated SQL reveals issues you didn't expect!</p>
 <h3 id="performance-analysis">Performance Analysis<a class="headerlink" href="#performance-analysis" title="Link to this section">¶</a></h3>
 <p>Review generated SQL to identify optimization opportunities. The generated SQL shows you exactly what the database will execute, so you can spot performance issues:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="c1"># Check join conditions and filter placement</span>
-</span><span id="__span-30-2"><a href="#__codelineno-30-2" id="__codelineno-30-2" name="__codelineno-30-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.industry, MEASURE(total_arr) FROM subscriptions CROSS JOIN users WHERE subscriptions.status = 'active' GROUP BY users.industry"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a href="#__codelineno-43-1" id="__codelineno-43-1" name="__codelineno-43-1"></a><span class="c1"># Check join conditions and filter placement</span>
+</span><span id="__span-43-2"><a href="#__codelineno-43-2" id="__codelineno-43-2" name="__codelineno-43-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.industry, MEASURE(total_arr) FROM subscriptions CROSS JOIN users WHERE subscriptions.status = 'active' GROUP BY users.industry"</span>
 </span></code></pre></div>
 <p>Look at the generated SQL, are joins efficient? Are filters in the right place? This is your chance to optimize before execution.</p>
 <h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Link to this section">¶</a></h3>
 <p>Generate SQL examples for documentation or training. Use transpilation to create SQL examples that show how semantic queries translate:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="c1"># Create SQL reference from semantic queries</span>
-</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-44-1"><a href="#__codelineno-44-1" id="__codelineno-44-1" name="__codelineno-44-1"></a><span class="c1"># Create SQL reference from semantic queries</span>
+</span><span id="__span-44-2"><a href="#__codelineno-44-2" id="__codelineno-44-2" name="__codelineno-44-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"</span>
 </span></code></pre></div>
 <p>Use this for documentation. Show both the semantic query (easy to understand) and the generated SQL (what actually runs).</p>
 <h2 id="common-errors-and-solutions">Common Errors and Solutions<a class="headerlink" href="#common-errors-and-solutions" title="Link to this section">¶</a></h2>
@@ -2347,33 +2724,33 @@
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <h3 id="validate-before-execution">Validate Before Execution<a class="headerlink" href="#validate-before-execution" title="Link to this section">¶</a></h3>
 <p>Always transpile queries before running them in production. It's like checking your work before turning it in:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="c1"># Good: Validate first</span>
-</span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
-</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="c1"># Review output, then execute - make sure the SQL looks right</span>
-</span><span id="__span-32-4"><a href="#__codelineno-32-4" id="__codelineno-32-4" name="__codelineno-32-4"></a>
-</span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="c1"># Bad: Execute without validation</span>
-</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="c1"># Direct execution without checking generated SQL - don't do this</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a><span class="c1"># Good: Validate first</span>
+</span><span id="__span-45-2"><a href="#__codelineno-45-2" id="__codelineno-45-2" name="__codelineno-45-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
+</span><span id="__span-45-3"><a href="#__codelineno-45-3" id="__codelineno-45-3" name="__codelineno-45-3"></a><span class="c1"># Review output, then execute - make sure the SQL looks right</span>
+</span><span id="__span-45-4"><a href="#__codelineno-45-4" id="__codelineno-45-4" name="__codelineno-45-4"></a>
+</span><span id="__span-45-5"><a href="#__codelineno-45-5" id="__codelineno-45-5" name="__codelineno-45-5"></a><span class="c1"># Bad: Execute without validation</span>
+</span><span id="__span-45-6"><a href="#__codelineno-45-6" id="__codelineno-45-6" name="__codelineno-45-6"></a><span class="c1"># Direct execution without checking generated SQL - don't do this</span>
 </span></code></pre></div>
 <p>Transpilation catches errors early. Use it!</p>
 <h3 id="use-transpilation-for-debugging">Use Transpilation for Debugging<a class="headerlink" href="#use-transpilation-for-debugging" title="Link to this section">¶</a></h3>
 <p>When queries return unexpected results, transpile to inspect generated SQL. The generated SQL often reveals what's actually happening:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a><span class="c1"># Debug query behavior</span>
-</span><span id="__span-33-2"><a href="#__codelineno-33-2" id="__codelineno-33-2" name="__codelineno-33-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
-</span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a><span class="c1"># Compare generated SQL with expected behavior - does it match what you think should happen?</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-46-1"><a href="#__codelineno-46-1" id="__codelineno-46-1" name="__codelineno-46-1"></a><span class="c1"># Debug query behavior</span>
+</span><span id="__span-46-2"><a href="#__codelineno-46-2" id="__codelineno-46-2" name="__codelineno-46-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
+</span><span id="__span-46-3"><a href="#__codelineno-46-3" id="__codelineno-46-3" name="__codelineno-46-3"></a><span class="c1"># Compare generated SQL with expected behavior - does it match what you think should happen?</span>
 </span></code></pre></div>
 <p>Sometimes the issue isn't with your semantic query, it's with how it's being translated. Transpilation shows you the translation.</p>
 <h3 id="document-query-patterns">Document Query Patterns<a class="headerlink" href="#document-query-patterns" title="Link to this section">¶</a></h3>
 <p>Use transpilation output to document common query patterns:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a><span class="c1"># Generate SQL examples for documentation</span>
-</span><span id="__span-34-2"><a href="#__codelineno-34-2" id="__codelineno-34-2" name="__codelineno-34-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-47-1"><a href="#__codelineno-47-1" id="__codelineno-47-1" name="__codelineno-47-1"></a><span class="c1"># Generate SQL examples for documentation</span>
+</span><span id="__span-47-2"><a href="#__codelineno-47-2" id="__codelineno-47-2" name="__codelineno-47-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_arr) FROM subscriptions WHERE subscriptions.status = 'active'"</span>
 </span></code></pre></div>
 <h3 id="test-both-formats">Test Both Formats<a class="headerlink" href="#test-both-formats" title="Link to this section">¶</a></h3>
 <p>When building applications, test both SQL and JSON formats:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a><span class="c1"># Test SQL format</span>
-</span><span id="__span-35-2"><a href="#__codelineno-35-2" id="__codelineno-35-2" name="__codelineno-35-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
-</span><span id="__span-35-3"><a href="#__codelineno-35-3" id="__codelineno-35-3" name="__codelineno-35-3"></a>
-</span><span id="__span-35-4"><a href="#__codelineno-35-4" id="__codelineno-35-4" name="__codelineno-35-4"></a><span class="c1"># Test equivalent JSON format</span>
-</span><span id="__span-35-5"><a href="#__codelineno-35-5" id="__codelineno-35-5" name="__codelineno-35-5"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span><span class="s1">'{"query": {"measures": ["users.total_users"]}}'</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-48-1"><a href="#__codelineno-48-1" id="__codelineno-48-1" name="__codelineno-48-1"></a><span class="c1"># Test SQL format</span>
+</span><span id="__span-48-2"><a href="#__codelineno-48-2" id="__codelineno-48-2" name="__codelineno-48-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
+</span><span id="__span-48-3"><a href="#__codelineno-48-3" id="__codelineno-48-3" name="__codelineno-48-3"></a>
+</span><span id="__span-48-4"><a href="#__codelineno-48-4" id="__codelineno-48-4" name="__codelineno-48-4"></a><span class="c1"># Test equivalent JSON format</span>
+</span><span id="__span-48-5"><a href="#__codelineno-48-5" id="__codelineno-48-5" name="__codelineno-48-5"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span><span class="s1">'{"query": {"measures": ["users.total_users"]}}'</span>
 </span></code></pre></div>
 <h3 id="choose-appropriate-mode">Choose Appropriate Mode<a class="headerlink" href="#choose-appropriate-mode" title="Link to this section">¶</a></h3>
 <p>Select post-processing or pushdown mode based on needs:</p>
@@ -2388,19 +2765,19 @@
 <h2 id="integration-with-development-workflow">Integration with Development Workflow<a class="headerlink" href="#integration-with-development-workflow" title="Link to this section">¶</a></h2>
 <h3 id="pre-commit-validation">Pre-commit Validation<a class="headerlink" href="#pre-commit-validation" title="Link to this section">¶</a></h3>
 <p>Add transpilation checks to your development workflow:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a><span class="c1"># Validate semantic queries in CI/CD</span>
-</span><span id="__span-36-2"><a href="#__codelineno-36-2" id="__codelineno-36-2" name="__codelineno-36-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-49-1"><a href="#__codelineno-49-1" id="__codelineno-49-1" name="__codelineno-49-1"></a><span class="c1"># Validate semantic queries in CI/CD</span>
+</span><span id="__span-49-2"><a href="#__codelineno-49-2" id="__codelineno-49-2" name="__codelineno-49-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
 </span></code></pre></div>
 <h3 id="query-testing">Query Testing<a class="headerlink" href="#query-testing" title="Link to this section">¶</a></h3>
 <p>Use transpilation to generate test SQL:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="c1"># Generate SQL for testing</span>
-</span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
-</span><span id="__span-37-3"><a href="#__codelineno-37-3" id="__codelineno-37-3" name="__codelineno-37-3"></a><span class="c1"># Use output in test assertions</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-50-1"><a href="#__codelineno-50-1" id="__codelineno-50-1" name="__codelineno-50-1"></a><span class="c1"># Generate SQL for testing</span>
+</span><span id="__span-50-2"><a href="#__codelineno-50-2" id="__codelineno-50-2" name="__codelineno-50-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.plan_type, MEASURE(total_users) FROM users GROUP BY users.plan_type"</span>
+</span><span id="__span-50-3"><a href="#__codelineno-50-3" id="__codelineno-50-3" name="__codelineno-50-3"></a><span class="c1"># Use output in test assertions</span>
 </span></code></pre></div>
 <h3 id="performance-tuning">Performance Tuning<a class="headerlink" href="#performance-tuning" title="Link to this section">¶</a></h3>
 <p>Analyze generated SQL for optimization:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a href="#__codelineno-38-1" id="__codelineno-38-1" name="__codelineno-38-1"></a><span class="c1"># Review join conditions and filter placement</span>
-</span><span id="__span-38-2"><a href="#__codelineno-38-2" id="__codelineno-38-2" name="__codelineno-38-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.industry, MEASURE(total_arr) FROM subscriptions CROSS JOIN users WHERE subscriptions.status = 'active' GROUP BY users.industry"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-51-1"><a href="#__codelineno-51-1" id="__codelineno-51-1" name="__codelineno-51-1"></a><span class="c1"># Review join conditions and filter placement</span>
+</span><span id="__span-51-2"><a href="#__codelineno-51-2" id="__codelineno-51-2" name="__codelineno-51-2"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT users.industry, MEASURE(total_arr) FROM subscriptions CROSS JOIN users WHERE subscriptions.status = 'active' GROUP BY users.industry"</span>
 </span></code></pre></div>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
@@ -2474,8 +2851,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script src="../../assets/javascripts/favicon-switcher.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

@@ -8,9 +8,9 @@
 <link href="../../../components/advanced-features/custom_materializations/" rel="prev"/>
 <link href="../../data-product-lifecycle/" rel="next"/>
 <link href="../../../assets/images/D_logo_dark-32px.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
 <title>Get Started - DataOS Vulcan</title>
-<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -1262,14 +1262,11 @@
 <p><strong>Important</strong>: Before running setup, ensure Docker Desktop is running on your machine and that you are logged into RubikLabs.</p>
 <p>Execute the setup command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>make<span class="w"> </span>setup
-</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>or
-</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
-</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>up<span class="w"> </span>-d
-</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>up<span class="w"> </span>-d
-</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>or
-</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
-</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>up<span class="w"> </span>-d
-</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>up<span class="w"> </span>-d
+</span></code></pre></div>
+<p>Or, if you prefer running Docker Compose directly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>up<span class="w"> </span>-d
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>up<span class="w"> </span>-d
 </span></code></pre></div>
 <p>This command creates and starts three essential services:</p>
 <ul>
@@ -1292,7 +1289,7 @@
 <p>Before proceeding, verify that all required infrastructure services (engine and storage) are up and running.</p>
 <p><strong>Check running containers</strong></p>
 <p>Use Docker directly to confirm that all containers are running:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>docker<span class="w"> </span>ps
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>docker<span class="w"> </span>ps
 </span></code></pre></div>
 <p>You should see containers corresponding to the following services with a status of <code>Up</code>:</p>
 <ul>
@@ -1303,12 +1300,12 @@
 <p>If a container is missing from the list or not in an <code>Up</code> state, it may have stopped or failed to start.</p>
 <p><strong>Validate container logs</strong></p>
 <p>To inspect logs for any specific service, use:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>&lt;container_name&gt;
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>&lt;container_name&gt;
 </span></code></pre></div>
 <p>For example:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>statestore
-</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>docker<span class="w"> </span>logs<span class="w"> </span>minio
-</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>docker<span class="w"> </span>logs<span class="w"> </span>warehouse
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>statestore
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>docker<span class="w"> </span>logs<span class="w"> </span>minio
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a>docker<span class="w"> </span>logs<span class="w"> </span>warehouse
 </span></code></pre></div>
 <p>Review the logs for errors, crash messages, or failed startup checks.</p>
 <p>Once all containers are running properly and logs look healthy, proceed to the next step.</p>
@@ -1321,52 +1318,52 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="3:10"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><input id="__tabbed_3_3" name="__tabbed_3" type="radio"/><input id="__tabbed_3_4" name="__tabbed_3" type="radio"/><input id="__tabbed_3_5" name="__tabbed_3" type="radio"/><input id="__tabbed_3_6" name="__tabbed_3" type="radio"/><input id="__tabbed_3_7" name="__tabbed_3" type="radio"/><input id="__tabbed_3_8" name="__tabbed_3" type="radio"/><input id="__tabbed_3_9" name="__tabbed_3" type="radio"/><input id="__tabbed_3_10" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Postgres (Default)</label><label for="__tabbed_3_2">BigQuery</label><label for="__tabbed_3_3">Databricks</label><label for="__tabbed_3_4">Fabric</label><label for="__tabbed_3_5">MSSQL</label><label for="__tabbed_3_6">MySQL</label><label for="__tabbed_3_7">Redshift</label><label for="__tabbed_3_8">Snowflake</label><label for="__tabbed_3_9">Spark</label><label for="__tabbed_3_10">Trino</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.10 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/postgres/postgres/#docker-images">Postgres engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.10 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/bigquery/bigquery/#docker-images">BigQuery engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.10 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/databricks/databricks/#docker-images">Databricks engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/fabric/fabric/#docker-images">Fabric engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/mssql/mssql/#docker-images">MSSQL engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/mysql/mysql/#docker-images">MySQL engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/redshift/redshift/#docker-images">Redshift engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.10 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.10 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/snowflake/snowflake/#docker-images">Snowflake engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/spark/spark/#docker-images">Spark engine configuration</a></em><p></p>
 </div>
 <div class="tabbed-block">
-<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"</span>
+<p></p><div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">vulcan</span><span class="o">=</span><span class="s2">"docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"</span>
 </span></code></pre></div>
 <em>Image version from <a href="../../../configurations/engines/trino/trino/#docker-images">Trino engine configuration</a></em><p></p>
 </div>
@@ -1374,20 +1371,57 @@
 </div>
 <p><strong>Note</strong>: This alias is temporary and will be lost when you close your shell session. To make it permanent, add this line to your shell configuration file (<code>~/.bashrc</code> for Bash or <code>~/.zshrc</code> for Zsh), then restart your terminal or run <code>source ~/.zshrc</code> (or <code>source ~/.bashrc</code>).</p>
 <p><strong>Step 4: Start API Services</strong></p>
-<p>Start the Vulcan API services:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>make<span class="w"> </span>vulcan-up
-</span><span id="__span-17-2"><a href="#__codelineno-17-2" id="__codelineno-17-2" name="__codelineno-17-2"></a>or
-</span><span id="__span-17-3"><a href="#__codelineno-17-3" id="__codelineno-17-3" name="__codelineno-17-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>up<span class="w"> </span>-d
-</span><span id="__span-17-4"><a href="#__codelineno-17-4" id="__codelineno-17-4" name="__codelineno-17-4"></a>or
-</span><span id="__span-17-5"><a href="#__codelineno-17-5" id="__codelineno-17-5" name="__codelineno-17-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>up<span class="w"> </span>-d
+<p><strong>Configure Environment Variables</strong></p>
+<p>Before starting the services, open <code>docker/docker-compose.vulcan.yml</code> and replace the following placeholders with your actual values:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Placeholder</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATAOS_RUN_AS_USER</code></td>
+<td><code>&lt;your-dataos-username&gt;</code></td>
+<td>Your DataOS user ID</td>
+</tr>
+<tr>
+<td><code>DATAOS_RUN_AS_APIKEY</code></td>
+<td><code>&lt;your-dataos-api-key&gt;</code></td>
+<td>Your DataOS API key</td>
+</tr>
+<tr>
+<td><code>HEIMDALL_URL</code></td>
+<td><code>&lt;your-dataos-context&gt;</code></td>
+<td>Your DataOS context URL (e.g., <code>https://my-context.dataos.app/heimdall</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Generate SSL Certificates for MySQL Wire Protocol (Optional)</strong></p>
+<p>If you plan to use the Vulcan MySQL wire protocol service (<code>vulcan-mysql</code>), SSL/TLS certificates are required. Generate them before starting the service:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>docker/ssl
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-nodes<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="w">  </span>-keyout<span class="w"> </span>docker/ssl/server.key<span class="w"> </span>-out<span class="w"> </span>docker/ssl/server.crt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">"/CN=vulcan-mysql"</span>
 </span></code></pre></div>
-<p>This command starts two services:</p>
+<p><strong>Start the services:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>make<span class="w"> </span>vulcan-up
+</span></code></pre></div>
+<p>Or, if you prefer running Docker Compose directly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>up<span class="w"> </span>-d
+</span></code></pre></div>
+<p>This command starts the following services:</p>
 <ul>
 <li>
 <p><strong>vulcan-api</strong>: A REST API server for querying your semantic model (available at <code>http://localhost:8000</code>)</p>
 </li>
 <li>
-<p><strong>vulcan-transpiler</strong>: A service for transpiling semantic queries to SQL</p>
+<p><strong>vulcan-graphql</strong>: A GraphQL interface for querying your semantic layer (available at <code>http://localhost:3000</code>)</p>
+</li>
+<li>
+<p><strong>vulcan-mysql</strong> <em>(optional)</em>: MySQL wire protocol access to Vulcan for BI tool connectivity (available at <code>localhost:3307</code>)</p>
 </li>
 </ul>
 <p>Once these services are running, you're ready to create your first project!</p>
@@ -1397,12 +1431,12 @@
 <p><small>The download includes: Docker Compose files, Windows batch scripts, and a comprehensive README</small></p>
 <p><strong>Step 1: Extract and Navigate</strong></p>
 <p>Extract the downloaded zip file and navigate to the <code>vulcan-project</code> directory:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>cd vulcan-project
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>cd vulcan-project
 </span></code></pre></div>
 <p><strong>Step 2: Run Setup</strong></p>
 <p><strong>Important</strong>: Before running setup, ensure Docker Desktop for Windows is running and that you are logged into RubikLabs.</p>
 <p>Execute the setup script:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>setup.bat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>setup.bat
 </span></code></pre></div>
 <p>This script creates and starts three essential services:</p>
 <ul>
@@ -1425,7 +1459,7 @@
 <p>Before proceeding, verify that all required infrastructure services (engine and storage) are up and running.</p>
 <p><strong>Check running containers</strong></p>
 <p>Use Docker directly to confirm that all containers are running:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>docker ps
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>docker ps
 </span></code></pre></div>
 <p>You should see containers corresponding to the following services with a status of <code>Up</code>:</p>
 <ul>
@@ -1436,31 +1470,141 @@
 <p>If a container is missing from the list or not in an <code>Up</code> state, it may have stopped or failed to start.</p>
 <p><strong>Validate container logs</strong></p>
 <p>To inspect logs for any specific service, use:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>docker logs &lt;container_name&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>docker logs &lt;container_name&gt;
 </span></code></pre></div>
 <p>For example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>docker logs statestore
-</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>docker logs minio
-</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a>docker logs warehouse
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>docker logs statestore
+</span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a>docker logs minio
+</span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a>docker logs warehouse
 </span></code></pre></div>
 <p>Review the logs for errors, crash messages, or failed startup checks.</p>
 <p>Once all containers are running properly and logs look healthy, proceed to the next step.</p>
-<p><strong>Step 3: Access Vulcan CLI</strong></p>
-<p>Use the provided batch script to access the Vulcan CLI:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>vulcan.bat
+<p><strong>Step 3: Configure Vulcan CLI Access</strong></p>
+<p>Create a function to access the Vulcan CLI. Open PowerShell and run the following command. <strong>Postgres is shown by default</strong> (recommended for most users). If you're using a different engine, select it from the tabs below:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:10"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><input id="__tabbed_4_4" name="__tabbed_4" type="radio"/><input id="__tabbed_4_5" name="__tabbed_4" type="radio"/><input id="__tabbed_4_6" name="__tabbed_4" type="radio"/><input id="__tabbed_4_7" name="__tabbed_4" type="radio"/><input id="__tabbed_4_8" name="__tabbed_4" type="radio"/><input id="__tabbed_4_9" name="__tabbed_4" type="radio"/><input id="__tabbed_4_10" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Postgres (Default)</label><label for="__tabbed_4_2">BigQuery</label><label for="__tabbed_4_3">Databricks</label><label for="__tabbed_4_4">Fabric</label><label for="__tabbed_4_5">MSSQL</label><label for="__tabbed_4_6">MySQL</label><label for="__tabbed_4_7">Redshift</label><label for="__tabbed_4_8">Snowflake</label><label for="__tabbed_4_9">Spark</label><label for="__tabbed_4_10">Trino</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-postgres</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">10</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-26-3"><a href="#__codelineno-26-3" id="__codelineno-26-3" name="__codelineno-26-3"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>This script runs Vulcan commands in a Docker container with the correct network and volume settings.</p>
+<em>Image version from <a href="../../../configurations/engines/postgres/postgres/#docker-images">Postgres engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-bigquery</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">10</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/bigquery/bigquery/#docker-images">BigQuery engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-databricks</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">10</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/databricks/databricks/#docker-images">Databricks engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-29-2"><a href="#__codelineno-29-2" id="__codelineno-29-2" name="__codelineno-29-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-fabric</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">6</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-29-3"><a href="#__codelineno-29-3" id="__codelineno-29-3" name="__codelineno-29-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/fabric/fabric/#docker-images">Fabric engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-30-2"><a href="#__codelineno-30-2" id="__codelineno-30-2" name="__codelineno-30-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-mssql</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">6</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-30-3"><a href="#__codelineno-30-3" id="__codelineno-30-3" name="__codelineno-30-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/mssql/mssql/#docker-images">MSSQL engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-mysql</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">6</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/mysql/mysql/#docker-images">MySQL engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-redshift</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">6</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/redshift/redshift/#docker-images">Redshift engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-33-2"><a href="#__codelineno-33-2" id="__codelineno-33-2" name="__codelineno-33-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-snowflake</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">10</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/snowflake/snowflake/#docker-images">Snowflake engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-34-2"><a href="#__codelineno-34-2" id="__codelineno-34-2" name="__codelineno-34-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-spark</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">6</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-34-3"><a href="#__codelineno-34-3" id="__codelineno-34-3" name="__codelineno-34-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/spark/spark/#docker-images">Spark engine configuration</a></em><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div class="language-powershell highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a><span class="k">function</span> <span class="n">vulcan</span> <span class="p">{</span>
+</span><span id="__span-35-2"><a href="#__codelineno-35-2" id="__codelineno-35-2" name="__codelineno-35-2"></a>  <span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-network</span><span class="p">=</span><span class="n">vulcan</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="p">.:/</span><span class="n">workspace</span> <span class="n">tmdcio</span><span class="p">/</span><span class="n">vulcan-trino</span><span class="p">:</span><span class="n">0</span><span class="p">.</span><span class="n">228</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">6</span> <span class="n">vulcan</span> <span class="nv">$args</span>
+</span><span id="__span-35-3"><a href="#__codelineno-35-3" id="__codelineno-35-3" name="__codelineno-35-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<em>Image version from <a href="../../../configurations/engines/trino/trino/#docker-images">Trino engine configuration</a></em><p></p>
+</div>
+</div>
+</div>
+<p><strong>Note</strong>: This function is temporary and will be lost when you close your PowerShell session. To make it permanent, add it to your PowerShell profile. Run <code>notepad $PROFILE</code> to open your profile file, paste the function, and save.</p>
 <p><strong>Step 4: Start API Services</strong></p>
-<p>Start the Vulcan API services:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>start-vulcan-api.bat
+<p><strong>Configure Environment Variables</strong></p>
+<p>Before starting the services, open <code>docker\docker-compose.vulcan.yml</code> and replace the following placeholders with your actual values:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Placeholder</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATAOS_RUN_AS_USER</code></td>
+<td><code>&lt;your-dataos-username&gt;</code></td>
+<td>Your DataOS user ID</td>
+</tr>
+<tr>
+<td><code>DATAOS_RUN_AS_APIKEY</code></td>
+<td><code>&lt;your-dataos-api-key&gt;</code></td>
+<td>Your DataOS API key</td>
+</tr>
+<tr>
+<td><code>HEIMDALL_URL</code></td>
+<td><code>&lt;your-dataos-context&gt;</code></td>
+<td>Your DataOS context URL (e.g., <code>https://my-context.dataos.app/heimdall</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Generate SSL Certificates for MySQL Wire Protocol (Optional)</strong></p>
+<p>If you plan to use the Vulcan MySQL wire protocol service (<code>vulcan-mysql</code>), SSL/TLS certificates are required. Generate them before starting the service:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a>mkdir docker\ssl
+</span><span id="__span-36-2"><a href="#__codelineno-36-2" id="__codelineno-36-2" name="__codelineno-36-2"></a>openssl req -x509 -nodes -days 365 -newkey rsa:2048 ^
+</span><span id="__span-36-3"><a href="#__codelineno-36-3" id="__codelineno-36-3" name="__codelineno-36-3"></a>  -keyout docker\ssl\server.key -out docker\ssl\server.crt ^
+</span><span id="__span-36-4"><a href="#__codelineno-36-4" id="__codelineno-36-4" name="__codelineno-36-4"></a>  -subj "/CN=vulcan-mysql"
 </span></code></pre></div>
-<p>This command starts two services:</p>
+<p><strong>Start the services:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a>start-vulcan-api.bat
+</span></code></pre></div>
+<p>This command starts the following services:</p>
 <ul>
 <li>
 <p><strong>vulcan-api</strong>: A REST API server for querying your semantic model (available at <code>http://localhost:8000</code>)</p>
 </li>
 <li>
-<p><strong>vulcan-transpiler</strong>: A service for transpiling semantic queries to SQL</p>
+<p><strong>vulcan-graphql</strong>: A GraphQL interface for querying your semantic layer (available at <code>http://localhost:3000</code>)</p>
+</li>
+<li>
+<p><strong>vulcan-mysql</strong> <em>(optional)</em>: MySQL wire protocol access to Vulcan for BI tool connectivity (available at <code>localhost:3307</code>)</p>
 </li>
 </ul>
 <p>Once these services are running, you're ready to create your first project!</p>
@@ -1469,12 +1613,12 @@
 </div>
 <h2 id="create-your-first-project">Create Your First Project<a class="headerlink" href="#create-your-first-project" title="Link to this section">¶</a></h2>
 <p>Now that your environment is set up, let's create your first Vulcan project. This section walks you through initializing a project, verifying the setup, running your first plan, and querying your data.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Mac/Linux</label><label for="__tabbed_4_2">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Mac/Linux</label><label for="__tabbed_5_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><strong>Step 1: Initialize Your Project</strong></p>
 <p>Initialize a new Vulcan project: <a href="../../../cli-commands/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>vulcan<span class="w"> </span>init
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a href="#__codelineno-38-1" id="__codelineno-38-1" name="__codelineno-38-1"></a>vulcan<span class="w"> </span>init
 </span></code></pre></div>
 <p>When prompted:</p>
 <ul>
@@ -1515,7 +1659,7 @@
 </div>
 <p><strong>Step 2: Verify Your Setup</strong></p>
 <p>Check your project configuration and connection status: <a href="../../../cli-commands/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>vulcan<span class="w"> </span>info
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a href="#__codelineno-39-1" id="__codelineno-39-1" name="__codelineno-39-1"></a>vulcan<span class="w"> </span>info
 </span></code></pre></div>
 <p>This command displays:</p>
 <ul>
@@ -1532,7 +1676,7 @@
 <p><strong>Important</strong>: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.</p>
 <p><strong>Step 3: Create and Apply Your First Plan</strong></p>
 <p>Generate a plan for your models: <a href="../../../cli-commands/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>vulcan<span class="w"> </span>plan
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-40-1"><a href="#__codelineno-40-1" id="__codelineno-40-1" name="__codelineno-40-1"></a>vulcan<span class="w"> </span>plan
 </span></code></pre></div>
 <p>This command performs three key actions:</p>
 <ol>
@@ -1544,19 +1688,19 @@
 <p><strong>Note</strong>: The backfill process may take a few minutes depending on the amount of historical data to process.</p>
 <p><strong>Step 4: Query Your Models</strong></p>
 <p>Execute SQL queries against your models: <a href="../../../cli-commands/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a>vulcan<span class="w"> </span>fetchdf<span class="w"> </span><span class="s2">"select * from schema.model_name"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-41-1"><a href="#__codelineno-41-1" id="__codelineno-41-1" name="__codelineno-41-1"></a>vulcan<span class="w"> </span>fetchdf<span class="w"> </span><span class="s2">"select * from schema.model_name"</span>
 </span></code></pre></div>
 <p>This command executes a SQL query and returns the results as a pandas DataFrame.</p>
 <p><strong>Step 5: Query Using Semantic Layer</strong></p>
 <p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-commands/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(measure_name) FROM model"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(measure_name) FROM model"</span>
 </span></code></pre></div>
 <p>This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.</p>
 </div>
 <div class="tabbed-block">
 <p><strong>Step 1: Initialize Your Project</strong></p>
 <p>Initialize a new Vulcan project: <a href="../../../cli-commands/cli/#init" target="_blank"><em>Learn more about init</em></a></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a>vulcan init
+<div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a href="#__codelineno-43-1" id="__codelineno-43-1" name="__codelineno-43-1"></a>vulcan init
 </span></code></pre></div>
 <p>When prompted:</p>
 <ul>
@@ -1597,7 +1741,7 @@
 </div>
 <p><strong>Step 2: Verify Your Setup</strong></p>
 <p>Check your project configuration and connection status: <a href="../../../cli-commands/cli/#info" target="_blank"><em>Learn more about info</em></a></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a>vulcan info
+<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a href="#__codelineno-44-1" id="__codelineno-44-1" name="__codelineno-44-1"></a>vulcan info
 </span></code></pre></div>
 <p>This command displays:</p>
 <ul>
@@ -1614,7 +1758,7 @@
 <p><strong>Important</strong>: Verify that the setup is correct before proceeding to run plans. If you see any errors, check the Troubleshooting section below.</p>
 <p><strong>Step 3: Create and Apply Your First Plan</strong></p>
 <p>Generate a plan for your models: <a href="../../../cli-commands/cli/#plan" target="_blank"><em>Learn more about plan</em></a></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a>vulcan plan
+<div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a>vulcan plan
 </span></code></pre></div>
 <p>This command performs three key actions:</p>
 <ol>
@@ -1626,12 +1770,12 @@
 <p><strong>Note</strong>: The backfill process may take a few minutes depending on the amount of historical data to process.</p>
 <p><strong>Step 4: Query Your Models</strong></p>
 <p>Execute SQL queries against your models: <a href="../../../cli-commands/cli/#fetchdf" target="_blank"><em>Learn more about fetchdf</em></a></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a>vulcan fetchdf "select * from schema.model_name"
+<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a href="#__codelineno-46-1" id="__codelineno-46-1" name="__codelineno-46-1"></a>vulcan fetchdf "select * from schema.model_name"
 </span></code></pre></div>
 <p>This command executes a SQL query and returns the results as a pandas DataFrame.</p>
 <p><strong>Step 5: Query Using Semantic Layer</strong></p>
 <p>Use Vulcan's semantic layer to query your data: <a href="../../../cli-commands/cli/#transpile" target="_blank"><em>Learn more about transpile</em></a></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a>vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
+<div class="language-text highlight"><pre><span></span><code><span id="__span-47-1"><a href="#__codelineno-47-1" id="__codelineno-47-1" name="__codelineno-47-1"></a>vulcan transpile --format sql "SELECT MEASURE(measure_name) FROM model"
 </span></code></pre></div>
 <p>This command transpiles your semantic query into SQL that can be executed against your data warehouse. The semantic layer provides a business-friendly interface for querying your data models.</p>
 </div>
@@ -1639,46 +1783,40 @@
 </div>
 <h2 id="stopping-services">Stopping Services<a class="headerlink" href="#stopping-services" title="Link to this section">¶</a></h2>
 <p>When you're done working with Vulcan, you can stop the services to free up system resources. Use the commands below based on your operating system.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Mac/Linux</label><label for="__tabbed_5_2">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">Mac/Linux</label><label for="__tabbed_6_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><strong>Stop All Services</strong></p>
 <p>To stop all running services:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a>make<span class="w"> </span>all-down<span class="w">       </span><span class="c1"># Stop all services</span>
-</span><span id="__span-35-2"><a href="#__codelineno-35-2" id="__codelineno-35-2" name="__codelineno-35-2"></a>or
-</span><span id="__span-35-3"><a href="#__codelineno-35-3" id="__codelineno-35-3" name="__codelineno-35-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>down<span class="w"> </span>-v
-</span><span id="__span-35-4"><a href="#__codelineno-35-4" id="__codelineno-35-4" name="__codelineno-35-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>down<span class="w"> </span>-v
-</span><span id="__span-35-5"><a href="#__codelineno-35-5" id="__codelineno-35-5" name="__codelineno-35-5"></a>or
-</span><span id="__span-35-6"><a href="#__codelineno-35-6" id="__codelineno-35-6" name="__codelineno-35-6"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>down<span class="w"> </span>-v
-</span><span id="__span-35-7"><a href="#__codelineno-35-7" id="__codelineno-35-7" name="__codelineno-35-7"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>down<span class="w"> </span>-v
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-48-1"><a href="#__codelineno-48-1" id="__codelineno-48-1" name="__codelineno-48-1"></a>make<span class="w"> </span>all-down
+</span></code></pre></div>
+<p>Or, if you prefer running Docker Compose directly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-49-1"><a href="#__codelineno-49-1" id="__codelineno-49-1" name="__codelineno-49-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>down<span class="w"> </span>-v
+</span><span id="__span-49-2"><a href="#__codelineno-49-2" id="__codelineno-49-2" name="__codelineno-49-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>down<span class="w"> </span>-v
 </span></code></pre></div>
 <p><strong>Stop and Clean Up (Warning: This deletes all data)</strong></p>
 <p>To stop all services and remove volumes (this will delete all data):</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a>make<span class="w"> </span>all-clean<span class="w">      </span><span class="c1"># Stop and remove volumes (this will delete all data)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-50-1"><a href="#__codelineno-50-1" id="__codelineno-50-1" name="__codelineno-50-1"></a>make<span class="w"> </span>all-clean<span class="w">      </span><span class="c1"># Stop and remove volumes (this will delete all data)</span>
 </span></code></pre></div>
 <p><strong>Stop Individual Service Groups</strong></p>
 <p>You can also stop specific service groups:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a>make<span class="w"> </span>vulcan-down<span class="w">     </span><span class="c1"># Stop only Vulcan API services</span>
-</span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a>or
-</span><span id="__span-37-3"><a href="#__codelineno-37-3" id="__codelineno-37-3" name="__codelineno-37-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>down<span class="w"> </span>-v
-</span><span id="__span-37-4"><a href="#__codelineno-37-4" id="__codelineno-37-4" name="__codelineno-37-4"></a>or
-</span><span id="__span-37-5"><a href="#__codelineno-37-5" id="__codelineno-37-5" name="__codelineno-37-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.vulcan.yml<span class="w"> </span>down<span class="w"> </span>-v
-</span><span id="__span-37-6"><a href="#__codelineno-37-6" id="__codelineno-37-6" name="__codelineno-37-6"></a>make<span class="w"> </span>infra-down<span class="w">      </span><span class="c1"># Stop infrastructure services (statestore, minio)</span>
-</span><span id="__span-37-7"><a href="#__codelineno-37-7" id="__codelineno-37-7" name="__codelineno-37-7"></a>make<span class="w"> </span>warehouse-down<span class="w">  </span><span class="c1"># Stop warehouse services</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-51-1"><a href="#__codelineno-51-1" id="__codelineno-51-1" name="__codelineno-51-1"></a>make<span class="w"> </span>vulcan-down<span class="w">     </span><span class="c1"># Stop only Vulcan API services</span>
+</span><span id="__span-51-2"><a href="#__codelineno-51-2" id="__codelineno-51-2" name="__codelineno-51-2"></a>make<span class="w"> </span>infra-down<span class="w">      </span><span class="c1"># Stop infrastructure services (statestore, minio)</span>
+</span><span id="__span-51-3"><a href="#__codelineno-51-3" id="__codelineno-51-3" name="__codelineno-51-3"></a>make<span class="w"> </span>warehouse-down<span class="w">  </span><span class="c1"># Stop warehouse services</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
 <p><strong>Stop All Services</strong></p>
 <p>To stop all running services:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-38-1"><a href="#__codelineno-38-1" id="__codelineno-38-1" name="__codelineno-38-1"></a>stop-all.bat           # Stop all services
+<div class="language-text highlight"><pre><span></span><code><span id="__span-52-1"><a href="#__codelineno-52-1" id="__codelineno-52-1" name="__codelineno-52-1"></a>stop-all.bat           # Stop all services
 </span></code></pre></div>
 <p><strong>Stop and Clean Up (Warning: This deletes all data)</strong></p>
 <p>To stop all services and remove volumes (this will delete all data):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a href="#__codelineno-39-1" id="__codelineno-39-1" name="__codelineno-39-1"></a>clean.bat              # Stop and remove volumes (this will delete all data)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-53-1"><a href="#__codelineno-53-1" id="__codelineno-53-1" name="__codelineno-53-1"></a>clean.bat              # Stop and remove volumes (this will delete all data)
 </span></code></pre></div>
 <p><strong>Stop Individual Services</strong></p>
 <p>To stop only the Vulcan API services:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-40-1"><a href="#__codelineno-40-1" id="__codelineno-40-1" name="__codelineno-40-1"></a>vulcan-down.bat        # Stop only Vulcan API services
+<div class="language-text highlight"><pre><span></span><code><span id="__span-54-1"><a href="#__codelineno-54-1" id="__codelineno-54-1" name="__codelineno-54-1"></a>vulcan-down.bat        # Stop only Vulcan API services
 </span></code></pre></div>
 </div>
 </div>
@@ -1699,12 +1837,12 @@
 </ul>
 <p><strong>Invalid Connection Config Error</strong></p>
 <p>If you see an error like:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a href="#__codelineno-41-1" id="__codelineno-41-1" name="__codelineno-41-1"></a>Error: Invalid 'postgres' connection config:
-</span><span id="__span-41-2"><a href="#__codelineno-41-2" id="__codelineno-41-2" name="__codelineno-41-2"></a>  Field 'host': Input should be a valid string
-</span><span id="__span-41-3"><a href="#__codelineno-41-3" id="__codelineno-41-3" name="__codelineno-41-3"></a>  Field 'user': Input should be a valid string
-</span><span id="__span-41-4"><a href="#__codelineno-41-4" id="__codelineno-41-4" name="__codelineno-41-4"></a>  Field 'password': Input should be a valid string
-</span><span id="__span-41-5"><a href="#__codelineno-41-5" id="__codelineno-41-5" name="__codelineno-41-5"></a>  Field 'port': Input should be a valid integer
-</span><span id="__span-41-6"><a href="#__codelineno-41-6" id="__codelineno-41-6" name="__codelineno-41-6"></a>  Field 'database': Input should be a valid string
+<div class="language-text highlight"><pre><span></span><code><span id="__span-55-1"><a href="#__codelineno-55-1" id="__codelineno-55-1" name="__codelineno-55-1"></a>Error: Invalid 'postgres' connection config:
+</span><span id="__span-55-2"><a href="#__codelineno-55-2" id="__codelineno-55-2" name="__codelineno-55-2"></a>  Field 'host': Input should be a valid string
+</span><span id="__span-55-3"><a href="#__codelineno-55-3" id="__codelineno-55-3" name="__codelineno-55-3"></a>  Field 'user': Input should be a valid string
+</span><span id="__span-55-4"><a href="#__codelineno-55-4" id="__codelineno-55-4" name="__codelineno-55-4"></a>  Field 'password': Input should be a valid string
+</span><span id="__span-55-5"><a href="#__codelineno-55-5" id="__codelineno-55-5" name="__codelineno-55-5"></a>  Field 'port': Input should be a valid integer
+</span><span id="__span-55-6"><a href="#__codelineno-55-6" id="__codelineno-55-6" name="__codelineno-55-6"></a>  Field 'database': Input should be a valid string
 </span></code></pre></div>
 <p>This means your <code>config.yaml</code> file is missing or incomplete. You need to create or update your <code>config.yaml</code> file with proper gateway configuration before running <code>vulcan info</code> or other Vulcan commands.</p>
 <p><strong>Solution:</strong></p>
@@ -1716,27 +1854,27 @@
 <p><strong>If you already have a project</strong>, ensure your <code>config.yaml</code> file includes a <code>gateways</code> section with all required connection fields. Here's a minimal example for Postgres:</p>
 </li>
 </ol>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a><span class="nt">gateways</span><span class="p">:</span>
-</span><span id="__span-42-2"><a href="#__codelineno-42-2" id="__codelineno-42-2" name="__codelineno-42-2"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
-</span><span id="__span-42-3"><a href="#__codelineno-42-3" id="__codelineno-42-3" name="__codelineno-42-3"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
-</span><span id="__span-42-4"><a href="#__codelineno-42-4" id="__codelineno-42-4" name="__codelineno-42-4"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-</span><span id="__span-42-5"><a href="#__codelineno-42-5" id="__codelineno-42-5" name="__codelineno-42-5"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
-</span><span id="__span-42-6"><a href="#__codelineno-42-6" id="__codelineno-42-6" name="__codelineno-42-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
-</span><span id="__span-42-7"><a href="#__codelineno-42-7" id="__codelineno-42-7" name="__codelineno-42-7"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
-</span><span id="__span-42-8"><a href="#__codelineno-42-8" id="__codelineno-42-8" name="__codelineno-42-8"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
-</span><span id="__span-42-9"><a href="#__codelineno-42-9" id="__codelineno-42-9" name="__codelineno-42-9"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
-</span><span id="__span-42-10"><a href="#__codelineno-42-10" id="__codelineno-42-10" name="__codelineno-42-10"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
-</span><span id="__span-42-11"><a href="#__codelineno-42-11" id="__codelineno-42-11" name="__codelineno-42-11"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-</span><span id="__span-42-12"><a href="#__codelineno-42-12" id="__codelineno-42-12" name="__codelineno-42-12"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
-</span><span id="__span-42-13"><a href="#__codelineno-42-13" id="__codelineno-42-13" name="__codelineno-42-13"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
-</span><span id="__span-42-14"><a href="#__codelineno-42-14" id="__codelineno-42-14" name="__codelineno-42-14"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
-</span><span id="__span-42-15"><a href="#__codelineno-42-15" id="__codelineno-42-15" name="__codelineno-42-15"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
-</span><span id="__span-42-16"><a href="#__codelineno-42-16" id="__codelineno-42-16" name="__codelineno-42-16"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
-</span><span id="__span-42-17"><a href="#__codelineno-42-17" id="__codelineno-42-17" name="__codelineno-42-17"></a>
-</span><span id="__span-42-18"><a href="#__codelineno-42-18" id="__codelineno-42-18" name="__codelineno-42-18"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-</span><span id="__span-42-19"><a href="#__codelineno-42-19" id="__codelineno-42-19" name="__codelineno-42-19"></a>
-</span><span id="__span-42-20"><a href="#__codelineno-42-20" id="__codelineno-42-20" name="__codelineno-42-20"></a><span class="nt">model_defaults</span><span class="p">:</span>
-</span><span id="__span-42-21"><a href="#__codelineno-42-21" id="__codelineno-42-21" name="__codelineno-42-21"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-56-1"><a href="#__codelineno-56-1" id="__codelineno-56-1" name="__codelineno-56-1"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-56-2"><a href="#__codelineno-56-2" id="__codelineno-56-2" name="__codelineno-56-2"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-56-3"><a href="#__codelineno-56-3" id="__codelineno-56-3" name="__codelineno-56-3"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
+</span><span id="__span-56-4"><a href="#__codelineno-56-4" id="__codelineno-56-4" name="__codelineno-56-4"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-56-5"><a href="#__codelineno-56-5" id="__codelineno-56-5" name="__codelineno-56-5"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-56-6"><a href="#__codelineno-56-6" id="__codelineno-56-6" name="__codelineno-56-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-56-7"><a href="#__codelineno-56-7" id="__codelineno-56-7" name="__codelineno-56-7"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-56-8"><a href="#__codelineno-56-8" id="__codelineno-56-8" name="__codelineno-56-8"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-56-9"><a href="#__codelineno-56-9" id="__codelineno-56-9" name="__codelineno-56-9"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-56-10"><a href="#__codelineno-56-10" id="__codelineno-56-10" name="__codelineno-56-10"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
+</span><span id="__span-56-11"><a href="#__codelineno-56-11" id="__codelineno-56-11" name="__codelineno-56-11"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-56-12"><a href="#__codelineno-56-12" id="__codelineno-56-12" name="__codelineno-56-12"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-56-13"><a href="#__codelineno-56-13" id="__codelineno-56-13" name="__codelineno-56-13"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-56-14"><a href="#__codelineno-56-14" id="__codelineno-56-14" name="__codelineno-56-14"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-56-15"><a href="#__codelineno-56-15" id="__codelineno-56-15" name="__codelineno-56-15"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-56-16"><a href="#__codelineno-56-16" id="__codelineno-56-16" name="__codelineno-56-16"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-56-17"><a href="#__codelineno-56-17" id="__codelineno-56-17" name="__codelineno-56-17"></a>
+</span><span id="__span-56-18"><a href="#__codelineno-56-18" id="__codelineno-56-18" name="__codelineno-56-18"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-56-19"><a href="#__codelineno-56-19" id="__codelineno-56-19" name="__codelineno-56-19"></a>
+</span><span id="__span-56-20"><a href="#__codelineno-56-20" id="__codelineno-56-20" name="__codelineno-56-20"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-56-21"><a href="#__codelineno-56-21" id="__codelineno-56-21" name="__codelineno-56-21"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
 </span></code></pre></div>
 <div class="admonition important">
 <p class="admonition-title">Connection Values</p>
@@ -1745,22 +1883,22 @@
 <p>See the <a href="../../../configurations/overview/">Configuration Overview</a> for detailed information about gateway configuration.</p>
 <p><strong>Network Errors</strong></p>
 <p>If you encounter network-related errors, ensure the <code>vulcan</code> Docker network exists:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">Mac/Linux</label><label for="__tabbed_6_2">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">Mac/Linux</label><label for="__tabbed_7_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Check if the network exists:
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a href="#__codelineno-43-1" id="__codelineno-43-1" name="__codelineno-43-1"></a>docker<span class="w"> </span>network<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan
+</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-57-1"><a href="#__codelineno-57-1" id="__codelineno-57-1" name="__codelineno-57-1"></a>docker<span class="w"> </span>network<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan
 </span></code></pre></div>
 If it doesn't exist, create it:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-44-1"><a href="#__codelineno-44-1" id="__codelineno-44-1" name="__codelineno-44-1"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-58-1"><a href="#__codelineno-58-1" id="__codelineno-58-1" name="__codelineno-58-1"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>vulcan
 </span></code></pre></div><p></p>
 </div>
 <div class="tabbed-block">
 <p>Check if the network exists:
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a href="#__codelineno-45-1" id="__codelineno-45-1" name="__codelineno-45-1"></a>docker network ls | grep vulcan
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-59-1"><a href="#__codelineno-59-1" id="__codelineno-59-1" name="__codelineno-59-1"></a>docker network ls | grep vulcan
 </span></code></pre></div>
 If it doesn't exist, create it:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a href="#__codelineno-46-1" id="__codelineno-46-1" name="__codelineno-46-1"></a>docker network create vulcan
+<div class="language-text highlight"><pre><span></span><code><span id="__span-60-1"><a href="#__codelineno-60-1" id="__codelineno-60-1" name="__codelineno-60-1"></a>docker network create vulcan
 </span></code></pre></div><p></p>
 </div>
 </div>
@@ -1773,11 +1911,11 @@ If it doesn't exist, create it:
 </ol>
 <p><strong>Can't Connect to Services</strong></p>
 <p>If you're unable to connect to Vulcan services, verify that all required services are running:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-47-1"><a href="#__codelineno-47-1" id="__codelineno-47-1" name="__codelineno-47-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>ps
-</span><span id="__span-47-2"><a href="#__codelineno-47-2" id="__codelineno-47-2" name="__codelineno-47-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>ps
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-61-1"><a href="#__codelineno-61-1" id="__codelineno-61-1" name="__codelineno-61-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>ps
+</span><span id="__span-61-2"><a href="#__codelineno-61-2" id="__codelineno-61-2" name="__codelineno-61-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.warehouse.yml<span class="w"> </span>ps
 </span></code></pre></div>
 <p>All services should show as "Up" or "running". If any service shows as "Exited" or "Stopped", check the logs:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-48-1"><a href="#__codelineno-48-1" id="__codelineno-48-1" name="__codelineno-48-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>logs
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-62-1"><a href="#__codelineno-62-1" id="__codelineno-62-1" name="__codelineno-62-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.infra.yml<span class="w"> </span>logs
 </span></code></pre></div>
 <p><strong>Access MinIO Console</strong></p>
 <p>You can access the MinIO console to manage your object storage:</p>
@@ -1795,7 +1933,7 @@ If it doesn't exist, create it:
 <p>The MinIO console allows you to browse buckets, upload files, and manage storage policies.</p>
 <p><strong>Permission denied</strong></p>
 <p>Create a .logs folder manually and change the permission 
-</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-49-1"><a href="#__codelineno-49-1" id="__codelineno-49-1" name="__codelineno-49-1"></a>chmod<span class="w"> </span>-R<span class="w"> </span>a+w<span class="w"> </span>.
+</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-63-1"><a href="#__codelineno-63-1" id="__codelineno-63-1" name="__codelineno-63-1"></a>chmod<span class="w"> </span>-R<span class="w"> </span>a+w<span class="w"> </span>.
 </span></code></pre></div><p></p>
 </details>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
@@ -1871,8 +2009,8 @@ If it doesn't exist, create it:
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
 <script src="../../../assets/javascripts/mermaid-zoom.js"></script>
 <script src="../../../assets/javascripts/favicon-switcher.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
