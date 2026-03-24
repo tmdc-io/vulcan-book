@@ -1,10 +1,26 @@
+# Vulcan API + GraphQL + MySQL wire (Snowflake image). Prereq: vulcan network, statestore, minio, transpiler.
+# From project root of this bundle: cp env.example .env && make up
+#
+# Snowflake creds + MinIO/statestore on Docker network (transpiler/graphql URLs come from config.yaml, same as b2b_saas).
+x-vulcan-env: &vulcan_env
+  PROJECT_PATH: ${PROJECT_PATH:-/workspace}
+  MINIO_ENDPOINT: http://minio:9000
+  STATESTORE_HOST: statestore
+  STATESTORE_PORT: "5432"
+  SNOWFLAKE_ACCOUNT: ${SNOWFLAKE_ACCOUNT}
+  SNOWFLAKE_USER: ${SNOWFLAKE_USER}
+  SNOWFLAKE_PASSWORD: ${SNOWFLAKE_PASSWORD}
+  SNOWFLAKE_WAREHOUSE: ${SNOWFLAKE_WAREHOUSE}
+  SNOWFLAKE_DATABASE: ${SNOWFLAKE_DATABASE}
+  SNOWFLAKE_ROLE: ${SNOWFLAKE_ROLE:-}
+  SNOWFLAKE_AUTHENTICATOR: ${SNOWFLAKE_AUTHENTICATOR:-snowflake}
+  STATE_SCHEMA: ${STATE_SCHEMA:-vulcan_try}
+
+# Images: Snowflake CLI/API image vs GraphQL (separate tags — match b2b_saas/docker/docker-compose.vulcan.yml).
+# Override: VERSION=… for vulcan-snowflake, GRAPHQL_VERSION=… for vulcan-graphql (default 0.228.1.11).
 x-images:
-  # Unified Vulcan image (Python API + Go MySQL server)
-  # Version format: MAJOR.MINOR.PATCH.REVISION (e.g., 0.228.1.1)
-  vulcan: &vulcan_image "tmdcio/vulcan-postgres:${VERSION:-0.228.1.11}"
-  vulcan-graphql: &vulcan_graphql_image "tmdcio/vulcan-graphql:${VERSION:-0.228.1.11}"
-  # Lightweight MySQL image (Go binary only, no Python). Same binary supports server and proxy modes.
-  # Build: make -C docker mysql-wire
+  vulcan: &vulcan_image "tmdcio/vulcan-snowflake:${VERSION:-0.228.1.12-rc2}"
+  vulcan-graphql: &vulcan_graphql_image "tmdcio/vulcan-graphql:${GRAPHQL_VERSION:-0.228.1.11}"
   vulcan-mysql: &vulcan_mysql_image "tmdcio/vulcan-mysql:${MYSQL_VERSION:-0.0.0-exp.04}"
 
 networks:
@@ -12,14 +28,12 @@ networks:
     external: true
 
 services:
-  # Vulcan API for this example project
   vulcan-api:
     image: *vulcan_image
     working_dir: /workspace
-    command: ["vulcan", "--log-to-stdout","api", "--host", "0.0.0.0", "--port", "8000"]
+    command: ["vulcan", "--log-to-stdout", "api", "--host", "0.0.0.0", "--port", "8000"]
     environment:
-      PROJECT_PATH: ${PROJECT_PATH:-/workspace}
-      VULCAN__TRANSPILER__BASE_URL: http://host.docker.internal:8100
+      <<: *vulcan_env
     ports:
       - "8000:8000"
     volumes:
@@ -27,16 +41,13 @@ services:
     restart: unless-stopped
     networks:
       - vulcan
-    # Note: depends_on with external services (statestore, minio) won't work across compose files
-    # Ensure infra services are running before starting this service
 
-  # Vulcan GraphQL service
   vulcan-graphql:
     image: *vulcan_graphql_image
     environment:
       VULCAN_API_URL: http://vulcan-api:8000
-      VULCAN_TENANT_ID: ${VULCAN_TENANT_ID:-marketing}
-      VULCAN_DB_TYPE: ${VULCAN_DB_TYPE:-postgres}
+      VULCAN_TENANT_ID: ${VULCAN_TENANT_ID:-default}
+      VULCAN_DB_TYPE: snowflake
     depends_on:
       - vulcan-api
     restart: unless-stopped
@@ -45,107 +56,37 @@ services:
     networks:
       - vulcan
 
-  # Vulcan MySQL service - provides MySQL wire protocol access to Vulcan
-  # Uses lightweight image (Go binary only) - same binary as proxy, runs in MODE=server
-  # SSL/TLS is MANDATORY - certificates must be mounted
-  # Connect using: mysql -h 127.0.0.1 -P 3307 -u <username> -p'<api-key>' --ssl-mode=REQUIRED --enable-cleartext-plugin
-  # Or via proxy: mysql -h 127.0.0.1 -P 3306 -u <username> -p'<api-key>' --enable-cleartext-plugin vulcan
   vulcan-mysql:
     image: *vulcan_mysql_image
     ports:
-      - "3307:3306"       # MySQL wire protocol - 3307 on host when using proxy (proxy uses 3306)
-      - "8081:8080"       # HTTP monitoring endpoints (/health, /livez, /metrics) - mapped to 8081 to avoid conflict with API on 8000
+      - "3307:3306"
+      - "8081:8080"
     environment:
       LOG_LEVEL: ${MYSQL_LOG_LEVEL:-debug}
-      
-      # -------------------------------------------------------------------------
-      # Mode Configuration
-      # -------------------------------------------------------------------------
-      # server: MySQL server with Vulcan API backend (semantic layer queries)
-      # proxy: MySQL proxy forwarding to upstream MySQL servers
-      # -------------------------------------------------------------------------
       MODE: "server"
-      
-      # -------------------------------------------------------------------------
-      # MySQL Server Configuration
-      # -------------------------------------------------------------------------
-      MYSQL_HOST: "0.0.0.0"           # Bind to all interfaces
-      MYSQL_PORT: "3306"              # Standard MySQL port
-      MYSQL_DB_NAME: "vulcan"         # Default database name for semantic layer tables
-      MYSQL_MAX_CONNECTIONS: "1000"   # Maximum concurrent connections
-      
-      # -------------------------------------------------------------------------
-      # MySQL Connection Timeouts
-      # -------------------------------------------------------------------------
-      # These control how long connections can remain idle/active
-      # Increase for long-running BI tool sessions
-      # -------------------------------------------------------------------------
-      MYSQL_HANDSHAKE_TIMEOUT: "10"   # Timeout for initial MySQL handshake (seconds)
-      MYSQL_CONN_READ_TIMEOUT: "3600" # Timeout for reading from client - 1 hour for idle BI tools
-      MYSQL_CONN_WRITE_TIMEOUT: "300" # Timeout for writing to client - 5 minutes
-      SLOW_QUERY_THRESHOLD: "10"      # Log queries taking longer than this (seconds)
-      
-      # -------------------------------------------------------------------------
-      # SSL/TLS Configuration (MANDATORY)
-      # -------------------------------------------------------------------------
-      # SSL is required for all connections. Generate certificates before starting:
-      #   openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-      #     -keyout ssl/server.key -out ssl/server.crt \
-      #     -subj "/CN=vulcan-mysql"
-      # -------------------------------------------------------------------------
+      MYSQL_HOST: "0.0.0.0"
+      MYSQL_PORT: "3306"
+      MYSQL_DB_NAME: "vulcan"
+      MYSQL_MAX_CONNECTIONS: "1000"
+      MYSQL_HANDSHAKE_TIMEOUT: "10"
+      MYSQL_CONN_READ_TIMEOUT: "3600"
+      MYSQL_CONN_WRITE_TIMEOUT: "300"
+      SLOW_QUERY_THRESHOLD: "10"
       MYSQL_SSL_CERT_FILE: "/ssl/server.crt"
       MYSQL_SSL_KEY_FILE: "/ssl/server.key"
-      # MYSQL_SSL_CA_FILE: "/ssl/ca.crt"  # Optional: for client cert verification
-      
-      # -------------------------------------------------------------------------
-      # Heimdall Authentication Service (REQUIRED in server mode)
-      # -------------------------------------------------------------------------
-      # Heimdall validates user credentials (username/apikey) before allowing
-      # MySQL connections. Set HEIMDALL_URL to your DataOS Heimdall endpoint.
-      # -------------------------------------------------------------------------
-      HEIMDALL_URL: ${HEIMDALL_URL:-https://<your-dataos-context>/heimdall}
+      HEIMDALL_URL: ${HEIMDALL_URL:-https://neptune-021726.dataos.cloud/heimdall}
       HEIMDALL_AUTH_PATH: /api/v1/authorize
       HEIMDALL_TIMEOUT: "10"
-      
-      # -------------------------------------------------------------------------
-      # DataOS User Identity (REQUIRED in server mode)
-      # -------------------------------------------------------------------------
-      # The user-id of the person who deployed/runs Vulcan.
-      # Used for internal service-to-service calls (Transpiler X-User header).
-      # Service will FAIL TO START if not set.
-      # -------------------------------------------------------------------------
-      DATAOS_RUN_AS_USER: ${DATAOS_RUN_AS_USER:-<your-dataos-username>}
-      # Bearer token for server-to-server Vulcan API calls (metadata, query execution).
-      # Required when Vulcan API has Heimdall auth enabled.
-      DATAOS_RUN_AS_APIKEY: ${DATAOS_RUN_AS_APIKEY:-<your-dataos-api-key>}
-      
-      # -------------------------------------------------------------------------
-      # HTTP Server Configuration (Monitoring Only)
-      # -------------------------------------------------------------------------
+      DATAOS_RUN_AS_USER: ${DATAOS_RUN_AS_USER:-localdev}
+      DATAOS_RUN_AS_APIKEY: ${DATAOS_RUN_AS_APIKEY:-}
       HTTP_HOST: "0.0.0.0"
       HTTP_PORT: "8080"
-      
-      # -------------------------------------------------------------------------
-      # Vulcan API Service Configuration (Query Execution)
-      # -------------------------------------------------------------------------
-      # MySQL server forwards SQL queries to Vulcan API for execution.
-      # Note: Endpoint paths are hardcoded in the service, only URL is configurable.
-      # -------------------------------------------------------------------------
       VULCAN_API_URL: http://vulcan-api:8000
-      
-      # Environment (default: prod) and query cache TTL (default: 60 min)
       VULCAN_ENVIRONMENT: ${VULCAN_ENVIRONMENT:-prod}
       VULCAN_QUERY_TTL_MINUTES: ${VULCAN_QUERY_TTL_MINUTES:-60}
-      
-      # -------------------------------------------------------------------------
-      # Vulcan API Query Execution Polling Configuration
-      # -------------------------------------------------------------------------
-      # Controls how MySQL server polls API for query results.
-      # Uses exponential backoff from initial to max delay.
-      # -------------------------------------------------------------------------
-      VULCAN_API_POLL_INITIAL_MS: "1000"  # Start polling at 1 second
-      VULCAN_API_POLL_MAX_MS: "5000"      # Max delay between polls: 5 seconds
-      VULCAN_API_QUERY_TIMEOUT: "300"     # Total query timeout: 5 minutes
+      VULCAN_API_POLL_INITIAL_MS: "1000"
+      VULCAN_API_POLL_MAX_MS: "5000"
+      VULCAN_API_QUERY_TIMEOUT: "300"
     volumes:
       - ./ssl:/ssl:ro
     depends_on:
@@ -159,4 +100,3 @@ services:
     restart: unless-stopped
     networks:
       - vulcan
- 
