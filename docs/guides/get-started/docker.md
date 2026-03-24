@@ -79,33 +79,33 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     Execute the setup command:
     
     ```bash
-    make setup
+    make up
     ```
     
-    Or, if you prefer running Docker Compose directly:
-    
-    ```bash
-    docker network create vulcan
-    docker compose -f docker/docker-compose.infra.yml up -d
-    docker compose -f docker/docker-compose.warehouse.yml up -d
-    ```
-    
-    This command creates and starts three essential services:
+    This command starts the full Vulcan stack in one step:
     
     - **statestore** (PostgreSQL): Stores Vulcan's internal state, including model definitions, plan information, and execution history. This database persists your semantic model, plans, and tracks materialization state.
     
     - **minio** (Object Storage): Stores query results, artifacts, and other data objects that Vulcan generates. This service provides data retrieval and caching for your workflows.
     
-    - **minio-init**: Initializes MinIO buckets and policies with the correct configuration. This service runs once to set up the storage infrastructure.
+    - **vulcan-transpiler**: Transpiler API for converting semantic queries to SQL (available at `http://localhost:8100`)
     
-    **Note**: These services are essential for Vulcan's operation and must be running before you can use Vulcan. The setup process typically takes 1-2 minutes to complete.
+    - **vulcan-api**: REST API server for querying your semantic model (available at `http://localhost:8000`)
+    
+    - **vulcan-graphql**: GraphQL interface for querying your semantic layer (available at `http://localhost:3000`)
+    
+    - **vulcan-mysql** *(optional)*: MySQL wire protocol access for BI tool connectivity (available at `localhost:3307`)
+    
+    - **MySQL proxy**: Proxy for BI tools to connect via MySQL protocol (available at `localhost:3306`)
+    
+    **Note**: The setup process typically takes 1-2 minutes to complete. All services are essential for Vulcan's operation.
 
     !!! note "State Connection Default"
         By default, you should use Postgres for your state connection. When configuring your `config.yaml`, set `state_connection` to use Postgres. This ensures reliable state management and is the recommended approach for most projects.
     
     **Verify Services Are Running**
     
-    Before proceeding, verify that all required infrastructure services (engine and storage) are up and running.
+    Before proceeding, verify that all services are up and running.
     
     **Check running containers**
     
@@ -119,7 +119,9 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     - **statestore** (PostgreSQL) – State storage service
     - **minio** – Object storage service
-    - **warehouse** (PostgreSQL) – Data warehouse engine
+    - **vulcan-api** – REST API service
+    - **vulcan-graphql** – GraphQL service
+    - **vulcan-transpiler** – Transpiler service
     
     If a container is missing from the list or not in an `Up` state, it may have stopped or failed to start.
     
@@ -136,7 +138,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     ```bash
     docker logs statestore
     docker logs minio
-    docker logs warehouse
+    docker logs vulcan-api
     ```
     
     Review the logs for errors, crash messages, or failed startup checks.
@@ -214,50 +216,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
 
     
-    **Step 4: Start API Services**
-
-    **Configure Environment Variables**
-    
-    Before starting the services, open `docker/docker-compose.vulcan.yml` and replace the following placeholders with your actual values:
-    
-    | Variable | Placeholder | Description |
-    |---|---|---|
-    | `DATAOS_RUN_AS_USER` | `<your-dataos-username>` | Your DataOS user ID |
-    | `DATAOS_RUN_AS_APIKEY` | `<your-dataos-api-key>` | Your DataOS API key |
-    | `HEIMDALL_URL` | `<your-dataos-context>` | Your DataOS context URL (e.g., `https://my-context.dataos.app/heimdall`) |
-
-    **Generate SSL Certificates for MySQL Wire Protocol (Optional)**
-    
-    If you plan to use the Vulcan MySQL wire protocol service (`vulcan-mysql`), SSL/TLS certificates are required. Generate them before starting the service:
-    
-    ```bash
-    mkdir -p docker/ssl
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-      -keyout docker/ssl/server.key -out docker/ssl/server.crt \
-      -subj "/CN=vulcan-mysql"
-    ```
-
-    **Start the services:**
-    
-    ```bash
-    make vulcan-up
-    ```
-    
-    Or, if you prefer running Docker Compose directly:
-    
-    ```bash
-    docker compose -f docker/docker-compose.vulcan.yml up -d
-    ```
-    
-    This command starts the following services:
-    
-    - **vulcan-api**: A REST API server for querying your semantic model (available at `http://localhost:8000`)
-
-    - **vulcan-graphql**: A GraphQL interface for querying your semantic layer (available at `http://localhost:3000`)
-
-    - **vulcan-mysql** *(optional)*: MySQL wire protocol access to Vulcan for BI tool connectivity (available at `localhost:3307`)
-    
-    Once these services are running, you're ready to create your first project!
+    Once all services are running, you're ready to create your first project!
 
 === "Windows"
         
@@ -658,14 +617,7 @@ When you're done working with Vulcan, you can stop the services to free up syste
     To stop all running services:
     
     ```bash
-    make all-down
-    ```
-    
-    Or, if you prefer running Docker Compose directly:
-    
-    ```bash
-    docker compose -f docker/docker-compose.infra.yml down -v
-    docker compose -f docker/docker-compose.warehouse.yml down -v
+    make down
     ```
     
     **Stop and Clean Up (Warning: This deletes all data)**
@@ -681,9 +633,10 @@ When you're done working with Vulcan, you can stop the services to free up syste
     You can also stop specific service groups:
     
     ```bash
-    make vulcan-down     # Stop only Vulcan API services
-    make infra-down      # Stop infrastructure services (statestore, minio)
-    make warehouse-down  # Stop warehouse services
+    make vulcan-down      # Stop only Vulcan API services
+    make infra-down       # Stop infrastructure services (statestore, minio)
+    make transpiler-down  # Stop transpiler services
+    make proxy-down       # Stop MySQL proxy
     ```
 
 === "Windows"

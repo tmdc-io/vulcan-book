@@ -21,10 +21,9 @@ They're the foundation of your semantic layer, everything else (business metrics
 A semantic model maps a physical Vulcan model to a semantic representation. Here's the basic structure:
 
 ```yaml
-models:
+semantic_models:
   analytics.customers:  # Physical model name (dictionary key)
     alias: customers     # Business-friendly semantic alias
-    description: "Customer master data"
     dimensions: {...}    # Optional: control which columns are exposed
     measures: {...}      # Optional: aggregated calculations
     segments: {...}      # Optional: reusable filter conditions
@@ -61,10 +60,8 @@ dimensions:
       granularities:
         - name: monthly
           interval: "1 month"
-          description: "Monthly subscription cohorts"
         - name: quarterly
           interval: "3 months"
-          description: "Quarterly cohorts"
 ```
 
 Use `excludes` to hide sensitive or internal columns. Use `enhancements` to add time granularities for cohort analysis, useful for subscription or signup dates.
@@ -80,21 +77,18 @@ measures:
   total_revenue:
     type: sum
     expression: "{customers.amount}"
-    description: "Total revenue from all orders"
     format: currency
   
   avg_order_value:
     type: number
     expression: "SUM({customers.total_revenue}) / NULLIF(COUNT(*), 0)"
     format: currency
-    description: "Average order value"
   
   active_customers:
     type: count_distinct
     expression: "{customers.customer_id}"
     filters:
       - "{customers.status} = 'active'"
-    description: "Number of active customers"
 ```
 
 Notice the curly braces around column references like `{customers.amount}`? That's the semantic reference syntax. We'll talk more about that in the best practices section.
@@ -111,15 +105,12 @@ Segments are saved filters. Instead of writing `WHERE status = 'active'` every t
 segments:
   active_customers:
     expression: "{customers.status} = 'active'"
-    description: "Customers with active subscriptions"
   
   high_value:
     expression: "{customers.total_spent} > 10000"
-    description: "Customers who spent over $10K"
   
   recent_signups:
     expression: "{customers.signup_date} >= CURRENT_DATE - INTERVAL '30 days'"
-    description: "Customers who signed up in last 30 days"
 ```
 
 Segments make your semantic layer more consistent, everyone uses the same definition of "active customers" or "high value," so there's no confusion about what those terms mean.
@@ -135,12 +126,10 @@ joins:
   customers:
     type: many_to_one
     expression: "{orders.customer_id} = {customers.customer_id}"
-    description: "Order's customer"
   
   products:
     type: many_to_one
     expression: "{orders.product_id} = {products.product_id}"
-    description: "Ordered product"
 ```
 
 The relationship type helps Vulcan understand the cardinality, which is important for aggregations and preventing double-counting. The expression is the actual SQL join condition, using semantic references with curly braces.
@@ -154,13 +143,12 @@ Once you've defined joins, you can reference columns and measures from other mod
 You can use columns from joined models in measure expressions and filters:
 
 ```yaml
-measures:
-  enterprise_revenue:
-    type: sum
-    expression: "{orders.amount}"
-    filters:
-      - "{customers.customer_tier} = 'Enterprise'"
-    description: "Revenue from Enterprise customers"
+    measures:
+      enterprise_revenue:
+        type: sum
+        expression: "{orders.amount}"
+        filters:
+          - "{customers.customer_tier} = 'Enterprise'"
 ```
 
 Even though `enterprise_revenue` is defined on the `orders` model, it filters by `customers.customer_tier` from the joined `customers` model. Vulcan handles the join logic automatically.
@@ -194,7 +182,7 @@ Proxy dimensions are powerful, they let you analyze one model using aggregated v
 Here's a complete semantic model definition that brings it all together:
 
 ```yaml
-models:
+semantic_models:
   analytics.customers:
     alias: customers
     
@@ -208,38 +196,31 @@ models:
           granularities:
             - name: monthly
               interval: "1 month"
-              description: "Monthly signup cohorts"
             - name: quarterly
               interval: "3 months"
-              description: "Quarterly signup cohorts"
     
     measures:
       total_customers:
         type: count
         expression: "{customers.customer_id}"
-        description: "Total number of customers"
       
       active_customers:
         type: count_distinct
         expression: "{customers.customer_id}"
         filters:
           - "{customers.status} = 'active'"
-        description: "Number of active customers"
     
     segments:
       active:
         expression: "{customers.status} = 'active'"
-        description: "Active customers"
       
       high_value:
         expression: "{customers.total_spent} > 10000"
-        description: "High-value customers"
     
     joins:
       orders:
         type: one_to_many
         expression: "{customers.customer_id} = {orders.customer_id}"
-        description: "Customer's orders"
 ```
 
 This semantic model:
@@ -296,7 +277,6 @@ measures:
   total_revenue:
     type: sum
     expression: "{orders.amount}"
-    description: "Total revenue from all completed orders"
     meta:
       business_owner: "Finance Team"
       calculation_method: "Sum of order amounts excluding refunds"

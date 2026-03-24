@@ -65,7 +65,7 @@ Here's what semantic models do:
 Here's a simple example:
 
 ```yaml
-models:
+semantic_models:
   analytics.customers:
     alias: customers
     measures:

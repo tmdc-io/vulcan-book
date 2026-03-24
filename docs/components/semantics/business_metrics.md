@@ -35,7 +35,6 @@ metrics:
   monthly_revenue:
     measure: orders.total_sales        # Which measure to calculate
     time: orders.ORDERDATE             # Time dimension for analysis
-    description: "Monthly revenue trends"
 ```
 
 That's it! This metric is now ready to be queried at any time granularity you want.
@@ -51,7 +50,6 @@ metrics:
     time: lineitems.SHIPDATE
     slices:
       line_status: lineitems.LINESTATUS
-    description: "Gross revenue over time by line status"
     tags:
       - tpch
       - lineitem
@@ -72,7 +70,6 @@ metrics:
     slices:
       order_status: orders.ORDERSTATUS
       market_segment: customers.MKTSEGMENT
-    description: "Monthly total sales by order status and market segment"
     tags:
       - tpch
       - sales
@@ -105,7 +102,6 @@ metrics:
     slices:
       market_segment: customers.MKTSEGMENT
       nation: nations.NAME
-    description: "Average customer account balance by market segment and nation"
     tags:
       - tpch
       - customer
@@ -146,7 +142,6 @@ metrics:
   revenue_trends:
     measure: orders.total_sales
     time: orders.ORDERDATE
-    description: "Revenue at any time granularity"
 ```
 
 The same metric can be queried with different granularities:
@@ -178,7 +173,6 @@ metrics:
     slices:
       order_status: orders.ORDERSTATUS
       market_segment: customers.MKTSEGMENT
-    description: "Monthly total sales by order status and market segment"
     tags:
       - tpch
       - sales
@@ -194,7 +188,6 @@ metrics:
     slices:
       market_segment: customers.MKTSEGMENT
       order_priority: orders.ORDERPRIORITY
-    description: "Average order value trend by market segment and priority"
     tags:
       - tpch
       - orders
@@ -208,7 +201,6 @@ metrics:
     slices:
       order_priority: orders.ORDERPRIORITY
       order_status: orders.ORDERSTATUS
-    description: "Order volume over time by priority and status"
     tags:
       - tpch
       - orders
@@ -223,7 +215,6 @@ metrics:
     slices:
       ship_mode: lineitems.SHIPMODE
       return_flag: lineitems.RETURNFLAG
-    description: "Net revenue trends by shipping mode and return flag"
     tags:
       - tpch
       - lineitem
@@ -238,7 +229,6 @@ metrics:
     time: lineitems.SHIPDATE
     slices:
       line_status: lineitems.LINESTATUS
-    description: "Gross revenue over time by line status"
     tags:
       - tpch
       - lineitem
@@ -249,7 +239,6 @@ metrics:
     time: lineitems.SHIPDATE
     slices:
       ship_mode: lineitems.SHIPMODE
-    description: "Average discount trend by shipping mode"
     tags:
       - tpch
       - lineitem
@@ -264,7 +253,6 @@ metrics:
     slices:
       market_segment: customers.MKTSEGMENT
       nation: nations.NAME
-    description: "Average customer account balance by market segment and nation"
     tags:
       - tpch
       - customer
@@ -278,7 +266,6 @@ Notice how each metric has:
 - A clear, descriptive name
 - A measure and time reference
 - Named slices for grouping dimensions
-- A description explaining what it measures
 - Tags for organization and discovery
 - Terms linking to business glossary definitions (optional)
 
@@ -349,7 +336,6 @@ metrics:
       order_status: orders.ORDERSTATUS
       market_segment: customers.MKTSEGMENT
       order_priority: orders.ORDERPRIORITY
-    description: "Revenue analysis by status, segment, and priority"
     tags:
       - revenue
       - analysis
@@ -366,7 +352,7 @@ Slices are what make metrics useful. Without them, you can only see the overall 
 
 ### Document business context
 
-Add descriptions, tags, and terms to help people understand what the metric means:
+Add tags and terms to help people understand what the metric means:
 
 ```yaml
 metrics:
@@ -376,7 +362,6 @@ metrics:
     slices:
       ship_mode: lineitems.SHIPMODE
       return_flag: lineitems.RETURNFLAG
-    description: "Net revenue trends by shipping mode and return flag"
     tags:
       - tpch
       - lineitem

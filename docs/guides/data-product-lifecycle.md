@@ -8,17 +8,20 @@ Follow this path from setup to production. Each step builds on the previous one.
 
 Get your environment ready.
 
-### Step 1: Start Infrastructure Services
+### Step 1: Start the Full Stack
 
 ```bash
-make setup
+make up
 ```
 
-This creates:
+This starts the complete Vulcan stack:
 - Docker network `vulcan`
 - Statestore (PostgreSQL) on port 5431 - stores Vulcan's internal state
 - MinIO on ports 9000/9001 - stores query results and artifacts
-- Warehouse database on port 5433 - your data warehouse
+- Transpiler API on port 8100 - converts semantic queries to SQL
+- Vulcan API on port 8000 - REST API for querying
+- GraphQL on port 3000 - GraphQL interface
+- MySQL proxy on port 3306 - for BI tool connectivity
 
 ### Step 2: Configure CLI Access
 
@@ -338,15 +341,9 @@ Bad data is caught and blocked.
 
 Expose your data via APIs.
 
-### Step 18: Start API Services
+### Step 18: Query via REST API
 
-```bash
-make vulcan-up
-```
-
-Starts vulcan-api (port 8000) and vulcan-transpiler.
-
-### Step 19: Query via REST API
+If you ran `make up` in Step 1, all API services are already running. You can query your data immediately.
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/query \
@@ -359,7 +356,7 @@ curl -X POST http://localhost:8000/api/v1/query \
   }'
 ```
 
-### Step 20: Query via Semantic Layer
+### Step 19: Query via Semantic Layer
 
 ```bash
 vulcan transpile --format sql "SELECT MEASURE(total_users) FROM users"
@@ -373,7 +370,7 @@ Data is accessible via REST, GraphQL, Python APIs, and semantic queries.
 
 Monitor, debug, and improve.
 
-### Step 21: Monitor Execution
+### Step 20: Monitor Execution
 
 ```bash
 # Check project status
@@ -389,7 +386,7 @@ vulcan render model_name
 vulcan fetchdf "SELECT * FROM schema.model_name LIMIT 10"
 ```
 
-### Step 22: Iterate
+### Step 21: Iterate
 
 **When you need to change models:**
 1. Edit model files
@@ -434,8 +431,9 @@ graph LR
 
 | Phase | Command | Purpose |
 |-------|---------|---------|
-| **Setup** | `make setup` | Start infrastructure |
+| **Setup** | `make up` | Start full stack (infra + APIs) |
 | **Setup** | `alias vulcan=...` | Configure CLI |
+| **Shutdown** | `make down` | Stop all services |
 | **Init** | `vulcan init` | Create project |
 | **Init** | `vulcan info` | Verify setup |
 | **Develop** | `vulcan lint` | Check code quality |
@@ -444,7 +442,6 @@ graph LR
 | **Run** | `vulcan run` | Process new data |
 | **Query** | `vulcan fetchdf` | Execute SQL queries |
 | **Semantic** | `vulcan transpile` | Convert semantic to SQL |
-| **API** | `make vulcan-up` | Start API services |
 | **Debug** | `vulcan render` | See generated SQL |
 
 ---
