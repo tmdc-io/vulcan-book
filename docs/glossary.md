@@ -51,7 +51,6 @@ These transform your technical tables into something business users can query wi
 | **Segments** | Reusable filter conditions. Define subsets like "active customers" or "high-value orders" that you can reuse across queries. | [Semantic Models](components/semantics/models.md#segments) |
 | **Joins** | Relationships between semantic models. Enable cross-model analysis, like combining order data with customer data automatically. | [Semantic Models](components/semantics/models.md#joins) |
 | **Business Metrics** | Complete analytical definitions that combine measures with dimensions and time. Ready for time-series analysis and automatic API generation. | [Business Metrics](components/semantics/business_metrics.md) |
-| **Proxy Dimensions** | Expose measures from joined models as dimensions. Lets you filter or group by aggregated values from other models. | [Semantic Models](components/semantics/models.md#cross-model-analysis) |
 | **Transpilation** | Convert semantic queries to executable SQL. Validate and debug business-friendly queries before they hit your database. | [Transpiling Semantics](guides/transpiling_semantics.md) |
 
 ---

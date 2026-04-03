@@ -1,4 +1,4 @@
-# DataOS 2.0 Env Deployment
+# Deploment Steps
 
 This guide provides step-by-step instructions for deploying Vulcan data products in a DataOS environment.
 
@@ -82,19 +82,20 @@ ds resource apply -f git-sync-secret.yaml
 
 **Example secret configuration:**
 ```yaml
-version: v1
-type: secret
 name: git-sync
-workspace: <workspace-name>
-spec:
-  type: key-value-properties
-  acl: r
+version: v2alpha
+type: secret
+workspace: system
+layer: user
+description: "Secret for git-sync authentication (Bitbucket)"
+secret:
+  type: key-value
   data:
-    username: <your-git-username>
-    password: <your-git-token-or-password>
+    GITSYNC_USERNAME: "<your-git-username>"
+    GITSYNC_PASSWORD: "<your-git-token-or-password>"
 ```
 
-> **Important:** Replace credentials with your actual Git repository access tokens.
+> **Important:** Replace `GITSYNC_USERNAME` and `GITSYNC_PASSWORD` with your actual Git repository credentials or access tokens.
 
 ---
 
@@ -213,11 +214,11 @@ notification_targets:
       - check_failure
 
 users:
-  - username: shreya
-    email: shreya.sikarwar@tmdc.io
+  - username: <owner-username>
+    email: <owner-email@example.com>
     type: OWNER
-  - username: rohit
-    email: rohit.raj@tmdc.io
+  - username: <contributor-username>
+    email: <contributor-email@example.com>
     type: CONTRIBUTOR
 ```
 </details>
@@ -337,7 +338,7 @@ tags:
   - user_engagement
   - device_analytics
 spec:
-  runAsUser: "shreyasikarwartmdcio"
+  runAsUser: "<dataos-username>"
   compute: cyclone-compute
   engine: snowflake
   repo:

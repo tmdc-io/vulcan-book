@@ -39,7 +39,7 @@ When a SQL engine receives a query like `SELECT id FROM "some_table"`, it needs 
 
 Different SQL dialects resolve identifiers differently. Some identifiers are case-sensitive if quoted. Case-insensitive identifiers are usually lowercased or uppercased before the engine looks up the object.
 
-Vulcan analyzes model queries to extract information like column-level lineage. To do this, it normalizes and quotes all identifiers in queries, [respecting each dialect's resolution rules](https://sqlglot.com/sqlglot/dialects/dialect.html#Dialect.normalize_identifier).
+Vulcan analyzes model queries to extract information like column-level lineage. To do this, it normalizes and quotes all identifiers in queries, respecting each dialect's resolution rules.
 
 The normalization strategy determines whether case-insensitive identifiers are lowercased or uppercased. You can configure this per dialect. To treat all identifiers as case-sensitive in a BigQuery project:
 

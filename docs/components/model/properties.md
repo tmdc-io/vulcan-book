@@ -10,7 +10,7 @@ This page is a complete reference for all available properties. It covers what e
 
 | Property | Description | Type | Required |
 |----------|-------------|:----:|:--------:|
-| `name` | Fully qualified model name (`schema.model` or `catalog.schema.model`) | `str` | N* |
+| `name` | Fully qualified model name (`schema.model` or `catalog.schema.model`) | `str` | Y |
 | `project` | Project name for multi-repo deployments | `str` | N |
 | `kind` | Model kind (VIEW, FULL, INCREMENTAL, etc.) | `str` \| `dict` | N |
 | `cron` | Schedule expression for model refresh | `str` | N |

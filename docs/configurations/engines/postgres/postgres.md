@@ -38,20 +38,25 @@ Here are all the connection parameters you can use when setting up a PostgreSQL 
 | `sslmode`          | The security of the connection to the Postgres server                           | string | N        |
 | `application_name` | The name of the application to use for the connection                           | string | N        |
 
+### Authentication Methods
+
+- Username/password authentication (required)
+- SSL mode configuration (optional): Use `sslmode: require` for secure connections in production environments
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with PostgreSQL:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-postgres:0.228.1.8` | Main Vulcan API service for PostgreSQL |
-| `tmdcio/vulcan-transpiler:0.228.1.8` | SQL transpiler service |
+| `tmdcio/vulcan-postgres:0.228.1.10` | Main Vulcan API service for PostgreSQL |
+| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-postgres:0.228.1.8
-docker pull tmdcio/vulcan-transpiler:0.228.1.8
+docker pull tmdcio/vulcan-postgres:0.228.1.10
+docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
 
 ### Materialization Strategy

@@ -66,6 +66,11 @@ Here are all the connection parameters you can use when setting up a Fabric gate
 3. Find the **SQL connection string** or **SQL endpoint**
 4. Copy the hostname (e.g., `your-workspace.datawarehouse.fabric.microsoft.com`)
 
+### Authentication Methods
+
+- Service principal authentication (required): Use `user` (client ID) and `password` (client secret)
+- User credentials authentication (required): Use `user` (username) and `password` (password)
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with Microsoft Fabric:
@@ -73,13 +78,13 @@ The following Docker images are available for running Vulcan with Microsoft Fabr
 | Image | Description |
 |-------|-------------|
 | `tmdcio/vulcan-fabric:0.228.1.6` | Main Vulcan API service for Fabric |
-| `tmdcio/vulcan-transpiler:0.228.1.8` | SQL transpiler service |
+| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
 docker pull tmdcio/vulcan-fabric:0.228.1.6
-docker pull tmdcio/vulcan-transpiler:0.228.1.8
+docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
 
 ### Materialization Strategy

@@ -30,6 +30,11 @@ Here are all the connection parameters you can use when setting up a Spark gatew
 | `catalog`    | The catalog to use when issuing commands                                 | string | N        |
 | `config`     | Key/value pairs to set for the Spark Configuration                       | dict   | N        |
 
+### Authentication Methods
+
+- Configuration-based authentication: Authentication credentials are typically configured through Spark configuration (`config` parameter) or `SPARK_CONFIG_DIR` environment variable
+- Catalog-based authentication: Depends on the underlying catalog (S3, HDFS, etc.) configured in Spark
+
 ### Catalog Support
 
 Vulcan's Spark integration is designed for single catalog usage. All models must be defined with a single catalog.
@@ -48,13 +53,13 @@ The following Docker images are available for running Vulcan with Spark:
 | Image | Description |
 |-------|-------------|
 | `tmdcio/vulcan-spark:0.228.1.6` | Main Vulcan API service for Spark |
-| `tmdcio/vulcan-transpiler:0.228.1.8` | SQL transpiler service |
+| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
 docker pull tmdcio/vulcan-spark:0.228.1.6
-docker pull tmdcio/vulcan-transpiler:0.228.1.8
+docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
 
 ### Materialization Strategy

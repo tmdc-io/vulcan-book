@@ -1,4 +1,4 @@
-# Vulcan Errors Reference Guide
+# Troubleshooting Guide
 
 This is a comprehensive reference guide for all error messages you may encounter when using Vulcan. **Copy and paste any error message into your browser's search (Ctrl+F / Cmd+F) to quickly find the cause and resolution.**
 

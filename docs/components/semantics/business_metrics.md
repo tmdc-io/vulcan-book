@@ -1,6 +1,6 @@
 # Business Metrics
 
-Business metrics are where your semantic layer really shines. They combine measures (the calculations) with dimensions (the attributes) and time (the when) to create complete analytical definitions that are ready for time-series analysis.
+Business metrics are where your semantic layer really shines. They combine measures (the calculations) with slices (the attributes for grouping) and time (the when) to create complete analytical definitions that are ready for time-series analysis.
 
 Semantic models provide the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can analyze over time. They're pre-configured for dashboards, reports, and APIs, no SQL required.
 
@@ -10,11 +10,11 @@ Business metrics are complete analytical definitions that:
 
 - **Combine measures with time**: Let you analyze trends at different time granularities (daily, weekly, monthly, etc.)
 
-- **Include dimensions**: Enable slicing and dicing by business attributes (customer tier, region, product category, etc.)
+- **Include slices**: Enable slicing and dicing by business attributes (customer segment, region, product category, etc.)
 
 - **Ready for analysis**: Pre-configured so they can power dashboards, reports, and APIs directly
 
-- **Examples**: `monthly_revenue_by_tier`, `daily_active_users`, `customer_acquisition_trend`
+- **Examples**: `monthly_sales_performance`, `avg_order_value_trend`, `customer_balance_by_segment`
 
 They're the bridge between your technical data models and the business questions people actually want to answer.
 
@@ -22,20 +22,19 @@ They're the bridge between your technical data models and the business questions
 
 A business metric brings together three things:
 
-- **Measure**: The calculation you want to perform (like `orders.total_revenue`)
+- **Measure**: The calculation you want to perform (like `orders.total_sales`)
 
-- **Time**: The time dimension for your analysis (like `orders.order_date`)
+- **Time**: The time dimension for your analysis (like `orders.ORDERDATE`)
 
-- **Dimensions**: Optional attributes for grouping and filtering (like `customers.customer_tier`)
+- **Slices**: Named attributes for grouping and filtering (like `market_segment: customers.MKTSEGMENT`)
 
 Here's the simplest possible metric:
 
 ```yaml
 metrics:
   monthly_revenue:
-    measure: orders.total_revenue      # Which measure to calculate
-    time: orders.order_date            # Time dimension for analysis
-    description: "Monthly revenue trends"
+    measure: orders.total_sales        # Which measure to calculate
+    time: orders.ORDERDATE             # Time dimension for analysis
 ```
 
 That's it! This metric is now ready to be queried at any time granularity you want.
@@ -46,81 +45,93 @@ Let's start with the basics, a metric that just has a measure and time:
 
 ```yaml
 metrics:
-  daily_revenue:
-    measure: orders.total_revenue
-    time: orders.order_date
-    description: "Daily revenue trends"
+  gross_revenue_trend:
+    measure: lineitems.gross_revenue
+    time: lineitems.SHIPDATE
+    slices:
+      line_status: lineitems.LINESTATUS
+    tags:
+      - tpch
+      - lineitem
+      - revenue
 ```
 
-Even though it's called `daily_revenue`, you're not locked into daily granularity. You can query this same metric at different time intervals (day, week, month, quarter, year) without redefining it. The metric definition stays the same; you just change the granularity when you query it.
+Even though you define time with a specific column, you're not locked into one granularity. You can query this same metric at different time intervals (day, week, month, quarter, year) without redefining it. The metric definition stays the same; you just change the granularity when you query it.
 
-## Metric with dimensions
+## Metric with slices
 
-Add dimensions to enable slicing and grouping:
+Add slices to enable grouping and filtering. Slices are named key-value pairs that map a friendly name to a dimension:
 
 ```yaml
 metrics:
-  revenue_by_tier:
-    measure: orders.total_revenue
-    time: orders.order_date
-    dimensions:
-      - customers.customer_tier      # Group by tier
-
-      - customers.country            # And country
-    description: "Revenue trends by customer tier and country"
+  monthly_sales_performance:
+    measure: orders.total_sales
+    time: orders.ORDERDATE
+    slices:
+      order_status: orders.ORDERSTATUS
+      market_segment: customers.MKTSEGMENT
+    tags:
+      - tpch
+      - sales
+      - revenue
+      - monthly
+    terms:
+      - glossary.total_sales
+      - glossary.revenue_metric
 ```
 
 Now you can answer questions like:
 
-- What's our revenue by tier over time?
+- What's our sales by order status over time?
 
-- How does revenue vary by country?
+- How does revenue vary by market segment?
 
-- What's the revenue breakdown by tier and country together?
+- What's the sales breakdown by status and segment together?
 
-The dimensions give you flexibility to analyze the metric from different angles.
+The slices give you flexibility to analyze the metric from different angles. The named keys (`order_status`, `market_segment`) make queries more readable than anonymous dimension lists.
 
 ## Cross-model metrics
 
-You're not limited to one model. Combine measures and dimensions from multiple models:
+You're not limited to one model. Combine measures and slices from multiple models:
 
 ```yaml
 metrics:
-  product_revenue_by_customer_segment:
-    measure: orders.total_revenue      # From orders
-    time: orders.order_date            # From orders
-    dimensions:
-      - products.category              # From products
-
-      - products.brand
-
-      - customers.customer_tier        # From customers
-
-      - customers.region
-    description: "Product revenue segmented by customer demographics"
+  customer_balance_by_segment:
+    measure: customers.avg_acctbal
+    time: orders.ORDERDATE
+    slices:
+      market_segment: customers.MKTSEGMENT
+      nation: nations.NAME
+    tags:
+      - tpch
+      - customer
+      - balance
+    terms:
+      - glossary.customer_balance
+      - glossary.account_metric
 ```
 
-This metric pulls the measure from `orders`, time from `orders`, product dimensions from `products`, and customer dimensions from `customers`. As long as you've defined the proper joins between these semantic models, Vulcan will handle the cross-model logic for you.
+This metric pulls the measure from `customers`, time from `orders`, and slices from both `customers` and `nations`. As long as you've defined the proper joins between these semantic models, Vulcan will handle the cross-model logic for you.
 
 **Important:** Make sure your semantic models have the right joins defined, or cross-model metrics won't work.
 
 ## Reference format
 
-Always use **dot notation** with semantic model aliases when referencing measures, dimensions, and time:
+Always use **dot notation** with semantic model aliases when referencing measures, slices, and time:
 
 ```yaml
 # Good: Use aliases
-measure: orders.total_revenue     # alias.measure_name
-time: orders.order_date           # alias.column_name
-dimensions:
-  - customers.customer_tier       # alias.column_name
+measure: orders.total_sales       # alias.measure_name
+time: orders.ORDERDATE            # alias.column_name
+slices:
+  market_segment: customers.MKTSEGMENT   # key: alias.column_name
 
 # Bad: Don't use physical names
 measure: analytics.fact_orders.revenue
 time: order_date  # Missing alias
 ```
 
-The dot notation (`orders.total_revenue`) tells Vulcan which semantic model to look in and what to reference. Physical table names won't work here, you need the semantic aliases.
+The dot notation (`orders.total_sales`) tells Vulcan which semantic model to look in and what to reference. Physical table names won't work here, you need the semantic aliases.
 
 ## Time granularity
 
@@ -129,9 +140,8 @@ Define metrics once, then query them at any time granularity:
 ```yaml
 metrics:
   revenue_trends:
-    measure: orders.total_revenue
-    time: orders.order_date
-    description: "Revenue at any time granularity"
+    measure: orders.total_sales
+    time: orders.ORDERDATE
 ```
 
 The same metric can be queried with different granularities:
@@ -150,45 +160,114 @@ You don't need separate metric definitions for each granularity, just change the
 
 ## Complete example
 
-Here's a more complete example showing different types of metrics:
+Here's a comprehensive example showing different types of metrics with the full syntax:
 
 ```yaml
 metrics:
-  # Simple revenue metric
-  daily_revenue:
-    measure: orders.total_revenue
-    time: orders.order_date
-    description: "Daily revenue trends"
-    tags: [revenue, financial, kpi]
-  
-  # Customer acquisition
-  customer_acquisition_trend:
-    measure: customers.new_signups
-    time: customers.signup_date
-    dimensions:
-      - customers.signup_channel
+  # ============================================================================
+  # ORDER REVENUE METRICS
+  # ============================================================================
+  monthly_sales_performance:
+    measure: orders.total_sales
+    time: orders.ORDERDATE
+    slices:
+      order_status: orders.ORDERSTATUS
+      market_segment: customers.MKTSEGMENT
+    tags:
+      - tpch
+      - sales
+      - revenue
+      - monthly
+    terms:
+      - glossary.total_sales
+      - glossary.revenue_metric
 
-      - customers.customer_tier
+  avg_order_value_trend:
+    measure: orders.avg_order_value
+    time: orders.ORDERDATE
+    slices:
+      market_segment: customers.MKTSEGMENT
+      order_priority: orders.ORDERPRIORITY
+    tags:
+      - tpch
+      - orders
+      - aov
+    terms:
+      - glossary.average_order_value
 
-      - customers.country
-    description: "Customer acquisition by channel, tier, and geography"
-    tags: [acquisition, growth, customer]
-  
-  # Cross-model metric
-  product_performance:
-    measure: orders.total_revenue
-    time: orders.order_date
-    dimensions:
-      - products.category
+  order_volume_by_priority:
+    measure: orders.total_orders
+    time: orders.ORDERDATE
+    slices:
+      order_priority: orders.ORDERPRIORITY
+      order_status: orders.ORDERSTATUS
+    tags:
+      - tpch
+      - orders
+      - volume
 
-      - products.brand
+  # ============================================================================
+  # LINE ITEM REVENUE METRICS
+  # ============================================================================
+  net_revenue_by_ship_mode:
+    measure: lineitems.net_revenue
+    time: lineitems.SHIPDATE
+    slices:
+      ship_mode: lineitems.SHIPMODE
+      return_flag: lineitems.RETURNFLAG
+    tags:
+      - tpch
+      - lineitem
+      - revenue
+      - shipping
+    terms:
+      - glossary.net_revenue
+      - glossary.shipping_metric
 
-      - customers.customer_tier
-    description: "Product revenue by category, brand, and customer segment"
-    tags: [revenue, products, segmentation]
+  gross_revenue_trend:
+    measure: lineitems.gross_revenue
+    time: lineitems.SHIPDATE
+    slices:
+      line_status: lineitems.LINESTATUS
+    tags:
+      - tpch
+      - lineitem
+      - revenue
+
+  avg_discount_trend:
+    measure: lineitems.avg_discount
+    time: lineitems.SHIPDATE
+    slices:
+      ship_mode: lineitems.SHIPMODE
+    tags:
+      - tpch
+      - lineitem
+      - discount
+
+  # ============================================================================
+  # CUSTOMER METRICS
+  # ============================================================================
+  customer_balance_by_segment:
+    measure: customers.avg_acctbal
+    time: orders.ORDERDATE
+    slices:
+      market_segment: customers.MKTSEGMENT
+      nation: nations.NAME
+    tags:
+      - tpch
+      - customer
+      - balance
+    terms:
+      - glossary.customer_balance
+      - glossary.account_metric
 ```
 
-Notice how each metric has a clear purpose, good description, and relevant tags. The tags help organize and discover metrics later.
+Notice how each metric has:
+- A clear, descriptive name
+- A measure and time reference
+- Named slices for grouping dimensions
+- Tags for organization and discovery
+- Terms linking to business glossary definitions (optional)
 
 ## Benefits
 
@@ -206,7 +285,7 @@ Metrics are built for analyzing trends over time:
 
 Business users can query metrics without writing SQL:
 
-- **Simple API**: Query metrics by name with a time range and dimensions
+- **Simple API**: Query metrics by name with a time range and slices
 
 - **Consistent results**: Same metric definition is used everywhere, so everyone gets the same answer
 
@@ -231,8 +310,9 @@ Make your metric names self-explanatory:
 ```yaml
 # Good: Self-explanatory
 metrics:
-  monthly_revenue_by_tier: ...
-  daily_active_users: ...
+  monthly_sales_performance: ...
+  avg_order_value_trend: ...
+  customer_balance_by_segment: ...
 
 # Bad: Vague
 metrics:
@@ -242,50 +322,57 @@ metrics:
 
 Good names make it obvious what the metric measures and how it's broken down.
 
-### Include essential dimensions
+### Include essential slices
 
-Think about what business questions people will want to answer, and include those dimensions:
+Think about what business questions people will want to answer, and include those slices:
 
 ```yaml
-# Good: Key business dimensions
+# Good: Key business slices with named keys
 metrics:
   revenue_analysis:
-    measure: orders.total_revenue
-    time: orders.order_date
-    dimensions:
-      - customers.customer_tier
-
-      - customers.region
-
-      - products.category
+    measure: orders.total_sales
+    time: orders.ORDERDATE
+    slices:
+      order_status: orders.ORDERSTATUS
+      market_segment: customers.MKTSEGMENT
+      order_priority: orders.ORDERPRIORITY
+    tags:
+      - revenue
+      - analysis
 
 # Too few: Limited analysis
 metrics:
   revenue:
-    measure: orders.total_revenue
-    time: orders.order_date
-    # Missing dimensions - can't slice and dice!
+    measure: orders.total_sales
+    time: orders.ORDERDATE
+    # Missing slices - can't group or filter!
 ```
 
-Dimensions are what make metrics useful. Without them, you can only see the overall trend, not the breakdowns that drive business decisions.
+Slices are what make metrics useful. Without them, you can only see the overall trend, not the breakdowns that drive business decisions. Named slice keys also make queries more readable.
 
 ### Document business context
 
-Add descriptions and metadata to help people understand what the metric means:
+Add tags and terms to help people understand what the metric means:
 
 ```yaml
 metrics:
-  net_revenue_retention:
-    measure: subscriptions.nrr
-    time: subscriptions.cohort_month
-    description: "Net Revenue Retention: expansion minus churn"
-    meta:
-      business_owner: "Finance Team"
-      calculation: "(Starting MRR + Expansion - Churn) / Starting MRR"
-      benchmark: ">110% is good for SaaS"
+  net_revenue_by_ship_mode:
+    measure: lineitems.net_revenue
+    time: lineitems.SHIPDATE
+    slices:
+      ship_mode: lineitems.SHIPMODE
+      return_flag: lineitems.RETURNFLAG
+    tags:
+      - tpch
+      - lineitem
+      - revenue
+      - shipping
+    terms:
+      - glossary.net_revenue
+      - glossary.shipping_metric
 ```
 
-The `meta` section is perfect for business context, calculation details, benchmarks, and ownership information. This helps people understand not just what the metric is, but what it means and how to interpret it.
+Tags help organize and discover metrics, while terms link to your business glossary for consistent definitions. This helps people understand not just what the metric is, but what it means and how to interpret it.
 
 ## Integration with semantic models
 

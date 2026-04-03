@@ -32,20 +32,25 @@ Here are all the connection parameters you can use when setting up a Databricks 
 | `access_token`    | Personal access token or service principal token for authentication             | string | Y        |
 | `catalog`         | The Unity Catalog name to use as the default catalog                            | string | Y        |
 
+### Authentication Methods
+
+- Personal access token authentication (required): Use `access_token` parameter
+- Service principal token authentication (required): Use `access_token` parameter with service principal token
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with Databricks:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-databricks:0.228.1.6` | Main Vulcan API service for Databricks |
-| `tmdcio/vulcan-transpiler:0.228.1.8` | SQL transpiler service |
+| `tmdcio/vulcan-databricks:0.228.1.10` | Main Vulcan API service for Databricks |
+| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-databricks:0.228.1.6
-docker pull tmdcio/vulcan-transpiler:0.228.1.8
+docker pull tmdcio/vulcan-databricks:0.228.1.10
+docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
 
 ### Materialization Strategy

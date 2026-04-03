@@ -217,8 +217,6 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 ✔ All model batches executed successfully
 ```
 
-*[Screenshot: First run output showing new interval processing]*
-
 **What Happened?**
 - `sales.daily_sales` has `cron: '@daily'`, so it runs daily - Vulcan checks if enough time has passed
 
@@ -248,8 +246,6 @@ Models to execute:
 └── sales.daily_sales: 2025-01-17 (1 interval)
 ```
 
-*[Screenshot: Daily run showing only daily model executed]*
-
 ### Weekly Model Execution
 
 After 7 days, both daily and weekly models run:
@@ -271,8 +267,6 @@ Executing model batches ━━━━━━━━━━━━━━━━━━�
 
 ✔ All model batches executed successfully
 ```
-
-*[Screenshot: Weekly run showing both daily and weekly models]*
 
 **Understanding Cron Schedules:**
 
@@ -305,8 +299,6 @@ No models to execute. All intervals are up to date.
 ✔ Run completed successfully
 ```
 
-*[Screenshot: Run output showing no models to execute]*
-
 This is normal when running frequently. Nothing to process means everything is up to date. Your automation is working and keeping things current.
 
 ---
@@ -329,8 +321,6 @@ Changed models:
 
 Please run 'vulcan plan' to apply these changes before using 'vulcan run'.
 ```
-
-*[Screenshot: Error message when trying to run with model changes]*
 
 **Workflow**: Always `plan` first to apply changes, then `run` for scheduled execution. 
 

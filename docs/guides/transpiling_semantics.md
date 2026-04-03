@@ -339,6 +339,217 @@ ORDER BY sum("subscriptions".arr) DESC
 LIMIT 100
 ```
 
+## Transpiling MySQL Payloads
+
+The Vulcan MySQL wire protocol service lets you query your semantic layer using any standard MySQL client or BI tool. Semantic queries are transpiled to native SQL on the server side — you write standard SQL against your semantic models, and Vulcan handles the translation.
+
+### Connecting to Vulcan MySQL
+
+Connect using any MySQL client:
+
+```bash
+mysql -h <host> -P <port> -u <username> -p'<api-key>' --enable-cleartext-plugin <tenant_name>.<data_product_name>
+```
+
+**Parameters:**
+
+| Parameter | Description | Example |
+|---|---|---|
+| `-h <host>` | Vulcan MySQL host | `127.0.0.1` (local) or `tcp.my-context.dataos.app` (remote) |
+| `-P <port>` | MySQL port | `3307` (local) or `3306` (remote) |
+| `-u <username>` | Your DataOS username | `johndoe` |
+| `-p'<api-key>'` | Your DataOS API key (no space after `-p`) | `-p'dG9rZW4xMjM0...'` |
+| `<tenant_name>.<data_product_name>` | Database to connect to | `marketing.sales_analytics` |
+
+**Example — Local connection:**
+
+```bash
+mysql -h 127.0.0.1 -P 3307 -u johndoe -p'dG9rZW4xMjM0NTY3ODk=' --ssl-mode=REQUIRED --enable-cleartext-plugin
+```
+
+**Example — Remote connection:**
+
+```bash
+mysql -h tcp.my-context.dataos.app -P 3306 -u johndoe -p'dG9rZW4xMjM0NTY3ODk=' --enable-cleartext-plugin marketing.sales_analytics
+```
+
+**On successful connection:**
+
+```
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 42
+Server version: 8.0.0 Vulcan MySQL Wire Protocol
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+```
+
+### Discovering Available Models
+
+List all available semantic models (tables):
+
+```sql
+mysql> SHOW TABLES;
++---------------------------+
+| Tables_in_sales_analytics |
++---------------------------+
+| users                     |
+| subscriptions             |
+| orders                    |
++---------------------------+
+3 rows in set (0.10 sec)
+```
+
+Inspect a model's columns (dimensions and measures):
+
+```sql
+mysql> DESCRIBE users;
++----------------+--------------+------+-----+
+| Field          | Type         | Null | Key |
++----------------+--------------+------+-----+
+| user_id        | varchar(255) | YES  |     |
+| plan_type      | varchar(255) | YES  |     |
+| industry       | varchar(255) | YES  |     |
+| total_users    | bigint       | YES  |     |
++----------------+--------------+------+-----+
+4 rows in set (0.08 sec)
+```
+
+### Basic Query
+
+Query a single measure:
+
+```sql
+mysql> SELECT MEASURE(total_users) FROM users;
++-------------+
+| total_users |
++-------------+
+|        4528 |
++-------------+
+1 row in set (0.45 sec)
+```
+
+### Query with Dimensions
+
+Query measures grouped by a dimension:
+
+```sql
+mysql> SELECT users.plan_type, MEASURE(total_users)
+    -> FROM users
+    -> GROUP BY users.plan_type;
++-----------+-------------+
+| plan_type | total_users |
++-----------+-------------+
+| free      |        2841 |
+| starter   |        1024 |
+| pro       |         512 |
+| enterprise|         151 |
++-----------+-------------+
+4 rows in set (0.62 sec)
+```
+
+### Query with Filters
+
+Filter results using WHERE conditions:
+
+```sql
+mysql> SELECT MEASURE(total_arr)
+    -> FROM subscriptions
+    -> WHERE subscriptions.status = 'active';
++-----------+
+| total_arr |
++-----------+
+| 2450000.0 |
++-----------+
+1 row in set (0.38 sec)
+```
+
+### Query with Time Grouping
+
+Group results by time intervals:
+
+```sql
+mysql> SELECT DATE_TRUNC('month', subscriptions.start_date) AS month,
+    ->        MEASURE(total_arr)
+    -> FROM subscriptions
+    -> GROUP BY month
+    -> ORDER BY month DESC
+    -> LIMIT 5;
++------------+-----------+
+| month      | total_arr |
++------------+-----------+
+| 2024-12-01 |  285000.0 |
+| 2024-11-01 |  272000.0 |
+| 2024-10-01 |  268500.0 |
+| 2024-09-01 |  254000.0 |
+| 2024-08-01 |  241000.0 |
++------------+-----------+
+5 rows in set (1.12 sec)
+```
+
+### Query with Joins
+
+Join multiple semantic models:
+
+```sql
+mysql> SELECT users.industry, MEASURE(total_arr)
+    -> FROM subscriptions
+    -> CROSS JOIN users
+    -> GROUP BY users.industry
+    -> ORDER BY MEASURE(total_arr) DESC;
++----------------+-----------+
+| industry       | total_arr |
++----------------+-----------+
+| Technology     |  820000.0 |
+| Finance        |  645000.0 |
+| Healthcare     |  480000.0 |
+| Retail         |  312000.0 |
+| Education      |  193000.0 |
++----------------+-----------+
+5 rows in set (1.34 sec)
+```
+
+### Complex Query
+
+Combine multiple dimensions, filters, time grouping, and joins:
+
+```sql
+mysql> SELECT DATE_TRUNC('month', subscriptions.start_date) AS month,
+    ->        subscriptions.plan_type,
+    ->        users.industry,
+    ->        MEASURE(total_arr),
+    ->        MEASURE(total_seats)
+    -> FROM subscriptions
+    -> CROSS JOIN users
+    -> WHERE subscriptions.status = 'active'
+    -> GROUP BY month, subscriptions.plan_type, users.industry
+    -> ORDER BY MEASURE(total_arr) DESC
+    -> LIMIT 10;
++------------+-----------+------------+-----------+-------------+
+| month      | plan_type | industry   | total_arr | total_seats |
++------------+-----------+------------+-----------+-------------+
+| 2024-12-01 | enterprise| Technology |  125000.0 |         480 |
+| 2024-12-01 | pro       | Finance    |   98000.0 |         320 |
+| 2024-11-01 | enterprise| Technology |  118000.0 |         460 |
+| 2024-11-01 | enterprise| Finance    |   95000.0 |         310 |
+| 2024-12-01 | pro       | Healthcare |   72000.0 |         240 |
+| 2024-10-01 | enterprise| Technology |  112000.0 |         440 |
+| 2024-11-01 | pro       | Finance    |   88000.0 |         290 |
+| 2024-12-01 | starter   | Technology |   54000.0 |         180 |
+| 2024-10-01 | enterprise| Finance    |   91000.0 |         300 |
+| 2024-11-01 | pro       | Healthcare |   68000.0 |         225 |
++------------+-----------+------------+-----------+-------------+
+10 rows in set (2.18 sec)
+```
+
+### Exit Session
+
+```sql
+mysql> EXIT;
+Bye
+```
+
 ## Use Cases
 
 ### Query Validation

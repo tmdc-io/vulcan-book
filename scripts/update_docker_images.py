@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to automatically update Docker image versions in docker.md
+Script to automatically update Docker image versions in docker.md and data-product-lifecycle.md
 by extracting versions from engine configuration files.
 """
 
@@ -52,61 +52,63 @@ def extract_image_version(engine_file: Path, engine_name: str) -> Optional[str]:
     return None
 
 
-def update_docker_md(docker_md_path: Path, versions: Dict[str, str]) -> bool:
+def update_md_file(md_path: Path, versions: Dict[str, str], file_name: str) -> bool:
     """
-    Update docker.md with the latest image versions.
+    Update a markdown file with the latest image versions.
     
     Args:
-        docker_md_path: Path to docker.md file
+        md_path: Path to the markdown file
         versions: Dictionary mapping engine names to versions
+        file_name: Name of the file (for logging purposes)
     
     Returns:
         True if file was updated, False otherwise
     """
-    if not docker_md_path.exists():
-        print(f"Error: docker.md not found at {docker_md_path}")
+    if not md_path.exists():
+        print(f"Error: {file_name} not found at {md_path}")
         return False
     
-    content = docker_md_path.read_text()
+    content = md_path.read_text()
     original_content = content
     
     # Update each engine's alias command
     for engine_name, engine_info in ENGINE_MAPPING.items():
-        display_name = engine_info["display"]
         version = versions.get(engine_name)
         
         if not version:
             print(f"Warning: No version found for {engine_name}, skipping update")
             continue
         
-        # Pattern to match the alias command for this engine
-        # Matches: alias vulcan="docker run ... tmdcio/vulcan-{engine}:{old_version} vulcan"
-        pattern = (
-            rf'(=== "{re.escape(display_name)}"\s+```bash\s+alias vulcan="docker run -it --network=vulcan --rm -v \.:/workspace tmdcio/vulcan-{re.escape(engine_name)}:)([\d.]+)( vulcan"\s+```)'
-        )
+        # Simple pattern to match the Docker image version in alias commands
+        # Matches: tmdcio/vulcan-{engine}:{old_version} vulcan"
+        pattern = rf'(tmdcio/vulcan-{re.escape(engine_name)}:)([\d.]+)( vulcan")'
         
         def replace_version(match):
+            old_version = match.group(2)
+            if old_version != version:
+                print(f"  Updating {engine_name} in {file_name}: {old_version} -> {version}")
             return f'{match.group(1)}{version}{match.group(3)}'
         
         content = re.sub(pattern, replace_version, content)
     
     if content != original_content:
-        docker_md_path.write_text(content)
-        print(f"Successfully updated {docker_md_path}")
+        md_path.write_text(content)
+        print(f"Successfully updated {md_path}")
         return True
     else:
-        print("No changes needed in docker.md")
+        print(f"No changes needed in {file_name}")
         return False
 
 
 def main():
-    """Main function to extract versions and update docker.md"""
+    """Main function to extract versions and update docker.md and data-product-lifecycle.md"""
     # Get the project root (assuming script is in scripts/ directory)
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
     
     engines_dir = project_root / "docs" / "configurations" / "engines"
     docker_md_path = project_root / "docs" / "guides" / "get-started" / "docker.md"
+    lifecycle_md_path = project_root / "docs" / "guides" / "data-product-lifecycle.md"
     
     if not engines_dir.exists():
         print(f"Error: Engines directory not found: {engines_dir}")
@@ -114,6 +116,10 @@ def main():
     
     if not docker_md_path.exists():
         print(f"Error: docker.md not found: {docker_md_path}")
+        return 1
+    
+    if not lifecycle_md_path.exists():
+        print(f"Error: data-product-lifecycle.md not found: {lifecycle_md_path}")
         return 1
     
     # Extract versions from all engine files
@@ -129,10 +135,11 @@ def main():
         print("Error: No versions found in any engine files")
         return 1
     
-    # Update docker.md
-    updated = update_docker_md(docker_md_path, versions)
+    # Update both files
+    updated_docker = update_md_file(docker_md_path, versions, "docker.md")
+    updated_lifecycle = update_md_file(lifecycle_md_path, versions, "data-product-lifecycle.md")
     
-    return 0 if updated or len(versions) > 0 else 1
+    return 0 if (updated_docker or updated_lifecycle or len(versions) > 0) else 1
 
 
 if __name__ == "__main__":

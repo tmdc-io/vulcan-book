@@ -35,6 +35,11 @@ Here are all the connection parameters you can use when setting up a MySQL gatew
 | `charset`  | The character set for the connection (default: `utf8mb4`)       | string | N        |
 | `ssl`      | SSL configuration options for secure connections                | dict   | N        |
 
+### Authentication Methods
+
+- Username/password authentication (required)
+- SSL configuration (optional): Use `ssl` option for secure connections in production environments
+
 ### Docker Images
 
 The following Docker images are available for running Vulcan with MySQL:
@@ -42,13 +47,13 @@ The following Docker images are available for running Vulcan with MySQL:
 | Image | Description |
 |-------|-------------|
 | `tmdcio/vulcan-mysql:0.228.1.6` | Main Vulcan API service for MySQL |
-| `tmdcio/vulcan-transpiler:0.228.1.8` | SQL transpiler service |
+| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
 
 Pull the images:
 
 ```bash
 docker pull tmdcio/vulcan-mysql:0.228.1.6
-docker pull tmdcio/vulcan-transpiler:0.228.1.8
+docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
 
 ### Materialization Strategy

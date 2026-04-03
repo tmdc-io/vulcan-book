@@ -36,7 +36,6 @@ Commands:
   evaluate                Evaluate a model and return a dataframe with a...
   fetchdf                 Run a SQL query and display the results.
   format                  Format all SQL models and audits.
-  graphql                 Manage the GraphQL service (subcommands: up,...
   info                    Print information about a Vulcan project.
   invalidate              Invalidate the target environment, forcing its...
   janitor                 Run the janitor process on-demand.
@@ -46,13 +45,10 @@ Commands:
   render                  Render a model's query, optionally expanding...
   rollback                Rollback Vulcan to the previous migration.
   run                     Evaluate missing intervals for the target...
-  semantic                Semantic layer operations.
   state                   Commands for interacting with state
   table_diff              Show the diff between two tables or a selection...
   table_name              Prints the name of the physical table for the...
   test                    Run model unit tests.
-  transpile               Transpile a semantic SQL or REST-style semantic...
-  transpiler              Manage the Transpiler service (subcommands: up,...
 ```
 
 ## audit
@@ -409,8 +405,6 @@ Usage: vulcan format [OPTIONS]
   Format all SQL models and audits.
 
 Options:
-  -t, --transpile TEXT        Transpile project models to the specified
-                              dialect.
   --append-newline            Include a newline at the end of each file.
   --no-rewrite-casts          Preserve the existing casts, without rewriting
                               them to use the :: syntax.
@@ -875,76 +869,6 @@ Options:
   --preserve-fixtures  Preserve the fixture tables in the testing database,
                        useful for debugging.
   --help               Show this message and exit.
-```
-
-## semantic
-
-Work with Vulcan's semantic layer. Currently, this includes exporting your semantic models and metrics to CubeJS-compatible YAML schemas, which lets you use your Vulcan semantic layer with other tools that support CubeJS.
-
-```
-Usage: vulcan semantic [OPTIONS] {export} [ENVIRONMENT]
-
-  Semantic layer operations.
-
-  This command provides semantic layer export functionality, allowing users to
-  convert semantic models and metrics into CubeJS-compatible YAML schemas.
-
-Options:
-  -o, --output PATH   Output file path for the CubeJS schema.  [required]
-  --strict            Strict mode: export only explicitly defined semantic
-                      models.
-  --no-auto-measures  Disable automatic generation of measures (e.g., _count)
-                      for models with grains.
-  --no-confirm        Do not prompt for confirmation before overwriting
-                      existing output file.
-  --help              Show this message and exit.
-```
-
-## transpile
-
-Convert semantic SQL queries or REST-style semantic query payloads into executable, database-specific SQL. This is useful for debugging semantic queries, validating them, or understanding how Vulcan translates business-friendly queries into actual SQL.
-
-```
-Usage: vulcan transpile [OPTIONS] [QUERY]
-
-  Transpile a semantic SQL or REST-style semantic query to executable SQL.
-
-Options:
-  --format [sql|rest]        Input type: semantic SQL ('sql') or REST-style
-                             semantic payload ('rest').  [required]
-  --file TEXT                Read query or REST payload from file. Use '-' to
-                             read from stdin.
-  --user TEXT                User id to propagate in the X-User header
-                             (defaults to 'cli').
-  --disable-post-processing  Disable post-processing in the Transpiler.
-  --style [pretty|compact]   SQL output style: 'pretty' (formatted with
-                             indentation), 'compact' (unformatted but
-                             processed),
-  --help                     Show this message and exit.
-```
-
-## transpiler
-
-```
-Usage: vulcan transpiler [OPTIONS] {up|down}
-
-  Manage the Transpiler service (subcommands: up, down).
-
-Options:
-  --no-detach  Run docker compose in the foreground (omit -d).
-  --help       Show this message and exit.
-```
-
-## graphql
-
-```
-Usage: vulcan graphql [OPTIONS] {up|down}
-
-  Manage the GraphQL service (subcommands: up, down).
-
-Options:
-  --no-detach  Run docker compose in the foreground (omit -d).
-  --help       Show this message and exit.
 ```
 
 ## lint
