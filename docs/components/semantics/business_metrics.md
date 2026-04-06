@@ -1,306 +1,245 @@
 # Business Metrics
 
-Business metrics are where your semantic layer really shines. They combine measures (the calculations) with dimensions (the attributes) and time (the when) to create complete analytical definitions that are ready for time-series analysis.
+Business metrics are time-series analytical definitions that combine a measure, a time dimension, and optional slices into a single queryable unit. They sit on top of [semantic models](models.md) and are the primary interface for dashboards, reports, and APIs.
 
-Semantic models provide the building blocks (measures, dimensions, joins), and business metrics combine those blocks into something you can analyze over time. They're pre-configured for dashboards, reports, and APIs, no SQL required.
+---
 
-## What are business metrics?
+## Structure
 
-Business metrics are complete analytical definitions that:
-
-- **Combine measures with time**: Let you analyze trends at different time granularities (daily, weekly, monthly, etc.)
-
-- **Include dimensions**: Enable slicing and dicing by business attributes (customer tier, region, product category, etc.)
-
-- **Ready for analysis**: Pre-configured so they can power dashboards, reports, and APIs directly
-
-- **Examples**: `monthly_revenue_by_tier`, `daily_active_users`, `customer_acquisition_trend`
-
-They're the bridge between your technical data models and the business questions people actually want to answer.
-
-## Basic structure
-
-A business metric brings together three things:
-
-- **Measure**: The calculation you want to perform (like `orders.total_revenue`)
-
-- **Time**: The time dimension for your analysis (like `orders.order_date`)
-
-- **Dimensions**: Optional attributes for grouping and filtering (like `customers.customer_tier`)
-
-Here's the simplest possible metric:
+Use either `metrics:` or `semantic_metrics:` as the top-level key — both are valid and produce the same result.
 
 ```yaml
 metrics:
-  monthly_revenue:
-    measure: orders.total_revenue      # Which measure to calculate
-    time: orders.order_date            # Time dimension for analysis
-    description: "Monthly revenue trends"
+  <metric_name>:                              # Metric name (must be unique)
+    measure: <alias>.<measure_name>           # Which measure to calculate
+    time: <alias>.<column_name>               # Time dimension for analysis
+    default_granularity: <granularity>        # Default time bucket
+    slices:                                   # Optional grouping dimensions
+      <slice_key>: <alias>.<column_name>
+    segments:                                 # Optional predefined filters
+      - <alias>.<segment_name>
+    description: "..."                        # Optional description
+    owner: "..."                              # Optional owner
+    tags: [...]                               # Optional tags
+    terms: [...]                              # Optional glossary references
 ```
 
-That's it! This metric is now ready to be queried at any time granularity you want.
+All references use **dot notation** with the semantic model alias: `alias.measure_name` for measures, `alias.column_name` for time and slices.
 
-## Simple metric
+---
 
-Let's start with the basics, a metric that just has a measure and time:
+## Required properties
+
+Every metric must define these three fields:
+
+### measure
+
+A reference to a measure defined in a semantic model, in the format `alias.measure_name`.
+
+```yaml
+measure: subscriptions.total_arr
+```
+
+### time
+
+A reference to a time/date column on a semantic model, in the format `alias.column_name`. This is the dimension used for time-series aggregation.
+
+```yaml
+time: subscriptions.start_date
+```
+
+!!! info "measure and time cannot be the same"
+    Vulcan rejects metrics where `measure` and `time` point to the same reference.
+
+### default_granularity
+
+The default time bucket for aggregation. Must be one of:
+
+| Value | Bucket |
+|-------|--------|
+| `second` | Per-second |
+| `minute` | Per-minute |
+| `hour` | Hourly |
+| `day` | Daily |
+| `week` | Weekly |
+| `month` | Monthly |
+| `quarter` | Quarterly |
+| `year` | Yearly |
+
+```yaml
+default_granularity: month
+```
+
+The default granularity is what's used when a consumer queries the metric without specifying one. Consumers can always override it at query time.
+
+---
+
+## Optional properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `slices` | Map of `name: alias.column` | Named dimensions for grouping and filtering |
+| `segments` | List of `alias.segment_name` | Predefined filters from semantic models |
+| `description` | String | Human-readable explanation of the metric |
+| `owner` | String | Team or person responsible for the metric |
+| `tags` | List of strings | Categorization labels for discovery |
+| `terms` | List of strings | Business glossary references (e.g. `glossary.revenue`) |
+
+---
+
+## Slices
+
+Slices are named key-value pairs that map a friendly label to a dimension column. They define how consumers can group and filter a metric.
 
 ```yaml
 metrics:
-  daily_revenue:
-    measure: orders.total_revenue
-    time: orders.order_date
-    description: "Daily revenue trends"
+  arr_growth:
+    measure: subscriptions.total_arr
+    time: subscriptions.start_date
+    default_granularity: month
+    slices:
+      plan_type: subscriptions.plan_type
+      industry: users.industry
+      billing_cycle: subscriptions.billing_cycle
+    description: "Annual Recurring Revenue growth by plan and industry"
 ```
 
-Even though it's called `daily_revenue`, you're not locked into daily granularity. You can query this same metric at different time intervals (day, week, month, quarter, year) without redefining it. The metric definition stays the same; you just change the granularity when you query it.
+The slice key (`plan_type`) is the name consumers use in queries. The value (`subscriptions.plan_type`) is the semantic reference to the actual column. Slice values must be unique within a metric — you cannot map two slice keys to the same column.
 
-## Metric with dimensions
+Slices can reference columns from any semantic model, as long as the models are connected through joins.
 
-Add dimensions to enable slicing and grouping:
+---
+
+## Segments
+
+Segments apply predefined filters from semantic models to a metric. Reference them using `alias.segment_name`:
 
 ```yaml
 metrics:
-  revenue_by_tier:
-    measure: orders.total_revenue
-    time: orders.order_date
-    dimensions:
-      - customers.customer_tier      # Group by tier
-
-      - customers.country            # And country
-    description: "Revenue trends by customer tier and country"
+  active_user_engagement:
+    measure: usage_events.daily_active_users
+    time: usage_events.event_date
+    default_granularity: day
+    segments:
+      - users.high_value_accounts
+      - usage_events.recent_activity
 ```
 
-Now you can answer questions like:
+The segments `high_value_accounts` and `recent_activity` must be defined in their respective semantic models. When the metric is queried, these filters are applied automatically.
 
-- What's our revenue by tier over time?
-
-- How does revenue vary by country?
-
-- What's the revenue breakdown by tier and country together?
-
-The dimensions give you flexibility to analyze the metric from different angles.
+---
 
 ## Cross-model metrics
 
-You're not limited to one model. Combine measures and dimensions from multiple models:
+Metrics can pull their measure, time, and slices from different semantic models. Vulcan resolves the join paths automatically based on the joins defined in your semantic models.
 
 ```yaml
 metrics:
-  product_revenue_by_customer_segment:
-    measure: orders.total_revenue      # From orders
-    time: orders.order_date            # From orders
-    dimensions:
-      - products.category              # From products
-
-      - products.brand
-
-      - customers.customer_tier        # From customers
-
-      - customers.region
-    description: "Product revenue segmented by customer demographics"
+  cohort_retention:
+    measure: users.active_users
+    time: users.signup_date
+    default_granularity: month
+    slices:
+      signup_channel: users.signup_channel
+      plan_type: subscriptions.plan_type
+    description: "User retention by signup cohort and plan type"
 ```
 
-This metric pulls the measure from `orders`, time from `orders`, product dimensions from `products`, and customer dimensions from `customers`. As long as you've defined the proper joins between these semantic models, Vulcan will handle the cross-model logic for you.
+This metric uses the `active_users` measure and `signup_date` time from the `users` model, but slices by `plan_type` from the `subscriptions` model. The `users` model must have a join defined to `subscriptions` for this to work.
 
-**Important:** Make sure your semantic models have the right joins defined, or cross-model metrics won't work.
+!!! warning "Joins are required for cross-model references"
+    If a metric references multiple semantic models, those models must be connected through joins. Vulcan validates this and will raise an error if a join path doesn't exist.
 
-## Reference format
-
-Always use **dot notation** with semantic model aliases when referencing measures, dimensions, and time:
-
-```yaml
-# Good: Use aliases
-measure: orders.total_revenue     # alias.measure_name
-time: orders.order_date           # alias.column_name
-dimensions:
-  - customers.customer_tier       # alias.column_name
-
-# Bad: Don't use physical names
-measure: analytics.fact_orders.revenue
-time: order_date  # Missing alias
-```
-
-The dot notation (`orders.total_revenue`) tells Vulcan which semantic model to look in and what to reference. Physical table names won't work here, you need the semantic aliases.
+---
 
 ## Time granularity
 
-Define metrics once, then query them at any time granularity:
+Define a metric once, query it at any granularity. The `default_granularity` sets the default, but consumers can override it:
 
-```yaml
-metrics:
-  revenue_trends:
-    measure: orders.total_revenue
-    time: orders.order_date
-    description: "Revenue at any time granularity"
-```
+- `granularity=day`
+- `granularity=week`
+- `granularity=month`
+- `granularity=quarter`
+- `granularity=year`
 
-The same metric can be queried with different granularities:
+You don't need separate metric definitions for daily, weekly, and monthly views of the same data.
 
-- Daily: `granularity=day`
-
-- Weekly: `granularity=week`
-
-- Monthly: `granularity=month`
-
-- Quarterly: `granularity=quarter`
-
-- Yearly: `granularity=year`
-
-You don't need separate metric definitions for each granularity, just change the query parameter.
+---
 
 ## Complete example
 
-Here's a more complete example showing different types of metrics:
+A full metrics file from a B2B SaaS project:
 
 ```yaml
 metrics:
-  # Simple revenue metric
-  daily_revenue:
-    measure: orders.total_revenue
-    time: orders.order_date
-    description: "Daily revenue trends"
-    tags: [revenue, financial, kpi]
-  
-  # Customer acquisition
-  customer_acquisition_trend:
-    measure: customers.new_signups
-    time: customers.signup_date
-    dimensions:
-      - customers.signup_channel
+  product_engagement:
+    measure: usage_events.daily_active_users
+    time: usage_events.event_date
+    default_granularity: day
+    slices:
+      feature_name: usage_events.feature_name
+      plan_type: users.plan_type
+    description: "Daily active users by feature and subscription plan"
+    tags:
+      - engagement
+      - dau
+    terms:
+      - glossary.user_engagement
+      - glossary.daily_active_users
 
-      - customers.customer_tier
+  churn_analysis:
+    measure: subscriptions.churn_count
+    time: subscriptions.end_date
+    default_granularity: month
+    slices:
+      plan_type: subscriptions.plan_type
+      company_size: users.company_size
+      signup_channel: users.signup_channel
+    description: "Churn patterns by plan, company size, and acquisition channel"
 
-      - customers.country
-    description: "Customer acquisition by channel, tier, and geography"
-    tags: [acquisition, growth, customer]
-  
-  # Cross-model metric
-  product_performance:
-    measure: orders.total_revenue
-    time: orders.order_date
-    dimensions:
-      - products.category
+  cohort_retention:
+    measure: users.active_users
+    time: users.signup_date
+    default_granularity: month
+    slices:
+      signup_channel: users.signup_channel
+      plan_type: subscriptions.plan_type
+    description: "User retention by signup cohort and plan type"
 
-      - products.brand
-
-      - customers.customer_tier
-    description: "Product revenue by category, brand, and customer segment"
-    tags: [revenue, products, segmentation]
+  arr_growth:
+    measure: subscriptions.total_arr
+    time: subscriptions.start_date
+    default_granularity: month
+    slices:
+      plan_type: subscriptions.plan_type
+      industry: users.industry
+      billing_cycle: subscriptions.billing_cycle
+    description: "Annual Recurring Revenue growth by plan and industry"
+    tags:
+      - revenue
+      - arr
+    terms:
+      - glossary.annual_recurring_revenue
 ```
 
-Notice how each metric has a clear purpose, good description, and relevant tags. The tags help organize and discover metrics later.
+---
 
-## Benefits
+## Validation
 
-### Time-series analysis
+Vulcan validates metric definitions automatically when you create a plan. It checks that:
 
-Metrics are built for analyzing trends over time:
+- `measure` references a valid measure on a semantic model
+- `time` references a valid time/date column
+- `default_granularity` is a recognized granularity value
+- `measure` and `time` do not point to the same reference
+- Slice values are unique (no two slice keys map to the same column)
+- Slice and segment references use valid `alias.name` format
+- Cross-model references have valid join paths between the involved models
 
-- **Flexible granularity**: Query the same metric at different time intervals without redefinition
-
-- **Consistent definitions**: Same calculation logic applies across all time periods
-
-- **Trend analysis**: Built-in support for comparing periods (month-over-month, year-over-year, etc.)
-
-### Self-service analytics
-
-Business users can query metrics without writing SQL:
-
-- **Simple API**: Query metrics by name with a time range and dimensions
-
-- **Consistent results**: Same metric definition is used everywhere, so everyone gets the same answer
-
-- **No SQL required**: Complex joins and aggregations are abstracted away
-
-### Single source of truth
-
-Centralized metric definitions mean:
-
-- **Define once**: Create metric definitions in YAML files
-
-- **Use everywhere**: Same metrics power dashboards, reports, and APIs
-
-- **Version controlled**: Metric definitions live alongside your code, so changes are tracked
-
-## Best practices
-
-### Descriptive names
-
-Make your metric names self-explanatory:
-
-```yaml
-# Good: Self-explanatory
-metrics:
-  monthly_revenue_by_tier: ...
-  daily_active_users: ...
-
-# Bad: Vague
-metrics:
-  metric_1: ...
-  rev: ...
-```
-
-Good names make it obvious what the metric measures and how it's broken down.
-
-### Include essential dimensions
-
-Think about what business questions people will want to answer, and include those dimensions:
-
-```yaml
-# Good: Key business dimensions
-metrics:
-  revenue_analysis:
-    measure: orders.total_revenue
-    time: orders.order_date
-    dimensions:
-      - customers.customer_tier
-
-      - customers.region
-
-      - products.category
-
-# Too few: Limited analysis
-metrics:
-  revenue:
-    measure: orders.total_revenue
-    time: orders.order_date
-    # Missing dimensions - can't slice and dice!
-```
-
-Dimensions are what make metrics useful. Without them, you can only see the overall trend, not the breakdowns that drive business decisions.
-
-### Document business context
-
-Add descriptions and metadata to help people understand what the metric means:
-
-```yaml
-metrics:
-  net_revenue_retention:
-    measure: subscriptions.nrr
-    time: subscriptions.cohort_month
-    description: "Net Revenue Retention: expansion minus churn"
-    meta:
-      business_owner: "Finance Team"
-      calculation: "(Starting MRR + Expansion - Churn) / Starting MRR"
-      benchmark: ">110% is good for SaaS"
-```
-
-The `meta` section is perfect for business context, calculation details, benchmarks, and ownership information. This helps people understand not just what the metric is, but what it means and how to interpret it.
-
-## Integration with semantic models
-
-Metrics build on top of semantic models:
-
-1. **Semantic models** define measures, dimensions, and joins
-2. **Metrics** combine these components with time for analysis
-3. **APIs** expose metrics for querying and visualization
-
-The semantic layer provides the foundation (the building blocks), and metrics add the time-series analytical capabilities (the finished product).
+---
 
 ## Next steps
 
-- Learn about [Semantic Models](models.md) that provide the foundation for metrics
-
+- Learn about [Semantic Models](models.md) that provide the measures, segments, and joins metrics build on
 - See the [Semantics Overview](overview.md) for the complete picture
-
 - Explore metric definitions in your project's `semantics/` directory

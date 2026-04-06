@@ -1,367 +1,360 @@
 # Semantic Models
 
-Semantic models are your bridge between technical data structures and business understanding. They take your physical Vulcan models (the tables and columns in your database) and map them to business concepts that make sense to analysts, product managers, and other non-technical users.
+Semantic models map your physical Vulcan models to business-friendly representations. They define what consumers can do with each model: which columns are exposed as dimensions, what aggregations are available as measures, which reusable filters exist as segments, and how models relate to each other through joins.
 
-Semantic models are a translation layer. Your database might have tables named `dim_customers` or `fact_orders` (technical naming), but your semantic layer can expose them as `customers` and `orders` (business-friendly naming). Semantic models define what you can do with the data: dimensions for grouping, measures for calculations, segments for filtering, and joins for combining models.
+---
 
-## What are semantic models?
+## Structure
 
-Semantic models bridge the gap between technical table structures and business understanding:
-
-- **Reference physical models**: Each semantic model references a Vulcan model defined in your `models/` directory
-
-- **Provide business aliases**: Hide technical naming (like `dim_customers` or `fact_orders`) behind consumer-friendly names
-
-- **Expose analytical capabilities**: Define dimensions, measures, segments, and joins for each model
-
-They're the foundation of your semantic layer, everything else (business metrics, semantic queries) builds on top of semantic models.
-
-## Basic structure
-
-A semantic model maps a physical Vulcan model to a semantic representation. Here's the basic structure:
+A semantic model wraps a single Vulcan model. Use either `semantic_models:` or `models:` as the top-level key — both are valid and produce the same result.
 
 ```yaml
-models:
-  analytics.customers:  # Physical model name (dictionary key)
-    alias: customers     # Business-friendly semantic alias
-    description: "Customer master data"
-    dimensions: {...}    # Optional: control which columns are exposed
-    measures: {...}      # Optional: aggregated calculations
-    segments: {...}      # Optional: reusable filter conditions
-    joins: {...}         # Optional: relationships to other models
+semantic_models:
+  b2b_saas.users:          # Fully qualified Vulcan model name
+    alias: users            # Business-friendly name used in queries
+
+    dimensions: {...}       # Control which columns are queryable
+    measures: {...}         # Aggregated calculations
+    segments: {...}         # Reusable filter conditions
+    joins: {...}            # Relationships to other semantic models
 ```
 
-The physical model name (`analytics.customers`) is the key, and everything else defines how it appears in the semantic layer.
+The YAML key (`b2b_saas.users`) must match an existing Vulcan model defined in your `models/` directory. The `alias` is the name consumers use when querying — it must start with a letter and contain only letters, numbers, and underscores. If omitted, it defaults to the model name.
+
+!!! info "No description at the model level"
+    Semantic models do not support a top-level `description` field. Descriptions belong in the Vulcan model file itself (the `MODEL()` DDL), not in the semantic YAML.
+
+---
 
 ## Dimensions
 
-Dimensions are attributes you use for grouping and filtering. They answer "by what?" questions, like "revenue by customer tier" or "orders by country."
+Dimensions are columns consumers can group by and filter on. By default, all columns from the underlying Vulcan model are exposed. You can narrow that down with `includes` or `excludes`, and add capabilities with `enhancements`.
 
-**The good news:** All columns from your Vulcan model automatically become dimensions. You don't have to define them manually unless you want to control which ones are exposed or add enhancements.
+### Controlling visibility
 
-Here's how you can control dimensions:
+Use `includes` to expose only specific columns, or `excludes` to hide specific ones. You cannot use both at the same time.
 
 ```yaml
-# All columns from analytics.customers automatically become dimensions:
-# - customers.customer_id
-# - customers.customer_tier
-# - customers.signup_date
-# - customers.country
+dimensions:
+  includes:
+    - user_id
+    - signup_date
+    - plan_type
+    - status
+    - company_size
+    - industry
+```
 
-# You can control which columns are exposed:
+```yaml
 dimensions:
   excludes:
-    - password_hash       # Hide sensitive data
-
+    - password_hash
     - internal_notes
-  
-  # Enhance dimensions with additional capabilities:
+```
+
+If you omit `dimensions` entirely (or leave both `includes` and `excludes` empty), every column in the model is exposed.
+
+!!! tip "Snowflake and other case-sensitive engines"
+    Snowflake stores unquoted identifiers in uppercase by default. When targeting Snowflake, use uppercase column names in your dimension lists, expressions, and filters to match the warehouse schema:
+
+    ```yaml
+    dimensions:
+      includes:
+        - USER_ID
+        - SIGNUP_DATE
+        - PLAN_TYPE
+    ```
+
+    ```yaml
+    measures:
+      active_users:
+        type: count
+        expression: "*"
+        filters:
+          - "{users.STATUS} = 'active'"
+    ```
+
+    Always match the casing your warehouse actually uses. Lowercase examples in this guide assume a case-insensitive engine like DuckDB or Postgres.
+
+### Enhancements
+
+Enhancements add time granularities or display formatting to a dimension. Each enhancement must specify at least one of `format` or `granularities`.
+
+```yaml
+dimensions:
+  includes:
+    - signup_date
+    - plan_type
   enhancements:
-    - name: start_date
+    - name: signup_date
       granularities:
         - name: monthly
           interval: "1 month"
-          description: "Monthly subscription cohorts"
         - name: quarterly
           interval: "3 months"
-          description: "Quarterly cohorts"
+    - name: mrr
+      format: currency
 ```
 
-Use `excludes` to hide sensitive or internal columns. Use `enhancements` to add time granularities for cohort analysis, useful for subscription or signup dates.
+**Granularity options** for `interval`: any positive quantity of `minute`, `hour`, `day`, `week`, `month`, or `year` (e.g. `"15 minutes"`, `"1 week"`).
+
+**Format options**: `currency`, `percent`, `imageUrl`, `link`, `id`.
+
+---
 
 ## Measures
 
-Measures are aggregated calculations that answer "how much?" or "how many?" questions. They're what you use to calculate totals, averages, counts, and other aggregations.
+Measures are named aggregations that answer "how much?" or "how many?" questions. Each measure requires a `type` and, for most types, an `expression`.
 
-You define measures using SQL expressions with aggregations like `SUM()`, `COUNT()`, `AVG()`, etc.:
+### Measure types
+
+| Type | Description | Expression required? |
+|------|-------------|---------------------|
+| `count` | Row count (`COUNT(*)`) | No |
+| `count_distinct` | Distinct count | Yes |
+| `count_distinct_approx` | Approximate distinct count | Yes |
+| `sum` | Sum aggregation | Yes |
+| `avg` | Average aggregation | Yes |
+| `min` | Minimum value | Yes |
+| `max` | Maximum value | Yes |
+| `number` | Custom numeric expression | Yes |
+| `string` | Custom string expression | Yes |
+| `time` | Custom time expression | Yes |
+| `boolean` | Custom boolean expression | Yes |
+
+### Defining measures
+
+Reference columns using curly-brace syntax: `{alias.column_name}`.
 
 ```yaml
 measures:
-  total_revenue:
-    type: sum
-    expression: "{customers.amount}"
-    description: "Total revenue from all orders"
-    format: currency
-  
-  avg_order_value:
-    type: number
-    expression: "SUM({customers.total_revenue}) / NULLIF(COUNT(*), 0)"
-    format: currency
-    description: "Average order value"
-  
-  active_customers:
-    type: count_distinct
-    expression: "{customers.customer_id}"
+  total_users:
+    type: count
+    expression: "{users.user_id}"
+    description: "Total registered users"
+    tags:
+      - user
+      - count
+
+  active_users:
+    type: count
+    expression: "*"
     filters:
-      - "{customers.status} = 'active'"
-    description: "Number of active customers"
+      - "{users.status} = 'active'"
+    description: "Currently active users"
+
+  avg_mrr_per_account:
+    type: avg
+    expression: "{subscriptions.mrr}"
+    filters:
+      - "{subscriptions.status} = 'active'"
+    format: currency
+    description: "Average MRR per active subscription"
+    tags:
+      - revenue
+      - financial
+    terms:
+      - revenue.avg_mrr
 ```
 
-Notice the curly braces around column references like `{customers.amount}`? That's the semantic reference syntax. We'll talk more about that in the best practices section.
+### Measure properties
 
-Measures can have filters (like `active_customers` above), which let you calculate metrics on subsets of data. They can also have formatting hints (like `currency`) to help visualization tools display them correctly.
+| Property | Required | Description |
+|----------|----------|-------------|
+| `type` | Yes | Aggregation type (see table above) |
+| `expression` | Depends | Column reference or SQL expression. Not required for `count`. |
+| `description` | No | Human-readable explanation of the measure |
+| `filters` | No | List of SQL conditions that restrict which rows are aggregated |
+| `format` | No | Display hint: `currency` or `percent` |
+| `tags` | No | List of categorization labels |
+| `terms` | No | List of business glossary references (e.g. `glossary.revenue`) |
+| `rolling_window` | No | Window configuration with `trailing`, `leading`, and `offset` |
+| `public` | No | Whether the measure is visible to consumers (default: `true`) |
+
+!!! warning "Reserved name"
+    `count` is a reserved measure name — Vulcan adds it automatically. Use a different name like `total_users` or `row_count`.
+
+---
 
 ## Segments
 
-Segments are reusable filter conditions that answer "which ones?" questions. They define meaningful subsets of your data that you can use across multiple queries and metrics.
-
-Segments are saved filters. Instead of writing `WHERE status = 'active'` every time, you define an `active_customers` segment once and reuse it:
+Segments are reusable filter conditions that define meaningful subsets of your data. Instead of writing `WHERE status = 'active'` in every query, define it once as a segment.
 
 ```yaml
 segments:
-  active_customers:
-    expression: "{customers.status} = 'active'"
-    description: "Customers with active subscriptions"
-  
-  high_value:
-    expression: "{customers.total_spent} > 10000"
-    description: "Customers who spent over $10K"
-  
+  high_value_accounts:
+    expression: "{users.plan_type} IN ('pro', 'enterprise')"
+    description: "Paid plan users"
+    tags:
+      - customer
+      - segment
+      - revenue
+    terms:
+      - customer.high_value
+
   recent_signups:
-    expression: "{customers.signup_date} >= CURRENT_DATE - INTERVAL '30 days'"
-    description: "Customers who signed up in last 30 days"
+    expression: |
+      {users.signup_date} >= DATEADD(DAY, -7, CURRENT_DATE)
+    description: "Users signed up in last 7 days"
+
+  at_risk_users:
+    expression: |
+      {users.status} = 'active' AND {users.plan_type} = 'free'
+    description: "Free users who might churn"
 ```
 
-Segments make your semantic layer more consistent, everyone uses the same definition of "active customers" or "high value," so there's no confusion about what those terms mean.
+### Segment properties
+
+| Property | Required | Description |
+|----------|----------|-------------|
+| `expression` | Yes | SQL boolean condition using `{alias.column}` references |
+| `description` | No | Human-readable explanation |
+| `tags` | No | Categorization labels |
+| `terms` | No | Business glossary references |
+| `public` | No | Visibility to consumers (default: `true`) |
+
+!!! info "Uniqueness constraint"
+    Measure and segment names must be unique within a single semantic model. You cannot have a measure and a segment with the same name.
+
+---
 
 ## Joins
 
-Joins define relationships between semantic models. They're what enable cross-model analysis, like combining order data with customer data or product data.
-
-You define the relationship type (`one_to_one`, `one_to_many`, `many_to_one`) and the join expression:
+Joins define relationships between semantic models so you can analyze across tables. The join key is the alias of the target model, and the expression is the SQL join condition.
 
 ```yaml
 joins:
-  customers:
-    type: many_to_one
-    expression: "{orders.customer_id} = {customers.customer_id}"
-    description: "Order's customer"
-  
-  products:
-    type: many_to_one
-    expression: "{orders.product_id} = {products.product_id}"
-    description: "Ordered product"
+  subscriptions:
+    type: one_to_many
+    expression: "{users.user_id} = {subscriptions.user_id}"
+
+  usage_events:
+    type: one_to_many
+    expression: "{users.user_id} = {usage_events.user_id}"
 ```
 
-The relationship type helps Vulcan understand the cardinality, which is important for aggregations and preventing double-counting. The expression is the actual SQL join condition, using semantic references with curly braces.
+### Join types
 
-## Cross-model analysis
+| Type | Cardinality | Example |
+|------|-------------|---------|
+| `one_to_one` | One row matches one row | user to user_profile |
+| `one_to_many` | One row matches many rows | customer to orders |
+| `many_to_one` | Many rows match one row | orders to customer |
 
-Once you've defined joins, you can reference columns and measures from other models in your current model's definitions. This is where semantic models really shine, you can build complex analytical definitions that span multiple models.
+The join `expression` uses `{alias.column}` syntax on both sides. The cardinality helps Vulcan handle aggregations correctly and prevent double-counting.
 
-### Referencing joined model fields
+### Cross-model references
 
-You can use columns from joined models in measure expressions and filters:
+Once joins are defined, you can reference columns from joined models in measure filters:
 
 ```yaml
 measures:
   enterprise_revenue:
     type: sum
-    expression: "{orders.amount}"
+    expression: "{subscriptions.arr}"
     filters:
-      - "{customers.customer_tier} = 'Enterprise'"
-    description: "Revenue from Enterprise customers"
+      - "{users.plan_type} = 'enterprise'"
+    description: "ARR from enterprise plan users"
 ```
 
-Even though `enterprise_revenue` is defined on the `orders` model, it filters by `customers.customer_tier` from the joined `customers` model. Vulcan handles the join logic automatically.
+Here `enterprise_revenue` is defined on the subscriptions model but filters by `users.plan_type` from the joined users model. Vulcan resolves the join path automatically.
 
-<!-- ### Proxy dimensions
-
-Proxy dimensions let you expose measures from joined models as dimensions on the current model. This is useful when you want to filter or group by aggregated values from other models:
-
-```yaml
-dimensions:
-  proxies:
-    - name: plan_average_monthly_price
-      measure: subscription_plans.avg_monthly_price
-    
-    - name: plan_average_annual_price
-      measure: subscription_plans.avg_annual_price
-```
-
-**Requirements:**
-
-- The referenced model must be joined to the current model
-
-- The measure must exist on the target model
-
-- Use the format `model_alias.measure_name`
-
-Proxy dimensions are powerful, they let you analyze one model using aggregated values from another model, all without writing complex SQL. -->
+---
 
 ## Complete example
 
-Here's a complete semantic model definition that brings it all together:
+A full semantic model definition from a B2B SaaS project:
 
 ```yaml
-models:
-  analytics.customers:
-    alias: customers
-    
-    dimensions:
-      excludes:
-        - password_hash
+semantic_models:
+  b2b_saas.subscriptions:
+    alias: subscriptions
 
-        - internal_notes
-      enhancements:
-        - name: signup_date
-          granularities:
-            - name: monthly
-              interval: "1 month"
-              description: "Monthly signup cohorts"
-            - name: quarterly
-              interval: "3 months"
-              description: "Quarterly signup cohorts"
-    
     measures:
-      total_customers:
-        type: count
-        expression: "{customers.customer_id}"
-        description: "Total number of customers"
-      
-      active_customers:
-        type: count_distinct
-        expression: "{customers.customer_id}"
+      total_arr:
+        type: sum
+        expression: "{subscriptions.arr}"
         filters:
-          - "{customers.status} = 'active'"
-        description: "Number of active customers"
-    
+          - "{subscriptions.status} = 'active'"
+        format: currency
+        description: "Total Annual Recurring Revenue"
+        tags:
+          - revenue
+          - financial
+        terms:
+          - revenue.total_arr
+
+      churn_count:
+        type: count
+        expression: "*"
+        filters:
+          - "{subscriptions.status} = 'cancelled'"
+          - |
+            {subscriptions.end_date} >= DATEADD(DAY, -30, CURRENT_DATE)
+        description: "Subscriptions churned in last 30 days"
+        tags:
+          - churn
+          - retention
+
+      subscription_count:
+        type: count
+        expression: "*"
+        filters:
+          - "{subscriptions.status} = 'active'"
+        description: "Total active subscriptions"
+
     segments:
-      active:
-        expression: "{customers.status} = 'active'"
-        description: "Active customers"
-      
-      high_value:
-        expression: "{customers.total_spent} > 10000"
-        description: "High-value customers"
-    
+      active_subscriptions:
+        expression: "{subscriptions.status} = 'active'"
+        description: "Currently active subscriptions"
+
+      high_value_accounts:
+        expression: "{subscriptions.mrr} >= 1000"
+        description: "High-value accounts (>= $1000 MRR)"
+        tags:
+          - revenue
+          - high_value
+
+      enterprise_subscriptions:
+        expression: "{subscriptions.plan_type} = 'enterprise'"
+        description: "Enterprise plan subscriptions"
+
     joins:
-      orders:
-        type: one_to_many
-        expression: "{customers.customer_id} = {orders.customer_id}"
-        description: "Customer's orders"
+      subscription_plans:
+        type: many_to_one
+        expression: "{subscriptions.plan_id} = {subscription_plans.plan_id}"
+
+    dimensions:
+      includes:
+        - plan_id
+        - start_date
+        - end_date
+        - plan_type
+        - status
+        - billing_cycle
+        - mrr
+        - arr
 ```
 
-This semantic model:
-- Exposes customer dimensions (with some exclusions and enhancements)
-
-- Defines customer measures (total and active counts)
-
-- Creates reusable segments (active and high-value customers)
-
-- Joins to orders for cross-model analysis
-
-## Best practices
-
-### Use business-friendly aliases
-
-Your aliases should make sense to business users, not just developers:
-
-```yaml
-# Good: Consumer-friendly
-alias: customers
-alias: orders
-alias: subscriptions
-
-# Bad: Technical naming
-alias: dim_customers
-alias: fact_orders
-```
-
-The whole point of semantic models is to hide technical complexity. Don't bring it back with technical naming!
-
-### Design models with semantics in mind
-
-When you're building your Vulcan models, think about how they'll be used semantically:
-
-```sql
--- Good: Clean column names, business-friendly
-MODEL (name analytics.customers);
-SELECT
-  customer_id,
-  customer_tier,      -- Good dimension name
-  signup_date,        -- Good time dimension
-  total_spent         -- Good for segments
-FROM raw.customers;
-```
-
-Clean, descriptive column names make semantic models easier to build and use. Avoid abbreviations and technical jargon.
-
-### Document business logic
-
-Add descriptions and metadata to help people understand what measures and segments mean:
-
-```yaml
-measures:
-  total_revenue:
-    type: sum
-    expression: "{orders.amount}"
-    description: "Total revenue from all completed orders"
-    meta:
-      business_owner: "Finance Team"
-      calculation_method: "Sum of order amounts excluding refunds"
-```
-
-The `meta` section is perfect for business context, ownership, calculation details, and other information that helps people understand and trust the metric.
-
-### Use curly braces for references
-
-When referencing any column or measure anywhere in your semantic model definitions, always use curly braces `{}`:
-
-```yaml
-# Good: Use curly braces for all references
-measures:
-  total_revenue:
-    type: sum
-    expression: "{orders.amount}"  # Column reference with curly braces
-  
-  active_customers:
-    type: count_distinct
-    expression: "{customers.customer_id}"  # Column reference with curly braces
-    filters:
-      - "{customers.status} = 'active'"  # Column reference in filter
-
-segments:
-  high_value:
-    expression: "{customers.total_spent} > 10000"  # Column reference with curly braces
-
-joins:
-  customers:
-    type: many_to_one
-    expression: "{orders.customer_id} = {customers.customer_id}"  # Both references use curly braces
-```
-
-**Why use curly braces?**
-- Clear distinction between semantic references and SQL functions
-
-- Consistent syntax across all semantic model definitions
-
-- Prevents ambiguity in complex expressions
-
-- Required for cross-model references (e.g., `{customers.customer_tier}`)
-
-It's a best practice that makes your semantic models more maintainable and less error-prone.
+---
 
 ## Validation
 
-Vulcan automatically validates semantic model definitions when you create a plan. It checks:
+Vulcan validates semantic model definitions automatically when you create a plan. It checks that:
 
-- All column references in measures exist
-
-- All column references in segments exist
-
-- Join expressions reference valid columns
-
+- Column references in measures and segments point to real columns
+- Join expressions reference valid columns on both sides
+- Join targets reference existing semantic model aliases
 - Cross-model references have valid join paths
+- Aliases follow naming rules (letters, numbers, underscores; starts with a letter)
+- No duplicate names exist across measures and segments
 
-- Semantic aliases are properly defined
+Validation runs before anything is materialized, so errors are caught early.
 
-If something's wrong, you'll know about it before you try to use the semantic layer. This catches errors early and keeps your semantic models reliable.
+---
 
 ## Next steps
 
-- Learn about [Business Metrics](./business_metrics.md) that combine measures with time and dimensions
-
-- Explore semantic model examples in your project's `semantics/` directory
-
+- Learn about [Business Metrics](business_metrics.md) that combine measures with time and dimensions
+- Explore working examples in your project's `semantics/` directory
 - See the [Semantics Overview](overview.md) for the complete picture
