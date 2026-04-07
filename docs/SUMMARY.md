@@ -1,6 +1,6 @@
 # Table of contents
 
-* [About](index.md)
+[About](index.md)
 
 * [Configurations](configurations/overview.md)
   * [Options](configurations/options/README.md)
