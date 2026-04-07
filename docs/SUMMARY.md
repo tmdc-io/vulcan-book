@@ -2,7 +2,7 @@
 
 [About](index.md)
 
-* [Configurations](configurations/overview.md)
+## [Configurations](configurations/overview.md)
   * [Options](configurations/options/README.md)
     * [Model Defaults](configurations/options/model_defaults.md)
     * [Variables](configurations/options/variables.md)
