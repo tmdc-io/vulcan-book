@@ -1,4 +1,4 @@
-# Deploment Steps
+# Deployment Steps
 
 This guide provides step-by-step instructions for deploying Vulcan data products in a DataOS environment.
 

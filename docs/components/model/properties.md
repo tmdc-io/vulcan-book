@@ -18,7 +18,7 @@ This page is a complete reference for all available properties. It covers what e
 | `interval_unit` | Temporal granularity of data intervals | `str` | N |
 | `start` | Earliest date/time to process | `str` \| `int` | N |
 | `end` | Latest date/time to process | `str` \| `int` | N |
-| `grain` | Column(s) defining row uniqueness | `str` \| `tuple` | N |
+| `grains` | Column(s) defining row uniqueness | `str` \| `tuple` | N |
 | `grains` | Multiple unique key definitions | `tuple` | N |
 | `owner` | Model owner for governance | `str` | N |
 | `description` | Model description (registered as table comment) | `str` | N |
@@ -34,7 +34,7 @@ This page is a complete reference for all available properties. It covers what e
 | `depends_on` | Explicit model dependencies | `array[str]` | N |
 | `references` | Non-unique join relationship columns | `array` | N |
 | `partitioned_by` | Partition key column(s) | `str` \| `array` | N |
-| `clustered_by` | Clustering column(s) | `str` | N |
+| `clustered_by` | Clustering column(s) | `array` | N |
 | `table_format` | Table format (iceberg, hive, delta) | `str` | N |
 | `storage_format` | Storage format (parquet, orc) | `str` | N |
 | `physical_properties` | Engine-specific table/view properties | `dict` | N |
@@ -1279,6 +1279,24 @@ Allow processing of incomplete data intervals. By default, Vulcan waits for comp
 
 **Default:** `false` (wait for complete intervals)
 
+=== "SQL"
+
+    ```sql
+    MODEL (
+      name sales.realtime_events,
+      allow_partials true,  -- Enable partial intervals
+    );
+    ```
+
+=== "Python"
+
+    ```python
+    @model(
+        "sales.realtime_events",
+        allow_partials=True,
+    )
+    ```
+
 ### optimize_query
 
 Enable or disable query optimization. Vulcan optimizes queries by default (rewrites them for better performance), but sometimes you want to disable this.
@@ -1680,7 +1698,7 @@ Properties for SCD Type 2 models that detect changes using an `updated_at` times
         updated_at_name last_modified,
         valid_from_name effective_from,
         valid_to_name effective_to,
-        invalidate_hard_deletes true,
+        invalidate_hard_deletes false,
         updated_at_as_valid_from true,
       )
     );
@@ -1710,7 +1728,7 @@ Properties for SCD Type 2 models that detect changes using an `updated_at` times
             updated_at_name="last_modified",
             valid_from_name="effective_from",
             valid_to_name="effective_to",
-            invalidate_hard_deletes=True,
+            invalidate_hard_deletes=False,
         ),
         depends_on=["raw.customers"],
     )
