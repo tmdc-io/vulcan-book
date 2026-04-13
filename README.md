@@ -14,13 +14,15 @@ make deploy   # Deploy to GitHub Pages
 ## Structure
 
 - `docs/` - Documentation source files
-- `draft/` - Draft and reference materials
+- `overrides/` - MkDocs Material theme customizations
+- `scripts/` - Build helper scripts
 - `mkdocs.yml` - MkDocs configuration
 - `pyproject.toml` - Python dependencies
+- `Makefile` - Build, serve, and deploy commands
 
 ## Development
 
-The development server runs at `http://127.0.0.1:8000` and automatically reloads on file changes.
+The development server runs at `http://127.0.0.1:7000` and automatically reloads on file changes.
 
 ## Deployment
 
