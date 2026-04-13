@@ -1,0 +1,35 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#c92a2a','lineColor':'#495057','secondaryColor':'#4dabf7','tertiaryColor':'#51cf66'}}}%%
+
+%% Check Lifecycle
+%% From creation to monitoring
+
+flowchart LR
+    subgraph "Check Lifecycle"
+        Create[1. Create Check<br/>Write YAML config] --> |Deploy| Deploy[2. Deploy<br/>Add to checks/ directory]
+        
+        Deploy --> |Model Run| FirstRun[3. First Execution<br/>Collect baseline]
+        
+        FirstRun --> |Run 2-29| Build[4. Build History<br/>Collect 30+ data points]
+        
+        Build --> |Run 30+| Active[5. Active Monitoring<br/>Compare to baseline]
+        
+        Active --> |Evaluate| Decision{Check Result?}
+        
+        Decision -->|Pass| Pass[✓ Pass<br/>Continue Monitoring]
+        Decision -->|Fail| Fail[✗ Fail<br/>Capture Samples]
+        
+        Pass --> |Next Run| Active
+        Fail --> |Investigate| Debug[6. Debug<br/>Query samples]
+        
+        Debug --> |Fix Data| Fix[7. Fix Issue<br/>Update data/model]
+        Fix --> |Re-run| Active
+        
+        Debug --> |Adjust Threshold| Adjust[8. Adjust Check<br/>Update YAML]
+        Adjust --> |Re-deploy| Deploy
+    end
+
+    style Create fill:#4dabf7
+    style Active fill:#51cf66
+    style Fail fill:#ff6b6b
+    style Debug fill:#ffd43b
+

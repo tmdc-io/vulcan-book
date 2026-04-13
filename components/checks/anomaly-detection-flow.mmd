@@ -1,0 +1,38 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#ff6b6b','primaryTextColor':'#fff','primaryBorderColor':'#c92a2a','lineColor':'#495057','secondaryColor':'#4dabf7','tertiaryColor':'#51cf66'}}}%%
+
+%% Anomaly Detection Detailed Flow
+%% Shows how anomaly detection learns from history and detects outliers
+
+flowchart LR
+    subgraph "Anomaly Detection Process"
+        Start[Check Execution] --> |First Run| Collect1[Collect Metric Value<br/>e.g., row_count = 5000]
+        Collect1 --> |Store| History1[(History: Run 1<br/>5000)]
+        
+        Start --> |Run 2| Collect2[Collect Metric Value<br/>row_count = 5100]
+        Collect2 --> |Store| History2[(History: Run 2<br/>5100)]
+        
+        Start --> |Run 3| Collect3[Collect Metric Value<br/>row_count = 4950]
+        Collect3 --> |Store| History3[(History: Run 3<br/>4950)]
+        
+        Start --> |Run N<br/>After 30+ runs| Current[Current Value<br/>row_count = 8000]
+        
+        History1 --> |Query| Stats[Calculate Statistics<br/>Mean, StdDev, Trends]
+        History2 --> Stats
+        History3 --> Stats
+        
+        Stats --> |Build Model| Model[Statistical Model<br/>Mean: 5016<br/>StdDev: 75<br/>Expected: 4900-5132]
+        
+        Current --> |Compare| Compare{Within Range?}
+        Model --> Compare
+        
+        Compare -->|Yes ±3σ| Pass[✓ Pass<br/>Normal Value]
+        Compare -->|No >3σ| Fail[✗ Fail<br/>Anomaly Detected!]
+        
+        Fail --> Alert[Alert User<br/>Unusual Value Detected]
+    end
+
+    style Current fill:#ff6b6b
+    style Fail fill:#ff6b6b
+    style Pass fill:#51cf66
+    style Model fill:#ffd43b
+

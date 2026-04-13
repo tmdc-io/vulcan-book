@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
+<meta content="DataOS Vulcan Team" name="author"/>
+<link href="https://tmdc-io.github.io/vulcan-docs/guides/semantic_query_lifecycle/" rel="canonical"/>
+<link href="../transpiling_semantics/" rel="prev"/>
+<link href="../deployment_guide/" rel="next"/>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Semantic Query Lifecycle - DataOS Vulcan</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="../../assets/stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../assets/images/D_logo_light-32px.png" media="(prefers-color-scheme: dark)" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="apple-touch-icon" sizes="32x32"/>
+<meta content="website" property="og:type"/>
+<meta content="DataOS Vulcan" property="og:title"/>
+<meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." property="og:description"/>
+<meta content="https://tmdc-io.github.io/vulcan-docs/" property="og:url"/>
+<meta content="DataOS Vulcan" property="og:site_name"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="DataOS Vulcan" name="twitter:title"/>
+<meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." name="twitter:description"/>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="blue-grey" data-md-color-primary="blue-grey" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#semantic-query-lifecycle">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="DataOS Vulcan" class="md-header__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/D_logo_dark-32px.png"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            DataOS Vulcan
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Semantic Query Lifecycle
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="blue-grey" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="blue-grey" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<a aria-label="Share" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Share">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    tmdc-io/vulcan-book
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="DataOS Vulcan" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/D_logo_dark-32px.png"/>
+</a>
+    DataOS Vulcan
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    tmdc-io/vulcan-book
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Configurations
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Configurations
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Options
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Options
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/model_defaults/">
+<span class="md-ellipsis">
+    
+  
+    Model Defaults
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/variables/">
+<span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/execution_hooks/">
+<span class="md-ellipsis">
+    
+  
+    Execution Hooks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/notifications/">
+<span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/linter/">
+<span class="md-ellipsis">
+    
+  
+    Linter
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Engines
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Engines
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/bigquery/bigquery/">
+<span class="md-ellipsis">
+    
+  
+    BigQuery
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/databricks/databricks/">
+<span class="md-ellipsis">
+    
+  
+    Databricks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/fabric/fabric/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft Fabric
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/mssql/mssql/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft SQL Server
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/mysql/mysql/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/postgres/postgres/">
+<span class="md-ellipsis">
+    
+  
+    Postgres
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/redshift/redshift/">
+<span class="md-ellipsis">
+    
+  
+    Amazon Redshift
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/snowflake/snowflake/">
+<span class="md-ellipsis">
+    
+  
+    Snowflake
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/spark/spark/">
+<span class="md-ellipsis">
+    
+  
+    Spark
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/trino/trino/">
+<span class="md-ellipsis">
+    
+  
+    Trino
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../ci-cd/ci-cd/">
+<span class="md-ellipsis">
+    
+  
+    CI/CD
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Components
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Model
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Model
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/properties/">
+<span class="md-ellipsis">
+    
+  
+    Properties
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1_3" id="__nav_3_1_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Types
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_3_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_1_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Types
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/sql_models/">
+<span class="md-ellipsis">
+    
+  
+    SQL
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/python_models/">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/external_models/">
+<span class="md-ellipsis">
+    
+  
+    External
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/managed_models/">
+<span class="md-ellipsis">
+    
+  
+    Managed
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/model_kinds/">
+<span class="md-ellipsis">
+    
+  
+    Kinds
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/statements/">
+<span class="md-ellipsis">
+    
+  
+    Statements
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/tests/tests/">
+<span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/audits/audits/">
+<span class="md-ellipsis">
+    
+  
+    Audits
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/checks/checks/">
+<span class="md-ellipsis">
+    
+  
+    Checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Semantics
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Semantics
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/models/">
+<span class="md-ellipsis">
+    
+  
+    Semantic Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/business_metrics/">
+<span class="md-ellipsis">
+    
+  
+    Business Metrics
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Advance Features
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Advance Features
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6_1" id="__nav_3_6_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_1_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_6_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Macros
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/variables/">
+<span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/built_in/">
+<span class="md-ellipsis">
+    
+  
+    Built In
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/jinja/">
+<span class="md-ellipsis">
+    
+  
+    Jinja
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/signals/">
+<span class="md-ellipsis">
+    
+  
+    Signals
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/custom_materializations/">
+<span class="md-ellipsis">
+    
+  
+    Custom materializations
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../get-started/docker/">
+<span class="md-ellipsis">
+    
+  
+    Get Started
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data-product-lifecycle/">
+<span class="md-ellipsis">
+    
+  
+    Data Product Lifecycle
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../plan_guide/">
+<span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../run_and_scheduling/">
+<span class="md-ellipsis">
+    
+  
+    Run and Scheduling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../models/">
+<span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../incremental_by_time/">
+<span class="md-ellipsis">
+    
+  
+    Incremental by Time
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data_quality/">
+<span class="md-ellipsis">
+    
+  
+    Data Quality
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../model_selection/">
+<span class="md-ellipsis">
+    
+  
+    Model Selection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transpiling_semantics/">
+<span class="md-ellipsis">
+    
+  
+    Transpiling Semantics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Semantic Query Lifecycle
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Semantic Query Lifecycle
+  
+
+    
+  </span>
+</a>
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-submit-a-query">
+<span class="md-ellipsis">
+      
+        1. Submit a query
+      
+    </span>
+</a>
+<nav aria-label="1. Submit a query" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-fields">
+<span class="md-ellipsis">
+      
+        Query fields
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-transpile-to-sql">
+<span class="md-ellipsis">
+      
+        2. Transpile to SQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-cache-check">
+<span class="md-ellipsis">
+      
+        3. Cache check
+      
+    </span>
+</a>
+<nav aria-label="3. Cache check" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#has-this-exact-query-been-run-before">
+<span class="md-ellipsis">
+      
+        Has this exact query been run before?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#is-someone-else-already-running-this-query">
+<span class="md-ellipsis">
+      
+        Is someone else already running this query?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#did-this-query-fail-recently">
+<span class="md-ellipsis">
+      
+        Did this query fail recently?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cache-invalidation">
+<span class="md-ellipsis">
+      
+        Cache invalidation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-statement-id">
+<span class="md-ellipsis">
+      
+        4. Statement ID
+      
+    </span>
+</a>
+<nav aria-label="4. Statement ID" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#status-lifecycle">
+<span class="md-ellipsis">
+      
+        Status lifecycle
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resolution-strategies">
+<span class="md-ellipsis">
+      
+        Resolution strategies
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-execution">
+<span class="md-ellipsis">
+      
+        5. Execution
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-fetch-the-result">
+<span class="md-ellipsis">
+      
+        6. Fetch the result
+      
+    </span>
+</a>
+<nav aria-label="6. Fetch the result" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#poll-for-status">
+<span class="md-ellipsis">
+      
+        Poll for status
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#download-the-result">
+<span class="md-ellipsis">
+      
+        Download the result
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pagination-and-projection">
+<span class="md-ellipsis">
+      
+        Pagination and projection
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#putting-it-all-together">
+<span class="md-ellipsis">
+      
+        Putting it all together
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#state-tables">
+<span class="md-ellipsis">
+      
+        State tables
+      
+    </span>
+</a>
+<nav aria-label="State tables" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#state-connection">
+<span class="md-ellipsis">
+      
+        State connection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_results">
+<span class="md-ellipsis">
+      
+        _query_results
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_fingerprints">
+<span class="md-ellipsis">
+      
+        _query_fingerprints
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_requests">
+<span class="md-ellipsis">
+      
+        _query_requests
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_perspective">
+<span class="md-ellipsis">
+      
+        _query_perspective
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-the-tables-relate">
+<span class="md-ellipsis">
+      
+        How the tables relate
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-cache-invalidation-works">
+<span class="md-ellipsis">
+      
+        How cache invalidation works
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quick-reference">
+<span class="md-ellipsis">
+      
+        Quick reference
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../deployment_guide/">
+<span class="md-ellipsis">
+    
+  
+    Deployment Steps
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cli-commands/cli/">
+<span class="md-ellipsis">
+    
+  
+    CLI Commands
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cookbook/">
+<span class="md-ellipsis">
+    
+  
+    Cookbook
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../glossary/">
+<span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../faq/">
+<span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-submit-a-query">
+<span class="md-ellipsis">
+      
+        1. Submit a query
+      
+    </span>
+</a>
+<nav aria-label="1. Submit a query" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-fields">
+<span class="md-ellipsis">
+      
+        Query fields
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-transpile-to-sql">
+<span class="md-ellipsis">
+      
+        2. Transpile to SQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-cache-check">
+<span class="md-ellipsis">
+      
+        3. Cache check
+      
+    </span>
+</a>
+<nav aria-label="3. Cache check" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#has-this-exact-query-been-run-before">
+<span class="md-ellipsis">
+      
+        Has this exact query been run before?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#is-someone-else-already-running-this-query">
+<span class="md-ellipsis">
+      
+        Is someone else already running this query?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#did-this-query-fail-recently">
+<span class="md-ellipsis">
+      
+        Did this query fail recently?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cache-invalidation">
+<span class="md-ellipsis">
+      
+        Cache invalidation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-statement-id">
+<span class="md-ellipsis">
+      
+        4. Statement ID
+      
+    </span>
+</a>
+<nav aria-label="4. Statement ID" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#status-lifecycle">
+<span class="md-ellipsis">
+      
+        Status lifecycle
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resolution-strategies">
+<span class="md-ellipsis">
+      
+        Resolution strategies
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-execution">
+<span class="md-ellipsis">
+      
+        5. Execution
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-fetch-the-result">
+<span class="md-ellipsis">
+      
+        6. Fetch the result
+      
+    </span>
+</a>
+<nav aria-label="6. Fetch the result" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#poll-for-status">
+<span class="md-ellipsis">
+      
+        Poll for status
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#download-the-result">
+<span class="md-ellipsis">
+      
+        Download the result
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pagination-and-projection">
+<span class="md-ellipsis">
+      
+        Pagination and projection
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#putting-it-all-together">
+<span class="md-ellipsis">
+      
+        Putting it all together
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#state-tables">
+<span class="md-ellipsis">
+      
+        State tables
+      
+    </span>
+</a>
+<nav aria-label="State tables" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#state-connection">
+<span class="md-ellipsis">
+      
+        State connection
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_results">
+<span class="md-ellipsis">
+      
+        _query_results
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_fingerprints">
+<span class="md-ellipsis">
+      
+        _query_fingerprints
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_requests">
+<span class="md-ellipsis">
+      
+        _query_requests
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_query_perspective">
+<span class="md-ellipsis">
+      
+        _query_perspective
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-the-tables-relate">
+<span class="md-ellipsis">
+      
+        How the tables relate
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-cache-invalidation-works">
+<span class="md-ellipsis">
+      
+        How cache invalidation works
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quick-reference">
+<span class="md-ellipsis">
+      
+        Quick reference
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigation" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../..">
+<span class="md-ellipsis">
+    About
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../get-started/docker/">
+<span class="md-ellipsis">
+    Guides
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<h1 id="semantic-query-lifecycle">Semantic Query Lifecycle<a class="headerlink" href="#semantic-query-lifecycle" title="Link to this section">¶</a></h1>
+<p>How a semantic query travels through Vulcan — from the moment you POST a request to when you download the result.</p>
+<hr/>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h2>
+<p>Semantic queries are <strong>asynchronous</strong>. You submit a query, get a statement ID back immediately, and poll for the result. This design allows Vulcan to deduplicate identical queries, serve results from cache, and scale execution across workers.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>POST query ──► statement ID ──► poll status ──► GET result
+</span></code></pre></div>
+<p>The full lifecycle has six stages:</p>
+<ol>
+<li><strong>Submit</strong> — Client sends a semantic query</li>
+<li><strong>Transpile</strong> — Vulcan converts semantic references to warehouse SQL</li>
+<li><strong>Cache check</strong> — Vulcan looks for an existing result before executing</li>
+<li><strong>Execute</strong> — A worker runs the SQL on the data warehouse</li>
+<li><strong>Store</strong> — The result is saved as a Parquet file in object storage</li>
+<li><strong>Fetch</strong> — Client retrieves the result using the statement ID</li>
+</ol>
+<hr/>
+<h2 id="1-submit-a-query">1. Submit a query<a class="headerlink" href="#1-submit-a-query" title="Link to this section">¶</a></h2>
+<p>Send a <code>POST</code> to <code>/api/v1/query/semantic/rest</code> with a JSON body describing what you want:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">  </span><span class="nt">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">    </span><span class="nt">"measures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;alias&gt;.&lt;measure_name&gt;"</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">],</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="nt">"dimensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;alias&gt;.&lt;column_name&gt;"</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">],</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="nt">"timeDimensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">        </span><span class="nt">"dimension"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;alias&gt;.&lt;column_name&gt;"</span><span class="p">,</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">        </span><span class="nt">"granularity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;second|minute|hour|day|week|month|quarter|year&gt;"</span><span class="p">,</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">        </span><span class="nt">"dateRange"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;start_date&gt;"</span><span class="p">,</span><span class="w"> </span><span class="s2">"&lt;end_date&gt;"</span><span class="p">]</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">    </span><span class="p">],</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">    </span><span class="nt">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">    </span><span class="nt">"segments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;alias&gt;.&lt;segment_name&gt;"</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">],</span>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">    </span><span class="nt">"order"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"&lt;field&gt;"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;asc|desc&gt;"</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">    </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;</span><span class="mi">1-50000</span><span class="err">&gt;</span><span class="p">,</span>
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">    </span><span class="nt">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;timezone&gt;"</span>
+</span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-18"><a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The query uses semantic names — <code>orders.total_revenue</code>, <code>orders.region</code> — defined in your <code>semantics/</code> YAML files. You never write SQL directly.</p>
+<h3 id="query-fields">Query fields<a class="headerlink" href="#query-fields" title="Link to this section">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>measures</code></td>
+<td>List of measures to calculate (e.g. <code>["orders.total_revenue"]</code>)</td>
+</tr>
+<tr>
+<td><code>dimensions</code></td>
+<td>Columns to group by (e.g. <code>["orders.region"]</code>)</td>
+</tr>
+<tr>
+<td><code>timeDimensions</code></td>
+<td>Time-based dimensions with granularity and date ranges</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>Filter conditions applied to the query</td>
+</tr>
+<tr>
+<td><code>segments</code></td>
+<td>Predefined segment filters from semantic models</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Sort order — dict <code>{"field": "asc"}</code> or array <code>[["field", "desc"]]</code></td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>Maximum rows returned (1–50,000, default 10,000)</td>
+</tr>
+<tr>
+<td><code>timezone</code></td>
+<td>Timezone for time dimensions (default <code>"UTC"</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2-transpile-to-sql">2. Transpile to SQL<a class="headerlink" href="#2-transpile-to-sql" title="Link to this section">¶</a></h2>
+<p>The warehouse doesn't understand semantic names like <code>orders.total_revenue</code>. Vulcan translates them into real SQL.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>Semantic query ──► Catalog + Transpiler ──► Warehouse SQL
+</span></code></pre></div>
+<ol>
+<li>Vulcan loads the project's <strong>semantic catalog</strong> — all models, measures, dimensions, joins, and their mappings to physical tables</li>
+<li>The catalog is exported in a schema format and sent to the <strong>Transpiler Service</strong> along with your query</li>
+<li>The transpiler generates warehouse-specific SQL (Snowflake SQL, DuckDB SQL, etc.) based on the target engine</li>
+</ol>
+<p>The generated SQL looks something like:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">SELECT</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span><span class="n">region</span><span class="p">,</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">  </span><span class="n">DATE_TRUNC</span><span class="p">(</span><span class="s1">'month'</span><span class="p">,</span><span class="w"> </span><span class="n">order_date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">order_date</span><span class="p">,</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">revenue</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_revenue</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">analytics</span><span class="p">.</span><span class="n">orders</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">order_date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">'2024-01-01'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">'2024-12-31'</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">2</span>
+</span></code></pre></div>
+<p>The transpiler handles joins, aggregations, grouping, and dialect-specific syntax automatically.</p>
+<hr/>
+<h2 id="3-cache-check">3. Cache check<a class="headerlink" href="#3-cache-check" title="Link to this section">¶</a></h2>
+<p>Before running anything on the warehouse, Vulcan checks if it can skip execution entirely. It hashes the generated SQL into a <strong>fingerprint</strong> and asks three questions:</p>
+<h3 id="has-this-exact-query-been-run-before">Has this exact query been run before?<a class="headerlink" href="#has-this-exact-query-been-run-before" title="Link to this section">¶</a></h3>
+<p>If a cached result exists for this fingerprint <strong>and</strong> the upstream data hasn't changed since, Vulcan returns the cached result immediately. No warehouse call needed.</p>
+<h3 id="is-someone-else-already-running-this-query">Is someone else already running this query?<a class="headerlink" href="#is-someone-else-already-running-this-query" title="Link to this section">¶</a></h3>
+<p>If the same query is currently in-flight from another request, Vulcan <strong>piggybacks</strong> on it instead of running a duplicate. Your statement ID is linked to the running query's ID, and when it finishes, both requests share the same result.</p>
+<h3 id="did-this-query-fail-recently">Did this query fail recently?<a class="headerlink" href="#did-this-query-fail-recently" title="Link to this section">¶</a></h3>
+<p>If the same query recently failed, Vulcan returns the error directly to avoid hammering a broken query. Use the <code>retry_on_recent_failure</code> query parameter to override this behavior.</p>
+<h3 id="cache-invalidation">Cache invalidation<a class="headerlink" href="#cache-invalidation" title="Link to this section">¶</a></h3>
+<p>Cached results are automatically invalidated when upstream models get refreshed. If your pipeline runs and updates the <code>orders</code> table, all cached results that depend on <code>orders</code> are expired. The next identical query executes fresh instead of returning stale data.</p>
+<hr/>
+<h2 id="4-statement-id">4. Statement ID<a class="headerlink" href="#4-statement-id" title="Link to this section">¶</a></h2>
+<p>No matter which path is taken — cache hit, piggyback, or new execution — the API responds immediately with an <strong>HTTP 202</strong> and a statement ID:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stmt-abc-123"</span><span class="p">,</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QUEUED"</span><span class="p">,</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">  </span><span class="nt">"strategy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"execute"</span><span class="p">,</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">  </span><span class="nt">"sql"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SELECT region, ..."</span><span class="p">,</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">  </span><span class="nt">"fingerprint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a1b2c3..."</span><span class="p">,</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">  </span><span class="nt">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">    </span><span class="nt">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/v1/query/statement/stmt-abc-123"</span><span class="p">,</span>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w">    </span><span class="nt">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/v1/query/statement/stmt-abc-123/result"</span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The statement ID is your receipt. The API never blocks until the query finishes.</p>
+<h3 id="status-lifecycle">Status lifecycle<a class="headerlink" href="#status-lifecycle" title="Link to this section">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>ACCEPTED ──► QUEUED ──► IN_PROGRESS ──► SUCCESS
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>                                    └──► FAILED
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>                                    └──► CANCELLED
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ACCEPTED</code></td>
+<td>Request received, before queuing</td>
+</tr>
+<tr>
+<td><code>QUEUED</code></td>
+<td>Job placed in the queue, waiting for a worker</td>
+</tr>
+<tr>
+<td><code>IN_PROGRESS</code></td>
+<td>A worker picked it up and is executing SQL on the warehouse</td>
+</tr>
+<tr>
+<td><code>SUCCESS</code></td>
+<td>Done — result is available</td>
+</tr>
+<tr>
+<td><code>FAILED</code></td>
+<td>Something went wrong — error message is attached</td>
+</tr>
+<tr>
+<td><code>CANCELLED</code></td>
+<td>Cancelled by the user</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cache hits</strong> skip straight to <code>SUCCESS</code>. <strong>Piggybacks</strong> mirror the status of the primary query.</p>
+<h3 id="resolution-strategies">Resolution strategies<a class="headerlink" href="#resolution-strategies" title="Link to this section">¶</a></h3>
+<p>Each statement ID records which path was taken:</p>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>What happened</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>execute</code></td>
+<td>New execution — SQL sent to the warehouse</td>
+</tr>
+<tr>
+<td><code>from_cache</code></td>
+<td>Cache hit — result returned from a previous execution</td>
+</tr>
+<tr>
+<td><code>await_primary</code></td>
+<td>Piggyback — linked to an identical query already running</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="5-execution">5. Execution<a class="headerlink" href="#5-execution" title="Link to this section">¶</a></h2>
+<p>For new executions, the query goes through a job queue backed by PostgreSQL (PGQueuer). A background worker picks it up and:</p>
+<ol>
+<li><strong>Runs the SQL</strong> on your data warehouse (Snowflake, Databricks, DuckDB, etc.)</li>
+<li><strong>Saves the result</strong> as a Parquet file in object storage (S3, MinIO, GCS)</li>
+<li><strong>Records metadata</strong> — row count, file size, column schema, lineage</li>
+<li><strong>Creates a cache entry</strong> so the next identical query can skip execution</li>
+<li><strong>Updates the statement status</strong> to <code>SUCCESS</code> (or <code>FAILED</code> if something went wrong)</li>
+</ol>
+<hr/>
+<h2 id="6-fetch-the-result">6. Fetch the result<a class="headerlink" href="#6-fetch-the-result" title="Link to this section">¶</a></h2>
+<p>Use the statement ID to check status and retrieve data.</p>
+<h3 id="poll-for-status">Poll for status<a class="headerlink" href="#poll-for-status" title="Link to this section">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>GET /api/v1/query/statement/{id}
+</span></code></pre></div>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="p">{</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stmt-abc-123"</span><span class="p">,</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SUCCESS"</span><span class="p">,</span>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">  </span><span class="nt">"row_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+</span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="w">  </span><span class="nt">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="w">    </span><span class="nt">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/v1/query/statement/stmt-abc-123/result"</span>
+</span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-7-8"><a href="#__codelineno-7-8" id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Keep polling until <code>status</code> is <code>SUCCESS</code> or <code>FAILED</code>.</p>
+<h3 id="download-the-result">Download the result<a class="headerlink" href="#download-the-result" title="Link to this section">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>GET /api/v1/query/statement/{id}/result
+</span></code></pre></div>
+<p>The result endpoint supports multiple output formats:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>How to request</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parquet</td>
+<td>Default, or <code>format=parquet</code></td>
+<td>Redirects (307) to a presigned download URL</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td><code>Accept: application/json</code> or <code>format=json</code></td>
+<td>Returns data inline as JSON</td>
+</tr>
+<tr>
+<td>CSV</td>
+<td><code>Accept: text/csv</code> or <code>format=csv</code></td>
+<td>Returns data inline as CSV</td>
+</tr>
+<tr>
+<td>YAML</td>
+<td><code>Accept: application/yaml</code> or <code>format=yaml</code></td>
+<td>Returns data inline as YAML</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pagination-and-projection">Pagination and projection<a class="headerlink" href="#pagination-and-projection" title="Link to this section">¶</a></h3>
+<p>For JSON, CSV, and YAML formats, you can filter the result using query parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>limit</code></td>
+<td>Maximum number of rows to return</td>
+</tr>
+<tr>
+<td><code>offset</code></td>
+<td>Number of rows to skip</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>Comma-separated list of columns to include</td>
+</tr>
+</tbody>
+</table>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>GET /api/v1/query/statement/{id}/result?format=json&amp;limit=100&amp;offset=0&amp;columns=region,total_revenue
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Parquet format ignores pagination</p>
+<p>When requesting Parquet format, <code>limit</code>, <code>offset</code>, and <code>columns</code> parameters are ignored — you get the full result file.</p>
+</div>
+<hr/>
+<h2 id="putting-it-all-together">Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Link to this section">¶</a></h2>
+<p>Here's the typical client flow:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>1.  POST /api/v1/query/semantic/rest
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a>    Body: { "query": { "measures": [...], ... } }
+</span><span id="__span-10-3"><a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a>    ← 202  { "id": "stmt-abc-123", "status": "QUEUED" }
+</span><span id="__span-10-4"><a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a href="#__codelineno-10-5" id="__codelineno-10-5" name="__codelineno-10-5"></a>2.  GET /api/v1/query/statement/stmt-abc-123
+</span><span id="__span-10-6"><a href="#__codelineno-10-6" id="__codelineno-10-6" name="__codelineno-10-6"></a>    ← 200  { "status": "IN_PROGRESS" }
+</span><span id="__span-10-7"><a href="#__codelineno-10-7" id="__codelineno-10-7" name="__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a href="#__codelineno-10-8" id="__codelineno-10-8" name="__codelineno-10-8"></a>3.  GET /api/v1/query/statement/stmt-abc-123
+</span><span id="__span-10-9"><a href="#__codelineno-10-9" id="__codelineno-10-9" name="__codelineno-10-9"></a>    ← 200  { "status": "SUCCESS", "row_count": 1000 }
+</span><span id="__span-10-10"><a href="#__codelineno-10-10" id="__codelineno-10-10" name="__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a href="#__codelineno-10-11" id="__codelineno-10-11" name="__codelineno-10-11"></a>4.  GET /api/v1/query/statement/stmt-abc-123/result?format=json
+</span><span id="__span-10-12"><a href="#__codelineno-10-12" id="__codelineno-10-12" name="__codelineno-10-12"></a>    ← 200  [ { "region": "US", "total_revenue": 42000 }, ... ]
+</span></code></pre></div>
+<hr/>
+<h2 id="state-tables">State tables<a class="headerlink" href="#state-tables" title="Link to this section">¶</a></h2>
+<p>Vulcan persists all query metadata in four tables that live in the <strong>state connection</strong> database. These tables power caching, deduplication, status tracking, and saved queries.</p>
+<h3 id="state-connection">State connection<a class="headerlink" href="#state-connection" title="Link to this section">¶</a></h3>
+<p>The state tables are stored in a PostgreSQL database configured via your project's <code>config.yaml</code>:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-11-2"><a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="w">  </span><span class="nt">my_gateway</span><span class="p">:</span>
+</span><span id="__span-11-3"><a href="#__codelineno-11-3" id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
+</span><span id="__span-11-4"><a href="#__codelineno-11-4" id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-11-5"><a href="#__codelineno-11-5" id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+</span><span id="__span-11-6"><a href="#__codelineno-11-6" id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-11-7"><a href="#__codelineno-11-7" id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-11-8"><a href="#__codelineno-11-8" id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-11-9"><a href="#__codelineno-11-9" id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-11-10"><a href="#__codelineno-11-10" id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="w">    </span><span class="nt">state_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span><span class="w">    </span><span class="c1"># Schema where state tables live (default: "vulcan")</span>
+</span></code></pre></div>
+<p>If no <code>state_connection</code> is configured, Vulcan falls back to the warehouse connection. All <code>_query_*</code> tables are created in the <code>state_schema</code> (default <code>vulcan</code>).</p>
+<h3 id="_query_results"><code>_query_results</code><a class="headerlink" href="#_query_results" title="Link to this section">¶</a></h3>
+<p>Stores metadata about each query result. The actual data lives in object storage as Parquet — this table only tracks where to find it.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>result_id</code></td>
+<td>text (PK)</td>
+<td>Unique result identifier</td>
+</tr>
+<tr>
+<td><code>object_store_path</code></td>
+<td>text</td>
+<td>Parquet file path in object storage (e.g. <code>results/{id}.parquet</code>)</td>
+</tr>
+<tr>
+<td><code>row_count</code></td>
+<td>bigint</td>
+<td>Number of rows in the result</td>
+</tr>
+<tr>
+<td><code>size_bytes</code></td>
+<td>bigint</td>
+<td>Parquet file size in bytes</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>jsonb</td>
+<td>Column schema: <code>[{"name": "...", "type": "..."}]</code></td>
+</tr>
+<tr>
+<td><code>sql</code></td>
+<td>text</td>
+<td>SQL query that produced this result</td>
+</tr>
+<tr>
+<td><code>references</code></td>
+<td>jsonb</td>
+<td>Field-level lineage: <code>{column: [[model, field], ...]}</code></td>
+</tr>
+<tr>
+<td><code>created_ts</code></td>
+<td>bigint</td>
+<td>When the result was stored (Unix milliseconds)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_query_fingerprints"><code>_query_fingerprints</code><a class="headerlink" href="#_query_fingerprints" title="Link to this section">¶</a></h3>
+<p>The <strong>cache index</strong>. Each entry maps a SQL fingerprint (hash of normalized SQL) to a stored result. This is what makes cache hits possible.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fingerprint</code></td>
+<td>text (PK)</td>
+<td>SHA-256 hash of normalized SQL + params</td>
+</tr>
+<tr>
+<td><code>result_id</code></td>
+<td>text</td>
+<td>Links to <code>_query_results.result_id</code></td>
+</tr>
+<tr>
+<td><code>depends_on</code></td>
+<td>text[]</td>
+<td>Model names this query touches (used for invalidation)</td>
+</tr>
+<tr>
+<td><code>created_ts</code></td>
+<td>bigint</td>
+<td>When the cache entry was created (Unix ms)</td>
+</tr>
+<tr>
+<td><code>expires_ts</code></td>
+<td>bigint</td>
+<td>When the entry expires (Unix ms, NULL = no TTL expiry)</td>
+</tr>
+<tr>
+<td><code>invalidated_by_run_id</code></td>
+<td>text</td>
+<td>Run ID that invalidated this entry</td>
+</tr>
+<tr>
+<td><code>invalidated_ts</code></td>
+<td>bigint</td>
+<td>When invalidation happened (Unix ms)</td>
+</tr>
+</tbody>
+</table>
+<p>A fingerprint is considered <strong>stale</strong> when <code>expires_ts &lt;= now</code> or <code>invalidated_ts</code> is set.</p>
+<h3 id="_query_requests"><code>_query_requests</code><a class="headerlink" href="#_query_requests" title="Link to this section">¶</a></h3>
+<p>An audit log of every query submission. Every API call — whether it's a cache hit, piggyback, or new execution — creates a row here.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>request_id</code></td>
+<td>text (PK)</td>
+<td>The statement ID returned to the client</td>
+</tr>
+<tr>
+<td><code>strategy</code></td>
+<td>text</td>
+<td>Resolution path: <code>execute</code>, <code>from_cache</code>, or <code>await_primary</code></td>
+</tr>
+<tr>
+<td><code>execution_status</code></td>
+<td>text</td>
+<td>Current status: <code>ACCEPTED</code>, <code>QUEUED</code>, <code>IN_PROGRESS</code>, <code>SUCCESS</code>, <code>FAILED</code>, <code>CANCELLED</code></td>
+</tr>
+<tr>
+<td><code>fingerprint</code></td>
+<td>text</td>
+<td>Links to <code>_query_fingerprints.fingerprint</code></td>
+</tr>
+<tr>
+<td><code>result_id</code></td>
+<td>text</td>
+<td>Links to <code>_query_results.result_id</code> (set on completion)</td>
+</tr>
+<tr>
+<td><code>primary_request_id</code></td>
+<td>text</td>
+<td>For <code>await_primary</code>: the statement ID of the query actually running</td>
+</tr>
+<tr>
+<td><code>depends_on</code></td>
+<td>text[]</td>
+<td>Model names this query touches</td>
+</tr>
+<tr>
+<td><code>gateway</code></td>
+<td>text</td>
+<td>Gateway name used for execution</td>
+</tr>
+<tr>
+<td><code>sql_query</code></td>
+<td>text</td>
+<td>SQL as executed</td>
+</tr>
+<tr>
+<td><code>normalized_sql</code></td>
+<td>text</td>
+<td>Normalized SQL (used for fingerprinting)</td>
+</tr>
+<tr>
+<td><code>rest_query</code></td>
+<td>jsonb</td>
+<td>Original REST query payload</td>
+</tr>
+<tr>
+<td><code>query_type</code></td>
+<td>text</td>
+<td>Query type (e.g. <code>SEMANTIC_REST</code>, <code>RAW_SQL</code>)</td>
+</tr>
+<tr>
+<td><code>pgq_job_id</code></td>
+<td>bigint</td>
+<td>PGQueuer job ID</td>
+</tr>
+<tr>
+<td><code>ttl</code></td>
+<td>int</td>
+<td>Request TTL in minutes (5–43,200)</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>jsonb</td>
+<td>Client metadata</td>
+</tr>
+<tr>
+<td><code>submitted_by</code></td>
+<td>text</td>
+<td>Who submitted the query</td>
+</tr>
+<tr>
+<td><code>submitted_ts</code></td>
+<td>bigint</td>
+<td>When submitted (Unix ms)</td>
+</tr>
+<tr>
+<td><code>execution_start_ts</code></td>
+<td>bigint</td>
+<td>When the worker started executing (Unix ms)</td>
+</tr>
+<tr>
+<td><code>execution_end_ts</code></td>
+<td>bigint</td>
+<td>When execution finished (Unix ms)</td>
+</tr>
+<tr>
+<td><code>cached_at_ts</code></td>
+<td>bigint</td>
+<td>Set for <code>from_cache</code> strategy</td>
+</tr>
+<tr>
+<td><code>error_message</code></td>
+<td>text</td>
+<td>Error details for <code>FAILED</code> requests</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_query_perspective"><code>_query_perspective</code><a class="headerlink" href="#_query_perspective" title="Link to this section">¶</a></h3>
+<p>Saved queries (perspectives) that can be refreshed automatically when underlying data changes.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>perspective_id</code></td>
+<td>text (PK)</td>
+<td>Unique perspective identifier</td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>text</td>
+<td>URL-friendly unique slug</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>text</td>
+<td>Display name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text</td>
+<td>Description</td>
+</tr>
+<tr>
+<td><code>request_id</code></td>
+<td>text</td>
+<td>Links to latest <code>_query_requests.request_id</code></td>
+</tr>
+<tr>
+<td><code>fingerprint</code></td>
+<td>text</td>
+<td>Denormalized fingerprint for staleness checks</td>
+</tr>
+<tr>
+<td><code>rest_query</code></td>
+<td>jsonb</td>
+<td>Saved query definition</td>
+</tr>
+<tr>
+<td><code>depends_on</code></td>
+<td>text[]</td>
+<td>Model names (for auto-refresh)</td>
+</tr>
+<tr>
+<td><code>auto_refresh</code></td>
+<td>boolean</td>
+<td>Whether to re-run when dependencies are invalidated</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>text[]</td>
+<td>Categorization labels</td>
+</tr>
+<tr>
+<td><code>owner</code></td>
+<td>text</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td><code>is_public</code></td>
+<td>boolean</td>
+<td>Visibility</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-the-tables-relate">How the tables relate<a class="headerlink" href="#how-the-tables-relate" title="Link to this section">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>_query_requests.fingerprint  ───►  _query_fingerprints.fingerprint
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a>_query_fingerprints.result_id ───►  _query_results.result_id
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a>_query_requests.result_id     ───►  _query_results.result_id
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a>_query_perspective.request_id ───►  _query_requests.request_id
+</span></code></pre></div>
+<h3 id="how-cache-invalidation-works">How cache invalidation works<a class="headerlink" href="#how-cache-invalidation-works" title="Link to this section">¶</a></h3>
+<p>When a pipeline run refreshes upstream models (e.g. <code>orders</code> gets new data):</p>
+<ol>
+<li>The run is recorded in the <code>_runs</code> activity table with <code>models_affected</code></li>
+<li>Vulcan finds all rows in <code>_query_fingerprints</code> where <code>depends_on</code> overlaps with <code>models_affected</code></li>
+<li>Those rows are updated: <code>expires_ts</code> and <code>invalidated_ts</code> are set to now, and <code>invalidated_by_run_id</code> records which run caused it</li>
+<li>The next time someone queries the same fingerprint, <code>get_fingerprint_result</code> sees the entry is stale and treats it as a cache miss</li>
+<li>The query executes fresh, and a new fingerprint entry + result replaces the old one</li>
+</ol>
+<p>This means cached results stay fresh as long as the underlying data hasn't changed — and are automatically expired the moment it does.</p>
+<hr/>
+<h2 id="quick-reference">Quick reference<a class="headerlink" href="#quick-reference" title="Link to this section">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Submit endpoint</td>
+<td><code>POST /api/v1/query/semantic/rest</code></td>
+</tr>
+<tr>
+<td>Poll endpoint</td>
+<td><code>GET /api/v1/query/statement/{id}</code></td>
+</tr>
+<tr>
+<td>Result endpoint</td>
+<td><code>GET /api/v1/query/statement/{id}/result</code></td>
+</tr>
+<tr>
+<td>Semantic definitions</td>
+<td><code>semantics/*.yml</code> in your project</td>
+</tr>
+<tr>
+<td>Transpilation</td>
+<td>Semantic JSON → Transpiler Service → warehouse SQL</td>
+</tr>
+<tr>
+<td>Job queue</td>
+<td>PostgreSQL-backed (PGQueuer)</td>
+</tr>
+<tr>
+<td>Result storage</td>
+<td>Parquet files in object storage (S3 / MinIO / GCS)</td>
+</tr>
+<tr>
+<td>Caching</td>
+<td>Fingerprint-based, auto-invalidated on model refreshes</td>
+</tr>
+<tr>
+<td>Result formats</td>
+<td>Parquet, JSON, CSV, YAML</td>
+</tr>
+<tr>
+<td>State tables</td>
+<td><code>_query_results</code>, <code>_query_fingerprints</code>, <code>_query_requests</code>, <code>_query_perspective</code></td>
+</tr>
+<tr>
+<td>State connection</td>
+<td>Configured via <code>state_connection</code> in gateway config (default: warehouse connection)</td>
+</tr>
+<tr>
+<td>State schema</td>
+<td>Default <code>vulcan</code>, configurable via <code>state_schema</code></td>
+</tr>
+</tbody>
+</table>
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="Footer" class="md-footer__inner md-grid">
+<a aria-label="Previous: Transpiling Semantics" class="md-footer__link md-footer__link--prev" href="../transpiling_semantics/">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Previous
+              </span>
+<div class="md-ellipsis">
+                Transpiling Semantics
+              </div>
+</div>
+</a>
+<a aria-label="Next: Deployment Steps" class="md-footer__link md-footer__link--next" href="../deployment_guide/">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Next
+              </span>
+<div class="md-ellipsis">
+                Deployment Steps
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 DataOS Vulcan Team<br/>
+<small>Complete stack for building data products</small>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/tmdc-io/vulcan-book" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<div class="md-progress" data-md-component="progress" role="progressbar"></div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../assets/javascripts/mermaid-zoom.js"></script>
+<script src="../../assets/javascripts/favicon-switcher.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
