@@ -7,3 +7,11 @@ __pycache__/
 .DS_Store
 *.egg-info/
 
+# Non-essential / internal-only files
+__draft/
+extra/
+supporting-docs/
+writing-guide/
+writing-guide.zip
+mkdocs_old.yml
+docs/readme/
