@@ -99,9 +99,11 @@ graph TB
     Gateways --> Connection[connection]
     Gateways --> StateConn[state_connection]
     Gateways --> TestConn[test_connection]
+    Gateways --> Scheduler[scheduler]
     Options --> Linter[linter]
     Options --> Notifications[notifications]
     Options --> Variables[variables]
+    Options --> ExecHooks[execution_hooks]
 ```
 
 ## Configuration Sections
@@ -169,11 +171,11 @@ Gateways define how Vulcan connects to your data warehouse and state backend. De
 | Component | Description | Type | Required |
 |-----------|-------------|:----:|:--------:|
 | `connection` | Primary data warehouse connection | object | Yes |
-| `state_connection` | Where Vulcan stores internal state | object | No |
-| `test_connection` | Connection for running tests | object | No |
+| `state_connection` | Where Vulcan stores internal state (defaults to `connection` if not set) | object | No |
+| `test_connection` | Connection for running tests (defaults to DuckDB) | object | No |
 | `scheduler` | Scheduler configuration | object | No |
 | `state_schema` | Schema name for state tables | string | No |
-
+| `default_gateway` | Which gateway to use when none is specified | string | No |
 
 ```yaml
 # Gateway Connection
@@ -193,6 +195,11 @@ gateways:
       database: statestore
       user: vulcan
       password: "{{ env_var('STATE_DB_PASSWORD') }}"
+    test_connection:
+      type: duckdb
+    scheduler:
+      type: builtin
+    state_schema: my_project
 
 default_gateway: default
 ```
@@ -217,11 +224,30 @@ See [Model Defaults](./options/model_defaults.md) for all available options.
 
 Store sensitive information like passwords and API keys without hardcoding them. Use environment variables, `.env` files, or configuration overrides. Variables also let you override configuration values dynamically.
 
+```yaml
+variables:
+  warehouse_schema: analytics
+  refresh_window_days: 7
+
+gateways:
+  default:
+    variables:
+      warehouse_schema: analytics_dev  # override per gateway
+```
+
 See [Variables](./options/variables.md) for details.
 
 ### Execution Hooks
 
 Run SQL statements automatically at the start and end of `vulcan plan` and `vulcan run` commands. Use `before_all` for setup tasks like creating temporary tables or granting permissions. Use `after_all` for cleanup or post-processing.
+
+```yaml
+before_all:
+  - GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO reporting_role
+
+after_all:
+  - ANALYZE analytics.daily_sales
+```
 
 See [Execution Hooks](./options/execution_hooks.md) for detailed examples and use cases.
 
@@ -234,6 +260,18 @@ See [Linter](./options/linter.md) for rules and custom linter configuration.
 ### Notifications
 
 Set up alerts via Slack or email. Get notified when plans start or finish, when runs complete, or when audits fail.
+
+```yaml
+notification_targets:
+  - type: slack
+    url: "{{ env_var('SLACK_WEBHOOK_URL') }}"
+    notify_on:
+      - run_end
+      - audit_failure
+  - type: console
+    notify_on:
+      - plan_change
+```
 
 See [Notifications](./options/notifications.md) for Slack webhooks, API, and email setup.
 
@@ -375,6 +413,13 @@ This table lists all available configuration keys in `config.yaml`. Click the li
     - **Environment-level:** Use `environment_catalog_mapping` to route all models in a given environment to a specific catalog, without changing individual model names.
 
     Model-level catalog takes precedence. If you set both, the catalog in the model name wins.
+
+    ```yaml
+    environment_catalog_mapping:
+      dev: dev_catalog
+      staging: staging_catalog
+      prod: prod_catalog
+    ```
 
 ### Project Management
 
