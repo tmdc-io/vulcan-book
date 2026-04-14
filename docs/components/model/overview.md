@@ -146,7 +146,7 @@ MODEL (
 
 This tells Vulcan:
 
-- **`name`** - What to call this model (schema.table format)
+- **`name`** - What to call this model (`schema.table` or `catalog.schema.table` if targeting a non-default database)
 
 - **`kind`** - How to materialize it (FULL rebuilds everything, INCREMENTAL only updates changes, etc.)
 
@@ -166,7 +166,7 @@ Here are the properties you'll use most often:
 
 | Property | What It Does | Example |
 | -------- | ------------ | ------- |
-| `name` | Fully qualified model name (schema.table) | `sales.daily_sales` |
+| `name` | Fully qualified model name (`schema.table` or `catalog.schema.table`) | `sales.daily_sales` |
 | `kind` | Materialization strategy | `FULL`, `INCREMENTAL`, `VIEW` |
 | `cron` | When to run (scheduling) | `'@daily'`, `'0 0 * * *'` |
 | `grains` | Column(s) that make rows unique | `(order_date)` or `(customer_id, order_date)` |

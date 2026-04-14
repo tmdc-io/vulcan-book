@@ -362,10 +362,19 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | `pinned_environments` | Environments not deleted by janitor | array | No | `[]` | - |
 | `physical_schema_mapping` | Map model patterns to physical schema names | object | No | `{}` | - |
 | `environment_suffix_target` | Where to append environment name | string | No | `schema` | - |
-| `environment_catalog_mapping` | Map environments to catalog names | object | No | `{}` | - |
+| `environment_catalog_mapping` | Route environments to specific catalogs (e.g., dev models go to `dev_catalog`, prod to `prod_catalog`). Useful in multi-catalog setups where each environment writes to a different database. | object | No | `{}` | - |
 | `physical_table_naming_convention` | How to name tables at physical layer | string | No | `full` | - |
 | `virtual_environment_mode` | How to handle environments | string | No | `full` | - |
 | `gateway_managed_virtual_layer` | Whether gateways manage virtual layer | boolean | No | `false` | - |
+
+!!! tip "Catalog in model names vs. environment catalog mapping"
+
+    There are two ways to control which catalog your models land in:
+
+    - **Model-level:** Use a three-part name (`catalog.schema.model`) in your MODEL definition to target a specific catalog for that model. See [model name property](../components/model/properties.md#name).
+    - **Environment-level:** Use `environment_catalog_mapping` to route all models in a given environment to a specific catalog, without changing individual model names.
+
+    Model-level catalog takes precedence. If you set both, the catalog in the model name wins.
 
 ### Project Management
 

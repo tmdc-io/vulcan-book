@@ -10,7 +10,7 @@ This page is a complete reference for all available properties. It covers what e
 
 | Property | Description | Type | Required |
 |----------|-------------|:----:|:--------:|
-| `name` | Fully qualified model name (`schema.model` or `catalog.schema.model`) | `str` | Y |
+| `name` | Fully qualified model name: `schema.model` or `catalog.schema.model` (catalog required when targeting a non-default database) | `str` | Y |
 | `project` | Project name for multi-repo deployments | `str` | N |
 | `kind` | Model kind (VIEW, FULL, INCREMENTAL, etc.) | `str` \| `dict` | N |
 | `cron` | Schedule expression for model refresh | `str` | N |
@@ -56,7 +56,7 @@ This page is a complete reference for all available properties. It covers what e
 
 ### name
 
-Your model's name is how it's identified in the data warehouse. It needs at least a schema (`schema.model`), and you can optionally include a catalog (`catalog.schema.model`).
+Your model's name is how it's identified in the data warehouse. It needs at least a schema (`schema.model`), and you can include a catalog (`catalog.schema.model`) when targeting a specific database.
 
 **Format:** `schema.model` or `catalog.schema.model`
 
@@ -66,12 +66,12 @@ This becomes the production table/view name that other models and users will ref
 
     ```sql
     MODEL (
-      name sales.daily_sales,        -- schema.model format
+      name sales.daily_sales,        -- uses the gateway's default catalog
     );
     
-    -- Or with catalog
+    -- Target a specific catalog
     MODEL (
-      name catalog.sales.daily_sales -- catalog.schema.model format
+      name analytics_db.sales.daily_sales -- writes to analytics_db, not the default
     );
     ```
 
@@ -79,16 +79,27 @@ This becomes the production table/view name that other models and users will ref
 
     ```python
     @model(
-        "sales.daily_sales",  # schema.model format
+        "sales.daily_sales",  # uses the gateway's default catalog
     )
     def execute(context, **kwargs):
         ...
     
-    # Or with catalog
+    # Target a specific catalog
     @model(
-        "catalog.sales.daily_sales",  # catalog.schema.model format
+        "analytics_db.sales.daily_sales",  # writes to analytics_db, not the default
     )
     ```
+
+!!! info "When do you need the catalog?"
+
+    If you omit the catalog, Vulcan writes to the **default catalog** configured in your [gateway connection](../../configurations/overview.md) (e.g., the `catalog` property in your Databricks or Trino config).
+
+    You **must** specify the catalog when:
+
+    - Your model targets a **different database** than the gateway default
+    - You're working in a **multi-catalog setup** (e.g., separate catalogs for raw, staging, and analytics data)
+
+    If all your models live in one catalog, `schema.model` is all you need.
 
 !!! note "Environment Prefixing"
 
