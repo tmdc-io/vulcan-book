@@ -58,6 +58,7 @@ nav:
         - components/advanced-features/signals.md
         - components/advanced-features/custom_materializations.md
   - Guides:
+      - guides/index.md
       - guides/get-started/docker.md
       # - guides/plan.md
       - guides/data-product-lifecycle.md
