@@ -15,7 +15,7 @@ This guide provides step-by-step instructions for deploying Vulcan data products
 
 Before deploying a Vulcan data product, ensure you have the following resources configured in your DataOS environment:
 
-### 1. DataOS 2.0 CLI
+### 1. DataOS CLI
 
 Ensure you have the DataOS CLI installed and configured:
 
@@ -455,10 +455,52 @@ ds resource apply -f domain-resource.yaml
 # Get resource status
 ds resource -t vulcan -n <data-product-name> get
 
-
 # Check logs
 ds resource -t vulcan -n <data-product-name> logs
 ```
+
+### Understanding Runtime Entries
+
+Vulcan doesn't run as a single container. When you deploy, DataOS splits it into three components, each with its own runtime and logs:
+
+- **plan** - handles migration and deployment preparation (`vulcan migrate` + `vulcan plan --auto-apply`)
+- **run** - executes your models on schedule (`vulcan run`)
+- **api** - serves queries and exposes endpoints (long-running service)
+
+Open the **Runtime** tab in your DataOS instance and you'll see entries for all three. This is expected.
+
+### Which Log to Check
+
+| What you're investigating | Look at | Runtime entry pattern |
+|---|---|---|
+| Model execution results | **run** logs | `*-r-execute`, `workflow...run...` |
+| Migration, planning, auto-apply | **plan** logs | `*-mgrt-execute`, `*-plan-execute` |
+| API availability, query issues | **api** logs | `*-api-*`, `service...api...` |
+
+For example, if your resource is called `orders-analytics`:
+
+- `orders-analyticsv1-mgrt-execute` and `orders-analyticsv1-plan-execute` belong to **plan**
+- `orders-analyticsv1-r-execute` and `workflowv2alpha...run...` entries belong to **run**
+- `orders-analyticsv1-api-*` and `servicev2alpha...api...` entries belong to **api**
+
+### Why Multiple Entries Appear
+
+You'll often see more than three entries. Here's why:
+
+- **Scheduled runs create new pods.** Each time the cron fires, DataOS creates a new workflow pod for the run. Five "Succeeded" entries means five completed scheduled runs. This is normal.
+- **API replicas and sidecars.** The API pod has multiple containers, each with its own logs:
+
+    | Container | Use it for |
+    |---|---|
+    | Main API container | Core API/service behavior |
+    | GraphQL sidecar | GraphQL-related investigation |
+    | MySQL sidecar | MySQL wire protocol or client connection issues |
+
+- **Plan also runs as a workflow.** Migration and planning each get their own pod, so you'll see separate entries for those too.
+
+!!! tip "Quick rule of thumb"
+
+    To verify a scheduled execution went through, open the **most recent** "Succeeded" run workflow pod. That has the latest `vulcan run` output.
 
 ---
 
