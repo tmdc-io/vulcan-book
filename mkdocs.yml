@@ -58,7 +58,7 @@ nav:
         - components/advanced-features/signals.md
         - components/advanced-features/custom_materializations.md
   - Guides:
-      - guides/index.md
+      - Overview: guides/overview.md
       - guides/get-started/docker.md
       # - guides/plan.md
       - guides/data-product-lifecycle.md
@@ -142,6 +142,9 @@ plugins:
   - search:
       separator: '[\s\-,:!=\[\]()"/_]+'
   - glightbox
+  - redirects:
+      redirect_maps:
+        'guides/index.md': 'guides/overview.md'
   - mermaid2:
       arguments:
         theme: base
