@@ -481,7 +481,7 @@ For example, if your resource is called `orders-analytics`:
 
 - `orders-analyticsv1-mgrt-execute` and `orders-analyticsv1-plan-execute` belong to **plan**
 - `orders-analyticsv1-r-execute` and `workflowv2alpha...run...` entries belong to **run**
-- `orders-analyticsv1-api-*` and `servicev2alpha...api...` entries belong to **api**
+- `orders-analyticsv1-api-*` and `servicev2alpha...api...` entries belong to **api** (check `*-main` for API logs, `*-sc-1` for GraphQL, `*-sc-2` for MySQL)
 
 ### Why Multiple Entries Appear
 
@@ -490,11 +490,11 @@ You'll often see more than three entries. Here's why:
 - **Scheduled runs create new pods.** Each time the cron fires, DataOS creates a new workflow pod for the run. Five "Succeeded" entries means five completed scheduled runs. This is normal.
 - **API replicas and sidecars.** The API pod has multiple containers, each with its own logs:
 
-    | Container | Use it for |
-    |---|---|
-    | Main API container | Core API/service behavior |
-    | GraphQL sidecar | GraphQL-related investigation |
-    | MySQL sidecar | MySQL wire protocol or client connection issues |
+    | Container | Log suffix | Use it for |
+    |---|---|---|
+    | Main API container | `*-main` | Core API/service behavior |
+    | GraphQL sidecar | `*-sc-1` | GraphQL-related investigation |
+    | MySQL sidecar | `*-sc-2` | MySQL wire protocol or client connection issues |
 
 - **Plan also runs as a workflow.** Migration and planning each get their own pod, so you'll see separate entries for those too.
 
