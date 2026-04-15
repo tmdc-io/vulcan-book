@@ -483,6 +483,30 @@ For example, if your resource is called `orders-analytics`:
 - `orders-analyticsv1-r-execute` and `workflowv2alpha...run...` entries belong to **run**
 - `orders-analyticsv1-api-*` and `servicev2alpha...api...` entries belong to **api** (check `*-main` for API logs, `*-sc-1` for GraphQL, `*-sc-2` for MySQL)
 
+### Fetching Logs via CLI
+
+Use the DataOS CLI to pull logs from a specific component and container:
+
+```bash
+dataos-ctl resource -t Vulcan -n <resource-name> logs \
+  --container-group <container-group> -c <container-name>
+```
+
+| What you need | `--container-group` | `-c` |
+|---|---|---|
+| Planning / migration logs | `<name>-plan-execute` | `main` |
+| Model execution logs | `<name>-run-execute` | `main` |
+| API service logs | `<name>-api` | `main` |
+| GraphQL sidecar logs | `<name>-api` | `sc-1` |
+| MySQL sidecar logs | `<name>-api` | `sc-2` |
+
+For example, to check execution logs for a resource called `orders-analytics`:
+
+```bash
+dataos-ctl resource -t Vulcan -n orders-analytics logs \
+  --container-group orders-analytics-run-execute -c main
+```
+
 ### Why Multiple Entries Appear
 
 You'll often see more than three entries. Here's why:
