@@ -10,6 +10,21 @@ Apache Spark is a unified analytics engine for large-scale data processing. Vulc
 1. A running Spark cluster (standalone, YARN, or Kubernetes)
 2. Spark 3.x or higher (3.4+ recommended for catalog support)
 3. Network connectivity to the Spark master node
+4. **Spark version alignment** — the Spark version on your cluster must match the version bundled in the Vulcan Spark Docker image
+
+!!! warning "Spark Version Mismatch"
+    The Spark version running on your cluster **must match** the version bundled in the Vulcan Spark Docker image. The Vulcan container acts as the Spark driver and serializes task objects that your cluster's executors deserialize. Even a minor version difference (e.g., 3.5.1 in the image vs 3.5.7 on your cluster) can break serialization and produce errors like:
+
+    ```
+    java.io.InvalidClassException: org.apache.spark.scheduler.Task;
+    local class incompatible: stream classdesc serialVersionUID = <UID_A>,
+    local class serialVersionUID = <UID_B>
+    ```
+
+    To resolve this, either:
+
+    - Update your Spark cluster to match the version in the Vulcan image, **or**
+    - Use a Vulcan Spark Docker image built with the same Spark version as your cluster
 
 ### Permissions
 

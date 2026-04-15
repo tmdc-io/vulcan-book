@@ -205,6 +205,9 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
         alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"
         ```
         *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*
+
+        !!! warning "Spark requires a running cluster and version alignment"
+            Unlike other engines, Spark requires a running Spark cluster on your machine (or network). The Spark version on your cluster **must match** the version bundled in the Vulcan Spark image — a mismatch causes `InvalidClassException` serialization errors at runtime. See the [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
     
     === "Trino"
         ```bash
@@ -370,6 +373,9 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
         }
         ```
         *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*
+
+        !!! warning "Spark requires a running cluster and version alignment"
+            Unlike other engines, Spark requires a running Spark cluster on your machine (or network). The Spark version on your cluster **must match** the version bundled in the Vulcan Spark image — a mismatch causes `InvalidClassException` serialization errors at runtime. See the [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
 
     === "Trino"
         ```powershell
@@ -794,6 +800,27 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
     ```bash
     chmod -R a+w .
     ```
+
+    **Spark Version Mismatch (`InvalidClassException`)**
+
+    If you're using the Spark engine and see an error like:
+
+    ```
+    java.io.InvalidClassException: org.apache.spark.scheduler.Task;
+    local class incompatible: stream classdesc serialVersionUID = <UID_A>,
+    local class serialVersionUID = <UID_B>
+    ```
+
+    This means the Spark version on your cluster does not match the version bundled in the Vulcan Spark Docker image. The Vulcan container acts as the Spark driver, so the driver and executor Spark versions must be identical.
+
+    **Solution:**
+
+    1. Check which Spark version your cluster is running (e.g., `spark-submit --version`)
+    2. Ensure the Vulcan Spark image uses the same version — either update your cluster or use a matching Vulcan image
+
+    For example, if your cluster runs Spark 3.5.7 but the Vulcan image bundles 3.5.1, update the image tag to one built with 3.5.7.
+
+    See the [Spark engine prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for more details.
 
 
 ## Next Steps
