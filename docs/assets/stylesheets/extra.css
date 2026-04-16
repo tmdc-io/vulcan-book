@@ -6947,6 +6947,8 @@ html .md-typeset .footnote-ref {
 .mermaid-zoom-wrapper .mermaid {
   transition: transform 0.3s ease;
   transform-origin: center center;
+  border: none;
+  margin: 0;
 }
 
 .md-typeset .grid {
