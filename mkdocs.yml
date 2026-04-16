@@ -70,11 +70,11 @@ nav:
       - guides/model_selection.md
       - guides/transpiling_semantics.md
       - guides/semantic_query_lifecycle.md
+      - guides/vulcan_api_guide.md
       - guides/deployment_guide.md
       
       #- guides/federated_engines.md
       # - Virtual environments Guide:
-      # - Vulcan API Guide:
       # - Table Creation Guide:
   - CLI Commands: cli-commands/cli.md
   - Cookbook: cookbook/index.md
