@@ -2,6 +2,9 @@
 
 Follow this path from setup to production. Each step builds on the previous one.
 
+!!! note "Before you start"
+    This guide assumes you've already completed the [Get Started](get-started/docker.md) guide. You should have Docker running, the Vulcan stack up, and the CLI alias configured. If `vulcan --help` doesn't work yet, it would be ideal to finish the setup first.
+
 ---
 
 ## Phase 1: Setup & Infrastructure

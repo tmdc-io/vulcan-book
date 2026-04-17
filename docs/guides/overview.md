@@ -34,6 +34,10 @@ If you're new, start at the top. If you're looking for something specific, jump 
 
 [Semantic Query Lifecycle](semantic_query_lifecycle.md) - How a semantic query travels through Vulcan: from POST request, to transpilation, cache check, worker execution, and result download. Covers the async model and all six stages.
 
+## APIs
+
+[Vulcan API Guide](vulcan_api_guide.md) - Query your semantic layer from applications, dashboards, or BI tools. Covers the REST API (async submit, poll, download), GraphQL, and MySQL wire protocol, along with authentication, the `vulcan api` command, and production deployment config.
+
 ## Deployment
 
 [Deployment Steps](deployment_guide.md) - Deploy your Vulcan project to a DataOS environment. Covers CLI setup, depot and compute configuration, resource manifests, and verification steps.

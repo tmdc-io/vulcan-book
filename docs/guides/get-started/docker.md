@@ -1,5 +1,8 @@
 # Get Started
 
+!!! warning "LDK update incoming"
+    The Local Development Kit (LDK) for Vulcan is being updated to the latest version. This guide will be revised to match. Everything here still works, but expect changes soon.
+
 This guide shows you how to set up a complete Vulcan project on your local machine.
 
 The example project runs locally using a Postgres SQL engine. Vulcan automatically generates all necessary project files and configurations.
