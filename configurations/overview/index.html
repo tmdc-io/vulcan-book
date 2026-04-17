@@ -8,9 +8,9 @@
 <link href="../.." rel="prev"/>
 <link href="../options/model_defaults/" rel="next"/>
 <link href="../../assets/images/D_logo_dark-32px.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
 <title>Overview - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -341,14 +341,14 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#configuration-reference">
+<a class="md-nav__link" href="#complete-configuration-reference">
 <span class="md-ellipsis">
       
-        Configuration Reference
+        Complete Configuration Reference
       
     </span>
 </a>
-<nav aria-label="Configuration Reference" class="md-nav">
+<nav aria-label="Complete Configuration Reference" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#project-identity-metadata">
@@ -1458,14 +1458,14 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#configuration-reference">
+<a class="md-nav__link" href="#complete-configuration-reference">
 <span class="md-ellipsis">
       
-        Configuration Reference
+        Complete Configuration Reference
       
     </span>
 </a>
-<nav aria-label="Configuration Reference" class="md-nav">
+<nav aria-label="Complete Configuration Reference" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#project-identity-metadata">
@@ -1804,6 +1804,12 @@
 <td style="text-align: center;">Yes</td>
 </tr>
 <tr>
+<td><code>description</code></td>
+<td>Project description</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr>
 <td><code>display_name</code></td>
 <td>Human-readable project name for UI/docs</td>
 <td style="text-align: center;">string</td>
@@ -1819,6 +1825,12 @@
 <td><code>terms</code></td>
 <td>Business glossary terms using dot notation (e.g., <code>glossary.data_product</code>)</td>
 <td style="text-align: center;">array of string</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Project metadata object (domain, use_cases, limitations)</td>
+<td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 </tr>
 <tr>
@@ -1891,6 +1903,48 @@
 </span></code></pre></div>
 <h3 id="gateways">Gateways<a class="headerlink" href="#gateways" title="Link to this section">¶</a></h3>
 <p>Gateways define how Vulcan connects to your data warehouse and state backend. Define multiple gateways for different environments: dev, staging, prod. Each gateway has its own connection settings.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>connection</code></td>
+<td>Primary data warehouse connection</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr>
+<td><code>state_connection</code></td>
+<td>Where Vulcan stores internal state</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr>
+<td><code>test_connection</code></td>
+<td>Connection for running tests</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr>
+<td><code>scheduler</code></td>
+<td>Scheduler configuration</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr>
+<td><code>state_schema</code></td>
+<td>Schema name for state tables</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+</tr>
+</tbody>
+</table>
 <table>
 <thead>
 <tr>
@@ -2031,7 +2085,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Link to this section">¶</a></h2>
+<h2 id="complete-configuration-reference">Complete Configuration Reference<a class="headerlink" href="#complete-configuration-reference" title="Link to this section">¶</a></h2>
 <p>This table lists all available configuration keys in <code>config.yaml</code>. Click the links for detailed documentation.</p>
 <h3 id="project-identity-metadata">Project Identity &amp; Metadata<a class="headerlink" href="#project-identity-metadata" title="Link to this section">¶</a></h3>
 <table>
@@ -2974,8 +3028,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script src="../../assets/javascripts/favicon-switcher.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
