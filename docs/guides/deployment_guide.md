@@ -231,6 +231,12 @@ This file defines the DataOS-specific resource configuration for deploying Vulca
 
 **Location:** `<project-root>/domain-resource.yaml`
 
+You can create this file manually, or generate a starter deploy manifest using the Vulcan CLI:
+
+```bash
+vulcan create_deploy_yaml
+```
+
 **Key sections:**
 
 #### Resource Metadata
@@ -418,7 +424,7 @@ your-project/
 ```
 
 2. Configure `config.yaml` with your project settings
-3. Configure `domain-resource.yaml` with DataOS settings
+3. Generate `domain-resource.yaml` with `vulcan create_deploy_yaml` or configure it manually with your DataOS settings
 4. Push your code to a Git repository
 
 ### Step 2: Create Required Secrets
@@ -444,6 +450,9 @@ ds resource -t stack get -a
 ### Step 4: Deploy Vulcan Resource
 
 ```bash
+# Generate the deploy manifest if you haven't created it yet
+vulcan create_deploy_yaml
+
 # Apply the domain-resource configuration
 ds resource apply -f domain-resource.yaml
 
