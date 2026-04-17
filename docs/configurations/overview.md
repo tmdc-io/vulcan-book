@@ -115,9 +115,11 @@ Metadata fields that identify your project. They don't affect how Vulcan runs, b
 | `name` | Project identifier (used internally) | string | Yes |
 | `tenant` | Tenant or organization name | string | Yes |
 | `description` | Project description | string | Yes |
+| `description` | Project description | string | Yes |
 | `display_name` | Human-readable project name for UI/docs | string | No |
 | `tags` | Labels for categorization and filtering | array of string | No |
 | `terms` | Business glossary terms using dot notation (e.g., `glossary.data_product`) | array of string | No |
+| `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
 | `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
 
 ```yaml
@@ -165,6 +167,14 @@ metadata:
 ### Gateways
 
 Gateways define how Vulcan connects to your data warehouse and state backend. Define multiple gateways for different environments: dev, staging, prod. Each gateway has its own connection settings.
+
+| Component | Description | Type | Required |
+|-----------|-------------|:----:|:--------:|
+| `connection` | Primary data warehouse connection | object | Yes |
+| `state_connection` | Where Vulcan stores internal state | object | No |
+| `test_connection` | Connection for running tests | object | No |
+| `scheduler` | Scheduler configuration | object | No |
+| `state_schema` | Schema name for state tables | string | No |
 
 | Component | Description | Type | Required |
 |-----------|-------------|:----:|:--------:|

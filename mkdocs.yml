@@ -68,6 +68,7 @@ nav:
       - guides/data_quality.md
       - guides/model_selection.md
       - guides/transpiling_semantics.md
+      - guides/semantic_query_lifecycle.md
       - guides/deployment_guide.md
       
       #- guides/federated_engines.md
