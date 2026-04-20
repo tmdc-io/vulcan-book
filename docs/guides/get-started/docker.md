@@ -157,7 +157,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     === "Postgres (Default)"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.17 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.18 vulcan"
         ```
         *Image version from [Postgres engine configuration](../../configurations/engines/postgres/postgres.md#docker-images)*
     
@@ -169,7 +169,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     === "Databricks"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.15 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.18 vulcan"
         ```
         *Image version from [Databricks engine configuration](../../configurations/engines/databricks/databricks.md#docker-images)*
     
@@ -199,13 +199,13 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     === "Snowflake"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.17 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.18 vulcan"
         ```
         *Image version from [Snowflake engine configuration](../../configurations/engines/snowflake/snowflake.md#docker-images)*
     
     === "Spark"
         ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.15 vulcan"
+        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.18 vulcan"
         ```
         *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*
 
@@ -308,7 +308,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     === "Postgres (Default)"
         ```powershell
         function vulcan {
-          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.17 vulcan $args
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.18 vulcan $args
         }
         ```
         *Image version from [Postgres engine configuration](../../configurations/engines/postgres/postgres.md#docker-images)*
@@ -324,7 +324,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     === "Databricks"
         ```powershell
         function vulcan {
-          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.15 vulcan $args
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.18 vulcan $args
         }
         ```
         *Image version from [Databricks engine configuration](../../configurations/engines/databricks/databricks.md#docker-images)*
@@ -364,7 +364,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     === "Snowflake"
         ```powershell
         function vulcan {
-          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.17 vulcan $args
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.18 vulcan $args
         }
         ```
         *Image version from [Snowflake engine configuration](../../configurations/engines/snowflake/snowflake.md#docker-images)*
@@ -372,7 +372,7 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     === "Spark"
         ```powershell
         function vulcan {
-          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.15 vulcan $args
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.18 vulcan $args
         }
         ```
         *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*

@@ -51,12 +51,12 @@ The following Docker images are available for running Vulcan with Snowflake:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-snowflake:0.228.1.17` | Main Vulcan API service for Snowflake |
+| `tmdcio/vulcan-snowflake:0.228.1.18` | Main Vulcan API service for Snowflake |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-snowflake:0.228.1.17
+docker pull tmdcio/vulcan-snowflake:0.228.1.18
 ```
 
 ### Materialization Strategy
