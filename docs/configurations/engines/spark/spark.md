@@ -48,7 +48,7 @@ If `catalog` is not set, the behavior depends on the Spark version:
 
 ### Docker Images
 
-The following Docker images are available for running Vulcan with Spark (and for building custom Spark engine images):
+The following Docker images are available for running Vulcan with Spark:
 
 | Image | Description |
 |-------|-------------|
