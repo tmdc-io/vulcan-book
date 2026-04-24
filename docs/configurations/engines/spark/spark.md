@@ -111,33 +111,6 @@ context.spark.udf.registerJavaFunction(
 
 If the UDF runs on executors (most do), ensure workers can also see the same JARs (for example by also setting `spark.executor.extraClasspath` and/or baking/mounting the JARs into worker containers).
 
-#### Python Dependencies
-
-See: <https://realpython.com/python-wheels/>
-
-```bash
-python -m pip install -U build
-python -m build
-ls -1 dist/*.whl
-```
-
-Place wheels (and/or packages) at your project root under `dependencies/python/`. Python dependency discovery supports nested folders under `dependencies/python/`.
-
-In the standard Vulcan Spark flows (for example local Docker or cloned-project execution), you typically just **drop wheels into** `dependencies/python/` and 
-then **import them normally** in your model/UDF code — the runtime makes them available.
-
-Example (import inside an executor-side UDF):
-
-```python
-@functions.udf("string")
-def my_python_udf(value: str) -> str:
-    from my_package import normalize_value
-    return normalize_value(value)
-```
-
-If you are using `spark-submit` directly (outside Vulcan’s runtime wiring), distribute wheels using `--py-files` or `spark.submit.pyFiles`.
-
-
 ### Materialization Strategy
 
 Spark uses the following materialization strategies depending on the model kind:
