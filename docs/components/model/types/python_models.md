@@ -109,6 +109,22 @@ The `@model` decorator captures your model's metadata (just like the `MODEL` DDL
 
 **Return types:** You can return Pandas, PySpark, Bigframe, or Snowpark DataFrames. If your output is large, you can also use Python generators to return data in chunks for memory management.
 
+## Python Dependencies
+
+If your Python model (or engine-side UDF) needs additional Python packages, build a wheel and place it in your project under `dependencies/python/`.
+
+See: <https://packaging.python.org/en/latest/specifications/binary-distribution-format/>
+
+```bash
+python -m pip install -U build
+python -m build
+ls -1 dist/*.whl
+```
+
+Place wheels (and/or packages) at your project root under `dependencies/python/`. Nested folders under `dependencies/python/` are supported.
+
+In standard Vulcan execution flows (for example local Docker or cloned-project execution), you typically just drop wheels into `dependencies/python/` and import them normally in your model/UDF code.
+
 ## `@model` Specification
 
 The `@model` decorator accepts the same properties as SQL models, just use Python syntax instead of SQL DDL. `name`, `kind`, `cron`, `grains`, etc. They all work the same way.

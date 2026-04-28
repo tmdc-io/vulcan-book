@@ -52,15 +52,64 @@ The following Docker images are available for running Vulcan with Spark:
 
 | Image | Description |
 |-------|-------------|
+| `tmdcio/vulcan-spark-base:0.228.1.6` | Spark-ready base layer used by `vulcan-spark` builds |
 | `tmdcio/vulcan-spark:0.228.1.6` | Main Vulcan API service for Spark |
 | `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
+
+#### Image Contents
+
+Most users only need `vulcan-spark` + `vulcan-transpiler`.
+For local development users can also pull `vulcan-spark-base` for spark-master and spark-worker.
+
+`vulcan-spark-base` is the Spark runtime foundation (Ubuntu-based) that makes the engine “Spark-ready”.
 
 Pull the images:
 
 ```bash
+docker pull tmdcio/vulcan-spark-base:***
 docker pull tmdcio/vulcan-spark:0.228.1.6
 docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
+
+### Managing External/Extra Dependencies
+
+#### Java Dependencies
+
+##### Maven
+See: <https://maven.apache.org/plugins/maven-jar-plugin/usage>
+```bash
+mvn -DskipTests package
+ls -1 target/*.jar
+```
+
+##### Gradle
+See:  <https://docs.gradle.org/current/userguide/building_java_projects.html, https://docs.gradle.org/current/userguide/java_plugin.html>
+```bash
+./gradlew shadowJar
+ls -1 build/libs/*.jar
+```
+
+Place JARs at your project root under `dependencies/java/` so they are available inside the container at `/workspace/dependencies/java`. Nested folders under `dependencies/java/` are not supported (for example `dependencies/java/lib/*.jar` will not be picked up).
+
+If you have multiple JAR folders, include all of them in Spark config via `spark.driver.extraClasspath`:
+
+```properties
+spark.driver.extraClasspath=/workspace/dependencies/java:/workspace/third_party/jars
+```
+
+On Windows, use `;` instead of `:` to separate multiple paths.
+
+To *use* classes from your JAR in a Python model, register the Java UDF by fully-qualified class name, then call it in SQL expressions:
+
+```java
+context.spark.udf.registerJavaFunction(
+    "my_udf_name",
+    "com.yourorg.udf.YourUdfClass",
+    types.StringType(),
+)
+```
+
+If the UDF runs on executors (most do), ensure workers can also see the same JARs (for example by also setting `spark.executor.extraClasspath` and/or baking/mounting the JARs into worker containers).
 
 ### Materialization Strategy
 
@@ -79,6 +128,7 @@ Spark uses the following materialization strategies depending on the model kind:
 - [INCREMENTAL_BY_UNIQUE_KEY](../../../components/model/model_kinds.md#materialization-strategy_1)
 - [INCREMENTAL_BY_PARTITION](../../../components/model/model_kinds.md#materialization-strategy_3)
 - [FULL](../../../components/model/model_kinds.md#materialization-strategy_2)
+
 
 !!! note
     Spark may not be used for the Vulcan state connection. Use a transactional database like PostgreSQL for the `state_connection`.
