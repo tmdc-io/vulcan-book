@@ -76,14 +76,14 @@ docker pull tmdcio/vulcan-transpiler:0.228.1.10
 #### Java Dependencies
 
 ##### Maven
-See: <https://www.geeksforgeeks.org/advance-java/create-an-executable-jar-with-maven/>
+See: <https://maven.apache.org/plugins/maven-jar-plugin/usage>
 ```bash
 mvn -DskipTests package
 ls -1 target/*.jar
 ```
 
 ##### Gradle
-See:  <https://simplesolution.dev/gradle-creating-executable-jar-file/>
+See:  <https://docs.gradle.org/current/userguide/building_java_projects.html, https://docs.gradle.org/current/userguide/java_plugin.html>
 ```bash
 ./gradlew shadowJar
 ls -1 build/libs/*.jar

@@ -113,7 +113,7 @@ The `@model` decorator captures your model's metadata (just like the `MODEL` DDL
 
 If your Python model (or engine-side UDF) needs additional Python packages, build a wheel and place it in your project under `dependencies/python/`.
 
-See: <https://realpython.com/python-wheels/>
+See: <https://packaging.python.org/en/latest/specifications/binary-distribution-format/>
 
 ```bash
 python -m pip install -U build
