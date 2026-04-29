@@ -1,7 +1,7 @@
 site_name: DataOS Vulcan
 site_description: Complete documentation for Vulcan - complete stack for building data products
 site_author: DataOS Vulcan Team
-site_url: https://tmdc-io.github.io/vulcan-docs
+site_url: https://tmdc-io.github.io/vulcan-book/
 
 repo_name: tmdc-io/vulcan-book
 repo_url: https://github.com/tmdc-io/vulcan-book
@@ -145,6 +145,7 @@ plugins:
   - redirects:
       redirect_maps:
         'guides/index.md': 'guides/overview.md'
+        'index/index.md': 'index.md'
   - mermaid2:
       arguments:
         theme: base
