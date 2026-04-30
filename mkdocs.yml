@@ -76,6 +76,16 @@ nav:
       #- guides/federated_engines.md
       # - Virtual environments Guide:
       # - Table Creation Guide:
+  - Activation:
+    - About: activation/about.md
+    - Apps: activation/apps/apps.md
+    - BI: 
+      - About: activation/bi/about.md
+      - PowerBI: activation/bi/powerbi.md
+      - Tableau: activation/bi/tableau.md
+      - Superset: activation/bi/superset.md
+    - Python: activation/python/python.md
+    - MySQL: activation/mysql/about.md
   - CLI Commands: cli-commands/cli.md
   - Cookbook: cookbook/index.md
   - Glossary: glossary.md
