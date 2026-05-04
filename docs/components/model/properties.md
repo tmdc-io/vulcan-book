@@ -90,6 +90,10 @@ This becomes the production table/view name that other models and users will ref
     )
     ```
 
+!!! tip "Best Practice"
+
+    Use the fully qualified `catalog.schema.model` format. It makes your model names explicit and unambiguous, prevents surprises when gateway defaults change, and works seamlessly in multi-catalog setups.
+
 !!! info "When do you need the catalog?"
 
     If you omit the catalog, Vulcan writes to the **default catalog** configured in your [gateway connection](../../configurations/overview.md) (e.g., the `catalog` property in your Databricks or Trino config).

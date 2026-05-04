@@ -171,7 +171,7 @@ Gateways define how Vulcan connects to your data warehouse and state backend. De
 | Component | Description | Type | Required |
 |-----------|-------------|:----:|:--------:|
 | `connection` | Primary data warehouse connection | object | Yes |
-| `state_connection` | Where Vulcan stores internal state (defaults to `connection` if not set) | object | No |
+| `state_connection` | Where Vulcan stores internal state (defaults to `connection` if not set). For local testing, point this at DuckDB; for production, use Postgres | object | No |
 | `test_connection` | Connection for running tests (defaults to DuckDB) | object | No |
 | `scheduler` | Scheduler configuration | object | No |
 | `state_schema` | Schema name for state tables | string | No |
@@ -318,7 +318,7 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 |-------------------|-------------|:----:|:--------:|---------|---------------|
 | `gateways` | Gateway configurations for different environments | object | **Yes*** | `{"": {}}` | [See above](#gateways) |
 | `gateways.<name>.connection` | Primary data warehouse connection | object | **Yes** | - | [Engines](./engines/postgres/postgres.md) |
-| `gateways.<name>.state_connection` | Where Vulcan stores internal state | object | No | Uses `connection` | - |
+| `gateways.<name>.state_connection` | Where Vulcan stores internal state. For local testing, point this at DuckDB; for production, use Postgres | object | No | Uses `connection` | - |
 | `gateways.<name>.test_connection` | Connection for running unit tests | object | No | DuckDB | - |
 | `gateways.<name>.scheduler` | Scheduler configuration | object | No | `builtin` | - |
 | `gateways.<name>.state_schema` | Schema name for state tables | string | No | `vulcan`** | - |
@@ -429,8 +429,8 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | `time_column_format` | Default format for model time columns | string | No | `%Y-%m-%d` | - |
 | `infer_python_dependencies` | Auto-detect Python package requirements | boolean | No | `true` | - |
 | `log_limit` | Default number of logs to keep | integer | No | `20` | - |
-| `cache_dir` | Directory to store SQLMesh cache | string | No | `.cache` | - |
-| `loader` | Loader class for loading project files | class | No | `SqlMeshLoader` | - |
+| `cache_dir` | Directory for Vulcan's compiled project cache | string | No | `.cache` | - |
+| `loader` | Loader class for loading project files | class | No | Default loader | - |
 | `loader_kwargs` | Arguments to pass to loader instance | object | No | `{}` | - |
 
 ### Command Configuration

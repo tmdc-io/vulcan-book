@@ -526,6 +526,26 @@ You'll often see more than three entries. Here's why:
 
     To verify a scheduled execution went through, open the **most recent** "Succeeded" run workflow pod. That has the latest `vulcan run` output.
 
+### Spark engines: driver vs executor logs
+
+If your gateway uses Spark, the runtime entries above only tell half the story. Vulcan's `run` (and `plan`) pod is the **Spark driver**: it builds the query plan, ships tasks to your cluster, and collects results. The actual work runs on **executors** that live on your Spark cluster, not on DataOS.
+
+That split changes where you go to debug:
+
+| Symptom | Where the log lives | How to read it |
+|---|---|---|
+| Vulcan can't reach Spark, auth errors, version mismatches, scheduler exceptions | DataOS `*-run-execute` or `*-plan-execute` pod | `dataos-ctl resource -t Vulcan -n <name> logs --container-group <name>-run-execute -c main` |
+| Task failed inside a UDF, OOM on a worker, shuffle fetch failures | Spark cluster, executor logs | Spark master UI at `http://<spark-master>:8080`, then drill into the application then executors |
+| Driver-side stack trace that points into executor code | Both: DataOS shows the symptom, Spark shows the cause | Start in DataOS, follow the executor ID in the trace to the Spark UI |
+
+A common pattern: a `vulcan run` in DataOS fails with a multi-line Java stack trace. The top frames are driver-side and visible in `*-run-execute` logs; the root cause sits in an executor and is only retrievable from the Spark UI. Don't waste cycles re-running the DataOS pod when the answer is in the executor logs.
+
+For the symmetric "is my driver Spark version actually the same as my cluster's?" question, see [Verifying Spark version alignment](../configurations/engines/spark/spark.md#verifying-spark-version-alignment). A version skew is the single most common reason a Spark-backed run pod blows up at startup, and it surfaces as `java.io.InvalidClassException` in the `*-run-execute` logs.
+
+!!! note "Sidecars don't apply to Spark workloads"
+
+    The `sc-1` (GraphQL) and `sc-2` (MySQL) sidecars are part of the `api` pod, not `run`. Spark workloads don't add new container groups to DataOS. The driver still runs inside the existing `*-run-execute` container.
+
 ---
 
 ## Verification
