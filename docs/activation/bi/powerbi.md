@@ -1,78 +1,105 @@
-Power BI connects directly to your semantic layer, giving you access to all defined dimensions, measures, and context, ready to build reports and dashboards without any additional data modeling.
+# PowerBI
+
+Power BI connects to your semantic layer over the MySQL wire protocol. Every dimension, measure, and join already defined in `semantics/` shows up in the Fields pane, ready for visuals. You don't write Power Query, you don't redefine metrics per report.
 
 ---
 
-### Prerequisites
+## Prerequisites
 
-Before connecting, complete the following setup on your machine.
+Set these up once on the machine running Power BI Desktop.
 
-**1. Install MySQL Connector ODBC 8.0.23**
+### 1. Install MySQL Connector ODBC 8.0.23
 
-Download and install the MySQL ODBC connector. This is required for Power BI to communicate with your DataOS endpoint.
+Download and install the connector. Power BI talks to your DataOS endpoint through this driver.
 
 ```
 https://downloads.mysql.com/archives/get/p/10/file/mysql-connector-odbc-8.0.23-winx64.msi
 ```
 
-> **Note** -If you have a newer version of MySQL Connector ODBC already installed, or if you see the error *"There weren't enough elements in the enumeration to complete the operation"*, uninstall the current version and reinstall 8.0.23 specifically.
+> **Note:** Version 8.0.23 specifically. If a newer ODBC connector is already installed, or if you see *"There weren't enough elements in the enumeration to complete the operation"*, uninstall it and reinstall 8.0.23.
 
-**2. Allow third-party connectors in Power BI**
+### 2. Allow third-party connectors in Power BI
 
-Open Power BI Desktop and go to **File → Options and settings → Options → Security**. Under Data Extensions, select *"Allow any extension to load without validation or warning"*. Click OK and restart Power BI Desktop.
+Open Power BI Desktop and go to **File → Options and settings → Options → Security**. Under **Data Extensions**, select *"Allow any extension to load without validation or warning"*. Click OK and restart Power BI Desktop.
 
-**3. Install the DataOS Power BI Connector**
+### 3. Install the DataOS Power BI connector
 
-Download the connector file [`DataOS.mez`](../../assets/files/DataOS.mez) and place it in your Power BI custom connectors folder:
+Download [`DataOS.mez`](../../assets/files/DataOS.mez) and place it in your Power BI custom connectors folder:
 
 ```
 [My Documents]\Microsoft Power BI Desktop\Custom Connectors\
 ```
 
-If the folder doesn't exist, create it manually.
+If the folder doesn't exist, create it.
 
-**4. Add the environment variable**
-`ENABLE_CLEARTEXT_PLUGIN=1`
+### 4. Set the cleartext environment variable
+
+```
+ENABLE_CLEARTEXT_PLUGIN=1
+```
+
+The MySQL wire protocol uses cleartext authentication (over TLS); this variable tells the ODBC driver to allow it.
 
 ---
 
-### Connecting to Your Semantic Layer
+## Connecting to your semantic layer
 
-**Step 1 -Click the product tab and navigate to Connect**
+### Step 1: Open Connect from the product tab
 
-Select your tenant, go to the **Products** tab, and click either **Connect** or **Power BI** to initiate the connection.
+Select your tenant, go to the **Products** tab, and click **Connect** or **Power BI**.
 
 ![Step 1](../../assets/powerbi/step1.png)
 
-**Step 2 -Download the `.pbip` file**
+### Step 2: Download the `.pbip` file
 
-Click Download to save the `.pbip` package to your machine. This file is pre-configured with your tenant's endpoint and semantic model references.
+Click Download. The `.pbip` package is pre-configured with your tenant's endpoint and semantic model references.
 
 ![Step 2](../../assets/powerbi/step2.png)
 
-**Step 3 -Extract the downloaded archive**
+### Step 3: Extract the archive
 
-The downloaded file is a ZIP archive. Extract it to a folder of your choice -you'll find three files inside. The one to open is the `.pbip` file.
+The download is a ZIP. Extract it; you'll see three files. The one you open is the `.pbip` file.
 
 ![Step 3](../../assets/powerbi/step3.png)
 
-**Step 4 -Open the `.pbip` file in Power BI Desktop**
+### Step 4: Open the `.pbip` file
 
-Double-click the `.pbip` file. Power BI Desktop will open it automatically. If prompted with a connectivity or security dialog, click OK to proceed.
+Double-click it. Power BI Desktop opens it automatically. If you get a connectivity or security dialog, click OK.
 
 ![Step 4](../../assets/powerbi/step4.png)
 
-**Step 5 -Enter your credentials**
+### Step 5: Enter credentials
 
-When prompted, enter your tenant **username** and **API key**. These are the same credentials you use to log in to the product.
+When prompted, enter your tenant **username** and **API key**. Same credentials you use to log in to the product.
 
 ![Step 5](../../assets/powerbi/step5.png)
 
-**Step 6 -Your semantic models are now loaded**
+### Step 6: Your semantic models are loaded
 
-Once authenticated, all available semantic models -including their dimensions and measures -will appear in the Fields pane on the right.
+Once authenticated, every available semantic model, with its dimensions and measures, shows up in the Fields pane on the right.
 
 ![Step 6](../../assets/powerbi/step6.png)
 
 ---
 
-You're all set. You can now build reports, dashboards, and visualizations directly on top of your semantic models in Power BI Desktop.
+You're connected. Build reports, dashboards, and visuals directly on top of the semantic layer.
+
+## Troubleshooting
+
+??? note "Common issues"
+
+    **"There weren't enough elements in the enumeration to complete the operation"**
+
+    The wrong ODBC connector version is loaded. Uninstall any other MySQL ODBC version and reinstall 8.0.23 (link in Prerequisites).
+
+    **The DataOS connector doesn't appear in Power BI**
+
+    Two things to check: the `.mez` file is in `[My Documents]\Microsoft Power BI Desktop\Custom Connectors\`, and **Allow any extension to load** is enabled under **File → Options → Security → Data Extensions**. Restart Power BI after either change.
+
+    **Authentication fails with "cleartext password not allowed"**
+
+    `ENABLE_CLEARTEXT_PLUGIN=1` isn't set in the system environment. Add it, then restart Power BI Desktop so the new variable is picked up.
+
+    **Connection times out**
+
+    Check that the tenant URL in the `.pbip` file is reachable from your machine (corporate VPN or firewall rules can block it). Re-download the `.pbip` if you switched tenants.

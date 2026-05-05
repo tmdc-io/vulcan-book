@@ -1,28 +1,55 @@
-Once you've built data product with semantics(context layer) meaning it is ready to deliver value. 
-Activation is the step where all that investment starts paying off. Think of it like putting money in a fund: the setup is the hard part, but once it's done, the returns come to you automatically. It is how you collect those returns, through whichever channel fits your workflow.
+# Activation
 
-![Activation overview diagram](../assets/images/image.png)
+You've defined your models, validated them, and shipped a semantic layer. Now downstream tools need to read it: a dashboard in PowerBI, a notebook in Python, a customer-facing app, an analyst running ad-hoc SQL.
 
+Activation is how each of those surfaces connects to the same governed definitions, without re-modeling the data per tool.
 
-## What activation means
+```mermaid
+graph LR
+    subgraph SL ["Your Semantic Layer"]
+        direction TB
+        Sem["<b>Dimensions · Measures<br/>Segments · Metrics</b>"]
+    end
 
-Your semantics serve as a consistent, governed layer that every downstream tool reads from. Instead of re-modeling or re-explaining your data to each system, you define it once and activate it everywhere.
+    subgraph CH ["Activation Channels"]
+        direction TB
+        API["<b>REST / GraphQL API</b><br/>Apps & services"]
+        BI["<b>BI tools</b><br/>PowerBI · Tableau · Superset"]
+        SQL["<b>MySQL wire protocol</b><br/>IDEs · ad-hoc SQL"]
+        PY["<b>Python</b><br/>Notebooks · ML training"]
+    end
 
-## Activation channels
+    subgraph OUT ["Where it lands"]
+        Apps[Internal tools, customer apps]
+        Dash[Dashboards, reports]
+        Adhoc[Ad-hoc analysis, exports]
+        Models[Trained models, features]
+    end
 
-***1. Build applications*** — via API
-If you're building internal tools, customer-facing products, or automated workflows, you can access your data product programmatically through our API. Your semantics are already defined, so your app gets clean, consistent data without additional transformation.
+    Sem --> API --> Apps
+    Sem --> BI --> Dash
+    Sem --> SQL --> Adhoc
+    Sem --> PY --> Models
 
-***2. Visualize*** — via BI tools
-For dashboards, reports, and exploratory analysis, connect your favorite BI tool directly to the data product. The dimensions and measures you've defined become the building blocks of charts, filters, and drilldowns — no SQL writing required.
+    style SL fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style CH fill:#e3f2fd,stroke:#1976d2,stroke-width:1px
+    style OUT fill:#c8e6c9,stroke:#2e7d32,stroke-width:1px
+```
 
-***3. Explore*** — via MySQL
-For direct database access or ad-hoc querying, you can connect through MySQL. This is ideal for analysts who prefer writing queries or for powering data exports and integrations.
+## What activation gives you
 
-***4. Train models*** — via Python
-If your goal is machine learning, you can pull data directly using Python. Your semantics ensure the features and labels your models train on are consistent and well-defined from the start.
+Your semantics are the contract. Every channel reads from the same definitions, so a metric called `total_revenue` means the same thing in PowerBI, in a Python notebook, and in a customer-facing API. No re-modeling, no drift, no "which dashboard is right?"
 
+## Channels
 
-## The payoff
+**1. Build applications (API).** Hit the REST or GraphQL endpoint to pull semantic data into internal tools, customer-facing products, or workflows. The semantics handle the joins and aggregations; your app just asks for measures and dimensions. See the [Vulcan API Guide](../guides/vulcan_api_guide.md).
 
-Each channel is a different way to extract value from the same foundation. You invest the effort once — in building clean, well-structured semantics — and activation lets every team, tool, and use case benefit from it effortlessly.
+**2. Visualize (BI tools).** Connect PowerBI, Tableau, or Superset over the MySQL wire protocol. Your dimensions and measures show up as fields, ready for charts and drilldowns. No SQL in the dashboard, no metric definitions duplicated per workbook. See [BI tools](bi/about.md).
+
+**3. Explore (MySQL).** Point any MySQL-compatible client (CLI, DBeaver, JetBrains, etc.) at the same wire protocol for ad-hoc querying or to power exports and integrations. See [MySQL](mysql/about.md).
+
+**4. Train models (Python).** Pull semantic data into a notebook with the standard `mysql-connector-python` library. The features and labels you train on are the same ones your dashboards report against. See [Python](python/python.md).
+
+## How it pays off
+
+Define the metric once. Every team, tool, and use case downstream gets the same answer. That's the point of investing in the semantic layer in the first place.

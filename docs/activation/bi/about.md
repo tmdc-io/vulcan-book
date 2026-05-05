@@ -1,7 +1,13 @@
-Connect your BI tool of choice and turn your dimensions and measures into charts, dashboards, and drilldowns, no SQL required.
+# BI Tools
 
-**Supported Tool**
+Connect a BI tool over the MySQL wire protocol and your semantic models show up as native tables, with every dimension and measure already defined. Charts, filters, and drilldowns build on the same metrics you ship to APIs and notebooks, so a number on a dashboard matches a number from a Python query.
+
+No SQL in the workbook. No metric definitions duplicated per dashboard.
+
+## Supported tools
 
 1. [PowerBI](powerbi.md)
 2. [Tableau](tableau.md)
 3. [Superset](superset.md)
+
+> **Note:** Each guide covers prerequisites, the connection flow, and credentials. The connection itself is the same MySQL wire protocol used by the [MySQL](../mysql/about.md) and [Python](../python/python.md) channels.
