@@ -117,9 +117,11 @@ Metadata fields that identify your project. They don't affect how Vulcan runs, b
 | `name` | Project identifier (used internally) | string | Yes |
 | `tenant` | Tenant or organization name | string | Yes |
 | `description` | Project description | string | Yes |
+| `description` | Project description | string | Yes |
 | `display_name` | Human-readable project name for UI/docs | string | No |
 | `tags` | Labels for categorization and filtering | array of string | No |
 | `terms` | Business glossary terms using dot notation (e.g., `glossary.data_product`) | array of string | No |
+| `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
 | `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
 
 ```yaml
@@ -293,7 +295,7 @@ Vulcan works with these data warehouses and compute engines:
 | [MySQL](./engines/mysql/mysql.md) | WIP |
 | [Lakehouse](./engines/) | Coming Soon |
 
-## Configuration Reference
+## Complete Configuration Reference
 
 This table lists all available configuration keys in `config.yaml`. Click the links for detailed documentation.
 
