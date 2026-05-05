@@ -15,7 +15,7 @@ This guide provides step-by-step instructions for deploying Vulcan data products
 
 Before deploying a Vulcan data product, ensure you have the following resources configured in your DataOS environment:
 
-### 1. DataOS 2.0 CLI
+### 1. DataOS CLI
 
 Ensure you have the DataOS CLI installed and configured:
 
@@ -231,6 +231,12 @@ This file defines the DataOS-specific resource configuration for deploying Vulca
 
 **Location:** `<project-root>/domain-resource.yaml`
 
+You can create this file manually, or generate a starter deploy manifest using the Vulcan CLI:
+
+```bash
+vulcan create_deploy_yaml
+```
+
 **Key sections:**
 
 #### Resource Metadata
@@ -418,7 +424,7 @@ your-project/
 ```
 
 2. Configure `config.yaml` with your project settings
-3. Configure `domain-resource.yaml` with DataOS settings
+3. Generate `domain-resource.yaml` with `vulcan create_deploy_yaml` or configure it manually with your DataOS settings
 4. Push your code to a Git repository
 
 ### Step 2: Create Required Secrets
@@ -444,6 +450,9 @@ ds resource -t stack get -a
 ### Step 4: Deploy Vulcan Resource
 
 ```bash
+# Generate the deploy manifest if you haven't created it yet
+vulcan create_deploy_yaml
+
 # Apply the domain-resource configuration
 ds resource apply -f domain-resource.yaml
 
@@ -455,10 +464,96 @@ ds resource apply -f domain-resource.yaml
 # Get resource status
 ds resource -t vulcan -n <data-product-name> get
 
-
 # Check logs
 ds resource -t vulcan -n <data-product-name> logs
 ```
+
+### Understanding Runtime Entries
+
+Vulcan doesn't run as a single container. When you deploy, DataOS splits it into three components, each with its own runtime and logs:
+
+- **plan** - handles migration and deployment preparation (`vulcan migrate` + `vulcan plan --auto-apply`)
+- **run** - executes your models on schedule (`vulcan run`)
+- **api** - serves queries and exposes endpoints (long-running service)
+
+Open the **Runtime** tab in your DataOS instance and you'll see entries for all three. This is expected.
+
+### Which Log to Check
+
+| What you're investigating | Look at | Runtime entry pattern |
+|---|---|---|
+| Model execution results | **run** logs | `*-r-execute`, `workflow...run...` |
+| Migration, planning, auto-apply | **plan** logs | `*-mgrt-execute`, `*-plan-execute` |
+| API availability, query issues | **api** logs | `*-api-*`, `service...api...` |
+
+For example, if your resource is called `orders-analytics`:
+
+- `orders-analyticsv1-mgrt-execute` and `orders-analyticsv1-plan-execute` belong to **plan**
+- `orders-analyticsv1-r-execute` and `workflowv2alpha...run...` entries belong to **run**
+- `orders-analyticsv1-api-*` and `servicev2alpha...api...` entries belong to **api** (check `*-main` for API logs, `*-sc-1` for GraphQL, `*-sc-2` for MySQL)
+
+### Fetching Logs via CLI
+
+Use the DataOS CLI to pull logs from a specific component and container:
+
+```bash
+dataos-ctl resource -t Vulcan -n <resource-name> logs \
+  --container-group <container-group> -c <container-name>
+```
+
+| What you need | `--container-group` | `-c` |
+|---|---|---|
+| Planning / migration logs | `<name>-plan-execute` | `main` |
+| Model execution logs | `<name>-run-execute` | `main` |
+| API service logs | `<name>-api` | `main` |
+| GraphQL sidecar logs | `<name>-api` | `sc-1` |
+| MySQL sidecar logs | `<name>-api` | `sc-2` |
+
+For example, to check execution logs for a resource called `orders-analytics`:
+
+```bash
+dataos-ctl resource -t Vulcan -n orders-analytics logs \
+  --container-group orders-analytics-run-execute -c main
+```
+
+### Why Multiple Entries Appear
+
+You'll often see more than three entries. Here's why:
+
+- **Scheduled runs create new pods.** Each time the cron fires, DataOS creates a new workflow pod for the run. Five "Succeeded" entries means five completed scheduled runs. This is normal.
+- **API replicas and sidecars.** The API pod has multiple containers, each with its own logs:
+
+    | Container | Log suffix | Use it for |
+    |---|---|---|
+    | Main API container | `*-main` | Core API/service behavior |
+    | GraphQL sidecar | `*-sc-1` | GraphQL-related investigation |
+    | MySQL sidecar | `*-sc-2` | MySQL wire protocol or client connection issues |
+
+- **Plan also runs as a workflow.** Migration and planning each get their own pod, so you'll see separate entries for those too.
+
+!!! tip "Quick rule of thumb"
+
+    To verify a scheduled execution went through, open the **most recent** "Succeeded" run workflow pod. That has the latest `vulcan run` output.
+
+### Spark engines: driver vs executor logs
+
+If your gateway uses Spark, the runtime entries above only tell half the story. Vulcan's `run` (and `plan`) pod is the **Spark driver**: it builds the query plan, ships tasks to your cluster, and collects results. The actual work runs on **executors** that live on your Spark cluster, not on DataOS.
+
+That split changes where you go to debug:
+
+| Symptom | Where the log lives | How to read it |
+|---|---|---|
+| Vulcan can't reach Spark, auth errors, version mismatches, scheduler exceptions | DataOS `*-run-execute` or `*-plan-execute` pod | `dataos-ctl resource -t Vulcan -n <name> logs --container-group <name>-run-execute -c main` |
+| Task failed inside a UDF, OOM on a worker, shuffle fetch failures | Spark cluster, executor logs | Spark master UI at `http://<spark-master>:8080`, then drill into the application then executors |
+| Driver-side stack trace that points into executor code | Both: DataOS shows the symptom, Spark shows the cause | Start in DataOS, follow the executor ID in the trace to the Spark UI |
+
+A common pattern: a `vulcan run` in DataOS fails with a multi-line Java stack trace. The top frames are driver-side and visible in `*-run-execute` logs; the root cause sits in an executor and is only retrievable from the Spark UI. Don't waste cycles re-running the DataOS pod when the answer is in the executor logs.
+
+For the symmetric "is my driver Spark version actually the same as my cluster's?" question, see [Verifying Spark version alignment](../configurations/engines/spark/spark.md#verifying-spark-version-alignment). A version skew is the single most common reason a Spark-backed run pod blows up at startup, and it surfaces as `java.io.InvalidClassException` in the `*-run-execute` logs.
+
+!!! note "Sidecars don't apply to Spark workloads"
+
+    The `sc-1` (GraphQL) and `sc-2` (MySQL) sidecars are part of the `api` pod, not `run`. Spark workloads don't add new container groups to DataOS. The driver still runs inside the existing `*-run-execute` container.
 
 ---
 

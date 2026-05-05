@@ -2,6 +2,9 @@
 
 Follow this path from setup to production. Each step builds on the previous one.
 
+!!! note "Before you start"
+    This guide assumes you've already completed the [Get Started](get-started/docker.md) guide. You should have Docker running, the Vulcan stack up, and the CLI alias configured. If `vulcan --help` doesn't work yet, it would be ideal to finish the setup first.
+
 ---
 
 ## Phase 1: Setup & Infrastructure
@@ -32,7 +35,7 @@ Create an alias to access the Vulcan CLI. The alias uses an engine-specific Dock
 
 === "Postgres (Default)"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.10 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.18 vulcan"
     ```
     *Image version from [Postgres engine configuration](../../configurations/engines/postgres/postgres.md#docker-images)*
 
@@ -44,7 +47,7 @@ Create an alias to access the Vulcan CLI. The alias uses an engine-specific Dock
 
 === "Databricks"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.10 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.18 vulcan"
     ```
     *Image version from [Databricks engine configuration](../../configurations/engines/databricks/databricks.md#docker-images)*
 
@@ -74,19 +77,19 @@ Create an alias to access the Vulcan CLI. The alias uses an engine-specific Dock
 
 === "Snowflake"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.10 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.18 vulcan"
     ```
     *Image version from [Snowflake engine configuration](../../configurations/engines/snowflake/snowflake.md#docker-images)*
 
 === "Spark"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.18 vulcan"
     ```
     *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*
 
 === "Trino"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.15 vulcan"
     ```
     *Image version from [Trino engine configuration](../../configurations/engines/trino/trino.md#docker-images)*
 

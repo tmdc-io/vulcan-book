@@ -26,6 +26,7 @@ Commands:
   audit                   Run audits for the target model(s).
   check_intervals         Show missing intervals in an environment,...
   clean                   Clears the Vulcan cache and any build artifacts.
+  create_deploy_yaml      Generate a DataOS Vulcan resource deploy YAML...
   create_external_models  Create a schema file containing external model...
   create_test             Generate a unit test fixture for a given model.
   dag                     Render the DAG as an html file.
@@ -140,6 +141,25 @@ Options:
 
     ```
     $ vulcan create_external_models
+    ```
+
+## create_deploy_yaml
+
+Generate a DataOS Vulcan resource deploy YAML file. This is useful when you want to package your Vulcan project into a deployment manifest that can be applied in DataOS environments.
+
+```
+Usage: vulcan create_deploy_yaml [OPTIONS]
+
+  Generate a DataOS Vulcan resource deploy YAML file.
+
+Options:
+  --help  Show this message and exit.
+```
+
+??? example "Example"
+
+    ```
+    $ vulcan create_deploy_yaml
     ```
 
 
