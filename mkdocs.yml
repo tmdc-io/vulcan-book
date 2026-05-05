@@ -72,7 +72,8 @@ nav:
       - guides/semantic_query_lifecycle.md
       - guides/vulcan_api_guide.md
       - guides/deployment_guide.md
-      
+      - guides/troubleshooting.md
+
       #- guides/federated_engines.md
       # - Virtual environments Guide:
       # - Table Creation Guide:
