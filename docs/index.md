@@ -2,7 +2,7 @@
 
 A data product moves through four phases: Input/output, transformation, quality, semantics. Vulcan is one stack for all four.
 
-**Input/Output:** Bring your warehouse: Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, or Redshift etc. Vulcan connects through one config file and runs against the engine you already pay for. No data movement, no proprietary store.
+**Input/Output:** Bring your engine: Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, or Redshift etc. Vulcan connects through one config file and runs against the engine you already pay for. No data movement, no proprietary store.
 
 **Transformation:** Write models in SQL or Python, or mix both in the same project. `vulcan plan` shows the full impact of every change before it touches the warehouse; `vulcan run` ships it on the cron you set.
 
@@ -62,7 +62,7 @@ graph LR
 ```
 
 <!-- ## What you get -->
-
+<!-- 
 - **SQL + Python models** - Write transformations in either language, or mix both in the same project. Most teams start with SQL for heavy-lifting transformations, then add Python when they hit logic that's painful in SQL: API calls, ML models, complex business rules.
 
 - **CI/CD for data** - `vulcan plan` shows the full impact of every change before it touches your warehouse. Review what changed, approve when ready, roll back if something breaks.
@@ -71,7 +71,7 @@ graph LR
 
 - **Semantic layer** - Define dimensions, measures, segments, and metrics once. Vulcan validates them and generates REST, GraphQL, and MySQL-wire APIs. No manual API code.
 
-- **Multi-engine support** - Works with Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, Redshift, and more.
+- **Multi-engine support** - Works with Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, Redshift, and more. -->
 
 ## Get started
 
