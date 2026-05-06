@@ -43,12 +43,12 @@ The following Docker images are available for running Vulcan with Databricks:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-databricks:0.228.1.18` | Main Vulcan API service for Databricks |
+| `tmdcio/vulcan-databricks:0.228.1.19` | Main Vulcan API service for Databricks |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-databricks:0.228.1.18
+docker pull tmdcio/vulcan-databricks:0.228.1.19
 ```
 
 ### Materialization Strategy

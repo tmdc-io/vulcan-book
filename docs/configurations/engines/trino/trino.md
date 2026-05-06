@@ -48,12 +48,12 @@ The following Docker images are available for running Vulcan with Trino:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-trino:0.228.1.18` | Main Vulcan API service for Trino |
+| `tmdcio/vulcan-trino:0.228.1.19` | Main Vulcan API service for Trino |
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-trino:0.228.1.18
+docker pull tmdcio/vulcan-trino:0.228.1.19
 ```
 
 ### Materialization Strategy
