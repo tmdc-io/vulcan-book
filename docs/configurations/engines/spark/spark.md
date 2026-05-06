@@ -52,23 +52,25 @@ The following Docker images are available for running Vulcan with Spark:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-spark-base:0.228.1.6` | Spark-ready base layer used by `vulcan-spark` builds |
-| `tmdcio/vulcan-spark:0.228.1.6` | Main Vulcan API service for Spark |
-| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
+| `tmdcio/vulcan-spark-base:0.228.1.19` | Spark-ready base layer used by `vulcan-spark` builds |
+| `tmdcio/vulcan-spark:0.228.1.19` | Main Vulcan API service for Spark |
+| `tmdcio/vulcan-transpiler-semantic:0.0.5` | Semantic query transpiler engine |
+| `tmdcio/vulcan-transpiler-api:0.0.5` | Transpiler API service |
 
 #### Image Contents
 
-Most users only need `vulcan-spark` + `vulcan-transpiler`.
-For local development users can also pull `vulcan-spark-base` for spark-master and spark-worker.
+Most users only need `vulcan-spark` plus the two transpiler images (`vulcan-transpiler-semantic` and `vulcan-transpiler-api`).
+For local development you can also pull `vulcan-spark-base` for spark-master and spark-worker.
 
-`vulcan-spark-base` is the Spark runtime foundation (Ubuntu-based) that makes the engine “Spark-ready”.
+`vulcan-spark-base` is the Spark runtime foundation that makes the engine "Spark-ready".
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-spark-base:***
-docker pull tmdcio/vulcan-spark:0.228.1.6
-docker pull tmdcio/vulcan-transpiler:0.228.1.10
+docker pull tmdcio/vulcan-spark-base:0.228.1.19
+docker pull tmdcio/vulcan-spark:0.228.1.19
+docker pull tmdcio/vulcan-transpiler-semantic:0.0.5
+docker pull tmdcio/vulcan-transpiler-api:0.0.5
 ```
 
 ### Managing External/Extra Dependencies
