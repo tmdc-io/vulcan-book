@@ -1,0 +1,2792 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
+<meta content="DataOS Vulcan Team" name="author"/>
+<link href="https://tmdc-io.github.io/vulcan-book/guides/vulcan_api_guide/" rel="canonical"/>
+<link href="../semantic_query_lifecycle/" rel="prev"/>
+<link href="../deployment_guide/" rel="next"/>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Vulcan API Guide - DataOS Vulcan</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="../../assets/stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../assets/images/D_logo_light-32px.png" media="(prefers-color-scheme: dark)" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="apple-touch-icon" sizes="32x32"/>
+<meta content="website" property="og:type"/>
+<meta content="DataOS Vulcan" property="og:title"/>
+<meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." property="og:description"/>
+<meta content="https://tmdc-io.github.io/vulcan-book/" property="og:url"/>
+<meta content="DataOS Vulcan" property="og:site_name"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="DataOS Vulcan" name="twitter:title"/>
+<meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." name="twitter:description"/>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="blue-grey" data-md-color-primary="blue-grey" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#vulcan-api-guide">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="DataOS Vulcan" class="md-header__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/D_logo_dark-32px.png"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            DataOS Vulcan
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Vulcan API Guide
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="blue-grey" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="blue-grey" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<a aria-label="Share" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Share">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    tmdc-io/vulcan-book
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="DataOS Vulcan" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/D_logo_dark-32px.png"/>
+</a>
+    DataOS Vulcan
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    tmdc-io/vulcan-book
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Configurations
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Configurations
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Options
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Options
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/model_defaults/">
+<span class="md-ellipsis">
+    
+  
+    Model Defaults
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/variables/">
+<span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/execution_hooks/">
+<span class="md-ellipsis">
+    
+  
+    Execution Hooks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/notifications/">
+<span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/linter/">
+<span class="md-ellipsis">
+    
+  
+    Linter
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Engines
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Engines
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/bigquery/bigquery/">
+<span class="md-ellipsis">
+    
+  
+    BigQuery
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/databricks/databricks/">
+<span class="md-ellipsis">
+    
+  
+    Databricks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/fabric/fabric/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft Fabric
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/mssql/mssql/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft SQL Server
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/mysql/mysql/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/postgres/postgres/">
+<span class="md-ellipsis">
+    
+  
+    Postgres
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/redshift/redshift/">
+<span class="md-ellipsis">
+    
+  
+    Amazon Redshift
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/snowflake/snowflake/">
+<span class="md-ellipsis">
+    
+  
+    Snowflake
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/spark/spark/">
+<span class="md-ellipsis">
+    
+  
+    Spark
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/trino/trino/">
+<span class="md-ellipsis">
+    
+  
+    Trino
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../ci-cd/ci-cd/">
+<span class="md-ellipsis">
+    
+  
+    CI/CD
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Components
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Model
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Model
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/properties/">
+<span class="md-ellipsis">
+    
+  
+    Properties
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1_3" id="__nav_3_1_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Types
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_3_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_1_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Types
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/sql_models/">
+<span class="md-ellipsis">
+    
+  
+    SQL
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/python_models/">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/external_models/">
+<span class="md-ellipsis">
+    
+  
+    External
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/managed_models/">
+<span class="md-ellipsis">
+    
+  
+    Managed
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/model_kinds/">
+<span class="md-ellipsis">
+    
+  
+    Kinds
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/statements/">
+<span class="md-ellipsis">
+    
+  
+    Statements
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/tests/tests/">
+<span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/audits/audits/">
+<span class="md-ellipsis">
+    
+  
+    Audits
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/checks/checks/">
+<span class="md-ellipsis">
+    
+  
+    Checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Semantics
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Semantics
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/models/">
+<span class="md-ellipsis">
+    
+  
+    Semantic Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/business_metrics/">
+<span class="md-ellipsis">
+    
+  
+    Business Metrics
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Advance Features
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Advance Features
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6_1" id="__nav_3_6_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_1_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_6_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Macros
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/variables/">
+<span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/built_in/">
+<span class="md-ellipsis">
+    
+  
+    Built In
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/jinja/">
+<span class="md-ellipsis">
+    
+  
+    Jinja
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/signals/">
+<span class="md-ellipsis">
+    
+  
+    Signals
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/custom_materializations/">
+<span class="md-ellipsis">
+    
+  
+    Custom materializations
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../get-started/docker/">
+<span class="md-ellipsis">
+    
+  
+    Get Started
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data-product-lifecycle/">
+<span class="md-ellipsis">
+    
+  
+    Data Product Lifecycle
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../plan_guide/">
+<span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../run_and_scheduling/">
+<span class="md-ellipsis">
+    
+  
+    Run and Scheduling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../models/">
+<span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../incremental_by_time/">
+<span class="md-ellipsis">
+    
+  
+    Incremental by Time
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data_quality/">
+<span class="md-ellipsis">
+    
+  
+    Data Quality
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../model_selection/">
+<span class="md-ellipsis">
+    
+  
+    Model Selection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transpiling_semantics/">
+<span class="md-ellipsis">
+    
+  
+    Transpiling Semantics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../semantic_query_lifecycle/">
+<span class="md-ellipsis">
+    
+  
+    Semantic Query Lifecycle
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Vulcan API Guide
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Vulcan API Guide
+  
+
+    
+  </span>
+</a>
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+</a>
+<nav aria-label="Prerequisites" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#service-ports">
+<span class="md-ellipsis">
+      
+        Service Ports
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#authentication">
+<span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+</a>
+<nav aria-label="Authentication" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#local-development">
+<span class="md-ellipsis">
+      
+        Local Development
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dataos-deployment">
+<span class="md-ellipsis">
+      
+        DataOS Deployment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-wire-protocol">
+<span class="md-ellipsis">
+      
+        MySQL Wire Protocol
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#querying-via-rest-api">
+<span class="md-ellipsis">
+      
+        Querying via REST API
+      
+    </span>
+</a>
+<nav aria-label="Querying via REST API" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-submit-a-semantic-query">
+<span class="md-ellipsis">
+      
+        Step 1: Submit a Semantic Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-payload-reference">
+<span class="md-ellipsis">
+      
+        Query Payload Reference
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-receive-a-statement-id">
+<span class="md-ellipsis">
+      
+        Step 2: Receive a Statement ID
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-3-poll-for-status">
+<span class="md-ellipsis">
+      
+        Step 3: Poll for Status
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-4-download-the-result">
+<span class="md-ellipsis">
+      
+        Step 4: Download the Result
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#complete-example">
+<span class="md-ellipsis">
+      
+        Complete Example
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#querying-via-graphql">
+<span class="md-ellipsis">
+      
+        Querying via GraphQL
+      
+    </span>
+</a>
+<nav aria-label="Querying via GraphQL" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#endpoint">
+<span class="md-ellipsis">
+      
+        Endpoint
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-query">
+<span class="md-ellipsis">
+      
+        Example Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#graphql-playground">
+<span class="md-ellipsis">
+      
+        GraphQL Playground
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introspection">
+<span class="md-ellipsis">
+      
+        Introspection
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#querying-via-mysql-wire-protocol">
+<span class="md-ellipsis">
+      
+        Querying via MySQL Wire Protocol
+      
+    </span>
+</a>
+<nav aria-label="Querying via MySQL Wire Protocol" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connecting">
+<span class="md-ellipsis">
+      
+        Connecting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#discovering-models">
+<span class="md-ellipsis">
+      
+        Discovering Models
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#writing-queries">
+<span class="md-ellipsis">
+      
+        Writing Queries
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpiling-queries-locally">
+<span class="md-ellipsis">
+      
+        Transpiling Queries Locally
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#starting-the-api-server-manually">
+<span class="md-ellipsis">
+      
+        Starting the API Server Manually
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#api-endpoints-reference">
+<span class="md-ellipsis">
+      
+        API Endpoints Reference
+      
+    </span>
+</a>
+<nav aria-label="API Endpoints Reference" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rest-api">
+<span class="md-ellipsis">
+      
+        REST API
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#graphql">
+<span class="md-ellipsis">
+      
+        GraphQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-wire-protocol_1">
+<span class="md-ellipsis">
+      
+        MySQL Wire Protocol
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deployment">
+<span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting">
+<span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+</a>
+<nav aria-label="Troubleshooting" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connection-refused">
+<span class="md-ellipsis">
+      
+        Connection Refused
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#authentication-errors-401-403">
+<span class="md-ellipsis">
+      
+        Authentication Errors (401 / 403)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-returns-failed-status">
+<span class="md-ellipsis">
+      
+        Query Returns FAILED Status
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#empty-results">
+<span class="md-ellipsis">
+      
+        Empty Results
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-steps">
+<span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../deployment_guide/">
+<span class="md-ellipsis">
+    
+  
+    Deployment Steps
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../troubleshooting/">
+<span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Activation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Activation
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/apps/apps/">
+<span class="md-ellipsis">
+    
+  
+    Apps
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    BI
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    BI
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/powerbi/">
+<span class="md-ellipsis">
+    
+  
+    PowerBI
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/tableau/">
+<span class="md-ellipsis">
+    
+  
+    Tableau
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/superset/">
+<span class="md-ellipsis">
+    
+  
+    Superset
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/python/python/">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/mysql/about/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cli-commands/cli/">
+<span class="md-ellipsis">
+    
+  
+    CLI Commands
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cookbook/">
+<span class="md-ellipsis">
+    
+  
+    Cookbook
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../glossary/">
+<span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../faq/">
+<span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+</a>
+<nav aria-label="Prerequisites" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#service-ports">
+<span class="md-ellipsis">
+      
+        Service Ports
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#authentication">
+<span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+</a>
+<nav aria-label="Authentication" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#local-development">
+<span class="md-ellipsis">
+      
+        Local Development
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dataos-deployment">
+<span class="md-ellipsis">
+      
+        DataOS Deployment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-wire-protocol">
+<span class="md-ellipsis">
+      
+        MySQL Wire Protocol
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#querying-via-rest-api">
+<span class="md-ellipsis">
+      
+        Querying via REST API
+      
+    </span>
+</a>
+<nav aria-label="Querying via REST API" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-submit-a-semantic-query">
+<span class="md-ellipsis">
+      
+        Step 1: Submit a Semantic Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-payload-reference">
+<span class="md-ellipsis">
+      
+        Query Payload Reference
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-receive-a-statement-id">
+<span class="md-ellipsis">
+      
+        Step 2: Receive a Statement ID
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-3-poll-for-status">
+<span class="md-ellipsis">
+      
+        Step 3: Poll for Status
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-4-download-the-result">
+<span class="md-ellipsis">
+      
+        Step 4: Download the Result
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#complete-example">
+<span class="md-ellipsis">
+      
+        Complete Example
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#querying-via-graphql">
+<span class="md-ellipsis">
+      
+        Querying via GraphQL
+      
+    </span>
+</a>
+<nav aria-label="Querying via GraphQL" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#endpoint">
+<span class="md-ellipsis">
+      
+        Endpoint
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-query">
+<span class="md-ellipsis">
+      
+        Example Query
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#graphql-playground">
+<span class="md-ellipsis">
+      
+        GraphQL Playground
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introspection">
+<span class="md-ellipsis">
+      
+        Introspection
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#querying-via-mysql-wire-protocol">
+<span class="md-ellipsis">
+      
+        Querying via MySQL Wire Protocol
+      
+    </span>
+</a>
+<nav aria-label="Querying via MySQL Wire Protocol" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connecting">
+<span class="md-ellipsis">
+      
+        Connecting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#discovering-models">
+<span class="md-ellipsis">
+      
+        Discovering Models
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#writing-queries">
+<span class="md-ellipsis">
+      
+        Writing Queries
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpiling-queries-locally">
+<span class="md-ellipsis">
+      
+        Transpiling Queries Locally
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#starting-the-api-server-manually">
+<span class="md-ellipsis">
+      
+        Starting the API Server Manually
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#api-endpoints-reference">
+<span class="md-ellipsis">
+      
+        API Endpoints Reference
+      
+    </span>
+</a>
+<nav aria-label="API Endpoints Reference" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rest-api">
+<span class="md-ellipsis">
+      
+        REST API
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#graphql">
+<span class="md-ellipsis">
+      
+        GraphQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-wire-protocol_1">
+<span class="md-ellipsis">
+      
+        MySQL Wire Protocol
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deployment">
+<span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting">
+<span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+</a>
+<nav aria-label="Troubleshooting" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connection-refused">
+<span class="md-ellipsis">
+      
+        Connection Refused
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#authentication-errors-401-403">
+<span class="md-ellipsis">
+      
+        Authentication Errors (401 / 403)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-returns-failed-status">
+<span class="md-ellipsis">
+      
+        Query Returns FAILED Status
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#empty-results">
+<span class="md-ellipsis">
+      
+        Empty Results
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-steps">
+<span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigation" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../..">
+<span class="md-ellipsis">
+    About
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../overview/">
+<span class="md-ellipsis">
+    Guides
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<h1 id="vulcan-api-guide">Vulcan API Guide<a class="headerlink" href="#vulcan-api-guide" title="Link to this section">¶</a></h1>
+<p>You've defined your semantic models, your measures and dimensions are in place, and your plan has been applied. Now you want to query that data from an application, a dashboard, or a BI tool.</p>
+<p>Vulcan gives you three ways to do it: a <strong>REST API</strong>, a <strong>GraphQL</strong> endpoint, and a <strong>MySQL wire protocol</strong> service. All three are generated directly from your <code>semantics/</code> definitions. You don't write any API code.</p>
+<p>This guide walks you through authentication, querying each surface, and wiring things up for production.</p>
+<hr/>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
+<p>You need three things before the APIs will work:</p>
+<ol>
+<li><strong>A running Vulcan stack</strong> - bring it up with <code>make up</code> (see the <a href="../get-started/docker/">Get Started guide</a>)</li>
+<li><strong>At least one semantic model</strong> in your <code>semantics/</code> directory with dimensions and measures defined (see <a href="../../components/semantics/models/">Semantic Models</a>)</li>
+<li><strong>An applied plan</strong> - run <code>vulcan plan</code> so Vulcan knows about your models</li>
+</ol>
+<h3 id="service-ports">Service Ports<a class="headerlink" href="#service-ports" title="Link to this section">¶</a></h3>
+<p>When running locally via Docker, your services live at:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Port</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REST API</td>
+<td>8000</td>
+<td><code>http://localhost:8000</code></td>
+</tr>
+<tr>
+<td>GraphQL</td>
+<td>3000</td>
+<td><code>http://localhost:3000</code></td>
+</tr>
+<tr>
+<td>MySQL wire protocol</td>
+<td>3307</td>
+<td><code>localhost:3307</code></td>
+</tr>
+<tr>
+<td>Transpiler</td>
+<td>8100</td>
+<td><code>http://localhost:8100</code></td>
+</tr>
+<tr>
+<td>Interactive API docs (ReDoc)</td>
+<td>8000</td>
+<td><code>http://localhost:8000/redoc</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Link to this section">¶</a></h2>
+<p>How you authenticate depends on where Vulcan is running.</p>
+<h3 id="local-development">Local Development<a class="headerlink" href="#local-development" title="Link to this section">¶</a></h3>
+<p>In a local Docker setup, authentication is typically off. Vulcan uses environment variables in <code>docker-compose.vulcan.yml</code> to identify the user:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATAOS_RUN_AS_USER</code></td>
+<td>Your DataOS user ID</td>
+</tr>
+<tr>
+<td><code>DATAOS_RUN_AS_APIKEY</code></td>
+<td>Your DataOS API key</td>
+</tr>
+<tr>
+<td><code>HEIMDALL_URL</code></td>
+<td>Your DataOS context URL (e.g., <code>https://my-context.dataos.app/heimdall</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>When <code>HEIMDALL_ENABLED</code> is <code>false</code> (the local default), requests don't need a token.</p>
+<h3 id="dataos-deployment">DataOS Deployment<a class="headerlink" href="#dataos-deployment" title="Link to this section">¶</a></h3>
+<p>With Heimdall enabled, every request needs a Bearer token:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span><span class="s1">'https://&lt;env-fqn&gt;/&lt;tenant&gt;/vulcan/&lt;data-product-name&gt;/livez'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">'Authorization: Bearer &lt;your-token&gt;'</span>
+</span></code></pre></div>
+<p>Heimdall validates the token before the request reaches Vulcan.</p>
+<h3 id="mysql-wire-protocol">MySQL Wire Protocol<a class="headerlink" href="#mysql-wire-protocol" title="Link to this section">¶</a></h3>
+<p>For MySQL connections, your DataOS API key is the password:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span>&lt;host&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;port&gt;<span class="w"> </span>-u<span class="w"> </span>&lt;username&gt;<span class="w"> </span>-p<span class="s1">'&lt;api-key&gt;'</span><span class="w"> </span>--enable-cleartext-plugin
+</span></code></pre></div>
+<p>Full connection details are in the <a href="#querying-via-mysql-wire-protocol">MySQL wire protocol</a> section below.</p>
+<hr/>
+<h2 id="querying-via-rest-api">Querying via REST API<a class="headerlink" href="#querying-via-rest-api" title="Link to this section">¶</a></h2>
+<p>The REST API is <strong>asynchronous</strong>. You submit a query, get a statement ID back immediately, then poll until the result is ready. This is what makes caching, deduplication, and parallel execution possible.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>POST query  --&gt;  statement ID  --&gt;  poll status  --&gt;  GET result
+</span></code></pre></div>
+<p>Want the full picture of what happens internally? See <a href="../semantic_query_lifecycle/">Semantic Query Lifecycle</a>.</p>
+<h3 id="step-1-submit-a-semantic-query">Step 1: Submit a Semantic Query<a class="headerlink" href="#step-1-submit-a-semantic-query" title="Link to this section">¶</a></h3>
+<p>POST a JSON body to <code>/api/v1/query/semantic/rest</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">Mac/Linux</label><label for="__tabbed_1_2">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/query/semantic/rest<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="s1">    "query": {</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="s1">      "measures": ["orders.total_revenue"],</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="s1">      "dimensions": ["orders.region"],</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="s1">      "timeDimensions": [</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="s1">        {</span>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="s1">          "dimension": "orders.order_date",</span>
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="s1">          "granularity": "month",</span>
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="s1">          "dateRange": ["2024-01-01", "2024-12-31"]</span>
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="s1">        }</span>
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="s1">      ],</span>
+</span><span id="__span-3-14"><a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="s1">      "limit": 100</span>
+</span><span id="__span-3-15"><a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="s1">    }</span>
+</span><span id="__span-3-16"><a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="s1">  }'</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>curl -X POST http://localhost:8000/api/v1/query/semantic/rest ^
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>  -H "Content-Type: application/json" ^
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a>  -d "{\"query\": {\"measures\": [\"orders.total_revenue\"], \"dimensions\": [\"orders.region\"], \"timeDimensions\": [{\"dimension\": \"orders.order_date\", \"granularity\": \"month\", \"dateRange\": [\"2024-01-01\", \"2024-12-31\"]}], \"limit\": 100}}"
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="query-payload-reference">Query Payload Reference<a class="headerlink" href="#query-payload-reference" title="Link to this section">¶</a></h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="p">{</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span><span class="nt">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="nt">"measures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;alias&gt;.&lt;measure_name&gt;"</span><span class="p">],</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="nt">"dimensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;alias&gt;.&lt;dimension_name&gt;"</span><span class="p">],</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span><span class="nt">"timeDimensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">        </span><span class="nt">"dimension"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;alias&gt;.&lt;time_dimension&gt;"</span><span class="p">,</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">        </span><span class="nt">"granularity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;second|minute|hour|day|week|month|quarter|year&gt;"</span><span class="p">,</span>
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">        </span><span class="nt">"dateRange"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;start_date&gt;"</span><span class="p">,</span><span class="w"> </span><span class="s2">"&lt;end_date&gt;"</span><span class="p">]</span>
+</span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">    </span><span class="p">],</span>
+</span><span id="__span-5-12"><a href="#__codelineno-5-12" id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">    </span><span class="nt">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-5-13"><a href="#__codelineno-5-13" id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-5-14"><a href="#__codelineno-5-14" id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">        </span><span class="nt">"member"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;alias&gt;.&lt;dimension_name&gt;"</span><span class="p">,</span>
+</span><span id="__span-5-15"><a href="#__codelineno-5-15" id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">        </span><span class="nt">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;equals|notEquals|contains|notContains|gt|gte|lt|lte|set|notSet|inDateRange|notInDateRange|beforeDate|afterDate&gt;"</span><span class="p">,</span>
+</span><span id="__span-5-16"><a href="#__codelineno-5-16" id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">        </span><span class="nt">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;value1&gt;"</span><span class="p">,</span><span class="w"> </span><span class="s2">"&lt;value2&gt;"</span><span class="p">]</span>
+</span><span id="__span-5-17"><a href="#__codelineno-5-17" id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-5-18"><a href="#__codelineno-5-18" id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="w">    </span><span class="p">],</span>
+</span><span id="__span-5-19"><a href="#__codelineno-5-19" id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="w">    </span><span class="nt">"segments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;alias&gt;.&lt;segment_name&gt;"</span><span class="p">],</span>
+</span><span id="__span-5-20"><a href="#__codelineno-5-20" id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="w">    </span><span class="nt">"order"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"&lt;alias&gt;.&lt;member&gt;"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;asc|desc&gt;"</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-5-21"><a href="#__codelineno-5-21" id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="w">    </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-5-22"><a href="#__codelineno-5-22" id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="w">    </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-5-23"><a href="#__codelineno-5-23" id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="w">    </span><span class="nt">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="p">,</span>
+</span><span id="__span-5-24"><a href="#__codelineno-5-24" id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="w">    </span><span class="nt">"renewQuery"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-5-25"><a href="#__codelineno-5-25" id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-5-26"><a href="#__codelineno-5-26" id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="w">  </span><span class="nt">"ttl_minutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span>
+</span><span id="__span-5-27"><a href="#__codelineno-5-27" id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>measures</code></td>
+<td>string[]</td>
+<td>Yes</td>
+<td>Measures to calculate, e.g. <code>["orders.total_revenue"]</code></td>
+</tr>
+<tr>
+<td><code>dimensions</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Columns to group by, e.g. <code>["orders.region"]</code></td>
+</tr>
+<tr>
+<td><code>timeDimensions</code></td>
+<td>object[]</td>
+<td>No</td>
+<td>Time-based dimensions with granularity and date ranges</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>object[]</td>
+<td>No</td>
+<td>Filter conditions applied to the query</td>
+</tr>
+<tr>
+<td><code>segments</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Predefined segment filters from your semantic models</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>object</td>
+<td>No</td>
+<td>Sort order: <code>{"field": "asc"}</code> or <code>{"field": "desc"}</code></td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Max rows returned (1-50,000, default 10,000)</td>
+</tr>
+<tr>
+<td><code>offset</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Rows to skip</td>
+</tr>
+<tr>
+<td><code>timezone</code></td>
+<td>string</td>
+<td>No</td>
+<td>Timezone for time dimensions (default <code>"UTC"</code>)</td>
+</tr>
+<tr>
+<td><code>renewQuery</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Set to <code>true</code> to bypass cache</td>
+</tr>
+<tr>
+<td><code>ttl_minutes</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Cache duration in minutes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-2-receive-a-statement-id">Step 2: Receive a Statement ID<a class="headerlink" href="#step-2-receive-a-statement-id" title="Link to this section">¶</a></h3>
+<p>You get back an <strong>HTTP 202</strong> immediately with a statement ID:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="p">{</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stmt-abc-123"</span><span class="p">,</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QUEUED"</span><span class="p">,</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">  </span><span class="nt">"strategy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"execute"</span><span class="p">,</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">  </span><span class="nt">"sql"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SELECT region, ..."</span><span class="p">,</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">  </span><span class="nt">"fingerprint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a1b2c3..."</span><span class="p">,</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">  </span><span class="nt">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">    </span><span class="nt">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/v1/query/statement/stmt-abc-123"</span><span class="p">,</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">    </span><span class="nt">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/v1/query/statement/stmt-abc-123/result"</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The <code>strategy</code> field tells you what happened:</p>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>execute</code></td>
+<td>New execution: SQL sent to the warehouse</td>
+</tr>
+<tr>
+<td><code>from_cache</code></td>
+<td>Cache hit: result already exists from a previous run</td>
+</tr>
+<tr>
+<td><code>await_primary</code></td>
+<td>Piggyback: an identical query is already running, yours is linked to it</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-3-poll-for-status">Step 3: Poll for Status<a class="headerlink" href="#step-3-poll-for-status" title="Link to this section">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>curl<span class="w"> </span>http://localhost:8000/api/v1/query/statement/stmt-abc-123
+</span></code></pre></div>
+<p>Poll until <code>status</code> reads <code>SUCCESS</code> or <code>FAILED</code>:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="p">{</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stmt-abc-123"</span><span class="p">,</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SUCCESS"</span><span class="p">,</span>
+</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">  </span><span class="nt">"row_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">  </span><span class="nt">"_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">    </span><span class="nt">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/v1/query/statement/stmt-abc-123/result"</span>
+</span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Status lifecycle:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>ACCEPTED --&gt; QUEUED --&gt; IN_PROGRESS --&gt; SUCCESS
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a>                                   \-&gt; FAILED
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a>                                   \-&gt; CANCELLED
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ACCEPTED</code></td>
+<td>Request received, not yet queued</td>
+</tr>
+<tr>
+<td><code>QUEUED</code></td>
+<td>In the queue, waiting for a worker</td>
+</tr>
+<tr>
+<td><code>IN_PROGRESS</code></td>
+<td>A worker is running SQL on the warehouse</td>
+</tr>
+<tr>
+<td><code>SUCCESS</code></td>
+<td>Done, result is ready</td>
+</tr>
+<tr>
+<td><code>FAILED</code></td>
+<td>Something broke, check <code>error_message</code></td>
+</tr>
+<tr>
+<td><code>CANCELLED</code></td>
+<td>Cancelled by the user</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-4-download-the-result">Step 4: Download the Result<a class="headerlink" href="#step-4-download-the-result" title="Link to this section">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>curl<span class="w"> </span>http://localhost:8000/api/v1/query/statement/stmt-abc-123/result?format<span class="o">=</span>json
+</span></code></pre></div>
+<p>Pick your output format:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>How to request</th>
+<th>What you get</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parquet</td>
+<td>Default, or <code>format=parquet</code></td>
+<td>307 redirect to a presigned download URL</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td><code>Accept: application/json</code> or <code>format=json</code></td>
+<td>Data inline as JSON</td>
+</tr>
+<tr>
+<td>CSV</td>
+<td><code>Accept: text/csv</code> or <code>format=csv</code></td>
+<td>Data inline as CSV</td>
+</tr>
+<tr>
+<td>YAML</td>
+<td><code>Accept: application/yaml</code> or <code>format=yaml</code></td>
+<td>Data inline as YAML</td>
+</tr>
+</tbody>
+</table>
+<p>For JSON, CSV, and YAML you can also paginate and project:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>limit</code></td>
+<td>Max rows to return</td>
+</tr>
+<tr>
+<td><code>offset</code></td>
+<td>Rows to skip</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>Comma-separated list of columns to include</td>
+</tr>
+</tbody>
+</table>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>GET /api/v1/query/statement/{id}/result?format=json&amp;limit=100&amp;offset=0&amp;columns=region,total_revenue
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Parquet ignores pagination</p>
+<p>When you request Parquet, <code>limit</code>, <code>offset</code>, and <code>columns</code> are ignored. You get the full result file.</p>
+</div>
+<h3 id="complete-example">Complete Example<a class="headerlink" href="#complete-example" title="Link to this section">¶</a></h3>
+<p>The full flow, end to end:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="c1"># 1. Submit query</span>
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/query/semantic/rest<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"query": {"measures": ["orders.total_revenue"], "dimensions": ["orders.region"]}}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-5"><a href="#__codelineno-12-5" id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+</span><span id="__span-12-6"><a href="#__codelineno-12-6" id="__codelineno-12-6" name="__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a href="#__codelineno-12-7" id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="c1"># 2. Poll for status (use your actual statement ID)</span>
+</span><span id="__span-12-8"><a href="#__codelineno-12-8" id="__codelineno-12-8" name="__codelineno-12-8"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/api/v1/query/statement/stmt-abc-123<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+</span><span id="__span-12-9"><a href="#__codelineno-12-9" id="__codelineno-12-9" name="__codelineno-12-9"></a>
+</span><span id="__span-12-10"><a href="#__codelineno-12-10" id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="c1"># 3. Download result as JSON</span>
+</span><span id="__span-12-11"><a href="#__codelineno-12-11" id="__codelineno-12-11" name="__codelineno-12-11"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/api/v1/query/statement/stmt-abc-123/result?format<span class="o">=</span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+</span></code></pre></div>
+<hr/>
+<h2 id="querying-via-graphql">Querying via GraphQL<a class="headerlink" href="#querying-via-graphql" title="Link to this section">¶</a></h2>
+<p>The GraphQL service runs on port <strong>3000</strong>.</p>
+<h3 id="endpoint">Endpoint<a class="headerlink" href="#endpoint" title="Link to this section">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>http://localhost:3000/graphql
+</span></code></pre></div>
+<h3 id="example-query">Example Query<a class="headerlink" href="#example-query" title="Link to this section">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3000/graphql<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="s1">    "query": "{ orders(limit: 10) { region total_revenue order_date } }"</span>
+</span><span id="__span-14-5"><a href="#__codelineno-14-5" id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="s1">  }'</span>
+</span></code></pre></div>
+<h3 id="graphql-playground">GraphQL Playground<a class="headerlink" href="#graphql-playground" title="Link to this section">¶</a></h3>
+<p>Open <code>http://localhost:3000</code> in your browser. You get an interactive explorer where you can browse the schema, write queries, and see documentation for every field.</p>
+<h3 id="introspection">Introspection<a class="headerlink" href="#introspection" title="Link to this section">¶</a></h3>
+<p>Discover what's available programmatically:</p>
+<div class="language-graphql highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="p">{</span>
+</span><span id="__span-15-2"><a href="#__codelineno-15-2" id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="w">  </span><span class="n">__schema</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-3"><a href="#__codelineno-15-3" id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="w">    </span><span class="n">types</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-4"><a href="#__codelineno-15-4" id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="w">      </span><span class="n">name</span>
+</span><span id="__span-15-5"><a href="#__codelineno-15-5" id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="w">      </span><span class="n">fields</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-6"><a href="#__codelineno-15-6" id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="w">        </span><span class="n">name</span>
+</span><span id="__span-15-7"><a href="#__codelineno-15-7" id="__codelineno-15-7" name="__codelineno-15-7"></a><span class="w">        </span><span class="n">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-15-8"><a href="#__codelineno-15-8" id="__codelineno-15-8" name="__codelineno-15-8"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-15-9"><a href="#__codelineno-15-9" id="__codelineno-15-9" name="__codelineno-15-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-15-10"><a href="#__codelineno-15-10" id="__codelineno-15-10" name="__codelineno-15-10"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-15-11"><a href="#__codelineno-15-11" id="__codelineno-15-11" name="__codelineno-15-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr/>
+<h2 id="querying-via-mysql-wire-protocol">Querying via MySQL Wire Protocol<a class="headerlink" href="#querying-via-mysql-wire-protocol" title="Link to this section">¶</a></h2>
+<p>Got a BI tool that speaks MySQL? Connect it to Vulcan. You write semantic SQL against your models, and Vulcan transpiles it to native warehouse SQL behind the scenes.</p>
+<h3 id="connecting">Connecting<a class="headerlink" href="#connecting" title="Link to this section">¶</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">Local</label><label for="__tabbed_2_2">Remote (DataOS)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>-P<span class="w"> </span><span class="m">3307</span><span class="w"> </span>-u<span class="w"> </span>&lt;username&gt;<span class="w"> </span>-p<span class="s1">'&lt;api-key&gt;'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-2"><a href="#__codelineno-16-2" id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="w">  </span>--ssl-mode<span class="o">=</span>REQUIRED<span class="w"> </span>--enable-cleartext-plugin
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span>tcp.&lt;context&gt;.dataos.app<span class="w"> </span>-P<span class="w"> </span><span class="m">3306</span><span class="w"> </span>-u<span class="w"> </span>&lt;username&gt;<span class="w"> </span>-p<span class="s1">'&lt;api-key&gt;'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-2"><a href="#__codelineno-17-2" id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="w">  </span>--enable-cleartext-plugin<span class="w"> </span>&lt;tenant_name&gt;.&lt;data_product_name&gt;
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-h &lt;host&gt;</code></td>
+<td>Vulcan MySQL host</td>
+<td><code>127.0.0.1</code> (local) or <code>tcp.my-context.dataos.app</code> (remote)</td>
+</tr>
+<tr>
+<td><code>-P &lt;port&gt;</code></td>
+<td>MySQL port</td>
+<td><code>3307</code> (local) or <code>3306</code> (remote)</td>
+</tr>
+<tr>
+<td><code>-u &lt;username&gt;</code></td>
+<td>Your DataOS username</td>
+<td><code>johndoe</code></td>
+</tr>
+<tr>
+<td><code>-p'&lt;api-key&gt;'</code></td>
+<td>Your DataOS API key (no space after <code>-p</code>)</td>
+<td><code>-p'dG9rZW4xMjM0...'</code></td>
+</tr>
+<tr>
+<td>Database</td>
+<td>Tenant and data product</td>
+<td><code>marketing.sales_analytics</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="discovering-models">Discovering Models<a class="headerlink" href="#discovering-models" title="Link to this section">¶</a></h3>
+<p>Once you're connected, explore with standard MySQL commands:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="c1">-- List all semantic models</span>
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="p">;</span>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="c1">-- Inspect a model's columns (dimensions and measures)</span>
+</span><span id="__span-18-5"><a href="#__codelineno-18-5" id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="k">DESCRIBE</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="writing-queries">Writing Queries<a class="headerlink" href="#writing-queries" title="Link to this section">¶</a></h3>
+<p>Semantic SQL looks like regular SQL, but measures need the <code>MEASURE()</code> wrapper:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="c1">-- Simple measure</span>
+</span><span id="__span-19-2"><a href="#__codelineno-19-2" id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_users</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span><span id="__span-19-3"><a href="#__codelineno-19-3" id="__codelineno-19-3" name="__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a href="#__codelineno-19-4" id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="c1">-- Grouped by dimension</span>
+</span><span id="__span-19-5"><a href="#__codelineno-19-5" id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">plan_type</span><span class="p">,</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_users</span><span class="p">)</span>
+</span><span id="__span-19-6"><a href="#__codelineno-19-6" id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="k">FROM</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-19-7"><a href="#__codelineno-19-7" id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">plan_type</span><span class="p">;</span>
+</span><span id="__span-19-8"><a href="#__codelineno-19-8" id="__codelineno-19-8" name="__codelineno-19-8"></a>
+</span><span id="__span-19-9"><a href="#__codelineno-19-9" id="__codelineno-19-9" name="__codelineno-19-9"></a><span class="c1">-- With filters</span>
+</span><span id="__span-19-10"><a href="#__codelineno-19-10" id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span>
+</span><span id="__span-19-11"><a href="#__codelineno-19-11" id="__codelineno-19-11" name="__codelineno-19-11"></a><span class="k">FROM</span><span class="w"> </span><span class="n">subscriptions</span>
+</span><span id="__span-19-12"><a href="#__codelineno-19-12" id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="p">;</span>
+</span><span id="__span-19-13"><a href="#__codelineno-19-13" id="__codelineno-19-13" name="__codelineno-19-13"></a>
+</span><span id="__span-19-14"><a href="#__codelineno-19-14" id="__codelineno-19-14" name="__codelineno-19-14"></a><span class="c1">-- With time grouping</span>
+</span><span id="__span-19-15"><a href="#__codelineno-19-15" id="__codelineno-19-15" name="__codelineno-19-15"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">DATE_TRUNC</span><span class="p">(</span><span class="s1">'month'</span><span class="p">,</span><span class="w"> </span><span class="n">subscriptions</span><span class="p">.</span><span class="n">start_date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">month</span><span class="p">,</span>
+</span><span id="__span-19-16"><a href="#__codelineno-19-16" id="__codelineno-19-16" name="__codelineno-19-16"></a><span class="w">       </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span>
+</span><span id="__span-19-17"><a href="#__codelineno-19-17" id="__codelineno-19-17" name="__codelineno-19-17"></a><span class="k">FROM</span><span class="w"> </span><span class="n">subscriptions</span>
+</span><span id="__span-19-18"><a href="#__codelineno-19-18" id="__codelineno-19-18" name="__codelineno-19-18"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">month</span>
+</span><span id="__span-19-19"><a href="#__codelineno-19-19" id="__codelineno-19-19" name="__codelineno-19-19"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">month</span><span class="w"> </span><span class="k">DESC</span>
+</span><span id="__span-19-20"><a href="#__codelineno-19-20" id="__codelineno-19-20" name="__codelineno-19-20"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-19-21"><a href="#__codelineno-19-21" id="__codelineno-19-21" name="__codelineno-19-21"></a>
+</span><span id="__span-19-22"><a href="#__codelineno-19-22" id="__codelineno-19-22" name="__codelineno-19-22"></a><span class="c1">-- Cross-model joins</span>
+</span><span id="__span-19-23"><a href="#__codelineno-19-23" id="__codelineno-19-23" name="__codelineno-19-23"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">industry</span><span class="p">,</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span>
+</span><span id="__span-19-24"><a href="#__codelineno-19-24" id="__codelineno-19-24" name="__codelineno-19-24"></a><span class="k">FROM</span><span class="w"> </span><span class="n">subscriptions</span>
+</span><span id="__span-19-25"><a href="#__codelineno-19-25" id="__codelineno-19-25" name="__codelineno-19-25"></a><span class="k">CROSS</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-19-26"><a href="#__codelineno-19-26" id="__codelineno-19-26" name="__codelineno-19-26"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">industry</span>
+</span><span id="__span-19-27"><a href="#__codelineno-19-27" id="__codelineno-19-27" name="__codelineno-19-27"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">MEASURE</span><span class="p">(</span><span class="n">total_arr</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">BI Tool Integration</p>
+<p>Tableau, Metabase, Superset, DBeaver, and anything else that speaks MySQL can connect to Vulcan. Use the same host, port, username, and API key.</p>
+</div>
+<p>For a complete reference with example output, see <a href="../transpiling_semantics/#transpiling-mysql-payloads">Transpiling Semantics: MySQL Payloads</a>.</p>
+<hr/>
+<h2 id="transpiling-queries-locally">Transpiling Queries Locally<a class="headerlink" href="#transpiling-queries-locally" title="Link to this section">¶</a></h2>
+<p>Before you hit the API, you can preview the generated SQL locally with <code>vulcan transpile</code>. Nothing executes - you just see what Vulcan would send to the warehouse.</p>
+<p>Semantic SQL:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>sql<span class="w"> </span><span class="s2">"SELECT MEASURE(total_users) FROM users"</span>
+</span></code></pre></div>
+<p>REST API payloads:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>vulcan<span class="w"> </span>transpile<span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span><span class="s1">'{"query": {"measures": ["users.total_users"]}}'</span>
+</span></code></pre></div>
+<p>Great for debugging unexpected results or validating that your semantic definitions produce the SQL you expect. See <a href="../transpiling_semantics/">Transpiling Semantics</a> for the full reference.</p>
+<hr/>
+<h2 id="starting-the-api-server-manually">Starting the API Server Manually<a class="headerlink" href="#starting-the-api-server-manually" title="Link to this section">¶</a></h2>
+<p>Not using Docker Compose? Start the API server directly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>vulcan<span class="w"> </span>api
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--host</code></td>
+<td><code>0.0.0.0</code></td>
+<td>Host to bind to</td>
+</tr>
+<tr>
+<td><code>--port</code></td>
+<td><code>8000</code></td>
+<td>Port to bind to</td>
+</tr>
+<tr>
+<td><code>--reload</code></td>
+<td><code>false</code></td>
+<td>Auto-reload on file changes</td>
+</tr>
+<tr>
+<td><code>--workers</code></td>
+<td><code>1</code></td>
+<td>Number of worker processes</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="../../cli-commands/cli/#api">CLI Commands: api</a> for details.</p>
+<hr/>
+<h2 id="api-endpoints-reference">API Endpoints Reference<a class="headerlink" href="#api-endpoints-reference" title="Link to this section">¶</a></h2>
+<h3 id="rest-api">REST API<a class="headerlink" href="#rest-api" title="Link to this section">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api/v1/query/semantic/rest</code></td>
+<td>POST</td>
+<td>Submit a semantic query</td>
+</tr>
+<tr>
+<td><code>/api/v1/query/statement/{id}</code></td>
+<td>GET</td>
+<td>Poll query status</td>
+</tr>
+<tr>
+<td><code>/api/v1/query/statement/{id}/result</code></td>
+<td>GET</td>
+<td>Download results (Parquet, JSON, CSV, YAML)</td>
+</tr>
+<tr>
+<td><code>/livez</code></td>
+<td>GET</td>
+<td>Health check</td>
+</tr>
+<tr>
+<td><code>/redoc</code></td>
+<td>GET</td>
+<td>Interactive API docs (OpenAPI)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graphql">GraphQL<a class="headerlink" href="#graphql" title="Link to this section">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/graphql</code></td>
+<td>POST</td>
+<td>Execute GraphQL queries</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>GET</td>
+<td>GraphQL Playground</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mysql-wire-protocol_1">MySQL Wire Protocol<a class="headerlink" href="#mysql-wire-protocol_1" title="Link to this section">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SHOW TABLES</code></td>
+<td>List available semantic models</td>
+</tr>
+<tr>
+<td><code>DESCRIBE &lt;model&gt;</code></td>
+<td>Show model columns (dimensions and measures)</td>
+</tr>
+<tr>
+<td><code>SELECT ... FROM &lt;model&gt;</code></td>
+<td>Query using semantic SQL with <code>MEASURE()</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Link to this section">¶</a></h2>
+<p>In DataOS, the API runs as a long-lived service alongside your plan and run workflows. Configure it in <code>domain-resource.yaml</code>:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="nt">api</span><span class="p">:</span>
+</span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-23-3"><a href="#__codelineno-23-3" id="__codelineno-23-3" name="__codelineno-23-3"></a><span class="w">  </span><span class="nt">logLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INFO</span>
+</span><span id="__span-23-4"><a href="#__codelineno-23-4" id="__codelineno-23-4" name="__codelineno-23-4"></a><span class="w">  </span><span class="nt">resource</span><span class="p">:</span>
+</span><span id="__span-23-5"><a href="#__codelineno-23-5" id="__codelineno-23-5" name="__codelineno-23-5"></a><span class="w">    </span><span class="nt">request</span><span class="p">:</span>
+</span><span id="__span-23-6"><a href="#__codelineno-23-6" id="__codelineno-23-6" name="__codelineno-23-6"></a><span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"200m"</span>
+</span><span id="__span-23-7"><a href="#__codelineno-23-7" id="__codelineno-23-7" name="__codelineno-23-7"></a><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"512Mi"</span>
+</span><span id="__span-23-8"><a href="#__codelineno-23-8" id="__codelineno-23-8" name="__codelineno-23-8"></a><span class="w">    </span><span class="nt">limit</span><span class="p">:</span>
+</span><span id="__span-23-9"><a href="#__codelineno-23-9" id="__codelineno-23-9" name="__codelineno-23-9"></a><span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"5000m"</span>
+</span><span id="__span-23-10"><a href="#__codelineno-23-10" id="__codelineno-23-10" name="__codelineno-23-10"></a><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">"4Gi"</span>
+</span></code></pre></div>
+<p>The API pod runs three containers:</p>
+<table>
+<thead>
+<tr>
+<th>Container</th>
+<th>Log suffix</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main API</td>
+<td><code>*-main</code></td>
+<td>REST API service</td>
+</tr>
+<tr>
+<td>GraphQL sidecar</td>
+<td><code>*-sc-1</code></td>
+<td>GraphQL interface</td>
+</tr>
+<tr>
+<td>MySQL sidecar</td>
+<td><code>*-sc-2</code></td>
+<td>MySQL wire protocol</td>
+</tr>
+</tbody>
+</table>
+<p>Fetch logs for a specific container:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>dataos-ctl<span class="w"> </span>resource<span class="w"> </span>-t<span class="w"> </span>Vulcan<span class="w"> </span>-n<span class="w"> </span>&lt;resource-name&gt;<span class="w"> </span>logs<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-2"><a href="#__codelineno-24-2" id="__codelineno-24-2" name="__codelineno-24-2"></a><span class="w">  </span>--container-group<span class="w"> </span>&lt;name&gt;-api<span class="w"> </span>-c<span class="w"> </span>main
+</span></code></pre></div>
+<p>For the complete deployment walkthrough, see <a href="../deployment_guide/">Deployment Guide</a>.</p>
+<hr/>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">¶</a></h2>
+<h3 id="connection-refused">Connection Refused<a class="headerlink" href="#connection-refused" title="Link to this section">¶</a></h3>
+<p>You see: <code>curl: (7) Failed to connect to localhost port 8000</code></p>
+<p>Check if the API container is actually running:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>docker<span class="w"> </span>ps<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>vulcan-api
+</span></code></pre></div>
+<p>If it's not there, look at the logs:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>vulcan-api
+</span></code></pre></div>
+<h3 id="authentication-errors-401-403">Authentication Errors (401 / 403)<a class="headerlink" href="#authentication-errors-401-403" title="Link to this section">¶</a></h3>
+<p>You get <code>Unauthorized</code> or <code>Forbidden</code> back.</p>
+<ul>
+<li><strong>Local:</strong> Make sure <code>DATAOS_RUN_AS_APIKEY</code> is set in your <code>docker-compose.vulcan.yml</code></li>
+<li><strong>DataOS:</strong> Your Bearer token may be expired. Generate a fresh one.</li>
+<li><strong>MySQL:</strong> Check that there's no space between <code>-p</code> and your API key</li>
+</ul>
+<h3 id="query-returns-failed-status">Query Returns FAILED Status<a class="headerlink" href="#query-returns-failed-status" title="Link to this section">¶</a></h3>
+<p>Polling gives you <code>"status": "FAILED"</code> with an error message. Look at the <code>error_message</code> field first. Common causes:</p>
+<ul>
+<li>Misspelled semantic member names - double-check your <code>semantics/*.yml</code> definitions</li>
+<li>Warehouse unreachable - is the underlying engine up?</li>
+<li>Bad SQL - run <code>vulcan transpile</code> to see the generated query and spot the issue</li>
+</ul>
+<h3 id="empty-results">Empty Results<a class="headerlink" href="#empty-results" title="Link to this section">¶</a></h3>
+<p>Query succeeds but you get zero rows. A few things to check:</p>
+<ul>
+<li>Have you actually applied a plan? Models aren't materialized until you run <code>vulcan plan</code></li>
+<li>Does the <code>timeDimensions</code> date range cover dates with actual data?</li>
+<li>Try <code>vulcan fetchdf</code> to query the underlying table directly and confirm the data is there</li>
+</ul>
+<hr/>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
+<ul>
+<li><a href="../semantic_query_lifecycle/">Semantic Query Lifecycle</a> - how the async query flow, caching, and deduplication work under the hood</li>
+<li><a href="../transpiling_semantics/">Transpiling Semantics</a> - full reference for <code>vulcan transpile</code> and semantic SQL syntax</li>
+<li><a href="../../components/semantics/models/">Semantic Models</a> - defining dimensions, measures, and segments</li>
+<li><a href="../../components/semantics/business_metrics/">Business Metrics</a> - time-series metric definitions</li>
+<li><a href="../deployment_guide/">Deployment Guide</a> - deploying Vulcan to DataOS</li>
+</ul>
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="Footer" class="md-footer__inner md-grid">
+<a aria-label="Previous: Semantic Query Lifecycle" class="md-footer__link md-footer__link--prev" href="../semantic_query_lifecycle/">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Previous
+              </span>
+<div class="md-ellipsis">
+                Semantic Query Lifecycle
+              </div>
+</div>
+</a>
+<a aria-label="Next: Deployment Steps" class="md-footer__link md-footer__link--next" href="../deployment_guide/">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Next
+              </span>
+<div class="md-ellipsis">
+                Deployment Steps
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 DataOS Vulcan Team<br/>
+<small>Complete stack for building data products</small>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/tmdc-io/vulcan-book" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<div class="md-progress" data-md-component="progress" role="progressbar"></div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../assets/javascripts/mermaid-zoom.js"></script>
+<script src="../../assets/javascripts/favicon-switcher.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

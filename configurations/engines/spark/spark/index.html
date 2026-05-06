@@ -4,13 +4,13 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
 <meta content="DataOS Vulcan Team" name="author"/>
-<link href="https://tmdc-io.github.io/vulcan-docs/configurations/engines/spark/spark/" rel="canonical"/>
+<link href="https://tmdc-io.github.io/vulcan-book/configurations/engines/spark/spark/" rel="canonical"/>
 <link href="../../snowflake/snowflake/" rel="prev"/>
 <link href="../../trino/trino/" rel="next"/>
 <link href="../../../../assets/images/D_logo_dark-32px.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Spark - DataOS Vulcan</title>
-<link href="../../../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -23,7 +23,7 @@
 <meta content="website" property="og:type"/>
 <meta content="DataOS Vulcan" property="og:title"/>
 <meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." property="og:description"/>
-<meta content="https://tmdc-io.github.io/vulcan-docs/" property="og:url"/>
+<meta content="https://tmdc-io.github.io/vulcan-book/" property="og:url"/>
 <meta content="DataOS Vulcan" property="og:site_name"/>
 <meta content="summary" name="twitter:card"/>
 <meta content="DataOS Vulcan" name="twitter:title"/>
@@ -501,6 +501,15 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#managing-externalextra-dependencies">
+<span class="md-ellipsis">
+      
+        Managing External/Extra Dependencies
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#materialization-strategy">
 <span class="md-ellipsis">
       
@@ -965,6 +974,18 @@
           </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="../../../../guides/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="../../../../guides/get-started/docker/">
 <span class="md-ellipsis">
     
@@ -1085,11 +1106,183 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="../../../../guides/vulcan_api_guide/">
+<span class="md-ellipsis">
+    
+  
+    Vulcan API Guide
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="../../../../guides/deployment_guide/">
 <span class="md-ellipsis">
     
   
     Deployment Steps
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../guides/troubleshooting/">
+<span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Activation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Activation
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/apps/apps/">
+<span class="md-ellipsis">
+    
+  
+    Apps
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    BI
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    BI
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/bi/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/bi/powerbi/">
+<span class="md-ellipsis">
+    
+  
+    PowerBI
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/bi/tableau/">
+<span class="md-ellipsis">
+    
+  
+    Tableau
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/bi/superset/">
+<span class="md-ellipsis">
+    
+  
+    Superset
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/python/python/">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../activation/mysql/about/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
   
 
     
@@ -1221,6 +1414,15 @@
 <span class="md-ellipsis">
       
         Docker Images
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#managing-externalextra-dependencies">
+<span class="md-ellipsis">
+      
+        Managing External/Extra Dependencies
       
     </span>
 </a>
@@ -1361,19 +1563,58 @@
 </thead>
 <tbody>
 <tr>
-<td><code>tmdcio/vulcan-spark:0.228.1.6</code></td>
+<td><code>tmdcio/vulcan-spark-base:0.228.1.19</code></td>
+<td>Spark-ready base layer used by <code>vulcan-spark</code> builds</td>
+</tr>
+<tr>
+<td><code>tmdcio/vulcan-spark:0.228.1.19</code></td>
 <td>Main Vulcan API service for Spark</td>
 </tr>
 <tr>
-<td><code>tmdcio/vulcan-transpiler:0.228.1.10</code></td>
-<td>SQL transpiler service</td>
+<td><code>tmdcio/vulcan-transpiler-semantic:0.0.5</code></td>
+<td>Semantic query transpiler engine</td>
+</tr>
+<tr>
+<td><code>tmdcio/vulcan-transpiler-api:0.0.5</code></td>
+<td>Transpiler API service</td>
 </tr>
 </tbody>
 </table>
+<h4 id="image-contents">Image Contents<a class="headerlink" href="#image-contents" title="Link to this section">¶</a></h4>
+<p>Most users only need <code>vulcan-spark</code> plus the two transpiler images (<code>vulcan-transpiler-semantic</code> and <code>vulcan-transpiler-api</code>).
+For local development you can also pull <code>vulcan-spark-base</code> for spark-master and spark-worker.</p>
+<p><code>vulcan-spark-base</code> is the Spark runtime foundation that makes the engine "Spark-ready".</p>
 <p>Pull the images:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-spark:0.228.1.6
-</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-transpiler:0.228.1.10
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-spark-base:0.228.1.19
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-spark:0.228.1.19
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-transpiler-semantic:0.0.5
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>docker<span class="w"> </span>pull<span class="w"> </span>tmdcio/vulcan-transpiler-api:0.0.5
 </span></code></pre></div>
+<h3 id="managing-externalextra-dependencies">Managing External/Extra Dependencies<a class="headerlink" href="#managing-externalextra-dependencies" title="Link to this section">¶</a></h3>
+<h4 id="java-dependencies">Java Dependencies<a class="headerlink" href="#java-dependencies" title="Link to this section">¶</a></h4>
+<h5 id="maven">Maven<a class="headerlink" href="#maven" title="Link to this section">¶</a></h5>
+<p>See: <a href="https://maven.apache.org/plugins/maven-jar-plugin/usage">https://maven.apache.org/plugins/maven-jar-plugin/usage</a>
+</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>mvn<span class="w"> </span>-DskipTests<span class="w"> </span>package
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>ls<span class="w"> </span>-1<span class="w"> </span>target/*.jar
+</span></code></pre></div><p></p>
+<h5 id="gradle">Gradle<a class="headerlink" href="#gradle" title="Link to this section">¶</a></h5>
+<p>See:  <a href="https://docs.gradle.org/current/userguide/building_java_projects.html, https://docs.gradle.org/current/userguide/java_plugin.html">https://docs.gradle.org/current/userguide/building_java_projects.html, https://docs.gradle.org/current/userguide/java_plugin.html</a>
+</p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>./gradlew<span class="w"> </span>shadowJar
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>ls<span class="w"> </span>-1<span class="w"> </span>build/libs/*.jar
+</span></code></pre></div><p></p>
+<p>Place JARs at your project root under <code>dependencies/java/</code> so they are available inside the container at <code>/workspace/dependencies/java</code>. Nested folders under <code>dependencies/java/</code> are not supported (for example <code>dependencies/java/lib/*.jar</code> will not be picked up).</p>
+<p>If you have multiple JAR folders, include all of them in Spark config via <code>spark.driver.extraClasspath</code>:</p>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="na">spark.driver.extraClasspath</span><span class="o">=</span><span class="s">/workspace/dependencies/java:/workspace/third_party/jars</span>
+</span></code></pre></div>
+<p>On Windows, use <code>;</code> instead of <code>:</code> to separate multiple paths.</p>
+<p>To <em>use</em> classes from your JAR in a Python model, register the Java UDF by fully-qualified class name, then call it in SQL expressions:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="n">context</span><span class="p">.</span><span class="na">spark</span><span class="p">.</span><span class="na">udf</span><span class="p">.</span><span class="na">registerJavaFunction</span><span class="p">(</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">    </span><span class="s">"my_udf_name"</span><span class="p">,</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">    </span><span class="s">"com.yourorg.udf.YourUdfClass"</span><span class="p">,</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">    </span><span class="n">types</span><span class="p">.</span><span class="na">StringType</span><span class="p">(),</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>If the UDF runs on executors (most do), ensure workers can also see the same JARs (for example by also setting <code>spark.executor.extraClasspath</code> and/or baking/mounting the JARs into worker containers).</p>
 <h3 id="materialization-strategy">Materialization Strategy<a class="headerlink" href="#materialization-strategy" title="Link to this section">¶</a></h3>
 <p>Spark uses the following materialization strategies depending on the model kind:</p>
 <table>
@@ -1482,8 +1723,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../../../assets/javascripts/mermaid-zoom.js"></script>
 <script src="../../../../assets/javascripts/favicon-switcher.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

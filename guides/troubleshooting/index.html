@@ -1,0 +1,2962 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
+<meta content="DataOS Vulcan Team" name="author"/>
+<link href="https://tmdc-io.github.io/vulcan-book/guides/troubleshooting/" rel="canonical"/>
+<link href="../deployment_guide/" rel="prev"/>
+<link href="../../activation/about/" rel="next"/>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Troubleshooting - DataOS Vulcan</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="../../assets/stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../assets/images/D_logo_light-32px.png" media="(prefers-color-scheme: dark)" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../assets/images/D_logo_dark-32px.png" rel="apple-touch-icon" sizes="32x32"/>
+<meta content="website" property="og:type"/>
+<meta content="DataOS Vulcan" property="og:title"/>
+<meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." property="og:description"/>
+<meta content="https://tmdc-io.github.io/vulcan-book/" property="og:url"/>
+<meta content="DataOS Vulcan" property="og:site_name"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="DataOS Vulcan" name="twitter:title"/>
+<meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." name="twitter:description"/>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="blue-grey" data-md-color-primary="blue-grey" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#troubleshooting">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="DataOS Vulcan" class="md-header__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/D_logo_dark-32px.png"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            DataOS Vulcan
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Troubleshooting
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="blue-grey" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="blue-grey" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="blue-grey" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<a aria-label="Share" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Share">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    tmdc-io/vulcan-book
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="DataOS Vulcan" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="DataOS Vulcan">
+<img alt="logo" src="../../assets/images/D_logo_dark-32px.png"/>
+</a>
+    DataOS Vulcan
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/tmdc-io/vulcan-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    tmdc-io/vulcan-book
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Configurations
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Configurations
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Options
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Options
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/model_defaults/">
+<span class="md-ellipsis">
+    
+  
+    Model Defaults
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/variables/">
+<span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/execution_hooks/">
+<span class="md-ellipsis">
+    
+  
+    Execution Hooks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/notifications/">
+<span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/options/linter/">
+<span class="md-ellipsis">
+    
+  
+    Linter
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Engines
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Engines
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/bigquery/bigquery/">
+<span class="md-ellipsis">
+    
+  
+    BigQuery
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/databricks/databricks/">
+<span class="md-ellipsis">
+    
+  
+    Databricks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/fabric/fabric/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft Fabric
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/mssql/mssql/">
+<span class="md-ellipsis">
+    
+  
+    Microsoft SQL Server
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/mysql/mysql/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/postgres/postgres/">
+<span class="md-ellipsis">
+    
+  
+    Postgres
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/redshift/redshift/">
+<span class="md-ellipsis">
+    
+  
+    Amazon Redshift
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/snowflake/snowflake/">
+<span class="md-ellipsis">
+    
+  
+    Snowflake
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/spark/spark/">
+<span class="md-ellipsis">
+    
+  
+    Spark
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../configurations/engines/trino/trino/">
+<span class="md-ellipsis">
+    
+  
+    Trino
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../ci-cd/ci-cd/">
+<span class="md-ellipsis">
+    
+  
+    CI/CD
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Components
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Model
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Model
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/properties/">
+<span class="md-ellipsis">
+    
+  
+    Properties
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_1_3" id="__nav_3_1_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Types
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_3_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_1_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Types
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/sql_models/">
+<span class="md-ellipsis">
+    
+  
+    SQL
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/python_models/">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/external_models/">
+<span class="md-ellipsis">
+    
+  
+    External
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/types/managed_models/">
+<span class="md-ellipsis">
+    
+  
+    Managed
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/model_kinds/">
+<span class="md-ellipsis">
+    
+  
+    Kinds
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/model/statements/">
+<span class="md-ellipsis">
+    
+  
+    Statements
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/tests/tests/">
+<span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/audits/audits/">
+<span class="md-ellipsis">
+    
+  
+    Audits
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/checks/checks/">
+<span class="md-ellipsis">
+    
+  
+    Checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Semantics
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Semantics
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/models/">
+<span class="md-ellipsis">
+    
+  
+    Semantic Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/semantics/business_metrics/">
+<span class="md-ellipsis">
+    
+  
+    Business Metrics
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Advance Features
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Advance Features
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6_1" id="__nav_3_6_1_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_1_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_3_6_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Macros
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/variables/">
+<span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/built_in/">
+<span class="md-ellipsis">
+    
+  
+    Built In
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/macros/jinja/">
+<span class="md-ellipsis">
+    
+  
+    Jinja
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/signals/">
+<span class="md-ellipsis">
+    
+  
+    Signals
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../components/advanced-features/custom_materializations/">
+<span class="md-ellipsis">
+    
+  
+    Custom materializations
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../get-started/docker/">
+<span class="md-ellipsis">
+    
+  
+    Get Started
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data-product-lifecycle/">
+<span class="md-ellipsis">
+    
+  
+    Data Product Lifecycle
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../plan_guide/">
+<span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../run_and_scheduling/">
+<span class="md-ellipsis">
+    
+  
+    Run and Scheduling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../models/">
+<span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../incremental_by_time/">
+<span class="md-ellipsis">
+    
+  
+    Incremental by Time
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data_quality/">
+<span class="md-ellipsis">
+    
+  
+    Data Quality
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../model_selection/">
+<span class="md-ellipsis">
+    
+  
+    Model Selection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transpiling_semantics/">
+<span class="md-ellipsis">
+    
+  
+    Transpiling Semantics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../semantic_query_lifecycle/">
+<span class="md-ellipsis">
+    
+  
+    Semantic Query Lifecycle
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../vulcan_api_guide/">
+<span class="md-ellipsis">
+    
+  
+    Vulcan API Guide
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../deployment_guide/">
+<span class="md-ellipsis">
+    
+  
+    Deployment Steps
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+</a>
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-each-entry-is-structured">
+<span class="md-ellipsis">
+      
+        How each entry is structured
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-validation-errors">
+<span class="md-ellipsis">
+      
+        Query validation errors
+      
+    </span>
+</a>
+<nav aria-label="Query validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#parse_error">
+<span class="md-ellipsis">
+      
+        PARSE_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data_manipulation_detected">
+<span class="md-ellipsis">
+      
+        DATA_MANIPULATION_DETECTED
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#not_found">
+<span class="md-ellipsis">
+      
+        NOT_FOUND
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table_extraction_error">
+<span class="md-ellipsis">
+      
+        TABLE_EXTRACTION_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#normalization_error">
+<span class="md-ellipsis">
+      
+        NORMALIZATION_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#recent_failure">
+<span class="md-ellipsis">
+      
+        RECENT_FAILURE
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#request-validation-errors">
+<span class="md-ellipsis">
+      
+        Request validation errors
+      
+    </span>
+</a>
+<nav aria-label="Request validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#invalid-ttl">
+<span class="md-ellipsis">
+      
+        Invalid ttl
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#oversized-meta">
+<span class="md-ellipsis">
+      
+        Oversized meta
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#generic-422-validation-error">
+<span class="md-ellipsis">
+      
+        Generic 422 validation error
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic-query-and-transpiler-errors">
+<span class="md-ellipsis">
+      
+        Semantic query and transpiler errors
+      
+    </span>
+</a>
+<nav aria-label="Semantic query and transpiler errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#apiquerypost_processing_required">
+<span class="md-ellipsis">
+      
+        API.QUERY.POST_PROCESSING_REQUIRED
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpilerqueryinvalid">
+<span class="md-ellipsis">
+      
+        TRANSPILER.QUERY.INVALID
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpilerserviceunavailable">
+<span class="md-ellipsis">
+      
+        TRANSPILER.SERVICE.UNAVAILABLE
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpilerupstreamerror">
+<span class="md-ellipsis">
+      
+        TRANSPILER.UPSTREAM.ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sql_transpilation_error">
+<span class="md-ellipsis">
+      
+        SQL_TRANSPILATION_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic_query_error">
+<span class="md-ellipsis">
+      
+        SEMANTIC_QUERY_ERROR
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#authentication-and-authorization-errors">
+<span class="md-ellipsis">
+      
+        Authentication and authorization errors
+      
+    </span>
+</a>
+<nav aria-label="Authentication and authorization errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonauthunauthorized">
+<span class="md-ellipsis">
+      
+        COMMON.AUTH.UNAUTHORIZED
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonauthinvalid_token">
+<span class="md-ellipsis">
+      
+        COMMON.AUTH.INVALID_TOKEN
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonauthforbidden">
+<span class="md-ellipsis">
+      
+        COMMON.AUTH.FORBIDDEN
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commoninternalerror-during-auth">
+<span class="md-ellipsis">
+      
+        COMMON.INTERNAL.ERROR during auth
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-and-service-initialization-errors">
+<span class="md-ellipsis">
+      
+        Environment and service initialization errors
+      
+    </span>
+</a>
+<nav aria-label="Environment and service initialization errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-not-found">
+<span class="md-ellipsis">
+      
+        Environment not found
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpiler-client-not-initialized">
+<span class="md-ellipsis">
+      
+        Transpiler client not initialized
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-context-manager-not-initialized">
+<span class="md-ellipsis">
+      
+        Environment context manager not initialized
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric-and-semantic-catalog-errors">
+<span class="md-ellipsis">
+      
+        Metric and semantic catalog errors
+      
+    </span>
+</a>
+<nav aria-label="Metric and semantic catalog errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric-not-found">
+<span class="md-ellipsis">
+      
+        Metric not found
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#model-not-found">
+<span class="md-ellipsis">
+      
+        Model not found
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unknown-slices-for-metric">
+<span class="md-ellipsis">
+      
+        Unknown slices for metric
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric-misconfigured-because-slice-ref-is-missing">
+<span class="md-ellipsis">
+      
+        Metric misconfigured because slice ref is missing
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic-field-definition-errors">
+<span class="md-ellipsis">
+      
+        Semantic field definition errors
+      
+    </span>
+</a>
+<nav aria-label="Semantic field definition errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#field-has-no-role">
+<span class="md-ellipsis">
+      
+        Field has no role
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#field-is-both-measure-and-segment">
+<span class="md-ellipsis">
+      
+        Field is both measure and segment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#time-properties-on-non-dimension-field">
+<span class="md-ellipsis">
+      
+        Time properties on non-dimension field
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#measure-type-on-non-measure-field">
+<span class="md-ellipsis">
+      
+        Measure type on non-measure field
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#perspective-errors">
+<span class="md-ellipsis">
+      
+        Perspective errors
+      
+    </span>
+</a>
+<nav aria-label="Perspective errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#slug_conflict">
+<span class="md-ellipsis">
+      
+        SLUG_CONFLICT
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statement-not-found-for-perspective-creation-or-update">
+<span class="md-ellipsis">
+      
+        Statement not found for perspective creation or update
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statement-must-be-success">
+<span class="md-ellipsis">
+      
+        Statement must be SUCCESS
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statement-has-no-result">
+<span class="md-ellipsis">
+      
+        Statement has no result
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#only-owner-can-update-perspective">
+<span class="md-ellipsis">
+      
+        Only owner can update perspective
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#access-denied-on-perspective">
+<span class="md-ellipsis">
+      
+        Access denied on perspective
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#result-retrieval-errors">
+<span class="md-ellipsis">
+      
+        Result retrieval errors
+      
+    </span>
+</a>
+<nav aria-label="Result retrieval errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#result-not-available-yet">
+<span class="md-ellipsis">
+      
+        Result not available yet
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unsupported-format">
+<span class="md-ellipsis">
+      
+        Unsupported format
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#invalid-columns-requested">
+<span class="md-ellipsis">
+      
+        Invalid columns requested
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#file-api-validation-errors">
+<span class="md-ellipsis">
+      
+        File API validation errors
+      
+    </span>
+</a>
+<nav aria-label="File API validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#path-outside-project-directory">
+<span class="md-ellipsis">
+      
+        Path outside project directory
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#path-matches-ignore-patterns">
+<span class="md-ellipsis">
+      
+        Path matches ignore patterns
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#time-range-validation-errors">
+<span class="md-ellipsis">
+      
+        Time range validation errors
+      
+    </span>
+</a>
+<nav aria-label="Time range validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#invalid-timestamp-range">
+<span class="md-ellipsis">
+      
+        Invalid timestamp range
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#still-stuck">
+<span class="md-ellipsis">
+      
+        Still stuck?
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Activation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Activation
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/apps/apps/">
+<span class="md-ellipsis">
+    
+  
+    Apps
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    BI
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    BI
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/powerbi/">
+<span class="md-ellipsis">
+    
+  
+    PowerBI
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/tableau/">
+<span class="md-ellipsis">
+    
+  
+    Tableau
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/superset/">
+<span class="md-ellipsis">
+    
+  
+    Superset
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/python/python/">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/mysql/about/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cli-commands/cli/">
+<span class="md-ellipsis">
+    
+  
+    CLI Commands
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../cookbook/">
+<span class="md-ellipsis">
+    
+  
+    Cookbook
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../glossary/">
+<span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../faq/">
+<span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="On this page" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-each-entry-is-structured">
+<span class="md-ellipsis">
+      
+        How each entry is structured
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-validation-errors">
+<span class="md-ellipsis">
+      
+        Query validation errors
+      
+    </span>
+</a>
+<nav aria-label="Query validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#parse_error">
+<span class="md-ellipsis">
+      
+        PARSE_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data_manipulation_detected">
+<span class="md-ellipsis">
+      
+        DATA_MANIPULATION_DETECTED
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#not_found">
+<span class="md-ellipsis">
+      
+        NOT_FOUND
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table_extraction_error">
+<span class="md-ellipsis">
+      
+        TABLE_EXTRACTION_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#normalization_error">
+<span class="md-ellipsis">
+      
+        NORMALIZATION_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#recent_failure">
+<span class="md-ellipsis">
+      
+        RECENT_FAILURE
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#request-validation-errors">
+<span class="md-ellipsis">
+      
+        Request validation errors
+      
+    </span>
+</a>
+<nav aria-label="Request validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#invalid-ttl">
+<span class="md-ellipsis">
+      
+        Invalid ttl
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#oversized-meta">
+<span class="md-ellipsis">
+      
+        Oversized meta
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#generic-422-validation-error">
+<span class="md-ellipsis">
+      
+        Generic 422 validation error
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic-query-and-transpiler-errors">
+<span class="md-ellipsis">
+      
+        Semantic query and transpiler errors
+      
+    </span>
+</a>
+<nav aria-label="Semantic query and transpiler errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#apiquerypost_processing_required">
+<span class="md-ellipsis">
+      
+        API.QUERY.POST_PROCESSING_REQUIRED
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpilerqueryinvalid">
+<span class="md-ellipsis">
+      
+        TRANSPILER.QUERY.INVALID
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpilerserviceunavailable">
+<span class="md-ellipsis">
+      
+        TRANSPILER.SERVICE.UNAVAILABLE
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpilerupstreamerror">
+<span class="md-ellipsis">
+      
+        TRANSPILER.UPSTREAM.ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sql_transpilation_error">
+<span class="md-ellipsis">
+      
+        SQL_TRANSPILATION_ERROR
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic_query_error">
+<span class="md-ellipsis">
+      
+        SEMANTIC_QUERY_ERROR
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#authentication-and-authorization-errors">
+<span class="md-ellipsis">
+      
+        Authentication and authorization errors
+      
+    </span>
+</a>
+<nav aria-label="Authentication and authorization errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonauthunauthorized">
+<span class="md-ellipsis">
+      
+        COMMON.AUTH.UNAUTHORIZED
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonauthinvalid_token">
+<span class="md-ellipsis">
+      
+        COMMON.AUTH.INVALID_TOKEN
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonauthforbidden">
+<span class="md-ellipsis">
+      
+        COMMON.AUTH.FORBIDDEN
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commoninternalerror-during-auth">
+<span class="md-ellipsis">
+      
+        COMMON.INTERNAL.ERROR during auth
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-and-service-initialization-errors">
+<span class="md-ellipsis">
+      
+        Environment and service initialization errors
+      
+    </span>
+</a>
+<nav aria-label="Environment and service initialization errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-not-found">
+<span class="md-ellipsis">
+      
+        Environment not found
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transpiler-client-not-initialized">
+<span class="md-ellipsis">
+      
+        Transpiler client not initialized
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-context-manager-not-initialized">
+<span class="md-ellipsis">
+      
+        Environment context manager not initialized
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric-and-semantic-catalog-errors">
+<span class="md-ellipsis">
+      
+        Metric and semantic catalog errors
+      
+    </span>
+</a>
+<nav aria-label="Metric and semantic catalog errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric-not-found">
+<span class="md-ellipsis">
+      
+        Metric not found
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#model-not-found">
+<span class="md-ellipsis">
+      
+        Model not found
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unknown-slices-for-metric">
+<span class="md-ellipsis">
+      
+        Unknown slices for metric
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric-misconfigured-because-slice-ref-is-missing">
+<span class="md-ellipsis">
+      
+        Metric misconfigured because slice ref is missing
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic-field-definition-errors">
+<span class="md-ellipsis">
+      
+        Semantic field definition errors
+      
+    </span>
+</a>
+<nav aria-label="Semantic field definition errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#field-has-no-role">
+<span class="md-ellipsis">
+      
+        Field has no role
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#field-is-both-measure-and-segment">
+<span class="md-ellipsis">
+      
+        Field is both measure and segment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#time-properties-on-non-dimension-field">
+<span class="md-ellipsis">
+      
+        Time properties on non-dimension field
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#measure-type-on-non-measure-field">
+<span class="md-ellipsis">
+      
+        Measure type on non-measure field
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#perspective-errors">
+<span class="md-ellipsis">
+      
+        Perspective errors
+      
+    </span>
+</a>
+<nav aria-label="Perspective errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#slug_conflict">
+<span class="md-ellipsis">
+      
+        SLUG_CONFLICT
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statement-not-found-for-perspective-creation-or-update">
+<span class="md-ellipsis">
+      
+        Statement not found for perspective creation or update
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statement-must-be-success">
+<span class="md-ellipsis">
+      
+        Statement must be SUCCESS
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statement-has-no-result">
+<span class="md-ellipsis">
+      
+        Statement has no result
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#only-owner-can-update-perspective">
+<span class="md-ellipsis">
+      
+        Only owner can update perspective
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#access-denied-on-perspective">
+<span class="md-ellipsis">
+      
+        Access denied on perspective
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#result-retrieval-errors">
+<span class="md-ellipsis">
+      
+        Result retrieval errors
+      
+    </span>
+</a>
+<nav aria-label="Result retrieval errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#result-not-available-yet">
+<span class="md-ellipsis">
+      
+        Result not available yet
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unsupported-format">
+<span class="md-ellipsis">
+      
+        Unsupported format
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#invalid-columns-requested">
+<span class="md-ellipsis">
+      
+        Invalid columns requested
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#file-api-validation-errors">
+<span class="md-ellipsis">
+      
+        File API validation errors
+      
+    </span>
+</a>
+<nav aria-label="File API validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#path-outside-project-directory">
+<span class="md-ellipsis">
+      
+        Path outside project directory
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#path-matches-ignore-patterns">
+<span class="md-ellipsis">
+      
+        Path matches ignore patterns
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#time-range-validation-errors">
+<span class="md-ellipsis">
+      
+        Time range validation errors
+      
+    </span>
+</a>
+<nav aria-label="Time range validation errors" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#invalid-timestamp-range">
+<span class="md-ellipsis">
+      
+        Invalid timestamp range
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#still-stuck">
+<span class="md-ellipsis">
+      
+        Still stuck?
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigation" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../..">
+<span class="md-ellipsis">
+    About
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../overview/">
+<span class="md-ellipsis">
+    Guides
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">¶</a></h1>
+<p>Vulcan rejects bad requests early so you don't waste warehouse cycles or end up with half-broken results. When a query, plan, or API call fails, you get back a specific error code and message. This page lists every error you can hit at validation or request time, what triggered it, and how to fix it.</p>
+<p>If you came here from a <code>4xx</code> response, copy the code or message into your browser's find dialog (<code>Cmd/Ctrl + F</code>) and jump straight to the entry.</p>
+<hr/>
+<h2 id="how-each-entry-is-structured">How each entry is structured<a class="headerlink" href="#how-each-entry-is-structured" title="Link to this section">¶</a></h2>
+<p>Each error below follows the same shape:</p>
+<ul>
+<li><strong>Error message:</strong> the literal string Vulcan returns.</li>
+<li>A short paragraph explaining when and why it fires.</li>
+<li><strong>Fix:</strong> a short list of what to change.</li>
+</ul>
+<p>If the same fix appears in more than one place (for example, "check your token"), it's because the underlying problem really is the same. The categories tell you where in the request path the error came from.</p>
+<hr/>
+<h2 id="query-validation-errors">Query validation errors<a class="headerlink" href="#query-validation-errors" title="Link to this section">¶</a></h2>
+<p>These come back when you submit SQL to the Vulcan query API and Vulcan rejects it before any execution happens.</p>
+<h3 id="parse_error"><code>PARSE_ERROR</code><a class="headerlink" href="#parse_error" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>SQL could not be parsed.</p>
+</blockquote>
+<p>The SQL doesn't parse against the target gateway dialect, or it uses a construct the parser doesn't understand. This is almost always a syntax issue, not a permissions or model issue.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Recheck the SQL against the dialect of the selected gateway.</li>
+<li>Replace dialect-specific functions if you're pointing at a different engine.</li>
+<li>Break apart deeply nested or vendor-specific syntax.</li>
+</ul>
+<h3 id="data_manipulation_detected"><code>DATA_MANIPULATION_DETECTED</code><a class="headerlink" href="#data_manipulation_detected" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>Only read-only SQL is allowed, but the query contains write or mutation operations.</p>
+</blockquote>
+<p>The raw SQL endpoint accepts read-only statements only. Anything that mutates data or schema gets blocked: <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>MERGE</code>, <code>CREATE</code>, <code>DROP</code>, <code>ALTER</code>, <code>TRUNCATE</code>, <code>REPLACE</code>, and similar.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Send a read-only query (<code>SELECT</code>, <code>WITH</code>, etc.).</li>
+<li>Move data modification logic into a model, pipeline, or job. The query API isn't the right place for it.</li>
+<li>If you meant to send a semantic query, use the semantic endpoint instead of the raw SQL endpoint.</li>
+</ul>
+<h3 id="not_found"><code>NOT_FOUND</code><a class="headerlink" href="#not_found" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>One or more referenced tables or models were not found.</p>
+</blockquote>
+<p>The query references a table or model name that doesn't exist in the selected environment, or the snapshot Vulcan is reading from doesn't include it yet.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Double-check the table or model name for typos.</li>
+<li>Confirm you're targeting the right environment.</li>
+<li>Run <code>vulcan plan &lt;env&gt;</code> if the model hasn't been planned or applied there yet.</li>
+</ul>
+<h3 id="table_extraction_error"><code>TABLE_EXTRACTION_ERROR</code><a class="headerlink" href="#table_extraction_error" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>Vulcan could not extract table references from the SQL.</p>
+</blockquote>
+<p>The SQL parsed cleanly, but the lineage step that walks the AST to find table references failed. Usually a complex or unsupported construct trips this up.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Simplify the SQL.</li>
+<li>Split large nested queries into smaller CTEs.</li>
+<li>Avoid unusual dialect-specific patterns where you can.</li>
+</ul>
+<h3 id="normalization_error"><code>NORMALIZATION_ERROR</code><a class="headerlink" href="#normalization_error" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>Vulcan could not normalize the SQL after parsing.</p>
+</blockquote>
+<p>The query parsed, but serializing it back into normalized SQL failed. This is rare and usually points to an edge case in the AST.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Simplify the query structure.</li>
+<li>Remove edge-case syntax.</li>
+<li>Test with more standard SQL constructs and add back complexity from there.</li>
+</ul>
+<h3 id="recent_failure"><code>RECENT_FAILURE</code><a class="headerlink" href="#recent_failure" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>An identical query failed recently, so Vulcan prevents immediate retry by default.</p>
+</blockquote>
+<p>Vulcan fingerprints every query and blocks repeat submissions of a recently-failed query for a short window. This stops noisy retry loops from hammering the warehouse and Vulcan itself.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Fix the original failure first. Whatever caused the previous run to fail will keep failing if you just retry.</li>
+<li>Resubmit after the fix.</li>
+<li>If retrying is intentional (for example, an upstream blip you've already confirmed is resolved), set <code>retry_on_recent_failure=true</code> on the request.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Why this exists</p>
+<p>Without this guard, a failing query in a tight loop can produce thousands of identical failures in seconds. The fingerprint is hashed on the normalized SQL, so cosmetic changes won't bypass it: fix the actual problem.</p>
+</div>
+<hr/>
+<h2 id="request-validation-errors">Request validation errors<a class="headerlink" href="#request-validation-errors" title="Link to this section">¶</a></h2>
+<p>These come from FastAPI and Pydantic checks on the request body itself, before the SQL or semantic logic ever runs.</p>
+<h3 id="invalid-ttl">Invalid <code>ttl</code><a class="headerlink" href="#invalid-ttl" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>ttl must be 0 (never expires) or between 5 and 43200 minutes</code></p>
+</blockquote>
+<p>The TTL you sent is outside the allowed range. Vulcan accepts:</p>
+<ul>
+<li><code>0</code> for "never expire"</li>
+<li><code>5</code> to <code>43200</code> minutes for expiring cache entries</li>
+</ul>
+<p>Values from <code>1</code> to <code>4</code> are explicitly rejected so you don't accidentally cache results for a too-short window.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Use <code>0</code> if the result should not expire.</li>
+<li>Use a value between <code>5</code> and <code>43200</code>.</li>
+</ul>
+<h3 id="oversized-meta">Oversized <code>meta</code><a class="headerlink" href="#oversized-meta" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>meta field exceeds 10KB limit</code></p>
+</blockquote>
+<p>The request metadata is larger than the size Vulcan allows for direct SQL submissions. The <code>meta</code> field is intended for tracing, debugging, and small context, not for shipping payloads.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Trim the <code>meta</code> object down to what you actually need.</li>
+<li>Keep only fields you'll read back later (request ID, user ID, source, etc.).</li>
+<li>Store anything large somewhere else and reference it by ID.</li>
+</ul>
+<h3 id="generic-422-validation-error">Generic <code>422</code> validation error<a class="headerlink" href="#generic-422-validation-error" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The request body or query parameters are invalid.</p>
+</blockquote>
+<p>FastAPI or Pydantic rejected the request because of one of the usual suspects:</p>
+<ul>
+<li>a required field is missing</li>
+<li>a field has the wrong type</li>
+<li>an enum value isn't one of the allowed options</li>
+<li>a parameter has an unexpected shape</li>
+</ul>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Compare your payload against the API schema at <code>/redoc</code> or <code>/openapi.json</code>.</li>
+<li>Make sure every required field is present.</li>
+<li>Match field types exactly to the contract for that endpoint.</li>
+</ul>
+<hr/>
+<h2 id="semantic-query-and-transpiler-errors">Semantic query and transpiler errors<a class="headerlink" href="#semantic-query-and-transpiler-errors" title="Link to this section">¶</a></h2>
+<p>These show up when you query the semantic layer and Vulcan or the transpiler rejects the request.</p>
+<h3 id="apiquerypost_processing_required"><code>API.QUERY.POST_PROCESSING_REQUIRED</code><a class="headerlink" href="#apiquerypost_processing_required" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The semantic query requires post-processing, but post-processing is disabled.</p>
+</blockquote>
+<p>Some semantic queries need a post-processing step after transpilation (for example, certain time grain rollups). When <code>disable_post_processing=true</code> is set on the request, Vulcan refuses to run those queries because the results would be wrong.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Resend the request with <code>disable_post_processing=false</code>.</li>
+<li>If the query still fails after that, look at the transpiler error attached to the response for the real cause.</li>
+</ul>
+<h3 id="transpilerqueryinvalid"><code>TRANSPILER.QUERY.INVALID</code><a class="headerlink" href="#transpilerqueryinvalid" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The transpiler rejected the semantic query as invalid.</p>
+</blockquote>
+<p>The semantic SQL or REST query is structurally invalid, references the wrong semantic objects, or violates a semantic query rule (for example, mixing measures and dimensions in a way that has no valid SQL).</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Verify your measures, dimensions, filters, and joins.</li>
+<li>Make sure every reference matches a real semantic object.</li>
+<li>For grouped queries, include the right dimensions in the grouping fields.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Preview before you send</p>
+<p>Run <code>vulcan transpile</code> locally on the same payload before submitting it to the API. You'll see the error immediately and the SQL it would produce, which usually points straight at the problem.</p>
+</div>
+<h3 id="transpilerserviceunavailable"><code>TRANSPILER.SERVICE.UNAVAILABLE</code><a class="headerlink" href="#transpilerserviceunavailable" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The semantic query service is unavailable.</p>
+</blockquote>
+<p>The transpiler service couldn't be reached, timed out, or hasn't finished initializing.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Hit the transpiler health endpoint to confirm it's actually running.</li>
+<li>Check network connectivity between the API service and the transpiler.</li>
+<li>Retry once the upstream service is back.</li>
+</ul>
+<h3 id="transpilerupstreamerror"><code>TRANSPILER.UPSTREAM.ERROR</code><a class="headerlink" href="#transpilerupstreamerror" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The transpiler service returned an upstream server error.</p>
+</blockquote>
+<p>The transpiler itself crashed or errored while processing the request.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Check transpiler logs for the actual exception.</li>
+<li>Retry if it looks transient.</li>
+<li>Escalate if the same valid query fails consistently: that's a bug, not a config issue.</li>
+</ul>
+<h3 id="sql_transpilation_error"><code>SQL_TRANSPILATION_ERROR</code><a class="headerlink" href="#sql_transpilation_error" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>Client SQL dialect transpilation failed.</p>
+</blockquote>
+<p>This usually shows up on internal semantic SQL flows where an incoming dialect (for example, MySQL) needs to be converted into the target backend dialect first, and that conversion failed.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Rewrite the SQL using simpler or more portable syntax.</li>
+<li>Avoid dialect-specific functions that have no direct mapping in the target engine.</li>
+<li>Confirm the declared client dialect actually matches what you're sending.</li>
+</ul>
+<h3 id="semantic_query_error"><code>SEMANTIC_QUERY_ERROR</code><a class="headerlink" href="#semantic_query_error" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>Semantic SQL compilation failed.</p>
+</blockquote>
+<p>The semantic query is invalid after Vulcan hands it to the transpiler. The most common cause is bad aggregation or grouping logic.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Check the query syntax.</li>
+<li>Make sure every non-aggregated column appears in <code>GROUP BY</code>.</li>
+<li>Verify your semantic field and metric references are correct.</li>
+</ul>
+<hr/>
+<h2 id="authentication-and-authorization-errors">Authentication and authorization errors<a class="headerlink" href="#authentication-and-authorization-errors" title="Link to this section">¶</a></h2>
+<p>These come from Heimdall and the auth middleware. They tell you whether the request was authenticated, and whether the authenticated user is allowed to do what they asked.</p>
+<h3 id="commonauthunauthorized"><code>COMMON.AUTH.UNAUTHORIZED</code><a class="headerlink" href="#commonauthunauthorized" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>Missing or malformed authorization header.</p>
+</blockquote>
+<p>The request didn't include a valid <code>Authorization</code> header in the expected Bearer token format.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Send the header as <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+<li>Make sure it isn't empty or trimmed by an intermediate proxy.</li>
+</ul>
+<h3 id="commonauthinvalid_token"><code>COMMON.AUTH.INVALID_TOKEN</code><a class="headerlink" href="#commonauthinvalid_token" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The provided token is invalid.</p>
+</blockquote>
+<p>Heimdall received the request but determined the token is expired, malformed, revoked, or otherwise unusable.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Refresh or replace the token.</li>
+<li>Confirm the token was issued for the correct tenant or environment.</li>
+</ul>
+<h3 id="commonauthforbidden"><code>COMMON.AUTH.FORBIDDEN</code><a class="headerlink" href="#commonauthforbidden" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The user is authenticated but not allowed to perform the action.</p>
+</blockquote>
+<p>The token is valid, but access policies deny the request.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Check the user's roles or tags.</li>
+<li>Update the access policy if the user should be allowed.</li>
+<li>Retry with a service account that has the right permission, if you have one.</li>
+</ul>
+<h3 id="commoninternalerror-during-auth"><code>COMMON.INTERNAL.ERROR</code> during auth<a class="headerlink" href="#commoninternalerror-during-auth" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>Authorization service unavailable.</p>
+</blockquote>
+<p>Heimdall timed out, returned invalid data, or wasn't reachable.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Check Heimdall's health and logs.</li>
+<li>Verify network connectivity from the API service to Heimdall.</li>
+<li>Retry after Heimdall is restored.</li>
+</ul>
+<hr/>
+<h2 id="environment-and-service-initialization-errors">Environment and service initialization errors<a class="headerlink" href="#environment-and-service-initialization-errors" title="Link to this section">¶</a></h2>
+<p>These show up when an environment doesn't exist, or when the API process didn't initialize correctly at startup.</p>
+<h3 id="environment-not-found">Environment not found<a class="headerlink" href="#environment-not-found" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Environment '&lt;env&gt;' not found. Run 'vulcan plan &lt;env&gt;' to create it.</code></p>
+</blockquote>
+<p>The environment doesn't exist in the state store. Common causes:</p>
+<ul>
+<li>the environment name is misspelled</li>
+<li>the environment was never created</li>
+<li>the state database was reset and lost it</li>
+</ul>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Verify the environment name.</li>
+<li>Create it with <code>vulcan plan &lt;env&gt;</code>.</li>
+<li>Confirm the state store still contains the environment by running <code>vulcan environments</code>.</li>
+</ul>
+<h3 id="transpiler-client-not-initialized">Transpiler client not initialized<a class="headerlink" href="#transpiler-client-not-initialized" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The API cannot access the shared transpiler client.</p>
+</blockquote>
+<p>The API process started, but the transpiler client wasn't wired up. Without it, semantic queries can't be transpiled.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Read API startup logs for the underlying initialization error.</li>
+<li>Verify transpiler-related configuration (host, port, credentials).</li>
+<li>Restart the service after fixing the cause.</li>
+</ul>
+<h3 id="environment-context-manager-not-initialized">Environment context manager not initialized<a class="headerlink" href="#environment-context-manager-not-initialized" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The API cannot resolve environment context.</p>
+</blockquote>
+<p>Startup failed before the environment context manager was constructed.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Read API startup logs for the underlying error.</li>
+<li>Fix the initialization failure that you find there.</li>
+<li>Restart the API.</li>
+</ul>
+<hr/>
+<h2 id="metric-and-semantic-catalog-errors">Metric and semantic catalog errors<a class="headerlink" href="#metric-and-semantic-catalog-errors" title="Link to this section">¶</a></h2>
+<p>These come from the metric and model lookup paths in the semantic layer.</p>
+<h3 id="metric-not-found">Metric not found<a class="headerlink" href="#metric-not-found" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Metric '&lt;metric_name&gt;' not found</code></p>
+</blockquote>
+<p>The metric name isn't in the loaded semantic catalog for this environment.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Check the metric name for typos.</li>
+<li>Confirm the metric is defined and loaded in the selected environment.</li>
+</ul>
+<h3 id="model-not-found">Model not found<a class="headerlink" href="#model-not-found" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Model '&lt;model_name&gt;' not found</code></p>
+</blockquote>
+<p>The model name (or alias) isn't in the environment catalog.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Verify the model name.</li>
+<li>If you're using model aliases, confirm the alias actually resolves.</li>
+<li>Make sure the model has been planned into this environment.</li>
+</ul>
+<h3 id="unknown-slices-for-metric">Unknown slices for metric<a class="headerlink" href="#unknown-slices-for-metric" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Unknown slice(s) for metric ...</code></p>
+</blockquote>
+<p>The request asked for slices that aren't defined for that metric.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Use only the slices the metric actually exposes.</li>
+<li>Look at the metric definition to see the allowed slice names.</li>
+</ul>
+<h3 id="metric-misconfigured-because-slice-ref-is-missing">Metric misconfigured because slice ref is missing<a class="headerlink" href="#metric-misconfigured-because-slice-ref-is-missing" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Metric is misconfigured ... slice '&lt;name&gt;.ref' is missing</code></p>
+</blockquote>
+<p>The metric exists, but one of its slices doesn't carry the required semantic reference. This is a configuration bug, not a request bug.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Open the metric definition.</li>
+<li>Add the missing slice reference in the semantic configuration.</li>
+</ul>
+<hr/>
+<h2 id="semantic-field-definition-errors">Semantic field definition errors<a class="headerlink" href="#semantic-field-definition-errors" title="Link to this section">¶</a></h2>
+<p>These fail at validation time when Vulcan loads the semantic layer. They almost always come from a <code>semantics/*.yml</code> file that's been edited.</p>
+<h3 id="field-has-no-role">Field has no role<a class="headerlink" href="#field-has-no-role" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Field '&lt;name&gt;' must have at least one role: is_column, is_dimension, is_measure, or is_segment</code></p>
+</blockquote>
+<p>The field was declared without any semantic or physical role, so Vulcan doesn't know what to do with it.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Mark the field as at least one valid role.</li>
+<li>Decide whether the field is a column, dimension, measure, or segment, and set that flag to <code>true</code>.</li>
+</ul>
+<h3 id="field-is-both-measure-and-segment">Field is both measure and segment<a class="headerlink" href="#field-is-both-measure-and-segment" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Field '&lt;name&gt;' cannot be both measure and segment</code></p>
+</blockquote>
+<p>The field has conflicting roles. A field can't be aggregated and used as a segment filter at the same time.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Pick one role for the field.</li>
+<li>If you need both behaviors, define two separate fields, one for each.</li>
+</ul>
+<h3 id="time-properties-on-non-dimension-field">Time properties on non-dimension field<a class="headerlink" href="#time-properties-on-non-dimension-field" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Field '&lt;name&gt;' has time properties but is_dimension=False</code></p>
+</blockquote>
+<p>You added time-specific metadata (granularity, time type, etc.) to a field that isn't marked as a dimension.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Set <code>is_dimension=true</code> if the field is meant to be a time dimension.</li>
+<li>Otherwise, remove the time-specific properties.</li>
+</ul>
+<h3 id="measure-type-on-non-measure-field">Measure type on non-measure field<a class="headerlink" href="#measure-type-on-non-measure-field" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Field '&lt;name&gt;' has measure_type but is_measure=False</code></p>
+</blockquote>
+<p>You set <code>measure_type</code> on a field that isn't marked as a measure.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Set <code>is_measure=true</code> if the field should behave as a measure.</li>
+<li>Otherwise, remove <code>measure_type</code>.</li>
+</ul>
+<hr/>
+<h2 id="perspective-errors">Perspective errors<a class="headerlink" href="#perspective-errors" title="Link to this section">¶</a></h2>
+<p>Perspectives are saved views over a statement's result. These errors fire when you create, update, or read one.</p>
+<h3 id="slug_conflict"><code>SLUG_CONFLICT</code><a class="headerlink" href="#slug_conflict" title="Link to this section">¶</a></h3>
+<blockquote>
+<p>The requested perspective slug is already taken.</p>
+</blockquote>
+<p>Perspective slugs are unique. The slug you sent (or the one Vulcan generated) is already in use.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Pick a different slug.</li>
+<li>Use one of the slug suggestions returned in the API response.</li>
+</ul>
+<h3 id="statement-not-found-for-perspective-creation-or-update">Statement not found for perspective creation or update<a class="headerlink" href="#statement-not-found-for-perspective-creation-or-update" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Statement not found</code></p>
+</blockquote>
+<p>The <code>statement_id</code> you supplied doesn't exist.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Verify the statement ID.</li>
+<li>Confirm the statement was created in the same system and environment you're posting against.</li>
+</ul>
+<h3 id="statement-must-be-success">Statement must be <code>SUCCESS</code><a class="headerlink" href="#statement-must-be-success" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Statement must be SUCCESS</code> or <code>Primary statement must be SUCCESS</code></p>
+</blockquote>
+<p>You can only build a perspective from a statement that completed successfully and has a stored result. Pending or failed statements are rejected.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Wait for the statement to finish.</li>
+<li>Fix the underlying query if it failed, then re-submit.</li>
+</ul>
+<h3 id="statement-has-no-result">Statement has no result<a class="headerlink" href="#statement-has-no-result" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Statement has no result</code>, <code>Primary statement has no result</code>, or <code>Cache result not found</code></p>
+</blockquote>
+<p>The statement metadata exists, but the result isn't where Vulcan expects it. Either it was never produced, never stored, or its link is broken.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Check worker execution logs for that statement.</li>
+<li>Check object store and result metadata for the missing artifact.</li>
+<li>Re-run the statement after fixing storage or execution.</li>
+</ul>
+<h3 id="only-owner-can-update-perspective">Only owner can update perspective<a class="headerlink" href="#only-owner-can-update-perspective" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Only owner can update perspective</code></p>
+</blockquote>
+<p>The current user isn't the owner of the perspective.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Update from the owner account.</li>
+<li>If your product workflow allows transferring ownership, do that first.</li>
+</ul>
+<h3 id="access-denied-on-perspective">Access denied on perspective<a class="headerlink" href="#access-denied-on-perspective" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Access denied</code></p>
+</blockquote>
+<p>The perspective is private and the current user is neither the owner nor in the allowed user list.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Add the user to <code>allowed_user_ids</code> on the perspective.</li>
+<li>Make the perspective public if that's appropriate for your use case.</li>
+<li>Otherwise, access it as the owner.</li>
+</ul>
+<hr/>
+<h2 id="result-retrieval-errors">Result retrieval errors<a class="headerlink" href="#result-retrieval-errors" title="Link to this section">¶</a></h2>
+<p>These show up when you ask for a statement's result.</p>
+<h3 id="result-not-available-yet">Result not available yet<a class="headerlink" href="#result-not-available-yet" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Result not available. Statement status: ...</code> or <code>Result not available. Primary status: ...</code></p>
+</blockquote>
+<p>You requested the result before the underlying statement reached <code>SUCCESS</code>.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Poll the statement detail endpoint first.</li>
+<li>Only fetch the result once the status is <code>SUCCESS</code>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">How to poll properly</p>
+<p>See <a href="../vulcan_api_guide/#step-3-poll-for-status">Vulcan API Guide: Step 3</a> for the full status lifecycle and recommended poll behavior.</p>
+</div>
+<h3 id="unsupported-format">Unsupported format<a class="headerlink" href="#unsupported-format" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Format '&lt;x&gt;' not supported. Use: parquet, json, yaml, csv</code></p>
+</blockquote>
+<p>The requested output format isn't one Vulcan supports.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Use one of <code>parquet</code>, <code>json</code>, <code>yaml</code>, or <code>csv</code>.</li>
+</ul>
+<h3 id="invalid-columns-requested">Invalid columns requested<a class="headerlink" href="#invalid-columns-requested" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Invalid columns requested: ...</code></p>
+</blockquote>
+<p>You asked for columns by name, but at least one of them isn't in the result schema.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Use only column names that the statement actually returned.</li>
+<li>Inspect the statement schema before asking for filtered output.</li>
+</ul>
+<hr/>
+<h2 id="file-api-validation-errors">File API validation errors<a class="headerlink" href="#file-api-validation-errors" title="Link to this section">¶</a></h2>
+<p>These come from the file API and protect the project root from path traversal and ignored files.</p>
+<h3 id="path-outside-project-directory">Path outside project directory<a class="headerlink" href="#path-outside-project-directory" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Path outside project directory</code></p>
+</blockquote>
+<p>The path you sent resolves to a location outside the configured project root.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Use a path relative to the project directory.</li>
+<li>Don't use traversal patterns like <code>../</code>.</li>
+</ul>
+<h3 id="path-matches-ignore-patterns">Path matches ignore patterns<a class="headerlink" href="#path-matches-ignore-patterns" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>Path matches ignore patterns</code></p>
+</blockquote>
+<p>The path is blocked by configured ignore rules. This usually catches files that contain secrets, large artifacts, or anything you've explicitly told Vulcan not to expose.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Use a path that isn't covered by an ignore rule.</li>
+<li>Update the ignore rules only if exposing that file is intended and safe.</li>
+</ul>
+<hr/>
+<h2 id="time-range-validation-errors">Time range validation errors<a class="headerlink" href="#time-range-validation-errors" title="Link to this section">¶</a></h2>
+<h3 id="invalid-timestamp-range">Invalid timestamp range<a class="headerlink" href="#invalid-timestamp-range" title="Link to this section">¶</a></h3>
+<blockquote>
+<p><code>start_ts must be &lt;= end_ts</code> or equivalent parameter names</p>
+</blockquote>
+<p>The start timestamp is later than the end timestamp.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Swap the timestamps.</li>
+<li>Confirm the start value is earlier than or equal to the end value.</li>
+</ul>
+<hr/>
+<h2 id="still-stuck">Still stuck?<a class="headerlink" href="#still-stuck" title="Link to this section">¶</a></h2>
+<p>If your error isn't on this page, or the suggested fix didn't help:</p>
+<ul>
+<li>Run <code>vulcan transpile</code> locally on the failing payload to see the generated SQL and any earlier errors. See <a href="../transpiling_semantics/">Transpiling Semantics</a>.</li>
+<li>Look at the API logs around the failing request for additional context.</li>
+<li>Check the <a href="../vulcan_api_guide/">Vulcan API Guide</a> troubleshooting section for connection, auth, and result-fetching issues that aren't validation errors.</li>
+<li>For lifecycle questions (why a query went to cache, why deduplication kicked in, why a status looks stuck), see <a href="../semantic_query_lifecycle/">Semantic Query Lifecycle</a>.</li>
+</ul>
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="Footer" class="md-footer__inner md-grid">
+<a aria-label="Previous: Deployment Steps" class="md-footer__link md-footer__link--prev" href="../deployment_guide/">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Previous
+              </span>
+<div class="md-ellipsis">
+                Deployment Steps
+              </div>
+</div>
+</a>
+<a aria-label="Next: About" class="md-footer__link md-footer__link--next" href="../../activation/about/">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                Next
+              </span>
+<div class="md-ellipsis">
+                About
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 DataOS Vulcan Team<br/>
+<small>Complete stack for building data products</small>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/tmdc-io/vulcan-book" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<div class="md-progress" data-md-component="progress" role="progressbar"></div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../assets/javascripts/mermaid-zoom.js"></script>
+<script src="../../assets/javascripts/favicon-switcher.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

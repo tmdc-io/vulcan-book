@@ -4,13 +4,13 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="Complete documentation for Vulcan - complete stack for building data products" name="description"/>
 <meta content="DataOS Vulcan Team" name="author"/>
-<link href="https://tmdc-io.github.io/vulcan-docs/guides/deployment_guide/" rel="canonical"/>
-<link href="../semantic_query_lifecycle/" rel="prev"/>
-<link href="../../cli-commands/cli/" rel="next"/>
+<link href="https://tmdc-io.github.io/vulcan-book/guides/deployment_guide/" rel="canonical"/>
+<link href="../vulcan_api_guide/" rel="prev"/>
+<link href="../troubleshooting/" rel="next"/>
 <link href="../../assets/images/D_logo_dark-32px.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.7.0" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
 <title>Deployment Steps - DataOS Vulcan</title>
-<link href="../../assets/stylesheets/main.618322db.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -23,7 +23,7 @@
 <meta content="website" property="og:type"/>
 <meta content="DataOS Vulcan" property="og:title"/>
 <meta content="Complete stack for building data products. Write SQL or Python models, get CI/CD, testing, data quality, and API generation." property="og:description"/>
-<meta content="https://tmdc-io.github.io/vulcan-docs/" property="og:url"/>
+<meta content="https://tmdc-io.github.io/vulcan-book/" property="og:url"/>
 <meta content="DataOS Vulcan" property="og:site_name"/>
 <meta content="summary" name="twitter:card"/>
 <meta content="DataOS Vulcan" name="twitter:title"/>
@@ -869,6 +869,18 @@
           </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="../overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="../get-started/docker/">
 <span class="md-ellipsis">
     
@@ -988,6 +1000,18 @@
   </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../vulcan_api_guide/">
+<span class="md-ellipsis">
+    
+  
+    Vulcan API Guide
+  
+
+    
+  </span>
+</a>
+</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
@@ -1028,10 +1052,10 @@
 <nav aria-label="Prerequisites" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#1-dataos-20-cli">
+<a class="md-nav__link" href="#1-dataos-cli">
 <span class="md-ellipsis">
       
-        1. DataOS 2.0 CLI
+        1. DataOS CLI
       
     </span>
 </a>
@@ -1161,6 +1185,51 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-runtime-entries">
+<span class="md-ellipsis">
+      
+        Understanding Runtime Entries
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#which-log-to-check">
+<span class="md-ellipsis">
+      
+        Which Log to Check
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fetching-logs-via-cli">
+<span class="md-ellipsis">
+      
+        Fetching Logs via CLI
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#why-multiple-entries-appear">
+<span class="md-ellipsis">
+      
+        Why Multiple Entries Appear
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spark-engines-driver-vs-executor-logs">
+<span class="md-ellipsis">
+      
+        Spark engines: driver vs executor logs
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -1197,6 +1266,166 @@
 </li>
 </ul>
 </nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../troubleshooting/">
+<span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Activation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Activation
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/apps/apps/">
+<span class="md-ellipsis">
+    
+  
+    Apps
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    BI
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    BI
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/about/">
+<span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/powerbi/">
+<span class="md-ellipsis">
+    
+  
+    PowerBI
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/tableau/">
+<span class="md-ellipsis">
+    
+  
+    Tableau
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/bi/superset/">
+<span class="md-ellipsis">
+    
+  
+    Superset
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/python/python/">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../activation/mysql/about/">
+<span class="md-ellipsis">
+    
+  
+    MySQL
+  
+
+    
+  </span>
+</a>
 </li>
 </ul>
 </nav>
@@ -1274,10 +1503,10 @@
 <nav aria-label="Prerequisites" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#1-dataos-20-cli">
+<a class="md-nav__link" href="#1-dataos-cli">
 <span class="md-ellipsis">
       
-        1. DataOS 2.0 CLI
+        1. DataOS CLI
       
     </span>
 </a>
@@ -1407,6 +1636,51 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-runtime-entries">
+<span class="md-ellipsis">
+      
+        Understanding Runtime Entries
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#which-log-to-check">
+<span class="md-ellipsis">
+      
+        Which Log to Check
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fetching-logs-via-cli">
+<span class="md-ellipsis">
+      
+        Fetching Logs via CLI
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#why-multiple-entries-appear">
+<span class="md-ellipsis">
+      
+        Why Multiple Entries Appear
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spark-engines-driver-vs-executor-logs">
+<span class="md-ellipsis">
+      
+        Spark engines: driver vs executor logs
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -1457,7 +1731,7 @@
 </a>
 </li>
 <li class="md-path__item">
-<a class="md-path__link" href="../get-started/docker/">
+<a class="md-path__link" href="../overview/">
 <span class="md-ellipsis">
     Guides
   </span>
@@ -1477,7 +1751,7 @@
 <hr/>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h2>
 <p>Before deploying a Vulcan data product, ensure you have the following resources configured in your DataOS environment:</p>
-<h3 id="1-dataos-20-cli">1. DataOS 2.0 CLI<a class="headerlink" href="#1-dataos-20-cli" title="Link to this section">¶</a></h3>
+<h3 id="1-dataos-cli">1. DataOS CLI<a class="headerlink" href="#1-dataos-cli" title="Link to this section">¶</a></h3>
 <p>Ensure you have the DataOS CLI installed and configured:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># Verify CLI installation</span>
 </span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>ds<span class="w"> </span>version
@@ -1847,24 +2121,185 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="c1"># Get resource status</span>
 </span><span id="__span-24-2"><a href="#__codelineno-24-2" id="__codelineno-24-2" name="__codelineno-24-2"></a>ds<span class="w"> </span>resource<span class="w"> </span>-t<span class="w"> </span>vulcan<span class="w"> </span>-n<span class="w"> </span>&lt;data-product-name&gt;<span class="w"> </span>get
 </span><span id="__span-24-3"><a href="#__codelineno-24-3" id="__codelineno-24-3" name="__codelineno-24-3"></a>
-</span><span id="__span-24-4"><a href="#__codelineno-24-4" id="__codelineno-24-4" name="__codelineno-24-4"></a>
-</span><span id="__span-24-5"><a href="#__codelineno-24-5" id="__codelineno-24-5" name="__codelineno-24-5"></a><span class="c1"># Check logs</span>
-</span><span id="__span-24-6"><a href="#__codelineno-24-6" id="__codelineno-24-6" name="__codelineno-24-6"></a>ds<span class="w"> </span>resource<span class="w"> </span>-t<span class="w"> </span>vulcan<span class="w"> </span>-n<span class="w"> </span>&lt;data-product-name&gt;<span class="w"> </span>logs
+</span><span id="__span-24-4"><a href="#__codelineno-24-4" id="__codelineno-24-4" name="__codelineno-24-4"></a><span class="c1"># Check logs</span>
+</span><span id="__span-24-5"><a href="#__codelineno-24-5" id="__codelineno-24-5" name="__codelineno-24-5"></a>ds<span class="w"> </span>resource<span class="w"> </span>-t<span class="w"> </span>vulcan<span class="w"> </span>-n<span class="w"> </span>&lt;data-product-name&gt;<span class="w"> </span>logs
 </span></code></pre></div>
+<h3 id="understanding-runtime-entries">Understanding Runtime Entries<a class="headerlink" href="#understanding-runtime-entries" title="Link to this section">¶</a></h3>
+<p>Vulcan doesn't run as a single container. When you deploy, DataOS splits it into three components, each with its own runtime and logs:</p>
+<ul>
+<li><strong>plan</strong> - handles migration and deployment preparation (<code>vulcan migrate</code> + <code>vulcan plan --auto-apply</code>)</li>
+<li><strong>run</strong> - executes your models on schedule (<code>vulcan run</code>)</li>
+<li><strong>api</strong> - serves queries and exposes endpoints (long-running service)</li>
+</ul>
+<p>Open the <strong>Runtime</strong> tab in your DataOS instance and you'll see entries for all three. This is expected.</p>
+<h3 id="which-log-to-check">Which Log to Check<a class="headerlink" href="#which-log-to-check" title="Link to this section">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>What you're investigating</th>
+<th>Look at</th>
+<th>Runtime entry pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model execution results</td>
+<td><strong>run</strong> logs</td>
+<td><code>*-r-execute</code>, <code>workflow...run...</code></td>
+</tr>
+<tr>
+<td>Migration, planning, auto-apply</td>
+<td><strong>plan</strong> logs</td>
+<td><code>*-mgrt-execute</code>, <code>*-plan-execute</code></td>
+</tr>
+<tr>
+<td>API availability, query issues</td>
+<td><strong>api</strong> logs</td>
+<td><code>*-api-*</code>, <code>service...api...</code></td>
+</tr>
+</tbody>
+</table>
+<p>For example, if your resource is called <code>orders-analytics</code>:</p>
+<ul>
+<li><code>orders-analyticsv1-mgrt-execute</code> and <code>orders-analyticsv1-plan-execute</code> belong to <strong>plan</strong></li>
+<li><code>orders-analyticsv1-r-execute</code> and <code>workflowv2alpha...run...</code> entries belong to <strong>run</strong></li>
+<li><code>orders-analyticsv1-api-*</code> and <code>servicev2alpha...api...</code> entries belong to <strong>api</strong> (check <code>*-main</code> for API logs, <code>*-sc-1</code> for GraphQL, <code>*-sc-2</code> for MySQL)</li>
+</ul>
+<h3 id="fetching-logs-via-cli">Fetching Logs via CLI<a class="headerlink" href="#fetching-logs-via-cli" title="Link to this section">¶</a></h3>
+<p>Use the DataOS CLI to pull logs from a specific component and container:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>dataos-ctl<span class="w"> </span>resource<span class="w"> </span>-t<span class="w"> </span>Vulcan<span class="w"> </span>-n<span class="w"> </span>&lt;resource-name&gt;<span class="w"> </span>logs<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="w">  </span>--container-group<span class="w"> </span>&lt;container-group&gt;<span class="w"> </span>-c<span class="w"> </span>&lt;container-name&gt;
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>What you need</th>
+<th><code>--container-group</code></th>
+<th><code>-c</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Planning / migration logs</td>
+<td><code>&lt;name&gt;-plan-execute</code></td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>Model execution logs</td>
+<td><code>&lt;name&gt;-run-execute</code></td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>API service logs</td>
+<td><code>&lt;name&gt;-api</code></td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>GraphQL sidecar logs</td>
+<td><code>&lt;name&gt;-api</code></td>
+<td><code>sc-1</code></td>
+</tr>
+<tr>
+<td>MySQL sidecar logs</td>
+<td><code>&lt;name&gt;-api</code></td>
+<td><code>sc-2</code></td>
+</tr>
+</tbody>
+</table>
+<p>For example, to check execution logs for a resource called <code>orders-analytics</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>dataos-ctl<span class="w"> </span>resource<span class="w"> </span>-t<span class="w"> </span>Vulcan<span class="w"> </span>-n<span class="w"> </span>orders-analytics<span class="w"> </span>logs<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a><span class="w">  </span>--container-group<span class="w"> </span>orders-analytics-run-execute<span class="w"> </span>-c<span class="w"> </span>main
+</span></code></pre></div>
+<h3 id="why-multiple-entries-appear">Why Multiple Entries Appear<a class="headerlink" href="#why-multiple-entries-appear" title="Link to this section">¶</a></h3>
+<p>You'll often see more than three entries. Here's why:</p>
+<ul>
+<li><strong>Scheduled runs create new pods.</strong> Each time the cron fires, DataOS creates a new workflow pod for the run. Five "Succeeded" entries means five completed scheduled runs. This is normal.</li>
+<li>
+<p><strong>API replicas and sidecars.</strong> The API pod has multiple containers, each with its own logs:</p>
+<table>
+<thead>
+<tr>
+<th>Container</th>
+<th>Log suffix</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main API container</td>
+<td><code>*-main</code></td>
+<td>Core API/service behavior</td>
+</tr>
+<tr>
+<td>GraphQL sidecar</td>
+<td><code>*-sc-1</code></td>
+<td>GraphQL-related investigation</td>
+</tr>
+<tr>
+<td>MySQL sidecar</td>
+<td><code>*-sc-2</code></td>
+<td>MySQL wire protocol or client connection issues</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>Plan also runs as a workflow.</strong> Migration and planning each get their own pod, so you'll see separate entries for those too.</p>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Quick rule of thumb</p>
+<p>To verify a scheduled execution went through, open the <strong>most recent</strong> "Succeeded" run workflow pod. That has the latest <code>vulcan run</code> output.</p>
+</div>
+<h3 id="spark-engines-driver-vs-executor-logs">Spark engines: driver vs executor logs<a class="headerlink" href="#spark-engines-driver-vs-executor-logs" title="Link to this section">¶</a></h3>
+<p>If your gateway uses Spark, the runtime entries above only tell half the story. Vulcan's <code>run</code> (and <code>plan</code>) pod is the <strong>Spark driver</strong>: it builds the query plan, ships tasks to your cluster, and collects results. The actual work runs on <strong>executors</strong> that live on your Spark cluster, not on DataOS.</p>
+<p>That split changes where you go to debug:</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Where the log lives</th>
+<th>How to read it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vulcan can't reach Spark, auth errors, version mismatches, scheduler exceptions</td>
+<td>DataOS <code>*-run-execute</code> or <code>*-plan-execute</code> pod</td>
+<td><code>dataos-ctl resource -t Vulcan -n &lt;name&gt; logs --container-group &lt;name&gt;-run-execute -c main</code></td>
+</tr>
+<tr>
+<td>Task failed inside a UDF, OOM on a worker, shuffle fetch failures</td>
+<td>Spark cluster, executor logs</td>
+<td>Spark master UI at <code>http://&lt;spark-master&gt;:8080</code>, then drill into the application then executors</td>
+</tr>
+<tr>
+<td>Driver-side stack trace that points into executor code</td>
+<td>Both: DataOS shows the symptom, Spark shows the cause</td>
+<td>Start in DataOS, follow the executor ID in the trace to the Spark UI</td>
+</tr>
+</tbody>
+</table>
+<p>A common pattern: a <code>vulcan run</code> in DataOS fails with a multi-line Java stack trace. The top frames are driver-side and visible in <code>*-run-execute</code> logs; the root cause sits in an executor and is only retrievable from the Spark UI. Don't waste cycles re-running the DataOS pod when the answer is in the executor logs.</p>
+<p>For the symmetric "is my driver Spark version actually the same as my cluster's?" question, see <a href="../../configurations/engines/spark/spark/#verifying-spark-version-alignment">Verifying Spark version alignment</a>. A version skew is the single most common reason a Spark-backed run pod blows up at startup, and it surfaces as <code>java.io.InvalidClassException</code> in the <code>*-run-execute</code> logs.</p>
+<div class="admonition note">
+<p class="admonition-title">Sidecars don't apply to Spark workloads</p>
+<p>The <code>sc-1</code> (GraphQL) and <code>sc-2</code> (MySQL) sidecars are part of the <code>api</code> pod, not <code>run</code>. Spark workloads don't add new container groups to DataOS. The driver still runs inside the existing <code>*-run-execute</code> container.</p>
+</div>
 <hr/>
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Link to this section">¶</a></h2>
 <h3 id="verify-models-in-data-warehouse">Verify Models in Data Warehouse<a class="headerlink" href="#verify-models-in-data-warehouse" title="Link to this section">¶</a></h3>
 <p>Connect to your data warehouse and verify that tables/views have been created:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="c1">-- For Snowflake</span>
-</span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="o">&lt;</span><span class="k">database</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a>
-</span><span id="__span-25-4"><a href="#__codelineno-25-4" id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="c1">-- Check specific table</span>
-</span><span id="__span-25-5"><a href="#__codelineno-25-5" id="__codelineno-25-5" name="__codelineno-25-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="k">database</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="k">table</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="c1">-- For Snowflake</span>
+</span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="o">&lt;</span><span class="k">database</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">;</span>
+</span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a>
+</span><span id="__span-27-4"><a href="#__codelineno-27-4" id="__codelineno-27-4" name="__codelineno-27-4"></a><span class="c1">-- Check specific table</span>
+</span><span id="__span-27-5"><a href="#__codelineno-27-5" id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="k">database</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="k">table</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
 </span></code></pre></div>
 <h3 id="access-vulcan-api">Access Vulcan API<a class="headerlink" href="#access-vulcan-api" title="Link to this section">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="c1"># Test API (if exposed)</span>
-</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a>curl<span class="w"> </span>--location<span class="w"> </span><span class="s1">'https://&lt;env-fqn&gt;/&lt;tenant&gt;/vulcan/&lt;data-product-name&gt;/livez'</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-26-3"><a href="#__codelineno-26-3" id="__codelineno-26-3" name="__codelineno-26-3"></a><span class="w">  </span>--header<span class="w"> </span><span class="s1">'Authorization: Bearer &lt;your-token&gt;'</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="c1"># Test API (if exposed)</span>
+</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a>curl<span class="w"> </span>--location<span class="w"> </span><span class="s1">'https://&lt;env-fqn&gt;/&lt;tenant&gt;/vulcan/&lt;data-product-name&gt;/livez'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="w">  </span>--header<span class="w"> </span><span class="s1">'Authorization: Bearer &lt;your-token&gt;'</span>
 </span></code></pre></div>
 </article>
 </div>
@@ -1878,7 +2313,7 @@
 </main>
 <footer class="md-footer">
 <nav aria-label="Footer" class="md-footer__inner md-grid">
-<a aria-label="Previous: Semantic Query Lifecycle" class="md-footer__link md-footer__link--prev" href="../semantic_query_lifecycle/">
+<a aria-label="Previous: Vulcan API Guide" class="md-footer__link md-footer__link--prev" href="../vulcan_api_guide/">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
 </div>
@@ -1887,17 +2322,17 @@
                 Previous
               </span>
 <div class="md-ellipsis">
-                Semantic Query Lifecycle
+                Vulcan API Guide
               </div>
 </div>
 </a>
-<a aria-label="Next: CLI Commands" class="md-footer__link md-footer__link--next" href="../../cli-commands/cli/">
+<a aria-label="Next: Troubleshooting" class="md-footer__link md-footer__link--next" href="../troubleshooting/">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 Next
               </span>
 <div class="md-ellipsis">
-                CLI Commands
+                Troubleshooting
               </div>
 </div>
 <div class="md-footer__button md-icon">
@@ -1926,8 +2361,8 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <div class="md-progress" data-md-component="progress" role="progressbar"></div>
-<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.highlight", "search.suggest", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
 <script src="../../assets/javascripts/mermaid-zoom.js"></script>
 <script src="../../assets/javascripts/favicon-switcher.js"></script>
 <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
