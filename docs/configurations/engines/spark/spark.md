@@ -10,53 +10,6 @@ Apache Spark is a unified analytics engine for large-scale data processing. Vulc
 1. A running Spark cluster (standalone, YARN, or Kubernetes)
 2. Spark 3.x or higher (3.4+ recommended for catalog support)
 3. Network connectivity to the Spark master node
-4. **Spark version alignment**: the Spark version on your cluster must match the version bundled in the Vulcan Spark Docker image
-
-!!! warning "Spark Version Mismatch"
-    The Spark version running on your cluster **must match** the version bundled in the Vulcan Spark Docker image. The Vulcan container acts as the Spark driver and serializes task objects that your cluster's executors deserialize. Even a minor version difference (e.g., 3.5.1 in the image vs 3.5.7 on your cluster) can break serialization and produce errors like:
-
-    ```
-    java.io.InvalidClassException: org.apache.spark.scheduler.Task;
-    local class incompatible: stream classdesc serialVersionUID = <UID_A>,
-    local class serialVersionUID = <UID_B>
-    ```
-
-    To resolve this, either:
-
-    - Update your Spark cluster to match the version in the Vulcan image, **or**
-    - Use a Vulcan Spark Docker image built with the same Spark version as your cluster
-
-### Verifying Spark version alignment
-
-Don't wait for a 2 AM `InvalidClassException` to find out your driver and executors disagree. Check both versions before you run a single model.
-
-**Inside the Vulcan image** (the driver):
-
-```bash
-# If the container is already running in Kubernetes
-kubectl exec -it <vulcan-spark-pod> -- spark-submit --version
-
-# Or locally, before you push the image to your cluster
-docker run --rm tmdcio/vulcan-spark:0.228.1.18 spark-submit --version
-```
-
-The output banner ends with a line like `version 3.5.1`. That patch number (the `.1`) is the one that has to match, not just the `3.5`.
-
-If `spark-submit` isn't on `PATH` in the image, ask PySpark instead:
-
-```bash
-kubectl exec -it <vulcan-spark-pod> -- python -c "import pyspark; print(pyspark.__version__)"
-```
-
-**On your cluster** (the executors):
-
-```bash
-spark-submit --version
-```
-
-The Spark master web UI prints the same string in its header at `http://<spark-master>:8080`, which is usually faster than shelling into a worker node.
-
-If the two strings don't match byte-for-byte, fix it before scheduling anything: either rebuild the image against your cluster's Spark version, or upgrade the cluster to match the image.
 
 ### Permissions
 
@@ -99,13 +52,64 @@ The following Docker images are available for running Vulcan with Spark:
 
 | Image | Description |
 |-------|-------------|
-| `tmdcio/vulcan-spark:0.228.1.18` | Main Vulcan API service for Spark |
+| `tmdcio/vulcan-spark-base:0.228.1.6` | Spark-ready base layer used by `vulcan-spark` builds |
+| `tmdcio/vulcan-spark:0.228.1.6` | Main Vulcan API service for Spark |
+| `tmdcio/vulcan-transpiler:0.228.1.10` | SQL transpiler service |
+
+#### Image Contents
+
+Most users only need `vulcan-spark` + `vulcan-transpiler`.
+For local development users can also pull `vulcan-spark-base` for spark-master and spark-worker.
+
+`vulcan-spark-base` is the Spark runtime foundation (Ubuntu-based) that makes the engine “Spark-ready”.
 
 Pull the images:
 
 ```bash
-docker pull tmdcio/vulcan-spark:0.228.1.18
+docker pull tmdcio/vulcan-spark-base:***
+docker pull tmdcio/vulcan-spark:0.228.1.6
+docker pull tmdcio/vulcan-transpiler:0.228.1.10
 ```
+
+### Managing External/Extra Dependencies
+
+#### Java Dependencies
+
+##### Maven
+See: <https://maven.apache.org/plugins/maven-jar-plugin/usage>
+```bash
+mvn -DskipTests package
+ls -1 target/*.jar
+```
+
+##### Gradle
+See:  <https://docs.gradle.org/current/userguide/building_java_projects.html, https://docs.gradle.org/current/userguide/java_plugin.html>
+```bash
+./gradlew shadowJar
+ls -1 build/libs/*.jar
+```
+
+Place JARs at your project root under `dependencies/java/` so they are available inside the container at `/workspace/dependencies/java`. Nested folders under `dependencies/java/` are not supported (for example `dependencies/java/lib/*.jar` will not be picked up).
+
+If you have multiple JAR folders, include all of them in Spark config via `spark.driver.extraClasspath`:
+
+```properties
+spark.driver.extraClasspath=/workspace/dependencies/java:/workspace/third_party/jars
+```
+
+On Windows, use `;` instead of `:` to separate multiple paths.
+
+To *use* classes from your JAR in a Python model, register the Java UDF by fully-qualified class name, then call it in SQL expressions:
+
+```java
+context.spark.udf.registerJavaFunction(
+    "my_udf_name",
+    "com.yourorg.udf.YourUdfClass",
+    types.StringType(),
+)
+```
+
+If the UDF runs on executors (most do), ensure workers can also see the same JARs (for example by also setting `spark.executor.extraClasspath` and/or baking/mounting the JARs into worker containers).
 
 ### Materialization Strategy
 
@@ -124,6 +128,7 @@ Spark uses the following materialization strategies depending on the model kind:
 - [INCREMENTAL_BY_UNIQUE_KEY](../../../components/model/model_kinds.md#materialization-strategy_1)
 - [INCREMENTAL_BY_PARTITION](../../../components/model/model_kinds.md#materialization-strategy_3)
 - [FULL](../../../components/model/model_kinds.md#materialization-strategy_2)
+
 
 !!! note
     Spark may not be used for the Vulcan state connection. Use a transactional database like PostgreSQL for the `state_connection`.
