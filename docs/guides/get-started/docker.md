@@ -345,7 +345,6 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
 
             ```yaml
             name: spark
-            tenant: ct-sandbox
 
             model_defaults:
               dialect: spark2
@@ -657,7 +656,6 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
 
             ```yaml
             name: spark
-            tenant: ct-sandbox
 
             model_defaults:
               dialect: spark2

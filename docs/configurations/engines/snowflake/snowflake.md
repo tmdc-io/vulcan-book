@@ -77,6 +77,29 @@ Snowflake uses the following materialization strategies depending on the model k
 - [INCREMENTAL_BY_PARTITION](../../../components/model/model_kinds.md#materialization-strategy_3)
 - [FULL](../../../components/model/model_kinds.md#materialization-strategy_2)
 
+### Identifier Casing in Semantics
+
+Snowflake stores unquoted identifiers in **uppercase** by default. When Snowflake is the engine behind your semantic layer, the warehouse will only resolve column references that match its stored casing — so dimension lists, measure expressions, filters, and join clauses must all use uppercase column names.
+
+```yaml
+dimensions:
+  includes:
+    - USER_ID
+    - SIGNUP_DATE
+    - PLAN_TYPE
+
+measures:
+  active_users:
+    type: count
+    expression: "*"
+    filters:
+      - "{users.STATUS} = 'active'"
+```
+
+Lowercase examples elsewhere in the docs assume a case-insensitive engine like Postgres or DuckDB. Always match the casing your warehouse actually uses.
+
+See the [semantic models guide](../../../components/semantics/models.md#dimensions) for the full tip and additional context.
+
 !!! note
     The `account` identifier format is `<org-name>-<account-name>` (e.g., `myorg-myaccount`). Find it in your Snowflake URL.
 

@@ -115,7 +115,6 @@ This file contains Vulcan-specific configurations including model defaults, gate
 ```yaml
 name: <data-product-name>
 display_name: <Data Product Title>
-tenant: <tenant-name>
 description: <Description .... >
 
 tags:
@@ -172,7 +171,6 @@ users:
 ```yaml
 name: user-engagement
 display_name: User Engagement Analytics
-tenant: engineering
 description: User Engagement Analytics is a comprehensive data product delivering insights into user engagement patterns.
 
 tags:
@@ -277,7 +275,6 @@ spec:
 #### Workflow Configuration
 ```yaml
   workflow:
-    type: schedule              # Run on a schedule
     schedule:
       crons:
         - '<cron-expression>'  # eg. '*/45 * * * *' (Every 45 minutes)
@@ -298,10 +295,6 @@ spec:
 
 #### Vulcan Commands
 ```yaml
-    migrate:                    # Schema migration
-      command: [vulcan]
-      arguments: [migrate]
-    
     plan:                       # Plan changes
       command: [vulcan]
       arguments:
@@ -357,7 +350,6 @@ spec:
   depots:
     - dataos://snowflakevulcan2?purpose=rw
   workflow:
-    type: schedule
     schedule:
       crons:
         - '*/45 * * * *'
@@ -372,11 +364,6 @@ spec:
       limit:
         cpu: "1000m"
         memory: "1Gi"
-    migrate:
-      command:
-        - vulcan
-      arguments:
-        - migrate
     plan:
       command:
         - vulcan
@@ -472,7 +459,7 @@ ds resource -t vulcan -n <data-product-name> logs
 
 Vulcan doesn't run as a single container. When you deploy, DataOS splits it into three components, each with its own runtime and logs:
 
-- **plan** - handles migration and deployment preparation (`vulcan migrate` + `vulcan plan --auto-apply`)
+- **plan** - handles deployment preparation (`vulcan plan --auto-apply`)
 - **run** - executes your models on schedule (`vulcan run`)
 - **api** - serves queries and exposes endpoints (long-running service)
 
