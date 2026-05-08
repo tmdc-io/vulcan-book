@@ -18,7 +18,6 @@ Here's what a typical configuration file looks like:
 # Project identity
 name: orders-analytics
 display_name: Orders Analytics Platform
-tenant: engineering
 description: Orders Analytics is a centralized data product delivering clean, trusted insights across the full order lifecycle.
 
 # Classification
@@ -90,7 +89,7 @@ graph TB
     Config --> Gateways[Gateways]
     Config --> ModelDefaults[Model Defaults]
     Config --> Options[Optional Features]
-    Project --> Name[name, display_name, tenant]
+    Project --> Name[name, display_name]
     Project --> Desc[description]
     Project --> Tags[tags, terms]
     Metadata --> Domain[domain]
@@ -115,20 +114,16 @@ Metadata fields that identify your project. They don't affect how Vulcan runs, b
 | Option | Description | Type | Required |
 |--------|-------------|:----:|:--------:|
 | `name` | Project identifier (used internally) | string | Yes |
-| `tenant` | Tenant or organization name | string | Yes |
-| `description` | Project description | string | Yes |
 | `description` | Project description | string | Yes |
 | `display_name` | Human-readable project name for UI/docs | string | No |
 | `tags` | Labels for categorization and filtering | array of string | No |
 | `terms` | Business glossary terms using dot notation (e.g., `glossary.data_product`) | array of string | No |
-| `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
 | `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
 
 ```yaml
 # Project identity
 name: orders-analytics
 display_name: Orders Analytics Platform
-tenant: engineering
 description: Orders Analytics delivers insights across the full order lifecycle.
 
 # Classification
@@ -304,7 +299,6 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | Configuration Key | Description | Type | Required | Default | Documentation |
 |-------------------|-------------|:----:|:--------:|---------|---------------|
 | `name` | Project identifier (used for resource naming) | string | **Yes** | - | - |
-| `tenant` | Tenant or organization name (used for isolation) | string | **Yes** | - | - |
 | `description` | Project description and purpose | string | **Yes** | - | - |
 | `display_name` | Human-readable name for UI/docs | string | No | `null` | - |
 | `tags` | Labels for categorization and filtering | array | No | `[]` | - |
@@ -331,7 +325,7 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | `default_scheduler` | Root-level default scheduler | object | No | `builtin` | - |
 
 \* At least one gateway with a `connection` is required.  
-\** With root-level `state` connection, defaults to `{tenant}_{name}` (normalized).
+\** With root-level `state` connection, defaults to `{name}` (normalized).
 
 ### Model Configuration
 
@@ -467,7 +461,6 @@ The absolute minimum configuration required to start:
 
 ```yaml
 name: my-project
-tenant: my-org
 description: My project description
 
 gateways:
