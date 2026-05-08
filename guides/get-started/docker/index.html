@@ -9,7 +9,7 @@
 <link href="../../data-product-lifecycle/" rel="next"/>
 <link href="../../../assets/images/D_logo_dark-32px.png" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
-<title>Get Started - DataOS Vulcan</title>
+<title>Run Vulcan locally with Docker - DataOS Vulcan</title>
 <link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -44,7 +44,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#get-started">
+<a class="md-skip" href="#run-vulcan-locally-with-docker">
           Skip to content
         </a>
 </div>
@@ -68,7 +68,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Get Started
+              Run Vulcan locally with Docker
             
           </span>
 </div>
@@ -886,7 +886,7 @@
 <span class="md-ellipsis">
     
   
-    Get Started
+    Run Vulcan locally with Docker
   
 
     
@@ -897,7 +897,7 @@
 <span class="md-ellipsis">
     
   
-    Get Started
+    Run Vulcan locally with Docker
   
 
     
@@ -928,14 +928,14 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#setup-vulcan-locally">
+<a class="md-nav__link" href="#set-up-vulcan-locally">
 <span class="md-ellipsis">
       
-        Setup Vulcan Locally
+        Set up Vulcan locally
       
     </span>
 </a>
-<nav aria-label="Setup Vulcan Locally" class="md-nav">
+<nav aria-label="Set up Vulcan locally" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#step-1-create-a-project-folder">
@@ -1400,14 +1400,14 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#setup-vulcan-locally">
+<a class="md-nav__link" href="#set-up-vulcan-locally">
 <span class="md-ellipsis">
       
-        Setup Vulcan Locally
+        Set up Vulcan locally
       
     </span>
 </a>
-<nav aria-label="Setup Vulcan Locally" class="md-nav">
+<nav aria-label="Set up Vulcan locally" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#step-1-create-a-project-folder">
@@ -1518,14 +1518,14 @@
 </ol>
 </nav>
 <article class="md-content__inner md-typeset">
-<h1 id="get-started">Get Started<a class="headerlink" href="#get-started" title="Link to this section">¶</a></h1>
-<p>This guide helps you create and test Vulcan locally using the <strong>Local Development Kit (LDK)</strong>.</p>
+<h1 id="run-vulcan-locally-with-docker">Run Vulcan locally with Docker<a class="headerlink" href="#run-vulcan-locally-with-docker" title="Link to this section">¶</a></h1>
+<p>Run Vulcan on your laptop with the <strong>Local Development Kit (LDK)</strong>. You get the full CLI in a Docker container, no cloud account required.</p>
 <h2 id="what-is-the-ldk">What is the LDK?<a class="headerlink" href="#what-is-the-ldk" title="Link to this section">¶</a></h2>
-<p>The LDK is a lightweight Docker-based setup that gives you the <strong>Vulcan CLI</strong> on your local machine. Use it to build models, run plans, test queries, and validate your semantic layer — without any cloud deployment.</p>
+<p>The LDK is a single Docker image that gives you the <strong>Vulcan CLI</strong> on your machine. Use it to build models, run plans, test queries, and validate your semantic layer without any cloud deployment.</p>
 <p><strong>What the LDK gives you:</strong></p>
 <ul>
-<li><strong>Vulcan CLI</strong> — <code>vulcan init</code>, <code>vulcan plan</code>, <code>vulcan run</code>, and every other command</li>
-<li><strong>State backend</strong> — choose PostgreSQL (persistent, Docker-based) or DuckDB (lightweight, zero-setup)</li>
+<li><strong>Vulcan CLI</strong>: <code>vulcan init</code>, <code>vulcan plan</code>, <code>vulcan run</code>, and every other command</li>
+<li><strong>State backend</strong>: choose Postgres (persistent, Docker-based) or DuckDB (file-based, zero-setup)</li>
 </ul>
 <p>No zip downloads. No cloud setup. Pick your engine, choose a state backend, and start building.</p>
 <hr/>
@@ -1560,7 +1560,7 @@
 </div>
 </div>
 <hr/>
-<h2 id="setup-vulcan-locally">Setup Vulcan Locally<a class="headerlink" href="#setup-vulcan-locally" title="Link to this section">¶</a></h2>
+<h2 id="set-up-vulcan-locally">Set up Vulcan locally<a class="headerlink" href="#set-up-vulcan-locally" title="Link to this section">¶</a></h2>
 <h3 id="step-1-create-a-project-folder">Step 1: Create a project folder<a class="headerlink" href="#step-1-create-a-project-folder" title="Link to this section">¶</a></h3>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">Mac/Linux</label><label for="__tabbed_2_2">Windows</label></div>
 <div class="tabbed-content">
@@ -1576,7 +1576,7 @@
 </div>
 </div>
 <h3 id="step-2-create-a-docker-network">Step 2: Create a Docker network<a class="headerlink" href="#step-2-create-a-docker-network" title="Link to this section">¶</a></h3>
-<p>Vulcan runs the CLI as a Docker container. For it to reach other containers (like the statestore), all containers must be on the same Docker network.</p>
+<p>The CLI talks to the statestore by container name (<code>statestore</code>). That only works if both containers run on the same Docker network.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Mac/Linux</label><label for="__tabbed_3_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1589,10 +1589,10 @@
 </div>
 </div>
 </div>
-<p>The <code>vulcan</code> network is what makes container-to-container communication work. When you run <code>vulcan plan</code> or <code>vulcan run</code>, the CLI container connects to the statestore container by its name (<code>statestore</code>) — this only works if both are on the same network. Without it, the CLI would have no way to reach the state backend.</p>
+<p>Without this network, <code>vulcan plan</code> and <code>vulcan run</code> have no way to reach the state backend.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you see <code>network with name vulcan already exists</code>, that's fine — the network is already there and you can continue.</p>
+<p>If you see <code>network with name vulcan already exists</code>, you're done. The network is already there and you can continue.</p>
 </div>
 <h3 id="step-3-set-the-vulcan-cli-alias">Step 3: Set the Vulcan CLI alias<a class="headerlink" href="#step-3-set-the-vulcan-cli-alias" title="Link to this section">¶</a></h3>
 <p>The Vulcan CLI runs as a Docker container. The image you use depends on your engine. Run the command for your engine and OS:</p>
@@ -1622,10 +1622,10 @@
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Spark requires a running cluster</p>
-<p>Unlike other engines, Spark requires a running Spark cluster on your machine or network. The Spark version on your cluster <strong>must match</strong> the version bundled in the image — a mismatch causes <code>InvalidClassException</code> serialization errors at runtime. See <a href="../../../configurations/engines/spark/spark/#prerequisites">Spark prerequisites</a> for details.</p>
+<p>Unlike other engines, Spark needs a running Spark cluster on your machine or network. The Spark version on your cluster <strong>must match</strong> the version bundled in the image. A mismatch causes <code>InvalidClassException</code> serialization errors at runtime. See <a href="../../../configurations/engines/spark/spark/#prerequisites">Spark prerequisites</a> for details.</p>
 </div>
 <p><strong>Local Spark cluster</strong></p>
-<p>To run Spark locally, save this as <code>docker-compose.spark.yml</code> in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure — PostgreSQL (state + warehouse), MinIO (object storage), and the Iceberg REST catalog — so every hostname in <code>config.yaml</code> resolves correctly. The Spark image version (<code>3.5.1</code>) must match the version bundled in the Vulcan Spark image.</p>
+<p>To run Spark locally, save this as <code>docker-compose.spark.yml</code> in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure (Postgres for state and warehouse, MinIO for object storage, and the Iceberg REST catalog) so every hostname in <code>config.yaml</code> resolves correctly. The Spark image version (<code>3.5.1</code>) must match the version bundled in the Vulcan Spark image.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.spark.yml<span class="w"> </span>up<span class="w"> </span>-d
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nt">x-images</span><span class="p">:</span>
@@ -1663,7 +1663,7 @@
 </span><span id="__span-12-33"><a href="#__codelineno-12-33" id="__codelineno-12-33" name="__codelineno-12-33"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-12-34"><a href="#__codelineno-12-34" id="__codelineno-12-34" name="__codelineno-12-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span><span id="__span-12-35"><a href="#__codelineno-12-35" id="__codelineno-12-35" name="__codelineno-12-35"></a>
-</span><span id="__span-12-36"><a href="#__codelineno-12-36" id="__codelineno-12-36" name="__codelineno-12-36"></a><span class="w">  </span><span class="c1"># ── Warehouse (PostgreSQL — available as a JDBC Spark catalog) ───</span>
+</span><span id="__span-12-36"><a href="#__codelineno-12-36" id="__codelineno-12-36" name="__codelineno-12-36"></a><span class="w">  </span><span class="c1"># ── Warehouse (Postgres, available as a JDBC Spark catalog) ───</span>
 </span><span id="__span-12-37"><a href="#__codelineno-12-37" id="__codelineno-12-37" name="__codelineno-12-37"></a><span class="w">  </span><span class="nt">warehouse</span><span class="p">:</span>
 </span><span id="__span-12-38"><a href="#__codelineno-12-38" id="__codelineno-12-38" name="__codelineno-12-38"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15</span>
 </span><span id="__span-12-39"><a href="#__codelineno-12-39" id="__codelineno-12-39" name="__codelineno-12-39"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
@@ -1779,7 +1779,7 @@
 <p><strong>Vulcan config for Spark</strong></p>
 <p>Choose the example that matches your setup:</p>
 <details class="note">
-<summary>Local setup — Docker Spark cluster + Iceberg over MinIO</summary>
+<summary>Local setup: Docker Spark cluster + Iceberg over MinIO</summary>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="nt">gateways</span><span class="p">:</span>
 </span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
 </span><span id="__span-13-3"><a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
@@ -1789,7 +1789,7 @@
 </span><span id="__span-13-7"><a href="#__codelineno-13-7" id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="w">        </span><span class="s">"spark.app.name"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"vulcan"</span>
 </span><span id="__span-13-8"><a href="#__codelineno-13-8" id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="w">        </span><span class="s">"spark.driver.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region=us-east-1</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
 </span><span id="__span-13-9"><a href="#__codelineno-13-9" id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="w">        </span><span class="s">"spark.executor.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region=us-east-1</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
-</span><span id="__span-13-10"><a href="#__codelineno-13-10" id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="w">        </span><span class="c1"># JARs are baked into the Vulcan Spark image — no Ivy downloads at plan/run time</span>
+</span><span id="__span-13-10"><a href="#__codelineno-13-10" id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="w">        </span><span class="c1"># JARs are baked into the Vulcan Spark image: no Ivy downloads at plan/run time</span>
 </span><span id="__span-13-11"><a href="#__codelineno-13-11" id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="w">        </span><span class="s">"spark.executor.extraClassPath"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('VULCAN_SPARK_EXECUTOR_EXTRA_JARS_DIR',</span><span class="nv"> </span><span class="s">'/etc/dataos/work/jars')</span><span class="nv"> </span><span class="s">}}/*"</span>
 </span><span id="__span-13-12"><a href="#__codelineno-13-12" id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="w">        </span><span class="c1"># Iceberg catalog over MinIO</span>
 </span><span id="__span-13-13"><a href="#__codelineno-13-13" id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="w">        </span><span class="s">"spark.sql.catalog.warehouse"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.SparkCatalog"</span>
@@ -1833,64 +1833,63 @@
 <details class="note">
 <summary>Existing lakehouse depot</summary>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
-</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="nt">tenant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ct-sandbox</span>
-</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a>
-</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="nt">model_defaults</span><span class="p">:</span>
-</span><span id="__span-14-5"><a href="#__codelineno-14-5" id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark2</span>
-</span><span id="__span-14-6"><a href="#__codelineno-14-6" id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'*/5</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*'</span>
-</span><span id="__span-14-7"><a href="#__codelineno-14-7" id="__codelineno-14-7" name="__codelineno-14-7"></a>
-</span><span id="__span-14-8"><a href="#__codelineno-14-8" id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="nt">linter</span><span class="p">:</span>
-</span><span id="__span-14-9"><a href="#__codelineno-14-9" id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</span><span id="__span-14-10"><a href="#__codelineno-14-10" id="__codelineno-14-10" name="__codelineno-14-10"></a>
-</span><span id="__span-14-11"><a href="#__codelineno-14-11" id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="nt">gateways</span><span class="p">:</span>
-</span><span id="__span-14-12"><a href="#__codelineno-14-12" id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
-</span><span id="__span-14-13"><a href="#__codelineno-14-13" id="__codelineno-14-13" name="__codelineno-14-13"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
-</span><span id="__span-14-14"><a href="#__codelineno-14-14" id="__codelineno-14-14" name="__codelineno-14-14"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
-</span><span id="__span-14-15"><a href="#__codelineno-14-15" id="__codelineno-14-15" name="__codelineno-14-15"></a><span class="w">      </span><span class="nt">config</span><span class="p">:</span>
-</span><span id="__span-14-16"><a href="#__codelineno-14-16" id="__codelineno-14-16" name="__codelineno-14-16"></a><span class="w">        </span><span class="s">"spark.master"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_MASTER_URL')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-17"><a href="#__codelineno-14-17" id="__codelineno-14-17" name="__codelineno-14-17"></a><span class="w">        </span><span class="s">"spark.app.name"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_APP_NAME')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-18"><a href="#__codelineno-14-18" id="__codelineno-14-18" name="__codelineno-14-18"></a><span class="w">        </span><span class="s">"spark.driver.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
-</span><span id="__span-14-19"><a href="#__codelineno-14-19" id="__codelineno-14-19" name="__codelineno-14-19"></a><span class="w">        </span><span class="s">"spark.executor.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
-</span><span id="__span-14-20"><a href="#__codelineno-14-20" id="__codelineno-14-20" name="__codelineno-14-20"></a><span class="w">        </span><span class="c1"># Download Iceberg + AWS + PostgreSQL JDBC dependencies</span>
-</span><span id="__span-14-21"><a href="#__codelineno-14-21" id="__codelineno-14-21" name="__codelineno-14-21"></a><span class="w">        </span><span class="s">"spark.jars.packages"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2,org.apache.iceberg:iceberg-aws-bundle:1.5.2,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.postgresql:postgresql:42.7.1"</span>
-</span><span id="__span-14-22"><a href="#__codelineno-14-22" id="__codelineno-14-22" name="__codelineno-14-22"></a><span class="w">        </span><span class="s">"spark.jars.ivy"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"/tmp/.ivy2"</span>
-</span><span id="__span-14-23"><a href="#__codelineno-14-23" id="__codelineno-14-23" name="__codelineno-14-23"></a><span class="w">        </span><span class="c1"># S3 credentials</span>
-</span><span id="__span-14-24"><a href="#__codelineno-14-24" id="__codelineno-14-24" name="__codelineno-14-24"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.access.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-25"><a href="#__codelineno-14-25" id="__codelineno-14-25" name="__codelineno-14-25"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.secret.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-26"><a href="#__codelineno-14-26" id="__codelineno-14-26" name="__codelineno-14-26"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.endpoint"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ENDPOINT')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-27"><a href="#__codelineno-14-27" id="__codelineno-14-27" name="__codelineno-14-27"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.path.style.access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-14-28"><a href="#__codelineno-14-28" id="__codelineno-14-28" name="__codelineno-14-28"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.hadoop.fs.s3a.S3AFileSystem"</span>
-</span><span id="__span-14-29"><a href="#__codelineno-14-29" id="__codelineno-14-29" name="__codelineno-14-29"></a><span class="w">        </span><span class="c1"># Iceberg extensions</span>
-</span><span id="__span-14-30"><a href="#__codelineno-14-30" id="__codelineno-14-30" name="__codelineno-14-30"></a><span class="w">        </span><span class="s">"spark.sql.extensions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"</span>
-</span><span id="__span-14-31"><a href="#__codelineno-14-31" id="__codelineno-14-31" name="__codelineno-14-31"></a><span class="w">        </span><span class="c1"># Default catalog</span>
-</span><span id="__span-14-32"><a href="#__codelineno-14-32" id="__codelineno-14-32" name="__codelineno-14-32"></a><span class="w">        </span><span class="s">"spark.sql.defaultCatalog"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"s3depot"</span>
-</span><span id="__span-14-33"><a href="#__codelineno-14-33" id="__codelineno-14-33" name="__codelineno-14-33"></a><span class="w">        </span><span class="c1"># Iceberg catalog via lakehouse depot</span>
-</span><span id="__span-14-34"><a href="#__codelineno-14-34" id="__codelineno-14-34" name="__codelineno-14-34"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.SparkCatalog"</span>
-</span><span id="__span-14-35"><a href="#__codelineno-14-35" id="__codelineno-14-35" name="__codelineno-14-35"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.type"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"rest"</span>
-</span><span id="__span-14-36"><a href="#__codelineno-14-36" id="__codelineno-14-36" name="__codelineno-14-36"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.uri"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('ICEBERG_DEPOT_URI')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-37"><a href="#__codelineno-14-37" id="__codelineno-14-37" name="__codelineno-14-37"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.header.apikey"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_API_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-38"><a href="#__codelineno-14-38" id="__codelineno-14-38" name="__codelineno-14-38"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.warehouse"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_WAREHOUSE_PATH')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-39"><a href="#__codelineno-14-39" id="__codelineno-14-39" name="__codelineno-14-39"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.io-impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.aws.s3.S3FileIO"</span>
-</span><span id="__span-14-40"><a href="#__codelineno-14-40" id="__codelineno-14-40" name="__codelineno-14-40"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.path-style-access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-14-41"><a href="#__codelineno-14-41" id="__codelineno-14-41" name="__codelineno-14-41"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.access-key-id"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-42"><a href="#__codelineno-14-42" id="__codelineno-14-42" name="__codelineno-14-42"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.secret-access-key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-43"><a href="#__codelineno-14-43" id="__codelineno-14-43" name="__codelineno-14-43"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.client.region"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-44"><a href="#__codelineno-14-44" id="__codelineno-14-44" name="__codelineno-14-44"></a><span class="w">        </span><span class="c1"># Dynamic allocation</span>
-</span><span id="__span-14-45"><a href="#__codelineno-14-45" id="__codelineno-14-45" name="__codelineno-14-45"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-14-46"><a href="#__codelineno-14-46" id="__codelineno-14-46" name="__codelineno-14-46"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.shuffleTracking.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-14-47"><a href="#__codelineno-14-47" id="__codelineno-14-47" name="__codelineno-14-47"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.initialExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
-</span><span id="__span-14-48"><a href="#__codelineno-14-48" id="__codelineno-14-48" name="__codelineno-14-48"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.minExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
-</span><span id="__span-14-49"><a href="#__codelineno-14-49" id="__codelineno-14-49" name="__codelineno-14-49"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.maxExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"2"</span>
-</span><span id="__span-14-50"><a href="#__codelineno-14-50" id="__codelineno-14-50" name="__codelineno-14-50"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
-</span><span id="__span-14-51"><a href="#__codelineno-14-51" id="__codelineno-14-51" name="__codelineno-14-51"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-</span><span id="__span-14-52"><a href="#__codelineno-14-52" id="__codelineno-14-52" name="__codelineno-14-52"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_DATABASE')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-53"><a href="#__codelineno-14-53" id="__codelineno-14-53" name="__codelineno-14-53"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_HOST')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-54"><a href="#__codelineno-14-54" id="__codelineno-14-54" name="__codelineno-14-54"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PORT')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-55"><a href="#__codelineno-14-55" id="__codelineno-14-55" name="__codelineno-14-55"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_USER')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-56"><a href="#__codelineno-14-56" id="__codelineno-14-56" name="__codelineno-14-56"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-14-57"><a href="#__codelineno-14-57" id="__codelineno-14-57" name="__codelineno-14-57"></a><span class="w">    </span><span class="nt">state_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
-</span><span id="__span-14-58"><a href="#__codelineno-14-58" id="__codelineno-14-58" name="__codelineno-14-58"></a>
-</span><span id="__span-14-59"><a href="#__codelineno-14-59" id="__codelineno-14-59" name="__codelineno-14-59"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark2</span>
+</span><span id="__span-14-5"><a href="#__codelineno-14-5" id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'*/5</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*'</span>
+</span><span id="__span-14-6"><a href="#__codelineno-14-6" id="__codelineno-14-6" name="__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a href="#__codelineno-14-7" id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="nt">linter</span><span class="p">:</span>
+</span><span id="__span-14-8"><a href="#__codelineno-14-8" id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-14-9"><a href="#__codelineno-14-9" id="__codelineno-14-9" name="__codelineno-14-9"></a>
+</span><span id="__span-14-10"><a href="#__codelineno-14-10" id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-14-11"><a href="#__codelineno-14-11" id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-14-12"><a href="#__codelineno-14-12" id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
+</span><span id="__span-14-13"><a href="#__codelineno-14-13" id="__codelineno-14-13" name="__codelineno-14-13"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
+</span><span id="__span-14-14"><a href="#__codelineno-14-14" id="__codelineno-14-14" name="__codelineno-14-14"></a><span class="w">      </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-14-15"><a href="#__codelineno-14-15" id="__codelineno-14-15" name="__codelineno-14-15"></a><span class="w">        </span><span class="s">"spark.master"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_MASTER_URL')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-16"><a href="#__codelineno-14-16" id="__codelineno-14-16" name="__codelineno-14-16"></a><span class="w">        </span><span class="s">"spark.app.name"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_APP_NAME')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-17"><a href="#__codelineno-14-17" id="__codelineno-14-17" name="__codelineno-14-17"></a><span class="w">        </span><span class="s">"spark.driver.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
+</span><span id="__span-14-18"><a href="#__codelineno-14-18" id="__codelineno-14-18" name="__codelineno-14-18"></a><span class="w">        </span><span class="s">"spark.executor.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
+</span><span id="__span-14-19"><a href="#__codelineno-14-19" id="__codelineno-14-19" name="__codelineno-14-19"></a><span class="w">        </span><span class="c1"># Download Iceberg + AWS + PostgreSQL JDBC dependencies</span>
+</span><span id="__span-14-20"><a href="#__codelineno-14-20" id="__codelineno-14-20" name="__codelineno-14-20"></a><span class="w">        </span><span class="s">"spark.jars.packages"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2,org.apache.iceberg:iceberg-aws-bundle:1.5.2,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.postgresql:postgresql:42.7.1"</span>
+</span><span id="__span-14-21"><a href="#__codelineno-14-21" id="__codelineno-14-21" name="__codelineno-14-21"></a><span class="w">        </span><span class="s">"spark.jars.ivy"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"/tmp/.ivy2"</span>
+</span><span id="__span-14-22"><a href="#__codelineno-14-22" id="__codelineno-14-22" name="__codelineno-14-22"></a><span class="w">        </span><span class="c1"># S3 credentials</span>
+</span><span id="__span-14-23"><a href="#__codelineno-14-23" id="__codelineno-14-23" name="__codelineno-14-23"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.access.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-24"><a href="#__codelineno-14-24" id="__codelineno-14-24" name="__codelineno-14-24"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.secret.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-25"><a href="#__codelineno-14-25" id="__codelineno-14-25" name="__codelineno-14-25"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.endpoint"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ENDPOINT')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-26"><a href="#__codelineno-14-26" id="__codelineno-14-26" name="__codelineno-14-26"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.path.style.access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-14-27"><a href="#__codelineno-14-27" id="__codelineno-14-27" name="__codelineno-14-27"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.hadoop.fs.s3a.S3AFileSystem"</span>
+</span><span id="__span-14-28"><a href="#__codelineno-14-28" id="__codelineno-14-28" name="__codelineno-14-28"></a><span class="w">        </span><span class="c1"># Iceberg extensions</span>
+</span><span id="__span-14-29"><a href="#__codelineno-14-29" id="__codelineno-14-29" name="__codelineno-14-29"></a><span class="w">        </span><span class="s">"spark.sql.extensions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"</span>
+</span><span id="__span-14-30"><a href="#__codelineno-14-30" id="__codelineno-14-30" name="__codelineno-14-30"></a><span class="w">        </span><span class="c1"># Default catalog</span>
+</span><span id="__span-14-31"><a href="#__codelineno-14-31" id="__codelineno-14-31" name="__codelineno-14-31"></a><span class="w">        </span><span class="s">"spark.sql.defaultCatalog"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"s3depot"</span>
+</span><span id="__span-14-32"><a href="#__codelineno-14-32" id="__codelineno-14-32" name="__codelineno-14-32"></a><span class="w">        </span><span class="c1"># Iceberg catalog via lakehouse depot</span>
+</span><span id="__span-14-33"><a href="#__codelineno-14-33" id="__codelineno-14-33" name="__codelineno-14-33"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.SparkCatalog"</span>
+</span><span id="__span-14-34"><a href="#__codelineno-14-34" id="__codelineno-14-34" name="__codelineno-14-34"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.type"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"rest"</span>
+</span><span id="__span-14-35"><a href="#__codelineno-14-35" id="__codelineno-14-35" name="__codelineno-14-35"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.uri"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('ICEBERG_DEPOT_URI')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-36"><a href="#__codelineno-14-36" id="__codelineno-14-36" name="__codelineno-14-36"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.header.apikey"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_API_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-37"><a href="#__codelineno-14-37" id="__codelineno-14-37" name="__codelineno-14-37"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.warehouse"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_WAREHOUSE_PATH')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-38"><a href="#__codelineno-14-38" id="__codelineno-14-38" name="__codelineno-14-38"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.io-impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.aws.s3.S3FileIO"</span>
+</span><span id="__span-14-39"><a href="#__codelineno-14-39" id="__codelineno-14-39" name="__codelineno-14-39"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.path-style-access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-14-40"><a href="#__codelineno-14-40" id="__codelineno-14-40" name="__codelineno-14-40"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.access-key-id"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-41"><a href="#__codelineno-14-41" id="__codelineno-14-41" name="__codelineno-14-41"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.secret-access-key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-42"><a href="#__codelineno-14-42" id="__codelineno-14-42" name="__codelineno-14-42"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.client.region"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-43"><a href="#__codelineno-14-43" id="__codelineno-14-43" name="__codelineno-14-43"></a><span class="w">        </span><span class="c1"># Dynamic allocation</span>
+</span><span id="__span-14-44"><a href="#__codelineno-14-44" id="__codelineno-14-44" name="__codelineno-14-44"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-14-45"><a href="#__codelineno-14-45" id="__codelineno-14-45" name="__codelineno-14-45"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.shuffleTracking.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-14-46"><a href="#__codelineno-14-46" id="__codelineno-14-46" name="__codelineno-14-46"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.initialExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
+</span><span id="__span-14-47"><a href="#__codelineno-14-47" id="__codelineno-14-47" name="__codelineno-14-47"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.minExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
+</span><span id="__span-14-48"><a href="#__codelineno-14-48" id="__codelineno-14-48" name="__codelineno-14-48"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.maxExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"2"</span>
+</span><span id="__span-14-49"><a href="#__codelineno-14-49" id="__codelineno-14-49" name="__codelineno-14-49"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
+</span><span id="__span-14-50"><a href="#__codelineno-14-50" id="__codelineno-14-50" name="__codelineno-14-50"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-14-51"><a href="#__codelineno-14-51" id="__codelineno-14-51" name="__codelineno-14-51"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_DATABASE')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-52"><a href="#__codelineno-14-52" id="__codelineno-14-52" name="__codelineno-14-52"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_HOST')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-53"><a href="#__codelineno-14-53" id="__codelineno-14-53" name="__codelineno-14-53"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PORT')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-54"><a href="#__codelineno-14-54" id="__codelineno-14-54" name="__codelineno-14-54"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_USER')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-55"><a href="#__codelineno-14-55" id="__codelineno-14-55" name="__codelineno-14-55"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-14-56"><a href="#__codelineno-14-56" id="__codelineno-14-56" name="__codelineno-14-56"></a><span class="w">    </span><span class="nt">state_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
+</span><span id="__span-14-57"><a href="#__codelineno-14-57" id="__codelineno-14-57" name="__codelineno-14-57"></a>
+</span><span id="__span-14-58"><a href="#__codelineno-14-58" id="__codelineno-14-58" name="__codelineno-14-58"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 </span></code></pre></div>
 </details>
 </div>
@@ -1925,10 +1924,10 @@
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Spark requires a running cluster</p>
-<p>Unlike other engines, Spark requires a running Spark cluster on your machine or network. The Spark version on your cluster <strong>must match</strong> the version bundled in the image — a mismatch causes <code>InvalidClassException</code> serialization errors at runtime. See <a href="../../../configurations/engines/spark/spark/#prerequisites">Spark prerequisites</a> for details.</p>
+<p>Unlike other engines, Spark needs a running Spark cluster on your machine or network. The Spark version on your cluster <strong>must match</strong> the version bundled in the image. A mismatch causes <code>InvalidClassException</code> serialization errors at runtime. See <a href="../../../configurations/engines/spark/spark/#prerequisites">Spark prerequisites</a> for details.</p>
 </div>
 <p><strong>Local Spark cluster</strong></p>
-<p>To run Spark locally, save this as <code>docker-compose.spark.yml</code> in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure — PostgreSQL (state + warehouse), MinIO (object storage), and the Iceberg REST catalog — so every hostname in <code>config.yaml</code> resolves correctly. The Spark image version (<code>3.5.1</code>) must match the version bundled in the Vulcan Spark image.</p>
+<p>To run Spark locally, save this as <code>docker-compose.spark.yml</code> in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure (Postgres for state and warehouse, MinIO for object storage, and the Iceberg REST catalog) so every hostname in <code>config.yaml</code> resolves correctly. The Spark image version (<code>3.5.1</code>) must match the version bundled in the Vulcan Spark image.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>docker compose -f docker-compose.spark.yml up -d
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="nt">x-images</span><span class="p">:</span>
@@ -1966,7 +1965,7 @@
 </span><span id="__span-21-33"><a href="#__codelineno-21-33" id="__codelineno-21-33" name="__codelineno-21-33"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-21-34"><a href="#__codelineno-21-34" id="__codelineno-21-34" name="__codelineno-21-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span><span id="__span-21-35"><a href="#__codelineno-21-35" id="__codelineno-21-35" name="__codelineno-21-35"></a>
-</span><span id="__span-21-36"><a href="#__codelineno-21-36" id="__codelineno-21-36" name="__codelineno-21-36"></a><span class="w">  </span><span class="c1"># ── Warehouse (PostgreSQL — available as a JDBC Spark catalog) ───</span>
+</span><span id="__span-21-36"><a href="#__codelineno-21-36" id="__codelineno-21-36" name="__codelineno-21-36"></a><span class="w">  </span><span class="c1"># ── Warehouse (Postgres, available as a JDBC Spark catalog) ───</span>
 </span><span id="__span-21-37"><a href="#__codelineno-21-37" id="__codelineno-21-37" name="__codelineno-21-37"></a><span class="w">  </span><span class="nt">warehouse</span><span class="p">:</span>
 </span><span id="__span-21-38"><a href="#__codelineno-21-38" id="__codelineno-21-38" name="__codelineno-21-38"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15</span>
 </span><span id="__span-21-39"><a href="#__codelineno-21-39" id="__codelineno-21-39" name="__codelineno-21-39"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
@@ -2082,7 +2081,7 @@
 <p><strong>Vulcan config for Spark</strong></p>
 <p>Choose the example that matches your setup:</p>
 <details class="note">
-<summary>Local setup — Docker Spark cluster + Iceberg over MinIO</summary>
+<summary>Local setup: Docker Spark cluster + Iceberg over MinIO</summary>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="nt">gateways</span><span class="p">:</span>
 </span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
 </span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
@@ -2092,7 +2091,7 @@
 </span><span id="__span-22-7"><a href="#__codelineno-22-7" id="__codelineno-22-7" name="__codelineno-22-7"></a><span class="w">        </span><span class="s">"spark.app.name"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"vulcan"</span>
 </span><span id="__span-22-8"><a href="#__codelineno-22-8" id="__codelineno-22-8" name="__codelineno-22-8"></a><span class="w">        </span><span class="s">"spark.driver.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region=us-east-1</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
 </span><span id="__span-22-9"><a href="#__codelineno-22-9" id="__codelineno-22-9" name="__codelineno-22-9"></a><span class="w">        </span><span class="s">"spark.executor.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region=us-east-1</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
-</span><span id="__span-22-10"><a href="#__codelineno-22-10" id="__codelineno-22-10" name="__codelineno-22-10"></a><span class="w">        </span><span class="c1"># JARs are baked into the Vulcan Spark image — no Ivy downloads at plan/run time</span>
+</span><span id="__span-22-10"><a href="#__codelineno-22-10" id="__codelineno-22-10" name="__codelineno-22-10"></a><span class="w">        </span><span class="c1"># JARs are baked into the Vulcan Spark image: no Ivy downloads at plan/run time</span>
 </span><span id="__span-22-11"><a href="#__codelineno-22-11" id="__codelineno-22-11" name="__codelineno-22-11"></a><span class="w">        </span><span class="s">"spark.executor.extraClassPath"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('VULCAN_SPARK_EXECUTOR_EXTRA_JARS_DIR',</span><span class="nv"> </span><span class="s">'/etc/dataos/work/jars')</span><span class="nv"> </span><span class="s">}}/*"</span>
 </span><span id="__span-22-12"><a href="#__codelineno-22-12" id="__codelineno-22-12" name="__codelineno-22-12"></a><span class="w">        </span><span class="c1"># Iceberg catalog over MinIO</span>
 </span><span id="__span-22-13"><a href="#__codelineno-22-13" id="__codelineno-22-13" name="__codelineno-22-13"></a><span class="w">        </span><span class="s">"spark.sql.catalog.warehouse"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.SparkCatalog"</span>
@@ -2136,64 +2135,63 @@
 <details class="note">
 <summary>Existing lakehouse depot</summary>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
-</span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="nt">tenant</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ct-sandbox</span>
-</span><span id="__span-23-3"><a href="#__codelineno-23-3" id="__codelineno-23-3" name="__codelineno-23-3"></a>
-</span><span id="__span-23-4"><a href="#__codelineno-23-4" id="__codelineno-23-4" name="__codelineno-23-4"></a><span class="nt">model_defaults</span><span class="p">:</span>
-</span><span id="__span-23-5"><a href="#__codelineno-23-5" id="__codelineno-23-5" name="__codelineno-23-5"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark2</span>
-</span><span id="__span-23-6"><a href="#__codelineno-23-6" id="__codelineno-23-6" name="__codelineno-23-6"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'*/5</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*'</span>
-</span><span id="__span-23-7"><a href="#__codelineno-23-7" id="__codelineno-23-7" name="__codelineno-23-7"></a>
-</span><span id="__span-23-8"><a href="#__codelineno-23-8" id="__codelineno-23-8" name="__codelineno-23-8"></a><span class="nt">linter</span><span class="p">:</span>
-</span><span id="__span-23-9"><a href="#__codelineno-23-9" id="__codelineno-23-9" name="__codelineno-23-9"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</span><span id="__span-23-10"><a href="#__codelineno-23-10" id="__codelineno-23-10" name="__codelineno-23-10"></a>
-</span><span id="__span-23-11"><a href="#__codelineno-23-11" id="__codelineno-23-11" name="__codelineno-23-11"></a><span class="nt">gateways</span><span class="p">:</span>
-</span><span id="__span-23-12"><a href="#__codelineno-23-12" id="__codelineno-23-12" name="__codelineno-23-12"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
-</span><span id="__span-23-13"><a href="#__codelineno-23-13" id="__codelineno-23-13" name="__codelineno-23-13"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
-</span><span id="__span-23-14"><a href="#__codelineno-23-14" id="__codelineno-23-14" name="__codelineno-23-14"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
-</span><span id="__span-23-15"><a href="#__codelineno-23-15" id="__codelineno-23-15" name="__codelineno-23-15"></a><span class="w">      </span><span class="nt">config</span><span class="p">:</span>
-</span><span id="__span-23-16"><a href="#__codelineno-23-16" id="__codelineno-23-16" name="__codelineno-23-16"></a><span class="w">        </span><span class="s">"spark.master"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_MASTER_URL')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-17"><a href="#__codelineno-23-17" id="__codelineno-23-17" name="__codelineno-23-17"></a><span class="w">        </span><span class="s">"spark.app.name"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_APP_NAME')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-18"><a href="#__codelineno-23-18" id="__codelineno-23-18" name="__codelineno-23-18"></a><span class="w">        </span><span class="s">"spark.driver.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
-</span><span id="__span-23-19"><a href="#__codelineno-23-19" id="__codelineno-23-19" name="__codelineno-23-19"></a><span class="w">        </span><span class="s">"spark.executor.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
-</span><span id="__span-23-20"><a href="#__codelineno-23-20" id="__codelineno-23-20" name="__codelineno-23-20"></a><span class="w">        </span><span class="c1"># Download Iceberg + AWS + PostgreSQL JDBC dependencies</span>
-</span><span id="__span-23-21"><a href="#__codelineno-23-21" id="__codelineno-23-21" name="__codelineno-23-21"></a><span class="w">        </span><span class="s">"spark.jars.packages"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2,org.apache.iceberg:iceberg-aws-bundle:1.5.2,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.postgresql:postgresql:42.7.1"</span>
-</span><span id="__span-23-22"><a href="#__codelineno-23-22" id="__codelineno-23-22" name="__codelineno-23-22"></a><span class="w">        </span><span class="s">"spark.jars.ivy"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"/tmp/.ivy2"</span>
-</span><span id="__span-23-23"><a href="#__codelineno-23-23" id="__codelineno-23-23" name="__codelineno-23-23"></a><span class="w">        </span><span class="c1"># S3 credentials</span>
-</span><span id="__span-23-24"><a href="#__codelineno-23-24" id="__codelineno-23-24" name="__codelineno-23-24"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.access.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-25"><a href="#__codelineno-23-25" id="__codelineno-23-25" name="__codelineno-23-25"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.secret.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-26"><a href="#__codelineno-23-26" id="__codelineno-23-26" name="__codelineno-23-26"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.endpoint"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ENDPOINT')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-27"><a href="#__codelineno-23-27" id="__codelineno-23-27" name="__codelineno-23-27"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.path.style.access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-23-28"><a href="#__codelineno-23-28" id="__codelineno-23-28" name="__codelineno-23-28"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.hadoop.fs.s3a.S3AFileSystem"</span>
-</span><span id="__span-23-29"><a href="#__codelineno-23-29" id="__codelineno-23-29" name="__codelineno-23-29"></a><span class="w">        </span><span class="c1"># Iceberg extensions</span>
-</span><span id="__span-23-30"><a href="#__codelineno-23-30" id="__codelineno-23-30" name="__codelineno-23-30"></a><span class="w">        </span><span class="s">"spark.sql.extensions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"</span>
-</span><span id="__span-23-31"><a href="#__codelineno-23-31" id="__codelineno-23-31" name="__codelineno-23-31"></a><span class="w">        </span><span class="c1"># Default catalog</span>
-</span><span id="__span-23-32"><a href="#__codelineno-23-32" id="__codelineno-23-32" name="__codelineno-23-32"></a><span class="w">        </span><span class="s">"spark.sql.defaultCatalog"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"s3depot"</span>
-</span><span id="__span-23-33"><a href="#__codelineno-23-33" id="__codelineno-23-33" name="__codelineno-23-33"></a><span class="w">        </span><span class="c1"># Iceberg catalog via lakehouse depot</span>
-</span><span id="__span-23-34"><a href="#__codelineno-23-34" id="__codelineno-23-34" name="__codelineno-23-34"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.SparkCatalog"</span>
-</span><span id="__span-23-35"><a href="#__codelineno-23-35" id="__codelineno-23-35" name="__codelineno-23-35"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.type"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"rest"</span>
-</span><span id="__span-23-36"><a href="#__codelineno-23-36" id="__codelineno-23-36" name="__codelineno-23-36"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.uri"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('ICEBERG_DEPOT_URI')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-37"><a href="#__codelineno-23-37" id="__codelineno-23-37" name="__codelineno-23-37"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.header.apikey"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_API_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-38"><a href="#__codelineno-23-38" id="__codelineno-23-38" name="__codelineno-23-38"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.warehouse"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_WAREHOUSE_PATH')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-39"><a href="#__codelineno-23-39" id="__codelineno-23-39" name="__codelineno-23-39"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.io-impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.aws.s3.S3FileIO"</span>
-</span><span id="__span-23-40"><a href="#__codelineno-23-40" id="__codelineno-23-40" name="__codelineno-23-40"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.path-style-access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-23-41"><a href="#__codelineno-23-41" id="__codelineno-23-41" name="__codelineno-23-41"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.access-key-id"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-42"><a href="#__codelineno-23-42" id="__codelineno-23-42" name="__codelineno-23-42"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.secret-access-key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-43"><a href="#__codelineno-23-43" id="__codelineno-23-43" name="__codelineno-23-43"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.client.region"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-44"><a href="#__codelineno-23-44" id="__codelineno-23-44" name="__codelineno-23-44"></a><span class="w">        </span><span class="c1"># Dynamic allocation</span>
-</span><span id="__span-23-45"><a href="#__codelineno-23-45" id="__codelineno-23-45" name="__codelineno-23-45"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-23-46"><a href="#__codelineno-23-46" id="__codelineno-23-46" name="__codelineno-23-46"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.shuffleTracking.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
-</span><span id="__span-23-47"><a href="#__codelineno-23-47" id="__codelineno-23-47" name="__codelineno-23-47"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.initialExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
-</span><span id="__span-23-48"><a href="#__codelineno-23-48" id="__codelineno-23-48" name="__codelineno-23-48"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.minExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
-</span><span id="__span-23-49"><a href="#__codelineno-23-49" id="__codelineno-23-49" name="__codelineno-23-49"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.maxExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"2"</span>
-</span><span id="__span-23-50"><a href="#__codelineno-23-50" id="__codelineno-23-50" name="__codelineno-23-50"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
-</span><span id="__span-23-51"><a href="#__codelineno-23-51" id="__codelineno-23-51" name="__codelineno-23-51"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-</span><span id="__span-23-52"><a href="#__codelineno-23-52" id="__codelineno-23-52" name="__codelineno-23-52"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_DATABASE')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-53"><a href="#__codelineno-23-53" id="__codelineno-23-53" name="__codelineno-23-53"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_HOST')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-54"><a href="#__codelineno-23-54" id="__codelineno-23-54" name="__codelineno-23-54"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PORT')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-55"><a href="#__codelineno-23-55" id="__codelineno-23-55" name="__codelineno-23-55"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_USER')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-56"><a href="#__codelineno-23-56" id="__codelineno-23-56" name="__codelineno-23-56"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-23-57"><a href="#__codelineno-23-57" id="__codelineno-23-57" name="__codelineno-23-57"></a><span class="w">    </span><span class="nt">state_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
-</span><span id="__span-23-58"><a href="#__codelineno-23-58" id="__codelineno-23-58" name="__codelineno-23-58"></a>
-</span><span id="__span-23-59"><a href="#__codelineno-23-59" id="__codelineno-23-59" name="__codelineno-23-59"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a>
+</span><span id="__span-23-3"><a href="#__codelineno-23-3" id="__codelineno-23-3" name="__codelineno-23-3"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-23-4"><a href="#__codelineno-23-4" id="__codelineno-23-4" name="__codelineno-23-4"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark2</span>
+</span><span id="__span-23-5"><a href="#__codelineno-23-5" id="__codelineno-23-5" name="__codelineno-23-5"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'*/5</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*'</span>
+</span><span id="__span-23-6"><a href="#__codelineno-23-6" id="__codelineno-23-6" name="__codelineno-23-6"></a>
+</span><span id="__span-23-7"><a href="#__codelineno-23-7" id="__codelineno-23-7" name="__codelineno-23-7"></a><span class="nt">linter</span><span class="p">:</span>
+</span><span id="__span-23-8"><a href="#__codelineno-23-8" id="__codelineno-23-8" name="__codelineno-23-8"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-23-9"><a href="#__codelineno-23-9" id="__codelineno-23-9" name="__codelineno-23-9"></a>
+</span><span id="__span-23-10"><a href="#__codelineno-23-10" id="__codelineno-23-10" name="__codelineno-23-10"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-23-11"><a href="#__codelineno-23-11" id="__codelineno-23-11" name="__codelineno-23-11"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-23-12"><a href="#__codelineno-23-12" id="__codelineno-23-12" name="__codelineno-23-12"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
+</span><span id="__span-23-13"><a href="#__codelineno-23-13" id="__codelineno-23-13" name="__codelineno-23-13"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
+</span><span id="__span-23-14"><a href="#__codelineno-23-14" id="__codelineno-23-14" name="__codelineno-23-14"></a><span class="w">      </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-23-15"><a href="#__codelineno-23-15" id="__codelineno-23-15" name="__codelineno-23-15"></a><span class="w">        </span><span class="s">"spark.master"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_MASTER_URL')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-16"><a href="#__codelineno-23-16" id="__codelineno-23-16" name="__codelineno-23-16"></a><span class="w">        </span><span class="s">"spark.app.name"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('SPARK_APP_NAME')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-17"><a href="#__codelineno-23-17" id="__codelineno-23-17" name="__codelineno-23-17"></a><span class="w">        </span><span class="s">"spark.driver.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
+</span><span id="__span-23-18"><a href="#__codelineno-23-18" id="__codelineno-23-18" name="__codelineno-23-18"></a><span class="w">        </span><span class="s">"spark.executor.extraJavaOptions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"-Daws.region={{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">-Djava.io.tmpdir=/tmp/iceberg"</span>
+</span><span id="__span-23-19"><a href="#__codelineno-23-19" id="__codelineno-23-19" name="__codelineno-23-19"></a><span class="w">        </span><span class="c1"># Download Iceberg + AWS + PostgreSQL JDBC dependencies</span>
+</span><span id="__span-23-20"><a href="#__codelineno-23-20" id="__codelineno-23-20" name="__codelineno-23-20"></a><span class="w">        </span><span class="s">"spark.jars.packages"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2,org.apache.iceberg:iceberg-aws-bundle:1.5.2,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.postgresql:postgresql:42.7.1"</span>
+</span><span id="__span-23-21"><a href="#__codelineno-23-21" id="__codelineno-23-21" name="__codelineno-23-21"></a><span class="w">        </span><span class="s">"spark.jars.ivy"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"/tmp/.ivy2"</span>
+</span><span id="__span-23-22"><a href="#__codelineno-23-22" id="__codelineno-23-22" name="__codelineno-23-22"></a><span class="w">        </span><span class="c1"># S3 credentials</span>
+</span><span id="__span-23-23"><a href="#__codelineno-23-23" id="__codelineno-23-23" name="__codelineno-23-23"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.access.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-24"><a href="#__codelineno-23-24" id="__codelineno-23-24" name="__codelineno-23-24"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.secret.key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-25"><a href="#__codelineno-23-25" id="__codelineno-23-25" name="__codelineno-23-25"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.endpoint"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('MINIO_WAREHOUSE_ENDPOINT')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-26"><a href="#__codelineno-23-26" id="__codelineno-23-26" name="__codelineno-23-26"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.path.style.access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-23-27"><a href="#__codelineno-23-27" id="__codelineno-23-27" name="__codelineno-23-27"></a><span class="w">        </span><span class="s">"spark.hadoop.fs.s3a.impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.hadoop.fs.s3a.S3AFileSystem"</span>
+</span><span id="__span-23-28"><a href="#__codelineno-23-28" id="__codelineno-23-28" name="__codelineno-23-28"></a><span class="w">        </span><span class="c1"># Iceberg extensions</span>
+</span><span id="__span-23-29"><a href="#__codelineno-23-29" id="__codelineno-23-29" name="__codelineno-23-29"></a><span class="w">        </span><span class="s">"spark.sql.extensions"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"</span>
+</span><span id="__span-23-30"><a href="#__codelineno-23-30" id="__codelineno-23-30" name="__codelineno-23-30"></a><span class="w">        </span><span class="c1"># Default catalog</span>
+</span><span id="__span-23-31"><a href="#__codelineno-23-31" id="__codelineno-23-31" name="__codelineno-23-31"></a><span class="w">        </span><span class="s">"spark.sql.defaultCatalog"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"s3depot"</span>
+</span><span id="__span-23-32"><a href="#__codelineno-23-32" id="__codelineno-23-32" name="__codelineno-23-32"></a><span class="w">        </span><span class="c1"># Iceberg catalog via lakehouse depot</span>
+</span><span id="__span-23-33"><a href="#__codelineno-23-33" id="__codelineno-23-33" name="__codelineno-23-33"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.spark.SparkCatalog"</span>
+</span><span id="__span-23-34"><a href="#__codelineno-23-34" id="__codelineno-23-34" name="__codelineno-23-34"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.type"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"rest"</span>
+</span><span id="__span-23-35"><a href="#__codelineno-23-35" id="__codelineno-23-35" name="__codelineno-23-35"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.uri"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('ICEBERG_DEPOT_URI')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-36"><a href="#__codelineno-23-36" id="__codelineno-23-36" name="__codelineno-23-36"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.header.apikey"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_API_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-37"><a href="#__codelineno-23-37" id="__codelineno-23-37" name="__codelineno-23-37"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.warehouse"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_WAREHOUSE_PATH')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-38"><a href="#__codelineno-23-38" id="__codelineno-23-38" name="__codelineno-23-38"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.io-impl"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"org.apache.iceberg.aws.s3.S3FileIO"</span>
+</span><span id="__span-23-39"><a href="#__codelineno-23-39" id="__codelineno-23-39" name="__codelineno-23-39"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.path-style-access"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-23-40"><a href="#__codelineno-23-40" id="__codelineno-23-40" name="__codelineno-23-40"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.access-key-id"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_ACCESS_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-41"><a href="#__codelineno-23-41" id="__codelineno-23-41" name="__codelineno-23-41"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.s3.secret-access-key"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DEPOT_SECRET_KEY')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-42"><a href="#__codelineno-23-42" id="__codelineno-23-42" name="__codelineno-23-42"></a><span class="w">        </span><span class="s">"spark.sql.catalog.s3depot.client.region"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('AWS_REGION')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-43"><a href="#__codelineno-23-43" id="__codelineno-23-43" name="__codelineno-23-43"></a><span class="w">        </span><span class="c1"># Dynamic allocation</span>
+</span><span id="__span-23-44"><a href="#__codelineno-23-44" id="__codelineno-23-44" name="__codelineno-23-44"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-23-45"><a href="#__codelineno-23-45" id="__codelineno-23-45" name="__codelineno-23-45"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.shuffleTracking.enabled"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"true"</span>
+</span><span id="__span-23-46"><a href="#__codelineno-23-46" id="__codelineno-23-46" name="__codelineno-23-46"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.initialExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
+</span><span id="__span-23-47"><a href="#__codelineno-23-47" id="__codelineno-23-47" name="__codelineno-23-47"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.minExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"1"</span>
+</span><span id="__span-23-48"><a href="#__codelineno-23-48" id="__codelineno-23-48" name="__codelineno-23-48"></a><span class="w">        </span><span class="s">"spark.dynamicAllocation.maxExecutors"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"2"</span>
+</span><span id="__span-23-49"><a href="#__codelineno-23-49" id="__codelineno-23-49" name="__codelineno-23-49"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
+</span><span id="__span-23-50"><a href="#__codelineno-23-50" id="__codelineno-23-50" name="__codelineno-23-50"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-23-51"><a href="#__codelineno-23-51" id="__codelineno-23-51" name="__codelineno-23-51"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_DATABASE')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-52"><a href="#__codelineno-23-52" id="__codelineno-23-52" name="__codelineno-23-52"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_HOST')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-53"><a href="#__codelineno-23-53" id="__codelineno-23-53" name="__codelineno-23-53"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PORT')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-54"><a href="#__codelineno-23-54" id="__codelineno-23-54" name="__codelineno-23-54"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_USER')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-55"><a href="#__codelineno-23-55" id="__codelineno-23-55" name="__codelineno-23-55"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATESTORE_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-23-56"><a href="#__codelineno-23-56" id="__codelineno-23-56" name="__codelineno-23-56"></a><span class="w">    </span><span class="nt">state_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spark</span>
+</span><span id="__span-23-57"><a href="#__codelineno-23-57" id="__codelineno-23-57" name="__codelineno-23-57"></a>
+</span><span id="__span-23-58"><a href="#__codelineno-23-58" id="__codelineno-23-58" name="__codelineno-23-58"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 </span></code></pre></div>
 </details>
 </div>
@@ -2278,7 +2276,7 @@
 </span><span id="__span-26-12"><a href="#__codelineno-26-12" id="__codelineno-26-12" name="__codelineno-26-12"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/workspace/.state/vulcan.db</span>
 </span></code></pre></div>
 <details class="note">
-<summary>Using PostgreSQL as state backend instead</summary>
+<summary>Using Postgres as state backend instead</summary>
 <p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
@@ -2336,7 +2334,7 @@
 </span><span id="__span-31-12"><a href="#__codelineno-31-12" id="__codelineno-31-12" name="__codelineno-31-12"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/workspace/.state/vulcan.db</span>
 </span></code></pre></div>
 <details class="note">
-<summary>Using PostgreSQL as state backend instead</summary>
+<summary>Using Postgres as state backend instead</summary>
 <p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
@@ -2393,7 +2391,7 @@
 </span><span id="__span-36-11"><a href="#__codelineno-36-11" id="__codelineno-36-11" name="__codelineno-36-11"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/workspace/.state/vulcan.db</span>
 </span></code></pre></div>
 <details class="note">
-<summary>Using PostgreSQL as state backend instead</summary>
+<summary>Using Postgres as state backend instead</summary>
 <p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
@@ -2450,7 +2448,7 @@
 </span><span id="__span-41-11"><a href="#__codelineno-41-11" id="__codelineno-41-11" name="__codelineno-41-11"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/workspace/.state/vulcan.db</span>
 </span></code></pre></div>
 <details class="note">
-<summary>Using PostgreSQL as state backend instead</summary>
+<summary>Using Postgres as state backend instead</summary>
 <p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-42-2"><a href="#__codelineno-42-2" id="__codelineno-42-2" name="__codelineno-42-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
@@ -2548,13 +2546,13 @@
 </div>
 </div>
 <p>Vulcan validates your models, computes what needs to be materialized, and prompts you to apply. Enter <code>y</code> to confirm.</p>
-<p>For a full walkthrough of what happens after <code>plan</code> — running models, querying data, and iterating — see the <a href="../../plan_guide/">Plan guide</a>.</p>
+<p>For a full walkthrough of what happens after <code>plan</code> (running models, querying data, and iterating), see the <a href="../../plan_guide/">Plan guide</a>.</p>
 <hr/>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">¶</a></h2>
 <details class="note">
 <summary>Common issues and solutions</summary>
 <p><strong>Statestore container won't start</strong></p>
-<p>Only relevant if you're using PostgreSQL state. Ensure Docker Desktop is running and has at least 4 GB RAM allocated. Check under <strong>Settings → Resources → Advanced</strong>.</p>
+<p>Only relevant if you're using Postgres state. Make sure Docker Desktop is running and has at least 4 GB RAM allocated. Check under <strong>Settings → Resources → Advanced</strong>.</p>
 <p><strong>Invalid connection config</strong></p>
 <p>If <code>vulcan info</code> or any command shows:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-52-1"><a href="#__codelineno-52-1" id="__codelineno-52-1" name="__codelineno-52-1"></a>Error: Invalid 'postgres' connection config:
@@ -2613,10 +2611,10 @@ If missing:
 <hr/>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li><a href="../../data-product-lifecycle/">Data Product Lifecycle</a> — the full path from local setup to production deployment</li>
-<li><a href="../../../cli-commands/cli/">CLI Reference</a> — all available commands and options</li>
-<li><a href="../../../components/model/model_kinds/">Model Kinds</a> — FULL, INCREMENTAL, VIEW, and more</li>
-<li><a href="../../vulcan_api_guide/">Vulcan API Guide</a> — query your semantic layer via REST, GraphQL, or MySQL wire protocol</li>
+<li><strong><a href="../../data-product-lifecycle/">Data Product Lifecycle</a></strong>: the full path from local setup to production deployment</li>
+<li><strong><a href="../../../cli-commands/cli/">CLI Reference</a></strong>: all available commands and options</li>
+<li><strong><a href="../../../components/model/model_kinds/">Model Kinds</a></strong>: <code>FULL</code>, <code>INCREMENTAL</code>, <code>VIEW</code>, and more</li>
+<li><strong><a href="../../vulcan_api_guide/">Vulcan API Guide</a></strong>: query your semantic layer via REST, GraphQL, or MySQL wire protocol</li>
 </ul>
 </article>
 </div>

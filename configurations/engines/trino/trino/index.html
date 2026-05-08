@@ -515,6 +515,73 @@
 </ul>
 </nav>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dataos-deployment-with-minerva">
+<span class="md-ellipsis">
+      
+        DataOS Deployment with Minerva
+      
+    </span>
+</a>
+<nav aria-label="DataOS Deployment with Minerva" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-it-works">
+<span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#generate-the-minerva-password">
+<span class="md-ellipsis">
+      
+        Generate the Minerva Password
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-secret">
+<span class="md-ellipsis">
+      
+        Example Secret
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-configyaml">
+<span class="md-ellipsis">
+      
+        Example config.yaml
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-domain-resourceyaml">
+<span class="md-ellipsis">
+      
+        Example domain-resource.yaml
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#secret-to-environment-mapping">
+<span class="md-ellipsis">
+      
+        Secret-to-Environment Mapping
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
 </ul>
 </nav>
 </li>
@@ -972,7 +1039,7 @@
 <span class="md-ellipsis">
     
   
-    Get Started
+    Run Vulcan locally with Docker
   
 
     
@@ -1403,6 +1470,73 @@
 </ul>
 </nav>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dataos-deployment-with-minerva">
+<span class="md-ellipsis">
+      
+        DataOS Deployment with Minerva
+      
+    </span>
+</a>
+<nav aria-label="DataOS Deployment with Minerva" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-it-works">
+<span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#generate-the-minerva-password">
+<span class="md-ellipsis">
+      
+        Generate the Minerva Password
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-secret">
+<span class="md-ellipsis">
+      
+        Example Secret
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-configyaml">
+<span class="md-ellipsis">
+      
+        Example config.yaml
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-domain-resourceyaml">
+<span class="md-ellipsis">
+      
+        Example domain-resource.yaml
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#secret-to-environment-mapping">
+<span class="md-ellipsis">
+      
+        Secret-to-Environment Mapping
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
 </ul>
 </nav>
 </div>
@@ -1557,6 +1691,155 @@
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Always use environment variables for passwords: <code>password: {{ env_var('TRINO_PASSWORD') }}</code></p>
+</div>
+<h2 id="dataos-deployment-with-minerva">DataOS Deployment with Minerva<a class="headerlink" href="#dataos-deployment-with-minerva" title="Link to this section">¶</a></h2>
+<p>Minerva is the Trino-based query cluster that ships with DataOS. From Vulcan's perspective it is a standard Trino endpoint, so the same <code>trino</code> adapter is used. The only difference is <em>how</em> you wire the connection: instead of hard-coding host, user, catalog, and password into <code>config.yaml</code>, you store them in a DataOS secret and let the <code>vulcan</code> resource project them into the runtime as environment variables. <code>config.yaml</code> then reads those variables with <code>env_var(...)</code>.</p>
+<p>This pattern keeps credentials out of the project repo and lets you promote the same code across environments by swapping the secret.</p>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Link to this section">¶</a></h3>
+<ol>
+<li>Store the Minerva (Trino) connection values in a DataOS secret.</li>
+<li>Use <code>spec.use.projection</code> in the <code>vulcan</code> resource (<code>domain-resource.yaml</code>) to map secret values into environment variables for the runtime.</li>
+<li>Reference those environment variables in <code>config.yaml</code> under the Trino gateway connection.</li>
+</ol>
+<h3 id="generate-the-minerva-password">Generate the Minerva Password<a class="headerlink" href="#generate-the-minerva-password" title="Link to this section">¶</a></h3>
+<p>The Minerva password is a base64-encoded JSON object containing the cluster name, an API key, and the tenant. Generate it with:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">'{"cluster": "&lt;cluster-name&gt;", "apikey": "&lt;your-api-key&gt;", "tenant": "&lt;tenant-name&gt;"}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+</span></code></pre></div>
+<p>Use the resulting string as the <code>PASSWORD</code> value in the secret below.</p>
+<h3 id="example-secret">Example Secret<a class="headerlink" href="#example-secret" title="Link to this section">¶</a></h3>
+<p>Create a <code>key-value</code> secret that holds the Minerva connection details:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino-connection-secret</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2alpha</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="nt">layer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="nt">secret</span><span class="p">:</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">key-value</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">  </span><span class="nt">data</span><span class="p">:</span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">    </span><span class="nt">HOST</span><span class="p">:</span><span class="w"> </span><span class="s">"tcp.&lt;env-name&gt;"</span>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">    </span><span class="nt">USER</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;user-id&gt;"</span>
+</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">    </span><span class="nt">CATALOG</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;catalog-name&gt;"</span>
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">    </span><span class="nt">PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;base64-password-from-step-above&gt;"</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HOST</code></td>
+<td>Minerva (Trino) coordinator host (e.g. <code>tcp.&lt;env-name&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>USER</code></td>
+<td>DataOS user id used to authenticate</td>
+</tr>
+<tr>
+<td><code>CATALOG</code></td>
+<td>Default catalog to query</td>
+</tr>
+<tr>
+<td><code>PASSWORD</code></td>
+<td>Base64 string produced by the <code>echo ... | base64</code> command above</td>
+</tr>
+</tbody>
+</table>
+<p>Apply it with:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>ds<span class="w"> </span>resource<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>trino-connection-secret.yaml
+</span></code></pre></div>
+<h3 id="example-configyaml">Example <code>config.yaml</code><a class="headerlink" href="#example-configyaml" title="Link to this section">¶</a></h3>
+<p>The gateway block stays in the project's <code>config.yaml</code>, but every sensitive value is sourced from an environment variable:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino-analytics-prod</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Trino Analytics</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino</span>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('TRINO_HOST',</span><span class="nv"> </span><span class="s">'')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7432</span>
+</span><span id="__span-4-13"><a href="#__codelineno-4-13" id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('TRINO_USER',</span><span class="nv"> </span><span class="s">'')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-4-14"><a href="#__codelineno-4-14" id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">      </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('TRINO_CATALOG',</span><span class="nv"> </span><span class="s">'')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-4-15"><a href="#__codelineno-4-15" id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">      </span><span class="nt">http_scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+</span><span id="__span-4-16"><a href="#__codelineno-4-16" id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="w">      </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic</span>
+</span><span id="__span-4-17"><a href="#__codelineno-4-17" id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('TRINO_PASSWORD',</span><span class="nv"> </span><span class="s">'')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-4-18"><a href="#__codelineno-4-18" id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="w">      </span><span class="nt">verify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<h3 id="example-domain-resourceyaml">Example <code>domain-resource.yaml</code><a class="headerlink" href="#example-domain-resourceyaml" title="Link to this section">¶</a></h3>
+<p>The <code>vulcan</code> resource declares the secret it consumes and projects each key into an environment variable. The <code>base64_decode</code> filter unwraps the values stored in the secret so the runtime sees the raw connection details:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1alpha</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino-analytics-prod</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">  </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your-user&gt;</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">  </span><span class="nt">compute</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your-compute&gt;</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino</span>
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">  </span><span class="nt">repo</span><span class="p">:</span>
+</span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://bitbucket.org/&lt;your-org&gt;/&lt;your-repo&gt;</span>
+</span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">    </span><span class="nt">baseDir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">path/to/project</span>
+</span><span id="__span-5-12"><a href="#__codelineno-5-12" id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">    </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your-tenant&gt;:git-sync</span>
+</span><span id="__span-5-13"><a href="#__codelineno-5-13" id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">  </span><span class="nt">use</span><span class="p">:</span>
+</span><span id="__span-5-14"><a href="#__codelineno-5-14" id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">    </span><span class="nt">projection</span><span class="p">:</span>
+</span><span id="__span-5-15"><a href="#__codelineno-5-15" id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">      </span><span class="nt">secrets</span><span class="p">:</span>
+</span><span id="__span-5-16"><a href="#__codelineno-5-16" id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your-tenant&gt;:trino-connection-secret</span>
+</span><span id="__span-5-17"><a href="#__codelineno-5-17" id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">          </span><span class="nt">contextAlias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trn</span>
+</span><span id="__span-5-18"><a href="#__codelineno-5-18" id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="w">      </span><span class="nt">projections</span><span class="p">:</span>
+</span><span id="__span-5-19"><a href="#__codelineno-5-19" id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="w">        </span><span class="nt">envVars</span><span class="p">:</span>
+</span><span id="__span-5-20"><a href="#__codelineno-5-20" id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRINO_HOST</span>
+</span><span id="__span-5-21"><a href="#__codelineno-5-21" id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="w">            </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">secrets['trn'].HOST</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">base64_decode</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-5-22"><a href="#__codelineno-5-22" id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRINO_USER</span>
+</span><span id="__span-5-23"><a href="#__codelineno-5-23" id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="w">            </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">secrets['trn'].USER</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">base64_decode</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-5-24"><a href="#__codelineno-5-24" id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRINO_CATALOG</span>
+</span><span id="__span-5-25"><a href="#__codelineno-5-25" id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="w">            </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">secrets['trn'].CATALOG</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">base64_decode</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-5-26"><a href="#__codelineno-5-26" id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRINO_PASSWORD</span>
+</span><span id="__span-5-27"><a href="#__codelineno-5-27" id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="w">            </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">secrets['trn'].PASSWORD</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">base64_decode</span><span class="nv"> </span><span class="s">}}"</span>
+</span></code></pre></div>
+<h3 id="secret-to-environment-mapping">Secret-to-Environment Mapping<a class="headerlink" href="#secret-to-environment-mapping" title="Link to this section">¶</a></h3>
+<p>The projection above maps each secret key to the variable that <code>config.yaml</code> reads:</p>
+<table>
+<thead>
+<tr>
+<th>Secret Key</th>
+<th>Environment Variable</th>
+<th>Used In <code>config.yaml</code> As</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HOST</code></td>
+<td><code>TRINO_HOST</code></td>
+<td><code>host: "{{ env_var('TRINO_HOST') }}"</code></td>
+</tr>
+<tr>
+<td><code>USER</code></td>
+<td><code>TRINO_USER</code></td>
+<td><code>user: "{{ env_var('TRINO_USER') }}"</code></td>
+</tr>
+<tr>
+<td><code>CATALOG</code></td>
+<td><code>TRINO_CATALOG</code></td>
+<td><code>catalog: "{{ env_var('TRINO_CATALOG') }}"</code></td>
+</tr>
+<tr>
+<td><code>PASSWORD</code></td>
+<td><code>TRINO_PASSWORD</code></td>
+<td><code>password: "{{ env_var('TRINO_PASSWORD') }}"</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Minerva is a Trino cluster, so the engine adapter type stays <code>trino</code> in both <code>model_defaults.dialect</code> and <code>gateways.default.connection.type</code>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To rotate credentials, update the secret and re-apply the <code>vulcan</code> resource — no change to <code>config.yaml</code> is required.</p>
 </div>
 </article>
 </div>

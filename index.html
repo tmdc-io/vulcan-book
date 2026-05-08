@@ -184,6 +184,33 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-a-data-product">
+<span class="md-ellipsis">
+      
+        What is a data product?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#why-it-lives-above-the-engine">
+<span class="md-ellipsis">
+      
+        Why it lives above the engine
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#where-vulcan-fits">
+<span class="md-ellipsis">
+      
+        Where Vulcan fits
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#get-started">
 <span class="md-ellipsis">
       
@@ -913,7 +940,7 @@
 <span class="md-ellipsis">
     
   
-    Get Started
+    Run Vulcan locally with Docker
   
 
     
@@ -1278,6 +1305,33 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-a-data-product">
+<span class="md-ellipsis">
+      
+        What is a data product?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#why-it-lives-above-the-engine">
+<span class="md-ellipsis">
+      
+        Why it lives above the engine
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#where-vulcan-fits">
+<span class="md-ellipsis">
+      
+        Where Vulcan fits
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#get-started">
 <span class="md-ellipsis">
       
@@ -1294,11 +1348,18 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="about">About<a class="headerlink" href="#about" title="Link to this section">¶</a></h1>
-<p>A data product moves through four phases: Input/output, transformation, quality, semantics. Vulcan is one stack for all four.</p>
-<p><strong>Input/Output:</strong> Bring your engine: Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, or Redshift etc. Vulcan connects through one config file and runs against the engine you already pay for. No data movement, no proprietary store.</p>
-<p><strong>Transformation:</strong> Write models in SQL or Python, or mix both in the same project. <code>vulcan plan</code> shows the full impact of every change before it touches the warehouse; <code>vulcan run</code> ships it on the cron you set.</p>
-<p><strong>Quality:</strong> The linter catches errors before the warehouse does. Assertions block bad rows at write time. Checks watch for anomalies and drift after. Tests validate logic locally with no warehouse cost.</p>
-<p><strong>Semantics:</strong> Define dimensions, measures, segments, and metrics once. Vulcan validates them against your models and generates APIs automatically. The same definitions power your dashboards, notebooks, and application code.</p>
+<h2 id="what-is-a-data-product">What is a data product?<a class="headerlink" href="#what-is-a-data-product" title="Link to this section">¶</a></h2>
+<p>A data product is context, packaged as a first-class asset. It bundles schema, semantics, ownership, lineage, quality, and freshness into one governed unit. You build it once. Dashboards, applications, and AI agents all consume the same definition, the same number, the same trust.</p>
+<p>The alternative is what most teams have today: raw tables plus tribal knowledge. That works for an analyst who knows which <code>revenue</code> table is canonical. It breaks the moment an AI agent answers the same question, picks a stale table, and is confidently wrong.</p>
+<h2 id="why-it-lives-above-the-engine">Why it lives above the engine<a class="headerlink" href="#why-it-lives-above-the-engine" title="Link to this section">¶</a></h2>
+<p>If the contract lives inside the warehouse, it's locked to the warehouse. Real enterprises run Snowflake for analytics, Postgres for operations, a lakehouse for ML. The data product has to sit above the bytes so the same contract reaches every consumer, regardless of where the data physically is.</p>
+<h2 id="where-vulcan-fits">Where Vulcan fits<a class="headerlink" href="#where-vulcan-fits" title="Link to this section">¶</a></h2>
+<p>Vulcan builds data products above the engine. Bring Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, or Redshift etc. Vulcan runs against the engine you already pay for. No data movement, until needed.</p>
+<p>A data product moves through four phases: Input/Output, Transformation, Quality, Semantics. Vulcan is one stack for all four.</p>
+<p><strong>Input/Output</strong> is the engine you choose: point a single config file at it and Vulcan runs against it directly. </p>
+<p><strong>Transformation</strong> is where you write models in SQL or Python, or mix both in the same project. <code>vulcan plan</code> shows the full impact of every change before it touches the warehouse, and <code>vulcan run</code> ships it on the cron you set. </p>
+<p><strong>Quality</strong> is enforced in-house, not bolted on after the fact: the linter catches errors before the warehouse does, assertions block bad rows at write time, checks watch for anomalies and drift, and tests validate your logic locally with no warehouse cost.</p>
+<p><strong>Semantics</strong> is where you define dimensions, measures, segments, and metrics once. Vulcan validates them against your models and generates REST, GraphQL, and SQL-wire APIs automatically, so the same definitions power your dashboards, notebooks, and application code.</p>
 <pre class="mermaid"><code>graph LR
     subgraph VT ["Vulcan Timeline →"]
         direction LR
@@ -1356,7 +1417,7 @@
 
 - **Multi-engine support** - Works with Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, Redshift, and more. -->
 <h2 id="get-started">Get started<a class="headerlink" href="#get-started" title="Link to this section">¶</a></h2>
-<p>The <a href="guides/get-started/docker/">quickstart guide</a> walks you through setting up Vulcan and building your first project. By the end, you'll have your first assertion &amp; data quality check running.</p>
+<p>The <a href="guides/get-started/docker/">quickstart guide</a> gets the Vulcan CLI running in Docker on your machine, connects it to your engine, and materializes your first models with <code>vulcan plan</code>. From there, the project scaffold gives you <code>audits/</code>, <code>checks/</code>, <code>tests/</code>, and <code>semantics/</code> folders ready to fill in.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
