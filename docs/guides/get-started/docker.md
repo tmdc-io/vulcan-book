@@ -1,15 +1,15 @@
-# Get Started
+# Run Vulcan locally with Docker
 
-This guide helps you create and test Vulcan locally using the **Local Development Kit (LDK)**.
+Run Vulcan on your laptop with the **Local Development Kit (LDK)**. You get the full CLI in a Docker container, no cloud account required.
 
 ## What is the LDK?
 
-The LDK is a lightweight Docker-based setup that gives you the **Vulcan CLI** on your local machine. Use it to build models, run plans, test queries, and validate your semantic layer — without any cloud deployment.
+The LDK is a single Docker image that gives you the **Vulcan CLI** on your machine. Use it to build models, run plans, test queries, and validate your semantic layer without any cloud deployment.
 
 **What the LDK gives you:**
 
-- **Vulcan CLI** — `vulcan init`, `vulcan plan`, `vulcan run`, and every other command
-- **State backend** — choose PostgreSQL (persistent, Docker-based) or DuckDB (lightweight, zero-setup)
+- **Vulcan CLI**: `vulcan init`, `vulcan plan`, `vulcan run`, and every other command
+- **State backend**: choose Postgres (persistent, Docker-based) or DuckDB (file-based, zero-setup)
 
 No zip downloads. No cloud setup. Pick your engine, choose a state backend, and start building.
 
@@ -58,7 +58,7 @@ No zip downloads. No cloud setup. Pick your engine, choose a state backend, and 
 
 ---
 
-## Setup Vulcan Locally
+## Set up Vulcan locally
 
 ### Step 1: Create a project folder
 
@@ -75,7 +75,7 @@ No zip downloads. No cloud setup. Pick your engine, choose a state backend, and 
 
 ### Step 2: Create a Docker network
 
-Vulcan runs the CLI as a Docker container. For it to reach other containers (like the statestore), all containers must be on the same Docker network.
+The CLI talks to the statestore by container name (`statestore`). That only works if both containers run on the same Docker network.
 
 === "Mac/Linux"
     ```bash
@@ -87,10 +87,10 @@ Vulcan runs the CLI as a Docker container. For it to reach other containers (lik
     docker network create vulcan
     ```
 
-The `vulcan` network is what makes container-to-container communication work. When you run `vulcan plan` or `vulcan run`, the CLI container connects to the statestore container by its name (`statestore`) — this only works if both are on the same network. Without it, the CLI would have no way to reach the state backend.
+Without this network, `vulcan plan` and `vulcan run` have no way to reach the state backend.
 
 !!! note
-    If you see `network with name vulcan already exists`, that's fine — the network is already there and you can continue.
+    If you see `network with name vulcan already exists`, you're done. The network is already there and you can continue.
 
 ### Step 3: Set the Vulcan CLI alias
 
@@ -124,11 +124,11 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
         ```
 
         !!! warning "Spark requires a running cluster"
-            Unlike other engines, Spark requires a running Spark cluster on your machine or network. The Spark version on your cluster **must match** the version bundled in the image — a mismatch causes `InvalidClassException` serialization errors at runtime. See [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
+            Unlike other engines, Spark needs a running Spark cluster on your machine or network. The Spark version on your cluster **must match** the version bundled in the image. A mismatch causes `InvalidClassException` serialization errors at runtime. See [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
 
         **Local Spark cluster**
 
-        To run Spark locally, save this as `docker-compose.spark.yml` in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure — PostgreSQL (state + warehouse), MinIO (object storage), and the Iceberg REST catalog — so every hostname in `config.yaml` resolves correctly. The Spark image version (`3.5.1`) must match the version bundled in the Vulcan Spark image.
+        To run Spark locally, save this as `docker-compose.spark.yml` in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure (Postgres for state and warehouse, MinIO for object storage, and the Iceberg REST catalog) so every hostname in `config.yaml` resolves correctly. The Spark image version (`3.5.1`) must match the version bundled in the Vulcan Spark image.
 
         ```bash
         docker compose -f docker-compose.spark.yml up -d
@@ -170,7 +170,7 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
             networks:
               - vulcan
 
-          # ── Warehouse (PostgreSQL — available as a JDBC Spark catalog) ───
+          # ── Warehouse (Postgres, available as a JDBC Spark catalog) ───
           warehouse:
             image: postgres:15
             container_name: warehouse
@@ -288,7 +288,7 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
 
         Choose the example that matches your setup:
 
-        ??? note "Local setup — Docker Spark cluster + Iceberg over MinIO"
+        ??? note "Local setup: Docker Spark cluster + Iceberg over MinIO"
 
             ```yaml
             gateways:
@@ -300,7 +300,7 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
                     "spark.app.name": "vulcan"
                     "spark.driver.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
                     "spark.executor.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
-                    # JARs are baked into the Vulcan Spark image — no Ivy downloads at plan/run time
+                    # JARs are baked into the Vulcan Spark image: no Ivy downloads at plan/run time
                     "spark.executor.extraClassPath": "{{ env_var('VULCAN_SPARK_EXECUTOR_EXTRA_JARS_DIR', '/etc/dataos/work/jars') }}/*"
                     # Iceberg catalog over MinIO
                     "spark.sql.catalog.warehouse": "org.apache.iceberg.spark.SparkCatalog"
@@ -435,11 +435,11 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
         ```
 
         !!! warning "Spark requires a running cluster"
-            Unlike other engines, Spark requires a running Spark cluster on your machine or network. The Spark version on your cluster **must match** the version bundled in the image — a mismatch causes `InvalidClassException` serialization errors at runtime. See [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
+            Unlike other engines, Spark needs a running Spark cluster on your machine or network. The Spark version on your cluster **must match** the version bundled in the image. A mismatch causes `InvalidClassException` serialization errors at runtime. See [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
 
         **Local Spark cluster**
 
-        To run Spark locally, save this as `docker-compose.spark.yml` in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure — PostgreSQL (state + warehouse), MinIO (object storage), and the Iceberg REST catalog — so every hostname in `config.yaml` resolves correctly. The Spark image version (`3.5.1`) must match the version bundled in the Vulcan Spark image.
+        To run Spark locally, save this as `docker-compose.spark.yml` in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure (Postgres for state and warehouse, MinIO for object storage, and the Iceberg REST catalog) so every hostname in `config.yaml` resolves correctly. The Spark image version (`3.5.1`) must match the version bundled in the Vulcan Spark image.
 
         ```cmd
         docker compose -f docker-compose.spark.yml up -d
@@ -481,7 +481,7 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
             networks:
               - vulcan
 
-          # ── Warehouse (PostgreSQL — available as a JDBC Spark catalog) ───
+          # ── Warehouse (Postgres, available as a JDBC Spark catalog) ───
           warehouse:
             image: postgres:15
             container_name: warehouse
@@ -599,7 +599,7 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
 
         Choose the example that matches your setup:
 
-        ??? note "Local setup — Docker Spark cluster + Iceberg over MinIO"
+        ??? note "Local setup: Docker Spark cluster + Iceberg over MinIO"
 
             ```yaml
             gateways:
@@ -611,7 +611,7 @@ The Vulcan CLI runs as a Docker container. The image you use depends on your eng
                     "spark.app.name": "vulcan"
                     "spark.driver.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
                     "spark.executor.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
-                    # JARs are baked into the Vulcan Spark image — no Ivy downloads at plan/run time
+                    # JARs are baked into the Vulcan Spark image: no Ivy downloads at plan/run time
                     "spark.executor.extraClassPath": "{{ env_var('VULCAN_SPARK_EXECUTOR_EXTRA_JARS_DIR', '/etc/dataos/work/jars') }}/*"
                     # Iceberg catalog over MinIO
                     "spark.sql.catalog.warehouse": "org.apache.iceberg.spark.SparkCatalog"
@@ -764,7 +764,7 @@ Open `config.yaml` in your project root and add your engine connection and state
           database: /workspace/.state/vulcan.db
     ```
 
-    ??? note "Using PostgreSQL as state backend instead"
+    ??? note "Using Postgres as state backend instead"
 
         First, create and start a `docker-compose.infra.yml` with the statestore:
 
@@ -826,7 +826,7 @@ Open `config.yaml` in your project root and add your engine connection and state
           database: /workspace/.state/vulcan.db
     ```
 
-    ??? note "Using PostgreSQL as state backend instead"
+    ??? note "Using Postgres as state backend instead"
 
         First, create and start a `docker-compose.infra.yml` with the statestore:
 
@@ -887,7 +887,7 @@ Open `config.yaml` in your project root and add your engine connection and state
           database: /workspace/.state/vulcan.db
     ```
 
-    ??? note "Using PostgreSQL as state backend instead"
+    ??? note "Using Postgres as state backend instead"
 
         First, create and start a `docker-compose.infra.yml` with the statestore:
 
@@ -948,7 +948,7 @@ Open `config.yaml` in your project root and add your engine connection and state
           database: /workspace/.state/vulcan.db
     ```
 
-    ??? note "Using PostgreSQL as state backend instead"
+    ??? note "Using Postgres as state backend instead"
 
         First, create and start a `docker-compose.infra.yml` with the statestore:
 
@@ -1052,7 +1052,7 @@ This shows your connection status, model count, and project configuration. Fix a
 
 Vulcan validates your models, computes what needs to be materialized, and prompts you to apply. Enter `y` to confirm.
 
-For a full walkthrough of what happens after `plan` — running models, querying data, and iterating — see the [Plan guide](../plan_guide.md).
+For a full walkthrough of what happens after `plan` (running models, querying data, and iterating), see the [Plan guide](../plan_guide.md).
 
 ---
 
@@ -1062,7 +1062,7 @@ For a full walkthrough of what happens after `plan` — running models, querying
 
     **Statestore container won't start**
 
-    Only relevant if you're using PostgreSQL state. Ensure Docker Desktop is running and has at least 4 GB RAM allocated. Check under **Settings → Resources → Advanced**.
+    Only relevant if you're using Postgres state. Make sure Docker Desktop is running and has at least 4 GB RAM allocated. Check under **Settings → Resources → Advanced**.
 
     **Invalid connection config**
 
@@ -1125,7 +1125,7 @@ For a full walkthrough of what happens after `plan` — running models, querying
 
 ## Next Steps
 
-- [Data Product Lifecycle](../data-product-lifecycle.md) — the full path from local setup to production deployment
-- [CLI Reference](../../cli-commands/cli.md) — all available commands and options
-- [Model Kinds](../../components/model/model_kinds.md) — FULL, INCREMENTAL, VIEW, and more
-- [Vulcan API Guide](../vulcan_api_guide.md) — query your semantic layer via REST, GraphQL, or MySQL wire protocol
+- **[Data Product Lifecycle](../data-product-lifecycle.md)**: the full path from local setup to production deployment
+- **[CLI Reference](../../cli-commands/cli.md)**: all available commands and options
+- **[Model Kinds](../../components/model/model_kinds.md)**: `FULL`, `INCREMENTAL`, `VIEW`, and more
+- **[Vulcan API Guide](../vulcan_api_guide.md)**: query your semantic layer via REST, GraphQL, or MySQL wire protocol

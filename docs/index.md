@@ -1,14 +1,28 @@
 # About
 
-A data product moves through four phases: Input/output, transformation, quality, semantics. Vulcan is one stack for all four.
+## What is a data product?
 
-**Input/Output:** Bring your engine: Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, or Redshift etc. Vulcan connects through one config file and runs against the engine you already pay for. No data movement, no proprietary store.
+A data product is context, packaged as a first-class asset. It bundles schema, semantics, ownership, lineage, quality, and freshness into one governed unit. You build it once. Dashboards, applications, and AI agents all consume the same definition, the same number, the same trust.
 
-**Transformation:** Write models in SQL or Python, or mix both in the same project. `vulcan plan` shows the full impact of every change before it touches the warehouse; `vulcan run` ships it on the cron you set.
+The alternative is what most teams have today: raw tables plus tribal knowledge. That works for an analyst who knows which `revenue` table is canonical. It breaks the moment an AI agent answers the same question, picks a stale table, and is confidently wrong.
 
-**Quality:** The linter catches errors before the warehouse does. Assertions block bad rows at write time. Checks watch for anomalies and drift after. Tests validate logic locally with no warehouse cost.
+## Why it lives above the engine
 
-**Semantics:** Define dimensions, measures, segments, and metrics once. Vulcan validates them against your models and generates APIs automatically. The same definitions power your dashboards, notebooks, and application code.
+If the contract lives inside the warehouse, it's locked to the warehouse. Real enterprises run Snowflake for analytics, Postgres for operations, a lakehouse for ML. The data product has to sit above the bytes so the same contract reaches every consumer, regardless of where the data physically is.
+
+## Where Vulcan fits
+
+Vulcan builds data products above the engine. Bring Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, or Redshift etc. Vulcan runs against the engine you already pay for. No data movement, until needed.
+
+A data product moves through four phases: Input/Output, Transformation, Quality, Semantics. Vulcan is one stack for all four.
+
+**Input/Output** is the engine you choose: point a single config file at it and Vulcan runs against it directly. 
+
+**Transformation** is where you write models in SQL or Python, or mix both in the same project. `vulcan plan` shows the full impact of every change before it touches the warehouse, and `vulcan run` ships it on the cron you set. 
+
+**Quality** is enforced in-house, not bolted on after the fact: the linter catches errors before the warehouse does, assertions block bad rows at write time, checks watch for anomalies and drift, and tests validate your logic locally with no warehouse cost.
+
+**Semantics** is where you define dimensions, measures, segments, and metrics once. Vulcan validates them against your models and generates REST, GraphQL, and SQL-wire APIs automatically, so the same definitions power your dashboards, notebooks, and application code.
 
 
 
@@ -75,4 +89,4 @@ graph LR
 
 ## Get started
 
-The [quickstart guide](guides/get-started/docker.md) walks you through setting up Vulcan and building your first project. By the end, you'll have your first assertion & data quality check running.
+The [quickstart guide](guides/get-started/docker.md) gets the Vulcan CLI running in Docker on your machine, connects it to your engine, and materializes your first models with `vulcan plan`. From there, the project scaffold gives you `audits/`, `checks/`, `tests/`, and `semantics/` folders ready to fill in.
