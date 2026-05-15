@@ -766,14 +766,28 @@ Open `config.yaml` in your project root and add your engine connection and state
 
     ??? note "Using Postgres as state backend instead"
 
-        First, create and start a `docker-compose.infra.yml` with the statestore:
+        With the Postgres engine you already need a `warehouse` Postgres container for your data. Add a `statestore` container alongside it so both run on the `vulcan` network you created in Step 2.
+
+        Save the following as `docker-compose.infra.yml` in your project folder:
 
         ```yaml
         networks:
           vulcan:
-            driver: bridge
+            external: true
 
         services:
+          warehouse:
+            image: postgres:15
+            container_name: warehouse
+            environment:
+              POSTGRES_USER: vulcan
+              POSTGRES_PASSWORD: vulcan
+              POSTGRES_DB: warehouse
+            ports:
+              - "5434:5432"
+            networks:
+              - vulcan
+
           statestore:
             image: postgres:15
             container_name: statestore
@@ -786,6 +800,8 @@ Open `config.yaml` in your project root and add your engine connection and state
             networks:
               - vulcan
         ```
+
+        Start both services **before** you run `vulcan info` or `vulcan plan`:
 
         === "Mac/Linux"
             ```bash
@@ -807,6 +823,11 @@ Open `config.yaml` in your project root and add your engine connection and state
           user: vulcan
           password: vulcan
         ```
+
+        !!! note "Use service names as hosts, not `localhost`"
+            The Vulcan CLI runs inside a container on the `vulcan` network. From there it reaches the Postgres containers by their service names: `statestore` and `warehouse`. That is why `config.yaml` uses `host: statestore` and `host: warehouse`.
+
+            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host ports: `5433` for the statestore, `5434` for the warehouse.
 
     [:material-book-open-variant: Full Postgres reference](../../configurations/engines/postgres/postgres.md)
 
@@ -828,12 +849,14 @@ Open `config.yaml` in your project root and add your engine connection and state
 
     ??? note "Using Postgres as state backend instead"
 
-        First, create and start a `docker-compose.infra.yml` with the statestore:
+        Snowflake is your warehouse, so you only need to add a `statestore` Postgres container on the `vulcan` network you created in Step 2.
+
+        Save the following as `docker-compose.infra.yml` in your project folder:
 
         ```yaml
         networks:
           vulcan:
-            driver: bridge
+            external: true
 
         services:
           statestore:
@@ -848,6 +871,8 @@ Open `config.yaml` in your project root and add your engine connection and state
             networks:
               - vulcan
         ```
+
+        Start the service **before** you run `vulcan info` or `vulcan plan`:
 
         === "Mac/Linux"
             ```bash
@@ -869,6 +894,11 @@ Open `config.yaml` in your project root and add your engine connection and state
           user: vulcan
           password: vulcan
         ```
+
+        !!! note "Use service names as hosts, not `localhost`"
+            The Vulcan CLI runs inside a container on the `vulcan` network and reaches the statestore by its service name. That is why `config.yaml` uses `host: statestore`.
+
+            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host port `5433`.
 
     [:material-book-open-variant: Full Snowflake reference](../../configurations/engines/snowflake/snowflake.md)
 
@@ -889,12 +919,14 @@ Open `config.yaml` in your project root and add your engine connection and state
 
     ??? note "Using Postgres as state backend instead"
 
-        First, create and start a `docker-compose.infra.yml` with the statestore:
+        Databricks is your warehouse, so you only need to add a `statestore` Postgres container on the `vulcan` network you created in Step 2.
+
+        Save the following as `docker-compose.infra.yml` in your project folder:
 
         ```yaml
         networks:
           vulcan:
-            driver: bridge
+            external: true
 
         services:
           statestore:
@@ -909,6 +941,8 @@ Open `config.yaml` in your project root and add your engine connection and state
             networks:
               - vulcan
         ```
+
+        Start the service **before** you run `vulcan info` or `vulcan plan`:
 
         === "Mac/Linux"
             ```bash
@@ -930,6 +964,11 @@ Open `config.yaml` in your project root and add your engine connection and state
           user: vulcan
           password: vulcan
         ```
+
+        !!! note "Use service names as hosts, not `localhost`"
+            The Vulcan CLI runs inside a container on the `vulcan` network and reaches the statestore by its service name. That is why `config.yaml` uses `host: statestore`.
+
+            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host port `5433`.
 
     [:material-book-open-variant: Full Databricks reference](../../configurations/engines/databricks/databricks.md)
 
@@ -950,12 +989,14 @@ Open `config.yaml` in your project root and add your engine connection and state
 
     ??? note "Using Postgres as state backend instead"
 
-        First, create and start a `docker-compose.infra.yml` with the statestore:
+        Trino is your warehouse, so you only need to add a `statestore` Postgres container on the `vulcan` network you created in Step 2.
+
+        Save the following as `docker-compose.infra.yml` in your project folder:
 
         ```yaml
         networks:
           vulcan:
-            driver: bridge
+            external: true
 
         services:
           statestore:
@@ -970,6 +1011,8 @@ Open `config.yaml` in your project root and add your engine connection and state
             networks:
               - vulcan
         ```
+
+        Start the service **before** you run `vulcan info` or `vulcan plan`:
 
         === "Mac/Linux"
             ```bash
@@ -991,6 +1034,11 @@ Open `config.yaml` in your project root and add your engine connection and state
           user: vulcan
           password: vulcan
         ```
+
+        !!! note "Use service names as hosts, not `localhost`"
+            The Vulcan CLI runs inside a container on the `vulcan` network and reaches the statestore by its service name. That is why `config.yaml` uses `host: statestore`.
+
+            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host port `5433`.
 
     [:material-book-open-variant: Full Trino reference](../../configurations/engines/trino/trino.md)
 
@@ -1100,10 +1148,12 @@ For a full walkthrough of what happens after `plan` (running models, querying da
 
     If a port is occupied by another process, either stop that process or update the port mapping in `docker-compose.infra.yml`.
 
-    | Service | Default port |
-    |---------|-------------|
+    These are the host-side ports the infra YAML maps to. The Vulcan CLI itself talks to each container by service name on port `5432` inside the `vulcan` network and never uses these.
+
+    | Service | Host port |
+    |---------|-----------|
     | Statestore (Postgres, if used) | 5433 |
-    | Warehouse (Postgres engine only) | 5432 |
+    | Warehouse (Postgres engine only) | 5434 |
 
     **Permission denied**
 
