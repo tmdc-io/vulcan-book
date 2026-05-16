@@ -30,7 +30,6 @@ This page is a complete reference for all available properties. It covers what e
 | `columns` | Explicit column names and types | `array` | N |
 | `dialect` | SQL dialect of the model | `str` | N |
 | `assertions`  | Audits to run after model evaluation | `array` | N |
-| `profiles` | Columns to track statistical metrics over time | `array` | N |
 | `depends_on` | Explicit model dependencies | `array[str]` | N |
 | `references` | Non-unique join relationship columns | `array` | N |
 | `partitioned_by` | Partition key column(s) | `str` \| `array` | N |
@@ -800,70 +799,6 @@ Think of assertions as "this data must be true" validations that run automatical
         ],
     )
     ```
-
-### profiles
-
-Enable automatic data profiling for specific columns. Profiles track statistical metrics over time (like null percentages, distinct counts, distributions) without blocking your models.
-
-**How it works:** Vulcan collects metrics each run and stores them in the `_check_profiles` table. You can query this to see how your data changes over time, detect data drift, understand patterns, and decide which checks or audits to add.
-
-**Use cases:**
-
-- Track null percentages over time
-
-- Monitor distinct value counts
-
-- Detect data drift
-
-- Understand column distributions
-
-- Inform which Data Quality rules and audits to create
-
-Think of profiles as your data observability layer, they watch and learn, but don't block.
-=== "SQL"
-
-    ```sql
-    MODEL (
-      name vulcan_demo.full_model,
-      kind FULL,
-      grains (customer_id),
-      profiles (customer_id, customer_name, email, total_orders, total_spent, avg_order_value)
-    );
-
-    SELECT
-      c.customer_id,
-      c.name AS customer_name,
-      c.email,
-      COUNT(DISTINCT o.order_id) AS total_orders,
-      COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS total_spent,
-      COALESCE(SUM(oi.quantity * oi.unit_price), 0) / NULLIF(COUNT(DISTINCT o.order_id), 0) AS avg_order_value
-    FROM vulcan_demo.customers AS c
-    LEFT JOIN vulcan_demo.orders AS o ON c.customer_id = o.customer_id
-    LEFT JOIN vulcan_demo.order_items AS oi ON o.order_id = oi.order_id
-    GROUP BY c.customer_id, c.name, c.email
-    ```
-
-=== "Python"
-
-    ```python
-    @model(
-        "vulcan_demo.full_model_py",
-        columns={
-            "customer_id": "int",
-            "customer_name": "string",
-            "email": "string",
-            "total_orders": "int",
-            "total_spent": "decimal(10,2)",
-            "avg_order_value": "decimal(10,2)",
-        },
-        kind="full",
-        grains=["customer_id"],
-        profiles=["customer_id", "customer_name", "email", "total_orders", "total_spent", "avg_order_value"],
-    )
-    def execute(context, **kwargs):
-        ...
-    ```
-
 
 ### depends_on
 

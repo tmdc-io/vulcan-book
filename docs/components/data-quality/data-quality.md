@@ -8,6 +8,8 @@ Unlike [audits](../audits/audits.md) (which block model execution when they fail
 
 - Configured in simple YAML files in `models/dq/`, using `kind: dq`
 
+- One rule pack per file, each targeting a single model via `depends_on:`
+
 - Don't block models (your models keep running even if a rule fails)
 
 - Track historical patterns and trends
@@ -25,7 +27,7 @@ Before we dive in, let's clear up the confusion around these three data quality 
 | **Purpose** | Critical validation | Monitoring and analysis | Observation and tracking |
 | **When runs** | With model (inline) | Separately or with models | With model |
 | **Blocks models?** | Yes (always) | No | No |
-| **Configuration** | In MODEL DDL or .sql files | YAML files in `models/dq/` (`kind: dq`) | In MODEL DDL |
+| **Configuration** | In MODEL DDL or .sql files | YAML files in `models/dq/` (`kind: dq`) | Under `profiles:` in a `kind: dq` file |
 | **Output** | Pass/fail | Pass/fail + samples | Statistical metrics |
 | **Best for** | Business rules, data integrity | Trend monitoring, anomalies | Understanding data |
 | **Historical tracking** | No | Yes (Activity API) | Yes (`_check_profiles`) |
@@ -112,26 +114,26 @@ MODEL (
 ```
 
 ```yaml
-# DATA QUALITY (Monitoring: warns if unusual)
+# DATA QUALITY (Monitoring + observation)
 # models/dq/revenue.yml
-# This watches for anomalies but doesn't block
+# Profiles watch and record. Rules warn if something looks unusual.
+# Neither blocks the model.
 kind: dq
-checks:
-  analytics.revenue:
-    accuracy:
-      - anomaly detection for avg(revenue):
-          name: revenue_anomaly_detection
-      - change for row_count >= -30%:
-          name: row_count_drop_alert
-```
+name: revenue_dq
+depends_on: analytics.revenue
 
-```sql
--- PROFILE (Observation: tracks over time)
--- This just watches and records what it sees
-MODEL (
-  name analytics.revenue,
-  profiles (revenue, order_count, customer_tier)
-);
+profiles:
+  - revenue
+  - order_count
+  - customer_tier
+
+rules:
+  - anomaly detection for avg(revenue):
+      name: revenue_anomaly_detection
+      dimension: accuracy
+  - change for row_count >= -30%:
+      name: row_count_drop_alert
+      dimension: timeliness
 ```
 
 ## Quick Start
@@ -144,13 +146,14 @@ Create a file `models/dq/customers.yml`:
 
 ```yaml
 kind: dq
-checks:
-  analytics.customers:
-    completeness:
-      - missing_count(email) = 0:
-          name: no_missing_emails
-          attributes:
-            description: "All customers must have an email address"
+name: customers_dq
+depends_on: analytics.customers
+
+rules:
+  - missing_count(email) = 0:
+      name: no_missing_emails
+      dimension: completeness
+      description: "All customers must have an email address"
 ```
 
 That's it. This rule ensures every customer has an email address. When you run your models, the rule runs automatically and warns you if any emails are missing.
@@ -182,17 +185,21 @@ Make sure required data is present:
 
 ```yaml
 kind: dq
-checks:
-  analytics.orders:
-    completeness:
-      - missing_count(customer_id) = 0:
-          name: customer_id_required
-      
-      - missing_percent(email) < 5:
-          name: email_mostly_complete
-      
-      - row_count > 1000:
-          name: sufficient_orders
+name: orders_completeness
+depends_on: analytics.orders
+
+rules:
+  - missing_count(customer_id) = 0:
+      name: customer_id_required
+      dimension: completeness
+
+  - missing_percent(email) < 5:
+      name: email_mostly_complete
+      dimension: completeness
+
+  - row_count > 1000:
+      name: sufficient_orders
+      dimension: completeness
 ```
 
 The first rule ensures every order has a customer ID (zero tolerance). The second allows up to 5% missing emails (sometimes that's okay). The third makes sure you have enough data to work with.
@@ -203,23 +210,26 @@ Validate data format and values:
 
 ```yaml
 kind: dq
-checks:
-  analytics.users:
-    validity:
-      - failed rows:
-          name: invalid_emails
-          fail query: |
-            SELECT user_id, email
-            FROM analytics.users
-            WHERE email NOT LIKE '%@%'
-          samples limit: 10
-      
-      - failed rows:
-          name: invalid_ages
-          fail query: |
-            SELECT user_id, age
-            FROM analytics.users
-            WHERE age < 0 OR age > 120
+name: users_validity
+depends_on: analytics.users
+
+rules:
+  - failed rows:
+      name: invalid_emails
+      dimension: validity
+      fail query: |
+        SELECT user_id, email
+        FROM analytics.users
+        WHERE email NOT LIKE '%@%'
+      samples limit: 10
+
+  - failed rows:
+      name: invalid_ages
+      dimension: validity
+      fail query: |
+        SELECT user_id, age
+        FROM analytics.users
+        WHERE age < 0 OR age > 120
 ```
 
 The `failed rows` rule type is flexible. You can write any SQL query. If it returns rows, the rule fails and captures those rows as samples.
@@ -230,14 +240,17 @@ Ensure no duplicates:
 
 ```yaml
 kind: dq
-checks:
-  analytics.customers:
-    uniqueness:
-      - duplicate_count(email) = 0:
-          name: unique_emails
-      
-      - duplicate_count(customer_id, order_date) = 0:
-          name: unique_customer_date_combination
+name: customers_uniqueness
+depends_on: analytics.customers
+
+rules:
+  - duplicate_count(email) = 0:
+      name: unique_emails
+      dimension: uniqueness
+
+  - duplicate_count(customer_id, order_date) = 0:
+      name: unique_customer_date_combination
+      dimension: uniqueness
 ```
 
 The second example shows composite keys: maybe a customer can have multiple orders, but only one per day.
@@ -248,14 +261,17 @@ Detect unusual patterns automatically:
 
 ```yaml
 kind: dq
-checks:
-  analytics.daily_revenue:
-    accuracy:
-      - anomaly detection for row_count:
-          name: row_count_anomaly
-      
-      - anomaly detection for avg(revenue):
-          name: revenue_anomaly
+name: daily_revenue_anomaly
+depends_on: analytics.daily_revenue
+
+rules:
+  - anomaly detection for row_count:
+      name: row_count_anomaly
+      dimension: accuracy
+
+  - anomaly detection for avg(revenue):
+      name: revenue_anomaly
+      dimension: accuracy
 ```
 
 Anomaly detection learns from historical data and flags when something looks unusual. It needs to run a few times first to build a baseline, then it starts detecting problems.
@@ -266,13 +282,14 @@ Track changes over time:
 
 ```yaml
 kind: dq
-checks:
-  analytics.orders:
-    timeliness:
-      - change for row_count >= -50%:
-          name: row_count_drop_alert
-          attributes:
-            description: "Alert if row count drops more than 50%"
+name: orders_timeliness
+depends_on: analytics.orders
+
+rules:
+  - change for row_count >= -50%:
+      name: row_count_drop_alert
+      dimension: timeliness
+      description: "Alert if row count drops more than 50%"
 ```
 
 This compares the current value to the previous run and alerts you if it changes too much. Useful for catching sudden drops or spikes.
@@ -281,16 +298,16 @@ This compares the current value to the previous run and alerts you if it changes
 
 ### File Structure
 
-Data Quality rule packs live in YAML files in `models/dq/`. You can organize them however makes sense for your project:
+Data Quality rule packs live in YAML files in `models/dq/`. **Each file is one rule pack and targets exactly one model** via `depends_on:`. Organize them however makes sense for your project:
 
 ```
 project/
 ├── models/
 │   ├── dq/
-│   │   ├── users.yml           # Rules for user tables
-│   │   ├── orders.yml          # Rules for order tables
-│   │   ├── revenue.yml         # Rules for revenue tables
-│   │   └── cross_model.yml     # Rules spanning multiple tables
+│   │   ├── users.yml           # Rules for analytics.users
+│   │   ├── orders.yml          # Rules for analytics.orders
+│   │   ├── revenue.yml         # Rules for analytics.revenue
+│   │   └── cross_model.yml     # Rules anchored on one model, joining others via SQL
 │   ├── semantics/
 │   ├── metrics/
 │   └── *.sql
@@ -301,59 +318,133 @@ project/
 
 - Must end with `.yml` or `.yaml`
 
-- The name doesn't matter (Vulcan reads all files in `models/dq/`)
+- The file name doesn't matter (Vulcan reads all files in `models/dq/`)
 
-- Organize by domain or table for clarity, whatever helps you find things
+- Convention: name files after the model they target (e.g. `subscriptions.yml` for `hello.subscriptions`)
 
 ### Basic Data Quality Syntax
 
-Here's the basic structure of a Data Quality rule pack:
+A rule pack has a pack-level header followed by a list of `rules:`.
 
 ```yaml
-kind: dq
-checks:
-  <fully_qualified_table_name>:
-    <dimension>:
-      - <rule_expression>:
-          name: <rule_name>
-          attributes:
-            description: <human_readable_description>
-            tags: [<tag1>, <tag2>]
+kind: dq                          # Required: file kind
+name: <rule_pack_name>            # Required: unique name for this pack
+depends_on: <fully.qualified.model>  # Required: the model this pack validates
+
+# Optional pack-level fields:
+filter: "<sql_predicate>"         # Applied to every rule in this pack
+profiles:                         # Columns to profile alongside the rules
+  - <column_1>
+  - <column_2>
+
+rules:
+  - <rule_expression>:            # e.g. missing_count(col) = 0, failed rows, etc.
+      name: <rule_name>
+      dimension: <dimension>      # completeness | validity | accuracy | ...
+      description: <human_readable_description>
+      # ...other per-rule fields (see below)
 ```
 
-`kind: dq` declares the file as a Data Quality rule pack. The `checks:` block groups rules by table; each table groups rules by data-quality dimension.
+`kind: dq` declares the file as a Data Quality rule pack. `name` identifies the pack. `depends_on` ties every rule in the file to a single model.
 
 **Example:**
 
 ```yaml
 kind: dq
-checks:
-  analytics.customers:
-    completeness:
-      - row_count > 100:
-          name: sufficient_customers
-          attributes:
-            description: "At least 100 customers expected in production"
-            tags: [critical, daily]
+name: customers_dq
+depends_on: analytics.customers
+
+rules:
+  - row_count > 100:
+      name: sufficient_customers
+      dimension: completeness
+      description: "At least 100 customers expected in production"
+      tags: [critical, daily]
 ```
 
-The `name` field is required and should be descriptive. The `attributes` section is optional but useful for documentation and filtering.
+### Rule Forms: Shorthand and Full
+
+A rule can be a bare expression (no metadata) or an expression with a metadata block.
+
+**Shorthand** — just the expression, no metadata. Vulcan will auto-name the rule and skip the optional fields:
+
+```yaml
+rules:
+  - missing_count(user_id) = 0
+  - missing_count(event_date) = 0
+  - duplicate_count(event_id) = 0
+```
+
+**Full form** — expression as a YAML key, with metadata as the value:
+
+```yaml
+rules:
+  - missing_count(event_type) = 0:
+      name: no_missing_event_types
+      dimension: completeness
+      description: "All events must have an event type"
+```
+
+You can mix both in the same `rules:` list. Use shorthand for obvious rules, full form whenever you want a stable name, a dimension tag, a description, severity, etc.
+
+### Rule Attributes
+
+All rule metadata is **flat** — directly under the rule expression, not nested under an `attributes:` block.
+
+| Field | Description |
+|-------|-------------|
+| `name` | Stable identifier for the rule. Required when you want to look it up in the Activity API. |
+| `dimension` | Data-quality dimension: `completeness`, `validity`, `accuracy`, `consistency`, `uniqueness`, `timeliness`, `conformity`, or `coverage`. |
+| `description` | Human-readable explanation. |
+| `filter` | SQL predicate applied to this rule only. Overlays the pack-level `filter:`. |
+| `warn` | Threshold expression for emitting a warning (e.g. `when < 10`). |
+| `fail` | Threshold expression for failing the rule (e.g. `when > 100`). |
+| `warn_only` | `true` to downgrade any failure to a warning. |
+| `fail query` | SQL `SELECT` returning bad rows — only used with `failed rows`. |
+| `samples limit` | Number of failed sample rows to capture (default `5`). |
+| `tags` | List of tags for filtering and organisation, e.g. `[critical, daily]`. |
+| `owner` | Team or person responsible. |
+| `severity` | `error` (default) or `warning`. |
+
+**Example using `warn` / `fail` / `warn_only` / `filter`:**
+
+```yaml
+kind: dq
+name: usage_events_dq
+depends_on: b2b_saas.usage_events
+
+rules:
+  - row_count > 10:
+      name: sufficient_events
+      dimension: completeness
+      warn: when < 10
+      fail: when > 100
+      description: "At least 10 events captured"
+
+  - row_count > 0:
+      name: events_in_run_window
+      dimension: completeness
+      filter: "event_date >= CAST('${execution_dt}' AS DATE) - INTERVAL '7 days'"
+      warn_only: true
+      description: "Events exist in the run window"
+```
 
 ### Data Quality Dimensions
 
-Data Quality rules are organized by **8 standard dimensions** (based on ODPS v3.1). Each dimension focuses on a different aspect of data quality:
+Rules are classified by the `dimension:` field. Vulcan supports **8 standard dimensions** (based on ODPS v3.1). Each dimension focuses on a different aspect of data quality:
 
 #### 1. Completeness
 
 No missing required data. This is probably the most common dimension you'll use.
 
 ```yaml
-completeness:
-  - missing_count(customer_id) = 0
-
-  - missing_percent(email) < 5
-
-  - row_count > 1000
+rules:
+  - missing_count(customer_id) = 0:
+      dimension: completeness
+  - missing_percent(email) < 5:
+      dimension: completeness
+  - row_count > 1000:
+      dimension: completeness
 ```
 
 #### 2. Validity
@@ -361,10 +452,11 @@ completeness:
 Data conforms to format/syntax. Is that email actually an email? Is that date in the right format?
 
 ```yaml
-validity:
+rules:
   - failed rows:
+      dimension: validity
       fail query: |
-        SELECT * FROM table
+        SELECT * FROM analytics.users
         WHERE email NOT LIKE '%@%'
 ```
 
@@ -373,10 +465,11 @@ validity:
 Data matches reality. Is the average age reasonable? Is revenue in the expected range?
 
 ```yaml
-accuracy:
-  - anomaly detection for avg(revenue)
-
-  - avg(age) between 18 and 65
+rules:
+  - anomaly detection for avg(revenue):
+      dimension: accuracy
+  - avg(age) between 18 and 65:
+      dimension: accuracy
 ```
 
 #### 4. Consistency
@@ -384,12 +477,13 @@ accuracy:
 Data agrees across sources. Do orders match customers? Are totals consistent?
 
 ```yaml
-consistency:
+rules:
   - failed rows:
+      dimension: consistency
       fail query: |
         SELECT *
-        FROM orders o
-        LEFT JOIN customers c ON o.customer_id = c.customer_id
+        FROM analytics.orders o
+        LEFT JOIN analytics.customers c ON o.customer_id = c.customer_id
         WHERE c.customer_id IS NULL
 ```
 
@@ -398,10 +492,11 @@ consistency:
 No duplicates. Is that email really unique? Can customers have multiple orders per day?
 
 ```yaml
-uniqueness:
-  - duplicate_count(email) = 0
-
-  - duplicate_count(order_id) = 0
+rules:
+  - duplicate_count(email) = 0:
+      dimension: uniqueness
+  - duplicate_count(order_id) = 0:
+      dimension: uniqueness
 ```
 
 #### 6. Timeliness
@@ -409,13 +504,14 @@ uniqueness:
 Data is current. Is the data fresh? Are updates happening on time?
 
 ```yaml
-timeliness:
-  - change for row_count >= -30%
-
+rules:
+  - change for row_count >= -30%:
+      dimension: timeliness
   - failed rows:
+      dimension: timeliness
       fail query: |
         SELECT *
-        FROM orders
+        FROM analytics.orders
         WHERE updated_at < CURRENT_DATE - INTERVAL '7 days'
 ```
 
@@ -424,11 +520,12 @@ timeliness:
 Follows standards. Does the zip code have the right format? Are codes valid?
 
 ```yaml
-conformity:
+rules:
   - failed rows:
+      dimension: conformity
       fail query: |
         SELECT *
-        FROM addresses
+        FROM analytics.addresses
         WHERE LENGTH(zip_code) != 5
 ```
 
@@ -437,90 +534,91 @@ conformity:
 All records are present. Did we get all the data we expected?
 
 ```yaml
-coverage:
-  - row_count >= 95% of historical_avg(row_count)
+rules:
+  - row_count >= 95% of historical_avg(row_count):
+      dimension: coverage
 ```
 
-### Filtering Checks
+### Filtering Rules
 
-Sometimes you want to apply checks to a subset of your data. Maybe you only care about completed orders, or US customers. That's where filters come in:
+You can apply a SQL predicate at two levels.
+
+**Pack-level filter** — applied to every rule in the file:
 
 ```yaml
-checks:
-  analytics.orders:
-    filter: "status = 'completed' AND order_date >= CURRENT_DATE - INTERVAL '30 days'"
-    
-    completeness:
-      - missing_count(customer_id) = 0:
-          name: completed_orders_have_customers
+kind: dq
+name: completed_recent_orders_dq
+depends_on: analytics.orders
+
+filter: "status = 'completed' AND order_date >= CURRENT_DATE - INTERVAL '30 days'"
+
+rules:
+  - missing_count(customer_id) = 0:
+      name: completed_orders_have_customers
+      dimension: completeness
+  - row_count > 0:
+      name: completed_orders_exist
+      dimension: completeness
 ```
 
-**Multiple filters:**
-
-You can define the same table multiple times with different filters:
+**Per-rule filter** — applied only to that rule (and overlays the pack-level filter):
 
 ```yaml
-checks:
-  analytics.customers:
-    filter: "country = 'US'"
-    completeness:
-      - row_count > 1000
-  
-  analytics.customers:
-    filter: "country = 'EU'"
-    completeness:
-      - row_count > 500
+rules:
+  - row_count > 500:
+      name: sufficient_active_users
+      dimension: completeness
+      filter: "status = 'active'"
 ```
 
-This lets you have different expectations for different regions.
+Need different expectations for different slices of the same model (e.g. US vs EU customers)? Create a separate file per slice — each rule pack has a single `depends_on:` and its own `filter:`.
 
-### Check Attributes
-
-Add metadata to your checks to make them easier to manage and understand:
+### Per-Rule Metadata Example
 
 ```yaml
-checks:
-  analytics.revenue:
-    completeness:
-      - row_count > 1000:
-          name: sufficient_revenue_data
-          attributes:
-            description: "Revenue table must have at least 1000 rows for analysis"
-            tags: [critical, daily, revenue]
-            owner: data-team
-            jira: DATA-1234
-            sla: "< 1 hour"
+kind: dq
+name: revenue_dq
+depends_on: analytics.revenue
+
+rules:
+  - row_count > 1000:
+      name: sufficient_revenue_data
+      dimension: completeness
+      description: "Revenue table must have at least 1000 rows for analysis"
+      tags: [critical, daily, revenue]
+      owner: data-team
+      severity: error
 ```
 
-**Standard attributes:**
+**Standard fields recap:**
 
-- `description` - Human-readable explanation
+- `description` — Human-readable explanation
 
-- `severity` - `error` (default) or `warning` (warnings are less urgent)
+- `severity` — `error` (default) or `warning`
 
-- `tags` - List of tags for filtering/organization (find all "critical" checks easily)
+- `tags` — List of tags for filtering/organisation (find all "critical" rules easily)
 
-- `owner` - Team or person responsible (who do I call when this fails?)
+- `owner` — Team or person responsible
 
-- Custom attributes - Any key-value pairs (add whatever metadata you need)
+## Built-in Rule Types
 
-## Built-in Check Types
+Vulcan provides several built-in rule types that cover most common scenarios. Let's walk through them.
 
-Vulcan provides several built-in check types that cover most common scenarios. Let's walk through them:
-
-### Missing Data Checks
+### Missing Data Rules
 
 #### `missing_count(column)`
 
 Count of NULL values. Simple and straightforward:
 
 ```yaml
-completeness:
+rules:
   - missing_count(email) = 0:
       name: no_missing_emails
-  
+      dimension: completeness
+
   - missing_count(phone) <= 100:
       name: phone_mostly_complete
+      dimension: completeness
 ```
 
 The first ensures zero missing emails (strict). The second allows up to 100 missing phone numbers (maybe phones are optional for some customers).
@@ -530,114 +628,122 @@ The first ensures zero missing emails (strict). The second allows up to 100 miss
 Percentage of NULL values. Useful when you care about proportions rather than absolute counts:
 
 ```yaml
-completeness:
+rules:
   - missing_percent(email) < 5:
       name: email_95_percent_complete
-  
+      dimension: completeness
+
   - missing_percent(optional_field) < 50:
       name: optional_field_half_complete
+      dimension: completeness
 ```
 
 This is useful when table sizes vary. 5% missing might be fine for a million-row table but concerning for a hundred-row table.
 
-### Row Count Checks
+### Row Count Rules
 
 #### `row_count`
 
 Total rows in table. Use this to ensure you have enough data:
 
 ```yaml
-completeness:
+rules:
   - row_count > 1000:
       name: sufficient_data
-  
+      dimension: completeness
+
   - row_count between 1000 and 100000:
       name: expected_row_range
+      dimension: completeness
 ```
 
-The second example shows a range check, maybe you know your table should be between 1K and 100K rows, and anything outside that range is suspicious.
+The second example shows a range check — maybe you know your table should be between 1K and 100K rows, and anything outside that range is suspicious.
 
 #### `row_count` with filter
 
 You can also check row counts on filtered data:
 
 ```yaml
-completeness:
+rules:
   - row_count > 500:
       name: sufficient_active_users
+      dimension: completeness
       filter: "status = 'active'"
 ```
 
 This checks that you have at least 500 active users, regardless of how many total users you have.
 
-### Duplicate Count Checks
+### Duplicate Count Rules
 
 #### `duplicate_count(column)`
 
 Count of duplicate values. Perfect for ensuring uniqueness:
 
 ```yaml
-uniqueness:
+rules:
   - duplicate_count(email) = 0:
       name: unique_emails
-  
+      dimension: uniqueness
+
   - duplicate_count(customer_id) = 0:
       name: unique_customer_ids
+      dimension: uniqueness
 ```
 
-If this returns anything greater than zero, you've got duplicates. The check fails and you can investigate.
+If this returns anything greater than zero, you've got duplicates. The rule fails and you can investigate.
 
 #### `duplicate_count(column1, column2)`
 
 Composite key duplicates. Check combinations of columns:
 
 ```yaml
-uniqueness:
+rules:
   - duplicate_count(customer_id, order_date) = 0:
       name: unique_customer_date
-      attributes:
-        description: "Each customer can have at most one order per day"
+      dimension: uniqueness
+      description: "Each customer can have at most one order per day"
 ```
 
-Maybe customers can have multiple orders, but only one per day. This check enforces that business rule.
+Maybe customers can have multiple orders, but only one per day. This rule enforces that business rule.
 
-### Failed Rows Checks
+### Failed Rows Rules
 
 #### SQL-based validation with samples
 
-This is the most flexible check type, you can write any SQL query you want:
+This is the most flexible rule type — you can write any SQL query you want:
 
 ```yaml
-validity:
+rules:
   - failed rows:
       name: invalid_revenue
+      dimension: validity
       fail query: |
         SELECT customer_id, revenue, order_date
         FROM analytics.orders
         WHERE revenue < 0 OR revenue > 10000000
       samples limit: 20
-      attributes:
-        description: "Revenue must be between 0 and 10M"
+      description: "Revenue must be between 0 and 10M"
 ```
 
 **How it works:**
 
-- `fail query` - A SELECT statement that returns invalid rows
+- `fail query` — A SELECT statement that returns invalid rows
 
-- `samples limit` - How many example rows to capture when the check fails (default: 5)
+- `samples limit` — How many example rows to capture when the rule fails (default: 5)
 
-- Returns empty = check passes (no invalid rows found)
+- Returns empty = rule passes (no invalid rows found)
 
-- Returns rows = check fails (captures samples so you can see what's wrong)
+- Returns rows = rule fails (captures samples so you can see what's wrong)
 
 **Complex validation:**
 
 You can get fancy with joins and CTEs:
 
 ```yaml
-validity:
+rules:
   - failed rows:
       name: orphaned_orders
+      dimension: consistency
       fail query: |
         SELECT o.order_id, o.customer_id
         FROM analytics.orders o
@@ -646,42 +752,48 @@ validity:
       samples limit: 10
 ```
 
-This finds orders that reference customers that don't exist, a classic referential integrity check.
+This finds orders that reference customers that don't exist — a classic referential integrity check.
 
-### Threshold Checks
+### Threshold Rules
 
 #### Numeric aggregations
 
 Check aggregated values against thresholds:
 
 ```yaml
-accuracy:
+rules:
   - avg(revenue) between 100 and 10000:
       name: revenue_in_expected_range
-  
+      dimension: accuracy
+
   - sum(amount) > 1000000:
       name: sufficient_total_revenue
-  
+      dimension: accuracy
+
   - max(age) <= 120:
       name: age_within_human_range
-  
+      dimension: validity
+
   - min(price) >= 0:
       name: non_negative_prices
+      dimension: validity
 ```
 
 You can use any aggregation function: `avg`, `sum`, `min`, `max`, `count`, `distinct_count`, etc.
 
-#### Statistical checks
+#### Statistical rules
 
 Get fancy with statistical functions:
 
 ```yaml
-accuracy:
+rules:
   - stddev(revenue) < 5000:
       name: revenue_low_variance
-  
+      dimension: accuracy
+
   - percentile(revenue, 95) < 50000:
       name: revenue_95th_percentile_check
+      dimension: accuracy
 ```
 
 These detect when your data distribution changes unexpectedly.
@@ -690,24 +802,27 @@ These detect when your data distribution changes unexpectedly.
 
 #### ML-based anomaly detection
 
-This is where checks get really powerful. Anomaly detection uses historical check results to learn what's normal and flag unusual patterns:
+This is where rules get really powerful. Anomaly detection uses historical results to learn what's normal and flag unusual patterns:
 
 ```yaml
-accuracy:
+rules:
   - anomaly detection for row_count:
       name: row_count_anomaly
-      attributes:
-        description: "Detect unusual changes in row count"
-  
+      dimension: accuracy
+      description: "Detect unusual changes in row count"
+
   - anomaly detection for avg(revenue):
       name: revenue_anomaly
-  
+      dimension: accuracy
+
   - anomaly detection for distinct_count(customer_id):
       name: customer_count_anomaly
+      dimension: accuracy
 ```
 
 **How it works:**
-1. Collects historical metric values over time (every time the check runs)
+
+1. Collects historical metric values over time (every time the rule runs)
 2. Builds a statistical model (mean, standard deviation, trends)
 3. Compares current value to expected range
 4. Flags significant deviations (typically > 3 standard deviations)
@@ -720,40 +835,43 @@ accuracy:
 
 - More accurate after 30+ data points (the more history, the better)
 
-So if you're setting up anomaly detection, be patient, it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.
+So if you're setting up anomaly detection, be patient — it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.
 
-### Change Over Time Checks
+### Change Over Time Rules
 
 #### Monitor changes compared to previous run
 
 Track how metrics change between runs:
 
 ```yaml
-timeliness:
+rules:
   - change for row_count >= -50%:
       name: row_count_drop_alert
-      attributes:
-        description: "Alert if row count drops more than 50% from last week"
-  
+      dimension: timeliness
+      description: "Alert if row count drops more than 50% from last week"
+
   - change for avg(revenue) >= -20%:
       name: revenue_drop_alert
-  
+      dimension: timeliness
+
   - change for distinct_count(customer_id) >= 10%:
       name: customer_growth_check
+      dimension: timeliness
 ```
 
 **Change calculation:**
+
 ```
 change = (current_value - previous_value) / previous_value * 100
 ```
 
 **Examples:**
 
-- `change >= -30%` - Alert if metric drops more than 30% (negative change)
+- `change >= -30%` — Alert if metric drops more than 30% (negative change)
 
-- `change >= 10%` - Alert if metric grows more than 10% (positive change)
+- `change >= 10%` — Alert if metric grows more than 10% (positive change)
 
-- `change between -10% and 10%` - Alert if metric changes more than 10% either way
+- `change between -10% and 10%` — Alert if metric changes more than 10% either way
 
 This catches sudden changes that might indicate a problem or an opportunity.
 
@@ -763,16 +881,28 @@ This catches sudden changes that might indicate a problem or an opportunity.
 
 **Profiles automatically collect statistical metrics about your data over time.**
 
-Unlike checks (which validate), profiles **observe and track** data characteristics. They're like a data scientist watching your tables and taking notes:
+Unlike rules (which validate), profiles **observe and track** data characteristics. They're like a data scientist watching your tables and taking notes.
 
-```sql
-MODEL (
-  name analytics.customers,
-  kind FULL,
-  grains (customer_id),
-  profiles (revenue, signup_date, customer_tier, order_count)
-);
+Profiling is enabled in a `kind: dq` rule pack via the top-level `profiles:` list. Add the columns you want to track alongside (or instead of) the rules for the same model:
+
+```yaml
+# models/dq/customers.yml
+kind: dq
+name: customers_dq
+depends_on: analytics.customers
+
+profiles:
+  - revenue
+  - signup_date
+  - customer_tier
+  - order_count
+
+rules:
+  - missing_count(email) = 0:
+      dimension: completeness
 ```
+
+A rule pack can be profile-only (omit `rules:`), rules-only (omit `profiles:`), or both. Vulcan collects the listed metrics every time the model in `depends_on:` runs.
 
 **What gets profiled:**
 
@@ -780,7 +910,7 @@ MODEL (
 
 - Row count
 
-**Column-level metrics (all columns):**
+**Column-level metrics (all listed columns):**
 
 - Null count & percentage
 
@@ -805,27 +935,6 @@ MODEL (
 - Most frequent values
 
 Profiles track how things change over time so you can spot trends and drift.
-
-### Profile Configuration
-
-Enable profiling in your MODEL definition:
-
-```sql
-MODEL (
-  name analytics.revenue_metrics,
-  kind INCREMENTAL_BY_TIME_RANGE (time_column metric_date),
-  
-  -- Profile these columns
-  profiles (
-    revenue,
-    order_count,
-    customer_tier,
-    region
-  )
-);
-```
-
-Just list the columns you want to profile. Vulcan will automatically collect metrics for them every time the model runs.
 
 ### Profile Storage
 
@@ -918,25 +1027,33 @@ SELECT
 FROM current c, historical h;
 ```
 
-This query compares current metrics to 30-day historical averages and calculates percentage changes. Perfect for detecting drift!
+This query compares current metrics to 30-day historical averages and calculates percentage changes. Perfect for detecting drift.
 
-### Using Profiles to Inform Checks
+### Using Profiles to Inform Rules
 
 **Workflow:**
 
-1. **Enable profiling** on new models (just add `profiles (...)` to your MODEL)
+1. **Enable profiling** on new models (add a `profiles:` list to the `kind: dq` file for that model)
 2. **Observe patterns** for 30+ days (let profiles collect data)
 3. **Identify anomalies** in profile data (query `_check_profiles` and look for trends)
-4. **Create checks** based on observed patterns (now you know what's normal)
+4. **Create rules** based on observed patterns (now you know what's normal)
 
 **Example:**
 
-```sql
--- Step 1: Enable profiling
-MODEL (
-  name analytics.orders,
-  profiles (order_count, revenue, customer_tier)
-);
+```yaml
+# Step 1: Enable profiling alongside the rule pack
+kind: dq
+name: orders_dq
+depends_on: analytics.orders
+
+profiles:
+  - order_count
+  - revenue
+  - customer_tier
+
+rules:
+  - row_count > 0:
+      dimension: completeness
 ```
 
 ```sql
@@ -947,37 +1064,41 @@ SELECT
     AVG(value_number) AS typical_revenue,
     STDDEV(value_number) AS revenue_stddev
 FROM _check_profiles
-WHERE table_name = 'warehouse.hello.subscriptions'
-  AND column_name = 'mrr'
+WHERE table_name = 'warehouse.analytics.orders'
+  AND column_name = 'revenue'
   AND profile_type IN ('avg', 'mean', 'average', 'avg_value')
   AND to_timestamp(profiled_at/1000) >= CURRENT_DATE - INTERVAL '30 days';
 
 -- Results:
-
--- min_revenue: 45000
-
--- max_revenue: 75000
-
--- typical_revenue: 58000
-
--- revenue_stddev: 6000
+--   min_revenue:     45000
+--   max_revenue:     75000
+--   typical_revenue: 58000
+--   revenue_stddev:  6000
 ```
 
 ```yaml
-# Step 3: Create checks based on observed patterns
-checks:
-  analytics.orders:
-    accuracy:
-      - avg(revenue) between 40000 and 80000:
-          name: revenue_within_observed_range
-          attributes:
-            description: "Based on 30-day historical analysis"
-      
-      - anomaly detection for avg(revenue):
-          name: revenue_anomaly_detection
+# Step 3: Add rules informed by what you observed
+kind: dq
+name: orders_dq
+depends_on: analytics.orders
+
+profiles:
+  - order_count
+  - revenue
+  - customer_tier
+
+rules:
+  - avg(revenue) between 40000 and 80000:
+      name: revenue_within_observed_range
+      dimension: accuracy
+      description: "Based on 30-day historical analysis"
+
+  - anomaly detection for avg(revenue):
+      name: revenue_anomaly_detection
+      dimension: accuracy
 ```
 
-Now your checks are informed by actual data patterns, not guesses. Much better!
+Now your rules are informed by actual data patterns, not guesses.
 
 ### Profile Best Practices
 
@@ -991,7 +1112,7 @@ Now your checks are informed by actual data patterns, not guesses. Much better!
 
 - Query profiles to detect data drift (is something changing?)
 
-- Use profiles to inform check thresholds (data-driven thresholds are better)
+- Use profiles to inform rule thresholds (data-driven thresholds are better)
 
 **DON'T:**
 
@@ -1001,7 +1122,7 @@ Now your checks are informed by actual data patterns, not guesses. Much better!
 
 - Profile temporary/experimental models (waste of resources)
 
-- Use profiles as a replacement for checks (they serve different purposes)
+- Use profiles as a replacement for rules (they serve different purposes)
 
 - Profile very high-frequency models (storage cost adds up)
 
@@ -1013,7 +1134,7 @@ Now your checks are informed by actual data patterns, not guesses. Much better!
 
 - Detecting data drift (is the data changing?)
 
-- Informing audit/check strategy (what should we check?)
+- Informing audit/rule strategy (what should we check?)
 
 - Debugging data quality issues (what's normal vs abnormal?)
 
@@ -1031,89 +1152,97 @@ Now your checks are informed by actual data patterns, not guesses. Much better!
 
 ### Cross-Model Validation
 
-Validate relationships between models. This ensures referential integrity:
+Each rule pack targets a single model via `depends_on:`, but `failed rows` queries can reference any model in your warehouse. Anchor the pack on the model whose quality is at stake, then JOIN to the related models in SQL.
 
 ```yaml
-# models/dq/cross_model.yml
+# models/dq/orders_cross_model.yml
 kind: dq
-checks:
-  analytics.orders:
-    consistency:
-      - failed rows:
-          name: orphaned_orders
-          fail query: |
-            SELECT o.order_id, o.customer_id
-            FROM analytics.orders o
-            LEFT JOIN analytics.customers c ON o.customer_id = c.customer_id
-            WHERE c.customer_id IS NULL
-          samples limit: 10
-          attributes:
-            description: "All orders must have a valid customer"
-      
-      - failed rows:
-          name: revenue_mismatch
-          fail query: |
-            SELECT
-              o.order_id,
-              o.revenue as order_revenue,
-              r.revenue as revenue_table_revenue
-            FROM analytics.orders o
-            JOIN analytics.revenue r ON o.order_id = r.order_id
-            WHERE ABS(o.revenue - r.revenue) > 0.01
+name: orders_cross_model_dq
+depends_on: analytics.orders
+
+rules:
+  - failed rows:
+      name: orphaned_orders
+      dimension: consistency
+      fail query: |
+        SELECT o.order_id, o.customer_id
+        FROM analytics.orders o
+        LEFT JOIN analytics.customers c ON o.customer_id = c.customer_id
+        WHERE c.customer_id IS NULL
+      samples limit: 10
+      description: "All orders must have a valid customer"
+
+  - failed rows:
+      name: revenue_mismatch
+      dimension: consistency
+      fail query: |
+        SELECT
+          o.order_id,
+          o.revenue AS order_revenue,
+          r.revenue AS revenue_table_revenue
+        FROM analytics.orders o
+        JOIN analytics.revenue r ON o.order_id = r.order_id
+        WHERE ABS(o.revenue - r.revenue) > 0.01
 ```
 
-The first check finds orders without valid customers (orphaned records). The second ensures revenue matches across tables (consistency check).
+The first rule finds orders without valid customers (orphaned records). The second ensures revenue matches across tables (consistency check). Both belong to the `orders` pack because that's the model whose quality they describe.
 
 ### Time-Based Validation
 
 Ensure data timeliness. Is your data fresh? Are updates happening on schedule?
 
 ```yaml
-checks:
-  analytics.orders:
-    timeliness:
-      - failed rows:
-          name: stale_data
-          fail query: |
-            SELECT *
-            FROM analytics.orders
-            WHERE updated_at < CURRENT_TIMESTAMP - INTERVAL '24 hours'
-              AND status != 'completed'
-          attributes:
-            description: "Pending orders should update within 24 hours"
-      
-      - failed rows:
-          name: future_dates
-          fail query: |
-            SELECT *
-            FROM analytics.orders
-            WHERE order_date > CURRENT_DATE
+kind: dq
+name: orders_timeliness_dq
+depends_on: analytics.orders
+
+rules:
+  - failed rows:
+      name: stale_data
+      dimension: timeliness
+      fail query: |
+        SELECT *
+        FROM analytics.orders
+        WHERE updated_at < CURRENT_TIMESTAMP - INTERVAL '24 hours'
+          AND status != 'completed'
+      description: "Pending orders should update within 24 hours"
+
+  - failed rows:
+      name: future_dates
+      dimension: timeliness
+      fail query: |
+        SELECT *
+        FROM analytics.orders
+        WHERE order_date > CURRENT_DATE
 ```
 
-The first check finds stale pending orders (maybe something's stuck). The second catches future dates (data entry errors).
+The first rule finds stale pending orders (maybe something's stuck). The second catches future dates (data entry errors).
 
 ### Statistical Outlier Detection
 
 Custom outlier detection using SQL. Sometimes you need more control than anomaly detection provides:
 
 ```yaml
-checks:
-  analytics.revenue:
-    accuracy:
-      - failed rows:
-          name: revenue_outliers
-          fail query: |
-            WITH stats AS (
-              SELECT
-                AVG(revenue) as mean,
-                STDDEV(revenue) as stddev
-              FROM analytics.revenue
-            )
-            SELECT r.*,
-              (r.revenue - s.mean) / s.stddev as z_score
-            FROM analytics.revenue r, stats s
-            WHERE ABS((r.revenue - s.mean) / s.stddev) > 3
-          samples limit: 20
+kind: dq
+name: revenue_outliers_dq
+depends_on: analytics.revenue
+
+rules:
+  - failed rows:
+      name: revenue_outliers
+      dimension: accuracy
+      fail query: |
+        WITH stats AS (
+          SELECT
+            AVG(revenue) AS mean,
+            STDDEV(revenue) AS stddev
+          FROM analytics.revenue
+        )
+        SELECT r.*,
+          (r.revenue - s.mean) / s.stddev AS z_score
+        FROM analytics.revenue r, stats s
+        WHERE ABS((r.revenue - s.mean) / s.stddev) > 3
+      samples limit: 20
 ```
 
 This finds rows where revenue is more than 3 standard deviations from the mean (classic outlier detection). The z-score tells you how extreme each outlier is.
@@ -1129,48 +1258,53 @@ Organize your Data Quality rule packs in a way that makes sense for your team. H
 ```
 models/dq/
 ├── customers/
-│   ├── completeness.yml
-│   ├── validity.yml
-│   └── consistency.yml
+│   ├── customers_completeness.yml
+│   ├── customers_validity.yml
+│   └── customers_consistency.yml
 ├── orders/
-│   ├── completeness.yml
-│   └── timeliness.yml
+│   ├── orders_completeness.yml
+│   └── orders_timeliness.yml
 └── revenue/
-    └── accuracy.yml
+    └── revenue_accuracy.yml
 ```
 
 **By priority:**
 
 ```
 models/dq/
-├── critical.yml      # Must never fail
-├── important.yml     # Should rarely fail
-├── monitoring.yml    # Track trends
-└── experimental.yml  # Testing new rules
+├── customers_critical.yml      # Must never fail
+├── customers_important.yml     # Should rarely fail
+├── customers_monitoring.yml    # Track trends
+└── customers_experimental.yml  # Testing new rules
 ```
 
-Pick whatever works for your team. The important thing is consistency: if everyone knows where to find things, life is easier.
+Each file still maps to a single model via `depends_on:`. Splitting by dimension or priority is just a way to keep individual files small and ownership clear.
 
 ### Naming Conventions
 
 **Use descriptive names:**
 
 ```yaml
-# Bad - what does "check1" tell you?
-checks:
-  analytics.customers:
-    completeness:
-      - missing_count(email) = 0:
-          name: check1
+# Bad — what does "check1" tell you?
+kind: dq
+name: customers_dq
+depends_on: analytics.customers
 
-# Good - clear and descriptive
-checks:
-  analytics.customers:
-    completeness:
-      - missing_count(email) = 0:
-          name: no_missing_customer_emails
-          attributes:
-            description: "All customers must have an email for marketing"
+rules:
+  - missing_count(email) = 0:
+      name: check1
+      dimension: completeness
+
+# Good — clear and descriptive
+kind: dq
+name: customers_dq
+depends_on: analytics.customers
+
+rules:
+  - missing_count(email) = 0:
+      name: no_missing_customer_emails
+      dimension: completeness
+      description: "All customers must have an email for marketing"
 ```
 
 **Naming pattern:**
@@ -1194,44 +1328,50 @@ The key is that someone reading the name should understand what it checks withou
 **Start conservative, adjust based on data:**
 
 ```yaml
-# Step 1: Start with wide range
-checks:
-  analytics.orders:
-    completeness:
-      - row_count > 100:
-          name: sufficient_orders_v1
+# Step 1: Start with a wide range
+kind: dq
+name: orders_dq
+depends_on: analytics.orders
+
+rules:
+  - row_count > 100:
+      name: sufficient_orders_v1
+      dimension: completeness
 
 # Step 2: Monitor for 30 days, see actual range: 5000-10000
 
 # Step 3: Tighten based on observed patterns
-checks:
-  analytics.orders:
-    completeness:
-      - row_count between 4000 and 12000:
-          name: sufficient_orders_v2
-          attributes:
-            description: "Based on 30-day historical analysis"
+kind: dq
+name: orders_dq
+depends_on: analytics.orders
+
+rules:
+  - row_count between 4000 and 12000:
+      name: sufficient_orders_v2
+      dimension: completeness
+      description: "Based on 30-day historical analysis"
 ```
 
-Don't set thresholds based on guesses, let the data tell you what's normal. Use profiles to understand your data first, then set checks based on what you learn.
+Don't set thresholds based on guesses — let the data tell you what's normal. Use profiles to understand your data first, then set rules based on what you learn.
 
 **Use profiles to inform thresholds:**
 
 ```sql
 -- Query profiles to understand your data
 SELECT
-  MIN(value_number) as min_observed,
-  MAX(value_number) as max_observed,
-  AVG(value_number) as typical,
-  STDDEV(value_number) as stddev
-FROM check_results
-WHERE check_name = 'row_count'
-  AND executed_at >= CURRENT_DATE - INTERVAL '90 days';
+  MIN(value_number) AS min_observed,
+  MAX(value_number) AS max_observed,
+  AVG(value_number) AS typical,
+  STDDEV(value_number) AS stddev
+FROM _check_profiles
+WHERE table_name = 'warehouse.analytics.orders'
+  AND profile_type = 'row_count'
+  AND to_timestamp(profiled_at/1000) >= CURRENT_DATE - INTERVAL '90 days';
 
 -- Set threshold as: typical ± 3*stddev
 ```
 
-This gives you data-driven thresholds instead of wild guesses. Much better!
+This gives you data-driven thresholds instead of wild guesses.
 
 ### Integration Strategy
 
@@ -1239,7 +1379,6 @@ This gives you data-driven thresholds instead of wild guesses. Much better!
 
 ```sql
 -- LAYER 1: Audits (critical - blocks)
-
 -- Stop bad data at the door
 MODEL (
   name analytics.orders,
@@ -1251,31 +1390,29 @@ MODEL (
 ```
 
 ```yaml
-# LAYER 2: Data Quality rule pack (monitoring: warns)
+# LAYER 2 + 3: Data Quality rule pack (monitoring + observation)
 # models/dq/orders.yml
-# Watch for problems but don't block
+# Profiles observe trends, rules warn on issues. Neither blocks the model.
 kind: dq
-checks:
-  analytics.orders:
-    completeness:
-      - row_count between 5000 and 15000:
-          name: order_count_in_range
-    
-    timeliness:
-      - change for row_count >= -30%:
-          name: order_count_stable
+name: orders_dq
+depends_on: analytics.orders
+
+profiles:
+  - order_count
+  - revenue
+  - customer_tier
+
+rules:
+  - row_count between 5000 and 15000:
+      name: order_count_in_range
+      dimension: completeness
+
+  - change for row_count >= -30%:
+      name: order_count_stable
+      dimension: timeliness
 ```
 
-```sql
--- LAYER 3: Profiles (observe: tracks)
--- Just watch and learn
-MODEL (
-  name analytics.orders,
-  profiles (order_count, revenue, customer_tier)
-);
-```
-
-This three-layer approach covers data quality end to end: audits stop problems, Data Quality rule packs warn about issues, and profiles help you understand what's normal.
+This three-layer approach covers data quality end to end: audits stop problems, Data Quality rules warn about issues, and profiles help you understand what's normal — and both monitoring layers live in the same `kind: dq` file.
 
 ## Troubleshooting
 
@@ -1312,31 +1449,36 @@ This shows you actual rows that failed for debugging.
 
 #### Slow rule queries
 
-**Problem:** A rule takes too long to run
+**Problem:** A rule takes too long to run.
 
 **Solution 1: Add filters**
 
 ```yaml
 # Slow: scans entire table
 kind: dq
-checks:
-  analytics.orders:
-    validity:
-      - failed rows:
-          fail query: |
-            SELECT * FROM analytics.orders
-            WHERE email NOT LIKE '%@%'
+name: orders_dq
+depends_on: analytics.orders
 
-# Fast: filters to recent data
+rules:
+  - failed rows:
+      dimension: validity
+      fail query: |
+        SELECT * FROM analytics.orders
+        WHERE email NOT LIKE '%@%'
+
+# Fast: pack-level filter scopes everything to recent data
 kind: dq
-checks:
-  analytics.orders:
-    filter: "order_date >= CURRENT_DATE - INTERVAL '30 days'"
-    validity:
-      - failed rows:
-          fail query: |
-            SELECT * FROM analytics.orders
-            WHERE email NOT LIKE '%@%'
+name: orders_dq
+depends_on: analytics.orders
+
+filter: "order_date >= CURRENT_DATE - INTERVAL '30 days'"
+
+rules:
+  - failed rows:
+      dimension: validity
+      fail query: |
+        SELECT * FROM analytics.orders
+        WHERE email NOT LIKE '%@%'
 ```
 
 Filtering reduces the amount of data the rule needs to scan, which makes it faster.
@@ -1355,25 +1497,29 @@ Indexes help queries run faster, especially for `failed rows` rules that filter 
 
 #### Threshold too strict
 
-**Problem:** Rule fails during normal variance
+**Problem:** Rule fails during normal variance.
 
 ```yaml
 # Too strict: exact match is unrealistic
 kind: dq
-checks:
-  analytics.orders:
-    completeness:
-      - row_count = 10000  # Exact match
+name: orders_dq
+depends_on: analytics.orders
+
+rules:
+  - row_count = 10000:        # Exact match
+      dimension: completeness
 
 # Allow variance: more realistic
 kind: dq
-checks:
-  analytics.orders:
-    completeness:
-      - row_count between 9000 and 11000  # ±10% variance
+name: orders_dq
+depends_on: analytics.orders
+
+rules:
+  - row_count between 9000 and 11000:   # ±10% variance
+      dimension: completeness
 ```
 
-Real data has variance. Don't set thresholds that are too strict, you'll just get false positives.
+Real data has variance. Don't set thresholds that are too strict — you'll just get false positives.
 
 #### Use anomaly detection instead
 
@@ -1382,11 +1528,13 @@ Sometimes strict thresholds aren't the right approach:
 ```yaml
 # Replace strict threshold with ML-based detection
 kind: dq
-checks:
-  analytics.orders:
-    accuracy:
-      - anomaly detection for row_count:
-          name: row_count_anomaly
+name: orders_dq
+depends_on: analytics.orders
+
+rules:
+  - anomaly detection for row_count:
+      name: row_count_anomaly
+      dimension: accuracy
 ```
 
 Anomaly detection learns what's normal and adapts to variance, which reduces false positives.
@@ -1401,13 +1549,25 @@ Data Quality rule packs give you a way to monitor data quality over time without
 
 - YAML files in `models/dq/` with `kind: dq`
 
+- One pack per file, targeting a single model via `depends_on:`
+
+- Top-level fields: `kind`, `name`, `depends_on`, optional `filter:` and `profiles:`, then `rules:`
+
 - Non-blocking (don't stop models)
 
 - Track trends over time
 
 - Integrate with Activity API
 
-**2. Rule Types**
+**2. Rule Forms and Attributes**
+
+- Shorthand: bare expression (`- missing_count(col) = 0`)
+
+- Full form: expression as YAML key with flat metadata block (`name`, `dimension`, `description`, `filter`, `warn`, `fail`, `warn_only`, `tags`, `owner`, `severity`)
+
+- `failed rows` rules use `fail query: |` and optional `samples limit:`
+
+**3. Rule Types**
 
 - Missing data rules (`missing_count`, `missing_percent`)
 
@@ -1421,9 +1581,11 @@ Data Quality rule packs give you a way to monitor data quality over time without
 
 - Change monitoring (compare to previous runs)
 
-**3. Data Profiling**
+**4. Data Profiling**
 
 - Automatic statistical metric collection
+
+- Enabled via the `profiles:` list at the top of a `kind: dq` file
 
 - Stored in `_check_profiles` table
 
@@ -1431,7 +1593,7 @@ Data Quality rule packs give you a way to monitor data quality over time without
 
 - Inform rule threshold selection
 
-**4. Data Quality Strategy**
+**5. Data Quality Strategy**
 
 - **Audits**: Critical, blocking (stop bad data)
 

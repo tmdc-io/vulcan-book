@@ -2,6 +2,8 @@
 
 Model kinds determine how Vulcan loads and processes your data. Each kind is optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some create views that compute on-demand.
 
+Vulcan also supports YAML-only kinds that live in standalone YAML files under `models/` instead of inside a `MODEL (...)` block: [`semantic`](#semantic), [`metric`](#metric), and [`dq`](#dq).
+
 
 ## INCREMENTAL_BY_TIME_RANGE
 
@@ -2137,3 +2139,21 @@ ORDER BY s.shipped_date DESC
     Similar to `INCREMENTAL_BY_PARTITION`, attempting to [restate](../../guides/plan_guide.md#restatement-plans) an `INCREMENTAL_UNMANAGED` model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.
 
     Be very careful when restating these models!
+
+## semantic
+
+Wraps a Vulcan model with business-friendly dimensions, measures, segments, and joins. Defined in standalone YAML files under `models/semantics/` (one model per file).
+
+See [Semantic Models](../semantics/models.md) for the full reference.
+
+## metric
+
+Time-series analytical definition — pairs a measure from a semantic model with a time column and a default granularity, plus optional grouping dimensions and pre-built segments. Defined in standalone YAML files under `models/metrics/` (one metric per file).
+
+See [Business Metrics](../semantics/business_metrics.md) for the full reference.
+
+## dq
+
+Non-blocking data-quality rule pack — column profiles and validation rules attached to a single Vulcan model. Unlike [audits](../audits/audits.md) (which block model execution on failure), DQ rules emit warnings and feed into the Activity API for trend monitoring. Defined in standalone YAML files under `models/dq/` (one pack per file).
+
+See [Data Quality](../data-quality/data-quality.md) for the full reference.

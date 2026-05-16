@@ -92,19 +92,19 @@ Think of audits as your bouncer, they check IDs at the door and don't let anyone
 ```yaml
 # models/dq/daily_sales.yml
 kind: dq
-checks:
-  sales.daily_sales:
-    completeness:
-      - row_count > 0:
-          name: daily_records_exist
-          attributes:
-            description: "At least one record per day"
-    
-    accuracy:
-      - anomaly detection for total_revenue:
-          name: revenue_anomaly
-          attributes:
-            description: "Detect unusual revenue patterns"
+name: daily_sales_dq
+depends_on: sales.daily_sales
+
+rules:
+  - row_count > 0:
+      name: daily_records_exist
+      dimension: completeness
+      description: "At least one record per day"
+
+  - anomaly detection for total_revenue:
+      name: revenue_anomaly
+      dimension: accuracy
+      description: "Detect unusual revenue patterns"
 ```
 
 **Why checks are useful:**
@@ -230,68 +230,65 @@ MODEL (
 ```yaml
 # models/dq/daily_sales.yml
 kind: dq
-checks:
-  sales.daily_sales:
-    # Completeness: Ensure data exists
-    completeness:
-      - row_count > 0:
-          name: daily_records_exist
-          attributes:
-            description: "At least one record per day"
-    
-      - missing_count(order_date) = 0:
-          name: no_missing_dates
-          attributes:
-            description: "All dates must be present"
-    
-    # Validity: Check data ranges
-    validity:
-      - failed rows:
-          name: revenue_outliers
-          fail query: |
-            SELECT order_date, total_revenue
-            FROM sales.daily_sales
-            WHERE total_revenue > 500000 OR total_revenue < 0
-          samples limit: 10
-          attributes:
-            description: "Revenue outside expected range"
-    
-    # Accuracy: Anomaly detection
-    accuracy:
-      - anomaly detection for total_revenue:
-          name: revenue_anomaly
-          attributes:
-            description: "Detect unusual revenue patterns"
-      
-      - anomaly detection for total_orders:
-          name: order_count_anomaly
-          attributes:
-            description: "Detect unusual order volume"
-    
-    # Consistency: Cross-model validation
-    consistency:
-      - failed rows:
-          name: revenue_mismatch_with_raw
-          fail query: |
-            SELECT 
-              ds.order_date,
-              ds.total_revenue as daily_revenue,
-              SUM(o.total_amount) as raw_revenue
-            FROM sales.daily_sales ds
-            LEFT JOIN raw.raw_orders o 
-              ON DATE(o.order_date) = ds.order_date
-            GROUP BY ds.order_date, ds.total_revenue
-            HAVING ABS(ds.total_revenue - SUM(o.total_amount)) > 1.0
-          samples limit: 5
-          attributes:
-            description: "Daily revenue should match sum of raw orders"
-    
-    # Timeliness: Check data freshness
-    timeliness:
-      - change for row_count >= -20%:
-          name: row_count_drop_alert
-          attributes:
-            description: "Alert if daily records drop more than 20%"
+name: daily_sales_dq
+depends_on: sales.daily_sales
+
+rules:
+  # Completeness: ensure data exists
+  - row_count > 0:
+      name: daily_records_exist
+      dimension: completeness
+      description: "At least one record per day"
+
+  - missing_count(order_date) = 0:
+      name: no_missing_dates
+      dimension: completeness
+      description: "All dates must be present"
+
+  # Validity: check data ranges
+  - failed rows:
+      name: revenue_outliers
+      dimension: validity
+      fail query: |
+        SELECT order_date, total_revenue
+        FROM sales.daily_sales
+        WHERE total_revenue > 500000 OR total_revenue < 0
+      samples limit: 10
+      description: "Revenue outside expected range"
+
+  # Accuracy: anomaly detection
+  - anomaly detection for total_revenue:
+      name: revenue_anomaly
+      dimension: accuracy
+      description: "Detect unusual revenue patterns"
+
+  - anomaly detection for total_orders:
+      name: order_count_anomaly
+      dimension: accuracy
+      description: "Detect unusual order volume"
+
+  # Consistency: cross-model validation
+  - failed rows:
+      name: revenue_mismatch_with_raw
+      dimension: consistency
+      fail query: |
+        SELECT
+          ds.order_date,
+          ds.total_revenue AS daily_revenue,
+          SUM(o.total_amount) AS raw_revenue
+        FROM sales.daily_sales ds
+        LEFT JOIN raw.raw_orders o
+          ON DATE(o.order_date) = ds.order_date
+        GROUP BY ds.order_date, ds.total_revenue
+        HAVING ABS(ds.total_revenue - SUM(o.total_amount)) > 1.0
+      samples limit: 5
+      description: "Daily revenue should match sum of raw orders"
+
+  # Timeliness: check data freshness
+  - change for row_count >= -20%:
+      name: row_count_drop_alert
+      dimension: timeliness
+      description: "Alert if daily records drop more than 20%"
 ```
 
 <!-- *[Screenshot: Check dashboard showing trends and anomalies]* -->
@@ -474,44 +471,44 @@ HAVING ABS(ds.total_revenue - COALESCE(SUM(o.total_amount), 0)) > 0.01;
 ```yaml
 # models/dq/revenue_monitoring.yml
 kind: dq
-checks:
-  sales.daily_sales:
-    accuracy:
-      # Anomaly detection for revenue
-      - anomaly detection for total_revenue:
-          name: revenue_anomaly_detection
-          attributes:
-            description: "Detect statistically unusual revenue"
-      
-      # Trend monitoring
-      - change for total_revenue >= 50%:
-          name: revenue_spike_alert
-          attributes:
-            description: "Alert if revenue increases >50% day-over-day"
-      
-      - change for total_revenue <= -30%:
-          name: revenue_drop_alert
-          attributes:
-            description: "Alert if revenue drops >30% day-over-day"
-    
-    consistency:
-      # Cross-model validation (non-blocking)
-      - failed rows:
-          name: revenue_vs_raw_check
-          fail query: |
-            SELECT 
-              ds.order_date,
-              ds.total_revenue,
-              SUM(o.total_amount) as raw_sum,
-              ABS(ds.total_revenue - SUM(o.total_amount)) as diff
-            FROM sales.daily_sales ds
-            LEFT JOIN raw.raw_orders o 
-              ON DATE(o.order_date) = ds.order_date
-            GROUP BY ds.order_date, ds.total_revenue
-            HAVING ABS(ds.total_revenue - SUM(o.total_amount)) > 10.0
-          samples limit: 5
-          attributes:
-            description: "Monitor revenue consistency (wider tolerance than audit)"
+name: revenue_monitoring_dq
+depends_on: sales.daily_sales
+
+rules:
+  # Anomaly detection for revenue
+  - anomaly detection for total_revenue:
+      name: revenue_anomaly_detection
+      dimension: accuracy
+      description: "Detect statistically unusual revenue"
+
+  # Trend monitoring
+  - change for total_revenue >= 50%:
+      name: revenue_spike_alert
+      dimension: accuracy
+      description: "Alert if revenue increases >50% day-over-day"
+
+  - change for total_revenue <= -30%:
+      name: revenue_drop_alert
+      dimension: accuracy
+      description: "Alert if revenue drops >30% day-over-day"
+
+  # Cross-model validation (non-blocking)
+  - failed rows:
+      name: revenue_vs_raw_check
+      dimension: consistency
+      fail query: |
+        SELECT
+          ds.order_date,
+          ds.total_revenue,
+          SUM(o.total_amount) AS raw_sum,
+          ABS(ds.total_revenue - SUM(o.total_amount)) AS diff
+        FROM sales.daily_sales ds
+        LEFT JOIN raw.raw_orders o
+          ON DATE(o.order_date) = ds.order_date
+        GROUP BY ds.order_date, ds.total_revenue
+        HAVING ABS(ds.total_revenue - SUM(o.total_amount)) > 10.0
+      samples limit: 5
+      description: "Monitor revenue consistency (wider tolerance than audit)"
 ```
 
 **Why Both?**

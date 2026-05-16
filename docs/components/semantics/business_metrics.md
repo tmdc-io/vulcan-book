@@ -1,12 +1,12 @@
 # Business Metrics
 
-Business metrics are time-series analytical definitions that combine a measure, a time dimension, and optional slices into a single queryable unit. They sit on top of [semantic models](models.md) and are the primary interface for dashboards, reports, and APIs.
+Business metrics are time-series analytical definitions that combine a measure, a time dimension, and optional grouping dimensions into a single queryable unit. They sit on top of [semantic models](models.md) and are the primary interface for dashboards, reports, and APIs.
 
 ---
 
 ## Where these files live
 
-Put each metric in its own file under `models/metrics/`:
+Put each metric in its own file under `models/metrics/`, one metric per file:
 
 ```
 models/metrics/
@@ -16,59 +16,72 @@ models/metrics/
 └── product_engagement.yml
 ```
 
-!!! info "Other accepted shapes"
-    A consolidated `metrics.yml` with multiple metrics in one file is also accepted. Per-file is recommended for new projects since it keeps diffs and ownership clean.
+**File naming:** The filename doesn't matter — Vulcan reads every YAML file in `models/metrics/`. Naming files after the metric they define keeps diffs and ownership clean.
 
 ---
 
 ## Structure
 
-Use either `metrics:` or `semantic_metrics:` as the top-level key. Both are valid and produce the same result.
+A metric is a single document with `kind: metric` at the top. Reference measures, time columns, dimensions, and segments using `<semantic_name>.<field>` notation, where `<semantic_name>` is the value of the `name:` field at the top of the corresponding semantic model.
 
 ```yaml
-metrics:
-  <metric_name>:                              # Metric name (must be unique)
-    measure: <alias>.<measure_name>           # Which measure to calculate
-    time: <alias>.<column_name>               # Time dimension for analysis
-    default_granularity: <granularity>        # Default time bucket
-    slices:                                   # Optional grouping dimensions
-      <slice_key>: <alias>.<column_name>
-    segments:                                 # Optional predefined filters
-      - <alias>.<segment_name>
-    description: "..."                        # Optional description
-    owner: "..."                              # Optional owner
-    tags: [...]                               # Optional tags
-    terms: [...]                              # Optional glossary references
-```
+kind: metric
+name: <metric_name>                         # Unique metric name
+measure: <semantic_name>.<measure_name>     # Which measure to calculate
+ts: <semantic_name>.<column_name>           # Time column for time-series analysis
+granularity: <granularity>                  # Default time bucket
 
-All references use **dot notation** with the semantic model alias: `alias.measure_name` for measures, `alias.column_name` for time and slices.
+dimensions:                                 # Optional list of grouping dimensions
+  - <semantic_name>.<column_name>           # Bare reference: name auto-derived from <column_name>
+  - name: <slice_name>                      # Named slice: explicit name + ref (+ optional metadata)
+    ref: <semantic_name>.<column_name>
+
+segments:                                   # Optional list of predefined filters (strings only)
+  - <semantic_name>.<segment_name>          # Auto-derived name: <semantic_name>_<segment_name>
+
+description: "..."                          # Optional
+owner: "..."                                # Optional
+tags: [...]                                 # Optional
+terms: [...]                                # Optional
+ai_context: {...}                           # Optional — see models.md#ai-context
+```
 
 ---
 
 ## Required properties
 
-Every metric must define these three fields:
+Every metric must define these four fields:
+
+### name
+
+Unique identifier consumers use to reference the metric. Must be unique within the project.
+
+```yaml
+name: arr_growth
+```
 
 ### measure
 
-A reference to a measure defined in a semantic model, in the format `alias.measure_name`.
+A reference to a measure defined in a semantic model, in the format `<semantic_name>.<measure_name>`.
 
 ```yaml
 measure: subscriptions.total_arr
 ```
 
-### time
+`subscriptions` here is the `name:` at the top of the `subscriptions` semantic model file; `total_arr` is one of its measures.
 
-A reference to a time/date column on a semantic model, in the format `alias.column_name`. This is the dimension used for time-series aggregation.
+### ts
+
+A reference to a time/date column on a semantic model, in the format `<semantic_name>.<column_name>`. This is the time column used for time-series aggregation.
 
 ```yaml
-time: subscriptions.start_date
+ts: subscriptions.start_date
 ```
 
-!!! info "measure and time cannot be the same"
-    Vulcan rejects metrics where `measure` and `time` point to the same reference.
+!!! info "measure and ts cannot be the same"
+    Vulcan rejects metrics where `measure` and `ts` point to the same reference.
 
-### default_granularity
+### granularity
 
 The default time bucket for aggregation. Must be one of:
 
@@ -84,7 +97,7 @@ The default time bucket for aggregation. Must be one of:
 | `year` | Yearly |
 
 ```yaml
-default_granularity: month
+granularity: month
 ```
 
 The default granularity is what's used when a consumer queries the metric without specifying one. Consumers can always override it at query time.
@@ -95,74 +108,150 @@ The default granularity is what's used when a consumer queries the metric withou
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `slices` | Map of `name: alias.column` | Named dimensions for grouping and filtering |
-| `segments` | List of `alias.segment_name` | Predefined filters from semantic models |
-| `description` | String | Human-readable explanation of the metric |
-| `owner` | String | Team or person responsible for the metric |
-| `tags` | List of strings | Categorization labels for discovery |
-| `terms` | List of strings | Business glossary references (e.g. `glossary.revenue`) |
+| `dimensions` | List | Grouping dimensions (bare reference, or named slice with `name` + `ref`). See [Dimensions](#dimensions). |
+| `segments` | List of `<semantic_name>.<segment_name>` | Predefined filters from semantic models. **Qualified-ref strings only** — no named form. |
+| `description` | String | Human-readable explanation of the metric. |
+| `owner` | String | Team or person responsible for the metric. |
+| `tags` | List of strings | Categorization labels for discovery. See [Naming rules](models.md#naming-rules) for the allowed pattern. |
+| `terms` | List of strings | Business glossary references (e.g. `glossary.revenue`). See [Naming rules](models.md#naming-rules). |
+| `ai_context` | Object | Hints for AI/LLM consumers (`instructions`, `synonyms`, `examples`). See [AI context](models.md#ai-context). |
 
 ---
 
-## Slices
+## Dimensions
 
-Slices are named key-value pairs that map a friendly label to a dimension column. They define how consumers can group and filter a metric.
+`dimensions:` is a list. Each item can be either a bare reference to a column, or a named slice that gives the column a different display name.
+
+### Bare reference
+
+The most common form — just point at a column on a semantic model:
 
 ```yaml
-metrics:
-  arr_growth:
-    measure: subscriptions.total_arr
-    time: subscriptions.start_date
-    default_granularity: month
-    slices:
-      plan_type: subscriptions.plan_type
-      industry: users.industry
-      billing_cycle: subscriptions.billing_cycle
-    description: "Annual Recurring Revenue growth by plan and industry"
+dimensions:
+  - subscriptions.plan_type
+  - users.signup_channel
 ```
 
-The slice key (`plan_type`) is the name consumers use in queries. The value (`subscriptions.plan_type`) is the semantic reference to the actual column. Slice values must be unique within a metric — you cannot map two slice keys to the same column.
+The dimension's `name` is **auto-derived** from the field part after the `.` (so `subscriptions.plan_type` becomes `plan_type`, `users.signup_channel` becomes `signup_channel`). The derived name is what consumers use in queries.
 
-Slices can reference columns from any semantic model, as long as the models are connected through joins.
+!!! warning "Shorthand name collisions fail validation"
+    If two shorthand entries derive the **same** name from **different** refs, validation fails. Example:
+
+    ```yaml
+    dimensions:
+      - users.country         # derives "country"
+      - shipping.country      # also derives "country" — ERROR
+    ```
+
+    Switch one (or both) to the [object form](#named-slice) and give them distinct `name`s:
+
+    ```yaml
+    dimensions:
+      - name: user_country
+        ref: users.country
+      - name: shipping_country
+        ref: shipping.country
+    ```
+
+### Named slice
+
+Use the named form when you want to expose a dimension under a different label than the underlying column, disambiguate two columns that would derive the same shorthand name, or override the semantic-field's documentation/tags/terms/AI hints for this metric:
+
+```yaml
+dimensions:
+  - name: industry
+    ref: users.industry
+    description: Customer's reported industry
+    tags:
+      - customer
+      - segmentation
+    terms:
+      - customer.industry
+    ai_context:
+      instructions: Filter for the top-10 industries
+      synonyms:
+        - sector
+      examples:
+        - "SaaS"
+        - "FinTech"
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | Yes | The label consumers use in queries. Lowercase identifier — see [Naming rules](models.md#naming-rules). Must be unique across this metric's `dimensions` **and** `segments`. |
+| `ref` | Yes | The actual semantic reference (`<semantic_name>.<column>`). Both halves must be valid identifiers. |
+| `description` | No | Human-readable explanation. **Overrides** the description on the underlying semantic field for this metric. |
+| `tags` | No | List of categorization labels. **Overrides** the underlying field's tags for this metric. |
+| `terms` | No | List of business glossary references. **Overrides** the underlying field's terms for this metric. |
+| `ai_context` | No | Hints for AI/LLM consumers (`instructions`, `synonyms`, `examples`). **Overrides** the underlying field's `ai_context` for this metric. |
+
+!!! info "Override scope"
+    Overrides apply only to this metric's view of the dimension. Other metrics referencing the same column still see whatever is defined on the semantic model.
+
+You can freely mix bare references and named slices in the same `dimensions:` list:
+
+```yaml
+dimensions:
+  - subscriptions.plan_type
+  - users.signup_channel
+  - name: industry
+    ref: users.industry
+```
+
+Dimensions can reference columns from any semantic model, as long as the models are connected through joins.
 
 ---
 
 ## Segments
 
-Segments apply predefined filters from semantic models to a metric. Reference them using `alias.segment_name`:
+Segments apply predefined filters from semantic models to a metric. Reference them using `<semantic_name>.<segment_name>`:
 
 ```yaml
-metrics:
-  active_user_engagement:
-    measure: usage_events.daily_active_users
-    time: usage_events.event_date
-    default_granularity: day
-    segments:
-      - users.high_value_accounts
-      - usage_events.recent_activity
+segments:
+  - subscriptions.active_subscriptions
+  - subscriptions.high_value_accounts
 ```
 
-The segments `high_value_accounts` and `recent_activity` must be defined in their respective semantic models. When the metric is queried, these filters are applied automatically.
+The segments `active_subscriptions` and `high_value_accounts` must be defined in the `subscriptions` semantic model. When the metric is queried, these filters are applied automatically.
+
+### Segment rules
+
+| Aspect | Rule |
+|--------|------|
+| Entry type | **Must** be a qualified-reference string. Dict / object form is rejected by the parser. |
+| `ref` shape | `<semantic_name>.<segment_name>` — both halves must be valid identifiers. |
+| Auto-derived `name` | `<semantic_name>_<segment_name>`, lowercased. Must match `^[a-z][a-z0-9_]{0,63}$` and must not collide with any dimension `name` on this metric. |
+| Per-entry metadata | **Not supported.** Unlike dimensions, segments on a metric cannot carry per-entry `description`, `tags`, `terms`, or `ai_context`. To override segment metadata, edit it on the underlying semantic model. |
+
+Example of how derived names work:
+
+```yaml
+segments:
+  - usage_sessions.mobile_sessions   # derived name: usage_sessions_mobile_sessions
+  - usage_sessions.long_sessions     # derived name: usage_sessions_long_sessions
+```
 
 ---
 
 ## Cross-model metrics
 
-Metrics can pull their measure, time, and slices from different semantic models. Vulcan resolves the join paths automatically based on the joins defined in your semantic models.
+A metric can pull its measure, ts, and dimensions from different semantic models. Vulcan resolves the join paths automatically based on the joins defined in your semantic models.
 
 ```yaml
-metrics:
-  cohort_retention:
-    measure: users.active_users
-    time: users.signup_date
-    default_granularity: month
-    slices:
-      signup_channel: users.signup_channel
-      plan_type: subscriptions.plan_type
-    description: "User retention by signup cohort and plan type"
+kind: metric
+name: cohort_retention
+measure: users.active_users
+ts: users.signup_date
+granularity: month
+
+dimensions:
+  - users.signup_channel
+  - subscriptions.plan_type
+
+description: User retention by signup cohort and plan type
 ```
 
-This metric uses the `active_users` measure and `signup_date` time from the `users` model, but slices by `plan_type` from the `subscriptions` model. The `users` model must have a join defined to `subscriptions` for this to work.
+This metric uses the `active_users` measure and `signup_date` time from the `users` model, but groups by `plan_type` from the `subscriptions` model. The `users` semantic model must have a join defined to `subscriptions` for this to work.
 
 !!! warning "Joins are required for cross-model references"
     If a metric references multiple semantic models, those models must be connected through joins. Vulcan validates this and will raise an error if a join path doesn't exist.
@@ -171,7 +260,7 @@ This metric uses the `active_users` measure and `signup_date` time from the `use
 
 ## Time granularity
 
-Define a metric once, query it at any granularity. The `default_granularity` sets the default, but consumers can override it:
+Define a metric once, query it at any granularity. The `granularity:` value sets the default, but consumers can override it at query time:
 
 - `granularity=day`
 - `granularity=week`
@@ -183,61 +272,108 @@ You don't need separate metric definitions for daily, weekly, and monthly views 
 
 ---
 
-## Complete example
+## Examples
 
-A full metrics file from a B2B SaaS project:
+### Minimal
+
+The smallest valid metric is just the four required fields:
 
 ```yaml
-metrics:
-  product_engagement:
-    measure: usage_events.daily_active_users
-    time: usage_events.event_date
-    default_granularity: day
-    slices:
-      feature_name: usage_events.feature_name
-      plan_type: users.plan_type
-    description: "Daily active users by feature and subscription plan"
-    tags:
-      - engagement
-      - dau
-    terms:
-      - glossary.user_engagement
-      - glossary.daily_active_users
-
-  churn_analysis:
-    measure: subscriptions.churn_count
-    time: subscriptions.end_date
-    default_granularity: month
-    slices:
-      plan_type: subscriptions.plan_type
-      company_size: users.company_size
-      signup_channel: users.signup_channel
-    description: "Churn patterns by plan, company size, and acquisition channel"
-
-  cohort_retention:
-    measure: users.active_users
-    time: users.signup_date
-    default_granularity: month
-    slices:
-      signup_channel: users.signup_channel
-      plan_type: subscriptions.plan_type
-    description: "User retention by signup cohort and plan type"
-
-  arr_growth:
-    measure: subscriptions.total_arr
-    time: subscriptions.start_date
-    default_granularity: month
-    slices:
-      plan_type: subscriptions.plan_type
-      industry: users.industry
-      billing_cycle: subscriptions.billing_cycle
-    description: "Annual Recurring Revenue growth by plan and industry"
-    tags:
-      - revenue
-      - arr
-    terms:
-      - glossary.annual_recurring_revenue
+# models/metrics/churn_analysis.yml
+kind: metric
+name: churn_analysis
+measure: subscriptions.churn_count
+ts: subscriptions.end_date
+granularity: month
 ```
+
+### With dimensions and description
+
+```yaml
+# models/metrics/churn_analysis.yml
+kind: metric
+name: churn_analysis
+measure: subscriptions.churn_count
+ts: subscriptions.end_date
+granularity: month
+
+dimensions:
+  - subscriptions.plan_type
+  - users.signup_channel
+
+description: Churn patterns by plan and acquisition channel
+```
+
+### Cross-model with named slice
+
+```yaml
+# models/metrics/cohort_retention.yml
+kind: metric
+name: cohort_retention
+measure: users.active_users
+ts: users.signup_date
+granularity: month
+
+dimensions:
+  - users.signup_channel
+  - subscriptions.plan_type
+
+description: User retention by signup cohort and plan type
+```
+
+### Full example with segments, tags, terms
+
+```yaml
+# models/metrics/arr_growth.yml
+kind: metric
+name: arr_growth
+measure: subscriptions.total_arr
+ts: subscriptions.start_date
+granularity: month
+
+dimensions:
+  - subscriptions.plan_type
+  - name: industry
+    ref: users.industry
+
+segments:
+  - subscriptions.active_subscriptions
+  - subscriptions.high_value_accounts
+
+description: Annual Recurring Revenue growth by plan and industry
+tags:
+  - revenue
+  - arr
+  - metric
+terms:
+  - glossary.annual_recurring_revenue
+  - glossary.revenue_metric
+```
+
+---
+
+## Forbidden legacy keys
+
+Two keys from earlier versions of the metric spec are **explicitly rejected** and will cause validation to fail:
+
+| Legacy key | Use instead | Notes |
+|------------|-------------|-------|
+| `time` | `ts` | The time-column field was renamed. |
+| `slices` | `dimensions` | The grouping field was renamed and switched from a dict to a list. |
+
+If you're migrating an older project, do a global replace before running `vulcan plan`.
+
+---
+
+## Reserved names
+
+The following names cannot be used as a dimension `name` (object form) or as the auto-derived `name` of a segment on a metric:
+
+- `measure`
+- `time`
+- `ts`
+
+They're reserved as adjunct keys on the metric envelope. Pick a different name (e.g. `plan_type` instead of `time`). For segments, this means you can't reference a segment whose `<semantic_name>_<segment_name>` derivation collides with one of the reserved names.
 
 ---
 
@@ -246,17 +382,24 @@ metrics:
 Vulcan validates metric definitions automatically when you create a plan. It checks that:
 
 - `measure` references a valid measure on a semantic model
-- `time` references a valid time/date column
-- `default_granularity` is a recognized granularity value
-- `measure` and `time` do not point to the same reference
-- Slice values are unique (no two slice keys map to the same column)
-- Slice and segment references use valid `alias.name` format
+- `ts` references a valid time/date column
+- `granularity` is a recognized granularity value (see [granularity table](#granularity))
+- Every qualified reference (`measure`, `ts`, and each dimension/segment `ref`) is a valid `<semantic_name>.<field>` where both halves are valid identifiers
+- **All qualified refs used by the metric are unique** — you cannot use the same `<semantic_name>.<field>` as both `measure` and `ts`, or as two dimensions, etc.
+- **All names are unique across `dimensions` and `segments`** (dimension `name`s plus auto-derived segment `name`s, considered as one combined set)
+- Dimension references point to real columns
+- Named slices include both `name` and `ref`
+- Segment entries are qualified-reference strings (not objects) and their auto-derived `<semantic_name>_<segment_name>` matches the lowercase identifier pattern
 - Cross-model references have valid join paths between the involved models
+- Forbidden legacy keys (`time`, `slices`) are not present
+- Reserved names (`measure`, `time`, `ts`) are not used as a dimension or auto-derived segment `name`
+- All identifier names match the [naming rules](models.md#naming-rules)
+- No unknown keys appear inside `ai_context` (Pydantic `extra="forbid"`)
 
 ---
 
 ## Next steps
 
-- Learn about [Semantic Models](models.md) that provide the measures, segments, and joins metrics build on
+- Learn about [Semantic Models](models.md) — the source of measures, segments, and joins that metrics build on
 - See the [Semantics Overview](overview.md) for the complete picture
-- Explore metric definitions in your project's `semantics/` directory
+- Explore metric definitions in your project's `models/metrics/` directory

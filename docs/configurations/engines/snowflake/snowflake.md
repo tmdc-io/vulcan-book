@@ -83,15 +83,13 @@ Snowflake stores unquoted identifiers in **uppercase** by default. When Snowflak
 
 ```yaml
 dimensions:
-  includes:
-    - USER_ID
-    - SIGNUP_DATE
-    - PLAN_TYPE
+  - USER_ID
+  - SIGNUP_DATE
+  - PLAN_TYPE
 
 measures:
-  active_users:
+  - name: active_users
     type: count
-    expression: "*"
     filters:
       - "{users.STATUS} = 'active'"
 ```

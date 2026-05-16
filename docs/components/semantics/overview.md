@@ -55,21 +55,20 @@ Here's what semantic models do:
 Here's a simple example:
 
 ```yaml
-semantic_models:
-  analytics.customers:
-    alias: customers
+kind: semantic
+name: customers
+depends_on: analytics.customers
 
-    measures:
-      total_customers:
-        type: count
-        expression: "{customers.CUSTOMER_ID}"
-        description: "Total registered customers"
+dimensions:
+  - CUSTOMER_ID
+  - CUSTOMER_TIER
+  - SIGNUP_DATE
 
-    dimensions:
-      includes:
-        - CUSTOMER_ID
-        - CUSTOMER_TIER
-        - SIGNUP_DATE
+measures:
+  - name: total_customers
+    type: count
+    expression: "{customers.CUSTOMER_ID}"
+    description: Total registered customers
 ```
 
 This takes your `analytics.customers` model and exposes a `total_customers` measure that anyone can use. Business users can query "total customers" without knowing which table it comes from or how to write the SQL.
@@ -77,46 +76,44 @@ This takes your `analytics.customers` model and exposes a `total_customers` meas
 A more complete example with measures, segments, and joins:
 
 ```yaml
-semantic_models:
-  analytics.customers:
-    alias: customers
+kind: semantic
+name: customers
+depends_on: analytics.customers
 
-    measures:
-      total_customers:
-        type: count
-        expression: "{customers.CUSTOMER_ID}"
-        description: "Total registered customers"
-        tags:
-          - customer
-          - count
+dimensions:
+  - CUSTOMER_ID
+  - CUSTOMER_TIER
+  - SIGNUP_DATE
+  - STATUS
+  - PLAN_TYPE
 
-      active_customers:
-        type: count
-        expression: "*"
-        filters:
-          - "{customers.STATUS} = 'active'"
-        description: "Currently active customers"
+measures:
+  - name: total_customers
+    type: count
+    expression: "{customers.CUSTOMER_ID}"
+    description: Total registered customers
+    tags:
+      - customer
+      - count
 
-    segments:
-      high_value_accounts:
-        expression: "{customers.PLAN_TYPE} IN ('pro', 'enterprise')"
-        description: "Paid plan customers"
-        tags:
-          - customer
-          - segment
+  - name: active_customers
+    type: count
+    filters:
+      - "{customers.STATUS} = 'active'"
+    description: Currently active customers
 
-    joins:
-      orders:
-        type: one_to_many
-        expression: "{customers.CUSTOMER_ID} = {orders.CUSTOMER_ID}"
+segments:
+  - name: high_value_accounts
+    expression: "{customers.PLAN_TYPE} IN ('pro', 'enterprise')"
+    description: Paid plan customers
+    tags:
+      - customer
+      - segment
 
-    dimensions:
-      includes:
-        - CUSTOMER_ID
-        - CUSTOMER_TIER
-        - SIGNUP_DATE
-        - STATUS
-        - PLAN_TYPE
+joins:
+  - name: orders
+    type: one_to_many
+    expression: "{customers.CUSTOMER_ID} = {orders.CUSTOMER_ID}"
 ```
 
 ### Business Metrics
@@ -133,25 +130,28 @@ Here's what makes metrics powerful:
 Here's what a metric looks like:
 
 ```yaml
-metrics:
-  monthly_revenue:
-    measure: orders.total_revenue
-    time: orders.ORDER_DATE
-    default_granularity: month
-    slices:
-      customer_tier: customers.CUSTOMER_TIER
-      region: orders.REGION
-    description: "Monthly revenue by customer tier and region"
-    tags:
-      - revenue
-      - financial
+# models/metrics/monthly_revenue.yml
+kind: metric
+name: monthly_revenue
+measure: orders.total_revenue
+ts: orders.ORDER_DATE
+granularity: month
+
+dimensions:
+  - customers.CUSTOMER_TIER
+  - orders.REGION
+
+description: Monthly revenue by customer tier and region
+tags:
+  - revenue
+  - financial
 ```
 
 This creates a `monthly_revenue` metric that:
 
-- Uses the `total_revenue` measure from the orders model
-- Groups by `ORDER_DATE` (time dimension) at monthly granularity by default
-- Can be sliced by `CUSTOMER_TIER` and `REGION` (business dimensions)
+- Uses the `total_revenue` measure from the orders semantic model
+- Groups by `ORDER_DATE` (time column) at monthly granularity by default
+- Can be grouped by `CUSTOMER_TIER` and `REGION` (business dimensions)
 - Includes descriptive metadata via `description` and `tags`
 
 Anyone can query "monthly revenue by customer tier" without writing SQL. They reference the metric name, and Vulcan handles the complexity.
@@ -223,29 +223,27 @@ FROM raw.customers;
 Then in your semantic definition, expose those columns and build on them:
 
 ```yaml
-semantic_models:
-  analytics.customers:
-    alias: customers
+kind: semantic
+name: customers
+depends_on: analytics.customers
 
-    measures:
-      high_spenders:
-        type: count
-        expression: "*"
-        filters:
-          - "{customers.TOTAL_SPENT} > 10000"
-        description: "Customers who have spent over $10,000"
+dimensions:
+  - CUSTOMER_ID
+  - CUSTOMER_TIER
+  - SIGNUP_DATE
+  - TOTAL_SPENT
 
-    segments:
-      enterprise_tier:
-        expression: "{customers.CUSTOMER_TIER} = 'enterprise'"
-        description: "Enterprise-tier customers"
+measures:
+  - name: high_spenders
+    type: count
+    filters:
+      - "{customers.TOTAL_SPENT} > 10000"
+    description: Customers who have spent over $10,000
 
-    dimensions:
-      includes:
-        - CUSTOMER_ID
-        - CUSTOMER_TIER
-        - SIGNUP_DATE
-        - TOTAL_SPENT
+segments:
+  - name: enterprise_tier
+    expression: "{customers.CUSTOMER_TIER} = 'enterprise'"
+    description: Enterprise-tier customers
 ```
 
 Your models stay exactly as they are; the semantic layer just makes them more accessible.

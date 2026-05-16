@@ -219,13 +219,14 @@ Create `models/semantics/users.yml`:
 ```yaml
 kind: semantic
 name: users
-model: warehouse.users
+depends_on: warehouse.users
+
 dimensions:
-  - name: plan_type
-    type: string
+  - plan_type
+
 measures:
   - name: total_users
-    agg: count
+    type: count
 ```
 
 You get:
@@ -330,11 +331,13 @@ Create `models/dq/completeness.yml`:
 
 ```yaml
 kind: dq
-checks:
-  warehouse.users:
-    completeness:
-      - missing_count(email) = 0:
-          name: user_email_completeness
+name: users_completeness
+depends_on: warehouse.users
+
+rules:
+  - missing_count(email) = 0:
+      name: user_email_completeness
+      dimension: completeness
 ```
 
 Data Quality rule packs monitor data quality over time. They're non-blocking (warnings, not failures) and track quality metrics.
