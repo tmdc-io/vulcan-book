@@ -6,20 +6,23 @@ Semantic models map your physical Vulcan models to business-friendly representat
 
 ## Structure
 
-A semantic model wraps a single Vulcan model. Use either `semantic_models:` or `models:` as the top-level key — both are valid and produce the same result.
+A semantic model wraps a single Vulcan model. Use `kind: semantic` and put one model per file in `models/semantics/`:
 
 ```yaml
-semantic_models:
-  b2b_saas.users:          # Fully qualified Vulcan model name
-    alias: users            # Business-friendly name used in queries
+kind: semantic
+name: b2b_saas.users         # Fully qualified Vulcan model name
+alias: users                 # Business-friendly name used in queries
 
-    dimensions: {...}       # Control which columns are queryable
-    measures: {...}         # Aggregated calculations
-    segments: {...}         # Reusable filter conditions
-    joins: {...}            # Relationships to other semantic models
+dimensions: {...}            # Control which columns are queryable
+measures: {...}              # Aggregated calculations
+segments: {...}              # Reusable filter conditions
+joins: {...}                 # Relationships to other semantic models
 ```
 
-The YAML key (`b2b_saas.users`) must match an existing Vulcan model defined in your `models/` directory. The `alias` is the name consumers use when querying — it must start with a letter and contain only letters, numbers, and underscores. If omitted, it defaults to the model name.
+The model name (`b2b_saas.users`) must match an existing Vulcan model defined in your `models/` directory. The `alias` is the name consumers use when querying: it must start with a letter and contain only letters, numbers, and underscores. If omitted, it defaults to the model name.
+
+!!! info "Other accepted shapes"
+    Vulcan also accepts `semantic_models:` and `models:` blocks at the top of a file (typically under a top-level `semantics/` directory). Both produce the same result as `kind: semantic`. New projects should use `kind: semantic`.
 
 !!! info "No description at the model level"
     Semantic models do not support a top-level `description` field. Descriptions belong in the Vulcan model file itself (the `MODEL()` DDL), not in the semantic YAML.

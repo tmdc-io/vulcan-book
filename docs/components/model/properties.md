@@ -817,7 +817,7 @@ Enable automatic data profiling for specific columns. Profiles track statistical
 
 - Understand column distributions
 
-- Inform which checks/audits to create
+- Inform which Data Quality rules and audits to create
 
 Think of profiles as your data observability layer, they watch and learn, but don't block.
 === "SQL"

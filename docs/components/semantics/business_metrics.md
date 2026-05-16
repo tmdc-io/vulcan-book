@@ -4,9 +4,26 @@ Business metrics are time-series analytical definitions that combine a measure, 
 
 ---
 
+## Where these files live
+
+Put each metric in its own file under `models/metrics/`:
+
+```
+models/metrics/
+├── arr_growth.yml
+├── churn_analysis.yml
+├── cohort_retention.yml
+└── product_engagement.yml
+```
+
+!!! info "Other accepted shapes"
+    A consolidated `metrics.yml` with multiple metrics in one file is also accepted. Per-file is recommended for new projects since it keeps diffs and ownership clean.
+
+---
+
 ## Structure
 
-Use either `metrics:` or `semantic_metrics:` as the top-level key — both are valid and produce the same result.
+Use either `metrics:` or `semantic_metrics:` as the top-level key. Both are valid and produce the same result.
 
 ```yaml
 metrics:

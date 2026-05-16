@@ -44,7 +44,7 @@ nav:
         - components/model/statements.md
       - components/tests/tests.md
       - components/audits/audits.md
-      - components/checks/checks.md
+      - components/data-quality/data-quality.md
       - Semantics:
         - components/semantics/overview.md
         - components/semantics/models.md
@@ -157,6 +157,7 @@ plugins:
       redirect_maps:
         'guides/index.md': 'guides/overview.md'
         'index/index.md': 'index.md'
+        'components/checks/checks.md': 'components/data-quality/data-quality.md'
   - mermaid2:
       arguments:
         theme: base

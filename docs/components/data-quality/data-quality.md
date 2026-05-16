@@ -1,14 +1,14 @@
-# Checks
+# Data Quality
 
-Quality checks are validation rules that monitor your data quality over time without blocking your models. They warn you when something looks off, but they don't stop execution.
+Data Quality rule packs are validation rules that monitor your data quality over time without blocking your models. They warn you when something looks off, but they don't stop execution.
 
-Unlike [audits](../audits/audits.md) (which block models execution when they fail), checks run separately or alongside your models and provide non-blocking validation. They're perfect for tracking trends, detecting anomalies, and building up a historical picture of your data quality.
+Unlike [audits](../audits/audits.md) (which block model execution when they fail), Data Quality rule packs run separately or alongside your models and provide non-blocking validation. They're useful for tracking trends, detecting anomalies, and building a historical picture of your data quality.
 
-**What makes checks special:**
+**What makes Data Quality rule packs different:**
 
-- Configured in simple YAML files in the `checks/` directory
+- Configured in simple YAML files in `models/dq/`, using `kind: dq`
 
-- Don't block models (your models keep running even if checks fail)
+- Don't block models (your models keep running even if a rule fails)
 
 - Track historical patterns and trends
 
@@ -16,16 +16,16 @@ Unlike [audits](../audits/audits.md) (which block models execution when they fai
 
 - Integrate with Activity API for monitoring and alerting
 
-## Checks vs Audits vs Profiles
+## Data Quality vs Audits vs Profiles
 
 Before we dive in, let's clear up the confusion around these three data quality mechanisms. They all serve different purposes, and understanding when to use each one will save you headaches later.
 
-| Feature | Audits | Checks | Profiles |
-|---------|--------|--------|----------|
-| **Purpose** | Critical validation | Monitoring & analysis | Observation & tracking |
+| Feature | Audits | Data Quality rule packs | Profiles |
+|---------|--------|---------------|----------|
+| **Purpose** | Critical validation | Monitoring and analysis | Observation and tracking |
 | **When runs** | With model (inline) | Separately or with models | With model |
 | **Blocks models?** | Yes (always) | No | No |
-| **Configuration** | In MODEL DDL or .sql files | YAML files (`checks/`) | In MODEL DDL |
+| **Configuration** | In MODEL DDL or .sql files | YAML files in `models/dq/` (`kind: dq`) | In MODEL DDL |
 | **Output** | Pass/fail | Pass/fail + samples | Statistical metrics |
 | **Best for** | Business rules, data integrity | Trend monitoring, anomalies | Understanding data |
 | **Historical tracking** | No | Yes (Activity API) | Yes (`_check_profiles`) |
@@ -36,32 +36,32 @@ A layered approach to data quality:
 
 ```
 ┌─────────────────────────────────────────┐
-│  AUDITS (Critical - Blocks models)   │
+│  AUDITS (Critical: Blocks models)       │
 │  • Primary keys must be unique          │
 │  • Revenue must be non-negative         │
 │  • Foreign key relationships valid      │
 └─────────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
-│  CHECKS (Monitoring - Non-Blocking)     │
+│  DATA QUALITY (Monitoring: Non-Blocking) │
 │  • Row count within expected range      │
 │  • Anomaly detection on metrics         │
 │  • Cross-table consistency              │
 └─────────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
-│  PROFILES (Observation - Metrics)       │
+│  PROFILES (Observation: Metrics)        │
 │  • Track null percentages               │
 │  • Monitor column distributions         │
 │  • Detect data drift                    │
 └─────────────────────────────────────────┘
 ```
 
-Audits stop bad data at the door. Checks watch for problems but don't interfere. Profiles observe patterns and help you understand what's normal.
+Audits stop bad data at the door. Data Quality rule packs watch for problems but don't interfere. Profiles observe patterns and help you understand what's normal.
 
-## When to Use Checks
+## When to Use Data Quality
 
-**Use Quality Checks for:**
+**Use Data Quality rule packs for:**
 
 - Monitoring data quality trends over time (is completeness getting worse?)
 
@@ -93,16 +93,15 @@ Audits stop bad data at the door. Checks watch for problems but don't interfere.
 
 - Detecting data drift over time
 
-- Informing which checks/audits to add
+- Informing which Data Quality rules and audits to add
 
 **Example: Revenue validation strategy**
 
 Here's how you'd layer all three for a revenue table:
 
 ```sql
--- AUDIT (Critical - blocks if fails)
-
--- This stops the models if revenue is invalid
+-- AUDIT (Critical: blocks if it fails)
+-- This stops the model if revenue is invalid
 MODEL (
   name analytics.revenue,
   assertions (
@@ -113,8 +112,10 @@ MODEL (
 ```
 
 ```yaml
-# CHECK (Monitoring - warns if unusual)
+# DATA QUALITY (Monitoring: warns if unusual)
+# models/dq/revenue.yml
 # This watches for anomalies but doesn't block
+kind: dq
 checks:
   analytics.revenue:
     accuracy:
@@ -125,8 +126,7 @@ checks:
 ```
 
 ```sql
--- PROFILE (Observation - tracks over time)
-
+-- PROFILE (Observation: tracks over time)
 -- This just watches and records what it sees
 MODEL (
   name analytics.revenue,
@@ -136,13 +136,14 @@ MODEL (
 
 ## Quick Start
 
-### Your First Check
+### Your First Data Quality Rule Pack
 
-Let's create your first check. It's simpler than you might think!
+Let's create your first rule pack. It's simpler than you might think.
 
-Create a file `checks/customers.yml`:
+Create a file `models/dq/customers.yml`:
 
 ```yaml
+kind: dq
 checks:
   analytics.customers:
     completeness:
@@ -152,11 +153,11 @@ checks:
             description: "All customers must have an email address"
 ```
 
-That's it! This check ensures that every customer has an email address. When you run your models, this check will run automatically and warn you if any emails are missing.
+That's it. This rule ensures every customer has an email address. When you run your models, the rule runs automatically and warns you if any emails are missing.
 
 **What happens when it runs:**
 
-Checks and profiles run automatically when models are executed, either through a **plan** or **run** command. Here's what the execution output looks like:
+Rule packs and profiles run automatically when models execute, either through a **plan** or **run** command. Here's what the execution output looks like:
 
 ```bash
 Check Executions (1 Models)
@@ -171,15 +172,16 @@ Profiled 1 model (3 columns):
 
 Here are common patterns you'll use:
 
-### Common Check Patterns
+### Common Rule Patterns
 
-Here are the patterns you'll use most often. Copy these, tweak them for your tables, and you're good to go!
+Here are the patterns you'll use most often. Copy these, tweak them for your tables, and you're good to go.
 
-#### Pattern 1: Completeness Checks
+#### Pattern 1: Completeness Rules
 
 Make sure required data is present:
 
 ```yaml
+kind: dq
 checks:
   analytics.orders:
     completeness:
@@ -193,13 +195,14 @@ checks:
           name: sufficient_orders
 ```
 
-The first check ensures every order has a customer ID (zero tolerance). The second allows up to 5% missing emails (sometimes that's okay). The third makes sure you have enough data to work with.
+The first rule ensures every order has a customer ID (zero tolerance). The second allows up to 5% missing emails (sometimes that's okay). The third makes sure you have enough data to work with.
 
-#### Pattern 2: Validity Checks
+#### Pattern 2: Validity Rules
 
 Validate data format and values:
 
 ```yaml
+kind: dq
 checks:
   analytics.users:
     validity:
@@ -219,13 +222,14 @@ checks:
             WHERE age < 0 OR age > 120
 ```
 
-The `failed rows` check type is flexible. You can write any SQL query. If it returns rows, the check fails and captures those rows as samples.
+The `failed rows` rule type is flexible. You can write any SQL query. If it returns rows, the rule fails and captures those rows as samples.
 
-#### Pattern 3: Uniqueness Checks
+#### Pattern 3: Uniqueness Rules
 
 Ensure no duplicates:
 
 ```yaml
+kind: dq
 checks:
   analytics.customers:
     uniqueness:
@@ -236,13 +240,14 @@ checks:
           name: unique_customer_date_combination
 ```
 
-The second example shows composite keys, maybe a customer can have multiple orders, but only one per day.
+The second example shows composite keys: maybe a customer can have multiple orders, but only one per day.
 
 #### Pattern 4: Anomaly Detection
 
 Detect unusual patterns automatically:
 
 ```yaml
+kind: dq
 checks:
   analytics.daily_revenue:
     accuracy:
@@ -253,13 +258,14 @@ checks:
           name: revenue_anomaly
 ```
 
-Anomaly detection learns from historical data and flags when something looks unusual. It needs to run a few times first to build up a baseline, then it detects problems.
+Anomaly detection learns from historical data and flags when something looks unusual. It needs to run a few times first to build a baseline, then it starts detecting problems.
 
 #### Pattern 5: Change Monitoring
 
 Track changes over time:
 
 ```yaml
+kind: dq
 checks:
   analytics.orders:
     timeliness:
@@ -269,22 +275,25 @@ checks:
             description: "Alert if row count drops more than 50%"
 ```
 
-This compares the current value to the previous run and alerts you if it changes too much. Perfect for catching sudden drops or spikes.
+This compares the current value to the previous run and alerts you if it changes too much. Useful for catching sudden drops or spikes.
 
-## Check Configuration
+## Data Quality Configuration
 
 ### File Structure
 
-Checks live in YAML files in the `checks/` directory. You can organize them however makes sense for your project:
+Data Quality rule packs live in YAML files in `models/dq/`. You can organize them however makes sense for your project:
 
 ```
 project/
 ├── models/
-├── checks/
-│   ├── users.yml           # Checks for user tables
-│   ├── orders.yml          # Checks for order tables
-│   ├── revenue.yml         # Checks for revenue tables
-│   └── cross_model.yml     # Checks spanning multiple tables
+│   ├── dq/
+│   │   ├── users.yml           # Rules for user tables
+│   │   ├── orders.yml          # Rules for order tables
+│   │   ├── revenue.yml         # Rules for revenue tables
+│   │   └── cross_model.yml     # Rules spanning multiple tables
+│   ├── semantics/
+│   ├── metrics/
+│   └── *.sql
 └── config.yaml
 ```
 
@@ -292,28 +301,32 @@ project/
 
 - Must end with `.yml` or `.yaml`
 
-- The name doesn't matter (Vulcan reads all files in the directory)
+- The name doesn't matter (Vulcan reads all files in `models/dq/`)
 
 - Organize by domain or table for clarity, whatever helps you find things
 
-### Basic Check Syntax
+### Basic Data Quality Syntax
 
-Here's the basic structure of a check:
+Here's the basic structure of a Data Quality rule pack:
 
 ```yaml
+kind: dq
 checks:
   <fully_qualified_table_name>:
     <dimension>:
-      - <check_expression>:
-          name: <check_name>
+      - <rule_expression>:
+          name: <rule_name>
           attributes:
             description: <human_readable_description>
             tags: [<tag1>, <tag2>]
 ```
 
+`kind: dq` declares the file as a Data Quality rule pack. The `checks:` block groups rules by table; each table groups rules by data-quality dimension.
+
 **Example:**
 
 ```yaml
+kind: dq
 checks:
   analytics.customers:
     completeness:
@@ -328,7 +341,7 @@ The `name` field is required and should be descriptive. The `attributes` section
 
 ### Data Quality Dimensions
 
-Checks are organized by **8 standard dimensions** (based on ODPS v3.1). Each dimension focuses on a different aspect of data quality:
+Data Quality rules are organized by **8 standard dimensions** (based on ODPS v3.1). Each dimension focuses on a different aspect of data quality:
 
 #### 1. Completeness
 
@@ -1021,7 +1034,8 @@ Now your checks are informed by actual data patterns, not guesses. Much better!
 Validate relationships between models. This ensures referential integrity:
 
 ```yaml
-# checks/cross_model.yml
+# models/dq/cross_model.yml
+kind: dq
 checks:
   analytics.orders:
     consistency:
@@ -1106,14 +1120,14 @@ This finds rows where revenue is more than 3 standard deviations from the mean (
 
 ## Best Practices
 
-### Check Organization
+### Rule Pack Organization
 
-Organize your checks in a way that makes sense for your team. Here are two common approaches:
+Organize your Data Quality rule packs in a way that makes sense for your team. Here are two common approaches:
 
 **By domain:**
 
 ```
-checks/
+models/dq/
 ├── customers/
 │   ├── completeness.yml
 │   ├── validity.yml
@@ -1128,14 +1142,14 @@ checks/
 **By priority:**
 
 ```
-checks/
+models/dq/
 ├── critical.yml      # Must never fail
 ├── important.yml     # Should rarely fail
 ├── monitoring.yml    # Track trends
-└── experimental.yml  # Testing new checks
+└── experimental.yml  # Testing new rules
 ```
 
-Pick whatever works for your team. The important thing is consistency, if everyone knows where to find things, life is easier.
+Pick whatever works for your team. The important thing is consistency: if everyone knows where to find things, life is easier.
 
 ### Naming Conventions
 
@@ -1237,8 +1251,10 @@ MODEL (
 ```
 
 ```yaml
-# LAYER 2: Checks (monitoring - warns)
+# LAYER 2: Data Quality rule pack (monitoring: warns)
+# models/dq/orders.yml
 # Watch for problems but don't block
+kind: dq
 checks:
   analytics.orders:
     completeness:
@@ -1251,8 +1267,7 @@ checks:
 ```
 
 ```sql
--- LAYER 3: Profiles (observe - tracks)
-
+-- LAYER 3: Profiles (observe: tracks)
 -- Just watch and learn
 MODEL (
   name analytics.orders,
@@ -1260,18 +1275,18 @@ MODEL (
 );
 ```
 
-This three-layer approach gives you comprehensive data quality coverage: audits stop problems, checks warn about issues, and profiles help you understand what's normal.
+This three-layer approach covers data quality end to end: audits stop problems, Data Quality rule packs warn about issues, and profiles help you understand what's normal.
 
 ## Troubleshooting
 
-### Check Failures
+### Rule Failures
 
-#### Investigate failed check
+#### Investigate a failed rule
 
-When a check fails, you'll want to dig into why:
+When a rule fails, you'll want to dig into why:
 
 ```bash
-# Run specific check with verbose output
+# Run a specific rule with verbose output
 vulcan check --select analytics.customers.invalid_emails --verbose
 ```
 
@@ -1279,7 +1294,7 @@ This gives you more details about what went wrong.
 
 #### Query failed samples
 
-If your check captures samples (like `failed rows` checks do), you can query them:
+If your rule captures samples (like `failed rows` rules do), you can query them:
 
 ```sql
 -- Get samples from last failed run
@@ -1295,14 +1310,15 @@ This shows you actual rows that failed for debugging.
 
 ### Performance Issues
 
-#### Slow check queries
+#### Slow rule queries
 
-**Problem:** Check takes too long to run
+**Problem:** A rule takes too long to run
 
 **Solution 1: Add filters**
 
 ```yaml
-# Slow - scans entire table
+# Slow: scans entire table
+kind: dq
 checks:
   analytics.orders:
     validity:
@@ -1311,7 +1327,8 @@ checks:
             SELECT * FROM analytics.orders
             WHERE email NOT LIKE '%@%'
 
-# Fast - filters to recent data
+# Fast: filters to recent data
+kind: dq
 checks:
   analytics.orders:
     filter: "order_date >= CURRENT_DATE - INTERVAL '30 days'"
@@ -1322,7 +1339,7 @@ checks:
             WHERE email NOT LIKE '%@%'
 ```
 
-Filtering reduces the amount of data the check needs to scan, which makes it faster.
+Filtering reduces the amount of data the rule needs to scan, which makes it faster.
 
 **Solution 2: Add indexes**
 
@@ -1332,22 +1349,24 @@ CREATE INDEX idx_orders_email ON analytics.orders(email);
 CREATE INDEX idx_orders_order_date ON analytics.orders(order_date);
 ```
 
-Indexes help queries run faster, especially for `failed rows` checks that filter on specific columns.
+Indexes help queries run faster, especially for `failed rows` rules that filter on specific columns.
 
 ### False Positives
 
 #### Threshold too strict
 
-**Problem:** Check fails during normal variance
+**Problem:** Rule fails during normal variance
 
 ```yaml
-# Too strict - exact match is unrealistic
+# Too strict: exact match is unrealistic
+kind: dq
 checks:
   analytics.orders:
     completeness:
       - row_count = 10000  # Exact match
 
-# Allow variance - more realistic
+# Allow variance: more realistic
+kind: dq
 checks:
   analytics.orders:
     completeness:
@@ -1362,6 +1381,7 @@ Sometimes strict thresholds aren't the right approach:
 
 ```yaml
 # Replace strict threshold with ML-based detection
+kind: dq
 checks:
   analytics.orders:
     accuracy:
@@ -1373,12 +1393,13 @@ Anomaly detection learns what's normal and adapts to variance, which reduces fal
 
 ## Summary
 
-Quality checks provide a comprehensive way to monitor data quality over time without blocking your models. Here's what we covered:
+Data Quality rule packs give you a way to monitor data quality over time without blocking your models. Here's what we covered:
 
 ### Core Concepts
 
-**1. Quality Checks**
-- YAML-configured validation rules
+**1. Data Quality Rule Packs**
+
+- YAML files in `models/dq/` with `kind: dq`
 
 - Non-blocking (don't stop models)
 
@@ -1386,12 +1407,13 @@ Quality checks provide a comprehensive way to monitor data quality over time wit
 
 - Integrate with Activity API
 
-**2. Check Types**
-- Missing data checks (`missing_count`, `missing_percent`)
+**2. Rule Types**
 
-- Row count checks (`row_count`)
+- Missing data rules (`missing_count`, `missing_percent`)
 
-- Duplicate checks (`duplicate_count`)
+- Row count rules (`row_count`)
+
+- Duplicate rules (`duplicate_count`)
 
 - Failed rows (SQL-based, flexible)
 
@@ -1400,19 +1422,21 @@ Quality checks provide a comprehensive way to monitor data quality over time wit
 - Change monitoring (compare to previous runs)
 
 **3. Data Profiling**
+
 - Automatic statistical metric collection
 
 - Stored in `_check_profiles` table
 
 - Observe patterns without validation
 
-- Inform check threshold selection
+- Inform rule threshold selection
 
 **4. Data Quality Strategy**
-- **Audits** - Critical, blocking (stop bad data)
 
-- **Checks** - Monitoring, non-blocking (watch for problems)
+- **Audits**: Critical, blocking (stop bad data)
 
-- **Profiles** - Observation, tracking (understand what's normal)
+- **Data Quality rule packs**: Monitoring, non-blocking (watch for problems)
 
-Remember: start simple, use profiles to understand your data, then create checks based on what you learn. And don't forget, checks are there to help you, not stress you out. If a check is giving you too many false positives, adjust the threshold or switch to anomaly detection. The goal is better data quality, not perfect check scores.
+- **Profiles**: Observation, tracking (understand what's normal)
+
+Start simple. Use profiles to understand your data, then write rules based on what you learn. If a rule is throwing too many false positives, adjust the threshold or switch to anomaly detection. The goal is better data quality, not perfect rule scores.

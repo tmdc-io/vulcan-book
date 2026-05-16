@@ -175,24 +175,31 @@ The validation step is important — Vulcan checks that your measures reference 
 
 ## File Organization
 
-Semantic layer definitions are YAML files in the `semantics/` directory. You can organize them however makes sense for your team:
+Co-locate semantic models with the SQL models they wrap, and give each metric its own file:
 
 ```
 project/
-├── models/           # Vulcan data models (.sql files)
+├── models/                  # Vulcan data models (.sql files)
 │   ├── customers.sql
 │   ├── orders.sql
-│   └── events.sql
-│
-├── semantics/        # Semantic layer definitions (YAML)
-│   ├── customers.yml
-│   ├── orders.yml
-│   └── metrics.yml
+│   ├── events.sql
+│   │
+│   ├── semantics/           # Semantic models (kind: semantic)
+│   │   ├── customers.yml
+│   │   └── orders.yml
+│   │
+│   └── metrics/             # Per-metric files
+│       ├── arr_growth.yml
+│       ├── churn_analysis.yml
+│       └── cohort_retention.yml
 │
 └── config.yaml
 ```
 
-**File naming:** The filename doesn't matter — Vulcan automatically merges all YAML files in the `semantics/` directory. Organize by domain (like `customers.yml`, `orders.yml`) or by function (like `revenue_metrics.yml`), whatever makes sense for your team.
+**File naming:** The filename doesn't matter. Vulcan automatically merges all YAML files in `models/semantics/` and `models/metrics/`. Organize by domain (`customers.yml`, `orders.yml`) or by function (`revenue_metrics.yml`), whatever helps you find things.
+
+!!! info "Where to put `semantics/`"
+    Placing `semantics/` and `metrics/` inside `models/` is the recommended layout. A top-level `semantics/` directory next to `models/` is also accepted, so existing projects keep working without changes.
 
 ---
 

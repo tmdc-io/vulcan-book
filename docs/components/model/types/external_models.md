@@ -184,38 +184,13 @@ external_models/legacy_tables.yaml # More manual definitions
 
 **Best practice:** Use `create_external_models` to manage the main file, and put any tables that need manual definitions in the `external_models/` directory. That way you can regenerate the main file without losing your manual work!
 
-### External Assertions
+### Validating External Data
 
-You can define [assertions](../../audits/audits.md) on external models! This is super useful for validating upstream data quality before your internal models run.
+`external_models.yaml` is now a pure contract file: name, dialect, grains, and columns. The inline `audits:` block is no longer supported here.
 
-**Why this matters:** If your external data source has quality issues, you want to catch them early, before they flow into your models and cause bigger problems downstream.
+To validate upstream data from an external source, use one of these instead:
 
-Here's how you'd add assertions to an external model:
+- **Standalone audits** in `audits/*.sql`: write SQL audit objects that select bad rows and reference the external table by name.
+- **Data Quality rule packs** in `models/dq/*.yml` (`kind: dq`): non-blocking quality rules that run separately from the model pipeline. See the [Data Quality](../../data-quality/data-quality.md) component for the full syntax.
 
-```yaml
-- name: '"warehouse"."vulcan_demo"."customers"'
-  description: Table containing customer information
-  assertions:
-    - name: not_null
-      columns: "[customer_id, email]"
-    - name: unique_values
-      columns: "[customer_id]"
-  columns:
-    customer_id: INT
-    region_id: INT
-    name: TEXT
-    email: TEXT
-- name: '"warehouse"."vulcan_demo"."orders"'
-  description: Table containing order transactions
-  assertions:
-    - name: not_null
-      columns: "[order_id, customer_id, order_date]"
-    - name: accepted_range
-      column: order_id
-      min_v: "1"
-  columns:
-    order_id: INT
-    customer_id: INT
-    order_date: TIMESTAMP
-    warehouse_id: INT
-```
+Both run when the dependent Vulcan model executes, so quality issues in the upstream source are caught before they propagate downstream.

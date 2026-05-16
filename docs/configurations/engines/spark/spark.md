@@ -2,6 +2,9 @@
 
 Apache Spark is a unified analytics engine for large-scale data processing. Vulcan integrates with Spark to manage your data transformations with version control and safe deployments.
 
+!!! warning "VDE is not supported on Spark"
+    Setting `vde: true` in `config.yaml` is rejected by validation when the gateway type is `spark`. Spark gateways must run in simple mode (`vde: false`, which is the default). See [`vde`](../../overview.md#environment--schema-management) for details.
+
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `spark`
 

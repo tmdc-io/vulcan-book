@@ -20,6 +20,14 @@ name: orders-analytics
 display_name: Orders Analytics Platform
 description: Orders Analytics is a centralized data product delivering clean, trusted insights across the full order lifecycle.
 
+# Catalog metadata
+discoverable: true
+version: 0.1.2
+alignment: consumer_aligned
+
+# Environment behaviour
+vde: false   # set to true to enable Virtual Data Environments; not supported on spark/trino
+
 # Classification
 tags:
   - e-commerce
@@ -109,22 +117,30 @@ graph TB
 
 ### Project Settings
 
-Metadata fields that identify your project. They don't affect how Vulcan runs, but they're useful for organization and discovery.
+Metadata fields that identify your project. They don't affect how Vulcan runs, but catalog tools rely on them for organization and discovery.
 
 | Option | Description | Type | Required |
 |--------|-------------|:----:|:--------:|
-| `name` | Project identifier (used internally) | string | Yes |
-| `description` | Project description | string | Yes |
+| `name` | Project identifier (used internally). Can also be set via `DATAOS_RESOURCE_NAME` env var. | string | Yes |
+| `description` | Project description. Has a placeholder default but is still validated as non-empty. | string | Yes |
 | `display_name` | Human-readable project name for UI/docs | string | No |
-| `tags` | Labels for categorization and filtering | array of string | No |
+| `discoverable` | Whether this product appears in catalog search | boolean | No |
+| `version` | Release version (SemVer 2.0, e.g. `0.1.2`) | string | No |
+| `alignment` | Data Mesh orientation: `source_aligned` or `consumer_aligned` | enum | No |
+| `tags` | Labels for categorization and filtering. Merged with `DATAOS_RESOURCE_TAGS` env var. | array of string | No |
 | `terms` | Business glossary terms using dot notation (e.g., `glossary.data_product`) | array of string | No |
-| `metadata` | Project metadata object (domain, use_cases, limitations) | object | No |
+| `metadata` | Project metadata object (domain, use_cases, limitations, reference_links) | object | No |
 
 ```yaml
 # Project identity
 name: orders-analytics
 display_name: Orders Analytics Platform
 description: Orders Analytics delivers insights across the full order lifecycle.
+
+# Catalog metadata
+discoverable: true
+version: 0.1.2
+alignment: consumer_aligned
 
 # Classification
 tags:
@@ -137,6 +153,9 @@ terms:
   - glossary.analytics_platform
   - glossary.sales_operations
 ```
+
+!!! info "Tenant comes from the environment"
+    `tenant` is not a YAML key in `config.yaml`. Set it via the `DATAOS_TENANT_ID` environment variable (or `.env` file). Without it, Vulcan refuses to load the project.
 
 ### Metadata
 
@@ -298,15 +317,20 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 
 | Configuration Key | Description | Type | Required | Default | Documentation |
 |-------------------|-------------|:----:|:--------:|---------|---------------|
-| `name` | Project identifier (used for resource naming) | string | **Yes** | - | - |
-| `description` | Project description and purpose | string | **Yes** | - | - |
+| `name` | Project identifier (used for resource naming). Overridable via `DATAOS_RESOURCE_NAME`. | string | **Yes** | - | - |
+| `description` | Project description and purpose. Validated as non-empty. | string | **Yes** | placeholder | - |
 | `display_name` | Human-readable name for UI/docs | string | No | `null` | - |
-| `tags` | Labels for categorization and filtering | array | No | `[]` | - |
+| `discoverable` | Whether the product is listed in catalog search | boolean | No | `true` | - |
+| `version` | Release version (SemVer 2.0) | string | No | `"0.0.0"` | - |
+| `alignment` | Data Mesh orientation (`source_aligned` or `consumer_aligned`) | enum | No | `consumer_aligned` | - |
+| `project` | Legacy alias of `name`. Auto-filled from `name` if omitted. | string | No | `""` | - |
+| `tags` | Labels for categorization. Merged with `DATAOS_RESOURCE_TAGS`. | array | No | `[]` | - |
 | `terms` | Business glossary terms (e.g., `glossary.data_product`) | array | No | `[]` | - |
-| `metadata` | Project metadata (domain, use_cases, limitations) | object | No | `null` | [See above](#metadata) |
-| `metadata.domain` | Business domain (sales, marketing, finance, etc.) | string | No | `null` | - |
+| `metadata` | Project metadata (domain, use_cases, limitations, reference_links) | object | No | `null` | [See above](#metadata) |
+| `metadata.domain` | Business domain (sales, marketing, finance, etc.). Required when `metadata:` is set. | string | No | `null` | - |
 | `metadata.use_cases` | List of primary use cases this project addresses | array | No | `[]` | - |
 | `metadata.limitations` | Known constraints or caveats | array | No | `[]` | - |
+| `metadata.reference_links` | List of `{name, href}` reference links | array | No | `[]` | - |
 
 ### Gateway & Connection Configuration
 
@@ -315,14 +339,15 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | `gateways` | Gateway configurations for different environments | object | **Yes*** | `{"": {}}` | [See above](#gateways) |
 | `gateways.<name>.connection` | Primary data warehouse connection | object | **Yes** | - | [Engines](./engines/postgres/postgres.md) |
 | `gateways.<name>.state_connection` | Where Vulcan stores internal state. For local testing, point this at DuckDB; for production, use Postgres | object | No | Uses `connection` | - |
-| `gateways.<name>.test_connection` | Connection for running unit tests | object | No | DuckDB | - |
-| `gateways.<name>.scheduler` | Scheduler configuration | object | No | `builtin` | - |
+| `gateways.<name>.test_connection` | Connection for running unit tests | object | No | `null` | - |
+| `gateways.<name>.scheduler` | Scheduler configuration | object | No | Built-in (`BuiltInSchedulerConfig`) | - |
 | `gateways.<name>.state_schema` | Schema name for state tables | string | No | `vulcan`** | - |
 | `gateways.<name>.variables` | Gateway-specific variables | object | No | `{}` | [Variables](./options/variables.md) |
 | `default_gateway` | Name of the default gateway | string | No | `""` | - |
 | `default_connection` | Root-level default connection | object | No | `null` | - |
-| `default_test_connection` | Root-level default test connection | object | No | DuckDB | - |
-| `default_scheduler` | Root-level default scheduler | object | No | `builtin` | - |
+| `default_test_connection` | Root-level default test connection | object | No | `null` | - |
+| `default_scheduler` | Root-level default scheduler | object | No | Built-in (`BuiltInSchedulerConfig`) | - |
+| `state` | Separate root-level state connection (alternative to per-gateway `state_connection`). Can also be loaded from `/etc/dataos/secret/state_connection_config.yaml`. | object | No | `null` | - |
 
 \* At least one gateway with a `connection` is required.  
 \** With root-level `state` connection, defaults to `{name}` (normalized).
@@ -390,16 +415,16 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 
 | Configuration Key | Description | Type | Required | Default | Documentation |
 |-------------------|-------------|:----:|:--------:|---------|---------------|
+| `vde` | Turn full Virtual Data Environments on/off. `true` = versioned physical tables + virtual layer; `false` = simple mode. Defaults to `false`: enable it explicitly when you want VDE. Not supported for `spark` and `trino` gateways: validation rejects `vde: true` on those. Replaces the deprecated `virtual_environment_mode`. | boolean | No | `false` | - |
 | `default_target_environment` | Default environment for plan/run commands | string | No | `prod` | - |
 | `snapshot_ttl` | Time before unused snapshots are deleted | string | No | `in 1 week` | - |
 | `environment_ttl` | Time before dev environments are deleted | string | No | `in 1 week` | - |
 | `pinned_environments` | Environments not deleted by janitor | array | No | `[]` | - |
-| `physical_schema_mapping` | Map model patterns to physical schema names | object | No | `{}` | - |
-| `environment_suffix_target` | Where to append environment name | string | No | `schema` | - |
+| `physical_schema_mapping` | Map model patterns (regex) to physical schema names. Replaces the deprecated `physical_schema_override`, which is auto-converted with a warning. | object | No | `{}` | - |
+| `environment_suffix_target` | Where to append environment name (`schema`, `table`, `catalog`) | enum | No | `schema` | - |
 | `environment_catalog_mapping` | Route environments to specific catalogs (e.g., dev models go to `dev_catalog`, prod to `prod_catalog`). Useful in multi-catalog setups where each environment writes to a different database. | object | No | `{}` | - |
-| `physical_table_naming_convention` | How to name tables at physical layer | string | No | `full` | - |
-| `virtual_environment_mode` | How to handle environments | string | No | `full` | - |
-| `gateway_managed_virtual_layer` | Whether gateways manage virtual layer | boolean | No | `false` | - |
+| `physical_table_naming_convention` | How to name tables at the physical layer | enum | No | `schema_and_table` | - |
+| `gateway_managed_virtual_layer` | Whether virtual-layer views are created by the model's own gateway | boolean | No | `false` | - |
 
 !!! tip "Catalog in model names vs. environment catalog mapping"
 
@@ -436,9 +461,13 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | `format` | SQL formatting options | object | No | Default | - |
 | `ui` | UI server configuration | object | No | Default | - |
 | `plan` | Plan command configuration | object | No | Default | - |
+| `plan.auto_categorize_changes` | Auto-categorize changes as breaking/non-breaking. Replaces top-level `auto_categorize_changes`. | object | No | Default | - |
+| `plan.include_unmodified` | Include unmodified models in the plan output. Replaces top-level `include_unmodified`. | boolean | No | `false` | - |
+| `plan.use_finalized_state` | Use finalized state when creating plans. Requires `vde: true`. | boolean | No | `false` | - |
 | `migration` | Migration configuration | object | No | Default | - |
 | `run` | Run command configuration | object | No | Default | - |
 | `janitor` | Cleanup task configuration | object | No | Default | - |
+| `model_naming` | Name inference rules for models | object | No | Default | - |
 | `cicd_bot` | CI/CD bot configuration | object | No | `null` | - |
 
 ### Integrations & External Services
@@ -446,18 +475,25 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | Configuration Key | Description | Type | Required | Default | Documentation |
 |-------------------|-------------|:----:|:--------:|---------|---------------|
 | `dbt` | DBT-specific configuration | object | No | `null` | - |
-| `object_store` | Object storage for query results | object | No | `null` | - |
-| `transpiler` | External transpiler service | object | No | Default | - |
-| `graphql` | GraphQL API configuration | object | No | Default | - |
-| `state` | Root-level state connection (production) | object | No | `null` | - |
+| `object_store` | Object storage for query results (MinIO/S3/GCS/Azure) | object | No | `null` | - |
+| `transpiler` | External transpiler service | object | No | `{base_url: "http://127.0.0.1:8100", timeout: 30, token: null}` | - |
+| `graphql` | GraphQL proxy configuration | object | No | `{base_url: "http://127.0.0.1:3000", timeout: 30}` | - |
 | `pgq` | PostgreSQL Queue for async jobs | object | No | Default | - |
-| `analytics` | CloudEvents telemetry configuration | object | No | `{enabled: false}` | - |
+| `analytics` | CloudEvents telemetry configuration. Replaces the deprecated `disable_anonymized_analytics`. | object | No | `{enabled: false}` | - |
+| `analytics.enabled` | Enable telemetry publishing | boolean | No | `false` | - |
+| `analytics.api_key` | Telemetry API key. Required when `analytics.enabled: true`. | string | No | `null` | - |
 | `openlineage` | OpenLineage data lineage integration | object | No | `null` | - |
-| `heimdall` | Authentication service configuration | object | No | `{enabled: false}` | - |
+| `heimdall` | Heimdall authentication (Vulcan API only) | object | No | `{enabled: false}` | - |
+| `heimdall.enabled` | Enable Heimdall auth | boolean | No | `false` | - |
+| `heimdall.base_url` | Heimdall service URL. Required when `heimdall.enabled: true`. | string | No | `null` | - |
+| `hera` | Hera/OpenMetadata sync configuration | object | No | `{enabled: false}` | - |
+| `hera.enabled` | Enable Hera/OpenMetadata sync | boolean | No | `false` | - |
+| `hera.url` | Hera service URL. Required when `hera.enabled: true`. | string | No | `null` | - |
+| `hera.token` | Hera auth token. Required when `hera.enabled: true`. | string | No | `null` | - |
 
 ### Minimal Valid Configuration
 
-The absolute minimum configuration required to start:
+The non-skippable parts of `config.yaml` are: a non-empty `name`, a non-empty `description`, at least one working `gateways.<name>.connection`, and `model_defaults.dialect`. The runtime also needs `DATAOS_TENANT_ID` in the environment.
 
 ```yaml
 name: my-project
@@ -476,6 +512,59 @@ gateways:
 model_defaults:
   dialect: postgres
 ```
+
+```bash
+# Required at runtime, not in YAML
+export DATAOS_TENANT_ID=my-tenant
+```
+
+Everything else has a default and you can omit it.
+
+## Validation Rules
+
+Some fields become required only when another field is enabled:
+
+- `name` must be non-empty (or supplied via `DATAOS_RESOURCE_NAME`).
+- `description` must be non-empty.
+- `metadata.domain` is required when the `metadata:` block is present.
+- `hera.url` and `hera.token` are required when `hera.enabled: true`.
+- `heimdall.base_url` is required when `heimdall.enabled: true`.
+- `analytics.api_key` is required when `analytics.enabled: true`.
+- `vde: true` is rejected for `spark` and `trino` gateway types.
+- `version` must be valid SemVer 2.0 (e.g. `0.1.2`, `1.0.0-rc.1`).
+
+## Environment Variables
+
+A few values come from the shell or `.env`, not from YAML:
+
+| Variable | Effect |
+|---|---|
+| `DATAOS_TENANT_ID` | Required at runtime. Supplies the `tenant`. Not a YAML key. |
+| `DATAOS_RESOURCE_NAME` | Overrides `name` from `config.yaml`. |
+| `DATAOS_RESOURCE_TAGS` | Merged into `tags` from `config.yaml`. |
+
+## Migration from the Legacy Schema
+
+If you have an older `config.yaml`, these keys have moved or been replaced:
+
+| Old key | Replacement | Notes |
+|---|---|---|
+| `virtual_environment_mode: full` | `vde: true` | Old string values fail validation. |
+| `virtual_environment_mode: dev_only` | `vde: false` (or omit) | `vde` defaults to `false`. |
+| `auto_categorize_changes` (top-level) | `plan.auto_categorize_changes` | Now nested under `plan`. |
+| `include_unmodified` (top-level) | `plan.include_unmodified` | Now nested under `plan`. |
+| `physical_schema_override` | `physical_schema_mapping` | Auto-converted with a warning. |
+| `disable_anonymized_analytics` | `analytics.enabled` | Move into the `analytics` block. |
+| `tenant` (in YAML) | `DATAOS_TENANT_ID` env var | No longer a YAML key. |
+
+Quick migration checklist:
+
+1. Replace `virtual_environment_mode: full` with `vde: true`.
+2. Remove `virtual_environment_mode: dev_only` (or set `vde: false` explicitly).
+3. Add `discoverable`, `version`, `alignment` near the top of the file if you want non-default values.
+4. Make sure `version` is valid SemVer (`0.1.2`, not `0.1` or `v0.1.2`).
+5. Remove any deprecated keys listed above.
+6. Set `DATAOS_TENANT_ID` in your shell or `.env`.
 
 ## Best Practices
 

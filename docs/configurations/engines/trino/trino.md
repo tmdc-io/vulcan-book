@@ -2,6 +2,9 @@
 
 Trino (formerly PrestoSQL) is a distributed SQL query engine designed for fast, interactive analytics across large datasets. It excels at querying data from multiple sources including data lakes, databases, and object storage. Vulcan integrates with Trino to manage your data transformations using catalogs like Iceberg, Hive, and Delta Lake.
 
+!!! warning "VDE is not supported on Trino"
+    Setting `vde: true` in `config.yaml` is rejected by validation when the gateway type is `trino`. Trino gateways must run in simple mode (`vde: false`, which is the default). See [`vde`](../../overview.md#environment--schema-management) for details.
+
 ## Local/Built-in Scheduler
 **Engine Adapter Type**: `trino`
 

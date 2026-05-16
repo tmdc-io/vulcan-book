@@ -115,14 +115,15 @@ This creates:
 
 ```
 your-project/
-├── models/      # SQL/Python transformation models
-├── seeds/       # CSV files for static data
-├── audits/      # Data quality assertions
-├── tests/       # Unit tests for models
-├── macros/      # Reusable SQL patterns
-├── checks/      # Data quality monitoring
-├── semantics/   # Semantic layer (metrics, dimensions)
-└── config.yaml  # Project configuration
+├── models/              # SQL/Python transformation models
+│   ├── dq/              # Data Quality rule packs (kind: dq)
+│   ├── semantics/       # Semantic models (kind: semantic)
+│   └── metrics/         # Per-metric files
+├── seeds/               # CSV files for static data
+├── audits/              # Data quality assertions (blocking)
+├── tests/               # Unit tests for models
+├── macros/              # Reusable SQL patterns
+└── config.yaml          # Project configuration
 ```
 
 ### Step 4: Configure Project
@@ -213,21 +214,21 @@ Define business metrics and dimensions.
 
 ### Step 10: Define Semantic Models
 
-Create `semantics/users.yml`:
+Create `models/semantics/users.yml`:
 
 ```yaml
-semantic_models:
-  - name: users
-    model: warehouse.users
-    dimensions:
-      - name: plan_type
-        type: string
-    measures:
-      - name: total_users
-        agg: count
+kind: semantic
+name: users
+model: warehouse.users
+dimensions:
+  - name: plan_type
+    type: string
+measures:
+  - name: total_users
+    agg: count
 ```
 
-This enables:
+You get:
 - Business-friendly query interface
 - Automatic API generation
 - Single source of truth for metrics
@@ -323,18 +324,20 @@ HAVING COUNT(*) > 1
 
 Audits block bad data before it reaches production. They stop execution if data quality fails. The query returns rows when it finds bad data.
 
-### Step 17: Write Checks
+### Step 17: Write Data Quality Rules
 
-Create `checks/completeness.yml`:
+Create `models/dq/completeness.yml`:
 
 ```yaml
+kind: dq
 checks:
-  - name: user_email_completeness
-    model: warehouse.users
-    expression: email IS NOT NULL
+  warehouse.users:
+    completeness:
+      - missing_count(email) = 0:
+          name: user_email_completeness
 ```
 
-Checks monitor data quality over time. They're non-blocking (warnings, not failures) and track quality metrics.
+Data Quality rule packs monitor data quality over time. They're non-blocking (warnings, not failures) and track quality metrics.
 
 Bad data is caught and blocked.
 

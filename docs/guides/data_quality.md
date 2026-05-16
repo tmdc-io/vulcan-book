@@ -85,12 +85,13 @@ Think of audits as your bouncer, they check IDs at the door and don't let anyone
 
 <!-- *[Screenshot: Audit failure blocking plan execution]* -->
 
-### Checks: Quality Monitoring
+### Data Quality: Quality Monitoring
 
-**Use checks when:** You want to monitor trends and detect anomalies over time. Unlike audits, checks don't block your pipeline, they just keep an eye on things and warn you if something looks off.
+**Use Data Quality rule packs when:** You want to monitor trends and detect anomalies over time. Unlike audits, Data Quality rules don't block your pipeline, they just keep an eye on things and warn you if something looks off.
 
 ```yaml
-# checks/daily_sales.yml
+# models/dq/daily_sales.yml
+kind: dq
 checks:
   sales.daily_sales:
     completeness:
@@ -222,12 +223,13 @@ MODEL (
 
 <!-- *[Screenshot: Audit failure showing revenue mismatch]* -->
 
-### Layer 2: Checks (Monitoring)
+### Layer 2: Data Quality (Monitoring)
 
-**Why:** Monitor trends and detect anomalies without blocking the pipeline. You want to know if revenue spikes unexpectedly or if row counts drop, but these might be legitimate business events, so you investigate rather than blocking.
+**Why:** Monitor trends and detect anomalies without blocking the pipeline. You want to know if revenue spikes unexpectedly or if row counts drop, but these might be legitimate business events, so you investigate rather than block.
 
 ```yaml
-# checks/daily_sales.yml
+# models/dq/daily_sales.yml
+kind: dq
 checks:
   sales.daily_sales:
     # Completeness: Ensure data exists
@@ -468,9 +470,10 @@ GROUP BY ds.order_date, ds.total_revenue
 HAVING ABS(ds.total_revenue - COALESCE(SUM(o.total_amount), 0)) > 0.01;
 ```
 
-**Checks (Monitoring - Non-Blocking):**
+**Data Quality rule pack (Monitoring, non-blocking):**
 ```yaml
-# checks/revenue_monitoring.yml
+# models/dq/revenue_monitoring.yml
+kind: dq
 checks:
   sales.daily_sales:
     accuracy:
@@ -625,7 +628,7 @@ And here's what to avoid:
 
 - Learn about [Built-in Audits](../components/audits/audits.md#built-in-audits)
 
-- Explore [Check Dimensions](../components/checks/checks.md#data-quality-dimensions)
+- Explore [Data Quality Dimensions](../components/data-quality/data-quality.md#data-quality-dimensions)
 
 - Read about [Testing](../components/tests/tests.md)
 

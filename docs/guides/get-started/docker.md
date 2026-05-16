@@ -1,4 +1,4 @@
-# Run Vulcan locally with Docker
+# Get Started
 
 Run Vulcan on your laptop with the **Local Development Kit (LDK)**. You get the full CLI in a Docker container, no cloud account required.
 
@@ -737,12 +737,13 @@ This creates the standard project structure:
 | Directory | Purpose |
 |-----------|---------|
 | `models/` | SQL and Python model files |
+| `models/dq/` | Data Quality rule packs (`kind: dq`), non-blocking |
+| `models/semantics/` | Semantic models (`kind: semantic`) |
+| `models/metrics/` | Per-metric files (one metric per file) |
 | `seeds/` | Static CSV data files |
 | `audits/` | Quality assertions that block execution on failure |
-| `checks/` | Quality monitors (non-blocking) |
 | `tests/` | Model logic validation |
 | `macros/` | Reusable SQL snippets |
-| `semantics/` | Semantic layer definitions (measures, dimensions) |
 
 ### Step 5: Configure your connection
 

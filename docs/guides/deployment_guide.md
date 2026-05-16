@@ -117,6 +117,14 @@ name: <data-product-name>
 display_name: <Data Product Title>
 description: <Description .... >
 
+# Catalog metadata
+discoverable: true
+version: 0.1.0
+alignment: consumer_aligned
+
+# Environment behaviour
+vde: false   # set to true to enable Virtual Data Environments; not supported on spark/trino gateways
+
 tags:
   - <tag1>
   - <tag2>
@@ -134,6 +142,9 @@ metadata:
     - <limitation-1>
     - <limitation-2>
 ```
+
+!!! info "Tenant comes from the environment"
+    Set `DATAOS_TENANT_ID` in your shell or `.env`. It's no longer a YAML key.
 
 #### Model Defaults
 ```yaml
@@ -156,12 +167,16 @@ gateways:
 ```yaml
 users:
   - username: <username1>
+    github_username: <gh-username1>
     email: <username1@email.id>
     type: OWNER
   - username: <username2>
+    github_username: <gh-username2>
     email: <username2@email.id>
-    type: CONTRIBUTOR
+    type: OWNER
 ```
+
+`type: OWNER` marks the user as a data product owner. List one entry per owner. `github_username` drives PR/CI bot interactions; leave it out for users who don't have a GitHub account.
 
 #### Complete config.yaml Example
 
@@ -171,7 +186,15 @@ users:
 ```yaml
 name: user-engagement
 display_name: User Engagement Analytics
-description: User Engagement Analytics is a comprehensive data product delivering insights into user engagement patterns.
+description: User Engagement Analytics delivers insights into user engagement patterns.
+
+# Catalog metadata
+discoverable: true
+version: 0.1.0
+alignment: consumer_aligned
+
+# Environment behaviour
+vde: false   # set to true to enable Virtual Data Environments; not supported on spark/trino gateways
 
 tags:
   - snowflake
@@ -212,12 +235,14 @@ notification_targets:
       - check_failure
 
 users:
-  - username: <owner-username>
-    email: <owner-email@example.com>
+  - username: <owner-username-1>
+    github_username: <owner-gh-username-1>
+    email: <owner-email-1@example.com>
     type: OWNER
-  - username: <contributor-username>
-    email: <contributor-email@example.com>
-    type: CONTRIBUTOR
+  - username: <owner-username-2>
+    github_username: <owner-gh-username-2>
+    email: <owner-email-2@example.com>
+    type: OWNER
 ```
 </details>
 
@@ -403,11 +428,12 @@ your-project/
 ├── domain-resource.yaml     # DataOS resource definition
 ├── models/                  # SQL model files
 │   ├── staging/
-│   └── marts/
+│   ├── marts/
+│   ├── dq/                  # Data Quality rule packs (kind: dq)
+│   ├── semantics/           # Semantic models (kind: semantic)
+│   └── metrics/             # Per-metric files
 ├── seeds/                   # Static data files
-├── checks/                  # Data quality checks
-├── audits/                  # Audit queries
-└── semantics/              # Semantic layer definitions
+└── audits/                  # Audit queries (blocking)
 ```
 
 2. Configure `config.yaml` with your project settings

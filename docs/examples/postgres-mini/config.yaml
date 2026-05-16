@@ -1,6 +1,17 @@
 name: orders360
-tenant: marketing
 description: This DataOS example data product shows a minimal setup for a PostgreSQL-based data pipeline.
+
+# Catalog metadata
+discoverable: true
+version: 0.1.0
+alignment: consumer_aligned
+
+# Environment behaviour
+vde: false
+
+# Note: tenant is no longer a YAML key. Set DATAOS_TENANT_ID in your shell or .env.
+# Example: export DATAOS_TENANT_ID=marketing
+
 linter:
   enabled: false
   warn_rules:

@@ -89,4 +89,4 @@ graph LR
 
 ## Get started
 
-The [quickstart guide](guides/get-started/docker.md) gets the Vulcan CLI running in Docker on your machine, connects it to your engine, and materializes your first models with `vulcan plan`. From there, the project scaffold gives you `audits/`, `checks/`, `tests/`, and `semantics/` folders ready to fill in.
+The [quickstart guide](guides/get-started/docker.md) gets the Vulcan CLI running in Docker on your machine, connects it to your engine, and materializes your first models with `vulcan plan`. From there, the project scaffold gives you `audits/`, `models/dq/`, `tests/`, `models/semantics/`, and `models/metrics/` folders ready to fill in.
