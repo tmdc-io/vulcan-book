@@ -2,8 +2,6 @@
 
 Model kinds determine how Vulcan loads and processes your data. Each kind is optimized for different use cases. Some rebuild everything from scratch, others update incrementally, and some create views that compute on-demand.
 
-Vulcan also supports YAML-only kinds that live in standalone YAML files under `models/` instead of inside a `MODEL (...)` block: [`semantic`](#semantic), [`metric`](#metric), and [`dq`](#dq).
-
 
 ## INCREMENTAL_BY_TIME_RANGE
 
