@@ -2,7 +2,7 @@
 
 This guide explains how to use **Audits**, **Checks**, and **Tests** together to ensure data quality in your Orders360 project. You'll learn when to use each tool and see complex examples where they work together.
 
-These three tools work as layers of protection for your data. Each serves a different purpose. Together they provide comprehensive coverage.
+Three tools, three jobs. Tests catch logic bugs in your transformations before they run anywhere. Audits block bad rows at write time. Checks watch for trends and anomalies without blocking the pipeline.
 
 ---
 
@@ -418,7 +418,7 @@ flowchart TB
 
 5. **Checks** run (track trends, don't block) - monitoring happens in the background
 
-Tests happen first, then audits catch critical issues, and checks monitor everything. This layered approach provides comprehensive coverage.
+Tests run first against fixtures, audits run with the model and stop the run on failure, and checks run alongside to track quality over time. Each layer catches what the previous one isn't designed to.
 
 <!-- *[Screenshot: Complete workflow showing all three layers]* -->
 

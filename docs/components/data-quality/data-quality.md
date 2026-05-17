@@ -20,7 +20,7 @@ Unlike [audits](../audits/audits.md) (which block model execution when they fail
 
 ## Data Quality vs Audits vs Profiles
 
-Before we dive in, let's clear up the confusion around these three data quality mechanisms. They all serve different purposes, and understanding when to use each one will save you headaches later.
+Audits, Data Quality rule packs, and profiles all watch your data, but they answer different questions. Pick the wrong one and you'll either block a run that should have shipped or let bad rows reach production.
 
 | Feature | Audits | Data Quality rule packs | Profiles |
 |---------|--------|---------------|----------|
@@ -366,7 +366,7 @@ rules:
 
 A rule can be a bare expression (no metadata) or an expression with a metadata block.
 
-**Shorthand** — just the expression, no metadata. Vulcan will auto-name the rule and skip the optional fields:
+**Shorthand:** just the expression, no metadata. Vulcan auto-names the rule and skips the optional fields:
 
 ```yaml
 rules:
@@ -375,7 +375,7 @@ rules:
   - duplicate_count(event_id) = 0
 ```
 
-**Full form** — expression as a YAML key, with metadata as the value:
+**Full form:** the expression is a YAML key and the metadata is its value:
 
 ```yaml
 rules:
@@ -389,7 +389,7 @@ You can mix both in the same `rules:` list. Use shorthand for obvious rules, ful
 
 ### Rule Attributes
 
-All rule metadata is **flat** — directly under the rule expression, not nested under an `attributes:` block.
+All rule metadata is **flat**: keys sit directly under the rule expression, not nested under an `attributes:` block.
 
 | Field | Description |
 |-------|-------------|
@@ -400,7 +400,7 @@ All rule metadata is **flat** — directly under the rule expression, not nested
 | `warn` | Threshold expression for emitting a warning (e.g. `when < 10`). |
 | `fail` | Threshold expression for failing the rule (e.g. `when > 100`). |
 | `warn_only` | `true` to downgrade any failure to a warning. |
-| `fail query` | SQL `SELECT` returning bad rows — only used with `failed rows`. |
+| `fail query` | SQL `SELECT` returning bad rows. Only used with `failed rows`. |
 | `samples limit` | Number of failed sample rows to capture (default `5`). |
 | `tags` | List of tags for filtering and organisation, e.g. `[critical, daily]`. |
 | `owner` | Team or person responsible. |
@@ -543,7 +543,7 @@ rules:
 
 You can apply a SQL predicate at two levels.
 
-**Pack-level filter** — applied to every rule in the file:
+**Pack-level filter:** applied to every rule in the file.
 
 ```yaml
 kind: dq
@@ -561,7 +561,7 @@ rules:
       dimension: completeness
 ```
 
-**Per-rule filter** — applied only to that rule (and overlays the pack-level filter):
+**Per-rule filter:** applied only to that rule. Overlays the pack-level filter.
 
 ```yaml
 rules:
@@ -571,7 +571,7 @@ rules:
       filter: "status = 'active'"
 ```
 
-Need different expectations for different slices of the same model (e.g. US vs EU customers)? Create a separate file per slice — each rule pack has a single `depends_on:` and its own `filter:`.
+Need different expectations for different slices of the same model (e.g. US vs EU customers)? Create a separate file per slice. Each rule pack has a single `depends_on:` and its own `filter:`.
 
 ### Per-Rule Metadata Example
 
@@ -592,13 +592,13 @@ rules:
 
 **Standard fields recap:**
 
-- `description` — Human-readable explanation
+- `description`: human-readable explanation.
 
-- `severity` — `error` (default) or `warning`
+- `severity`: `error` (default) or `warning`.
 
-- `tags` — List of tags for filtering/organisation (find all "critical" rules easily)
+- `tags`: list of tags for filtering and organisation, e.g. find every `critical` rule.
 
-- `owner` — Team or person responsible
+- `owner`: team or person responsible.
 
 ## Built-in Rule Types
 
@@ -657,7 +657,7 @@ rules:
       dimension: completeness
 ```
 
-The second example shows a range check — maybe you know your table should be between 1K and 100K rows, and anything outside that range is suspicious.
+The second example is a range check: if you know the table should land between 1K and 100K rows, anything outside that range is suspicious.
 
 #### `row_count` with filter
 
@@ -710,7 +710,7 @@ Maybe customers can have multiple orders, but only one per day. This rule enforc
 
 #### SQL-based validation with samples
 
-This is the most flexible rule type — you can write any SQL query you want:
+This is the most flexible rule type. Write any SQL query that returns the rows you consider invalid:
 
 ```yaml
 rules:
@@ -727,13 +727,13 @@ rules:
 
 **How it works:**
 
-- `fail query` — A SELECT statement that returns invalid rows
+- `fail query`: a `SELECT` statement that returns invalid rows.
 
-- `samples limit` — How many example rows to capture when the rule fails (default: 5)
+- `samples limit`: how many example rows to capture when the rule fails (default: 5).
 
-- Returns empty = rule passes (no invalid rows found)
+- Empty result: the rule passes (no invalid rows found).
 
-- Returns rows = rule fails (captures samples so you can see what's wrong)
+- One or more rows: the rule fails, and Vulcan captures samples so you can see what's wrong.
 
 **Complex validation:**
 
@@ -752,7 +752,7 @@ rules:
       samples limit: 10
 ```
 
-This finds orders that reference customers that don't exist — a classic referential integrity check.
+This finds orders that reference customers that don't exist: a classic referential integrity check.
 
 ### Threshold Rules
 
@@ -802,7 +802,7 @@ These detect when your data distribution changes unexpectedly.
 
 #### ML-based anomaly detection
 
-This is where rules get really powerful. Anomaly detection uses historical results to learn what's normal and flag unusual patterns:
+Anomaly detection rules learn what "normal" looks like from previous runs of the same rule, then flag the next value when it falls outside that range. There's no model to train and no thresholds to set, you just declare the metric to watch:
 
 ```yaml
 rules:
@@ -835,7 +835,7 @@ rules:
 
 - More accurate after 30+ data points (the more history, the better)
 
-So if you're setting up anomaly detection, be patient — it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.
+Anomaly detection needs history before it's useful. Expect the first ~30 runs to be no-ops while the baseline fills in. After that it catches drifts you wouldn't have thought to write a threshold rule for.
 
 ### Change Over Time Rules
 
@@ -867,11 +867,11 @@ change = (current_value - previous_value) / previous_value * 100
 
 **Examples:**
 
-- `change >= -30%` — Alert if metric drops more than 30% (negative change)
+- `change >= -30%`: alert if the metric drops more than 30%.
 
-- `change >= 10%` — Alert if metric grows more than 10% (positive change)
+- `change >= 10%`: alert if the metric grows more than 10%.
 
-- `change between -10% and 10%` — Alert if metric changes more than 10% either way
+- `change between -10% and 10%`: alert if the metric moves more than 10% in either direction.
 
 This catches sudden changes that might indicate a problem or an opportunity.
 
@@ -1285,7 +1285,7 @@ Each file still maps to a single model via `depends_on:`. Splitting by dimension
 **Use descriptive names:**
 
 ```yaml
-# Bad — what does "check1" tell you?
+# Bad: what does "check1" tell you?
 kind: dq
 name: customers_dq
 depends_on: analytics.customers
@@ -1295,7 +1295,7 @@ rules:
       name: check1
       dimension: completeness
 
-# Good — clear and descriptive
+# Good: clear and descriptive
 kind: dq
 name: customers_dq
 depends_on: analytics.customers
@@ -1352,7 +1352,7 @@ rules:
       description: "Based on 30-day historical analysis"
 ```
 
-Don't set thresholds based on guesses — let the data tell you what's normal. Use profiles to understand your data first, then set rules based on what you learn.
+Don't set thresholds from guesses. Run profiles for a few weeks first, read the observed `min`, `max`, and `stddev`, then set rules from what you see.
 
 **Use profiles to inform thresholds:**
 
@@ -1412,7 +1412,7 @@ rules:
       dimension: timeliness
 ```
 
-This three-layer approach covers data quality end to end: audits stop problems, Data Quality rules warn about issues, and profiles help you understand what's normal — and both monitoring layers live in the same `kind: dq` file.
+Three layers, each with a clear job: audits stop bad rows, Data Quality rules raise non-blocking warnings, and profiles record what "normal" looks like. The two monitoring layers share the same `kind: dq` file, so a single file describes everything Vulcan should watch for one model.
 
 ## Troubleshooting
 
@@ -1519,7 +1519,7 @@ rules:
       dimension: completeness
 ```
 
-Real data has variance. Don't set thresholds that are too strict — you'll just get false positives.
+Real data has variance. Strict thresholds just produce false positives.
 
 #### Use anomaly detection instead
 

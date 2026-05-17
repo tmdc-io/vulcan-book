@@ -97,7 +97,7 @@ class NoMissingOwner(Rule):
 
 Put your custom rules in the `linter/` directory of your project. Vulcan will automatically find and load any classes that inherit from `Rule` in that directory.
 
-Once you've added a rule to your [configuration file](#applying-linting-rules), Vulcan will run it automatically when:
+Vulcan runs every configured rule automatically when:
 - You create a plan with `vulcan plan`
 
 - You run the `vulcan lint` command

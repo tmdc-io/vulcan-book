@@ -180,7 +180,7 @@ Here are the properties you'll use most often:
 
 ## DML: The SELECT Query
 
-The `SELECT` query is where the magic happens. This is your transformation logic, the SQL that actually does the work.
+The `SELECT` is the transformation. Vulcan wraps it with the right DDL and DML for the model kind (`CREATE OR REPLACE`, `INSERT`, `MERGE`, and so on), but the shape of the output is entirely whatever this query returns.
 
 ```sql linenums="1"
 SELECT

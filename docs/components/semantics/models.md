@@ -25,7 +25,7 @@ joins: [...]                 # Relationships to other semantic models
 | Field | Required | Description |
 |-------|----------|-------------|
 | `kind: semantic` | Yes | Declares the file as a semantic model. |
-| `name` | Yes | Business-friendly identifier consumers reference (e.g. `users`). Lowercase identifier — see [Naming rules](#naming-rules). This is the identifier you use in `{name.column}` references everywhere else. |
+| `name` | Yes | Business-friendly identifier consumers reference (e.g. `users`). Lowercase identifier (see [Naming rules](#naming-rules)). This is the identifier you use in `{name.column}` references everywhere else. |
 | `depends_on` | Yes | The fully qualified Vulcan model this wraps (e.g. `b2b_saas.users`). Must match a model defined in your `models/` directory. |
 | `dimensions` | **Yes** | List of dimensions. Must be non-empty. See [Dimensions](#dimensions). |
 | `description` | No | Human-readable explanation of the semantic model. |
@@ -128,7 +128,7 @@ dimensions:
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `name` | Yes | Lowercase identifier — see [Naming rules](#naming-rules). Must be unique within the dimension. |
+| `name` | Yes | Lowercase identifier (see [Naming rules](#naming-rules)). Must be unique within the dimension. |
 | `interval` | Yes | Duration string like `1 hour`, `30 minutes`, `1 month`. |
 | `description` | No | Human-readable explanation. |
 | `ai_context` | No | Hints for AI/LLM consumers. See [AI context](#ai-context). |
@@ -151,11 +151,11 @@ dimensions:
 
 | Property | Required | Description |
 |----------|----------|-------------|
-| `name` | Yes | Column name in the underlying Vulcan model. Mixed case allowed — see [Naming rules](#naming-rules). |
+| `name` | Yes | Column name in the underlying Vulcan model. Mixed case allowed (see [Naming rules](#naming-rules)). |
 | `description` | No | Human-readable explanation. |
 | `tags` | No | List of categorization labels. |
 | `terms` | No | List of business glossary references. |
-| `granularities` | No | List of time buckets — only meaningful on `TIMESTAMP`/`DATETIME` columns. Granularity names must be unique within the dimension. |
+| `granularities` | No | List of time buckets. Only meaningful on `TIMESTAMP`/`DATETIME` columns. Granularity names must be unique within the dimension. |
 | `format` | No | Free-form display hint (e.g. `percent`, `currency`). |
 | `ai_context` | No | Hints for AI/LLM consumers. See [AI context](#ai-context). |
 | `public` | No | Whether the dimension is visible to consumers (default: `true`). |
@@ -247,7 +247,7 @@ Pick the form that best describes intent: omit or `"*"` for "count rows", a `{na
 
 | Property | Required | Description |
 |----------|----------|-------------|
-| `name` | Yes | Lowercase identifier — see [Naming rules](#naming-rules). Must be unique among measures and segments in this semantic model. |
+| `name` | Yes | Lowercase identifier (see [Naming rules](#naming-rules)). Must be unique among measures and segments in this semantic model. |
 | `type` | Yes | Aggregation type (see table above). Normalized to lowercase. |
 | `expression` | Conditionally | Column reference (`{name.column}`) or SQL expression. Required for every type except `count`. |
 | `filters` | No | List of SQL conditions that restrict which rows are aggregated. **Only allowed on** `count`, `count_distinct`, `count_distinct_approx`, `sum`, `avg`, `min`, `max`. **Never allowed on** `number`. Use `{name.column}` references. |
@@ -259,7 +259,7 @@ Pick the form that best describes intent: omit or `"*"` for "count rows", a `{na
 | `public` | No | Whether the measure is visible to consumers (default: `true`). |
 
 !!! warning "Reserved name"
-    `count` is a reserved measure name — Vulcan adds an implicit `count` measure automatically. Use a different name like `total_users`, `row_count`, or `subscription_count`.
+    `count` is a reserved measure name: Vulcan adds an implicit `count` measure automatically. Use a different name like `total_users`, `row_count`, or `subscription_count`.
 
 ### Rolling windows
 
@@ -327,7 +327,7 @@ segments:
 
 | Property | Required | Description |
 |----------|----------|-------------|
-| `name` | Yes | Lowercase identifier — see [Naming rules](#naming-rules). |
+| `name` | Yes | Lowercase identifier (see [Naming rules](#naming-rules)). |
 | `expression` | Yes | SQL boolean condition. **Must reference columns of the current semantic model only** (e.g. `{usage_sessions.device_type} = 'mobile'`). Cross-model filters belong on a metric or a measure. |
 | `description` | No | Human-readable explanation. |
 | `tags` | No | List of categorization labels. |
@@ -359,14 +359,14 @@ joins:
 
 | Property | Required | Description |
 |----------|----------|-------------|
-| `name` | Yes | Lowercase identifier — see [Naming rules](#naming-rules). **Must match the `name:` of an existing semantic model** in the project. **Must not equal the current model's own `name`.** |
+| `name` | Yes | Lowercase identifier (see [Naming rules](#naming-rules)). **Must match the `name:` of an existing semantic model** in the project. **Must not equal the current model's own `name`.** |
 | `type` | Yes | One of `one_to_one`, `one_to_many`, `many_to_one`. Normalized to lowercase. |
 | `expression` | Yes | SQL-like join predicate referencing both sides as `{model_a.col} = {model_b.col}`. |
 | `ai_context` | No | Hints for AI/LLM consumers. See [AI context](#ai-context). |
 | `fqn` | No | Fully-qualified name of the join target. Engine-set; rarely authored by hand. |
 
 !!! warning "Joins do not accept metadata"
-    Joins do **not** support `description`, `tags`, `terms`, or `public`. Only the fields above are allowed — extra keys fail validation.
+    Joins do **not** support `description`, `tags`, `terms`, or `public`. Only the fields above are allowed; extra keys fail validation.
 
 ### Join types
 

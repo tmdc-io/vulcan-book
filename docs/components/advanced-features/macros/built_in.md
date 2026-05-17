@@ -12,7 +12,7 @@ Plus, you can write macro logic in Python, which gives you way more power than s
 
 ### How Vulcan macros work
 
-This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's helpful when you're debugging something that's not working as expected.
+This section describes what Vulcan actually does when it processes a macro. You don't need it to write macros, only to debug ones that aren't behaving the way you expected.
 
 The critical distinction between the Vulcan macro approach and templating systems is the role string substitution plays. In templating systems, string substitution is the entire and only point.
 
@@ -1196,7 +1196,7 @@ Note: This is DuckDB SQL and other dialects will be transpiled accordingly.
 
 - Generating references to engine-specific metadata tables that are derived from the physical table name, such as the [`<table>$properties`](https://trino.io/docs/current/connector/iceberg.html#metadata-tables) metadata table in Trino.
 
-Under the hood, it uses the `@this_model` variable so it can only be used during the `creating` and `evaluation` [runtime stages](./variables.md#runtime-variables). Attempting to use it at the `loading` runtime stage will result in a no-op.
+It relies on the `@this_model` variable, so it only works during the `creating` and `evaluation` [runtime stages](./variables.md#runtime-variables). Calling it during the `loading` stage is a no-op.
 
 The `@resolve_template` macro supports the following arguments:
 
@@ -1945,7 +1945,7 @@ Accessing the schema of an upstream model can be useful for various reasons. For
 
 - Applying transformations to columns, such as masking PII or computing various statistics based on the column types
 
-Thus, leveraging `columns_to_types` can also enable one to write code according to the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle, as a single macro function can implement the transformations instead of creating a different macro for each model of interest.
+Using `columns_to_types`, a single macro can apply the same transformation to every column that matches some condition, so you don't end up with one near-duplicate macro per model.
 
 Note: there may be models whose schema is not available when the project is being loaded, in which case a special placeholder column will be returned, aptly named: `__schema_unavailable_at_load__`. In some cases, the macro's implementation will need to account for this placeholder in order to avoid issues due to the schema being unavailable.
 
@@ -2033,13 +2033,13 @@ def print_message(evaluator, message):
 
 ### Typed macros
 
-Typed macros bring Python's type hinting to your SQL macros. By specifying what types your macro expects, you make your code more readable, easier to maintain, and less prone to errors. Plus, IDEs can give you better autocomplete and catch mistakes before you run your code.
+Typed macros are macros that declare their argument types using Python type hints. Without types, every argument arrives as a SQLGlot `exp.Literal` that you have to coerce by hand. With types, Vulcan does the coercion for you, and the function body works with regular `str`, `int`, `list`, and so on.
 
-#### Benefits of Typed Macros
+#### Why use them
 
-1. **Improved Readability**: By specifying types, the intent of the macro is clearer to other developers or future you.
-2. **Reduced Boilerplate**: No need for manual type conversion within the macro function, allowing you to focus on the core logic.
-3. **Enhanced Autocompletion**: IDEs can provide better autocompletion and documentation based on the specified types.
+1. **Less boilerplate.** No manual conversion from `exp.Literal` to `str` or `int` in every macro.
+2. **Errors caught earlier.** A wrong argument type fails at parse time, with a message that points at the call site, instead of throwing somewhere deep inside the macro body.
+3. **Better IDE support.** Autocomplete and inline docs show the actual parameter types, not `Any`.
 
 #### Defining a Typed Macro
 
@@ -2189,12 +2189,12 @@ SELECT
 FROM some_table;
 ```
 
-Generics can be nested and are resolved recursively allowing for fairly robust type hinting.
+Generics nest and resolve recursively, so `List[Tuple[str, int]]` works the way you'd expect.
 
 
-#### Conclusion
+#### Summary
 
-Typed macros in Vulcan not only enhance the development experience by making macros more readable and easier to use but also contribute to more robust and maintainable code. By leveraging Python's type hinting system, developers can create powerful and intuitive macros for their SQL queries, further bridging the gap between SQL and Python.
+Typed macros catch argument-type errors at parse time instead of at runtime, and they let macro bodies use plain Python values (`str`, `int`, lists, dicts) instead of unwrapping `exp.Literal` by hand. If a macro takes a column list or a date range, type it.
 
 ## Mixing macro systems
 
