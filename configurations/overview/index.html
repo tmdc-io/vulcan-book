@@ -462,6 +462,33 @@
 </nav>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#validation-rules">
+<span class="md-ellipsis">
+      
+        Validation Rules
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-variables">
+<span class="md-ellipsis">
+      
+        Environment Variables
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#migration-from-the-legacy-schema">
+<span class="md-ellipsis">
+      
+        Migration from the Legacy Schema
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#best-practices">
 <span class="md-ellipsis">
       
@@ -916,11 +943,11 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../components/checks/checks/">
+<a class="md-nav__link" href="../../components/data-quality/data-quality/">
 <span class="md-ellipsis">
     
   
-    Checks
+    Data Quality
   
 
     
@@ -1156,7 +1183,7 @@
 <span class="md-ellipsis">
     
   
-    Run Vulcan locally with Docker
+    Get Started
   
 
     
@@ -1763,6 +1790,33 @@
 </nav>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#validation-rules">
+<span class="md-ellipsis">
+      
+        Validation Rules
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-variables">
+<span class="md-ellipsis">
+      
+        Environment Variables
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#migration-from-the-legacy-schema">
+<span class="md-ellipsis">
+      
+        Migration from the Legacy Schema
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#best-practices">
 <span class="md-ellipsis">
       
@@ -1871,68 +1925,84 @@
 <span class="normal"><a href="#__codelineno-0-59">59</a></span>
 <span class="normal"><a href="#__codelineno-0-60">60</a></span>
 <span class="normal"><a href="#__codelineno-0-61">61</a></span>
-<span class="normal"><a href="#__codelineno-0-62">62</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># Project identity</span>
+<span class="normal"><a href="#__codelineno-0-62">62</a></span>
+<span class="normal"><a href="#__codelineno-0-63">63</a></span>
+<span class="normal"><a href="#__codelineno-0-64">64</a></span>
+<span class="normal"><a href="#__codelineno-0-65">65</a></span>
+<span class="normal"><a href="#__codelineno-0-66">66</a></span>
+<span class="normal"><a href="#__codelineno-0-67">67</a></span>
+<span class="normal"><a href="#__codelineno-0-68">68</a></span>
+<span class="normal"><a href="#__codelineno-0-69">69</a></span>
+<span class="normal"><a href="#__codelineno-0-70">70</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># Project identity</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">orders-analytics</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Orders Analytics Platform</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Orders Analytics is a centralized data product delivering clean, trusted insights across the full order lifecycle.</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="c1"># Classification</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="nt">tags</span><span class="p">:</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e-commerce</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retail</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales_analytics</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer_analytics</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="c1"># Catalog metadata</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="nt">discoverable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1.2</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="nt">alignment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">consumer_aligned</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="c1"># Environment behaviour</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="nt">vde</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># set to true to enable Virtual Data Environments; not supported on spark/trino</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="nt">terms</span><span class="p">:</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.data_product</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.analytics_platform</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.sales_operations</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="c1"># Metadata</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="nt">metadata</span><span class="p">:</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales_operations</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="w">  </span><span class="nt">use_cases</span><span class="p">:</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Daily and weekly sales reporting</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Customer segmentation and RFM analysis</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales funnel conversion tracking</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Product performance analytics</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="w">  </span><span class="nt">limitations</span><span class="p">:</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Demo dataset with synthetic data (100 customers, 1000 orders)</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Historical data from November 2025 onwards</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="c1"># Gateway Connection</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="nt">gateways</span><span class="p">:</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DB_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
-</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
-</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATE_DB_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
-</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a>
-</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a>
-</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="c1"># Model Defaults (required)</span>
-</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="nt">model_defaults</span><span class="p">:</span>
-</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
-</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'@daily'</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="c1"># Classification</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="nt">tags</span><span class="p">:</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e-commerce</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retail</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales_analytics</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer_analytics</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="nt">terms</span><span class="p">:</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.data_product</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.analytics_platform</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.sales_operations</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="c1"># Metadata</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales_operations</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="w">  </span><span class="nt">use_cases</span><span class="p">:</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Daily and weekly sales reporting</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Customer segmentation and RFM analysis</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales funnel conversion tracking</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Product performance analytics</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="w">  </span><span class="nt">limitations</span><span class="p">:</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Demo dataset with synthetic data (100 customers, 1000 orders)</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Historical data from November 2025 onwards</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="c1"># Gateway Connection</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="nt">gateways</span><span class="p">:</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="w">    </span><span class="nt">connection</span><span class="p">:</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('DB_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="w">    </span><span class="nt">state_connection</span><span class="p">:</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="w">      </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="w">      </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">env_var('STATE_DB_PASSWORD')</span><span class="nv"> </span><span class="s">}}"</span>
 </span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>
-</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="c1"># Linting Rules</span>
-</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="nt">linter</span><span class="p">:</span>
-</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ambiguousorinvalidcolumn</span>
-</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidselectstarexpansion</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="nt">default_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="c1"># Model Defaults (required)</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="nt">model_defaults</span><span class="p">:</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="w">  </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">'@daily'</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="c1"># Linting Rules</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="nt">linter</span><span class="p">:</span>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ambiguousorinvalidcolumn</span>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidselectstarexpansion</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h2 id="configuration-structure">Configuration Structure<a class="headerlink" href="#configuration-structure" title="Link to this section">¶</a></h2>
 <pre class="mermaid"><code>graph TB
@@ -1958,7 +2028,7 @@
     Options --&gt; ExecHooks[execution_hooks]</code></pre>
 <h2 id="configuration-sections">Configuration Sections<a class="headerlink" href="#configuration-sections" title="Link to this section">¶</a></h2>
 <h3 id="project-settings">Project Settings<a class="headerlink" href="#project-settings" title="Link to this section">¶</a></h3>
-<p>Metadata fields that identify your project. They don't affect how Vulcan runs, but they're useful for organization and discovery.</p>
+<p>Metadata fields that identify your project. They don't affect how Vulcan runs, but catalog tools rely on them for organization and discovery.</p>
 <table>
 <thead>
 <tr>
@@ -1971,13 +2041,13 @@
 <tbody>
 <tr>
 <td><code>name</code></td>
-<td>Project identifier (used internally)</td>
+<td>Project identifier (used internally). Can also be set via <code>DATAOS_RESOURCE_NAME</code> env var.</td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;">Yes</td>
 </tr>
 <tr>
 <td><code>description</code></td>
-<td>Project description</td>
+<td>Project description. Has a placeholder default but is still validated as non-empty.</td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;">Yes</td>
 </tr>
@@ -1988,8 +2058,26 @@
 <td style="text-align: center;">No</td>
 </tr>
 <tr>
+<td><code>discoverable</code></td>
+<td>Whether this product appears in catalog search</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Release version (SemVer 2.0, e.g. <code>0.1.2</code>)</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr>
+<td><code>alignment</code></td>
+<td>Data Mesh orientation: <code>source_aligned</code> or <code>consumer_aligned</code></td>
+<td style="text-align: center;">enum</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr>
 <td><code>tags</code></td>
-<td>Labels for categorization and filtering</td>
+<td>Labels for categorization and filtering. Merged with <code>DATAOS_RESOURCE_TAGS</code> env var.</td>
 <td style="text-align: center;">array of string</td>
 <td style="text-align: center;">No</td>
 </tr>
@@ -2001,7 +2089,7 @@
 </tr>
 <tr>
 <td><code>metadata</code></td>
-<td>Project metadata object (domain, use_cases, limitations)</td>
+<td>Project metadata object (domain, use_cases, limitations, reference_links)</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 </tr>
@@ -2012,17 +2100,26 @@
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Orders Analytics Platform</span>
 </span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Orders Analytics delivers insights across the full order lifecycle.</span>
 </span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="c1"># Classification</span>
-</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="nt">tags</span><span class="p">:</span>
-</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e-commerce</span>
-</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retail</span>
-</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales_analytics</span>
-</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="nt">terms</span><span class="p">:</span>
-</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.data_product</span>
-</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.analytics_platform</span>
-</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.sales_operations</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="c1"># Catalog metadata</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="nt">discoverable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1.2</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="nt">alignment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">consumer_aligned</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="c1"># Classification</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="nt">tags</span><span class="p">:</span>
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">e-commerce</span>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retail</span>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales_analytics</span>
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="nt">terms</span><span class="p">:</span>
+</span><span id="__span-1-18"><a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.data_product</span>
+</span><span id="__span-1-19"><a href="#__codelineno-1-19" id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.analytics_platform</span>
+</span><span id="__span-1-20"><a href="#__codelineno-1-20" id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">glossary.sales_operations</span>
 </span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Tenant comes from the environment</p>
+<p><code>tenant</code> is not a YAML key in <code>config.yaml</code>. Set it via the <code>DATAOS_TENANT_ID</code> environment variable (or <code>.env</code> file). Without it, Vulcan refuses to load the project.</p>
+</div>
 <h3 id="metadata">Metadata<a class="headerlink" href="#metadata" title="Link to this section">¶</a></h3>
 <p>Metadata fields provide additional context about your project's purpose and scope. Use these to document what your project does, where it applies, and any known constraints.</p>
 <table>
@@ -2261,7 +2358,7 @@
 <tbody>
 <tr>
 <td><code>name</code></td>
-<td>Project identifier (used for resource naming)</td>
+<td>Project identifier (used for resource naming). Overridable via <code>DATAOS_RESOURCE_NAME</code>.</td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;"><strong>Yes</strong></td>
 <td>-</td>
@@ -2269,10 +2366,10 @@
 </tr>
 <tr>
 <td><code>description</code></td>
-<td>Project description and purpose</td>
+<td>Project description and purpose. Validated as non-empty.</td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;"><strong>Yes</strong></td>
-<td>-</td>
+<td>placeholder</td>
 <td>-</td>
 </tr>
 <tr>
@@ -2284,8 +2381,40 @@
 <td>-</td>
 </tr>
 <tr>
+<td><code>discoverable</code></td>
+<td>Whether the product is listed in catalog search</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+<td><code>true</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Release version (SemVer 2.0)</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+<td><code>"0.0.0"</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>alignment</code></td>
+<td>Data Mesh orientation (<code>source_aligned</code> or <code>consumer_aligned</code>)</td>
+<td style="text-align: center;">enum</td>
+<td style="text-align: center;">No</td>
+<td><code>consumer_aligned</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>project</code></td>
+<td>Legacy alias of <code>name</code>. Auto-filled from <code>name</code> if omitted.</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+<td><code>""</code></td>
+<td>-</td>
+</tr>
+<tr>
 <td><code>tags</code></td>
-<td>Labels for categorization and filtering</td>
+<td>Labels for categorization. Merged with <code>DATAOS_RESOURCE_TAGS</code>.</td>
 <td style="text-align: center;">array</td>
 <td style="text-align: center;">No</td>
 <td><code>[]</code></td>
@@ -2301,7 +2430,7 @@
 </tr>
 <tr>
 <td><code>metadata</code></td>
-<td>Project metadata (domain, use_cases, limitations)</td>
+<td>Project metadata (domain, use_cases, limitations, reference_links)</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 <td><code>null</code></td>
@@ -2309,7 +2438,7 @@
 </tr>
 <tr>
 <td><code>metadata.domain</code></td>
-<td>Business domain (sales, marketing, finance, etc.)</td>
+<td>Business domain (sales, marketing, finance, etc.). Required when <code>metadata:</code> is set.</td>
 <td style="text-align: center;">string</td>
 <td style="text-align: center;">No</td>
 <td><code>null</code></td>
@@ -2326,6 +2455,14 @@
 <tr>
 <td><code>metadata.limitations</code></td>
 <td>Known constraints or caveats</td>
+<td style="text-align: center;">array</td>
+<td style="text-align: center;">No</td>
+<td><code>[]</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>metadata.reference_links</code></td>
+<td>List of <code>{name, href}</code> reference links</td>
 <td style="text-align: center;">array</td>
 <td style="text-align: center;">No</td>
 <td><code>[]</code></td>
@@ -2375,7 +2512,7 @@
 <td>Connection for running unit tests</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
-<td>DuckDB</td>
+<td><code>null</code></td>
 <td>-</td>
 </tr>
 <tr>
@@ -2383,7 +2520,7 @@
 <td>Scheduler configuration</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
-<td><code>builtin</code></td>
+<td>Built-in (<code>BuiltInSchedulerConfig</code>)</td>
 <td>-</td>
 </tr>
 <tr>
@@ -2423,7 +2560,7 @@
 <td>Root-level default test connection</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
-<td>DuckDB</td>
+<td><code>null</code></td>
 <td>-</td>
 </tr>
 <tr>
@@ -2431,7 +2568,15 @@
 <td>Root-level default scheduler</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
-<td><code>builtin</code></td>
+<td>Built-in (<code>BuiltInSchedulerConfig</code>)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>Separate root-level state connection (alternative to per-gateway <code>state_connection</code>). Can also be loaded from <code>/etc/dataos/secret/state_connection_config.yaml</code>.</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">No</td>
+<td><code>null</code></td>
 <td>-</td>
 </tr>
 </tbody>
@@ -2784,6 +2929,14 @@
 </thead>
 <tbody>
 <tr>
+<td><code>vde</code></td>
+<td>Turn full Virtual Data Environments on/off. <code>true</code> = versioned physical tables + virtual layer; <code>false</code> = simple mode. Defaults to <code>false</code>: enable it explicitly when you want VDE. Not supported for <code>spark</code> and <code>trino</code> gateways: validation rejects <code>vde: true</code> on those. Replaces the deprecated <code>virtual_environment_mode</code>.</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+<td><code>false</code></td>
+<td>-</td>
+</tr>
+<tr>
 <td><code>default_target_environment</code></td>
 <td>Default environment for plan/run commands</td>
 <td style="text-align: center;">string</td>
@@ -2817,7 +2970,7 @@
 </tr>
 <tr>
 <td><code>physical_schema_mapping</code></td>
-<td>Map model patterns to physical schema names</td>
+<td>Map model patterns (regex) to physical schema names. Replaces the deprecated <code>physical_schema_override</code>, which is auto-converted with a warning.</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 <td><code>{}</code></td>
@@ -2825,8 +2978,8 @@
 </tr>
 <tr>
 <td><code>environment_suffix_target</code></td>
-<td>Where to append environment name</td>
-<td style="text-align: center;">string</td>
+<td>Where to append environment name (<code>schema</code>, <code>table</code>, <code>catalog</code>)</td>
+<td style="text-align: center;">enum</td>
 <td style="text-align: center;">No</td>
 <td><code>schema</code></td>
 <td>-</td>
@@ -2841,23 +2994,15 @@
 </tr>
 <tr>
 <td><code>physical_table_naming_convention</code></td>
-<td>How to name tables at physical layer</td>
-<td style="text-align: center;">string</td>
+<td>How to name tables at the physical layer</td>
+<td style="text-align: center;">enum</td>
 <td style="text-align: center;">No</td>
-<td><code>full</code></td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>virtual_environment_mode</code></td>
-<td>How to handle environments</td>
-<td style="text-align: center;">string</td>
-<td style="text-align: center;">No</td>
-<td><code>full</code></td>
+<td><code>schema_and_table</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>gateway_managed_virtual_layer</code></td>
-<td>Whether gateways manage virtual layer</td>
+<td>Whether virtual-layer views are created by the model's own gateway</td>
 <td style="text-align: center;">boolean</td>
 <td style="text-align: center;">No</td>
 <td><code>false</code></td>
@@ -2988,6 +3133,30 @@
 <td>-</td>
 </tr>
 <tr>
+<td><code>plan.auto_categorize_changes</code></td>
+<td>Auto-categorize changes as breaking/non-breaking. Replaces top-level <code>auto_categorize_changes</code>.</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">No</td>
+<td>Default</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>plan.include_unmodified</code></td>
+<td>Include unmodified models in the plan output. Replaces top-level <code>include_unmodified</code>.</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+<td><code>false</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>plan.use_finalized_state</code></td>
+<td>Use finalized state when creating plans. Requires <code>vde: true</code>.</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+<td><code>false</code></td>
+<td>-</td>
+</tr>
+<tr>
 <td><code>migration</code></td>
 <td>Migration configuration</td>
 <td style="text-align: center;">object</td>
@@ -3006,6 +3175,14 @@
 <tr>
 <td><code>janitor</code></td>
 <td>Cleanup task configuration</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">No</td>
+<td>Default</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>model_naming</code></td>
+<td>Name inference rules for models</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 <td>Default</td>
@@ -3044,7 +3221,7 @@
 </tr>
 <tr>
 <td><code>object_store</code></td>
-<td>Object storage for query results</td>
+<td>Object storage for query results (MinIO/S3/GCS/Azure)</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 <td><code>null</code></td>
@@ -3055,23 +3232,15 @@
 <td>External transpiler service</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
-<td>Default</td>
+<td><code>{base_url: "http://127.0.0.1:8100", timeout: 30, token: null}</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>graphql</code></td>
-<td>GraphQL API configuration</td>
+<td>GraphQL proxy configuration</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
-<td>Default</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>state</code></td>
-<td>Root-level state connection (production)</td>
-<td style="text-align: center;">object</td>
-<td style="text-align: center;">No</td>
-<td><code>null</code></td>
+<td><code>{base_url: "http://127.0.0.1:3000", timeout: 30}</code></td>
 <td>-</td>
 </tr>
 <tr>
@@ -3084,10 +3253,26 @@
 </tr>
 <tr>
 <td><code>analytics</code></td>
-<td>CloudEvents telemetry configuration</td>
+<td>CloudEvents telemetry configuration. Replaces the deprecated <code>disable_anonymized_analytics</code>.</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 <td><code>{enabled: false}</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>analytics.enabled</code></td>
+<td>Enable telemetry publishing</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+<td><code>false</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>analytics.api_key</code></td>
+<td>Telemetry API key. Required when <code>analytics.enabled: true</code>.</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+<td><code>null</code></td>
 <td>-</td>
 </tr>
 <tr>
@@ -3100,16 +3285,64 @@
 </tr>
 <tr>
 <td><code>heimdall</code></td>
-<td>Authentication service configuration</td>
+<td>Heimdall authentication (Vulcan API only)</td>
 <td style="text-align: center;">object</td>
 <td style="text-align: center;">No</td>
 <td><code>{enabled: false}</code></td>
 <td>-</td>
 </tr>
+<tr>
+<td><code>heimdall.enabled</code></td>
+<td>Enable Heimdall auth</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+<td><code>false</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>heimdall.base_url</code></td>
+<td>Heimdall service URL. Required when <code>heimdall.enabled: true</code>.</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+<td><code>null</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>hera</code></td>
+<td>Hera/OpenMetadata sync configuration</td>
+<td style="text-align: center;">object</td>
+<td style="text-align: center;">No</td>
+<td><code>{enabled: false}</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>hera.enabled</code></td>
+<td>Enable Hera/OpenMetadata sync</td>
+<td style="text-align: center;">boolean</td>
+<td style="text-align: center;">No</td>
+<td><code>false</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>hera.url</code></td>
+<td>Hera service URL. Required when <code>hera.enabled: true</code>.</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+<td><code>null</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>hera.token</code></td>
+<td>Hera auth token. Required when <code>hera.enabled: true</code>.</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: center;">No</td>
+<td><code>null</code></td>
+<td>-</td>
+</tr>
 </tbody>
 </table>
 <h3 id="minimal-valid-configuration">Minimal Valid Configuration<a class="headerlink" href="#minimal-valid-configuration" title="Link to this section">¶</a></h3>
-<p>The absolute minimum configuration required to start:</p>
+<p>The non-skippable parts of <code>config.yaml</code> are: a non-empty <code>name</code>, a non-empty <code>description</code>, at least one working <code>gateways.&lt;name&gt;.connection</code>, and <code>model_defaults.dialect</code>. The runtime also needs <code>DATAOS_TENANT_ID</code> in the environment.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-project</span>
 </span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My project description</span>
 </span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a>
@@ -3126,6 +3359,103 @@
 </span><span id="__span-9-14"><a href="#__codelineno-9-14" id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="nt">model_defaults</span><span class="p">:</span>
 </span><span id="__span-9-15"><a href="#__codelineno-9-15" id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="w">  </span><span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
 </span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="c1"># Required at runtime, not in YAML</span>
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DATAOS_TENANT_ID</span><span class="o">=</span>my-tenant
+</span></code></pre></div>
+<p>Everything else has a default and you can omit it.</p>
+<h2 id="validation-rules">Validation Rules<a class="headerlink" href="#validation-rules" title="Link to this section">¶</a></h2>
+<p>Some fields become required only when another field is enabled:</p>
+<ul>
+<li><code>name</code> must be non-empty (or supplied via <code>DATAOS_RESOURCE_NAME</code>).</li>
+<li><code>description</code> must be non-empty.</li>
+<li><code>metadata.domain</code> is required when the <code>metadata:</code> block is present.</li>
+<li><code>hera.url</code> and <code>hera.token</code> are required when <code>hera.enabled: true</code>.</li>
+<li><code>heimdall.base_url</code> is required when <code>heimdall.enabled: true</code>.</li>
+<li><code>analytics.api_key</code> is required when <code>analytics.enabled: true</code>.</li>
+<li><code>vde: true</code> is rejected for <code>spark</code> and <code>trino</code> gateway types.</li>
+<li><code>version</code> must be valid SemVer 2.0 (e.g. <code>0.1.2</code>, <code>1.0.0-rc.1</code>).</li>
+</ul>
+<h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this section">¶</a></h2>
+<p>A few values come from the shell or <code>.env</code>, not from YAML:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATAOS_TENANT_ID</code></td>
+<td>Required at runtime. Supplies the <code>tenant</code>. Not a YAML key.</td>
+</tr>
+<tr>
+<td><code>DATAOS_RESOURCE_NAME</code></td>
+<td>Overrides <code>name</code> from <code>config.yaml</code>.</td>
+</tr>
+<tr>
+<td><code>DATAOS_RESOURCE_TAGS</code></td>
+<td>Merged into <code>tags</code> from <code>config.yaml</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="migration-from-the-legacy-schema">Migration from the Legacy Schema<a class="headerlink" href="#migration-from-the-legacy-schema" title="Link to this section">¶</a></h2>
+<p>If you have an older <code>config.yaml</code>, these keys have moved or been replaced:</p>
+<table>
+<thead>
+<tr>
+<th>Old key</th>
+<th>Replacement</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>virtual_environment_mode: full</code></td>
+<td><code>vde: true</code></td>
+<td>Old string values fail validation.</td>
+</tr>
+<tr>
+<td><code>virtual_environment_mode: dev_only</code></td>
+<td><code>vde: false</code> (or omit)</td>
+<td><code>vde</code> defaults to <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>auto_categorize_changes</code> (top-level)</td>
+<td><code>plan.auto_categorize_changes</code></td>
+<td>Now nested under <code>plan</code>.</td>
+</tr>
+<tr>
+<td><code>include_unmodified</code> (top-level)</td>
+<td><code>plan.include_unmodified</code></td>
+<td>Now nested under <code>plan</code>.</td>
+</tr>
+<tr>
+<td><code>physical_schema_override</code></td>
+<td><code>physical_schema_mapping</code></td>
+<td>Auto-converted with a warning.</td>
+</tr>
+<tr>
+<td><code>disable_anonymized_analytics</code></td>
+<td><code>analytics.enabled</code></td>
+<td>Move into the <code>analytics</code> block.</td>
+</tr>
+<tr>
+<td><code>tenant</code> (in YAML)</td>
+<td><code>DATAOS_TENANT_ID</code> env var</td>
+<td>No longer a YAML key.</td>
+</tr>
+</tbody>
+</table>
+<p>Quick migration checklist:</p>
+<ol>
+<li>Replace <code>virtual_environment_mode: full</code> with <code>vde: true</code>.</li>
+<li>Remove <code>virtual_environment_mode: dev_only</code> (or set <code>vde: false</code> explicitly).</li>
+<li>Add <code>discoverable</code>, <code>version</code>, <code>alignment</code> near the top of the file if you want non-default values.</li>
+<li>Make sure <code>version</code> is valid SemVer (<code>0.1.2</code>, not <code>0.1</code> or <code>v0.1.2</code>).</li>
+<li>Remove any deprecated keys listed above.</li>
+<li>Set <code>DATAOS_TENANT_ID</code> in your shell or <code>.env</code>.</li>
+</ol>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Link to this section">¶</a></h2>
 <p>Use environment variables for sensitive data like passwords and API keys. Keeps secrets out of your config files and makes it easier to manage different environments.</p>
 <p>Set meaningful defaults in <code>model_defaults</code> to reduce boilerplate. If most of your models use the same dialect, start date, or cron schedule, set it once here instead of repeating it everywhere.</p>

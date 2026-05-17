@@ -9,7 +9,7 @@
 <link href="../../data-product-lifecycle/" rel="next"/>
 <link href="../../../assets/images/D_logo_dark-32px.png" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
-<title>Run Vulcan locally with Docker - DataOS Vulcan</title>
+<title>Get Started - DataOS Vulcan</title>
 <link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
 <link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -44,7 +44,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#run-vulcan-locally-with-docker">
+<a class="md-skip" href="#get-started">
           Skip to content
         </a>
 </div>
@@ -68,7 +68,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Run Vulcan locally with Docker
+              Get Started
             
           </span>
 </div>
@@ -645,11 +645,11 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../components/checks/checks/">
+<a class="md-nav__link" href="../../../components/data-quality/data-quality/">
 <span class="md-ellipsis">
     
   
-    Checks
+    Data Quality
   
 
     
@@ -886,7 +886,7 @@
 <span class="md-ellipsis">
     
   
-    Run Vulcan locally with Docker
+    Get Started
   
 
     
@@ -897,7 +897,7 @@
 <span class="md-ellipsis">
     
   
-    Run Vulcan locally with Docker
+    Get Started
   
 
     
@@ -1518,7 +1518,7 @@
 </ol>
 </nav>
 <article class="md-content__inner md-typeset">
-<h1 id="run-vulcan-locally-with-docker">Run Vulcan locally with Docker<a class="headerlink" href="#run-vulcan-locally-with-docker" title="Link to this section">¶</a></h1>
+<h1 id="get-started">Get Started<a class="headerlink" href="#get-started" title="Link to this section">¶</a></h1>
 <p>Run Vulcan on your laptop with the <strong>Local Development Kit (LDK)</strong>. You get the full CLI in a Docker container, no cloud account required.</p>
 <h2 id="what-is-the-ldk">What is the LDK?<a class="headerlink" href="#what-is-the-ldk" title="Link to this section">¶</a></h2>
 <p>The LDK is a single Docker image that gives you the <strong>Vulcan CLI</strong> on your machine. Use it to build models, run plans, test queries, and validate your semantic layer without any cloud deployment.</p>
@@ -2232,6 +2232,18 @@
 <td>SQL and Python model files</td>
 </tr>
 <tr>
+<td><code>models/dq/</code></td>
+<td>Data Quality rule packs (<code>kind: dq</code>), non-blocking</td>
+</tr>
+<tr>
+<td><code>models/semantics/</code></td>
+<td>Semantic models (<code>kind: semantic</code>)</td>
+</tr>
+<tr>
+<td><code>models/metrics/</code></td>
+<td>Per-metric files (one metric per file)</td>
+</tr>
+<tr>
 <td><code>seeds/</code></td>
 <td>Static CSV data files</td>
 </tr>
@@ -2240,20 +2252,12 @@
 <td>Quality assertions that block execution on failure</td>
 </tr>
 <tr>
-<td><code>checks/</code></td>
-<td>Quality monitors (non-blocking)</td>
-</tr>
-<tr>
 <td><code>tests/</code></td>
 <td>Model logic validation</td>
 </tr>
 <tr>
 <td><code>macros/</code></td>
 <td>Reusable SQL snippets</td>
-</tr>
-<tr>
-<td><code>semantics/</code></td>
-<td>Semantic layer definitions (measures, dimensions)</td>
 </tr>
 </tbody>
 </table>
@@ -2277,24 +2281,38 @@
 </span></code></pre></div>
 <details class="note">
 <summary>Using Postgres as state backend instead</summary>
-<p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
+<p>With the Postgres engine you already need a <code>warehouse</code> Postgres container for your data. Add a <code>statestore</code> container alongside it so both run on the <code>vulcan</code> network you created in Step 2.</p>
+<p>Save the following as <code>docker-compose.infra.yml</code> in your project folder:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
-</span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
+</span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-27-4"><a href="#__codelineno-27-4" id="__codelineno-27-4" name="__codelineno-27-4"></a>
 </span><span id="__span-27-5"><a href="#__codelineno-27-5" id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-27-6"><a href="#__codelineno-27-6" id="__codelineno-27-6" name="__codelineno-27-6"></a><span class="w">  </span><span class="nt">statestore</span><span class="p">:</span>
+</span><span id="__span-27-6"><a href="#__codelineno-27-6" id="__codelineno-27-6" name="__codelineno-27-6"></a><span class="w">  </span><span class="nt">warehouse</span><span class="p">:</span>
 </span><span id="__span-27-7"><a href="#__codelineno-27-7" id="__codelineno-27-7" name="__codelineno-27-7"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15</span>
-</span><span id="__span-27-8"><a href="#__codelineno-27-8" id="__codelineno-27-8" name="__codelineno-27-8"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-27-8"><a href="#__codelineno-27-8" id="__codelineno-27-8" name="__codelineno-27-8"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
 </span><span id="__span-27-9"><a href="#__codelineno-27-9" id="__codelineno-27-9" name="__codelineno-27-9"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
 </span><span id="__span-27-10"><a href="#__codelineno-27-10" id="__codelineno-27-10" name="__codelineno-27-10"></a><span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span><span id="__span-27-11"><a href="#__codelineno-27-11" id="__codelineno-27-11" name="__codelineno-27-11"></a><span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
-</span><span id="__span-27-12"><a href="#__codelineno-27-12" id="__codelineno-27-12" name="__codelineno-27-12"></a><span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-27-12"><a href="#__codelineno-27-12" id="__codelineno-27-12" name="__codelineno-27-12"></a><span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
 </span><span id="__span-27-13"><a href="#__codelineno-27-13" id="__codelineno-27-13" name="__codelineno-27-13"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-</span><span id="__span-27-14"><a href="#__codelineno-27-14" id="__codelineno-27-14" name="__codelineno-27-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"5433:5432"</span>
+</span><span id="__span-27-14"><a href="#__codelineno-27-14" id="__codelineno-27-14" name="__codelineno-27-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"5434:5432"</span>
 </span><span id="__span-27-15"><a href="#__codelineno-27-15" id="__codelineno-27-15" name="__codelineno-27-15"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-27-16"><a href="#__codelineno-27-16" id="__codelineno-27-16" name="__codelineno-27-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-27-17"><a href="#__codelineno-27-17" id="__codelineno-27-17" name="__codelineno-27-17"></a>
+</span><span id="__span-27-18"><a href="#__codelineno-27-18" id="__codelineno-27-18" name="__codelineno-27-18"></a><span class="w">  </span><span class="nt">statestore</span><span class="p">:</span>
+</span><span id="__span-27-19"><a href="#__codelineno-27-19" id="__codelineno-27-19" name="__codelineno-27-19"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15</span>
+</span><span id="__span-27-20"><a href="#__codelineno-27-20" id="__codelineno-27-20" name="__codelineno-27-20"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-27-21"><a href="#__codelineno-27-21" id="__codelineno-27-21" name="__codelineno-27-21"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+</span><span id="__span-27-22"><a href="#__codelineno-27-22" id="__codelineno-27-22" name="__codelineno-27-22"></a><span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-27-23"><a href="#__codelineno-27-23" id="__codelineno-27-23" name="__codelineno-27-23"></a><span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
+</span><span id="__span-27-24"><a href="#__codelineno-27-24" id="__codelineno-27-24" name="__codelineno-27-24"></a><span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statestore</span>
+</span><span id="__span-27-25"><a href="#__codelineno-27-25" id="__codelineno-27-25" name="__codelineno-27-25"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-27-26"><a href="#__codelineno-27-26" id="__codelineno-27-26" name="__codelineno-27-26"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"5433:5432"</span>
+</span><span id="__span-27-27"><a href="#__codelineno-27-27" id="__codelineno-27-27" name="__codelineno-27-27"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+</span><span id="__span-27-28"><a href="#__codelineno-27-28" id="__codelineno-27-28" name="__codelineno-27-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<p>Start both services <strong>before</strong> you run <code>vulcan info</code> or <code>vulcan plan</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">Mac/Linux</label><label for="__tabbed_9_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2316,6 +2334,11 @@
 </span><span id="__span-30-6"><a href="#__codelineno-30-6" id="__codelineno-30-6" name="__codelineno-30-6"></a><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span><span id="__span-30-7"><a href="#__codelineno-30-7" id="__codelineno-30-7" name="__codelineno-30-7"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Use service names as hosts, not <code>localhost</code></p>
+<p>The Vulcan CLI runs inside a container on the <code>vulcan</code> network. From there it reaches the Postgres containers by their service names: <code>statestore</code> and <code>warehouse</code>. That is why <code>config.yaml</code> uses <code>host: statestore</code> and <code>host: warehouse</code>.</p>
+<p>Use <code>localhost</code> only when you connect from your host machine, for example from <code>psql</code> or a SQL IDE. In that case point at the mapped host ports: <code>5433</code> for the statestore, <code>5434</code> for the warehouse.</p>
+</div>
 </details>
 <p><a href="../../../configurations/engines/postgres/postgres/"><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"></path></svg></span> Full Postgres reference</a></p>
 </div>
@@ -2335,10 +2358,11 @@
 </span></code></pre></div>
 <details class="note">
 <summary>Using Postgres as state backend instead</summary>
-<p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
+<p>Snowflake is your warehouse, so you only need to add a <code>statestore</code> Postgres container on the <code>vulcan</code> network you created in Step 2.</p>
+<p>Save the following as <code>docker-compose.infra.yml</code> in your project folder:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
-</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
+</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-32-4"><a href="#__codelineno-32-4" id="__codelineno-32-4" name="__codelineno-32-4"></a>
 </span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="nt">services</span><span class="p">:</span>
 </span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="w">  </span><span class="nt">statestore</span><span class="p">:</span>
@@ -2353,6 +2377,7 @@
 </span><span id="__span-32-15"><a href="#__codelineno-32-15" id="__codelineno-32-15" name="__codelineno-32-15"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-32-16"><a href="#__codelineno-32-16" id="__codelineno-32-16" name="__codelineno-32-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<p>Start the service <strong>before</strong> you run <code>vulcan info</code> or <code>vulcan plan</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio"/><input id="__tabbed_10_2" name="__tabbed_10" type="radio"/><div class="tabbed-labels"><label for="__tabbed_10_1">Mac/Linux</label><label for="__tabbed_10_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2374,6 +2399,11 @@
 </span><span id="__span-35-6"><a href="#__codelineno-35-6" id="__codelineno-35-6" name="__codelineno-35-6"></a><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span><span id="__span-35-7"><a href="#__codelineno-35-7" id="__codelineno-35-7" name="__codelineno-35-7"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Use service names as hosts, not <code>localhost</code></p>
+<p>The Vulcan CLI runs inside a container on the <code>vulcan</code> network and reaches the statestore by its service name. That is why <code>config.yaml</code> uses <code>host: statestore</code>.</p>
+<p>Use <code>localhost</code> only when you connect from your host machine, for example from <code>psql</code> or a SQL IDE. In that case point at the mapped host port <code>5433</code>.</p>
+</div>
 </details>
 <p><a href="../../../configurations/engines/snowflake/snowflake/"><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"></path></svg></span> Full Snowflake reference</a></p>
 </div>
@@ -2392,10 +2422,11 @@
 </span></code></pre></div>
 <details class="note">
 <summary>Using Postgres as state backend instead</summary>
-<p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
+<p>Databricks is your warehouse, so you only need to add a <code>statestore</code> Postgres container on the <code>vulcan</code> network you created in Step 2.</p>
+<p>Save the following as <code>docker-compose.infra.yml</code> in your project folder:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
-</span><span id="__span-37-3"><a href="#__codelineno-37-3" id="__codelineno-37-3" name="__codelineno-37-3"></a><span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
+</span><span id="__span-37-3"><a href="#__codelineno-37-3" id="__codelineno-37-3" name="__codelineno-37-3"></a><span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-37-4"><a href="#__codelineno-37-4" id="__codelineno-37-4" name="__codelineno-37-4"></a>
 </span><span id="__span-37-5"><a href="#__codelineno-37-5" id="__codelineno-37-5" name="__codelineno-37-5"></a><span class="nt">services</span><span class="p">:</span>
 </span><span id="__span-37-6"><a href="#__codelineno-37-6" id="__codelineno-37-6" name="__codelineno-37-6"></a><span class="w">  </span><span class="nt">statestore</span><span class="p">:</span>
@@ -2410,6 +2441,7 @@
 </span><span id="__span-37-15"><a href="#__codelineno-37-15" id="__codelineno-37-15" name="__codelineno-37-15"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-37-16"><a href="#__codelineno-37-16" id="__codelineno-37-16" name="__codelineno-37-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<p>Start the service <strong>before</strong> you run <code>vulcan info</code> or <code>vulcan plan</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio"/><input id="__tabbed_11_2" name="__tabbed_11" type="radio"/><div class="tabbed-labels"><label for="__tabbed_11_1">Mac/Linux</label><label for="__tabbed_11_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2431,6 +2463,11 @@
 </span><span id="__span-40-6"><a href="#__codelineno-40-6" id="__codelineno-40-6" name="__codelineno-40-6"></a><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span><span id="__span-40-7"><a href="#__codelineno-40-7" id="__codelineno-40-7" name="__codelineno-40-7"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Use service names as hosts, not <code>localhost</code></p>
+<p>The Vulcan CLI runs inside a container on the <code>vulcan</code> network and reaches the statestore by its service name. That is why <code>config.yaml</code> uses <code>host: statestore</code>.</p>
+<p>Use <code>localhost</code> only when you connect from your host machine, for example from <code>psql</code> or a SQL IDE. In that case point at the mapped host port <code>5433</code>.</p>
+</div>
 </details>
 <p><a href="../../../configurations/engines/databricks/databricks/"><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"></path></svg></span> Full Databricks reference</a></p>
 </div>
@@ -2449,10 +2486,11 @@
 </span></code></pre></div>
 <details class="note">
 <summary>Using Postgres as state backend instead</summary>
-<p>First, create and start a <code>docker-compose.infra.yml</code> with the statestore:</p>
+<p>Trino is your warehouse, so you only need to add a <code>statestore</code> Postgres container on the <code>vulcan</code> network you created in Step 2.</p>
+<p>Save the following as <code>docker-compose.infra.yml</code> in your project folder:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-42-1"><a href="#__codelineno-42-1" id="__codelineno-42-1" name="__codelineno-42-1"></a><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-42-2"><a href="#__codelineno-42-2" id="__codelineno-42-2" name="__codelineno-42-2"></a><span class="w">  </span><span class="nt">vulcan</span><span class="p">:</span>
-</span><span id="__span-42-3"><a href="#__codelineno-42-3" id="__codelineno-42-3" name="__codelineno-42-3"></a><span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
+</span><span id="__span-42-3"><a href="#__codelineno-42-3" id="__codelineno-42-3" name="__codelineno-42-3"></a><span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-42-4"><a href="#__codelineno-42-4" id="__codelineno-42-4" name="__codelineno-42-4"></a>
 </span><span id="__span-42-5"><a href="#__codelineno-42-5" id="__codelineno-42-5" name="__codelineno-42-5"></a><span class="nt">services</span><span class="p">:</span>
 </span><span id="__span-42-6"><a href="#__codelineno-42-6" id="__codelineno-42-6" name="__codelineno-42-6"></a><span class="w">  </span><span class="nt">statestore</span><span class="p">:</span>
@@ -2467,6 +2505,7 @@
 </span><span id="__span-42-15"><a href="#__codelineno-42-15" id="__codelineno-42-15" name="__codelineno-42-15"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
 </span><span id="__span-42-16"><a href="#__codelineno-42-16" id="__codelineno-42-16" name="__codelineno-42-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<p>Start the service <strong>before</strong> you run <code>vulcan info</code> or <code>vulcan plan</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio"/><input id="__tabbed_12_2" name="__tabbed_12" type="radio"/><div class="tabbed-labels"><label for="__tabbed_12_1">Mac/Linux</label><label for="__tabbed_12_2">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2488,6 +2527,11 @@
 </span><span id="__span-45-6"><a href="#__codelineno-45-6" id="__codelineno-45-6" name="__codelineno-45-6"></a><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span><span id="__span-45-7"><a href="#__codelineno-45-7" id="__codelineno-45-7" name="__codelineno-45-7"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulcan</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Use service names as hosts, not <code>localhost</code></p>
+<p>The Vulcan CLI runs inside a container on the <code>vulcan</code> network and reaches the statestore by its service name. That is why <code>config.yaml</code> uses <code>host: statestore</code>.</p>
+<p>Use <code>localhost</code> only when you connect from your host machine, for example from <code>psql</code> or a SQL IDE. In that case point at the mapped host port <code>5433</code>.</p>
+</div>
 </details>
 <p><a href="../../../configurations/engines/trino/trino/"><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"></path></svg></span> Full Trino reference</a></p>
 </div>
@@ -2581,11 +2625,12 @@ If missing:
 </div>
 <p><strong>Port already in use</strong></p>
 <p>If a port is occupied by another process, either stop that process or update the port mapping in <code>docker-compose.infra.yml</code>.</p>
+<p>These are the host-side ports the infra YAML maps to. The Vulcan CLI itself talks to each container by service name on port <code>5432</code> inside the <code>vulcan</code> network and never uses these.</p>
 <table>
 <thead>
 <tr>
 <th>Service</th>
-<th>Default port</th>
+<th>Host port</th>
 </tr>
 </thead>
 <tbody>
@@ -2595,7 +2640,7 @@ If missing:
 </tr>
 <tr>
 <td>Warehouse (Postgres engine only)</td>
-<td>5432</td>
+<td>5434</td>
 </tr>
 </tbody>
 </table>

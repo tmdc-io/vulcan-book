@@ -799,11 +799,11 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../components/checks/checks/">
+<a class="md-nav__link" href="../../../../components/data-quality/data-quality/">
 <span class="md-ellipsis">
     
   
-    Checks
+    Data Quality
   
 
     
@@ -1039,7 +1039,7 @@
 <span class="md-ellipsis">
     
   
-    Run Vulcan locally with Docker
+    Get Started
   
 
     
@@ -1571,6 +1571,10 @@
 <article class="md-content__inner md-typeset">
 <h1 id="trino">Trino<a class="headerlink" href="#trino" title="Link to this section">¶</a></h1>
 <p>Trino (formerly PrestoSQL) is a distributed SQL query engine designed for fast, interactive analytics across large datasets. It excels at querying data from multiple sources including data lakes, databases, and object storage. Vulcan integrates with Trino to manage your data transformations using catalogs like Iceberg, Hive, and Delta Lake.</p>
+<div class="admonition warning">
+<p class="admonition-title">VDE is not supported on Trino</p>
+<p>Setting <code>vde: true</code> in <code>config.yaml</code> is rejected by validation when the gateway type is <code>trino</code>. Trino gateways must run in simple mode (<code>vde: false</code>, which is the default). See <a href="../../../overview/#environment--schema-management"><code>vde</code></a> for details.</p>
+</div>
 <h2 id="localbuilt-in-scheduler">Local/Built-in Scheduler<a class="headerlink" href="#localbuilt-in-scheduler" title="Link to this section">¶</a></h2>
 <p><strong>Engine Adapter Type</strong>: <code>trino</code></p>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this section">¶</a></h3>

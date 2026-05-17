@@ -961,6 +961,33 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic">
+<span class="md-ellipsis">
+      
+        semantic
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric">
+<span class="md-ellipsis">
+      
+        metric
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dq">
+<span class="md-ellipsis">
+      
+        dq
+      
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -1004,11 +1031,11 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../checks/checks/">
+<a class="md-nav__link" href="../../data-quality/data-quality/">
 <span class="md-ellipsis">
     
   
-    Checks
+    Data Quality
   
 
     
@@ -1244,7 +1271,7 @@
 <span class="md-ellipsis">
     
   
-    Run Vulcan locally with Docker
+    Get Started
   
 
     
@@ -1943,6 +1970,33 @@
 <span class="md-ellipsis">
       
         INCREMENTAL_UNMANAGED
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#semantic">
+<span class="md-ellipsis">
+      
+        semantic
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metric">
+<span class="md-ellipsis">
+      
+        metric
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dq">
+<span class="md-ellipsis">
+      
+        dq
       
     </span>
 </a>
@@ -5112,6 +5166,15 @@ Then you will want to <a href="../../../guides/plan_guide/#restatement-plans-res
 <p>Similar to <code>INCREMENTAL_BY_PARTITION</code>, attempting to <a href="../../../guides/plan_guide/#restatement-plans">restate</a> an <code>INCREMENTAL_UNMANAGED</code> model will trigger a full restatement. That is, the model will be rebuilt from scratch rather than from a time slice you specify.</p>
 <p>Be very careful when restating these models!</p>
 </div>
+<h2 id="semantic">semantic<a class="headerlink" href="#semantic" title="Link to this section">¶</a></h2>
+<p>Wraps a Vulcan model with business-friendly dimensions, measures, segments, and joins. Defined in standalone YAML files under <code>models/semantics/</code> (one model per file).</p>
+<p>See <a href="../../semantics/models/">Semantic Models</a> for the full reference.</p>
+<h2 id="metric">metric<a class="headerlink" href="#metric" title="Link to this section">¶</a></h2>
+<p>Time-series analytical definition — pairs a measure from a semantic model with a time column and a default granularity, plus optional grouping dimensions and pre-built segments. Defined in standalone YAML files under <code>models/metrics/</code> (one metric per file).</p>
+<p>See <a href="../../semantics/business_metrics/">Business Metrics</a> for the full reference.</p>
+<h2 id="dq">dq<a class="headerlink" href="#dq" title="Link to this section">¶</a></h2>
+<p>Non-blocking data-quality rule pack — column profiles and validation rules attached to a single Vulcan model. Unlike <a href="../../audits/audits/">audits</a> (which block model execution on failure), DQ rules emit warnings and feed into the Activity API for trend monitoring. Defined in standalone YAML files under <code>models/dq/</code> (one pack per file).</p>
+<p>See <a href="../../data-quality/data-quality/">Data Quality</a> for the full reference.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
