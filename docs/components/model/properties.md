@@ -91,7 +91,7 @@ This becomes the production table/view name that other models and users will ref
 
 !!! tip "Best Practice"
 
-    Use the fully qualified `catalog.schema.model` format. It makes your model names explicit and unambiguous, prevents surprises when gateway defaults change, and works seamlessly in multi-catalog setups.
+    Use the fully qualified `catalog.schema.model` format. Names are unambiguous, gateway-default changes can't silently retarget a model, and multi-catalog projects work without extra config.
 
 !!! info "When do you need the catalog?"
 
@@ -1361,7 +1361,7 @@ For the full picture on incremental models, check out the [Model Kinds](model_ki
 
 ### Common Incremental Properties
 
-These properties work with all incremental model kinds. They're your toolkit for controlling incremental behavior:
+These properties work with every incremental model kind. They control how Vulcan picks intervals, handles schema changes, and writes results:
 
 | Property | Description | Type | Default |
 |----------|-------------|:----:|:-------:|

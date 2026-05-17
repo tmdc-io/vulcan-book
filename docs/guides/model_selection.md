@@ -26,7 +26,7 @@ Understanding this distinction helps you understand what model selection is doin
 
 ## Understanding Model Dependencies
 
-Before we dive into selection, let's understand how models relate to each other in Orders360. This will help you understand why selecting one model might include others.
+Selection works on top of the model dependency graph: select one model and Vulcan pulls in everything downstream of it. Here's how the models relate in the Orders360 example.
 
 ```mermaid
 flowchart TD
@@ -66,7 +66,7 @@ This is important! When you select a model, Vulcan automatically includes its do
 
 ## Syntax
 
-Model selections use the `--select-model` argument in `vulcan plan`. You can select models in several ways, by name, pattern, tags, git changes, and more. Let's explore all the options!
+Model selections use the `--select-model` argument in `vulcan plan`. The selectors below cover names, patterns, tags, git changes, and combinations.
 
 ### Basic Selection
 

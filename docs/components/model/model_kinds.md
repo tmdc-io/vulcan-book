@@ -2146,12 +2146,12 @@ See [Semantic Models](../semantics/models.md) for the full reference.
 
 ## metric
 
-Time-series analytical definition — pairs a measure from a semantic model with a time column and a default granularity, plus optional grouping dimensions and pre-built segments. Defined in standalone YAML files under `models/metrics/` (one metric per file).
+Time-series analytical definition. Pairs a measure from a semantic model with a time column and a default granularity, plus optional grouping dimensions and pre-built segments. Defined in standalone YAML files under `models/metrics/` (one metric per file).
 
 See [Business Metrics](../semantics/business_metrics.md) for the full reference.
 
 ## dq
 
-Non-blocking data-quality rule pack — column profiles and validation rules attached to a single Vulcan model. Unlike [audits](../audits/audits.md) (which block model execution on failure), DQ rules emit warnings and feed into the Activity API for trend monitoring. Defined in standalone YAML files under `models/dq/` (one pack per file).
+Non-blocking data-quality rule pack: column profiles and validation rules attached to a single Vulcan model. Unlike [audits](../audits/audits.md) (which block model execution on failure), DQ rules emit warnings and feed into the Activity API for trend monitoring. Defined in standalone YAML files under `models/dq/` (one pack per file).
 
 See [Data Quality](../data-quality/data-quality.md) for the full reference.

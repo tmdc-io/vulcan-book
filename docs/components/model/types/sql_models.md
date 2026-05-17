@@ -2,7 +2,7 @@
 
 SQL models are the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.
 
-SQL models are simple, powerful, and work with any SQL database. Most of your data transformations will be SQL models.
+SQL models work with every supported engine (Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, Redshift, MSSQL, Fabric). Most transformations in a project end up as SQL models, with Python reserved for the few cases that don't fit SQL.
 
 ## SQL-Based Definition
 
@@ -363,12 +363,12 @@ Vulcan uses [SQLGlot](https://github.com/tobymao/sqlglot) to parse and transpile
 
 ## Macros
 
-Standard SQL is powerful, but real-world data pipelines need dynamic components. Date filters that change each run, conditional logic, reusable query patterns, macros give you all of this.
+Standard SQL doesn't handle the things real pipelines need every day: date ranges that shift each run, conditional logic, repeated patterns. Macros fill that gap.
 
-**Macro variables:** Vulcan provides automatic date/time variables for incremental models. Use `@start_date`, `@end_date`, `@start_ds`, `@end_ds` and Vulcan fills them in with the current time range. No more hardcoding dates!
+**Macro variables:** incremental models get automatic time variables. `@start_date`, `@end_date`, `@start_ds`, `@end_ds` resolve to the interval Vulcan is currently processing, so you don't hard-code dates.
 
-**Custom macros:** For complex logic or reusable patterns, Vulcan supports a powerful [macro syntax](../../advanced-features/macros/overview.md) and [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/). Write macros once, use them everywhere.
+**Custom macros:** Vulcan ships [its own macro syntax](../../advanced-features/macros/overview.md) and supports [Jinja](https://jinja.palletsprojects.com/en/3.1.x/). Use them for repeated CTEs, conditional joins, or any block of SQL you'd otherwise copy and paste across models.
 
-**Why macros matter:** They make your SQL more maintainable. Instead of copy-pasting complex logic, define it once as a macro and reuse it. Your queries stay clean and readable.
+**Why bother:** the repeated SQL lives in one place. When the business rule changes, you edit one macro instead of grepping for the pattern across thirty models.
 
 Learn more about macros in the [Macros documentation](../../advanced-features/macros/overview.md).
