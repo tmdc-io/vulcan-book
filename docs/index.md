@@ -20,7 +20,7 @@ A data product moves through four phases: Input/Output, Transformation, Quality,
 
 **Transformation** is where you write models in SQL or Python, or mix both in the same project. `vulcan plan` shows the full impact of every change before it touches the warehouse, and `vulcan run` ships it on the cron you set. 
 
-**Quality** is enforced in-house, not bolted on after the fact: the linter catches errors before the warehouse does, assertions block bad rows at write time, checks watch for anomalies and drift, and tests validate your logic locally with no warehouse cost.
+**Quality** is enforced in-house, not bolted on after the fact: the linter catches errors before the warehouse does, assertions block bad rows at write time, built-in data quality to watch for anomalies and drift, and tests validate your logic locally with no warehouse cost.
 
 **Semantics** is where you define dimensions, measures, segments, and metrics once. Vulcan validates them against your models and generates REST, GraphQL, and SQL-wire APIs automatically, so the same definitions power your dashboards, notebooks, and application code.
 
@@ -74,18 +74,6 @@ graph LR
     style GraphQL fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
     style MySQL fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
-
-<!-- ## What you get -->
-<!-- 
-- **SQL + Python models** - Write transformations in either language, or mix both in the same project. Most teams start with SQL for heavy-lifting transformations, then add Python when they hit logic that's painful in SQL: API calls, ML models, complex business rules.
-
-- **CI/CD for data** - `vulcan plan` shows the full impact of every change before it touches your warehouse. Review what changed, approve when ready, roll back if something breaks.
-
-- **Data quality built in** - Assertions block bad data at the door. Checks watch for anomalies and drift without blocking. Tests validate your logic locally, no warehouse costs.
-
-- **Semantic layer** - Define dimensions, measures, segments, and metrics once. Vulcan validates them and generates REST, GraphQL, and MySQL-wire APIs. No manual API code.
-
-- **Multi-engine support** - Works with Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, Redshift, and more. -->
 
 ## Get started
 
