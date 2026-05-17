@@ -1,6 +1,6 @@
 # Semantic Query Lifecycle
 
-How a semantic query travels through Vulcan — from the moment you POST a request to when you download the result.
+How a semantic query travels through Vulcan, from the moment you POST a request to when you download the result.
 
 ---
 
@@ -14,12 +14,12 @@ POST query ──► statement ID ──► poll status ──► GET result
 
 The full lifecycle has six stages:
 
-1. **Submit** — Client sends a semantic query
-2. **Transpile** — Vulcan converts semantic references to warehouse SQL
-3. **Cache check** — Vulcan looks for an existing result before executing
-4. **Execute** — A worker runs the SQL on the data warehouse
-5. **Store** — The result is saved as a Parquet file in object storage
-6. **Fetch** — Client retrieves the result using the statement ID
+1. **Submit:** the client sends a semantic query.
+2. **Transpile:** Vulcan converts semantic references to warehouse SQL.
+3. **Cache check:** Vulcan looks for an existing result before executing.
+4. **Execute:** a worker runs the SQL on the data warehouse.
+5. **Store:** the result is saved as a Parquet file in object storage.
+6. **Fetch:** the client retrieves the result using the statement ID.
 
 ---
 
@@ -48,7 +48,7 @@ Send a `POST` to `/api/v1/query/semantic/rest` with a JSON body describing what 
 }
 ```
 
-The query uses semantic names — `orders.total_revenue`, `orders.region` — defined in your `semantics/` YAML files. You never write SQL directly.
+The query uses semantic names like `orders.total_revenue` and `orders.region`, defined in your `semantics/` YAML files. You never write SQL directly.
 
 ### Query fields
 
@@ -59,7 +59,7 @@ The query uses semantic names — `orders.total_revenue`, `orders.region` — de
 | `timeDimensions` | Time-based dimensions with granularity and date ranges |
 | `filters` | Filter conditions applied to the query |
 | `segments` | Predefined segment filters from semantic models |
-| `order` | Sort order — dict `{"field": "asc"}` or array `[["field", "desc"]]` |
+| `order` | Sort order. Dict `{"field": "asc"}` or array `[["field", "desc"]]`. |
 | `limit` | Maximum rows returned (1–50,000, default 10,000) |
 | `timezone` | Timezone for time dimensions (default `"UTC"`) |
 
@@ -73,9 +73,9 @@ The warehouse doesn't understand semantic names like `orders.total_revenue`. Vul
 Semantic query ──► Catalog + Transpiler ──► Warehouse SQL
 ```
 
-1. Vulcan loads the project's **semantic catalog** — all models, measures, dimensions, joins, and their mappings to physical tables
-2. The catalog is exported in a schema format and sent to the **Transpiler Service** along with your query
-3. The transpiler generates warehouse-specific SQL (Snowflake SQL, DuckDB SQL, etc.) based on the target engine
+1. Vulcan loads the project's **semantic catalog**: all models, measures, dimensions, joins, and their mappings to physical tables.
+2. The catalog is exported in a schema format and sent to the **Transpiler Service** along with your query.
+3. The transpiler generates warehouse-specific SQL (Snowflake SQL, DuckDB SQL, etc.) for the target engine.
 
 The generated SQL looks something like:
 
@@ -118,7 +118,7 @@ Cached results are automatically invalidated when upstream models get refreshed.
 
 ## 4. Statement ID
 
-No matter which path is taken — cache hit, piggyback, or new execution — the API responds immediately with an **HTTP 202** and a statement ID:
+Whichever path the request takes (cache hit, piggyback, or new execution), the API responds immediately with an **HTTP 202** and a statement ID:
 
 ```json
 {
@@ -149,8 +149,8 @@ ACCEPTED ──► QUEUED ──► IN_PROGRESS ──► SUCCESS
 | `ACCEPTED` | Request received, before queuing |
 | `QUEUED` | Job placed in the queue, waiting for a worker |
 | `IN_PROGRESS` | A worker picked it up and is executing SQL on the warehouse |
-| `SUCCESS` | Done — result is available |
-| `FAILED` | Something went wrong — error message is attached |
+| `SUCCESS` | Done. Result is available. |
+| `FAILED` | Something went wrong. Error message is attached. |
 | `CANCELLED` | Cancelled by the user |
 
 **Cache hits** skip straight to `SUCCESS`. **Piggybacks** mirror the status of the primary query.
@@ -161,9 +161,9 @@ Each statement ID records which path was taken:
 
 | Strategy | What happened |
 |----------|---------------|
-| `execute` | New execution — SQL sent to the warehouse |
-| `from_cache` | Cache hit — result returned from a previous execution |
-| `await_primary` | Piggyback — linked to an identical query already running |
+| `execute` | New execution. SQL sent to the warehouse. |
+| `from_cache` | Cache hit. Result returned from a previous execution. |
+| `await_primary` | Piggyback. Linked to an identical query already running. |
 
 ---
 
@@ -173,7 +173,7 @@ For new executions, the query goes through a job queue backed by PostgreSQL (PGQ
 
 1. **Runs the SQL** on your data warehouse (Snowflake, Databricks, DuckDB, etc.)
 2. **Saves the result** as a Parquet file in object storage (S3, MinIO, GCS)
-3. **Records metadata** — row count, file size, column schema, lineage
+3. **Records metadata**: row count, file size, column schema, lineage.
 4. **Creates a cache entry** so the next identical query can skip execution
 5. **Updates the statement status** to `SUCCESS` (or `FAILED` if something went wrong)
 
@@ -232,7 +232,7 @@ GET /api/v1/query/statement/{id}/result?format=json&limit=100&offset=0&columns=r
 ```
 
 !!! info "Parquet format ignores pagination"
-    When requesting Parquet format, `limit`, `offset`, and `columns` parameters are ignored — you get the full result file.
+    When requesting Parquet format, `limit`, `offset`, and `columns` parameters are ignored. You get the full result file.
 
 ---
 
@@ -282,7 +282,7 @@ If no `state_connection` is configured, Vulcan falls back to the warehouse conne
 
 ### `_query_results`
 
-Stores metadata about each query result. The actual data lives in object storage as Parquet — this table only tracks where to find it.
+Stores metadata about each query result. The data itself lives in object storage as Parquet; this table only tracks where to find it.
 
 | Column | Type | Purpose |
 |--------|------|---------|
@@ -313,7 +313,7 @@ A fingerprint is considered **stale** when `expires_ts <= now` or `invalidated_t
 
 ### `_query_requests`
 
-An audit log of every query submission. Every API call — whether it's a cache hit, piggyback, or new execution — creates a row here.
+An audit log of every query submission. Every API call creates a row here, whether it ended up as a cache hit, a piggyback, or a new execution.
 
 | Column | Type | Purpose |
 |--------|------|---------|
@@ -377,7 +377,7 @@ When a pipeline run refreshes upstream models (e.g. `orders` gets new data):
 4. The next time someone queries the same fingerprint, `get_fingerprint_result` sees the entry is stale and treats it as a cache miss
 5. The query executes fresh, and a new fingerprint entry + result replaces the old one
 
-This means cached results stay fresh as long as the underlying data hasn't changed — and are automatically expired the moment it does.
+Cached results stay fresh as long as the underlying data hasn't changed, and are automatically expired the moment it does.
 
 ---
 

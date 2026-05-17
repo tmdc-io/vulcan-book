@@ -1,6 +1,6 @@
 # Overview
 
-The semantic layer is an abstraction that sits between your raw data and the people who consume it. It maps technical database objects — tables, columns, joins — to business concepts like "revenue," "active users," or "churn rate," giving everyone in your organization a shared vocabulary to query data without needing to understand the underlying schema.
+The semantic layer sits between your raw data and the people who consume it. It maps technical database objects (tables, columns, joins) to business concepts like "revenue," "active users," or "churn rate," so everyone in your organization queries data with the same vocabulary without needing to understand the underlying schema.
 
 ---
 
@@ -10,47 +10,30 @@ The semantic layer bridges the gap between "here's a table with columns" and "he
 
 Without a semantic layer, every time someone wants to analyze revenue, they have to remember which table has it, what the column is called, how to join it with other tables, and how to calculate it correctly. With a semantic layer, they ask for "revenue" and it works.
 
-### Key Benefits
+### Why it matters
 
-The semantic layer helps everyone in your organization work with data more effectively:
+**For developers.** Write the calculation for `revenue` once, then reuse it in dashboards, APIs, and reports. Definitions live in code, so PR review covers business logic and `git blame` works on metric changes. No more "which revenue query is canonical?".
 
-**For Developers:**
+**For business users.** Query data without writing SQL. The same `revenue` definition runs in Tableau, Power BI, Python notebooks, and the REST API, so two dashboards never disagree because they wrote slightly different `SUM(...)` expressions.
 
-- **Define metrics once, use everywhere** — Write the calculation once, use it in dashboards, APIs, and reports
-- **Version-controlled business logic** — Your metric definitions live in code, so changes are tracked and reviewable
-- **Consistent calculations** — No more "which revenue calculation should I use?", there's one definition
-
-**For Business Users:**
-
-- **Self-service analytics** — Query data without writing SQL (or even knowing what SQL is)
-- **Consistent metric definitions** — Everyone uses the same definition of "revenue" or "active users"
-- **Trusted, validated data** — Metrics are defined by the data team, so you know they're correct
-- **Works everywhere** — Use the same metrics in Tableau, Power BI, Python, or APIs
-
-**For Organizations:**
-
-- **Single source of truth** — One place where "revenue" is defined, not scattered across 20 different dashboards
-- **Faster time to insights** — Business users can answer questions themselves instead of waiting for the data team
-- **Reduced data team bottleneck** — Less "can you build me a dashboard?" requests
-- **Better data governance** — Centralized definitions make it easier to audit and maintain data quality
+**For organizations.** One place where `revenue` is defined, instead of scattered across twenty dashboards. Business users answer their own questions instead of queuing on the data team, and the data team can audit and change a definition without hunting down every consumer.
 
 ---
 
 ## Core Components
 
-The semantic layer has two main pieces that work together. Think of them as building blocks — you start with semantic models, then build metrics on top.
+The semantic layer has two pieces that build on each other: semantic models first, then metrics on top.
 
 ### Semantic Models
 
 Semantic models are wrappers around your Vulcan models. They take your technical tables and expose them in a business-friendly way. For detailed information, check out the [Semantic Models](models.md) documentation.
 
-Here's what semantic models do:
+A semantic model does four things:
 
-- **Map physical models** — Reference your Vulcan models from the `models/` directory
-- **Expose dimensions** — Specify which model columns become dimensions (things you can filter and group by)
-- **Define measures** — Typed aggregation calculations like `count`, `sum`, or `avg` with optional filters
-- **Create segments** — Reusable filter conditions (like "high-value customers" or "active users")
-- **Establish joins** — Relationships between models so you can analyze across tables
+- **Wraps a Vulcan model** from `models/` and picks which columns become dimensions you can filter and group by.
+- **Declares measures**: typed aggregations like `count`, `sum`, or `avg`, optionally with their own `filters`.
+- **Names reusable segments** (e.g. "high-value customers", "active users") so the same filter doesn't get rewritten in every query.
+- **Defines joins** to other semantic models, so a query can pull dimensions from one model and measures from another.
 
 Here's a simple example:
 
@@ -120,12 +103,11 @@ joins:
 
 Business metrics combine measures with dimensions and time to create complete analytical definitions. They're like pre-built queries that are ready to use. Learn more in the [Business Metrics](./business_metrics.md) guide.
 
-Here's what makes metrics powerful:
+Metrics add three things on top of measures:
 
-- **Time-series analysis** — Metrics include time dimensions so you can see trends over time
-- **Flexible granularity** — Query the same metric at different time intervals (day, week, month, etc.)
-- **Multi-dimensional** — Slice and dice by business attributes (customer tier, region, product category, etc.)
-- **Ready for dashboards** — Pre-configured for visualization tools
+- A required time column (`ts`) and default granularity, so every metric is a time series by construction.
+- A re-queryable granularity (`day`, `week`, `month`, ...) without rewriting the underlying measure.
+- A predeclared set of dimensions and segments the metric is allowed to slice by, so clients don't have to know the join graph.
 
 Here's what a metric looks like:
 
@@ -160,16 +142,16 @@ Anyone can query "monthly revenue by customer tier" without writing SQL. They re
 
 ## How It Works
 
-Setting up your semantic layer is straightforward. Here's the workflow:
+The workflow:
 
-1. **Define semantic models** — Create YAML files that reference your Vulcan models
-2. **Add measures and dimensions** — Define what can be calculated and filtered
-3. **Create joins** — Connect models so you can analyze across tables
-4. **Define metrics** — Combine measures with time and dimensions for analysis
-5. **Validate** — Vulcan automatically validates your semantic definitions when you create a plan
-6. **Query** — Use the semantic layer via APIs or export to BI tools
+1. **Define semantic models.** Create YAML files in `models/semantics/` that reference your Vulcan models.
+2. **Add measures and dimensions.** Declare what can be aggregated and what can be filtered or grouped by.
+3. **Create joins.** Connect semantic models so a single query can reach across tables.
+4. **Define metrics.** Combine a measure with a time column and a dimension list under `models/metrics/`.
+5. **Validate.** `vulcan plan` parses every definition and fails the plan if a measure references a column that doesn't exist, a join expression is invalid, or a metric points at a missing measure.
+6. **Query.** Hit the REST, GraphQL, or SQL-wire API, or export to a BI tool.
 
-The validation step is important — Vulcan checks that your measures reference real columns, joins are valid, and metrics make sense. It'll catch errors before you try to use them, which saves you from debugging issues later.
+Validation is the part that pays for itself. Catching a typo in a measure expression at plan time is much cheaper than a Tableau dashboard quietly returning zeros.
 
 ---
 
@@ -205,7 +187,7 @@ project/
 
 ## Integration with Models
 
-Here's the key insight: **the semantic layer builds on your existing models.** You select which columns to expose as dimensions, then layer on measures, segments, joins, and metrics. It doesn't replace anything — it makes your models more accessible.
+The semantic layer doesn't replace your models. You pick which columns to expose as dimensions, then layer measures, segments, joins, and metrics on top. The underlying SQL models stay exactly as they are.
 
 When you're designing Vulcan models, keep the semantic layer in mind:
 
@@ -252,9 +234,7 @@ Your models stay exactly as they are; the semantic layer just makes them more ac
 
 ## Next Steps
 
-- **[Semantic Models](models.md)** — Map physical models to business concepts with measures, segments, and joins
-- **[Business Metrics](./business_metrics.md)** — Create time-series analytical definitions with slices and granularity
-- **[Transpiling Semantic Queries](../../guides/transpiling_semantics.md)** — See how semantic queries get converted to SQL
-- **Check your project** — Look at the `semantics/` directory in your Vulcan project for examples
-
-The semantic layer makes your data accessible to everyone, not just SQL experts. Start with semantic models, add measures, then build metrics.
+- [Semantic Models](models.md): how to declare dimensions, measures, segments, and joins.
+- [Business Metrics](./business_metrics.md): how to wrap a measure with a time column and dimensions.
+- [Transpiling Semantic Queries](../../guides/transpiling_semantics.md): what SQL Vulcan generates for a semantic query.
+- The `models/semantics/` and `models/metrics/` folders in your project: working examples to copy from.

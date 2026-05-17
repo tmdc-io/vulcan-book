@@ -14,7 +14,7 @@ Transpilation transforms semantic layer queries into database-specific SQL. It c
 
 - **Validation**: Catches errors before query execution - find problems before they hit production
 
-- **Debugging**: Inspect the generated SQL to understand query behavior - see exactly what your semantic queries are doing under the hood
+- **Debugging**: Inspect the generated SQL to see exactly what Vulcan ran on the warehouse for a given semantic query.
 
 Semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap.
 
@@ -341,7 +341,7 @@ LIMIT 100
 
 ## Transpiling MySQL Payloads
 
-The Vulcan MySQL wire protocol service lets you query your semantic layer using any standard MySQL client or BI tool. Semantic queries are transpiled to native SQL on the server side — you write standard SQL against your semantic models, and Vulcan handles the translation.
+The Vulcan MySQL wire protocol service lets you query your semantic layer from any standard MySQL client or BI tool. Semantic queries are transpiled to native SQL on the server side: you write standard SQL against your semantic models, and Vulcan handles the translation.
 
 ### Connecting to Vulcan MySQL
 
@@ -361,13 +361,13 @@ mysql -h <host> -P <port> -u <username> -p'<api-key>' --enable-cleartext-plugin 
 | `-p'<api-key>'` | Your DataOS API key (no space after `-p`) | `-p'dG9rZW4xMjM0...'` |
 | `<tenant_name>.<data_product_name>` | Database to connect to | `marketing.sales_analytics` |
 
-**Example — Local connection:**
+**Example: local connection.**
 
 ```bash
 mysql -h 127.0.0.1 -P 3307 -u johndoe -p'dG9rZW4xMjM0NTY3ODk=' --ssl-mode=REQUIRED --enable-cleartext-plugin
 ```
 
-**Example — Remote connection:**
+**Example: remote connection.**
 
 ```bash
 mysql -h tcp.my-context.dataos.app -P 3306 -u johndoe -p'dG9rZW4xMjM0NTY3ODk=' --enable-cleartext-plugin marketing.sales_analytics
