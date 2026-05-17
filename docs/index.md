@@ -48,7 +48,7 @@ graph LR
         Audits -->|pass| Profiles
         Audits -->|fail| Stop(("STOP"))
 
-        Checks["<b>Checks</b><br/>Quality"] --> Sem
+        Checks["<b>dq</b><br/>Data Quality"] --> Sem
         Profiles["<b>Profiling</b><br/>Understanding"] --> Sem
 
         Sem["<b>Semantics</b><br/>Dimensions · Measures · Segments · Metrics"] --> REST["<b>REST API</b>"]
