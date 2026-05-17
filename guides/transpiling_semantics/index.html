@@ -2380,7 +2380,7 @@
 <p><strong>Validation</strong>: Catches errors before query execution - find problems before they hit production</p>
 </li>
 <li>
-<p><strong>Debugging</strong>: Inspect the generated SQL to understand query behavior - see exactly what your semantic queries are doing under the hood</p>
+<p><strong>Debugging</strong>: Inspect the generated SQL to see exactly what Vulcan ran on the warehouse for a given semantic query.</p>
 </li>
 </ul>
 <p>Semantic queries are easier to write and understand, but databases need SQL. Transpilation bridges that gap.</p>
@@ -2633,7 +2633,7 @@
 </span><span id="__span-27-16"><a href="#__codelineno-27-16" id="__codelineno-27-16" name="__codelineno-27-16"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span>
 </span></code></pre></div><p></p>
 <h2 id="transpiling-mysql-payloads">Transpiling MySQL Payloads<a class="headerlink" href="#transpiling-mysql-payloads" title="Link to this section">¶</a></h2>
-<p>The Vulcan MySQL wire protocol service lets you query your semantic layer using any standard MySQL client or BI tool. Semantic queries are transpiled to native SQL on the server side — you write standard SQL against your semantic models, and Vulcan handles the translation.</p>
+<p>The Vulcan MySQL wire protocol service lets you query your semantic layer from any standard MySQL client or BI tool. Semantic queries are transpiled to native SQL on the server side: you write standard SQL against your semantic models, and Vulcan handles the translation.</p>
 <h3 id="connecting-to-vulcan-mysql">Connecting to Vulcan MySQL<a class="headerlink" href="#connecting-to-vulcan-mysql" title="Link to this section">¶</a></h3>
 <p>Connect using any MySQL client:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span>&lt;host&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;port&gt;<span class="w"> </span>-u<span class="w"> </span>&lt;username&gt;<span class="w"> </span>-p<span class="s1">'&lt;api-key&gt;'</span><span class="w"> </span>--enable-cleartext-plugin<span class="w"> </span>&lt;tenant_name&gt;.&lt;data_product_name&gt;
@@ -2675,10 +2675,10 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Example — Local connection:</strong></p>
+<p><strong>Example: local connection.</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>-P<span class="w"> </span><span class="m">3307</span><span class="w"> </span>-u<span class="w"> </span>johndoe<span class="w"> </span>-p<span class="s1">'dG9rZW4xMjM0NTY3ODk='</span><span class="w"> </span>--ssl-mode<span class="o">=</span>REQUIRED<span class="w"> </span>--enable-cleartext-plugin
 </span></code></pre></div>
-<p><strong>Example — Remote connection:</strong></p>
+<p><strong>Example: remote connection.</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a>mysql<span class="w"> </span>-h<span class="w"> </span>tcp.my-context.dataos.app<span class="w"> </span>-P<span class="w"> </span><span class="m">3306</span><span class="w"> </span>-u<span class="w"> </span>johndoe<span class="w"> </span>-p<span class="s1">'dG9rZW4xMjM0NTY3ODk='</span><span class="w"> </span>--enable-cleartext-plugin<span class="w"> </span>marketing.sales_analytics
 </span></code></pre></div>
 <p><strong>On successful connection:</strong></p>

@@ -2139,7 +2139,7 @@
 </li>
 </ul>
 <h2 id="data-quality-vs-audits-vs-profiles">Data Quality vs Audits vs Profiles<a class="headerlink" href="#data-quality-vs-audits-vs-profiles" title="Link to this section">¶</a></h2>
-<p>Before we dive in, let's clear up the confusion around these three data quality mechanisms. They all serve different purposes, and understanding when to use each one will save you headaches later.</p>
+<p>Audits, Data Quality rule packs, and profiles all watch your data, but they answer different questions. Pick the wrong one and you'll either block a run that should have shipped or let bad rows reach production.</p>
 <table>
 <thead>
 <tr>
@@ -2483,13 +2483,13 @@
 </span></code></pre></div>
 <h3 id="rule-forms-shorthand-and-full">Rule Forms: Shorthand and Full<a class="headerlink" href="#rule-forms-shorthand-and-full" title="Link to this section">¶</a></h3>
 <p>A rule can be a bare expression (no metadata) or an expression with a metadata block.</p>
-<p><strong>Shorthand</strong> — just the expression, no metadata. Vulcan will auto-name the rule and skip the optional fields:</p>
+<p><strong>Shorthand:</strong> just the expression, no metadata. Vulcan auto-names the rule and skips the optional fields:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">missing_count(user_id) = 0</span>
 </span><span id="__span-13-3"><a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">missing_count(event_date) = 0</span>
 </span><span id="__span-13-4"><a href="#__codelineno-13-4" id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duplicate_count(event_id) = 0</span>
 </span></code></pre></div>
-<p><strong>Full form</strong> — expression as a YAML key, with metadata as the value:</p>
+<p><strong>Full form:</strong> the expression is a YAML key and the metadata is its value:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">missing_count(event_type) = 0</span><span class="p">:</span>
 </span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no_missing_event_types</span>
@@ -2498,7 +2498,7 @@
 </span></code></pre></div>
 <p>You can mix both in the same <code>rules:</code> list. Use shorthand for obvious rules, full form whenever you want a stable name, a dimension tag, a description, severity, etc.</p>
 <h3 id="rule-attributes">Rule Attributes<a class="headerlink" href="#rule-attributes" title="Link to this section">¶</a></h3>
-<p>All rule metadata is <strong>flat</strong> — directly under the rule expression, not nested under an <code>attributes:</code> block.</p>
+<p>All rule metadata is <strong>flat</strong>: keys sit directly under the rule expression, not nested under an <code>attributes:</code> block.</p>
 <table>
 <thead>
 <tr>
@@ -2537,7 +2537,7 @@
 </tr>
 <tr>
 <td><code>fail query</code></td>
-<td>SQL <code>SELECT</code> returning bad rows — only used with <code>failed rows</code>.</td>
+<td>SQL <code>SELECT</code> returning bad rows. Only used with <code>failed rows</code>.</td>
 </tr>
 <tr>
 <td><code>samples limit</code></td>
@@ -2655,7 +2655,7 @@
 </span></code></pre></div>
 <h3 id="filtering-rules">Filtering Rules<a class="headerlink" href="#filtering-rules" title="Link to this section">¶</a></h3>
 <p>You can apply a SQL predicate at two levels.</p>
-<p><strong>Pack-level filter</strong> — applied to every rule in the file:</p>
+<p><strong>Pack-level filter:</strong> applied to every rule in the file.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dq</span>
 </span><span id="__span-24-2"><a href="#__codelineno-24-2" id="__codelineno-24-2" name="__codelineno-24-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completed_recent_orders_dq</span>
 </span><span id="__span-24-3"><a href="#__codelineno-24-3" id="__codelineno-24-3" name="__codelineno-24-3"></a><span class="nt">depends_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics.orders</span>
@@ -2670,14 +2670,14 @@
 </span><span id="__span-24-12"><a href="#__codelineno-24-12" id="__codelineno-24-12" name="__codelineno-24-12"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completed_orders_exist</span>
 </span><span id="__span-24-13"><a href="#__codelineno-24-13" id="__codelineno-24-13" name="__codelineno-24-13"></a><span class="w">      </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completeness</span>
 </span></code></pre></div>
-<p><strong>Per-rule filter</strong> — applied only to that rule (and overlays the pack-level filter):</p>
+<p><strong>Per-rule filter:</strong> applied only to that rule. Overlays the pack-level filter.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">row_count &gt; 500</span><span class="p">:</span>
 </span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sufficient_active_users</span>
 </span><span id="__span-25-4"><a href="#__codelineno-25-4" id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="w">      </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completeness</span>
 </span><span id="__span-25-5"><a href="#__codelineno-25-5" id="__codelineno-25-5" name="__codelineno-25-5"></a><span class="w">      </span><span class="nt">filter</span><span class="p">:</span><span class="w"> </span><span class="s">"status</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">'active'"</span>
 </span></code></pre></div>
-<p>Need different expectations for different slices of the same model (e.g. US vs EU customers)? Create a separate file per slice — each rule pack has a single <code>depends_on:</code> and its own <code>filter:</code>.</p>
+<p>Need different expectations for different slices of the same model (e.g. US vs EU customers)? Create a separate file per slice. Each rule pack has a single <code>depends_on:</code> and its own <code>filter:</code>.</p>
 <h3 id="per-rule-metadata-example">Per-Rule Metadata Example<a class="headerlink" href="#per-rule-metadata-example" title="Link to this section">¶</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dq</span>
 </span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue_dq</span>
@@ -2695,16 +2695,16 @@
 <p><strong>Standard fields recap:</strong></p>
 <ul>
 <li>
-<p><code>description</code> — Human-readable explanation</p>
+<p><code>description</code>: human-readable explanation.</p>
 </li>
 <li>
-<p><code>severity</code> — <code>error</code> (default) or <code>warning</code></p>
+<p><code>severity</code>: <code>error</code> (default) or <code>warning</code>.</p>
 </li>
 <li>
-<p><code>tags</code> — List of tags for filtering/organisation (find all "critical" rules easily)</p>
+<p><code>tags</code>: list of tags for filtering and organisation, e.g. find every <code>critical</code> rule.</p>
 </li>
 <li>
-<p><code>owner</code> — Team or person responsible</p>
+<p><code>owner</code>: team or person responsible.</p>
 </li>
 </ul>
 <h2 id="built-in-rule-types">Built-in Rule Types<a class="headerlink" href="#built-in-rule-types" title="Link to this section">¶</a></h2>
@@ -2746,7 +2746,7 @@
 </span><span id="__span-29-7"><a href="#__codelineno-29-7" id="__codelineno-29-7" name="__codelineno-29-7"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">expected_row_range</span>
 </span><span id="__span-29-8"><a href="#__codelineno-29-8" id="__codelineno-29-8" name="__codelineno-29-8"></a><span class="w">      </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completeness</span>
 </span></code></pre></div>
-<p>The second example shows a range check — maybe you know your table should be between 1K and 100K rows, and anything outside that range is suspicious.</p>
+<p>The second example is a range check: if you know the table should land between 1K and 100K rows, anything outside that range is suspicious.</p>
 <h4 id="row_count-with-filter"><code>row_count</code> with filter<a class="headerlink" href="#row_count-with-filter" title="Link to this section">¶</a></h4>
 <p>You can also check row counts on filtered data:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="nt">rules</span><span class="p">:</span>
@@ -2780,7 +2780,7 @@
 <p>Maybe customers can have multiple orders, but only one per day. This rule enforces that business rule.</p>
 <h3 id="failed-rows-rules">Failed Rows Rules<a class="headerlink" href="#failed-rows-rules" title="Link to this section">¶</a></h3>
 <h4 id="sql-based-validation-with-samples">SQL-based validation with samples<a class="headerlink" href="#sql-based-validation-with-samples" title="Link to this section">¶</a></h4>
-<p>This is the most flexible rule type — you can write any SQL query you want:</p>
+<p>This is the most flexible rule type. Write any SQL query that returns the rows you consider invalid:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-33-2"><a href="#__codelineno-33-2" id="__codelineno-33-2" name="__codelineno-33-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">failed rows</span><span class="p">:</span>
 </span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalid_revenue</span>
@@ -2795,16 +2795,16 @@
 <p><strong>How it works:</strong></p>
 <ul>
 <li>
-<p><code>fail query</code> — A SELECT statement that returns invalid rows</p>
+<p><code>fail query</code>: a <code>SELECT</code> statement that returns invalid rows.</p>
 </li>
 <li>
-<p><code>samples limit</code> — How many example rows to capture when the rule fails (default: 5)</p>
+<p><code>samples limit</code>: how many example rows to capture when the rule fails (default: 5).</p>
 </li>
 <li>
-<p>Returns empty = rule passes (no invalid rows found)</p>
+<p>Empty result: the rule passes (no invalid rows found).</p>
 </li>
 <li>
-<p>Returns rows = rule fails (captures samples so you can see what's wrong)</p>
+<p>One or more rows: the rule fails, and Vulcan captures samples so you can see what's wrong.</p>
 </li>
 </ul>
 <p><strong>Complex validation:</strong></p>
@@ -2820,7 +2820,7 @@
 </span><span id="__span-34-9"><a href="#__codelineno-34-9" id="__codelineno-34-9" name="__codelineno-34-9"></a><span class="w">        </span><span class="no">WHERE c.customer_id IS NULL</span>
 </span><span id="__span-34-10"><a href="#__codelineno-34-10" id="__codelineno-34-10" name="__codelineno-34-10"></a><span class="w">      </span><span class="nt">samples limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </span></code></pre></div>
-<p>This finds orders that reference customers that don't exist — a classic referential integrity check.</p>
+<p>This finds orders that reference customers that don't exist: a classic referential integrity check.</p>
 <h3 id="threshold-rules">Threshold Rules<a class="headerlink" href="#threshold-rules" title="Link to this section">¶</a></h3>
 <h4 id="numeric-aggregations">Numeric aggregations<a class="headerlink" href="#numeric-aggregations" title="Link to this section">¶</a></h4>
 <p>Check aggregated values against thresholds:</p>
@@ -2856,7 +2856,7 @@
 <p>These detect when your data distribution changes unexpectedly.</p>
 <h3 id="anomaly-detection">Anomaly Detection<a class="headerlink" href="#anomaly-detection" title="Link to this section">¶</a></h3>
 <h4 id="ml-based-anomaly-detection">ML-based anomaly detection<a class="headerlink" href="#ml-based-anomaly-detection" title="Link to this section">¶</a></h4>
-<p>This is where rules get really powerful. Anomaly detection uses historical results to learn what's normal and flag unusual patterns:</p>
+<p>Anomaly detection rules learn what "normal" looks like from previous runs of the same rule, then flag the next value when it falls outside that range. There's no model to train and no thresholds to set, you just declare the metric to watch:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="nt">rules</span><span class="p">:</span>
 </span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">anomaly detection for row_count</span><span class="p">:</span>
 </span><span id="__span-37-3"><a href="#__codelineno-37-3" id="__codelineno-37-3" name="__codelineno-37-3"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">row_count_anomaly</span>
@@ -2890,7 +2890,7 @@
 <p>More accurate after 30+ data points (the more history, the better)</p>
 </li>
 </ul>
-<p>So if you're setting up anomaly detection, be patient — it needs to run a few times before it's useful. But once it has enough data, it's really good at spotting problems you might not think to check for.</p>
+<p>Anomaly detection needs history before it's useful. Expect the first ~30 runs to be no-ops while the baseline fills in. After that it catches drifts you wouldn't have thought to write a threshold rule for.</p>
 <h3 id="change-over-time-rules">Change Over Time Rules<a class="headerlink" href="#change-over-time-rules" title="Link to this section">¶</a></h3>
 <h4 id="monitor-changes-compared-to-previous-run">Monitor changes compared to previous run<a class="headerlink" href="#monitor-changes-compared-to-previous-run" title="Link to this section">¶</a></h4>
 <p>Track how metrics change between runs:</p>
@@ -2914,13 +2914,13 @@
 <p><strong>Examples:</strong></p>
 <ul>
 <li>
-<p><code>change &gt;= -30%</code> — Alert if metric drops more than 30% (negative change)</p>
+<p><code>change &gt;= -30%</code>: alert if the metric drops more than 30%.</p>
 </li>
 <li>
-<p><code>change &gt;= 10%</code> — Alert if metric grows more than 10% (positive change)</p>
+<p><code>change &gt;= 10%</code>: alert if the metric grows more than 10%.</p>
 </li>
 <li>
-<p><code>change between -10% and 10%</code> — Alert if metric changes more than 10% either way</p>
+<p><code>change between -10% and 10%</code>: alert if the metric moves more than 10% in either direction.</p>
 </li>
 </ul>
 <p>This catches sudden changes that might indicate a problem or an opportunity.</p>
@@ -3347,7 +3347,7 @@
 <p>Each file still maps to a single model via <code>depends_on:</code>. Splitting by dimension or priority is just a way to keep individual files small and ownership clear.</p>
 <h3 id="naming-conventions">Naming Conventions<a class="headerlink" href="#naming-conventions" title="Link to this section">¶</a></h3>
 <p><strong>Use descriptive names:</strong></p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-51-1"><a href="#__codelineno-51-1" id="__codelineno-51-1" name="__codelineno-51-1"></a><span class="c1"># Bad — what does "check1" tell you?</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-51-1"><a href="#__codelineno-51-1" id="__codelineno-51-1" name="__codelineno-51-1"></a><span class="c1"># Bad: what does "check1" tell you?</span>
 </span><span id="__span-51-2"><a href="#__codelineno-51-2" id="__codelineno-51-2" name="__codelineno-51-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dq</span>
 </span><span id="__span-51-3"><a href="#__codelineno-51-3" id="__codelineno-51-3" name="__codelineno-51-3"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers_dq</span>
 </span><span id="__span-51-4"><a href="#__codelineno-51-4" id="__codelineno-51-4" name="__codelineno-51-4"></a><span class="nt">depends_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics.customers</span>
@@ -3357,7 +3357,7 @@
 </span><span id="__span-51-8"><a href="#__codelineno-51-8" id="__codelineno-51-8" name="__codelineno-51-8"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check1</span>
 </span><span id="__span-51-9"><a href="#__codelineno-51-9" id="__codelineno-51-9" name="__codelineno-51-9"></a><span class="w">      </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completeness</span>
 </span><span id="__span-51-10"><a href="#__codelineno-51-10" id="__codelineno-51-10" name="__codelineno-51-10"></a>
-</span><span id="__span-51-11"><a href="#__codelineno-51-11" id="__codelineno-51-11" name="__codelineno-51-11"></a><span class="c1"># Good — clear and descriptive</span>
+</span><span id="__span-51-11"><a href="#__codelineno-51-11" id="__codelineno-51-11" name="__codelineno-51-11"></a><span class="c1"># Good: clear and descriptive</span>
 </span><span id="__span-51-12"><a href="#__codelineno-51-12" id="__codelineno-51-12" name="__codelineno-51-12"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dq</span>
 </span><span id="__span-51-13"><a href="#__codelineno-51-13" id="__codelineno-51-13" name="__codelineno-51-13"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customers_dq</span>
 </span><span id="__span-51-14"><a href="#__codelineno-51-14" id="__codelineno-51-14" name="__codelineno-51-14"></a><span class="nt">depends_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics.customers</span>
@@ -3415,7 +3415,7 @@
 </span><span id="__span-52-21"><a href="#__codelineno-52-21" id="__codelineno-52-21" name="__codelineno-52-21"></a><span class="w">      </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completeness</span>
 </span><span id="__span-52-22"><a href="#__codelineno-52-22" id="__codelineno-52-22" name="__codelineno-52-22"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Based</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">30-day</span><span class="nv"> </span><span class="s">historical</span><span class="nv"> </span><span class="s">analysis"</span>
 </span></code></pre></div>
-<p>Don't set thresholds based on guesses — let the data tell you what's normal. Use profiles to understand your data first, then set rules based on what you learn.</p>
+<p>Don't set thresholds from guesses. Run profiles for a few weeks first, read the observed <code>min</code>, <code>max</code>, and <code>stddev</code>, then set rules from what you see.</p>
 <p><strong>Use profiles to inform thresholds:</strong></p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-53-1"><a href="#__codelineno-53-1" id="__codelineno-53-1" name="__codelineno-53-1"></a><span class="c1">-- Query profiles to understand your data</span>
 </span><span id="__span-53-2"><a href="#__codelineno-53-2" id="__codelineno-53-2" name="__codelineno-53-2"></a><span class="k">SELECT</span>
@@ -3464,7 +3464,7 @@
 </span><span id="__span-55-19"><a href="#__codelineno-55-19" id="__codelineno-55-19" name="__codelineno-55-19"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count_stable</span>
 </span><span id="__span-55-20"><a href="#__codelineno-55-20" id="__codelineno-55-20" name="__codelineno-55-20"></a><span class="w">      </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">timeliness</span>
 </span></code></pre></div>
-<p>This three-layer approach covers data quality end to end: audits stop problems, Data Quality rules warn about issues, and profiles help you understand what's normal — and both monitoring layers live in the same <code>kind: dq</code> file.</p>
+<p>Three layers, each with a clear job: audits stop bad rows, Data Quality rules raise non-blocking warnings, and profiles record what "normal" looks like. The two monitoring layers share the same <code>kind: dq</code> file, so a single file describes everything Vulcan should watch for one model.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">¶</a></h2>
 <h3 id="rule-failures">Rule Failures<a class="headerlink" href="#rule-failures" title="Link to this section">¶</a></h3>
 <h4 id="investigate-a-failed-rule">Investigate a failed rule<a class="headerlink" href="#investigate-a-failed-rule" title="Link to this section">¶</a></h4>
@@ -3542,7 +3542,7 @@
 </span><span id="__span-60-16"><a href="#__codelineno-60-16" id="__codelineno-60-16" name="__codelineno-60-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">row_count between 9000 and 11000</span><span class="p">:</span><span class="w">   </span><span class="c1"># ±10% variance</span>
 </span><span id="__span-60-17"><a href="#__codelineno-60-17" id="__codelineno-60-17" name="__codelineno-60-17"></a><span class="w">      </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">completeness</span>
 </span></code></pre></div>
-<p>Real data has variance. Don't set thresholds that are too strict — you'll just get false positives.</p>
+<p>Real data has variance. Strict thresholds just produce false positives.</p>
 <h4 id="use-anomaly-detection-instead">Use anomaly detection instead<a class="headerlink" href="#use-anomaly-detection-instead" title="Link to this section">¶</a></h4>
 <p>Sometimes strict thresholds aren't the right approach:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-61-1"><a href="#__codelineno-61-1" id="__codelineno-61-1" name="__codelineno-61-1"></a><span class="c1"># Replace strict threshold with ML-based detection</span>

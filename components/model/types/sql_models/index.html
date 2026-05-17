@@ -1596,7 +1596,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="sql">SQL<a class="headerlink" href="#sql" title="Link to this section">¶</a></h1>
 <p>SQL models are the most common type of model you'll write. You can define them using SQL directly, or use Python to generate SQL dynamically.</p>
-<p>SQL models are simple, powerful, and work with any SQL database. Most of your data transformations will be SQL models.</p>
+<p>SQL models work with every supported engine (Postgres, Snowflake, Spark, Trino, BigQuery, Databricks, Redshift, MSSQL, Fabric). Most transformations in a project end up as SQL models, with Python reserved for the few cases that don't fit SQL.</p>
 <h2 id="sql-based-definition">SQL-Based Definition<a class="headerlink" href="#sql-based-definition" title="Link to this section">¶</a></h2>
 <p>SQL-based models are the most common type. They use regular SQL with additional Vulcan features.</p>
 <p><strong>Structure:</strong> A SQL model file has these parts (in order):</p>
@@ -2023,10 +2023,10 @@
 <p><strong>Use advanced syntax:</strong> You can use features from one dialect even if your engine doesn't support them. For example, <code>x::int</code> (PostgreSQL syntax) works even on engines that only support <code>CAST(x AS INT)</code>. SQLGlot handles the conversion.</p>
 <p><strong>Formatting flexibility:</strong> Trailing commas, extra whitespace, minor formatting differences, SQLGlot normalizes them all. Write SQL however you like, and Vulcan makes it consistent.</p>
 <h2 id="macros">Macros<a class="headerlink" href="#macros" title="Link to this section">¶</a></h2>
-<p>Standard SQL is powerful, but real-world data pipelines need dynamic components. Date filters that change each run, conditional logic, reusable query patterns, macros give you all of this.</p>
-<p><strong>Macro variables:</strong> Vulcan provides automatic date/time variables for incremental models. Use <code>@start_date</code>, <code>@end_date</code>, <code>@start_ds</code>, <code>@end_ds</code> and Vulcan fills them in with the current time range. No more hardcoding dates!</p>
-<p><strong>Custom macros:</strong> For complex logic or reusable patterns, Vulcan supports a powerful <a href="../../../advanced-features/macros/overview/">macro syntax</a> and <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja templates</a>. Write macros once, use them everywhere.</p>
-<p><strong>Why macros matter:</strong> They make your SQL more maintainable. Instead of copy-pasting complex logic, define it once as a macro and reuse it. Your queries stay clean and readable.</p>
+<p>Standard SQL doesn't handle the things real pipelines need every day: date ranges that shift each run, conditional logic, repeated patterns. Macros fill that gap.</p>
+<p><strong>Macro variables:</strong> incremental models get automatic time variables. <code>@start_date</code>, <code>@end_date</code>, <code>@start_ds</code>, <code>@end_ds</code> resolve to the interval Vulcan is currently processing, so you don't hard-code dates.</p>
+<p><strong>Custom macros:</strong> Vulcan ships <a href="../../../advanced-features/macros/overview/">its own macro syntax</a> and supports <a href="https://jinja.palletsprojects.com/en/3.1.x/">Jinja</a>. Use them for repeated CTEs, conditional joins, or any block of SQL you'd otherwise copy and paste across models.</p>
+<p><strong>Why bother:</strong> the repeated SQL lives in one place. When the business rule changes, you edit one macro instead of grepping for the pattern across thirty models.</p>
 <p>Learn more about macros in the <a href="../../../advanced-features/macros/overview/">Macros documentation</a>.</p>
 </article>
 </div>

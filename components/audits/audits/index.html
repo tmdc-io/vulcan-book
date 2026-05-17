@@ -1814,18 +1814,18 @@
 <p>Audits stop bad data before it causes problems downstream. They run after every model execution and halt your models if something's wrong.</p>
 <p>Unlike <a href="../../tests/tests/">tests</a> (which you run manually to verify logic), audits run automatically whenever you apply a <a href="../../../guides/plan_guide/">plan</a>. They catch data quality issues early, whether they come from external vendors, upstream teams, or your own model changes.</p>
 <p>All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything: no plan application, no run execution. This prevents bad data from propagating through your entire pipeline.</p>
-<p>A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.</p>
+<p>Audits catch bad rows where they enter the pipeline, so the dashboards and APIs downstream don't have to defend themselves against data the warehouse should have rejected in the first place.</p>
 <blockquote>
 <p><strong>Note:</strong> For incremental by time range models, audits only run on the intervals being processed, not the entire table. This keeps things fast and focused on what actually changed.</p>
 </blockquote>
 <h2 id="terminology-audits-and-assertions">Terminology: Audits and Assertions<a class="headerlink" href="#terminology-audits-and-assertions" title="Link to this section">¶</a></h2>
-<p>Before we dive in, let's clear up some terminology. Vulcan uses two related but distinct concepts:</p>
+<p>Two terms come up a lot, and they're easy to mix up:</p>
 <ul>
 <li>
-<p><strong>AUDIT</strong> - The validation rule itself (the SQL query that checks for problems)</p>
+<p><strong>AUDIT</strong>: the validation rule itself (the SQL query that returns rows when something is wrong).</p>
 </li>
 <li>
-<p><strong>ASSERTION</strong> - Attaching an audit to a model (claiming it should pass)</p>
+<p><strong>ASSERTION</strong>: attaching a named audit to a model and claiming the model should pass it.</p>
 </li>
 </ul>
 <p>An audit is the rule ("prices must be positive"), and an assertion is you saying "this model follows that rule."</p>
@@ -1853,7 +1853,7 @@
 </ol>
 <p><strong>Why this matters:</strong> Audits query for bad data. If your audit finds bad data (returns rows), that's a problem. If it finds nothing (returns zero rows), you're good to go.</p>
 <h3 id="plan-vs-run">Plan vs. Run<a class="headerlink" href="#plan-vs-run" title="Link to this section">¶</a></h3>
-<p>The difference between <code>plan</code> and <code>run</code> matters a lot when it comes to audits:</p>
+<p><code>plan</code> and <code>run</code> treat audit failures differently, and the difference matters:</p>
 <p><strong><code>plan</code></strong> - The safe way:
 - Vulcan evaluates and audits all modified models <em>before</em> promoting them to production</p>
 <ul>
@@ -1941,7 +1941,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This audit runs every time the <code>sushi.items</code> model runs.</p>
 <h3 id="generic-audits">Generic Audits<a class="headerlink" href="#generic-audits" title="Link to this section">¶</a></h3>
-<p>Here's where audits get really powerful. You can create parameterized audits that work across multiple models. This saves you from writing the same audit over and over.</p>
+<p>Audits can be parameterized, so one audit definition covers every model that follows the same shape. The same <code>not_null_columns</code> audit, for example, can apply to <code>customers</code>, <code>orders</code>, and <code>events</code> without three copies of the SQL.</p>
 <p>Consider this audit that checks if a column exceeds a threshold:</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
@@ -2483,7 +2483,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This ensures no <code>name</code> values end with 'doe' or 'smith'.</p>
 <h3 id="statistical-audits">Statistical Audits<a class="headerlink" href="#statistical-audits" title="Link to this section">¶</a></h3>
-<p>These audits check statistical properties of your data. They're powerful but require some tuning to get the thresholds right.</p>
+<p>These audits check statistical properties of your data. They need tuning to avoid false positives during normal variance.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Statistical audit thresholds usually need fine-tuning through trial and error. Start with wide ranges and tighten them as you learn what's normal for your data.</p>

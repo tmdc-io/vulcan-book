@@ -1600,7 +1600,7 @@
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">violation</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">model</span><span class="o">.</span><span class="n">owner</span> <span class="k">else</span> <span class="kc">None</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>Put your custom rules in the <code>linter/</code> directory of your project. Vulcan will automatically find and load any classes that inherit from <code>Rule</code> in that directory.</p>
-<p>Once you've added a rule to your <a href="#applying-linting-rules">configuration file</a>, Vulcan will run it automatically when:
+<p>Vulcan runs every configured rule automatically when:
 - You create a plan with <code>vulcan plan</code></p>
 <ul>
 <li>You run the <code>vulcan lint</code> command</li>

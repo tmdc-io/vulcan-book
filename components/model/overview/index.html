@@ -1873,7 +1873,7 @@
 <p>There are more properties available beyond these common ones, including <code>column_descriptions</code>, <code>column_tags</code>, and <code>column_terms</code> for column-level metadata. Check out the <a href="../properties/">Model Properties</a> reference for the complete list of all available model properties and their configurations.</p>
 </div>
 <h2 id="dml-the-select-query">DML: The SELECT Query<a class="headerlink" href="#dml-the-select-query" title="Link to this section">¶</a></h2>
-<p>The <code>SELECT</code> query is where the magic happens. This is your transformation logic, the SQL that actually does the work.</p>
+<p>The <code>SELECT</code> is the transformation. Vulcan wraps it with the right DDL and DML for the model kind (<code>CREATE OR REPLACE</code>, <code>INSERT</code>, <code>MERGE</code>, and so on), but the shape of the output is entirely whatever this query returns.</p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
 <span class="normal"><a href="#__codelineno-3-3">3</a></span>

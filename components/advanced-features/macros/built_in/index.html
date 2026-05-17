@@ -1959,7 +1959,7 @@
 <p>Vulcan macros are different. They're built specifically for SQL, and they understand what your SQL actually means. Instead of just swapping strings, Vulcan macros analyze your SQL using the <a href="https://github.com/tobymao/sqlglot">sqlglot</a> library to build a semantic representation of your query. Then they modify that representation. This means they can do things templating systems can't, like knowing whether something is a column name or a string literal, or understanding the structure of your query.</p>
 <p>Plus, you can write macro logic in Python, which gives you way more power than simple string substitution.</p>
 <h3 id="how-vulcan-macros-work">How Vulcan macros work<a class="headerlink" href="#how-vulcan-macros-work" title="Link to this section">¶</a></h3>
-<p>This section explains what happens under the hood when Vulcan processes your macros. You don't need to read this to use macros, but it's helpful when you're debugging something that's not working as expected.</p>
+<p>This section describes what Vulcan actually does when it processes a macro. You don't need it to write macros, only to debug ones that aren't behaving the way you expected.</p>
 <p>The critical distinction between the Vulcan macro approach and templating systems is the role string substitution plays. In templating systems, string substitution is the entire and only point.</p>
 <p>In Vulcan, string substitution is just one step toward modifying the semantic representation of the SQL query. <em>Vulcan macros work by building and modifying the semantic representation of the SQL query.</em></p>
 <p>After processing all the non-SQL text, it uses the substituted values to modify the semantic representation of the query to its final state.</p>
@@ -3246,7 +3246,7 @@ would be rendered as:<p></p>
 <p>Generating references to engine-specific metadata tables that are derived from the physical table name, such as the <a href="https://trino.io/docs/current/connector/iceberg.html#metadata-tables"><code>&lt;table&gt;$properties</code></a> metadata table in Trino.</p>
 </li>
 </ul>
-<p>Under the hood, it uses the <code>@this_model</code> variable so it can only be used during the <code>creating</code> and <code>evaluation</code> <a href="../variables/#runtime-variables">runtime stages</a>. Attempting to use it at the <code>loading</code> runtime stage will result in a no-op.</p>
+<p>It relies on the <code>@this_model</code> variable, so it only works during the <code>creating</code> and <code>evaluation</code> <a href="../variables/#runtime-variables">runtime stages</a>. Calling it during the <code>loading</code> stage is a no-op.</p>
 <p>The <code>@resolve_template</code> macro supports the following arguments:</p>
 <ul>
 <li>
@@ -4060,7 +4060,7 @@ would be rendered as:<p></p>
 <p>Applying transformations to columns, such as masking PII or computing various statistics based on the column types</p>
 </li>
 </ul>
-<p>Thus, leveraging <code>columns_to_types</code> can also enable one to write code according to the <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a> principle, as a single macro function can implement the transformations instead of creating a different macro for each model of interest.</p>
+<p>Using <code>columns_to_types</code>, a single macro can apply the same transformation to every column that matches some condition, so you don't end up with one near-duplicate macro per model.</p>
 <p>Note: there may be models whose schema is not available when the project is being loaded, in which case a special placeholder column will be returned, aptly named: <code>__schema_unavailable_at_load__</code>. In some cases, the macro's implementation will need to account for this placeholder in order to avoid issues due to the schema being unavailable.</p>
 <h4 id="accessing-snapshots">Accessing snapshots<a class="headerlink" href="#accessing-snapshots" title="Link to this section">¶</a></h4>
 <p>After a Vulcan project has been successfully loaded, its snapshots can be accessed in Python macro functions and Python models that generate SQL through the <code>get_snapshot</code> method of <code>MacroEvaluator</code>.</p>
@@ -4143,12 +4143,12 @@ would be rendered as:<p></p>
 </span><span id="__span-125-5"><a id="__codelineno-125-5" name="__codelineno-125-5"></a>  <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <h3 id="typed-macros">Typed macros<a class="headerlink" href="#typed-macros" title="Link to this section">¶</a></h3>
-<p>Typed macros bring Python's type hinting to your SQL macros. By specifying what types your macro expects, you make your code more readable, easier to maintain, and less prone to errors. Plus, IDEs can give you better autocomplete and catch mistakes before you run your code.</p>
-<h4 id="benefits-of-typed-macros">Benefits of Typed Macros<a class="headerlink" href="#benefits-of-typed-macros" title="Link to this section">¶</a></h4>
+<p>Typed macros are macros that declare their argument types using Python type hints. Without types, every argument arrives as a SQLGlot <code>exp.Literal</code> that you have to coerce by hand. With types, Vulcan does the coercion for you, and the function body works with regular <code>str</code>, <code>int</code>, <code>list</code>, and so on.</p>
+<h4 id="why-use-them">Why use them<a class="headerlink" href="#why-use-them" title="Link to this section">¶</a></h4>
 <ol>
-<li><strong>Improved Readability</strong>: By specifying types, the intent of the macro is clearer to other developers or future you.</li>
-<li><strong>Reduced Boilerplate</strong>: No need for manual type conversion within the macro function, allowing you to focus on the core logic.</li>
-<li><strong>Enhanced Autocompletion</strong>: IDEs can provide better autocompletion and documentation based on the specified types.</li>
+<li><strong>Less boilerplate.</strong> No manual conversion from <code>exp.Literal</code> to <code>str</code> or <code>int</code> in every macro.</li>
+<li><strong>Errors caught earlier.</strong> A wrong argument type fails at parse time, with a message that points at the call site, instead of throwing somewhere deep inside the macro body.</li>
+<li><strong>Better IDE support.</strong> Autocomplete and inline docs show the actual parameter types, not <code>Any</code>.</li>
 </ol>
 <h4 id="defining-a-typed-macro">Defining a Typed Macro<a class="headerlink" href="#defining-a-typed-macro" title="Link to this section">¶</a></h4>
 <p>Typed macros in Vulcan use Python's type hints. Here's a simple example of a typed macro that repeats a string a given number of times:</p>
@@ -4312,9 +4312,9 @@ would be rendered as:<p></p>
 </span><span id="__span-135-2"><a id="__codelineno-135-2" name="__codelineno-135-2"></a><span class="w">  </span><span class="o">@</span><span class="n">sum_integers</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">])</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total</span>
 </span><span id="__span-135-3"><a id="__codelineno-135-3" name="__codelineno-135-3"></a><span class="k">FROM</span><span class="w"> </span><span class="n">some_table</span><span class="p">;</span>
 </span></code></pre></div></td></tr></tbody></table></div>
-<p>Generics can be nested and are resolved recursively allowing for fairly robust type hinting.</p>
-<h4 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Link to this section">¶</a></h4>
-<p>Typed macros in Vulcan not only enhance the development experience by making macros more readable and easier to use but also contribute to more robust and maintainable code. By leveraging Python's type hinting system, developers can create powerful and intuitive macros for their SQL queries, further bridging the gap between SQL and Python.</p>
+<p>Generics nest and resolve recursively, so <code>List[Tuple[str, int]]</code> works the way you'd expect.</p>
+<h4 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">¶</a></h4>
+<p>Typed macros catch argument-type errors at parse time instead of at runtime, and they let macro bodies use plain Python values (<code>str</code>, <code>int</code>, lists, dicts) instead of unwrapping <code>exp.Literal</code> by hand. If a macro takes a column list or a date range, type it.</p>
 <h2 id="mixing-macro-systems">Mixing macro systems<a class="headerlink" href="#mixing-macro-systems" title="Link to this section">¶</a></h2>
 <p>Vulcan supports both Vulcan macros and <a href="../jinja/">Jinja macros</a>, but we strongly recommend picking one system per model. If you mix them, things can get confusing or break in unexpected ways. Pick the one that fits your needs and stick with it.</p>
 </article>

@@ -1780,7 +1780,7 @@
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Business-friendly identifier consumers reference (e.g. <code>users</code>). Lowercase identifier — see <a href="#naming-rules">Naming rules</a>. This is the identifier you use in <code>{name.column}</code> references everywhere else.</td>
+<td>Business-friendly identifier consumers reference (e.g. <code>users</code>). Lowercase identifier (see <a href="#naming-rules">Naming rules</a>). This is the identifier you use in <code>{name.column}</code> references everywhere else.</td>
 </tr>
 <tr>
 <td><code>depends_on</code></td>
@@ -1939,7 +1939,7 @@
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Lowercase identifier — see <a href="#naming-rules">Naming rules</a>. Must be unique within the dimension.</td>
+<td>Lowercase identifier (see <a href="#naming-rules">Naming rules</a>). Must be unique within the dimension.</td>
 </tr>
 <tr>
 <td><code>interval</code></td>
@@ -1980,7 +1980,7 @@
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Column name in the underlying Vulcan model. Mixed case allowed — see <a href="#naming-rules">Naming rules</a>.</td>
+<td>Column name in the underlying Vulcan model. Mixed case allowed (see <a href="#naming-rules">Naming rules</a>).</td>
 </tr>
 <tr>
 <td><code>description</code></td>
@@ -2000,7 +2000,7 @@
 <tr>
 <td><code>granularities</code></td>
 <td>No</td>
-<td>List of time buckets — only meaningful on <code>TIMESTAMP</code>/<code>DATETIME</code> columns. Granularity names must be unique within the dimension.</td>
+<td>List of time buckets. Only meaningful on <code>TIMESTAMP</code>/<code>DATETIME</code> columns. Granularity names must be unique within the dimension.</td>
 </tr>
 <tr>
 <td><code>format</code></td>
@@ -2156,7 +2156,7 @@
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Lowercase identifier — see <a href="#naming-rules">Naming rules</a>. Must be unique among measures and segments in this semantic model.</td>
+<td>Lowercase identifier (see <a href="#naming-rules">Naming rules</a>). Must be unique among measures and segments in this semantic model.</td>
 </tr>
 <tr>
 <td><code>type</code></td>
@@ -2207,7 +2207,7 @@
 </table>
 <div class="admonition warning">
 <p class="admonition-title">Reserved name</p>
-<p><code>count</code> is a reserved measure name — Vulcan adds an implicit <code>count</code> measure automatically. Use a different name like <code>total_users</code>, <code>row_count</code>, or <code>subscription_count</code>.</p>
+<p><code>count</code> is a reserved measure name: Vulcan adds an implicit <code>count</code> measure automatically. Use a different name like <code>total_users</code>, <code>row_count</code>, or <code>subscription_count</code>.</p>
 </div>
 <h3 id="rolling-windows">Rolling windows<a class="headerlink" href="#rolling-windows" title="Link to this section">¶</a></h3>
 <p>Attach a <code>rolling_window:</code> to a measure to compute it over a sliding time window relative to the query period.</p>
@@ -2294,7 +2294,7 @@
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Lowercase identifier — see <a href="#naming-rules">Naming rules</a>.</td>
+<td>Lowercase identifier (see <a href="#naming-rules">Naming rules</a>).</td>
 </tr>
 <tr>
 <td><code>expression</code></td>
@@ -2357,7 +2357,7 @@
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Lowercase identifier — see <a href="#naming-rules">Naming rules</a>. <strong>Must match the <code>name:</code> of an existing semantic model</strong> in the project. <strong>Must not equal the current model's own <code>name</code>.</strong></td>
+<td>Lowercase identifier (see <a href="#naming-rules">Naming rules</a>). <strong>Must match the <code>name:</code> of an existing semantic model</strong> in the project. <strong>Must not equal the current model's own <code>name</code>.</strong></td>
 </tr>
 <tr>
 <td><code>type</code></td>
@@ -2383,7 +2383,7 @@
 </table>
 <div class="admonition warning">
 <p class="admonition-title">Joins do not accept metadata</p>
-<p>Joins do <strong>not</strong> support <code>description</code>, <code>tags</code>, <code>terms</code>, or <code>public</code>. Only the fields above are allowed — extra keys fail validation.</p>
+<p>Joins do <strong>not</strong> support <code>description</code>, <code>tags</code>, <code>terms</code>, or <code>public</code>. Only the fields above are allowed; extra keys fail validation.</p>
 </div>
 <h3 id="join-types">Join types<a class="headerlink" href="#join-types" title="Link to this section">¶</a></h3>
 <table>

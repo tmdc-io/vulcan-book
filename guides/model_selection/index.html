@@ -1788,7 +1788,7 @@
 <p>Understanding this distinction helps you understand what model selection is doing. You're filtering which directly modified models to include, and Vulcan automatically figures out the indirect ones.</p>
 <hr/>
 <h2 id="understanding-model-dependencies">Understanding Model Dependencies<a class="headerlink" href="#understanding-model-dependencies" title="Link to this section">¶</a></h2>
-<p>Before we dive into selection, let's understand how models relate to each other in Orders360. This will help you understand why selecting one model might include others.</p>
+<p>Selection works on top of the model dependency graph: select one model and Vulcan pulls in everything downstream of it. Here's how the models relate in the Orders360 example.</p>
 <pre class="mermaid"><code>flowchart TD
     subgraph "Orders360 Model DAG"
         RAW_CUSTOMERS[raw.raw_customers&lt;br/&gt;Seed Model]
@@ -1825,7 +1825,7 @@
 <p>This is important! When you select a model, Vulcan automatically includes its downstream dependencies. You can't process <code>weekly_sales</code> without processing <code>daily_sales</code> first, because <code>weekly_sales</code> depends on it.</p>
 <hr/>
 <h2 id="syntax">Syntax<a class="headerlink" href="#syntax" title="Link to this section">¶</a></h2>
-<p>Model selections use the <code>--select-model</code> argument in <code>vulcan plan</code>. You can select models in several ways, by name, pattern, tags, git changes, and more. Let's explore all the options!</p>
+<p>Model selections use the <code>--select-model</code> argument in <code>vulcan plan</code>. The selectors below cover names, patterns, tags, git changes, and combinations.</p>
 <h3 id="basic-selection">Basic Selection<a class="headerlink" href="#basic-selection" title="Link to this section">¶</a></h3>
 <p>Select a single model by name:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>vulcan<span class="w"> </span>plan<span class="w"> </span>dev<span class="w"> </span>--select-model<span class="w"> </span><span class="s2">"sales.daily_sales"</span>

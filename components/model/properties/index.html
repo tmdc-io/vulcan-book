@@ -2457,7 +2457,7 @@
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Best Practice</p>
-<p>Use the fully qualified <code>catalog.schema.model</code> format. It makes your model names explicit and unambiguous, prevents surprises when gateway defaults change, and works seamlessly in multi-catalog setups.</p>
+<p>Use the fully qualified <code>catalog.schema.model</code> format. Names are unambiguous, gateway-default changes can't silently retarget a model, and multi-catalog projects work without extra config.</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">When do you need the catalog?</p>
@@ -3665,7 +3665,7 @@
 <p>These properties are specified inside the <code>kind</code> definition for incremental models. They control how incremental models behave, things like handling schema changes, restatements, and batch processing.</p>
 <p>For the full picture on incremental models, check out the <a href="../model_kinds/">Model Kinds</a> documentation.</p>
 <h3 id="common-incremental-properties">Common Incremental Properties<a class="headerlink" href="#common-incremental-properties" title="Link to this section">¶</a></h3>
-<p>These properties work with all incremental model kinds. They're your toolkit for controlling incremental behavior:</p>
+<p>These properties work with every incremental model kind. They control how Vulcan picks intervals, handles schema changes, and writes results:</p>
 <table>
 <thead>
 <tr>

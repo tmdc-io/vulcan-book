@@ -1821,7 +1821,7 @@
 </nav>
 <article class="md-content__inner md-typeset">
 <h1 id="semantic-query-lifecycle">Semantic Query Lifecycle<a class="headerlink" href="#semantic-query-lifecycle" title="Link to this section">¶</a></h1>
-<p>How a semantic query travels through Vulcan — from the moment you POST a request to when you download the result.</p>
+<p>How a semantic query travels through Vulcan, from the moment you POST a request to when you download the result.</p>
 <hr/>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">¶</a></h2>
 <p>Semantic queries are <strong>asynchronous</strong>. You submit a query, get a statement ID back immediately, and poll for the result. This design allows Vulcan to deduplicate identical queries, serve results from cache, and scale execution across workers.</p>
@@ -1829,12 +1829,12 @@
 </span></code></pre></div>
 <p>The full lifecycle has six stages:</p>
 <ol>
-<li><strong>Submit</strong> — Client sends a semantic query</li>
-<li><strong>Transpile</strong> — Vulcan converts semantic references to warehouse SQL</li>
-<li><strong>Cache check</strong> — Vulcan looks for an existing result before executing</li>
-<li><strong>Execute</strong> — A worker runs the SQL on the data warehouse</li>
-<li><strong>Store</strong> — The result is saved as a Parquet file in object storage</li>
-<li><strong>Fetch</strong> — Client retrieves the result using the statement ID</li>
+<li><strong>Submit:</strong> the client sends a semantic query.</li>
+<li><strong>Transpile:</strong> Vulcan converts semantic references to warehouse SQL.</li>
+<li><strong>Cache check:</strong> Vulcan looks for an existing result before executing.</li>
+<li><strong>Execute:</strong> a worker runs the SQL on the data warehouse.</li>
+<li><strong>Store:</strong> the result is saved as a Parquet file in object storage.</li>
+<li><strong>Fetch:</strong> the client retrieves the result using the statement ID.</li>
 </ol>
 <hr/>
 <h2 id="1-submit-a-query">1. Submit a query<a class="headerlink" href="#1-submit-a-query" title="Link to this section">¶</a></h2>
@@ -1858,7 +1858,7 @@
 </span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-1-18"><a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>The query uses semantic names — <code>orders.total_revenue</code>, <code>orders.region</code> — defined in your <code>semantics/</code> YAML files. You never write SQL directly.</p>
+<p>The query uses semantic names like <code>orders.total_revenue</code> and <code>orders.region</code>, defined in your <code>semantics/</code> YAML files. You never write SQL directly.</p>
 <h3 id="query-fields">Query fields<a class="headerlink" href="#query-fields" title="Link to this section">¶</a></h3>
 <table>
 <thead>
@@ -1890,7 +1890,7 @@
 </tr>
 <tr>
 <td><code>order</code></td>
-<td>Sort order — dict <code>{"field": "asc"}</code> or array <code>[["field", "desc"]]</code></td>
+<td>Sort order. Dict <code>{"field": "asc"}</code> or array <code>[["field", "desc"]]</code>.</td>
 </tr>
 <tr>
 <td><code>limit</code></td>
@@ -1908,9 +1908,9 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>Semantic query ──► Catalog + Transpiler ──► Warehouse SQL
 </span></code></pre></div>
 <ol>
-<li>Vulcan loads the project's <strong>semantic catalog</strong> — all models, measures, dimensions, joins, and their mappings to physical tables</li>
-<li>The catalog is exported in a schema format and sent to the <strong>Transpiler Service</strong> along with your query</li>
-<li>The transpiler generates warehouse-specific SQL (Snowflake SQL, DuckDB SQL, etc.) based on the target engine</li>
+<li>Vulcan loads the project's <strong>semantic catalog</strong>: all models, measures, dimensions, joins, and their mappings to physical tables.</li>
+<li>The catalog is exported in a schema format and sent to the <strong>Transpiler Service</strong> along with your query.</li>
+<li>The transpiler generates warehouse-specific SQL (Snowflake SQL, DuckDB SQL, etc.) for the target engine.</li>
 </ol>
 <p>The generated SQL looks something like:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">SELECT</span>
@@ -1936,7 +1936,7 @@
 <p>Cached results are automatically invalidated when upstream models get refreshed. If your pipeline runs and updates the <code>orders</code> table, all cached results that depend on <code>orders</code> are expired. The next identical query executes fresh instead of returning stale data.</p>
 <hr/>
 <h2 id="4-statement-id">4. Statement ID<a class="headerlink" href="#4-statement-id" title="Link to this section">¶</a></h2>
-<p>No matter which path is taken — cache hit, piggyback, or new execution — the API responds immediately with an <strong>HTTP 202</strong> and a statement ID:</p>
+<p>Whichever path the request takes (cache hit, piggyback, or new execution), the API responds immediately with an <strong>HTTP 202</strong> and a statement ID:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p">{</span>
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stmt-abc-123"</span><span class="p">,</span>
 </span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QUEUED"</span><span class="p">,</span>
@@ -1977,11 +1977,11 @@
 </tr>
 <tr>
 <td><code>SUCCESS</code></td>
-<td>Done — result is available</td>
+<td>Done. Result is available.</td>
 </tr>
 <tr>
 <td><code>FAILED</code></td>
-<td>Something went wrong — error message is attached</td>
+<td>Something went wrong. Error message is attached.</td>
 </tr>
 <tr>
 <td><code>CANCELLED</code></td>
@@ -2002,15 +2002,15 @@
 <tbody>
 <tr>
 <td><code>execute</code></td>
-<td>New execution — SQL sent to the warehouse</td>
+<td>New execution. SQL sent to the warehouse.</td>
 </tr>
 <tr>
 <td><code>from_cache</code></td>
-<td>Cache hit — result returned from a previous execution</td>
+<td>Cache hit. Result returned from a previous execution.</td>
 </tr>
 <tr>
 <td><code>await_primary</code></td>
-<td>Piggyback — linked to an identical query already running</td>
+<td>Piggyback. Linked to an identical query already running.</td>
 </tr>
 </tbody>
 </table>
@@ -2020,7 +2020,7 @@
 <ol>
 <li><strong>Runs the SQL</strong> on your data warehouse (Snowflake, Databricks, DuckDB, etc.)</li>
 <li><strong>Saves the result</strong> as a Parquet file in object storage (S3, MinIO, GCS)</li>
-<li><strong>Records metadata</strong> — row count, file size, column schema, lineage</li>
+<li><strong>Records metadata</strong>: row count, file size, column schema, lineage.</li>
 <li><strong>Creates a cache entry</strong> so the next identical query can skip execution</li>
 <li><strong>Updates the statement status</strong> to <code>SUCCESS</code> (or <code>FAILED</code> if something went wrong)</li>
 </ol>
@@ -2103,7 +2103,7 @@
 </span></code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Parquet format ignores pagination</p>
-<p>When requesting Parquet format, <code>limit</code>, <code>offset</code>, and <code>columns</code> parameters are ignored — you get the full result file.</p>
+<p>When requesting Parquet format, <code>limit</code>, <code>offset</code>, and <code>columns</code> parameters are ignored. You get the full result file.</p>
 </div>
 <hr/>
 <h2 id="putting-it-all-together">Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Link to this section">¶</a></h2>
@@ -2139,7 +2139,7 @@
 </span></code></pre></div>
 <p>If no <code>state_connection</code> is configured, Vulcan falls back to the warehouse connection. All <code>_query_*</code> tables are created in the <code>state_schema</code> (default <code>vulcan</code>).</p>
 <h3 id="_query_results"><code>_query_results</code><a class="headerlink" href="#_query_results" title="Link to this section">¶</a></h3>
-<p>Stores metadata about each query result. The actual data lives in object storage as Parquet — this table only tracks where to find it.</p>
+<p>Stores metadata about each query result. The data itself lives in object storage as Parquet; this table only tracks where to find it.</p>
 <table>
 <thead>
 <tr>
@@ -2241,7 +2241,7 @@
 </table>
 <p>A fingerprint is considered <strong>stale</strong> when <code>expires_ts &lt;= now</code> or <code>invalidated_ts</code> is set.</p>
 <h3 id="_query_requests"><code>_query_requests</code><a class="headerlink" href="#_query_requests" title="Link to this section">¶</a></h3>
-<p>An audit log of every query submission. Every API call — whether it's a cache hit, piggyback, or new execution — creates a row here.</p>
+<p>An audit log of every query submission. Every API call creates a row here, whether it ended up as a cache hit, a piggyback, or a new execution.</p>
 <table>
 <thead>
 <tr>
@@ -2446,7 +2446,7 @@
 <li>The next time someone queries the same fingerprint, <code>get_fingerprint_result</code> sees the entry is stale and treats it as a cache miss</li>
 <li>The query executes fresh, and a new fingerprint entry + result replaces the old one</li>
 </ol>
-<p>This means cached results stay fresh as long as the underlying data hasn't changed — and are automatically expired the moment it does.</p>
+<p>Cached results stay fresh as long as the underlying data hasn't changed, and are automatically expired the moment it does.</p>
 <hr/>
 <h2 id="quick-reference">Quick reference<a class="headerlink" href="#quick-reference" title="Link to this section">¶</a></h2>
 <table>

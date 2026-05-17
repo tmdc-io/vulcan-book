@@ -1776,7 +1776,7 @@
 </span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>├── cohort_retention.yml
 </span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>└── product_engagement.yml
 </span></code></pre></div>
-<p><strong>File naming:</strong> The filename doesn't matter — Vulcan reads every YAML file in <code>models/metrics/</code>. Naming files after the metric they define keeps diffs and ownership clean.</p>
+<p><strong>File naming:</strong> the filename doesn't matter. Vulcan reads every YAML file in <code>models/metrics/</code>. Naming files after the metric they define keeps diffs and ownership clean.</p>
 <hr/>
 <h2 id="structure">Structure<a class="headerlink" href="#structure" title="Link to this section">¶</a></h2>
 <p>A metric is a single document with <code>kind: metric</code> at the top. Reference measures, time columns, dimensions, and segments using <code>&lt;semantic_name&gt;.&lt;field&gt;</code> notation, where <code>&lt;semantic_name&gt;</code> is the value of the <code>name:</code> field at the top of the corresponding semantic model.</p>
@@ -1798,7 +1798,7 @@
 </span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">"..."</span><span class="w">                                </span><span class="c1"># Optional</span>
 </span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span><span class="w">                                 </span><span class="c1"># Optional</span>
 </span><span id="__span-1-18"><a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="nt">terms</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span><span class="w">                                </span><span class="c1"># Optional</span>
-</span><span id="__span-1-19"><a href="#__codelineno-1-19" id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="nt">ai_context</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">...</span><span class="p p-Indicator">}</span><span class="w">                           </span><span class="c1"># Optional — see models.md#ai-context</span>
+</span><span id="__span-1-19"><a href="#__codelineno-1-19" id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="nt">ai_context</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nv">...</span><span class="p p-Indicator">}</span><span class="w">                           </span><span class="c1"># Optional, see models.md#ai-context</span>
 </span></code></pre></div>
 <hr/>
 <h2 id="required-properties">Required properties<a class="headerlink" href="#required-properties" title="Link to this section">¶</a></h2>
@@ -1886,7 +1886,7 @@
 <tr>
 <td><code>segments</code></td>
 <td>List of <code>&lt;semantic_name&gt;.&lt;segment_name&gt;</code></td>
-<td>Predefined filters from semantic models. <strong>Qualified-ref strings only</strong> — no named form.</td>
+<td>Predefined filters from semantic models. <strong>Qualified-ref strings only</strong>; no named form.</td>
 </tr>
 <tr>
 <td><code>description</code></td>
@@ -1919,7 +1919,7 @@
 <h2 id="dimensions">Dimensions<a class="headerlink" href="#dimensions" title="Link to this section">¶</a></h2>
 <p><code>dimensions:</code> is a list. Each item can be either a bare reference to a column, or a named slice that gives the column a different display name.</p>
 <h3 id="bare-reference">Bare reference<a class="headerlink" href="#bare-reference" title="Link to this section">¶</a></h3>
-<p>The most common form — just point at a column on a semantic model:</p>
+<p>The most common form, just point at a column on a semantic model:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subscriptions.plan_type</span>
 </span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">users.signup_channel</span>
@@ -1930,7 +1930,7 @@
 <p>If two shorthand entries derive the <strong>same</strong> name from <strong>different</strong> refs, validation fails. Example:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nt">dimensions</span><span class="p">:</span>
 </span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">users.country</span><span class="w">         </span><span class="c1"># derives "country"</span>
-</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">shipping.country</span><span class="w">      </span><span class="c1"># also derives "country" — ERROR</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">shipping.country</span><span class="w">      </span><span class="c1"># also derives "country" -&gt; ERROR</span>
 </span></code></pre></div>
 <p>Switch one (or both) to the <a href="#named-slice">object form</a> and give them distinct <code>name</code>s:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nt">dimensions</span><span class="p">:</span>
@@ -1971,7 +1971,7 @@
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>The label consumers use in queries. Lowercase identifier — see <a href="../models/#naming-rules">Naming rules</a>. Must be unique across this metric's <code>dimensions</code> <strong>and</strong> <code>segments</code>.</td>
+<td>The label consumers use in queries. Lowercase identifier (see <a href="../models/#naming-rules">Naming rules</a>). Must be unique across this metric's <code>dimensions</code> <strong>and</strong> <code>segments</code>.</td>
 </tr>
 <tr>
 <td><code>ref</code></td>
@@ -2035,7 +2035,7 @@
 </tr>
 <tr>
 <td><code>ref</code> shape</td>
-<td><code>&lt;semantic_name&gt;.&lt;segment_name&gt;</code> — both halves must be valid identifiers.</td>
+<td><code>&lt;semantic_name&gt;.&lt;segment_name&gt;</code>. Both halves must be valid identifiers.</td>
 </tr>
 <tr>
 <td>Auto-derived <code>name</code></td>
@@ -2190,7 +2190,7 @@
 <li><code>ts</code> references a valid time/date column</li>
 <li><code>granularity</code> is a recognized granularity value (see <a href="#granularity">granularity table</a>)</li>
 <li>Every qualified reference (<code>measure</code>, <code>ts</code>, and each dimension/segment <code>ref</code>) is a valid <code>&lt;semantic_name&gt;.&lt;field&gt;</code> where both halves are valid identifiers</li>
-<li><strong>All qualified refs used by the metric are unique</strong> — you cannot use the same <code>&lt;semantic_name&gt;.&lt;field&gt;</code> as both <code>measure</code> and <code>ts</code>, or as two dimensions, etc.</li>
+<li><strong>All qualified refs used by the metric are unique.</strong> You cannot use the same <code>&lt;semantic_name&gt;.&lt;field&gt;</code> as both <code>measure</code> and <code>ts</code>, or as two dimensions, and so on.</li>
 <li><strong>All names are unique across <code>dimensions</code> and <code>segments</code></strong> (dimension <code>name</code>s plus auto-derived segment <code>name</code>s, considered as one combined set)</li>
 <li>Dimension references point to real columns</li>
 <li>Named slices include both <code>name</code> and <code>ref</code></li>
@@ -2204,7 +2204,7 @@
 <hr/>
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Link to this section">¶</a></h2>
 <ul>
-<li>Learn about <a href="../models/">Semantic Models</a> — the source of measures, segments, and joins that metrics build on</li>
+<li>Learn about <a href="../models/">Semantic Models</a>: the source of measures, segments, and joins that metrics build on.</li>
 <li>See the <a href="../overview/">Semantics Overview</a> for the complete picture</li>
 <li>Explore metric definitions in your project's <code>models/metrics/</code> directory</li>
 </ul>

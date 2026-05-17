@@ -1608,7 +1608,7 @@
 <p>Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in, they let you write your own Python code to control exactly how your models get materialized.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advanced Feature</p>
-<p>Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.</p>
+<p>Custom materializations replace Vulcan's built-in DDL/DML for a model kind. Reach for one only after you've ruled out the standard kinds: most workloads fit <code>FULL</code>, <code>INCREMENTAL_BY_TIME_RANGE</code>, <code>INCREMENTAL_BY_UNIQUE_KEY</code>, or <code>INCREMENTAL_BY_PARTITION</code>. If a built-in kind is almost what you need, file an issue first; an improvement there helps everyone.</p>
 </div>
 <h2 id="what-is-a-materialization">What is a materialization?<a class="headerlink" href="#what-is-a-materialization" title="Link to this section">¶</a></h2>
 <p>A materialization is the "how" behind your model execution. When Vulcan runs a model, it needs to figure out how to get that data into your database. The materialization is the set of methods that handle executing your transformation logic and managing the resulting data.</p>
@@ -1882,7 +1882,7 @@
 </span></code></pre></div></td></tr></tbody></table></div>
 <p>This gives you full control over the lifecycle of your data objects.</p>
 <h2 id="using-a-custom-materialization">Using a custom materialization<a class="headerlink" href="#using-a-custom-materialization" title="Link to this section">¶</a></h2>
-<p>Once you've created your materialization, using it is straightforward. In your model definition, set the <code>kind</code> to <code>CUSTOM</code> and specify the <code>materialization</code> name (the <code>NAME</code> from your Python class):</p>
+<p>To use the materialization, set the model's <code>kind</code> to <code>CUSTOM</code> and pass the class <code>NAME</code> as <code>materialization</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">SQL</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -2086,9 +2086,9 @@
 <h2 id="extending-customkind">Extending <code>CustomKind</code><a class="headerlink" href="#extending-customkind" title="Link to this section">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This is advanced territory. You're working with Vulcan's internals here, so there's extra complexity involved. If the basic custom materialization approach works for you, stick with that. Only dive into this if you really need the extra control.</p>
+<p>This subclasses Vulcan internals, which means more surface area to maintain. If the standard <code>Materialization</code> subclass works for you, stay there. Only use this when you need to validate custom properties before any database connection happens.</p>
 </div>
-<p>Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals, maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.</p>
+<p>The standard approach works for most cases. The reason to subclass <code>CustomKind</code> is when you need to validate or coerce custom properties before Vulcan opens any database connection, or you need a property to be present (and the right type) at parse time rather than at runtime.</p>
 <p>In those cases, you can create a subclass of <code>CustomKind</code> that Vulcan will use instead of the default. When your project loads, Vulcan will detect your subclass and use it instead of the standard <code>CustomKind</code>.</p>
 <h3 id="creating-a-custom-kind">Creating a custom kind<a class="headerlink" href="#creating-a-custom-kind" title="Link to this section">¶</a></h3>
 <p>Here's how you'd create a custom kind that validates a <code>primary_key</code> property:</p>
@@ -2211,12 +2211,12 @@
 </li>
 </ul>
 <h2 id="sharing-custom-materializations">Sharing custom materializations<a class="headerlink" href="#sharing-custom-materializations" title="Link to this section">¶</a></h2>
-<p>Once you've built a custom materialization, you'll probably want to use it across multiple projects. You have a couple of options.</p>
+<p>Two ways to share a materialization across projects:</p>
 <h3 id="copying-files">Copying files<a class="headerlink" href="#copying-files" title="Link to this section">¶</a></h3>
 <p>The simplest approach is to copy the materialization code into each project's <code>materializations/</code> directory. It works, but it's not the most maintainable approach, you'll need to manually update each copy when you make changes.</p>
 <p>If you go this route, we strongly recommend keeping the materialization code in version control and setting up a reliable way to notify users when updates are available.</p>
 <h3 id="python-packaging">Python packaging<a class="headerlink" href="#python-packaging" title="Link to this section">¶</a></h3>
-<p>A more robust approach is to package your materialization as a Python package. This is especially useful if you're using Airflow or other external schedulers where the scheduler cluster doesn't have direct access to your project's <code>materializations/</code> folder.</p>
+<p>Packaging the materialization as a Python package solves the copy-paste problem and also covers the case where the scheduler (Airflow, etc.) runs on machines that don't have access to the project's <code>materializations/</code> directory.</p>
 <p>Package your materialization using <a href="https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata">setuptools entrypoints</a>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">pyproject.toml</label><label for="__tabbed_2_2">setup.py</label></div>
 <div class="tabbed-content">
