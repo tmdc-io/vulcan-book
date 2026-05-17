@@ -16,7 +16,7 @@ models/metrics/
 └── product_engagement.yml
 ```
 
-**File naming:** The filename doesn't matter — Vulcan reads every YAML file in `models/metrics/`. Naming files after the metric they define keeps diffs and ownership clean.
+**File naming:** the filename doesn't matter. Vulcan reads every YAML file in `models/metrics/`. Naming files after the metric they define keeps diffs and ownership clean.
 
 ---
 
@@ -43,7 +43,7 @@ description: "..."                          # Optional
 owner: "..."                                # Optional
 tags: [...]                                 # Optional
 terms: [...]                                # Optional
-ai_context: {...}                           # Optional — see models.md#ai-context
+ai_context: {...}                           # Optional, see models.md#ai-context
 ```
 
 ---
@@ -109,7 +109,7 @@ The default granularity is what's used when a consumer queries the metric withou
 | Property | Type | Description |
 |----------|------|-------------|
 | `dimensions` | List | Grouping dimensions (bare reference, or named slice with `name` + `ref`). See [Dimensions](#dimensions). |
-| `segments` | List of `<semantic_name>.<segment_name>` | Predefined filters from semantic models. **Qualified-ref strings only** — no named form. |
+| `segments` | List of `<semantic_name>.<segment_name>` | Predefined filters from semantic models. **Qualified-ref strings only**; no named form. |
 | `description` | String | Human-readable explanation of the metric. |
 | `owner` | String | Team or person responsible for the metric. |
 | `tags` | List of strings | Categorization labels for discovery. See [Naming rules](models.md#naming-rules) for the allowed pattern. |
@@ -124,7 +124,7 @@ The default granularity is what's used when a consumer queries the metric withou
 
 ### Bare reference
 
-The most common form — just point at a column on a semantic model:
+The most common form, just point at a column on a semantic model:
 
 ```yaml
 dimensions:
@@ -140,7 +140,7 @@ The dimension's `name` is **auto-derived** from the field part after the `.` (so
     ```yaml
     dimensions:
       - users.country         # derives "country"
-      - shipping.country      # also derives "country" — ERROR
+      - shipping.country      # also derives "country" -> ERROR
     ```
 
     Switch one (or both) to the [object form](#named-slice) and give them distinct `name`s:
@@ -178,7 +178,7 @@ dimensions:
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `name` | Yes | The label consumers use in queries. Lowercase identifier — see [Naming rules](models.md#naming-rules). Must be unique across this metric's `dimensions` **and** `segments`. |
+| `name` | Yes | The label consumers use in queries. Lowercase identifier (see [Naming rules](models.md#naming-rules)). Must be unique across this metric's `dimensions` **and** `segments`. |
 | `ref` | Yes | The actual semantic reference (`<semantic_name>.<column>`). Both halves must be valid identifiers. |
 | `description` | No | Human-readable explanation. **Overrides** the description on the underlying semantic field for this metric. |
 | `tags` | No | List of categorization labels. **Overrides** the underlying field's tags for this metric. |
@@ -219,7 +219,7 @@ The segments `active_subscriptions` and `high_value_accounts` must be defined in
 | Aspect | Rule |
 |--------|------|
 | Entry type | **Must** be a qualified-reference string. Dict / object form is rejected by the parser. |
-| `ref` shape | `<semantic_name>.<segment_name>` — both halves must be valid identifiers. |
+| `ref` shape | `<semantic_name>.<segment_name>`. Both halves must be valid identifiers. |
 | Auto-derived `name` | `<semantic_name>_<segment_name>`, lowercased. Must match `^[a-z][a-z0-9_]{0,63}$` and must not collide with any dimension `name` on this metric. |
 | Per-entry metadata | **Not supported.** Unlike dimensions, segments on a metric cannot carry per-entry `description`, `tags`, `terms`, or `ai_context`. To override segment metadata, edit it on the underlying semantic model. |
 
@@ -385,7 +385,7 @@ Vulcan validates metric definitions automatically when you create a plan. It che
 - `ts` references a valid time/date column
 - `granularity` is a recognized granularity value (see [granularity table](#granularity))
 - Every qualified reference (`measure`, `ts`, and each dimension/segment `ref`) is a valid `<semantic_name>.<field>` where both halves are valid identifiers
-- **All qualified refs used by the metric are unique** — you cannot use the same `<semantic_name>.<field>` as both `measure` and `ts`, or as two dimensions, etc.
+- **All qualified refs used by the metric are unique.** You cannot use the same `<semantic_name>.<field>` as both `measure` and `ts`, or as two dimensions, and so on.
 - **All names are unique across `dimensions` and `segments`** (dimension `name`s plus auto-derived segment `name`s, considered as one combined set)
 - Dimension references point to real columns
 - Named slices include both `name` and `ref`
@@ -400,6 +400,6 @@ Vulcan validates metric definitions automatically when you create a plan. It che
 
 ## Next steps
 
-- Learn about [Semantic Models](models.md) — the source of measures, segments, and joins that metrics build on
+- Learn about [Semantic Models](models.md): the source of measures, segments, and joins that metrics build on.
 - See the [Semantics Overview](overview.md) for the complete picture
 - Explore metric definitions in your project's `models/metrics/` directory

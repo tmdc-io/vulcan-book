@@ -5,7 +5,7 @@ Vulcan comes with a variety of [model kinds](../model/model_kinds.md) that handl
 Sometimes, your specific use case doesn't quite fit any of the built-in model kinds. Maybe you need custom logic for how data gets inserted, or you want to implement a materialization strategy that's unique to your workflow. That's where custom materializations come in, they let you write your own Python code to control exactly how your models get materialized.
 
 !!! warning "Advanced Feature"
-    Custom materializations are powerful, but they're also advanced. Before diving in, make sure you've exhausted all other options. If an existing model kind can solve your problem, we want to improve our docs; if a built-in kind is almost what you need, we might be able to enhance it for everyone.
+    Custom materializations replace Vulcan's built-in DDL/DML for a model kind. Reach for one only after you've ruled out the standard kinds: most workloads fit `FULL`, `INCREMENTAL_BY_TIME_RANGE`, `INCREMENTAL_BY_UNIQUE_KEY`, or `INCREMENTAL_BY_PARTITION`. If a built-in kind is almost what you need, file an issue first; an improvement there helps everyone.
 
 ## What is a materialization?
 
@@ -179,7 +179,7 @@ This gives you full control over the lifecycle of your data objects.
 
 ## Using a custom materialization
 
-Once you've created your materialization, using it is straightforward. In your model definition, set the `kind` to `CUSTOM` and specify the `materialization` name (the `NAME` from your Python class):
+To use the materialization, set the model's `kind` to `CUSTOM` and pass the class `NAME` as `materialization`:
 
 === "SQL"
 
@@ -302,9 +302,9 @@ This lets you create flexible materializations that can adapt to different use c
 ## Extending `CustomKind`
 
 !!! warning
-    This is advanced territory. You're working with Vulcan's internals here, so there's extra complexity involved. If the basic custom materialization approach works for you, stick with that. Only dive into this if you really need the extra control.
+    This subclasses Vulcan internals, which means more surface area to maintain. If the standard `Materialization` subclass works for you, stay there. Only use this when you need to validate custom properties before any database connection happens.
 
-Most of the time, the standard custom materialization approach is all you need. But sometimes you want tighter integration with Vulcan's internals, maybe you need to validate custom properties before any database connections are made, or you want to leverage functionality that depends on specific properties being present.
+The standard approach works for most cases. The reason to subclass `CustomKind` is when you need to validate or coerce custom properties before Vulcan opens any database connection, or you need a property to be present (and the right type) at parse time rather than at runtime.
 
 In those cases, you can create a subclass of `CustomKind` that Vulcan will use instead of the default. When your project loads, Vulcan will detect your subclass and use it instead of the standard `CustomKind`.
 
@@ -391,7 +391,7 @@ Why would you want this? Two main benefits:
 
 ## Sharing custom materializations
 
-Once you've built a custom materialization, you'll probably want to use it across multiple projects. You have a couple of options.
+Two ways to share a materialization across projects:
 
 ### Copying files
 
@@ -401,7 +401,7 @@ If you go this route, we strongly recommend keeping the materialization code in 
 
 ### Python packaging
 
-A more robust approach is to package your materialization as a Python package. This is especially useful if you're using Airflow or other external schedulers where the scheduler cluster doesn't have direct access to your project's `materializations/` folder.
+Packaging the materialization as a Python package solves the copy-paste problem and also covers the case where the scheduler (Airflow, etc.) runs on machines that don't have access to the project's `materializations/` directory.
 
 Package your materialization using [setuptools entrypoints](https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/#using-package-metadata):
 

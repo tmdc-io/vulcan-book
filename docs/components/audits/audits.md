@@ -6,17 +6,17 @@ Unlike [tests](../tests/tests.md) (which you run manually to verify logic), audi
 
 All audits in Vulcan are blocking. When an audit fails, Vulcan stops everything: no plan application, no run execution. This prevents bad data from propagating through your entire pipeline.
 
-A comprehensive suite of audits helps you catch problems upstream, builds trust in your data across the organization, and lets your team work with confidence knowing that invalid data won't slip through.
+Audits catch bad rows where they enter the pipeline, so the dashboards and APIs downstream don't have to defend themselves against data the warehouse should have rejected in the first place.
 
 > **Note:** For incremental by time range models, audits only run on the intervals being processed, not the entire table. This keeps things fast and focused on what actually changed.
 
 ## Terminology: Audits and Assertions
 
-Before we dive in, let's clear up some terminology. Vulcan uses two related but distinct concepts:
+Two terms come up a lot, and they're easy to mix up:
 
-- **AUDIT** - The validation rule itself (the SQL query that checks for problems)
+- **AUDIT**: the validation rule itself (the SQL query that returns rows when something is wrong).
 
-- **ASSERTION** - Attaching an audit to a model (claiming it should pass)
+- **ASSERTION**: attaching a named audit to a model and claiming the model should pass it.
 
 An audit is the rule ("prices must be positive"), and an assertion is you saying "this model follows that rule."
 
@@ -50,7 +50,7 @@ Here's what happens when you run a model:
 
 ### Plan vs. Run
 
-The difference between `plan` and `run` matters a lot when it comes to audits:
+`plan` and `run` treat audit failures differently, and the difference matters:
 
 **`plan`** - The safe way:
 - Vulcan evaluates and audits all modified models *before* promoting them to production
@@ -129,7 +129,7 @@ This audit runs every time the `sushi.items` model runs.
 
 ### Generic Audits
 
-Here's where audits get really powerful. You can create parameterized audits that work across multiple models. This saves you from writing the same audit over and over.
+Audits can be parameterized, so one audit definition covers every model that follows the same shape. The same `not_null_columns` audit, for example, can apply to `customers`, `orders`, and `events` without three copies of the SQL.
 
 Consider this audit that checks if a column exceeds a threshold:
 
@@ -663,7 +663,7 @@ This ensures no `name` values end with 'doe' or 'smith'.
 
 ### Statistical Audits
 
-These audits check statistical properties of your data. They're powerful but require some tuning to get the thresholds right.
+These audits check statistical properties of your data. They need tuning to avoid false positives during normal variance.
 
 !!! note
     Statistical audit thresholds usually need fine-tuning through trial and error. Start with wide ranges and tighten them as you learn what's normal for your data.
