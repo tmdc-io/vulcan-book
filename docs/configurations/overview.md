@@ -10,6 +10,8 @@ Create a configuration file in your project root. Choose one:
 
 - `config.py`: Python format. Use this if you need dynamic configuration or want to generate settings programmatically.
 
+Usage guidance lives separately in `usage.yaml`. Keep connection/runtime settings in `config.yaml`, and keep business-facing guidance in `usage.yaml`.
+
 ## Example Configuration
 
 Here's what a typical configuration file looks like:
@@ -41,17 +43,6 @@ terms:
   - glossary.analytics_platform
   - glossary.sales_operations
 
-# Metadata
-metadata:
-  domain: sales_operations
-  use_cases:
-    - Daily and weekly sales reporting
-    - Customer segmentation and RFM analysis
-    - Sales funnel conversion tracking
-    - Product performance analytics
-  limitations:
-    - Demo dataset with synthetic data (100 customers, 1000 orders)
-    - Historical data from November 2025 onwards
 
 # Gateway Connection
 gateways:
@@ -87,22 +78,54 @@ linter:
     - invalidselectstarexpansion
 ```
 
+## Example Usage Guidance
+
+Create `usage.yaml` in your project root to describe who the data product is good for, who it is not good for, caveats users should know, and reference links.
+
+```yaml linenums="1"
+good_for:
+  - Customer analytics and segmentation
+  - title: Revenue reporting and forecasting
+    details: Planning, board reporting, and trend analysis across segments
+  - User acquisition tracking
+  - Subscription lifecycle management
+
+not_for:
+  - Real-time alerting
+  - title: Real-time operational decisions
+    details: Data refreshes weekly — not suitable for alerting or live dashboards
+
+caveats:
+  - Historical data available from 2024-01-01
+  - title: Weekly refresh cadence
+    details: Updates every Monday ~6am UTC; answers can be up to 7 days stale
+    severity: medium
+  - title: Excludes test and demo accounts
+    severity: low
+
+references:
+  - title: Vulcan book
+    url: https://tmdc-io.github.io/vulcan-book/
+    type: doc
+```
+
 ## Configuration Structure
 
 ```mermaid
 graph TB
     Config[config.yaml]
+    Usage[usage.yaml]
     Config --> Project[Project Settings]
-    Config --> Metadata[Metadata]
     Config --> Gateways[Gateways]
     Config --> ModelDefaults[Model Defaults]
     Config --> Options[Optional Features]
+    Usage --> GoodFor[good_for]
+    Usage --> NotFor[not_for]
+    Usage --> Caveats[caveats]
+    Usage --> References[references]
     Project --> Name[name, display_name]
     Project --> Desc[description]
     Project --> Tags[tags, terms]
-    Metadata --> Domain[domain]
-    Metadata --> UseCases[use_cases]
-    Metadata --> Limitations[limitations]
     Gateways --> Connection[connection]
     Gateways --> StateConn[state_connection]
     Gateways --> TestConn[test_connection]
@@ -117,7 +140,7 @@ graph TB
 
 ### Project Settings
 
-Metadata fields that identify your project. They don't affect how Vulcan runs, but catalog tools rely on them for organization and discovery.
+Project settings identify your project. They do not affect how Vulcan runs, but catalog tools rely on them for organization and discovery. Business-facing usage guidance belongs in `usage.yaml`, not in `config.yaml`.
 
 | Option | Description | Type | Required |
 |--------|-------------|:----:|:--------:|
@@ -129,7 +152,6 @@ Metadata fields that identify your project. They don't affect how Vulcan runs, b
 | `alignment` | Data Mesh orientation: `source_aligned` or `consumer_aligned` | enum | No |
 | `tags` | Labels for categorization and filtering. Merged with `DATAOS_RESOURCE_TAGS` env var. | array of string | No |
 | `terms` | Business glossary terms using dot notation (e.g., `glossary.data_product`) | array of string | No |
-| `metadata` | Project metadata object (domain, use_cases, limitations, reference_links) | object | No |
 
 ```yaml
 # Project identity
@@ -157,27 +179,42 @@ terms:
 !!! info "Tenant comes from the environment"
     `tenant` is not a YAML key in `config.yaml`. Set it via the `DATAOS_TENANT_ID` environment variable (or `.env` file). Without it, Vulcan refuses to load the project.
 
-### Metadata
+### Usage Guidance (`usage.yaml`)
 
-Metadata fields provide additional context about your project's purpose and scope. Use these to document what your project does, where it applies, and any known constraints.
+Use `usage.yaml` for business-facing guidance. This file helps consumers understand when to use the data product, when not to use it, what caveats apply, and where to find supporting references.
+
+Unlike `config.yaml`, `usage.yaml` does not configure runtime behavior. It is documentation and discovery guidance for humans and catalog/AI experiences.
 
 | Option | Description | Type | Required |
 |--------|-------------|:----:|:--------:|
-| `domain` | Business domain or data area (e.g., sales_operations, marketing, finance) | string | No |
-| `use_cases` | List of primary use cases or business problems this project addresses | array of string | No |
-| `limitations` | List of known constraints, caveats, or edge cases to be aware of | array of string | No |
+| `good_for` | Use cases where this data product is a good fit | array of string/object | No |
+| `not_for` | Use cases where this data product should not be used | array of string/object | No |
+| `caveats` | Known limits, freshness notes, exclusions, or interpretation warnings | array of string/object | No |
+| `references` | Supporting links such as docs, dashboards, runbooks, or tickets | array of object | No |
+
+List items can be simple strings or structured objects with `title` and optional details.
 
 ```yaml
-# Metadata
-metadata:
-  domain: sales_operations
-  use_cases:
-    - Daily and weekly sales reporting
-    - Customer segmentation and RFM analysis
-    - Sales funnel conversion tracking
-  limitations:
-    - Demo dataset with synthetic data (100 customers, 1000 orders)
-    - Historical data from November 2025 onwards
+good_for:
+  - Customer analytics and segmentation
+  - title: Revenue reporting and forecasting
+    details: Planning, board reporting, and trend analysis across segments
+
+not_for:
+  - Real-time alerting
+  - title: Real-time operational decisions
+    details: Data refreshes weekly — not suitable for alerting or live dashboards
+
+caveats:
+  - Historical data available from 2024-01-01
+  - title: Weekly refresh cadence
+    details: Updates every Monday ~6am UTC; answers can be up to 7 days stale
+    severity: medium
+
+references:
+  - title: Vulcan book
+    url: https://tmdc-io.github.io/vulcan-book/
+    type: doc
 ```
 
 ### Gateways
@@ -204,18 +241,6 @@ gateways:
       database: warehouse
       user: vulcan
       password: "{{ env_var('DB_PASSWORD') }}"
-    state_connection:
-      type: postgres
-      host: statestore
-      port: 5432
-      database: statestore
-      user: vulcan
-      password: "{{ env_var('STATE_DB_PASSWORD') }}"
-    test_connection:
-      type: duckdb
-    scheduler:
-      type: builtin
-    state_schema: my_project
 
 default_gateway: default
 ```
@@ -313,7 +338,7 @@ Vulcan works with these data warehouses and compute engines:
 
 This table lists all available configuration keys in `config.yaml`. Click the links for detailed documentation.
 
-### Project Identity & Metadata
+### Project Identity
 
 | Configuration Key | Description | Type | Required | Default | Documentation |
 |-------------------|-------------|:----:|:--------:|---------|---------------|
@@ -326,11 +351,17 @@ This table lists all available configuration keys in `config.yaml`. Click the li
 | `project` | Legacy alias of `name`. Auto-filled from `name` if omitted. | string | No | `""` | - |
 | `tags` | Labels for categorization. Merged with `DATAOS_RESOURCE_TAGS`. | array | No | `[]` | - |
 | `terms` | Business glossary terms (e.g., `glossary.data_product`) | array | No | `[]` | - |
-| `metadata` | Project metadata (domain, use_cases, limitations, reference_links) | object | No | `null` | [See above](#metadata) |
-| `metadata.domain` | Business domain (sales, marketing, finance, etc.). Required when `metadata:` is set. | string | No | `null` | - |
-| `metadata.use_cases` | List of primary use cases this project addresses | array | No | `[]` | - |
-| `metadata.limitations` | Known constraints or caveats | array | No | `[]` | - |
-| `metadata.reference_links` | List of `{name, href}` reference links | array | No | `[]` | - |
+
+### Usage Guidance (`usage.yaml`)
+
+These keys live in `usage.yaml`, not `config.yaml`.
+
+| Usage Key | Description | Type | Required | Default |
+|-----------|-------------|:----:|:--------:|---------|
+| `good_for` | Use cases where the data product is a good fit | array | No | `[]` |
+| `not_for` | Use cases where the data product should not be used | array | No | `[]` |
+| `caveats` | Known limits, freshness notes, exclusions, or warnings | array | No | `[]` |
+| `references` | Supporting links with `title`, `url`, and optional `type` | array | No | `[]` |
 
 ### Gateway & Connection Configuration
 
@@ -526,7 +557,6 @@ Some fields become required only when another field is enabled:
 
 - `name` must be non-empty (or supplied via `DATAOS_RESOURCE_NAME`).
 - `description` must be non-empty.
-- `metadata.domain` is required when the `metadata:` block is present.
 - `hera.url` and `hera.token` are required when `hera.enabled: true`.
 - `heimdall.base_url` is required when `heimdall.enabled: true`.
 - `analytics.api_key` is required when `analytics.enabled: true`.
@@ -556,6 +586,7 @@ If you have an older `config.yaml`, these keys have moved or been replaced:
 | `physical_schema_override` | `physical_schema_mapping` | Auto-converted with a warning. |
 | `disable_anonymized_analytics` | `analytics.enabled` | Move into the `analytics` block. |
 | `tenant` (in YAML) | `DATAOS_TENANT_ID` env var | No longer a YAML key. |
+| `metadata` (in `config.yaml`) | `usage.yaml` | Move business usage guidance out of runtime config. |
 
 Quick migration checklist:
 
@@ -563,8 +594,9 @@ Quick migration checklist:
 2. Remove `virtual_environment_mode: dev_only` (or set `vde: false` explicitly).
 3. Add `discoverable`, `version`, `alignment` near the top of the file if you want non-default values.
 4. Make sure `version` is valid SemVer (`0.1.2`, not `0.1` or `v0.1.2`).
-5. Remove any deprecated keys listed above.
-6. Set `DATAOS_TENANT_ID` in your shell or `.env`.
+5. Move business usage guidance from `metadata:` into `usage.yaml`.
+6. Remove any deprecated keys listed above.
+7. Set `DATAOS_TENANT_ID` in your shell or `.env`.
 
 ## Best Practices
 

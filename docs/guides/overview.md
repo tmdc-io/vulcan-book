@@ -14,9 +14,9 @@ If you're new, start at the top. If you're looking for something specific, jump 
 
 ## Day-to-day workflows
 
-[Plan](plan_guide.md) - `vulcan plan` shows you what changed, what gets recomputed, and what gets promoted before anything takes effect. Use this before every deployment.
+[Plan](plan_guide.md) - `vulcan plan` shows you what changed before anything takes effect. This guide covers the default no-virtual-layer behavior and links to the optional virtual-layer mode.
 
-[Run and Scheduling](run_and_scheduling.md) - `plan` applies changes. `run` processes new data intervals. This guide covers the difference, shows you how `vulcan run` works, and walks through cron-based scheduling for production.
+[Vulcan Run Guide](run_and_scheduling.md) - `plan` applies changes. `run` processes new data intervals for the already applied shape.
 
 [Models](models.md) - Add, edit, evaluate, and manage SQL and Python models. Covers the full workflow: creating a model, previewing its output with `vulcan evaluate`, and applying it with a plan.
 

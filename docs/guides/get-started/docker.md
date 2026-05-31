@@ -1,838 +1,246 @@
 # Get Started
 
-Run Vulcan on your laptop with the **Local Development Kit (LDK)**. You get the full CLI in a Docker container, no cloud account required.
-
-## What is the LDK?
-
-The LDK is a single Docker image that gives you the **Vulcan CLI** on your machine. Use it to build models, run plans, test queries, and validate your semantic layer without any cloud deployment.
-
-**What the LDK gives you:**
-
-- **Vulcan CLI**: `vulcan init`, `vulcan plan`, `vulcan run`, and every other command
-- **State backend**: choose Postgres (persistent, Docker-based) or DuckDB (file-based, zero-setup)
-
-No zip downloads. No cloud setup. Pick your engine, choose a state backend, and start building.
+Install Vulcan from a pre-built Python wheel file, choose an engine, and connect it to a warehouse. This guide uses [vulcan-0.228.1.21-py3-none-any.whl](vulcan-0.228.1.21-py3-none-any.whl).
 
 ---
 
 ## Prerequisites
 
+### Python 3.10
+
+Vulcan requires Python 3.10 for local wheel installation.
+
 === "Mac/Linux"
+    ```bash
+    python3.10 --version
+    python3.10 -m pip install --upgrade pip
+    ```
 
-    **1. Verify Docker is installed**
+=== "Windows"
+    ```powershell
+    py -3.10 --version
+    py -3.10 -m pip install --upgrade pip
+    ```
 
+### Docker for Local Services
+
+Install Docker if you want Vulcan to start local services for development. This is required for the local Postgres setup and the Spark Docker setup in this guide.
+
+=== "Mac/Linux"
     ```bash
     docker --version
     docker compose version
     ```
 
-    Both commands should return version numbers. Make sure Docker Desktop is running (Docker icon in your menu bar).
-
-    **2. Install Docker (if needed)**
-
-    - **Mac**: [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/){:target="_blank"}
-    - **Linux**: [Docker Engine](https://docs.docker.com/engine/install/){:target="_blank"}
-
-    **3. Allocate resources**
-
-    Open Docker Desktop → **Settings → Resources → Advanced** and set RAM to at least **4 GB**.
-
 === "Windows"
-
-    **1. Verify Docker is installed**
-
-    ```cmd
+    ```powershell
     docker --version
     docker compose version
     ```
 
-    Both commands should return version numbers. Make sure Docker Desktop is running (Docker icon in your system tray).
-
-    **2. Install Docker (if needed)**
-
-    [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/){:target="_blank"}
-
-    **3. Allocate resources**
-
-    Open Docker Desktop → **Settings → Resources → Advanced** and set RAM to at least **4 GB**.
+If Docker is not installed, install [Docker Desktop](https://www.docker.com/products/docker-desktop/){:target="_blank"} and make sure it is running before you start any local services.
 
 ---
 
-## Set up Vulcan locally
+## Step 1: Create and Activate a Virtual Environment
 
-### Step 1: Create a project folder
+Use a virtual environment for Postgres, Snowflake, Databricks, Trino, MySQL, and MSSQL.
+
+!!! note "Spark uses a different setup"
+    For Spark, skip the virtual environment and use the Spark Docker setup in the Spark tab below. The `vulcan-cli` container installs Vulcan from the wheel and runs the Spark driver inside Linux.
 
 === "Mac/Linux"
     ```bash
     mkdir my-vulcan-project && cd my-vulcan-project
+    python3.10 -m venv .venv
+    source .venv/bin/activate
     ```
 
 === "Windows"
     ```powershell
     mkdir my-vulcan-project
     cd my-vulcan-project
+    py -3.10 -m venv .venv
+    .venv\Scripts\activate
     ```
 
-### Step 2: Create a Docker network
+After activation, your terminal prompt should include `(.venv)`.
 
-The CLI talks to the statestore by container name (`statestore`). That only works if both containers run on the same Docker network.
+Download [vulcan-0.228.1.21-py3-none-any.whl](vulcan-0.228.1.21-py3-none-any.whl) and place it in your project folder.
 
-=== "Mac/Linux"
-    ```bash
-    docker network create vulcan
-    ```
+---
 
-=== "Windows"
-    ```cmd
-    docker network create vulcan
-    ```
+## Step 2: Install Vulcan for Your Engine
 
-Without this network, `vulcan plan` and `vulcan run` have no way to reach the state backend.
+Install the wheel with the extra for the engine you want to use.
 
-!!! note
-    If you see `network with name vulcan already exists`, you're done. The network is already there and you can continue.
-
-### Step 3: Set the Vulcan CLI alias
-
-The Vulcan CLI runs as a Docker container. The image you use depends on your engine. Run the command for your engine and OS:
-
-=== "Mac/Linux"
-
-    === "Postgres"
-        ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.19 vulcan"
-        ```
-
-    === "Snowflake"
-        ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.19 vulcan"
-        ```
-
-    === "Databricks"
-        ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.19 vulcan"
-        ```
-
-    === "Trino"
-        ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.19 vulcan"
-        ```
-
-    === "Spark"
-        ```bash
-        alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.19 vulcan"
-        ```
-
-        !!! warning "Spark requires a running cluster"
-            Unlike other engines, Spark needs a running Spark cluster on your machine or network. The Spark version on your cluster **must match** the version bundled in the image. A mismatch causes `InvalidClassException` serialization errors at runtime. See [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
-
-        **Local Spark cluster**
-
-        To run Spark locally, save this as `docker-compose.spark.yml` in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure (Postgres for state and warehouse, MinIO for object storage, and the Iceberg REST catalog) so every hostname in `config.yaml` resolves correctly. The Spark image version (`3.5.1`) must match the version bundled in the Vulcan Spark image.
-
-        ```bash
-        docker compose -f docker-compose.spark.yml up -d
-        ```
-
-        ```yaml
-        x-images:
-          postgres: &postgres_image "postgres:15-alpine"
-          minio: &minio_image "minio/minio:latest"
-          minio-mc: &minio_mc_image "minio/mc:latest"
-
-        volumes:
-          statestore:
-          minio-warehouse-data:
-
-        networks:
-          vulcan:
-            external: true
-
-        services:
-
-          # ── State backend ────────────────────────────────────────────────
-          statestore:
-            image: *postgres_image
-            environment:
-              POSTGRES_DB: statestore
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_HOST_AUTH_METHOD: trust
-            ports:
-              - "5431:5432"
-            volumes:
-              - statestore:/var/lib/postgresql/data
-            healthcheck:
-              test: ["CMD-SHELL", "pg_isready -U vulcan -d statestore"]
-              interval: 5s
-              timeout: 5s
-              retries: 5
-            networks:
-              - vulcan
-
-          # ── Warehouse (Postgres, available as a JDBC Spark catalog) ───
-          warehouse:
-            image: postgres:15
-            container_name: warehouse
-            environment:
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_DB: warehouse
-            ports:
-              - "5432:5432"
-            networks:
-              - vulcan
-
-          # ── Object storage (MinIO) ───────────────────────────────────────
-          minio-warehouse:
-            image: *minio_image
-            command: server /data --console-address ":9001"
-            environment:
-              MINIO_ROOT_USER: admin
-              MINIO_ROOT_PASSWORD: password
-              MINIO_DOMAIN: minio-warehouse
-            ports:
-              - "9000:9000"
-              - "9001:9001"
-            volumes:
-              - minio-warehouse-data:/data
-            healthcheck:
-              test: ["CMD", "mc", "ready", "local"]
-              interval: 5s
-              timeout: 5s
-              retries: 5
-            networks:
-              - vulcan
-
-          minio-warehouse-init:
-            image: *minio_mc_image
-            depends_on:
-              minio-warehouse:
-                condition: service_healthy
-            entrypoint: >
-              /bin/sh -c "
-              /usr/bin/mc alias set minio-warehouse http://minio-warehouse:9000 admin password;
-              /usr/bin/mc mb minio-warehouse/warehouse --ignore-existing;
-              /usr/bin/mc anonymous set download minio-warehouse/warehouse;
-              exit 0;
-              "
-            networks:
-              - vulcan
-
-          # ── Iceberg REST catalog ─────────────────────────────────────────
-          iceberg-rest-warehouse:
-            image: tabulario/iceberg-rest:latest
-            environment:
-              CATALOG_WAREHOUSE: s3://warehouse/
-              CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
-              CATALOG_S3_ENDPOINT: http://minio-warehouse:9000
-              CATALOG_S3_ACCESS__KEY__ID: admin
-              CATALOG_S3_SECRET__ACCESS__KEY: password
-              CATALOG_S3_PATH__STYLE__ACCESS: "true"
-              AWS_REGION: us-east-1
-              AWS_DEFAULT_REGION: us-east-1
-            ports:
-              - "8181:8181"
-            depends_on:
-              - minio-warehouse
-            networks:
-              vulcan:
-                aliases:
-                  - iceberg-rest.minio-warehouse
-
-          # ── Spark cluster ────────────────────────────────────────────────
-          spark-master:
-            image: spark:3.5.1-scala2.12-java17-python3-ubuntu
-            container_name: spark-master
-            command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
-            environment:
-              SPARK_MASTER_HOST: spark-master
-              SPARK_MASTER_PORT: 7077
-              SPARK_MASTER_WEBUI_PORT: 8080
-            ports:
-              - "7077:7077"
-              - "8080:8080"
-            networks:
-              - vulcan
-
-          spark-worker-1:
-            image: spark:3.5.1-scala2.12-java17-python3-ubuntu
-            container_name: spark-worker-1
-            depends_on:
-              - spark-master
-            environment:
-              SPARK_WORKER_CORES: 4
-              SPARK_WORKER_MEMORY: 2g
-            command: >
-              /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker
-              spark://spark-master:7077
-            networks:
-              - vulcan
-
-          spark-worker-2:
-            image: spark:3.5.1-scala2.12-java17-python3-ubuntu
-            container_name: spark-worker-2
-            depends_on:
-              - spark-master
-            environment:
-              SPARK_WORKER_CORES: 4
-              SPARK_WORKER_MEMORY: 2g
-            command: >
-              /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker
-              spark://spark-master:7077
-            networks:
-              - vulcan
-        ```
-
-        **Vulcan config for Spark**
-
-        Choose the example that matches your setup:
-
-        ??? note "Local setup: Docker Spark cluster + Iceberg over MinIO"
-
-            ```yaml
-            gateways:
-              default:
-                connection:
-                  type: spark
-                  config:
-                    "spark.master": "spark://spark-master:7077"
-                    "spark.app.name": "vulcan"
-                    "spark.driver.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
-                    "spark.executor.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
-                    # JARs are baked into the Vulcan Spark image: no Ivy downloads at plan/run time
-                    "spark.executor.extraClassPath": "{{ env_var('VULCAN_SPARK_EXECUTOR_EXTRA_JARS_DIR', '/etc/dataos/work/jars') }}/*"
-                    # Iceberg catalog over MinIO
-                    "spark.sql.catalog.warehouse": "org.apache.iceberg.spark.SparkCatalog"
-                    "spark.sql.catalog.warehouse.type": "rest"
-                    "spark.sql.catalog.warehouse.uri": "http://iceberg-rest-warehouse:8181"
-                    "spark.sql.catalog.warehouse.warehouse": "s3://warehouse/"
-                    "spark.sql.catalog.warehouse.io-impl": "org.apache.iceberg.aws.s3.S3FileIO"
-                    "spark.sql.catalog.warehouse.s3.endpoint": "http://minio-warehouse:9000"
-                    "spark.sql.catalog.warehouse.s3.path-style-access": "true"
-                    "spark.sql.catalog.warehouse.s3.access-key-id": "admin"
-                    "spark.sql.catalog.warehouse.s3.secret-access-key": "password"
-                    "spark.sql.catalog.warehouse.client.region": "us-east-1"
-                    # S3/MinIO credentials
-                    "spark.hadoop.fs.s3a.access.key": "admin"
-                    "spark.hadoop.fs.s3a.secret.key": "password"
-                    "spark.hadoop.fs.s3a.endpoint": "http://minio-warehouse:9000"
-                    "spark.hadoop.fs.s3a.path.style.access": "true"
-                    "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
-                    # Iceberg extensions
-                    "spark.sql.extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
-                    # Dynamic allocation
-                    "spark.dynamicAllocation.enabled": "true"
-                    "spark.dynamicAllocation.shuffleTracking.enabled": "true"
-                    "spark.dynamicAllocation.initialExecutors": "1"
-                    "spark.dynamicAllocation.minExecutors": "1"
-                    "spark.dynamicAllocation.maxExecutors": "2"
-                state_connection:
-                  type: postgres
-                  host: statestore
-                  port: 5432
-                  database: statestore
-                  user: vulcan
-                  password: vulcan
-
-            default_gateway: default
-
-            model_defaults:
-              dialect: spark2
-            ```
-
-        ??? note "Existing lakehouse depot"
-
-            ```yaml
-            name: spark
-
-            model_defaults:
-              dialect: spark2
-              cron: '*/5 * * * *'
-
-            linter:
-              enabled: false
-
-            gateways:
-              default:
-                connection:
-                  type: spark
-                  config:
-                    "spark.master": "{{ env_var('SPARK_MASTER_URL') }}"
-                    "spark.app.name": "{{ env_var('SPARK_APP_NAME') }}"
-                    "spark.driver.extraJavaOptions": "-Daws.region={{ env_var('AWS_REGION') }} -Djava.io.tmpdir=/tmp/iceberg"
-                    "spark.executor.extraJavaOptions": "-Daws.region={{ env_var('AWS_REGION') }} -Djava.io.tmpdir=/tmp/iceberg"
-                    # Download Iceberg + AWS + PostgreSQL JDBC dependencies
-                    "spark.jars.packages": "org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2,org.apache.iceberg:iceberg-aws-bundle:1.5.2,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.postgresql:postgresql:42.7.1"
-                    "spark.jars.ivy": "/tmp/.ivy2"
-                    # S3 credentials
-                    "spark.hadoop.fs.s3a.access.key": "{{ env_var('MINIO_WAREHOUSE_ACCESS_KEY') }}"
-                    "spark.hadoop.fs.s3a.secret.key": "{{ env_var('MINIO_WAREHOUSE_SECRET_KEY') }}"
-                    "spark.hadoop.fs.s3a.endpoint": "{{ env_var('MINIO_WAREHOUSE_ENDPOINT') }}"
-                    "spark.hadoop.fs.s3a.path.style.access": "true"
-                    "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
-                    # Iceberg extensions
-                    "spark.sql.extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
-                    # Default catalog
-                    "spark.sql.defaultCatalog": "s3depot"
-                    # Iceberg catalog via lakehouse depot
-                    "spark.sql.catalog.s3depot": "org.apache.iceberg.spark.SparkCatalog"
-                    "spark.sql.catalog.s3depot.type": "rest"
-                    "spark.sql.catalog.s3depot.uri": "{{ env_var('ICEBERG_DEPOT_URI') }}"
-                    "spark.sql.catalog.s3depot.header.apikey": "{{ env_var('DEPOT_API_KEY') }}"
-                    "spark.sql.catalog.s3depot.warehouse": "{{ env_var('DEPOT_WAREHOUSE_PATH') }}"
-                    "spark.sql.catalog.s3depot.io-impl": "org.apache.iceberg.aws.s3.S3FileIO"
-                    "spark.sql.catalog.s3depot.s3.path-style-access": "true"
-                    "spark.sql.catalog.s3depot.s3.access-key-id": "{{ env_var('DEPOT_ACCESS_KEY') }}"
-                    "spark.sql.catalog.s3depot.s3.secret-access-key": "{{ env_var('DEPOT_SECRET_KEY') }}"
-                    "spark.sql.catalog.s3depot.client.region": "{{ env_var('AWS_REGION') }}"
-                    # Dynamic allocation
-                    "spark.dynamicAllocation.enabled": "true"
-                    "spark.dynamicAllocation.shuffleTracking.enabled": "true"
-                    "spark.dynamicAllocation.initialExecutors": "1"
-                    "spark.dynamicAllocation.minExecutors": "1"
-                    "spark.dynamicAllocation.maxExecutors": "2"
-                state_connection:
-                  type: postgres
-                  database: "{{ env_var('STATESTORE_DATABASE') }}"
-                  host: "{{ env_var('STATESTORE_HOST') }}"
-                  port: "{{ env_var('STATESTORE_PORT') }}"
-                  user: "{{ env_var('STATESTORE_USER') }}"
-                  password: "{{ env_var('STATESTORE_PASSWORD') }}"
-                state_schema: spark
-
-            default_gateway: default
-            ```
-
-    !!! tip "Make the alias permanent"
-        Add the alias line to `~/.zshrc` (Zsh) or `~/.bashrc` (Bash), then run `source ~/.zshrc` to reload without restarting your terminal.
-
-=== "Windows"
-
-    === "Postgres"
-        ```powershell
-        function vulcan { docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.19 vulcan $args }
-        ```
-
-    === "Snowflake"
-        ```powershell
-        function vulcan { docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.19 vulcan $args }
-        ```
-
-    === "Databricks"
-        ```powershell
-        function vulcan { docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.19 vulcan $args }
-        ```
-
-    === "Trino"
-        ```powershell
-        function vulcan { docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.19 vulcan $args }
-        ```
-
-    === "Spark"
-        ```powershell
-        function vulcan { docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.19 vulcan $args }
-        ```
-
-        !!! warning "Spark requires a running cluster"
-            Unlike other engines, Spark needs a running Spark cluster on your machine or network. The Spark version on your cluster **must match** the version bundled in the image. A mismatch causes `InvalidClassException` serialization errors at runtime. See [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites) for details.
-
-        **Local Spark cluster**
-
-        To run Spark locally, save this as `docker-compose.spark.yml` in your project folder and bring it up. It starts the Spark cluster together with the supporting infrastructure (Postgres for state and warehouse, MinIO for object storage, and the Iceberg REST catalog) so every hostname in `config.yaml` resolves correctly. The Spark image version (`3.5.1`) must match the version bundled in the Vulcan Spark image.
-
-        ```cmd
-        docker compose -f docker-compose.spark.yml up -d
-        ```
-
-        ```yaml
-        x-images:
-          postgres: &postgres_image "postgres:15-alpine"
-          minio: &minio_image "minio/minio:latest"
-          minio-mc: &minio_mc_image "minio/mc:latest"
-
-        volumes:
-          statestore:
-          minio-warehouse-data:
-
-        networks:
-          vulcan:
-            external: true
-
-        services:
-
-          # ── State backend ────────────────────────────────────────────────
-          statestore:
-            image: *postgres_image
-            environment:
-              POSTGRES_DB: statestore
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_HOST_AUTH_METHOD: trust
-            ports:
-              - "5431:5432"
-            volumes:
-              - statestore:/var/lib/postgresql/data
-            healthcheck:
-              test: ["CMD-SHELL", "pg_isready -U vulcan -d statestore"]
-              interval: 5s
-              timeout: 5s
-              retries: 5
-            networks:
-              - vulcan
-
-          # ── Warehouse (Postgres, available as a JDBC Spark catalog) ───
-          warehouse:
-            image: postgres:15
-            container_name: warehouse
-            environment:
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_DB: warehouse
-            ports:
-              - "5432:5432"
-            networks:
-              - vulcan
-
-          # ── Object storage (MinIO) ───────────────────────────────────────
-          minio-warehouse:
-            image: *minio_image
-            command: server /data --console-address ":9001"
-            environment:
-              MINIO_ROOT_USER: admin
-              MINIO_ROOT_PASSWORD: password
-              MINIO_DOMAIN: minio-warehouse
-            ports:
-              - "9000:9000"
-              - "9001:9001"
-            volumes:
-              - minio-warehouse-data:/data
-            healthcheck:
-              test: ["CMD", "mc", "ready", "local"]
-              interval: 5s
-              timeout: 5s
-              retries: 5
-            networks:
-              - vulcan
-
-          minio-warehouse-init:
-            image: *minio_mc_image
-            depends_on:
-              minio-warehouse:
-                condition: service_healthy
-            entrypoint: >
-              /bin/sh -c "
-              /usr/bin/mc alias set minio-warehouse http://minio-warehouse:9000 admin password;
-              /usr/bin/mc mb minio-warehouse/warehouse --ignore-existing;
-              /usr/bin/mc anonymous set download minio-warehouse/warehouse;
-              exit 0;
-              "
-            networks:
-              - vulcan
-
-          # ── Iceberg REST catalog ─────────────────────────────────────────
-          iceberg-rest-warehouse:
-            image: tabulario/iceberg-rest:latest
-            environment:
-              CATALOG_WAREHOUSE: s3://warehouse/
-              CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
-              CATALOG_S3_ENDPOINT: http://minio-warehouse:9000
-              CATALOG_S3_ACCESS__KEY__ID: admin
-              CATALOG_S3_SECRET__ACCESS__KEY: password
-              CATALOG_S3_PATH__STYLE__ACCESS: "true"
-              AWS_REGION: us-east-1
-              AWS_DEFAULT_REGION: us-east-1
-            ports:
-              - "8181:8181"
-            depends_on:
-              - minio-warehouse
-            networks:
-              vulcan:
-                aliases:
-                  - iceberg-rest.minio-warehouse
-
-          # ── Spark cluster ────────────────────────────────────────────────
-          spark-master:
-            image: spark:3.5.1-scala2.12-java17-python3-ubuntu
-            container_name: spark-master
-            command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
-            environment:
-              SPARK_MASTER_HOST: spark-master
-              SPARK_MASTER_PORT: 7077
-              SPARK_MASTER_WEBUI_PORT: 8080
-            ports:
-              - "7077:7077"
-              - "8080:8080"
-            networks:
-              - vulcan
-
-          spark-worker-1:
-            image: spark:3.5.1-scala2.12-java17-python3-ubuntu
-            container_name: spark-worker-1
-            depends_on:
-              - spark-master
-            environment:
-              SPARK_WORKER_CORES: 4
-              SPARK_WORKER_MEMORY: 2g
-            command: >
-              /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker
-              spark://spark-master:7077
-            networks:
-              - vulcan
-
-          spark-worker-2:
-            image: spark:3.5.1-scala2.12-java17-python3-ubuntu
-            container_name: spark-worker-2
-            depends_on:
-              - spark-master
-            environment:
-              SPARK_WORKER_CORES: 4
-              SPARK_WORKER_MEMORY: 2g
-            command: >
-              /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker
-              spark://spark-master:7077
-            networks:
-              - vulcan
-        ```
-
-        **Vulcan config for Spark**
-
-        Choose the example that matches your setup:
-
-        ??? note "Local setup: Docker Spark cluster + Iceberg over MinIO"
-
-            ```yaml
-            gateways:
-              default:
-                connection:
-                  type: spark
-                  config:
-                    "spark.master": "spark://spark-master:7077"
-                    "spark.app.name": "vulcan"
-                    "spark.driver.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
-                    "spark.executor.extraJavaOptions": "-Daws.region=us-east-1 -Djava.io.tmpdir=/tmp/iceberg"
-                    # JARs are baked into the Vulcan Spark image: no Ivy downloads at plan/run time
-                    "spark.executor.extraClassPath": "{{ env_var('VULCAN_SPARK_EXECUTOR_EXTRA_JARS_DIR', '/etc/dataos/work/jars') }}/*"
-                    # Iceberg catalog over MinIO
-                    "spark.sql.catalog.warehouse": "org.apache.iceberg.spark.SparkCatalog"
-                    "spark.sql.catalog.warehouse.type": "rest"
-                    "spark.sql.catalog.warehouse.uri": "http://iceberg-rest-warehouse:8181"
-                    "spark.sql.catalog.warehouse.warehouse": "s3://warehouse/"
-                    "spark.sql.catalog.warehouse.io-impl": "org.apache.iceberg.aws.s3.S3FileIO"
-                    "spark.sql.catalog.warehouse.s3.endpoint": "http://minio-warehouse:9000"
-                    "spark.sql.catalog.warehouse.s3.path-style-access": "true"
-                    "spark.sql.catalog.warehouse.s3.access-key-id": "admin"
-                    "spark.sql.catalog.warehouse.s3.secret-access-key": "password"
-                    "spark.sql.catalog.warehouse.client.region": "us-east-1"
-                    # S3/MinIO credentials
-                    "spark.hadoop.fs.s3a.access.key": "admin"
-                    "spark.hadoop.fs.s3a.secret.key": "password"
-                    "spark.hadoop.fs.s3a.endpoint": "http://minio-warehouse:9000"
-                    "spark.hadoop.fs.s3a.path.style.access": "true"
-                    "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
-                    # Iceberg extensions
-                    "spark.sql.extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
-                    # Dynamic allocation
-                    "spark.dynamicAllocation.enabled": "true"
-                    "spark.dynamicAllocation.shuffleTracking.enabled": "true"
-                    "spark.dynamicAllocation.initialExecutors": "1"
-                    "spark.dynamicAllocation.minExecutors": "1"
-                    "spark.dynamicAllocation.maxExecutors": "2"
-                state_connection:
-                  type: postgres
-                  host: statestore
-                  port: 5432
-                  database: statestore
-                  user: vulcan
-                  password: vulcan
-
-            default_gateway: default
-
-            model_defaults:
-              dialect: spark2
-            ```
-
-        ??? note "Existing lakehouse depot"
-
-            ```yaml
-            name: spark
-
-            model_defaults:
-              dialect: spark2
-              cron: '*/5 * * * *'
-
-            linter:
-              enabled: false
-
-            gateways:
-              default:
-                connection:
-                  type: spark
-                  config:
-                    "spark.master": "{{ env_var('SPARK_MASTER_URL') }}"
-                    "spark.app.name": "{{ env_var('SPARK_APP_NAME') }}"
-                    "spark.driver.extraJavaOptions": "-Daws.region={{ env_var('AWS_REGION') }} -Djava.io.tmpdir=/tmp/iceberg"
-                    "spark.executor.extraJavaOptions": "-Daws.region={{ env_var('AWS_REGION') }} -Djava.io.tmpdir=/tmp/iceberg"
-                    # Download Iceberg + AWS + PostgreSQL JDBC dependencies
-                    "spark.jars.packages": "org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2,org.apache.iceberg:iceberg-aws-bundle:1.5.2,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.postgresql:postgresql:42.7.1"
-                    "spark.jars.ivy": "/tmp/.ivy2"
-                    # S3 credentials
-                    "spark.hadoop.fs.s3a.access.key": "{{ env_var('MINIO_WAREHOUSE_ACCESS_KEY') }}"
-                    "spark.hadoop.fs.s3a.secret.key": "{{ env_var('MINIO_WAREHOUSE_SECRET_KEY') }}"
-                    "spark.hadoop.fs.s3a.endpoint": "{{ env_var('MINIO_WAREHOUSE_ENDPOINT') }}"
-                    "spark.hadoop.fs.s3a.path.style.access": "true"
-                    "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
-                    # Iceberg extensions
-                    "spark.sql.extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
-                    # Default catalog
-                    "spark.sql.defaultCatalog": "s3depot"
-                    # Iceberg catalog via lakehouse depot
-                    "spark.sql.catalog.s3depot": "org.apache.iceberg.spark.SparkCatalog"
-                    "spark.sql.catalog.s3depot.type": "rest"
-                    "spark.sql.catalog.s3depot.uri": "{{ env_var('ICEBERG_DEPOT_URI') }}"
-                    "spark.sql.catalog.s3depot.header.apikey": "{{ env_var('DEPOT_API_KEY') }}"
-                    "spark.sql.catalog.s3depot.warehouse": "{{ env_var('DEPOT_WAREHOUSE_PATH') }}"
-                    "spark.sql.catalog.s3depot.io-impl": "org.apache.iceberg.aws.s3.S3FileIO"
-                    "spark.sql.catalog.s3depot.s3.path-style-access": "true"
-                    "spark.sql.catalog.s3depot.s3.access-key-id": "{{ env_var('DEPOT_ACCESS_KEY') }}"
-                    "spark.sql.catalog.s3depot.s3.secret-access-key": "{{ env_var('DEPOT_SECRET_KEY') }}"
-                    "spark.sql.catalog.s3depot.client.region": "{{ env_var('AWS_REGION') }}"
-                    # Dynamic allocation
-                    "spark.dynamicAllocation.enabled": "true"
-                    "spark.dynamicAllocation.shuffleTracking.enabled": "true"
-                    "spark.dynamicAllocation.initialExecutors": "1"
-                    "spark.dynamicAllocation.minExecutors": "1"
-                    "spark.dynamicAllocation.maxExecutors": "2"
-                state_connection:
-                  type: postgres
-                  database: "{{ env_var('STATESTORE_DATABASE') }}"
-                  host: "{{ env_var('STATESTORE_HOST') }}"
-                  port: "{{ env_var('STATESTORE_PORT') }}"
-                  user: "{{ env_var('STATESTORE_USER') }}"
-                  password: "{{ env_var('STATESTORE_PASSWORD') }}"
-                state_schema: spark
-
-            default_gateway: default
-            ```
-
-    !!! tip "Make the function permanent"
-        Run `notepad $PROFILE` to open your PowerShell profile, paste the function, and save.
-
-### Step 4: Initialize your project
-
-=== "Mac/Linux"
-    ```bash
-    vulcan init
-    ```
-
-=== "Windows"
-    ```cmd
-    vulcan init
-    ```
-
-When prompted, choose `DEFAULT` as the project type and select your engine.
-
-This creates the standard project structure:
-
-| Directory | Purpose |
-|-----------|---------|
-| `models/` | SQL and Python model files |
-| `models/dq/` | Data Quality rule packs (`kind: dq`), non-blocking |
-| `models/semantics/` | Semantic models (`kind: semantic`) |
-| `models/metrics/` | Per-metric files (one metric per file) |
-| `seeds/` | Static CSV data files |
-| `audits/` | Quality assertions that block execution on failure |
-| `tests/` | Model logic validation |
-| `macros/` | Reusable SQL snippets |
-
-### Step 5: Configure your connection
-
-Open `config.yaml` in your project root and add your engine connection and state backend. Pick the tab that matches your engine:
+!!! important
+    Quote the wheel path when using extras. Shells such as `zsh` may otherwise interpret the square brackets.
 
 === "Postgres"
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[postgres]"
+    ```
+
+=== "Snowflake"
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[snowflake]"
+    ```
+
+=== "Databricks"
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[databricks]"
+    ```
+
+=== "Spark"
+    Do not install Spark in a local virtual environment for this guide. Use the Spark Docker setup in [Step 3](#step-3-set-up-your-engine).
+
+=== "Trino"
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[trino]"
+    ```
+
+=== "MySQL"
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[mysql]"
+    ```
+
+=== "MSSQL"
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[mssql]"
+    ```
+
+Verify the install:
+
+=== "Mac/Linux"
+    ```bash
+    vulcan --version
+    python3.10 -c "import vulcan; print(vulcan.__version__)"
+    ```
+
+=== "Windows"
+    ```powershell
+    vulcan --version
+    py -3.10 -c "import vulcan; print(vulcan.__version__)"
+    ```
+
+---
+
+## Step 3: Set Up Your Engine
+
+Choose the tab for your engine. If you already have a warehouse or engine instance, use it and add its connection details to `config.yaml`. If you do not have one, use the local setup only where this guide provides one.
+
+=== "Postgres"
+
+    **Option 1: Use an existing Postgres instance**
+
+    Use an existing Postgres instance if you already have one. You need the host, port, database, user, and password. See the [Postgres connection options](http://127.0.0.1:7000/vulcan-book/configurations/engines/postgres/postgres/#connection-options) for all supported fields.
+
+    **Option 2: Start Postgres locally with Docker**
+
+    If you do not have Postgres locally, run it with Docker Compose.
+
+    Create the Docker network once:
+
+    ```bash
+    docker network create vulcan
+    ```
+
+    If Docker says the network already exists, continue.
+
+    Save this as `docker/docker-compose.warehouse.yml`:
+
+    ```yaml
+    # Central Warehouse - PostgreSQL for project data
+    # Access: postgresql://vulcan:vulcan@localhost:5433/warehouse
+
+    x-images:
+      postgres: &postgres_image "postgres:17-alpine"
+
+    volumes:
+      warehouse:
+        driver: local
+
+    networks:
+      vulcan:
+        external: true
+
+    services:
+      warehouse:
+        image: *postgres_image
+        environment:
+          POSTGRES_DB: warehouse
+          POSTGRES_USER: vulcan
+          POSTGRES_PASSWORD: vulcan
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - "5433:5432"
+        volumes:
+          - warehouse:/var/lib/postgresql/data
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U vulcan -d warehouse"]
+          interval: 5s
+          timeout: 5s
+          retries: 5
+        restart: unless-stopped
+        networks:
+          - vulcan
+    ```
+
+    Start Postgres:
+
+    ```bash
+    docker compose -f docker/docker-compose.warehouse.yml up -d
+    ```
+
+    Use this connection in `config.yaml`:
+
     ```yaml
     gateways:
       default:
         connection:
           type: postgres
-          host: warehouse
-          port: 5432
+          host: localhost
+          port: 5433
           database: warehouse
           user: vulcan
           password: vulcan
         state_connection:
           type: duckdb
-          database: /workspace/.state/vulcan.db
+          database: ./.state/vulcan.db
+
+    default_gateway: default
+
+    model_defaults:
+      dialect: postgres
     ```
-
-    ??? note "Using Postgres as state backend instead"
-
-        With the Postgres engine you already need a `warehouse` Postgres container for your data. Add a `statestore` container alongside it so both run on the `vulcan` network you created in Step 2.
-
-        Save the following as `docker-compose.infra.yml` in your project folder:
-
-        ```yaml
-        networks:
-          vulcan:
-            external: true
-
-        services:
-          warehouse:
-            image: postgres:15
-            container_name: warehouse
-            environment:
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_DB: warehouse
-            ports:
-              - "5434:5432"
-            networks:
-              - vulcan
-
-          statestore:
-            image: postgres:15
-            container_name: statestore
-            environment:
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_DB: statestore
-            ports:
-              - "5433:5432"
-            networks:
-              - vulcan
-        ```
-
-        Start both services **before** you run `vulcan info` or `vulcan plan`:
-
-        === "Mac/Linux"
-            ```bash
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-        === "Windows"
-            ```cmd
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-
-        Then set this in `config.yaml`:
-
-        ```yaml
-        state_connection:
-          type: postgres
-          host: statestore
-          port: 5432
-          database: statestore
-          user: vulcan
-          password: vulcan
-        ```
-
-        !!! note "Use service names as hosts, not `localhost`"
-            The Vulcan CLI runs inside a container on the `vulcan` network. From there it reaches the Postgres containers by their service names: `statestore` and `warehouse`. That is why `config.yaml` uses `host: statestore` and `host: warehouse`.
-
-            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host ports: `5433` for the statestore, `5434` for the warehouse.
 
     [:material-book-open-variant: Full Postgres reference](../../configurations/engines/postgres/postgres.md)
 
 === "Snowflake"
+
+    **Option 1: Use an existing Snowflake warehouse**
+
+    Use an existing Snowflake account and warehouse. No local Docker service is needed for Snowflake.
+
+    **Option 2: Create a Snowflake warehouse**
+
+    If you do not have Snowflake available yet, create a Snowflake account and warehouse in Snowflake. This guide does not start Snowflake with Docker.
+
+    Set your password as an environment variable:
+
+    === "Mac/Linux"
+        ```bash
+        export SNOWFLAKE_PASSWORD='your_password'
+        ```
+
+    === "Windows"
+        ```powershell
+        $env:SNOWFLAKE_PASSWORD = 'your_password'
+        ```
+
+    Use this connection in `config.yaml`:
+
     ```yaml
     gateways:
       default:
@@ -843,67 +251,43 @@ Open `config.yaml` in your project root and add your engine connection and state
           password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
           warehouse: your_warehouse
           database: your_database
+          role: your_role
         state_connection:
           type: duckdb
-          database: /workspace/.state/vulcan.db
+          database: ./.state/vulcan.db
+
+    default_gateway: default
+
+    model_defaults:
+      dialect: snowflake
     ```
-
-    ??? note "Using Postgres as state backend instead"
-
-        Snowflake is your warehouse, so you only need to add a `statestore` Postgres container on the `vulcan` network you created in Step 2.
-
-        Save the following as `docker-compose.infra.yml` in your project folder:
-
-        ```yaml
-        networks:
-          vulcan:
-            external: true
-
-        services:
-          statestore:
-            image: postgres:15
-            container_name: statestore
-            environment:
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_DB: statestore
-            ports:
-              - "5433:5432"
-            networks:
-              - vulcan
-        ```
-
-        Start the service **before** you run `vulcan info` or `vulcan plan`:
-
-        === "Mac/Linux"
-            ```bash
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-        === "Windows"
-            ```cmd
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-
-        Then set this in `config.yaml`:
-
-        ```yaml
-        state_connection:
-          type: postgres
-          host: statestore
-          port: 5432
-          database: statestore
-          user: vulcan
-          password: vulcan
-        ```
-
-        !!! note "Use service names as hosts, not `localhost`"
-            The Vulcan CLI runs inside a container on the `vulcan` network and reaches the statestore by its service name. That is why `config.yaml` uses `host: statestore`.
-
-            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host port `5433`.
 
     [:material-book-open-variant: Full Snowflake reference](../../configurations/engines/snowflake/snowflake.md)
 
 === "Databricks"
+
+    **Option 1: Use an existing Databricks workspace**
+
+    Use an existing Databricks workspace with SQL warehouse or cluster access. No local Docker service is needed for Databricks.
+
+    **Option 2: Create Databricks compute**
+
+    If you do not have Databricks available yet, create a workspace and SQL warehouse or cluster in Databricks. This guide does not start Databricks with Docker.
+
+    Set your access token as an environment variable:
+
+    === "Mac/Linux"
+        ```bash
+        export DATABRICKS_TOKEN='your_token'
+        ```
+
+    === "Windows"
+        ```powershell
+        $env:DATABRICKS_TOKEN = 'your_token'
+        ```
+
+    Use this connection in `config.yaml`:
+
     ```yaml
     gateways:
       default:
@@ -915,65 +299,249 @@ Open `config.yaml` in your project root and add your engine connection and state
           catalog: your_catalog
         state_connection:
           type: duckdb
-          database: /workspace/.state/vulcan.db
+          database: ./.state/vulcan.db
+
+    default_gateway: default
+
+    model_defaults:
+      dialect: databricks
     ```
-
-    ??? note "Using Postgres as state backend instead"
-
-        Databricks is your warehouse, so you only need to add a `statestore` Postgres container on the `vulcan` network you created in Step 2.
-
-        Save the following as `docker-compose.infra.yml` in your project folder:
-
-        ```yaml
-        networks:
-          vulcan:
-            external: true
-
-        services:
-          statestore:
-            image: postgres:15
-            container_name: statestore
-            environment:
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_DB: statestore
-            ports:
-              - "5433:5432"
-            networks:
-              - vulcan
-        ```
-
-        Start the service **before** you run `vulcan info` or `vulcan plan`:
-
-        === "Mac/Linux"
-            ```bash
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-        === "Windows"
-            ```cmd
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-
-        Then set this in `config.yaml`:
-
-        ```yaml
-        state_connection:
-          type: postgres
-          host: statestore
-          port: 5432
-          database: statestore
-          user: vulcan
-          password: vulcan
-        ```
-
-        !!! note "Use service names as hosts, not `localhost`"
-            The Vulcan CLI runs inside a container on the `vulcan` network and reaches the statestore by its service name. That is why `config.yaml` uses `host: statestore`.
-
-            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host port `5433`.
 
     [:material-book-open-variant: Full Databricks reference](../../configurations/engines/databricks/databricks.md)
 
+=== "Spark"
+
+    **Option 1: Use an existing Spark cluster**
+
+    If you already have a Spark cluster, use the `vulcan-cli` service below and update `spark.master` in `config.yaml` to point to your cluster.
+
+    **Option 2: Start Spark locally with Docker**
+
+    Spark uses a dedicated Docker Compose setup in this guide. It runs a Spark standalone cluster, MinIO, an Iceberg REST catalog, and a Linux-based `vulcan-cli` container. This avoids Windows Hadoop or `winutils.exe` issues because the Spark driver runs inside Linux.
+
+    Place `vulcan-0.228.1.21-py3-none-any.whl` in your project root, then save this as `docker/docker-compose.spark.yml`:
+
+    ```yaml
+    services:
+      # Spark standalone cluster for running Spark executors in containers.
+      spark-master:
+        image: tmdcio/vulcan-spark-base:0.228.1.21
+        container_name: spark-seeds-minimal-spark-master
+        restart: unless-stopped
+        command: ["/bin/bash", "-lc", "/opt/spark/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 && tail -f /opt/spark/logs/*"]
+        ports:
+          - "7077:7077"
+          - "8080:8080"
+        networks:
+          - spark-seeds-minimal-net
+
+      spark-worker:
+        image: tmdcio/vulcan-spark-base:0.228.1.21
+        container_name: spark-seeds-minimal-spark-worker
+        restart: unless-stopped
+        command: ["/bin/bash", "-lc", "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 --webui-port 8081 && tail -f /opt/spark/logs/*"]
+        depends_on:
+          - spark-master
+        ports:
+          - "8081:8081"
+        networks:
+          - spark-seeds-minimal-net
+
+      # MinIO for S3-compatible storage.
+      minio:
+        image: minio/minio:latest
+        container_name: spark-seeds-minimal-minio
+        restart: unless-stopped
+        environment:
+          - MINIO_ROOT_USER=admin
+          - MINIO_ROOT_PASSWORD=password
+          - MINIO_DOMAIN=minio
+        ports:
+          - "9000:9000"
+          - "9001:9001"
+        networks:
+          spark-seeds-minimal-net:
+            aliases:
+              - minio
+              - warehouse.minio
+        volumes:
+          - minio_data:/data
+        command: server /data --console-address ":9001"
+        healthcheck:
+          test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+          interval: 5s
+          timeout: 5s
+          retries: 10
+
+      # MinIO setup - creates warehouse bucket.
+      mc:
+        image: minio/mc:latest
+        container_name: spark-seeds-minimal-mc
+        networks:
+          - spark-seeds-minimal-net
+        depends_on:
+          minio:
+            condition: service_healthy
+        entrypoint: >
+          /bin/sh -c "
+            mc alias set minio http://minio:9000 admin password;
+            mc mb --ignore-existing minio/warehouse;
+            mc anonymous set public minio/warehouse;
+            exit 0;
+          "
+
+      # Iceberg REST Catalog.
+      iceberg-rest:
+        image: tabulario/iceberg-rest:latest
+        container_name: spark-seeds-minimal-iceberg-rest
+        restart: unless-stopped
+        ports:
+          - "8181:8181"
+        networks:
+          - spark-seeds-minimal-net
+        environment:
+          - AWS_ACCESS_KEY_ID=admin
+          - AWS_SECRET_ACCESS_KEY=password
+          - AWS_REGION=us-east-1
+          - CATALOG_WAREHOUSE=s3://warehouse/
+          - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
+          - CATALOG_S3_ENDPOINT=http://minio:9000
+        depends_on:
+          minio:
+            condition: service_healthy
+
+      # Vulcan CLI runner. The Spark driver runs in this Linux container.
+      vulcan-cli:
+        image: python:3.10-bookworm
+        container_name: spark-seeds-minimal-vulcan-cli
+        ports:
+          - "8000:8000"
+        restart: unless-stopped
+        networks:
+          - spark-seeds-minimal-net
+        depends_on:
+          - spark-master
+          - spark-worker
+          - iceberg-rest
+        environment:
+          - SPARK_MASTER=spark://spark-master:7077
+          - ICEBERG_REST_URI=http://iceberg-rest:8181
+          - MINIO_ENDPOINT=http://minio:9000
+        volumes:
+          - ..:/workspace
+        working_dir: /workspace
+        command:
+          - sh
+          - -lc
+          - |
+            set -eu
+
+            # Java is required for Spark.
+            if ! command -v java >/dev/null 2>&1; then
+              apt-get update
+              apt-get install -y openjdk-17-jre-headless
+              rm -rf /var/lib/apt/lists/*
+            fi
+
+            # Install Vulcan from the mounted wheel.
+            python -m pip install -U pip setuptools wheel
+            if ! command -v vulcan >/dev/null 2>&1; then
+              python -m pip install --no-cache-dir "vulcan[spark,postgres] @ file:///workspace/vulcan-0.228.1.21-py3-none-any.whl"
+            fi
+
+            tail -f /dev/null
+
+    networks:
+      spark-seeds-minimal-net:
+        driver: bridge
+
+    volumes:
+      minio_data:
+    ```
+
+    Start the Spark services:
+
+    ```bash
+    docker compose -f docker/docker-compose.spark.yml up -d
+    ```
+
+    **Vulcan CLI alias setup**
+
+    Use an alias so Spark commands run through the `vulcan-cli` container.
+
+    === "Windows"
+        ```powershell
+        function vulcan { docker exec -i spark-seeds-minimal-vulcan-cli vulcan @args }
+        ```
+
+    === "macOS"
+        ```bash
+        alias vulcan='docker exec -i spark-seeds-minimal-vulcan-cli vulcan'
+        ```
+
+    Verify Vulcan through the CLI container:
+
+    ```bash
+    docker compose -f docker/docker-compose.spark.yml run --rm vulcan-cli vulcan --version
+    ```
+
+    Use this connection in `config.yaml`:
+
+    ```yaml
+    gateways:
+      default:
+        connection:
+          type: spark
+          config:
+            spark.master: spark://spark-master:7077
+            spark.app.name: vulcan
+            spark.sql.catalog.local: org.apache.iceberg.spark.SparkCatalog
+            spark.sql.catalog.local.type: rest
+            spark.sql.catalog.local.uri: http://iceberg-rest:8181
+            spark.sql.catalog.local.warehouse: s3://warehouse/
+            spark.sql.catalog.local.io-impl: org.apache.iceberg.aws.s3.S3FileIO
+            spark.sql.catalog.local.s3.endpoint: http://minio:9000
+            spark.sql.catalog.local.s3.path-style-access: "true"
+            spark.hadoop.fs.s3a.access.key: admin
+            spark.hadoop.fs.s3a.secret.key: password
+            spark.hadoop.fs.s3a.endpoint: http://minio:9000
+            spark.hadoop.fs.s3a.path.style.access: "true"
+        state_connection:
+          type: duckdb
+          database: ./.state/vulcan.db
+
+    default_gateway: default
+
+    model_defaults:
+      dialect: spark2
+    ```
+
+    [:material-book-open-variant: Full Spark reference](../../configurations/engines/spark/spark.md)
+
 === "Trino"
+
+    **Option 1: Use an existing Trino cluster**
+
+    Use an existing Trino cluster with a configured catalog. No local Docker service is needed for Trino in this guide.
+
+    **Option 2: Create a Trino cluster**
+
+    If you do not have Trino available yet, create a Trino cluster and catalog outside this guide. This guide does not start Trino with Docker.
+
+    Set your password only if your Trino cluster requires password authentication:
+
+    === "Mac/Linux"
+        ```bash
+        export TRINO_PASSWORD='your_password'
+        ```
+
+    === "Windows"
+        ```powershell
+        $env:TRINO_PASSWORD = 'your_password'
+        ```
+
+    Use this connection in `config.yaml`:
+
     ```yaml
     gateways:
       default:
@@ -983,125 +551,175 @@ Open `config.yaml` in your project root and add your engine connection and state
           port: 8080
           user: your_user
           catalog: your_catalog
+          http_scheme: https
+          password: "{{ env_var('TRINO_PASSWORD') }}"
         state_connection:
           type: duckdb
-          database: /workspace/.state/vulcan.db
+          database: ./.state/vulcan.db
+
+    default_gateway: default
+
+    model_defaults:
+      dialect: trino
     ```
-
-    ??? note "Using Postgres as state backend instead"
-
-        Trino is your warehouse, so you only need to add a `statestore` Postgres container on the `vulcan` network you created in Step 2.
-
-        Save the following as `docker-compose.infra.yml` in your project folder:
-
-        ```yaml
-        networks:
-          vulcan:
-            external: true
-
-        services:
-          statestore:
-            image: postgres:15
-            container_name: statestore
-            environment:
-              POSTGRES_USER: vulcan
-              POSTGRES_PASSWORD: vulcan
-              POSTGRES_DB: statestore
-            ports:
-              - "5433:5432"
-            networks:
-              - vulcan
-        ```
-
-        Start the service **before** you run `vulcan info` or `vulcan plan`:
-
-        === "Mac/Linux"
-            ```bash
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-        === "Windows"
-            ```cmd
-            docker compose -f docker-compose.infra.yml up -d
-            ```
-
-        Then set this in `config.yaml`:
-
-        ```yaml
-        state_connection:
-          type: postgres
-          host: statestore
-          port: 5432
-          database: statestore
-          user: vulcan
-          password: vulcan
-        ```
-
-        !!! note "Use service names as hosts, not `localhost`"
-            The Vulcan CLI runs inside a container on the `vulcan` network and reaches the statestore by its service name. That is why `config.yaml` uses `host: statestore`.
-
-            Use `localhost` only when you connect from your host machine, for example from `psql` or a SQL IDE. In that case point at the mapped host port `5433`.
 
     [:material-book-open-variant: Full Trino reference](../../configurations/engines/trino/trino.md)
 
-=== "Spark"
+=== "MySQL"
+
+    **Option 1: Use an existing MySQL instance**
+
+    Use an existing MySQL instance. No local Docker service is provided for MySQL in this guide.
+
+    **Option 2: Create a MySQL instance**
+
+    If you do not have MySQL available yet, create a MySQL instance outside this guide. This guide does not start MySQL with Docker.
+
+    Set your password as an environment variable:
+
+    === "Mac/Linux"
+        ```bash
+        export MYSQL_PASSWORD='your_password'
+        ```
+
+    === "Windows"
+        ```powershell
+        $env:MYSQL_PASSWORD = 'your_password'
+        ```
+
+    Use this connection in `config.yaml`:
+
     ```yaml
     gateways:
       default:
         connection:
-          type: spark
-          config:
-            "spark.master": "spark://spark-master:7077"
-            "spark.app.name": "vulcan"
-            # ... see Step 3 for the full spark.* config
+          type: mysql
+          host: your_mysql_host
+          port: 3306
+          database: your_database
+          user: your_user
+          password: "{{ env_var('MYSQL_PASSWORD') }}"
         state_connection:
-          type: postgres
-          host: statestore
-          port: 5432
-          database: statestore
-          user: vulcan
-          password: vulcan
+          type: duckdb
+          database: ./.state/vulcan.db
+
+    default_gateway: default
+
+    model_defaults:
+      dialect: mysql
     ```
 
-    [:material-book-open-variant: Full Spark reference](../../configurations/engines/spark/spark.md)
+    [:material-book-open-variant: Full MySQL reference](../../configurations/engines/mysql/mysql.md)
 
-Add the required top-level keys at the bottom of `config.yaml`:
+=== "MSSQL"
 
-```yaml
-default_gateway: default
+    **Option 1: Use an existing SQL Server instance**
 
-model_defaults:
-  dialect: postgres  # change to match your engine: snowflake, databricks, trino, spark2
+    Use an existing SQL Server instance. No local Docker service is provided for MSSQL in this guide.
+
+    **Option 2: Create a SQL Server instance**
+
+    If you do not have SQL Server available yet, create a SQL Server instance outside this guide. This guide does not start MSSQL with Docker.
+
+    Set your password as an environment variable:
+
+    === "Mac/Linux"
+        ```bash
+        export MSSQL_PASSWORD='your_password'
+        ```
+
+    === "Windows"
+        ```powershell
+        $env:MSSQL_PASSWORD = 'your_password'
+        ```
+
+    Use this connection in `config.yaml`:
+
+    ```yaml
+    gateways:
+      default:
+        connection:
+          type: mssql
+          host: your_mssql_host
+          port: 1433
+          database: your_database
+          user: your_user
+          password: "{{ env_var('MSSQL_PASSWORD') }}"
+          trust_server_certificate: true
+        state_connection:
+          type: duckdb
+          database: ./.state/vulcan.db
+
+    default_gateway: default
+
+    model_defaults:
+      dialect: tsql
+    ```
+
+    [:material-book-open-variant: Full MSSQL reference](../../configurations/engines/mssql/mssql.md)
+
+---
+
+## Step 4: Initialize the Vulcan Project
+
+Run the initializer from your activated virtual environment:
+
+=== "Mac/Linux"
+    ```bash
+    vulcan init
+    ```
+
+=== "Windows"
+    ```powershell
+    vulcan init
+    ```
+
+The initializer creates the starter project structure for models, seeds, tests, quality checks, macros, and semantic definitions:
+
+```text
+my-vulcan-project/
+├── config.yaml
+├── usage.yaml
+├── audits/
+├── dq/
+│   └── full_model.yml
+├── macros/
+│   └── __init__.py
+├── models/
+│   ├── full_model.sql
+│   ├── incremental_model.sql
+│   ├── seed_model.sql
+│   ├── metrics/
+│   │   └── event_activity.yml
+│   └── semantics/
+│       └── incremental_model.yml
+├── seeds/
+│   └── seed_data.csv
+└── tests/
+    └── test_full_model.yaml
 ```
 
-### Step 6: Verify your setup
+---
+
+## Step 5: Verify and Run
+
+For every engine except Spark:
 
 === "Mac/Linux"
     ```bash
     vulcan info
+    vulcan plan
     ```
 
 === "Windows"
-    ```cmd
+    ```powershell
     vulcan info
-    ```
-
-This shows your connection status, model count, and project configuration. Fix any errors before proceeding.
-
-### Step 7: Run your first plan
-
-=== "Mac/Linux"
-    ```bash
     vulcan plan
     ```
 
-=== "Windows"
-    ```cmd
-    vulcan plan
-    ```
+Vulcan validates your project and computes what needs to be materialized.
 
-Vulcan validates your models, computes what needs to be materialized, and prompts you to apply. Enter `y` to confirm.
-
-For a full walkthrough of what happens after `plan` (running models, querying data, and iterating), see the [Plan guide](../plan_guide.md).
+For a full walkthrough of what happens after `plan`, see the [Plan guide](../plan_guide.md).
 
 ---
 
@@ -1109,68 +727,65 @@ For a full walkthrough of what happens after `plan` (running models, querying da
 
 ??? note "Common issues and solutions"
 
-    **Statestore container won't start**
+    **`ERROR: ... is not a supported wheel on this platform`**
 
-    Only relevant if you're using Postgres state. Make sure Docker Desktop is running and has at least 4 GB RAM allocated. Check under **Settings → Resources → Advanced**.
+    Make sure you are using Python 3.10. Recreate the virtual environment with Python 3.10 and install the wheel again.
 
-    **Invalid connection config**
+    **`zsh: no matches found`**
 
-    If `vulcan info` or any command shows:
+    Quote the wheel path when installing extras:
 
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[postgres]"
     ```
-    Error: Invalid 'postgres' connection config:
-      Field 'host': Input should be a valid string
-    ```
 
-    Your `config.yaml` is missing or incomplete. Run `vulcan init` if you haven't already, or verify the `gateways` section is present with all required connection fields.
+    **`vulcan: command not found`**
 
-    **Network error: `vulcan` network not found**
-
-    The Docker network may not exist. Check:
+    Activate the virtual environment before running Vulcan:
 
     === "Mac/Linux"
         ```bash
-        docker network ls | grep vulcan
+        source .venv/bin/activate
         ```
-        If missing, create it:
-        ```bash
-        docker network create vulcan
-        ```
+
     === "Windows"
-        ```cmd
-        docker network ls | findstr vulcan
-        ```
-        If missing:
-        ```cmd
-        docker network create vulcan
+        ```powershell
+        .venv\Scripts\activate
         ```
 
-    **Port already in use**
+    **Postgres Docker network does not exist**
 
-    If a port is occupied by another process, either stop that process or update the port mapping in `docker-compose.infra.yml`.
-
-    These are the host-side ports the infra YAML maps to. The Vulcan CLI itself talks to each container by service name on port `5432` inside the `vulcan` network and never uses these.
-
-    | Service | Host port |
-    |---------|-----------|
-    | Statestore (Postgres, if used) | 5433 |
-    | Warehouse (Postgres engine only) | 5434 |
-
-    **Permission denied**
+    Create the network before starting the Postgres warehouse:
 
     ```bash
-    chmod -R a+w .
+    docker network create vulcan
     ```
 
-    **Spark: `InvalidClassException` at runtime**
+    **Spark commands fail on Windows**
 
-    The Spark version on your cluster doesn't match the version bundled in the Vulcan image. Check your cluster version:
+    Run Spark commands through the `vulcan-cli` container shown in the Spark tab. It runs the Spark driver in Linux and avoids Windows Hadoop or `winutils.exe` issues.
+
+    **Reinstall Vulcan from the wheel**
 
     ```bash
-    spark-submit --version
+    pip install --force-reinstall "./vulcan-0.228.1.21-py3-none-any.whl"
     ```
 
-    Then use a Vulcan Spark image built against the same Spark version. See [Spark prerequisites](../../configurations/engines/spark/spark.md#prerequisites).
+---
+
+## Uninstall
+
+For virtual environment installs:
+
+```bash
+pip uninstall vulcan
+```
+
+For Spark, stop the Docker services:
+
+```bash
+docker compose -f docker/docker-compose.spark.yml down
+```
 
 ---
 
