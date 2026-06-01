@@ -42,6 +42,24 @@ kind: semantic
 name: customers
 depends_on: analytics.customers
 
+ai_context:
+  instructions: >
+    Customer analytics semantic model for customer counts, tiers, and signup trends.
+    Use CUSTOMER_TIER for segmentation and SIGNUP_DATE for acquisition analysis.
+  synonyms:
+    - customers
+    - accounts
+    - users
+  examples:
+    - description: total customers by tier
+      format: sql
+      query: |
+        SELECT
+          customers.CUSTOMER_TIER,
+          MEASURE(customers.total_customers)
+        FROM customers
+        GROUP BY 1;
+
 dimensions:
   - CUSTOMER_ID
   - CUSTOMER_TIER
