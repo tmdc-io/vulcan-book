@@ -1,682 +1,499 @@
-# Run and Scheduling
+# Vulcan Run Guide
 
-This guide covers Vulcan's run functionality and scheduling strategies. You'll learn how `vulcan run` processes new data intervals and how to automate it for production.
+This guide explains `vulcan run` in simple terms.
 
-The `run` command is different from `plan`, it's for regular scheduled execution, not for applying changes. Once you understand the difference, you'll know when to use each one.
+Think of Vulcan as a data operations assistant.
 
-## Run and Scheduler Architecture
-
-The following diagram illustrates how Vulcan's run system works with cron-based scheduling:
-
-```mermaid
-graph TB
-    subgraph "Scheduler Triggers"
-        CRON[Cron Job / CI/CD<br/>Runs periodically]
-        MANUAL[Manual Execution<br/>vulcan run]
-    end
-
-    subgraph "Run Process"
-        START[vulcan run<br/>Command starts]
-        CHECK[Check for missing intervals<br/>Compare with state]
-        CRON_CHECK[Check cron schedules<br/>Which models are due?]
-        FILTER[Filter models<br/>Only process due intervals]
-    end
-
-    subgraph "Model Execution"
-        M1[sales.daily_sales<br/>cron: @daily<br/>Due: Yes]
-        M2[sales.weekly_sales<br/>cron: @weekly<br/>Due: No]
-        M3[sales.monthly_sales<br/>cron: @monthly<br/>Due: No]
-    end
-
-    subgraph "State Management"
-        STATE[State Database<br/>Tracks processed intervals]
-        UPDATE[Update State<br/>Mark intervals as processed]
-    end
-
-    subgraph "Execution Flow"
-        EXEC1[Execute daily_sales<br/>Process missing intervals]
-        EXEC2[Skip weekly_sales<br/>Not due yet]
-        EXEC3[Skip monthly_sales<br/>Not due yet]
-    end
-
-    subgraph "Results"
-        SUCCESS[Run Complete<br/>Intervals processed]
-        LOG[Log Results<br/>Execution summary]
-    end
-
-    CRON -->|"Scheduled"| START
-    MANUAL -->|"Triggered"| START
-    START -->|"to"| CHECK
-    CHECK -->|"to"| CRON_CHECK
-    CRON_CHECK -->|"to"| FILTER
-    FILTER -->|"Due"| M1
-    FILTER -->|"Not due"| M2
-    FILTER -->|"Not due"| M3
-    
-    M1 -->|"to"| EXEC1
-    M2 -->|"to"| EXEC2
-    M3 -->|"to"| EXEC3
-    
-    EXEC1 -->|"to"| STATE
-    EXEC2 -.->|"Skip"| STATE
-    EXEC3 -.->|"Skip"| STATE
-    
-    STATE -->|"to"| UPDATE
-    UPDATE -->|"to"| SUCCESS
-    SUCCESS -->|"to"| LOG
-
-    style CRON fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
-    style START fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
-    style CHECK fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
-    style CRON_CHECK fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    style M1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style M2 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
-    style M3 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
-    style EXEC1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
-    style SUCCESS fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
-```
-
-### Key Concepts Illustrated
-
-1. **Scheduler Triggers**: Run can be triggered by cron jobs, CI/CD pipelines, or manually
-2. **Interval Detection**: Vulcan checks for missing intervals by comparing current state with model schedules
-3. **Cron-Based Filtering**: Only models whose cron schedules indicate they're due are executed
-4. **State Tracking**: Processed intervals are tracked in the state database
-5. **Efficient Execution**: Models not due are skipped, saving computational resources
-
----
-
-## Cron Schedule Flow
-
-The following diagram shows how different cron schedules determine model execution:
-
-```mermaid
-gantt
-    title Model Execution Timeline (Example: Hourly, Daily, Weekly)
-    dateFormat YYYY-MM-DD HH:mm
-    axisFormat %H:%M
-
-    section Hourly Model
-    Run every hour    :active, hourly1, 2025-01-20 00:00, 1h
-    Run every hour    :active, hourly2, 2025-01-20 01:00, 1h
-    Run every hour    :active, hourly3, 2025-01-20 02:00, 1h
-    Run every hour    :active, hourly4, 2025-01-20 03:00, 1h
-
-    section Daily Model
-    Run once daily    :active, daily1, 2025-01-20 00:00, 24h
-
-    section Weekly Model
-    Run once weekly   :active, weekly1, 2025-01-20 00:00, 168h
-```
-
-**Visual Explanation**: 
-- **Hourly models** run every hour when `vulcan run` executes
-
-- **Daily models** run once per day (at the scheduled time)
-
-- **Weekly models** run once per week (at the scheduled time)
-
----
-
-## Understanding Run vs Plan
-
-| Aspect | `vulcan plan` | `vulcan run` |
-|--------|---------------|--------------|
-| **Purpose** | Apply model changes to environment | Execute existing models on schedule |
-| **When to Use** | When models are modified/added/removed | When no changes, just process new data |
-| **Change Detection** | Compares local files vs environment | No file comparison needed |
-| **Backfill** | Backfills based on changes | Processes missing intervals only |
-| **Cron Schedule** | Not used (processes all affected dates) | Uses model's cron to determine what runs |
-| **User Interaction** | Prompts for change categorization | Runs automatically |
-| **Output** | Shows diffs and change summary | Shows execution progress |
-
-**Key Insight**: Use `plan` when you've changed code. Use `run` for regular scheduled execution. 
-
-Think of it this way: `plan` is for deploying changes, `run` is for processing new data. They serve different purposes!
-
----
-
-## How Run Works
-
-The `vulcan run` command processes missing data intervals for models that haven't changed:
-
-```mermaid
-flowchart TD
-    START[vulcan run<br/>Command starts] --> CHECK{Check model<br/>definitions}
-    
-    CHECK -->|"Changed"| ERROR[Error: Use 'vulcan plan'<br/>to apply changes first]
-    CHECK -->|"No changes"| STATE[Query state database<br/>Get processed intervals]
-    
-    STATE --> CRON[Check cron schedules<br/>Which models are due?]
-    
-    CRON --> FILTER{Filter models<br/>by cron schedule}
-    
-    FILTER -->|"Due"| EXEC1[Execute Model 1<br/>Process missing intervals]
-    FILTER -->|"Due"| EXEC2[Execute Model 2<br/>Process missing intervals]
-    FILTER -->|"Not due"| SKIP1[Skip Model 3<br/>Not due yet]
-    FILTER -->|"Not due"| SKIP2[Skip Model 4<br/>Not due yet]
-    
-    EXEC1 --> UPDATE[Update state database<br/>Mark intervals as processed]
-    EXEC2 --> UPDATE
-    SKIP1 -.->|"Skip"| UPDATE
-    SKIP2 -.->|"Skip"| UPDATE
-    
-    UPDATE --> SUCCESS[Run complete<br/>Summary output]
-    
-    ERROR --> END[Exit]
-    SUCCESS --> END
-
-    style START fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
-    style CHECK fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    style ERROR fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
-    style CRON fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
-    style FILTER fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    style EXEC1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style EXEC2 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style SKIP1 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
-    style SKIP2 fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
-    style UPDATE fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
-    style SUCCESS fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
-```
-
-**Process Steps:**
-
-1. **No Model Changes**: Assumes no model definitions have changed - if they have, you'll get an error telling you to use `plan` first
-2. **Cron-Based Execution**: Each model's `cron` parameter determines if it should run - daily models run daily, weekly models run weekly, etc.
-3. **Missing Intervals**: Only processes intervals that haven't been processed yet - efficient!
-4. **Automatic**: No prompts or user interaction required. Works well for automation.
-
-The `run` command works well for scheduled execution. It's fast, automatic, and only processes what's needed.
-
-!!! tip "Interactive Diagrams"
-    All diagrams in this guide are interactive! Double-click any diagram to zoom in and explore details. Use drag to pan, arrow keys to navigate, or the zoom controls.
-
----
-
-## Scenario 1: First Run - Processing New Data
-
-After applying your first plan, use `run` to process new data as it arrives.
+First, someone decides what the data product should look like. That happens with `vulcan plan`. After that shape is approved and applied, `vulcan run` keeps the data fresh.
 
 ```bash
 vulcan run
 ```
 
-**Expected Output:**
-```
-======================================================================
-Checking for missing intervals...
-----------------------------------------------------------------------
+`vulcan run` does not redesign the data product. It does not pick up new local code changes. It only works with the version that has already been applied.
 
-Models to execute:
-└── sales.daily_sales: 2025-01-16 (1 interval)
-
-Executing model batches ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 1/1 • 0:00:02
-
-[1/1] sales.daily_sales          [insert 2025-01-16 - 2025-01-16]   2.1s
-
-✔ All model batches executed successfully
-```
-
-**What Happened?**
-- `sales.daily_sales` has `cron: '@daily'`, so it runs daily - Vulcan checks if enough time has passed
-
-- Yesterday's plan processed up to 2025-01-15 - that's what's already done
-
-- Today (2025-01-16) is a new interval that needs processing - this is what's missing
-
-- `run` automatically processes this missing interval - no prompts, just works
-
-This is the beauty of `run`, it automatically figures out what needs processing and does it. Set it up once, and it keeps running!
+If you changed a model, metric, semantic definition, check, or project setting, run `vulcan plan` first. If the shape is already applied and you only want to process new or missing data, use `vulcan run`.
 
 ---
 
-## Scenario 2: Cron-Based Execution
+## The Simple Story
 
-Different models can have different `cron` schedules. `run` respects each model's schedule.
+Imagine a store that publishes a daily sales report.
 
-### Daily Model Execution
+The report design says:
 
-```bash
+1. Which tables exist.
+2. Which calculations are used.
+3. Which checks must pass.
+4. How often data should be refreshed.
+
+That design is applied with `vulcan plan`.
+
+Every day after that, new sales arrive. The report does not need to be redesigned. It only needs the next day of data.
+
+That is what `vulcan run` does.
+
+```text
+vulcan plan
+  -> approves the shape of the data product
+
 vulcan run
+  -> keeps that approved shape filled with fresh data
 ```
-
-**Expected Output (Day 2):**
-```
-Models to execute:
-└── sales.daily_sales: 2025-01-17 (1 interval)
-```
-
-### Weekly Model Execution
-
-After 7 days, both daily and weekly models run:
-
-```bash
-vulcan run
-```
-
-**Expected Output:**
-```
-Models to execute:
-├── sales.daily_sales: 2025-01-18 - 2025-01-24 (7 intervals)
-└── sales.weekly_sales: 2025-01-20 - 2025-01-20 (1 interval)
-
-Executing model batches ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 2/2 • 0:00:08
-
-[1/2] sales.daily_sales          [insert 2025-01-18 - 2025-01-24]   5.2s
-[2/2] sales.weekly_sales         [insert 2025-01-20 - 2025-01-20]   2.8s
-
-✔ All model batches executed successfully
-```
-
-**Understanding Cron Schedules:**
-
-- **Daily model (`@daily`)**: Processes missing daily intervals - runs every day when `run` executes
-
-- **Weekly model (`@weekly`)**: Only processes when 7 days have elapsed - skips if not enough time has passed
-
-- **Efficient**: Each model only processes what's due based on its schedule - no wasted compute
-
-This is why cron schedules are important. They tell Vulcan when each model should run, so you don't process things unnecessarily.
 
 ---
 
-## Scenario 3: Run with No Missing Intervals
+## Plan vs Run
 
-When all intervals are up to date, `run` skips execution:
+Use `vulcan plan` when the design changes.
 
-```bash
-vulcan run
+Use `vulcan run` when the design is already applied and the data needs to catch up.
+
+| Question | Use `vulcan plan` | Use `vulcan run` |
+| --- | --- | --- |
+| Did the model SQL or Python change? | Yes | No |
+| Did a metric, semantic model, check, or metadata change? | Yes | No |
+| Do you need Vulcan to review what changed? | Yes | No |
+| Do you only need to process new data? | No | Yes |
+| Do you want scheduled refreshes? | No | Yes |
+
+A simple rule:
+
+```text
+Changed the shape? Use plan.
+Refreshing data? Use run.
 ```
-
-**Expected Output:**
-```
-======================================================================
-Checking for missing intervals...
-----------------------------------------------------------------------
-
-No models to execute. All intervals are up to date.
-
-✔ Run completed successfully
-```
-
-This is normal when running frequently. Nothing to process means everything is up to date. Your automation is working and keeping things current.
 
 ---
 
-## Scenario 4: Run After Model Changes (Error Case)
+## What `vulcan run` Looks For
 
-If models have changed, Vulcan detects this and requires a plan first:
+When you run `vulcan run`, Vulcan asks:
 
-```bash
-vulcan run
-```
+1. What data product shape is already applied?
+2. Which models are part of that applied shape?
+3. Which dates or time windows have already been processed?
+4. Which dates or time windows are missing?
+5. Which missing windows are ready to run now?
+6. Which checks, audits, or quality rules should run after data is processed?
 
-**Expected Output:**
-```
-======================================================================
-Error: Model definitions have changed. Use 'vulcan plan' to apply changes first.
-
-Changed models:
-└── sales.daily_sales
-
-Please run 'vulcan plan' to apply these changes before using 'vulcan run'.
-```
-
-**Workflow**: Always `plan` first to apply changes, then `run` for scheduled execution. 
-
-This is the key workflow: use `plan` when you've changed code, then use `run` for regular data processing. Don't mix them up!
+Vulcan does not ask, “What local files changed?” That question belongs to `vulcan plan`.
 
 ---
 
-## Scheduling for Production
+## What `vulcan run` Does
 
-The `vulcan run` command doesn't run continuously - it executes once and exits. For production, you need to schedule it to run periodically. This is where automation comes in, you'll set up cron jobs, CI/CD pipelines, or Kubernetes CronJobs to trigger `run` on a schedule.
+`vulcan run` processes data for the models that are already applied.
 
-### Built-in Scheduler Architecture
+It can:
 
-```mermaid
-graph TB
-    subgraph "Automation Layer - Triggers"
-        CRON[Cron Job<br/>Schedule: Every hour<br/>Example: 0 * * * *]
-        CI[CI/CD Pipeline<br/>GitHub Actions / GitLab CI<br/>Scheduled workflows]
-        K8S[Kubernetes CronJob<br/>Container orchestration<br/>K8s native scheduling]
-        MANUAL[Manual Trigger<br/>Developer runs manually<br/>vulcan run]
-    end
+1. Process new daily, hourly, weekly, or monthly data.
+2. Catch up after a failed or delayed run.
+3. Run one selected model and the data it depends on.
+4. Respect model schedules.
+5. Wait for signals that say source data is ready.
+6. Run audits and assertions.
+7. Run data quality checks after successful model execution.
+8. Record what happened so teams can review it later.
 
-    subgraph "Vulcan Run Command"
-        RUN[vulcan run<br/>Command starts]
-        VALIDATE[Validate Models<br/>Check for changes<br/>Error if modified]
-        QUERY[Query State Database<br/>Get execution history<br/>Read processed intervals]
-    end
+It does not:
 
-    subgraph "State Database"
-        STATE[State Storage<br/>PostgreSQL / SQL Engine<br/>Transaction-safe storage]
-        
-        subgraph "State Tables"
-            INTERVALS[Processed Intervals<br/>model_name, start_ds, end_ds<br/>status: completed]
-            CRON_STATE[Cron Execution State<br/>model_name, last_run_time<br/>next_run_time]
-            MODEL_STATE[Model State<br/>model_name, fingerprint<br/>environment, version]
-        end
-    end
-
-    subgraph "Cron Evaluation Engine"
-        CRON_CHECK[Evaluate Cron Schedules<br/>Compare current time<br/>with last execution]
-        CALC[Calculate Missing Intervals<br/>Determine what's due<br/>Based on cron + state]
-        FILTER[Filter Models<br/>Only select due models<br/>Skip not-due models]
-    end
-
-    subgraph "Model Execution Queue"
-        QUEUE[Execution Queue<br/>Ordered by dependencies<br/>Upstream first]
-        EXEC1[Execute Hourly Model<br/>@hourly - Due<br/>Process missing intervals]
-        EXEC2[Execute Daily Model<br/>@daily - Due<br/>Process missing intervals]
-        SKIP[Skip Weekly Model<br/>@weekly - Not due<br/>Wait for next week]
-    end
-
-    subgraph "Update State"
-        UPDATE[Update State Database<br/>Mark intervals processed<br/>Update cron state]
-        COMMIT[Commit Transaction<br/>Ensure consistency<br/>Rollback on error]
-    end
-
-    subgraph "Results & Logging"
-        LOG[Log Execution<br/>Summary output<br/>Success/failure status]
-        NOTIFY[Notifications<br/>Optional: Slack/Email<br/>On success/failure]
-    end
-
-    CRON -->|"Scheduled trigger"| RUN
-    CI -->|"Pipeline trigger"| RUN
-    K8S -->|"K8s trigger"| RUN
-    MANUAL -->|"Manual trigger"| RUN
-    
-    RUN -->|"1. Validate"| VALIDATE
-    VALIDATE -->|"2. Query state"| QUERY
-    QUERY -->|"Read"| STATE
-    
-    STATE -->|"Intervals"| INTERVALS
-    STATE -->|"Cron state"| CRON_STATE
-    STATE -->|"Model state"| MODEL_STATE
-    
-    INTERVALS -->|"Compare"| CRON_CHECK
-    CRON_STATE -->|"Check schedule"| CRON_CHECK
-    MODEL_STATE -->|"Get models"| CRON_CHECK
-    
-    CRON_CHECK -->|"Evaluate"| CALC
-    CALC -->|"Calculate"| FILTER
-    
-    FILTER -->|"Due models"| QUEUE
-    FILTER -.->|"Skip"| SKIP
-    
-    QUEUE -->|"Execute"| EXEC1
-    QUEUE -->|"Execute"| EXEC2
-    
-    EXEC1 -->|"Update"| UPDATE
-    EXEC2 -->|"Update"| UPDATE
-    SKIP -.->|"No update"| UPDATE
-    
-    UPDATE -->|"Commit"| COMMIT
-    COMMIT -->|"Success"| LOG
-    LOG -->|"Optional"| NOTIFY
-
-    style CRON fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
-    style CI fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
-    style K8S fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
-    style MANUAL fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
-    style RUN fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
-    style VALIDATE fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    style STATE fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
-    style INTERVALS fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
-    style CRON_STATE fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
-    style MODEL_STATE fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
-    style CRON_CHECK fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
-    style CALC fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
-    style FILTER fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    style QUEUE fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style EXEC1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
-    style EXEC2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
-    style SKIP fill:#ffebee,stroke:#d32f2f,stroke-width:2px,color:#000
-    style UPDATE fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
-    style COMMIT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
-    style LOG fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
-    style NOTIFY fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
-```
-
-### Built-in Scheduler Components
-
-The built-in scheduler consists of several key components working together:
-
-1. **Automation Layer**: External triggers (cron, CI/CD, Kubernetes) that periodically execute `vulcan run`
-2. **State Database**: Stores execution history, processed intervals, and cron state
-3. **Cron Evaluation Engine**: Determines which models are due based on their schedules
-4. **Execution Queue**: Orders models by dependencies and executes them
-5. **State Updates**: Records what was processed for future runs
-
-**Key Features:**
-
-- Stores state in your SQL engine (or separate state database)
-
-- Automatically detects missing intervals
-
-- Respects each model's `cron` schedule
-
-- Processes only what's due
-
-- Transaction-safe state updates
-
-- Dependency-aware execution order
-
-### Setting Up Automation
-
-Run `vulcan run` periodically using one of these methods:
-
-#### Option 1: Linux/Mac Cron Job
-
-```bash
-# Edit crontab
-crontab -e
-
-# Run every hour
-0 * * * * cd /path/to/project && vulcan run >> /var/log/vulcan-run.log 2>&1
-
-# Run every 15 minutes
-*/15 * * * * cd /path/to/project && vulcan run >> /var/log/vulcan-run.log 2>&1
-```
-
-#### Option 2: CI/CD Pipeline
-
-**GitHub Actions Example:**
-```yaml
-name: Vulcan Run
-on:
-  schedule:
-    - cron: '0 * * * *'  # Every hour
-  workflow_dispatch:
-
-jobs:
-  run:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Run Vulcan
-        run: |
-          docker run --network=vulcan --rm \
-            -v $PWD:/workspace \
-            tmdcio/vulcan:latest vulcan run
-```
-
-**GitLab CI Example:**
-```yaml
-vulcan_run:
-  schedule:
-    - cron: '0 * * * *'  # Every hour
-  script:
-    - docker run --network=vulcan --rm \
-
-        -v $PWD:/workspace \
-        tmdcio/vulcan:latest vulcan run
-```
-
-#### Option 3: Kubernetes CronJob
-
-```yaml
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: vulcan-run
-spec:
-  schedule: "0 * * * *"  # Every hour
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: vulcan
-            image: tmdcio/vulcan:latest
-            command: ["vulcan", "run"]
-          restartPolicy: OnFailure
-```
-
-### Determining Run Frequency
-
-Set your automation frequency based on your most frequent model's `cron`:
-
-```mermaid
-graph TD
-    subgraph "Model Cron Schedules"
-        H[Hourly Model<br/>cron: @hourly]
-        D[Daily Model<br/>cron: @daily]
-        W[Weekly Model<br/>cron: @weekly]
-    end
-
-    subgraph "Automation Frequency"
-        AUTO_H[Run every hour<br/>vulcan run]
-        AUTO_D[Run daily<br/>vulcan run]
-        AUTO_W[Run weekly<br/>vulcan run]
-    end
-
-    subgraph "Execution Result"
-        RESULT1[Hourly: Runs every time<br/>Daily: Runs when due<br/>Weekly: Runs when due]
-        RESULT2[Hourly: Skipped<br/>Daily: Runs when due<br/>Weekly: Runs when due]
-        RESULT3[Hourly: Skipped<br/>Daily: Skipped<br/>Weekly: Runs when due]
-    end
-
-    H -->|"Requires"| AUTO_H
-    D -->|"Can use"| AUTO_H
-    W -->|"Can use"| AUTO_H
-    
-    AUTO_H -->|"Hour 1"| RESULT1
-    AUTO_H -->|"Hour 2-23"| RESULT2
-    AUTO_H -->|"Week 1"| RESULT3
-
-    style H fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
-    style D fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
-    style W fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
-    style AUTO_H fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
-    style RESULT1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
-    style RESULT2 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    style RESULT3 fill:#ffe082,stroke:#f9a825,stroke-width:2px,color:#000
-```
-
-**Rule**: Schedule `vulcan run` based on your **fastest model's cron**.
-
-- **Hourly models** → Run automation every hour - if you have hourly models, you need to run at least hourly
-
-- **Daily models** → Run automation daily - if your fastest model is daily, you can run daily
-
-- **Weekly models** → Run automation weekly - if your fastest model is weekly, you can run weekly
-
-**Example**: If your fastest model runs `@hourly`, schedule `vulcan run` to execute hourly. Models with slower schedules (daily, weekly) only process when their intervals are due. Vulcan won't process daily models every hour. It waits until they're actually due.
-
-The key insight: you can run `vulcan run` more frequently than your slowest model's schedule. Vulcan will just skip models that aren't due yet.
+1. Apply local code changes.
+2. Decide whether a model change is breaking or non-breaking.
+3. Promote new versions of models.
+4. Replace `vulcan plan`.
 
 ---
 
-## Advanced Run Options
+## The Run Journey
 
-### Run Specific Models
+A typical run follows this journey:
 
-```bash
-vulcan run --select-model "sales.daily_sales"
+```text
+1. Read the applied state
+2. Find models that belong to that state
+3. Check which time intervals are missing
+4. Check schedules and signals
+5. Decide what is ready to run
+6. Run models in the right order
+7. Run audits and quality checks
+8. Mark intervals as processed
+9. Record success, failure, or nothing to do
 ```
 
-Processes only the specified model and its upstream dependencies.
+If there is nothing ready, that is not a failure. It usually means the data is already up to date, or the next scheduled window is not ready yet.
 
-### Ignore Cron Schedules
+---
+
+## Applied State
+
+Applied state is the version of the data product Vulcan is allowed to run.
+
+Think of it like an approved blueprint.
+
+If a developer changes a local file, that local change is not automatically part of the blueprint. The change must go through `vulcan plan` first.
+
+Example:
+
+```text
+Applied state:
+  sales.orders uses approved version A
+
+Local file:
+  sales.orders was edited and now represents version B
+
+vulcan run:
+  still runs version A
+
+vulcan plan:
+  reviews and applies version B
+```
+
+This protects teams from accidentally running unapproved changes.
+
+---
+
+## Missing Intervals
+
+A missing interval is a time window that should have data but does not yet.
+
+Example:
+
+```text
+Daily orders model
+
+Already processed:
+  May 1
+  May 2
+
+Missing:
+  May 3
+```
+
+When you run `vulcan run`, Vulcan finds these missing windows and decides whether they are ready to process.
+
+It does not blindly run everything. It checks schedules, signals, dependencies, and the selected date range.
+
+---
+
+## Start And End Dates
+
+You can ask Vulcan to run a specific time window:
+
+```bash
+vulcan run --start 2026-05-01 --end 2026-05-07
+```
+
+Use this when:
+
+1. You want to catch up a known date range.
+2. You want to rerun a small window during testing.
+3. You do not want Vulcan to look beyond a specific date range.
+
+If you do not provide a date range, Vulcan uses the applied model settings, stored interval history, schedules, and current execution time to decide what is missing.
+
+---
+
+## Schedules
+
+Some models should run hourly. Some should run daily. Some should run weekly.
+
+A schedule tells Vulcan when a missing interval is allowed to run.
+
+Example:
+
+```text
+A daily model has missing data for May 3.
+
+If May 3 is not ready yet:
+  Vulcan waits.
+
+If May 3 is ready:
+  Vulcan can run it.
+```
+
+By default, `vulcan run` respects schedules.
+
+If you intentionally want to ignore schedules during a manual catch-up, use:
 
 ```bash
 vulcan run --ignore-cron
 ```
 
-Processes all missing intervals regardless of cron schedules. Use sparingly - typically for catching up after downtime. 
+Use this carefully. It can make Vulcan run data earlier than the normal schedule.
 
-This is useful if your automation was down for a while and you need to catch up on missed intervals. But normally, you want Vulcan to respect cron schedules, that's the whole point!
+---
 
-### Custom Execution Time
+## Signals
 
-```bash
-vulcan run --execution-time "2025-01-20 10:00:00"
+A signal is a readiness check.
+
+It can answer questions like:
+
+1. Has the source file arrived?
+2. Is the upstream table updated?
+3. Is the required partition available?
+4. Has another business process finished?
+
+If a signal says the data is not ready, Vulcan skips that interval for now.
+
+```text
+Missing interval
+  -> schedule ready?
+  -> source data ready?
+  -> upstream process done?
+  -> run only when all checks say yes
 ```
 
-Simulates running at a specific time. Useful for testing cron schedules.
+This helps prevent incomplete data from being processed too early.
 
-### Run in Different Environments
+---
 
-```bash
-vulcan run dev
+## Running In The Right Order
+
+Data models often depend on one another.
+
+Example:
+
+```text
+raw orders
+  -> cleaned orders
+    -> customer revenue
 ```
 
-Runs models in the `dev` environment, maintaining separate execution state from production.
+Vulcan runs upstream models before downstream models.
+
+If you ask Vulcan to run `customer revenue`, it normally includes the upstream models too. This helps prevent the final model from using stale or missing parent data.
 
 ---
 
-## State Database Considerations
+## Running Only One Part Of The Data Product
 
-By default, Vulcan stores scheduler state in your SQL engine. For production:
+You can select one model:
 
-**Recommended**: Use a separate PostgreSQL database for state storage when:
-- Your SQL engine is BigQuery (not optimized for frequent transactions)
+```bash
+vulcan run --select-model analytics.customer_revenue
+```
 
-- You observe performance degradation
+By default, Vulcan also includes upstream dependencies.
 
-- You need better isolation
+If you do not want that, use:
 
-See [Configuration Guide](../configurations/overview.md#gateways) for configuring a separate state database.
+```bash
+vulcan run --select-model analytics.customer_revenue --no-auto-upstream
+```
 
----
-
-## Best Practices
-
-1. **Use `run` for scheduled execution** - Don't use `plan` for regular data processing
-2. **Set up automation** - Schedule `vulcan run` based on your most frequent model's cron
-3. **Monitor execution** - Check logs to ensure intervals are processing correctly
-4. **Use `--ignore-cron` sparingly** - Only when catching up on missed intervals
-5. **Separate state database** - Consider PostgreSQL for state storage in production
-6. **Handle errors gracefully** - Set up [notifications](../configurations/options/notifications.md) for run failures
-
-Here are some tips to help you use `run` effectively:
-
-1. **Use `run` for scheduled execution** - Don't use `plan` for regular data processing. They serve different purposes!
-2. **Set up automation** - Schedule `vulcan run` based on your most frequent model's cron. Set it and forget it.
-3. **Monitor execution** - Check logs to ensure intervals are processing correctly. Make sure your automation is actually working.
-4. **Use `--ignore-cron` sparingly** - Only when catching up on missed intervals. Normally, let Vulcan respect cron schedules.
-5. **Separate state database** - Consider PostgreSQL for state storage in production. Some SQL engines aren't optimized for frequent transactions.
-6. **Handle errors gracefully** - Set up [notifications](../configurations/options/notifications.md) for run failures.
-
-Following these practices will help you build reliable, automated data pipelines.
+Use `--no-auto-upstream` carefully. If upstream data is missing, the selected model may run with incomplete inputs.
 
 ---
 
-## Quick Reference
+## Batches
 
-| Scenario | Command | When to Use |
-|----------|---------|-------------|
-| **Regular Run** | `vulcan run` | Scheduled execution (cron jobs, CI/CD) |
-| **Dev Environment** | `vulcan run dev` | Running models in dev environment |
-| **Select Models** | `vulcan run --select-model "model"` | Running specific models only |
-| **Ignore Cron** | `vulcan run --ignore-cron` | Catch up on all missing intervals |
-| **Custom Time** | `vulcan run --execution-time "..."` | Testing/simulating runs |
+Sometimes Vulcan has many missing intervals to process.
+
+Instead of running each one separately, Vulcan can group ready intervals into batches.
+
+Example:
+
+```text
+Ready intervals:
+  May 1
+  May 2
+  May 3
+
+Batch size: 2
+
+Batches:
+  Batch 1: May 1 to May 2
+  Batch 2: May 3
+```
+
+Batching helps Vulcan run efficiently while still respecting dependencies and gaps in data readiness.
 
 ---
 
-## Next Steps
+## Audits And Quality Checks
 
-- Learn about [Plan Guide](./plan_guide.md) for applying model changes
+After data runs, Vulcan can check whether the result looks trustworthy.
+
+Audits and assertions can answer questions like:
+
+1. Are there null IDs?
+2. Are there negative amounts?
+3. Is the row count too low?
+4. Are key values unique?
+
+Data quality checks can record quality posture after successful execution.
+
+The simple difference:
+
+```text
+Audits and assertions:
+  run during model evaluation and may block a bad result
+
+Data quality checks:
+  run after successful execution and record quality status
+```
+
+Both help teams trust the data after it is refreshed.
+
+---
+
+## What Happens If Nothing Runs
+
+Sometimes `vulcan run` finishes and says there is nothing to do.
+
+That can happen when:
+
+1. All data is already processed.
+2. The next scheduled interval is not ready yet.
+3. A signal says source data is not ready.
+4. The selected model has no missing work.
+5. The date range you requested has no missing intervals.
+
+This is usually a successful result. Vulcan checked the applied state and found no ready work.
+
+---
+
+## Run Activity
+
+At the end of a run, Vulcan records what happened.
+
+Run activity can include:
+
+1. When the run started and ended.
+2. Which models ran.
+3. Which intervals were processed.
+4. Which models were skipped.
+5. Which audits or checks passed or failed.
+6. What errors happened, if any.
+7. Whether the run succeeded, failed, or had nothing to do.
+
+This activity helps teams debug issues, monitor freshness, and explain what happened during a scheduled refresh.
+
+---
+
+## With And Without A Virtual Layer
+
+`vulcan run` behaves mostly the same with or without a virtual layer because it works from applied state.
+
+The main difference is where data lives and how consumers reach it.
+
+With a virtual layer:
+
+```text
+consumer-facing object
+  -> virtual-layer view
+  -> versioned physical snapshot table
+```
+
+Without a virtual layer:
+
+```text
+consumer-facing object
+  -> original materialized object
+```
+
+In both modes, `vulcan run` still:
+
+1. Finds missing intervals.
+2. Respects schedules and signals.
+3. Runs the DAG in order.
+4. Records intervals and run activity.
+
+The virtual layer does not make `vulcan run` detect code changes. Code-change detection belongs to `vulcan plan`.
+
+---
+
+## Useful Commands
+
+Run the applied shape:
+
+```bash
+vulcan run
+```
+
+Run a specific date window:
+
+```bash
+vulcan run --start 2026-05-01 --end 2026-05-07
+```
+
+Ignore schedules during a manual catch-up:
+
+```bash
+vulcan run --ignore-cron
+```
+
+Run one model and its upstream dependencies:
+
+```bash
+vulcan run --select-model analytics.customer_revenue
+```
+
+Run only the selected model:
+
+```bash
+vulcan run --select-model analytics.customer_revenue --no-auto-upstream
+```
+
+Skip cleanup:
+
+```bash
+vulcan run --skip-janitor
+```
+
+Exit with a specific code if applied state changes while the run is active:
+
+```bash
+vulcan run --exit-on-env-update 75
+```
+
+---
+
+## When To Use `vulcan run`
+
+Use `vulcan run` when:
+
+1. The data product shape is already applied.
+2. You need to process new data.
+3. You need to catch up missing data.
+4. You want scheduled execution to keep data fresh.
+5. You want to run a selected part of the DAG.
+6. You want audits, quality checks, and run history for processed intervals.
+
+Use `vulcan plan` instead when:
+
+1. You changed model SQL or Python.
+2. You changed model metadata.
+3. You added or removed models.
+4. You changed semantics, metrics, checks, hooks, or dependencies.
+5. You need Vulcan to review and classify changes before applying them.
+
+---
+
+## Common Misunderstandings
+
+**"`vulcan run` deploys local code changes."**
+
+No. `vulcan run` executes applied snapshots. Use `vulcan plan` to apply local project changes.
+
+**"Missing intervals always run immediately."**
+
+No. Schedules, signals, dependencies, and selected model filters can delay or skip a missing interval.
+
+**"`--select-model` only runs that one model."**
+
+Not by default. Vulcan includes upstream dependencies unless `--no-auto-upstream` is used.
+
+**"Nothing to do means failure."**
+
+No. It usually means no intervals are currently ready to execute.
+
+**"Quality checks are the same as audits."**
+
+No. Audits and assertions run during model evaluation and can block execution depending on configuration. Data quality checks run after successful execution and record quality posture.
+
+**"The virtual layer changes how run detects code changes."**
+
+No. The virtual layer affects object exposure and physical naming. Run still works from applied state. Plan handles code-change detection.

@@ -116,6 +116,54 @@ The default granularity is what's used when a consumer queries the metric withou
 | `terms` | List of strings | Business glossary references (e.g. `glossary.revenue`). See [Naming rules](models.md#naming-rules). |
 | `ai_context` | Object | Hints for AI/LLM consumers (`instructions`, `synonyms`, `examples`). See [AI context](models.md#ai-context). |
 
+Example:
+
+```yaml
+ai_context:
+  instructions: >
+    Subscription lifecycle and revenue metric (MRR, ARR, churn).
+    Filter active rows with status or active_subscriptions segment.
+    Query via SQL API, REST API (JSON), or GraphQL API.
+  synonyms:
+    - subscriptions
+    - billing accounts
+    - recurring revenue
+  examples:
+    - description: total ARR for active subscriptions
+      format: sql
+      query: |
+        SELECT MEASURE(subscriptions.total_arr)
+        FROM subscriptions
+        WHERE active_subscriptions IS TRUE;
+    - description: MRR by plan type
+      format: sql
+      query: |
+        SELECT
+          subscriptions.plan_type,
+          MEASURE(subscriptions.avg_mrr_per_account)
+        FROM subscriptions
+        WHERE subscriptions.status = 'active'
+        GROUP BY 1;
+    - description: total ARR for active subscriptions (REST API)
+      format: rest
+      query: |
+        {
+          "measures": ["subscriptions.total_arr"],
+          "segments": ["subscriptions.active_subscriptions"]
+        }
+    - description: MRR by plan type (GraphQL API)
+      format: graphql
+      query: |
+        {
+          vulcan {
+            subscriptions(where: { status: { equals: "active" } }) {
+              plan_type
+              avg_mrr_per_account
+            }
+          }
+        }
+```
+
 ---
 
 ## Dimensions
@@ -168,12 +216,21 @@ dimensions:
     terms:
       - customer.industry
     ai_context:
-      instructions: Filter for the top-10 industries
+      instructions: >
+        Use industry when segmenting subscription revenue by customer type.
+        Prefer top-N filters for dashboards with many long-tail values.
       synonyms:
         - sector
+        - customer vertical
       examples:
-        - "SaaS"
-        - "FinTech"
+        - description: MRR by industry
+          format: sql
+          query: |
+            SELECT
+              users.industry,
+              MEASURE(subscriptions.avg_mrr_per_account)
+            FROM subscriptions
+            GROUP BY 1;
 ```
 
 | Field | Required | Description |

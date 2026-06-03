@@ -503,16 +503,48 @@ name: subscriptions
 depends_on: hello.subscriptions
 
 ai_context:
-  instructions: |
-    Subscription rows represent the contract lifecycle, not invoice events.
-    Use `total_arr` for steady-state ARR and `churn_count` for retention questions.
+  instructions: >
+    Subscription lifecycle and revenue semantic model (MRR, ARR, churn).
+    Filter active rows with status or active_subscriptions segment.
+    Query via SQL API, REST API (JSON), or GraphQL API.
   synonyms:
-    - "contracts"
-    - "subscriptions"
-    - "accounts"
+    - subscriptions
+    - billing accounts
+    - recurring revenue
   examples:
-    - "How many active enterprise subscriptions exist this month?"
-    - "What is ARR by plan_type for the last quarter?"
+    - description: total ARR for active subscriptions
+      format: sql
+      query: |
+        SELECT MEASURE(subscriptions.total_arr)
+        FROM subscriptions
+        WHERE active_subscriptions IS TRUE;
+    - description: MRR by plan type
+      format: sql
+      query: |
+        SELECT
+          subscriptions.plan_type,
+          MEASURE(subscriptions.avg_mrr_per_account)
+        FROM subscriptions
+        WHERE subscriptions.status = 'active'
+        GROUP BY 1;
+    - description: total ARR for active subscriptions (REST API)
+      format: rest
+      query: |
+        {
+          "measures": ["subscriptions.total_arr"],
+          "segments": ["subscriptions.active_subscriptions"]
+        }
+    - description: MRR by plan type (GraphQL API)
+      format: graphql
+      query: |
+        {
+          vulcan {
+            subscriptions(where: { status: { equals: "active" } }) {
+              plan_type
+              avg_mrr_per_account
+            }
+          }
+        }
 
 dimensions:
   - name: plan_type
@@ -527,7 +559,7 @@ dimensions:
 |-------|------|-------------|
 | `instructions` | String | Free-form guidance for how to think about this object. |
 | `synonyms` | List of strings | Alternate names consumers/LLMs might use. |
-| `examples` | List of strings | Example questions, queries, or values that illustrate intent. |
+| `examples` | List of objects | Example SQL, REST, GraphQL, or natural-language prompts. Each example can include `description`, `format`, and `query`. |
 
 ---
 

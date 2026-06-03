@@ -105,7 +105,7 @@ Vulcan deployments require two key configuration files:
 
 ### 1. `config.yaml` - Vulcan Configuration
 
-This file contains Vulcan-specific configurations including model defaults, gateways, notifications, and metadata.
+This file contains Vulcan-specific runtime configuration, including model defaults, gateways, notifications, and environment behavior. Business-facing usage guidance belongs in `usage.yaml`.
 
 **Location:** `<project-root>/config.yaml`
 
@@ -133,18 +133,34 @@ terms:
   - glossary.<term1>
   - glossary.<term2>
 
-metadata:
-  domain: <business-domain>
-  use_cases:
-    - <use-case-1>
-    - <use-case-2>
-  limitations:
-    - <limitation-1>
-    - <limitation-2>
 ```
 
 !!! info "Tenant comes from the environment"
     Set `DATAOS_TENANT_ID` in your shell or `.env`. It's no longer a YAML key.
+
+#### Usage Guidance
+
+Business-facing usage guidance belongs in `usage.yaml`, not in `config.yaml`.
+
+```yaml
+good_for:
+  - <good-use-case-1>
+  - title: <good-use-case-title>
+    details: <when this data product is a good fit>
+
+not_for:
+  - <not-for-use-case-1>
+
+caveats:
+  - title: <known-caveat-title>
+    details: <what users should know>
+    severity: medium
+
+references:
+  - title: <reference-title>
+    url: <reference-url>
+    type: doc
+```
 
 #### Model Defaults
 ```yaml
@@ -205,16 +221,6 @@ terms:
   - glossary.data_product
   - glossary.analytics_platform
   - glossary.user_engagement
-
-metadata:
-  domain: product_analytics
-  use_cases:
-    - User engagement tracking and analysis
-    - Device usage analytics
-    - Session and activity monitoring
-  limitations:
-    - Data available from 2025 onwards
-    - Refreshes daily at midnight UTC
 
 model_defaults:
   dialect: snowflake

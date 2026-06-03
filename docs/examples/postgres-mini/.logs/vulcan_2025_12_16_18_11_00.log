@@ -1,0 +1,2 @@
+2025-12-16 18:11:01,313 - MainThread - vulcan.core.console - WARNING - The extension .yml does not designate an html file. A file with a `.html` extension will be created instead. (console.py:2353)
+2025-12-16 18:11:01,316 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:231)

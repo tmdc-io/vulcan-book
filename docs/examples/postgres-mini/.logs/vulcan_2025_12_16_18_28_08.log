@@ -1,0 +1,8 @@
+2025-12-16 18:28:09,137 - MainThread - vulcan.core.state_sync.common - INFO - Cleaned up 0 expired snapshots (janitor.py:181)
+2025-12-16 18:28:09,139 - MainThread - vulcan.core.state_sync.db.interval - INFO - Compacting 5 intervals for 5 snapshots (interval.py:130)
+2025-12-16 18:28:09,139 - MainThread - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."raw"."raw_customers": 4133886087> (interval.py:215)
+2025-12-16 18:28:09,139 - MainThread - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."raw"."raw_orders": 3563304840> (interval.py:215)
+2025-12-16 18:28:09,139 - MainThread - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."raw"."raw_products": 2562582557> (interval.py:215)
+2025-12-16 18:28:09,139 - MainThread - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."sales"."daily_sales": 4059378785> (interval.py:215)
+2025-12-16 18:28:09,139 - MainThread - vulcan.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"warehouse"."sales"."daily_sales": 1226329217> (interval.py:215)
+2025-12-16 18:28:09,144 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:231)
