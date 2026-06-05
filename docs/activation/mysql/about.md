@@ -67,7 +67,7 @@ DBeaver, DataGrip, MySQL Workbench, and most SQL IDEs support MySQL connections.
 
     **`SHOW TABLES` is empty**
 
-    No semantic models have been applied yet. Run `vulcan plan` and confirm at least one model exists in `semantics/`.
+    No semantic models have been applied yet. Run `vulcan plan` and confirm at least one model exists in `models/semantics/`.
 
     **Connection refused or timeout**
 

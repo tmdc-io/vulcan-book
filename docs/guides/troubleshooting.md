@@ -381,7 +381,7 @@ The metric exists, but one of its slices doesn't carry the required semantic ref
 
 ## Semantic field definition errors
 
-These fail at validation time when Vulcan loads the semantic layer. They almost always come from a `semantics/*.yml` file that's been edited.
+These fail at validation time when Vulcan loads the semantic layer. They almost always come from a `models/semantics/*.yml` file that's been edited.
 
 ### Field has no role
 

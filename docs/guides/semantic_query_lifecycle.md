@@ -48,7 +48,7 @@ Send a `POST` to `/api/v1/query/semantic/rest` with a JSON body describing what 
 }
 ```
 
-The query uses semantic names like `orders.total_revenue` and `orders.region`, defined in your `semantics/` YAML files. You never write SQL directly.
+The query uses semantic names like `orders.total_revenue` and `orders.region`, defined in your `models/semantics/` YAML files. You never write SQL directly.
 
 ### Query fields
 
@@ -388,7 +388,7 @@ Cached results stay fresh as long as the underlying data hasn't changed, and are
 | Submit endpoint | `POST /api/v1/query/semantic/rest` |
 | Poll endpoint | `GET /api/v1/query/statement/{id}` |
 | Result endpoint | `GET /api/v1/query/statement/{id}/result` |
-| Semantic definitions | `semantics/*.yml` in your project |
+| Semantic definitions | `models/semantics/*.yml` in your project |
 | Transpilation | Semantic JSON → Transpiler Service → warehouse SQL |
 | Job queue | PostgreSQL-backed (PGQueuer) |
 | Result storage | Parquet files in object storage (S3 / MinIO / GCS) |

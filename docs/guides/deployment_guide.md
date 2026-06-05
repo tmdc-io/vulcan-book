@@ -238,7 +238,7 @@ notification_targets:
     notify_on:
       - apply_failure
       - run_failure
-      - check_failure
+      - dq_failure
 
 users:
   - username: <owner-username-1>
@@ -438,6 +438,7 @@ your-project/
 │   ├── dq/                  # Data Quality rule packs (kind: dq)
 │   ├── semantics/           # Semantic models (kind: semantic)
 │   └── metrics/             # Per-metric files
+├── plugins/                 # Auth extension hooks and other project plugins
 ├── seeds/                   # Static data files
 └── audits/                  # Audit queries (blocking)
 ```

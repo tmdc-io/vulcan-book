@@ -632,7 +632,7 @@ The format differs between SQL and JSON, so make sure you're using the right syn
 
 **Solution:**
 
-- Check semantic model aliases in your `semantics/` directory
+- Check semantic model aliases in your `models/semantics/` directory
 
 - Verify alias spelling and casing
 

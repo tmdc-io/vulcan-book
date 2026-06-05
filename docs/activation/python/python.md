@@ -114,4 +114,4 @@ df = pd.read_sql("SELECT * FROM your_semantic_model", conn)
 
     **`SHOW TABLES` returns nothing**
 
-    Your data product has no semantic models yet, or the plan hasn't been applied. Run `vulcan plan` and confirm at least one model exists in `semantics/`.
+    Your data product has no semantic models yet, or the plan hasn't been applied. Run `vulcan plan` and confirm at least one model exists in `models/semantics/`.

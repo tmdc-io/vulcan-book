@@ -44,10 +44,10 @@ If Docker is not installed, install [Docker Desktop](https://www.docker.com/prod
 
 ## Step 1: Create and Activate a Virtual Environment
 
-Use a virtual environment for Postgres, Snowflake, Databricks, Trino, MySQL, and MSSQL.
+Use a virtual environment for Postgres, Snowflake, Databricks, Spark, Trino, MySQL, and MSSQL.
 
-!!! note "Spark uses a different setup"
-    For Spark, skip the virtual environment and use the Spark Docker setup in the Spark tab below. The `vulcan-cli` container installs Vulcan from the wheel and runs the Spark driver inside Linux.
+!!! note "Spark also needs Java"
+    For Spark, install Vulcan locally in Python 3.10 like the other engines. You also need a Java 17 SDK available from your laptop because the Spark driver runs in your local Python process.
 
 === "Mac/Linux"
     ```bash
@@ -93,7 +93,9 @@ Install the wheel with the extra for the engine you want to use.
     ```
 
 === "Spark"
-    Do not install Spark in a local virtual environment for this guide. Use the Spark Docker setup in [Step 3](#step-3-set-up-your-engine).
+    ```bash
+    pip install "./vulcan-0.228.1.21-py3-none-any.whl[spark,postgres]"
+    ```
 
 === "Trino"
     ```bash
@@ -313,13 +315,19 @@ Choose the tab for your engine. If you already have a warehouse or engine instan
 
     **Option 1: Use an existing Spark cluster**
 
-    If you already have a Spark cluster, use the `vulcan-cli` service below and update `spark.master` in `config.yaml` to point to your cluster.
+    If you already have a Spark cluster, update `spark.master` in `config.yaml` to point to your cluster.
 
     **Option 2: Start Spark locally with Docker**
 
-    Spark uses a dedicated Docker Compose setup in this guide. It runs a Spark standalone cluster, MinIO, an Iceberg REST catalog, and a Linux-based `vulcan-cli` container. This avoids Windows Hadoop or `winutils.exe` issues because the Spark driver runs inside Linux.
+    Spark uses a dedicated Docker Compose setup in this guide. It runs a Spark standalone cluster, MinIO, and an Iceberg REST catalog. Vulcan still runs locally from your Python 3.10 environment, so Java 17 must be installed and accessible from your laptop.
 
-    Place `vulcan-0.228.1.21-py3-none-any.whl` in your project root, then save this as `docker/docker-compose.spark.yml`:
+    Confirm Java 17 is available:
+
+    ```bash
+    java -version
+    ```
+
+    Save this as `docker/docker-compose.spark.yml`:
 
     ```yaml
     services:
@@ -410,47 +418,6 @@ Choose the tab for your engine. If you already have a warehouse or engine instan
           minio:
             condition: service_healthy
 
-      # Vulcan CLI runner. The Spark driver runs in this Linux container.
-      vulcan-cli:
-        image: python:3.10-bookworm
-        container_name: spark-seeds-minimal-vulcan-cli
-        ports:
-          - "8000:8000"
-        restart: unless-stopped
-        networks:
-          - spark-seeds-minimal-net
-        depends_on:
-          - spark-master
-          - spark-worker
-          - iceberg-rest
-        environment:
-          - SPARK_MASTER=spark://spark-master:7077
-          - ICEBERG_REST_URI=http://iceberg-rest:8181
-          - MINIO_ENDPOINT=http://minio:9000
-        volumes:
-          - ..:/workspace
-        working_dir: /workspace
-        command:
-          - sh
-          - -lc
-          - |
-            set -eu
-
-            # Java is required for Spark.
-            if ! command -v java >/dev/null 2>&1; then
-              apt-get update
-              apt-get install -y openjdk-17-jre-headless
-              rm -rf /var/lib/apt/lists/*
-            fi
-
-            # Install Vulcan from the mounted wheel.
-            python -m pip install -U pip setuptools wheel
-            if ! command -v vulcan >/dev/null 2>&1; then
-              python -m pip install --no-cache-dir "vulcan[spark,postgres] @ file:///workspace/vulcan-0.228.1.21-py3-none-any.whl"
-            fi
-
-            tail -f /dev/null
-
     networks:
       spark-seeds-minimal-net:
         driver: bridge
@@ -465,24 +432,10 @@ Choose the tab for your engine. If you already have a warehouse or engine instan
     docker compose -f docker/docker-compose.spark.yml up -d
     ```
 
-    **Vulcan CLI alias setup**
-
-    Use an alias so Spark commands run through the `vulcan-cli` container.
-
-    === "Windows"
-        ```powershell
-        function vulcan { docker exec -i spark-seeds-minimal-vulcan-cli vulcan @args }
-        ```
-
-    === "macOS"
-        ```bash
-        alias vulcan='docker exec -i spark-seeds-minimal-vulcan-cli vulcan'
-        ```
-
-    Verify Vulcan through the CLI container:
+    Verify Vulcan locally from your activated Python 3.10 environment:
 
     ```bash
-    docker compose -f docker/docker-compose.spark.yml run --rm vulcan-cli vulcan --version
+    vulcan --version
     ```
 
     Use this connection in `config.yaml`:
@@ -493,18 +446,18 @@ Choose the tab for your engine. If you already have a warehouse or engine instan
         connection:
           type: spark
           config:
-            spark.master: spark://spark-master:7077
+            spark.master: spark://localhost:7077
             spark.app.name: vulcan
             spark.sql.catalog.local: org.apache.iceberg.spark.SparkCatalog
             spark.sql.catalog.local.type: rest
-            spark.sql.catalog.local.uri: http://iceberg-rest:8181
+            spark.sql.catalog.local.uri: http://localhost:8181
             spark.sql.catalog.local.warehouse: s3://warehouse/
             spark.sql.catalog.local.io-impl: org.apache.iceberg.aws.s3.S3FileIO
-            spark.sql.catalog.local.s3.endpoint: http://minio:9000
+            spark.sql.catalog.local.s3.endpoint: http://localhost:9000
             spark.sql.catalog.local.s3.path-style-access: "true"
             spark.hadoop.fs.s3a.access.key: admin
             spark.hadoop.fs.s3a.secret.key: password
-            spark.hadoop.fs.s3a.endpoint: http://minio:9000
+            spark.hadoop.fs.s3a.endpoint: http://localhost:9000
             spark.hadoop.fs.s3a.path.style.access: "true"
         state_connection:
           type: duckdb
@@ -517,6 +470,8 @@ Choose the tab for your engine. If you already have a warehouse or engine instan
     ```
 
     [:material-book-open-variant: Full Spark reference](../../configurations/engines/spark/spark.md)
+
+    [:material-book-open-variant: Set up Spark locally](setup_spark_locally.md)
 
 === "Trino"
 

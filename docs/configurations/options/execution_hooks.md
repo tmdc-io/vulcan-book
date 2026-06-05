@@ -1,6 +1,6 @@
 # Execution Hooks
 
-Run SQL statements or macros automatically at the start and end of `vulcan plan` and `vulcan run` commands. Automate setup and cleanup tasks: create temporary tables, grant permissions, log pipeline runs, clean up after execution.
+Run SQL statements, SQL files, or macros automatically at the start and end of `vulcan plan` and `vulcan run` commands. Automate setup and cleanup tasks: create temporary tables, grant permissions, log pipeline runs, clean up after execution.
 
 ## Overview
 
@@ -13,6 +13,15 @@ Two hooks run at different times:
 
 The `before_all` hook runs once at the beginning, before Vulcan processes any models. Use it for setup tasks. The `after_all` hook runs once at the end, after all models are processed. Use it for cleanup or post-processing.
 
+Each hook entry can be one of these forms:
+
+| Form | Example | Use when |
+|------|---------|----------|
+| Inline SQL string | `CREATE SCHEMA IF NOT EXISTS analytics` | The statement is short and easy to read in `config.yaml`. |
+| Macro call | `"@grant_select_privileges()"` | The hook needs runtime context or reusable Python logic. |
+| File object | `{file: ./statements/select_1.txt}` | You want to make the file reference explicit. |
+| File path string | `./statements/select_3.sql` | The hook should run SQL from a file. |
+
 ## Basic Configuration
 
 === "YAML"
@@ -22,11 +31,15 @@ The `before_all` hook runs once at the beginning, before Vulcan processes any mo
       - CREATE TABLE IF NOT EXISTS audit_log (model VARCHAR, started_at TIMESTAMP)
 
       - INSERT INTO audit_log VALUES ('pipeline', CURRENT_TIMESTAMP)
+
+      - file: ./statements/select_1.txt
     
     after_all:
       - "@grant_select_privileges()"
 
       - UPDATE audit_log SET completed_at = CURRENT_TIMESTAMP WHERE model = 'pipeline'
+
+      - ./statements/select_3.sql
     ```
 
 === "Python"
@@ -45,6 +58,36 @@ The `before_all` hook runs once at the beginning, before Vulcan processes any mo
         ],
     )
     ```
+
+## File-Backed Statements
+
+Use file-backed hooks when setup or cleanup SQL is too long for `config.yaml`, or when multiple environments share the same statement file.
+
+```yaml title="config.yaml"
+before_all:
+  - file: ./statements/select_1.txt
+  - file: ./statements/select_2.sql
+
+after_all:
+  - ./statements/select_3.sql
+```
+
+Statement files can use `.txt` or `.sql` extensions and may contain multiple SQL statements:
+
+```sql title="statements/select_1.txt"
+select 1;
+select 2;
+select 3;
+select 4;
+select 5;
+select 6;
+select 7;
+select 8;
+select 9;
+select 10;
+```
+
+File paths are resolved relative to the project root. Keep long setup scripts in a folder such as `statements/` so `config.yaml` stays readable.
 
 ## Using Macros in Hooks
 

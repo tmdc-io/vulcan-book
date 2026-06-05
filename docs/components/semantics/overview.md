@@ -199,7 +199,16 @@ project/
 **File naming:** The filename doesn't matter. Vulcan automatically merges all YAML files in `models/semantics/` and `models/metrics/`. Organize by domain (`customers.yml`, `orders.yml`) or by function (`revenue_metrics.yml`), whatever helps you find things.
 
 !!! info "Where to put `semantics/`"
-    Placing `semantics/` and `metrics/` inside `models/` is the recommended layout. A top-level `semantics/` directory next to `models/` is also accepted, so existing projects keep working without changes.
+    New projects should place semantic models in `models/semantics/`. If you still have a top-level `semantics/` directory next to `models/`, move those files under `models/semantics/` as part of your OSI GA migration.
+
+!!! important "Auth-backed policies need an auth extension"
+    If your semantic models use policies or masking based on Heimdall auth, make sure `config.yaml` includes the root-level auth extension hook:
+
+    ```yaml
+    after_authorize: "plugins.auth_ext:resolve_user_groups"
+    ```
+
+    The hook resolves Heimdall role tags into policy groups. See the [Plugins Auth Extension Guide](plugins_auth_extension.md) for the full setup.
 
 ---
 
@@ -254,5 +263,6 @@ Your models stay exactly as they are; the semantic layer just makes them more ac
 
 - [Semantic Models](models.md): how to declare dimensions, measures, segments, and joins.
 - [Business Metrics](./business_metrics.md): how to wrap a measure with a time column and dimensions.
+- [Plugins Auth Extension Guide](plugins_auth_extension.md): how to resolve Heimdall role tags for policies and masking.
 - [Transpiling Semantic Queries](../../guides/transpiling_semantics.md): what SQL Vulcan generates for a semantic query.
 - The `models/semantics/` and `models/metrics/` folders in your project: working examples to copy from.

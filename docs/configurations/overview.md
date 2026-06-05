@@ -177,7 +177,13 @@ terms:
 ```
 
 !!! info "Tenant comes from the environment"
-    `tenant` is not a YAML key in `config.yaml`. Set it via the `DATAOS_TENANT_ID` environment variable (or `.env` file). Without it, Vulcan refuses to load the project.
+    `tenant` is required by the platform, but it is not a YAML key in `config.yaml`. In production, the platform injects it through `DATAOS_TENANT_ID`. For local development, export it before running Vulcan:
+
+    ```bash
+    export DATAOS_TENANT_ID=marketing
+    ```
+
+    Without `DATAOS_TENANT_ID`, Vulcan refuses to load the project.
 
 ### Usage Guidance (`usage.yaml`)
 
@@ -280,14 +286,16 @@ See [Variables](./options/variables.md) for details.
 
 ### Execution Hooks
 
-Run SQL statements automatically at the start and end of `vulcan plan` and `vulcan run` commands. Use `before_all` for setup tasks like creating temporary tables or granting permissions. Use `after_all` for cleanup or post-processing.
+Run SQL statements automatically at the start and end of `vulcan plan` and `vulcan run` commands. Use `before_all` for setup tasks like creating temporary tables or granting permissions. Use `after_all` for cleanup or post-processing. Hook entries can be inline SQL, macros, or files that contain SQL statements.
 
 ```yaml
 before_all:
   - GRANT SELECT ON ALL TABLES IN SCHEMA analytics TO reporting_role
+  - file: ./statements/setup.sql
 
 after_all:
   - ANALYZE analytics.daily_sales
+  - ./statements/cleanup.sql
 ```
 
 See [Execution Hooks](./options/execution_hooks.md) for detailed examples and use cases.
@@ -300,21 +308,76 @@ See [Linter](./options/linter.md) for rules and custom linter configuration.
 
 ### Notifications
 
-Set up alerts via Slack or email. Get notified when plans start or finish, when runs complete, or when audits fail.
+Set up alerts via Slack, Teams webhook, email, or console targets. Get notified when plans start or finish, when runs complete, or when data quality checks fail. Data quality events use the `dq_*` names.
 
 ```yaml
 notification_targets:
-  - type: slack
-    url: "{{ env_var('SLACK_WEBHOOK_URL') }}"
+  - type: teams_webhook
+    url: "{{ env_var('TEAMS_WEBHOOK_URL') }}"
     notify_on:
-      - run_end
-      - audit_failure
+      - apply_failure
+      - run_failure
+      - dq_failure
   - type: console
     notify_on:
       - plan_change
 ```
 
-See [Notifications](./options/notifications.md) for Slack webhooks, API, and email setup.
+See [Notifications](./options/notifications.md) for Teams webhook, Slack, API, and email setup.
+
+### Auth Extension Hook
+
+Use the root-level `after_authorize` field when a data product needs to resolve user groups after Heimdall authorization. The hook points to an async Python function in your project. Put plugin modules in a `plugins/` package at the project root:
+
+!!! important "Required for auth-backed policies"
+    If you are working with Heimdall auth, semantic model policies, or masking, make sure `config.yaml` includes this root-level hook:
+
+    ```yaml
+    after_authorize: "plugins.auth_ext:resolve_user_groups"
+    ```
+
+```text
+plugins/
+├── __init__.py
+└── auth_ext.py
+```
+
+```yaml
+after_authorize: "plugins.auth_ext:resolve_user_groups"
+
+heimdall:
+  enabled: true
+  base_url: "https://your-instance.dataos.cloud/heimdall"
+  timeout: 5
+```
+
+Previously, this behavior was commonly configured inside the `heimdall` block. For OSI GA projects, keep Heimdall connection settings under `heimdall` and put the extension hook at the root of `config.yaml`.
+
+```python title="plugins/auth_ext.py"
+from __future__ import annotations
+
+from schema.auth import AuthExtensionContext, SecurityContext
+
+ROLE_ID_TAG_PREFIX = "roles:id:"
+GROUP_DELIMITER = ","
+POLICY_GROUP_PRIORITY = ("operator", "developer")
+
+
+async def resolve_user_groups(ctx: AuthExtensionContext) -> SecurityContext:
+    """Derive policy groups from Heimdall role tags."""
+
+    groups = [
+        tag.replace(ROLE_ID_TAG_PREFIX, "", 1)
+        for tag in ctx.user_tags
+        if tag.startswith(ROLE_ID_TAG_PREFIX)
+    ]
+
+    group = next(
+        (policy_group for policy_group in POLICY_GROUP_PRIORITY if policy_group in groups),
+        groups[0] if groups else "",
+    )
+    return SecurityContext(group=group, groups=GROUP_DELIMITER.join(groups))
+```
 
 ## Supported Engines
 
@@ -422,8 +485,8 @@ These keys live in `usage.yaml`, not `config.yaml`.
 
 | Configuration Key | Description | Type | Required | Default | Documentation |
 |-------------------|-------------|:----:|:--------:|---------|---------------|
-| `before_all` | SQL statements executed at start of plan/run | array | No | `null` | [Execution Hooks](./options/execution_hooks.md) |
-| `after_all` | SQL statements executed at end of plan/run | array | No | `null` | [Execution Hooks](./options/execution_hooks.md) |
+| `before_all` | SQL statements, macros, or statement files executed at start of plan/run | array | No | `null` | [Execution Hooks](./options/execution_hooks.md) |
+| `after_all` | SQL statements, macros, or statement files executed at end of plan/run | array | No | `null` | [Execution Hooks](./options/execution_hooks.md) |
 
 ### Code Quality & Linting
 
@@ -438,7 +501,7 @@ These keys live in `usage.yaml`, not `config.yaml`.
 
 | Configuration Key | Description | Type | Required | Default | Documentation |
 |-------------------|-------------|:----:|:--------:|---------|---------------|
-| `notification_targets` | List of notification targets (Slack, email, console) | array | No | `[]` | [Notifications](./options/notifications.md) |
+| `notification_targets` | List of notification targets (Teams webhook, Slack, email, console) | array | No | `[]` | [Notifications](./options/notifications.md) |
 | `users` | List of users for approvals/notifications | array | No | `[]` | - |
 | `username` | Single user to receive notifications | string | No | `""` | - |
 
@@ -514,6 +577,7 @@ These keys live in `usage.yaml`, not `config.yaml`.
 | `analytics.enabled` | Enable telemetry publishing | boolean | No | `false` | - |
 | `analytics.api_key` | Telemetry API key. Required when `analytics.enabled: true`. | string | No | `null` | - |
 | `openlineage` | OpenLineage data lineage integration | object | No | `null` | - |
+| `after_authorize` | Auth extension hook called after Heimdall authorization, for example `plugins.auth_ext:resolve_user_groups`. | string | No | `null` | - |
 | `heimdall` | Heimdall authentication (Vulcan API only) | object | No | `{enabled: false}` | - |
 | `heimdall.enabled` | Enable Heimdall auth | boolean | No | `false` | - |
 | `heimdall.base_url` | Heimdall service URL. Required when `heimdall.enabled: true`. | string | No | `null` | - |
@@ -572,6 +636,7 @@ A few values come from the shell or `.env`, not from YAML:
 | `DATAOS_TENANT_ID` | Required at runtime. Supplies the `tenant`. Not a YAML key. |
 | `DATAOS_RESOURCE_NAME` | Overrides `name` from `config.yaml`. |
 | `DATAOS_RESOURCE_TAGS` | Merged into `tags` from `config.yaml`. |
+| `TEAMS_WEBHOOK_URL` | Recommended source for Teams webhook notification target URLs. |
 
 ## Migration from the Legacy Schema
 
@@ -586,6 +651,8 @@ If you have an older `config.yaml`, these keys have moved or been replaced:
 | `physical_schema_override` | `physical_schema_mapping` | Auto-converted with a warning. |
 | `disable_anonymized_analytics` | `analytics.enabled` | Move into the `analytics` block. |
 | `tenant` (in YAML) | `DATAOS_TENANT_ID` env var | No longer a YAML key. |
+| `heimdall.after_authorize` | `after_authorize` at root | Auth extension hooks now live at the root of `config.yaml`; keep only Heimdall service settings in `heimdall`. |
+| `check_start`, `check_end`, `check_failure` | `dq_start`, `dq_end`, `dq_failure` | Data quality notification events now use `dq_*` names. |
 | `metadata` (in `config.yaml`) | `usage.yaml` | Move business usage guidance out of runtime config. |
 
 Quick migration checklist:
@@ -595,8 +662,10 @@ Quick migration checklist:
 3. Add `discoverable`, `version`, `alignment` near the top of the file if you want non-default values.
 4. Make sure `version` is valid SemVer (`0.1.2`, not `0.1` or `v0.1.2`).
 5. Move business usage guidance from `metadata:` into `usage.yaml`.
-6. Remove any deprecated keys listed above.
-7. Set `DATAOS_TENANT_ID` in your shell or `.env`.
+6. Move any Heimdall auth extension hook to root-level `after_authorize`.
+7. Replace `check_*` notification events with `dq_*` event names.
+8. Remove any deprecated keys listed above.
+9. Set `DATAOS_TENANT_ID` in your shell or `.env`.
 
 ## Best Practices
 

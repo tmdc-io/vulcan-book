@@ -2,7 +2,7 @@
 
 You've defined your semantic models, your measures and dimensions are in place, and your plan has been applied. Now you want to query that data from an application, a dashboard, or a BI tool.
 
-Vulcan gives you three ways to do it: a **REST API**, a **GraphQL** endpoint, and a **MySQL wire protocol** service. All three are generated directly from your `semantics/` definitions. You don't write any API code.
+Vulcan gives you three ways to do it: a **REST API**, a **GraphQL** endpoint, and a **MySQL wire protocol** service. All three are generated directly from your `models/semantics/` definitions. You don't write any API code.
 
 This guide walks you through authentication, querying each surface, and wiring things up for production.
 
@@ -13,7 +13,7 @@ This guide walks you through authentication, querying each surface, and wiring t
 You need three things before the APIs will work:
 
 1. **A running Vulcan stack** - bring it up with `make up` (see the [Get Started guide](get-started/docker.md))
-2. **At least one semantic model** in your `semantics/` directory with dimensions and measures defined (see [Semantic Models](../components/semantics/models.md))
+2. **At least one semantic model** in your `models/semantics/` directory with dimensions and measures defined (see [Semantic Models](../components/semantics/models.md))
 3. **An applied plan** - run `vulcan plan` so Vulcan knows about your models
 
 ### Service Ports
@@ -529,7 +529,7 @@ You get `Unauthorized` or `Forbidden` back.
 
 Polling gives you `"status": "FAILED"` with an error message. Look at the `error_message` field first. Common causes:
 
-- Misspelled semantic member names - double-check your `semantics/*.yml` definitions
+- Misspelled semantic member names - double-check your `models/semantics/*.yml` definitions
 - Warehouse unreachable - is the underlying engine up?
 - Bad SQL - run `vulcan transpile` to see the generated query and spot the issue
 

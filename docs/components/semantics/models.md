@@ -36,6 +36,7 @@ joins: [...]                 # Relationships to other semantic models
 | `measures` | No | List of named aggregations. |
 | `segments` | No | List of reusable filter conditions. |
 | `joins` | No | List of relationships to other semantic models. |
+| `policies` | No | Row and column access policies. See [Policies, masking, and auth context](#policies-masking-and-auth-context). |
 
 !!! tip "Snowflake and other case-sensitive engines"
     Snowflake stores unquoted identifiers in uppercase by default. When targeting Snowflake, use uppercase column names in your dimension lists, expressions, and filters to match the warehouse schema. Lowercase examples in this guide assume a case-insensitive engine like DuckDB or Postgres.
@@ -54,13 +55,13 @@ Vulcan validates every identifier in a semantic model. Use this section as a qui
 | `terms[*]` | `^[a-zA-Z0-9._-]+$` | Typically dotted FQNs, e.g. `revenue.subscription`. |
 
 !!! warning "Unknown keys fail validation"
-    The wire-level schemas (`ai_context`, `rolling_window`, `granularities`) use Pydantic's `extra="forbid"`. Any unknown key inside these blocks will cause validation to fail. Stick to the documented fields.
+    The wire-level schemas (`ai_context`, `semantic_config`, `rolling_window`, `granularities`) use Pydantic's `extra="forbid"`. Any unknown key inside these blocks will cause validation to fail. Stick to the documented fields.
 
 ---
 
 ## Dimensions
 
-`dimensions:` is a **required, non-empty list**. Each item can be either a bare column name (shorthand) or a full dictionary with metadata, granularities, and formatting.
+`dimensions:` is a **required, non-empty list**. Each item can be either a bare column name (shorthand) or a full dictionary with metadata, granularities, semantic typing, masking, and formatting.
 
 ### Shorthand: a bare column name
 
@@ -79,7 +80,7 @@ Each string is the name of a column in the underlying Vulcan model.
 
 ### Full form: a dict with metadata
 
-When you want to add documentation, tags, glossary terms, granularities, or a display format, write the dimension as a dict:
+When you want to add documentation, tags, glossary terms, granularities, semantic type, masking, or a display format, write the dimension as a dict:
 
 ```yaml
 dimensions:
@@ -103,6 +104,29 @@ dimensions:
 ```
 
 You can freely mix shorthand and full-form entries in the same list.
+
+### Semantic dimension types
+
+Dimensions that need semantic meaning should use expanded syntax with `semantic_config.type`. Bare string dimensions still work when no semantic type is needed.
+
+```yaml
+dimensions:
+  - name: user_id
+    semantic_config:
+      type: identifier
+
+  - name: plan_type
+    semantic_config:
+      type: categorical
+
+  - status
+  - billing_cycle
+```
+
+| Type | Use for |
+|------|---------|
+| `identifier` | Primary keys, foreign keys, IDs |
+| `categorical` | Enums, status fields, type columns, grouping columns |
 
 ### Granularities
 
@@ -157,6 +181,8 @@ dimensions:
 | `terms` | No | List of business glossary references. |
 | `granularities` | No | List of time buckets. Only meaningful on `TIMESTAMP`/`DATETIME` columns. Granularity names must be unique within the dimension. |
 | `format` | No | Free-form display hint (e.g. `percent`, `currency`). |
+| `semantic_config` | No | Semantic meaning for the dimension. Supported `type` values are `identifier` and `categorical`. |
+| `mask_expression` | No | SQL expression returned for this dimension when a policy masks it. |
 | `ai_context` | No | Hints for AI/LLM consumers. See [AI context](#ai-context). |
 | `public` | No | Whether the dimension is visible to consumers (default: `true`). |
 
@@ -255,11 +281,57 @@ Pick the form that best describes intent: omit or `"*"` for "count rows", a `{na
 | `tags` | No | List of categorization labels. |
 | `terms` | No | List of business glossary references. |
 | `rolling_window` | No | Window configuration. See [Rolling windows](#rolling-windows). |
+| `semantic_config` | No | Semantic behavior for the measure. Supported `type` values are `simple`, `flow`, `stock`, and `ratio`. |
 | `ai_context` | No | Hints for AI/LLM consumers. See [AI context](#ai-context). |
 | `public` | No | Whether the measure is visible to consumers (default: `true`). |
 
 !!! warning "Reserved name"
     `count` is a reserved measure name: Vulcan adds an implicit `count` measure automatically. Use a different name like `total_users`, `row_count`, or `subscription_count`.
+
+### Semantic measure types
+
+Measures should declare their semantic behavior using `semantic_config.type`.
+
+| Type | Description |
+|------|-------------|
+| `simple` | Additive count or sum with no special time behavior |
+| `flow` | Accumulates over time, such as events or transactions |
+| `stock` | Point-in-time value, such as ARR, MRR, seats, or active users |
+| `ratio` | Computed from numerator and denominator measures |
+
+```yaml
+measures:
+  - name: total_users
+    type: count
+    expression: "{users.user_id}"
+    semantic_config:
+      type: simple
+
+  - name: churn_count
+    type: count
+    filters:
+      - "{subscriptions.status} = 'cancelled'"
+    semantic_config:
+      type: flow
+
+  - name: total_arr
+    type: sum
+    expression: "{subscriptions.arr}"
+    filters:
+      - "{subscriptions.status} = 'active'"
+    semantic_config:
+      type: stock
+      time_dimension: start_date
+      period_treatment: last
+      period_grain: day
+
+  - name: churn_rate
+    type: number
+    semantic_config:
+      type: ratio
+      numerator: churn_count
+      denominator: subscription_count
+```
 
 ### Rolling windows
 
@@ -398,6 +470,140 @@ Here `enterprise_revenue` is defined on the subscriptions semantic model but fil
 
 ---
 
+## Policies, masking, and auth context
+
+Semantic files can define row and column access policies close to the model they protect. Policies match against the user's resolved security context, usually populated after Heimdall authorization by a root-level `after_authorize` hook in `config.yaml`. See the [Plugins Auth Extension Guide](plugins_auth_extension.md) for the full plugin setup.
+
+!!! important "Configure the auth extension first"
+    If you are working with auth-backed semantic policies or masking, make sure `config.yaml` includes:
+
+    ```yaml
+    after_authorize: "plugins.auth_ext:resolve_user_groups"
+    ```
+
+```yaml title="config.yaml"
+after_authorize: "plugins.auth_ext:resolve_user_groups"
+```
+
+The hook should live in a project-level plugin package:
+
+```text
+plugins/
+├── __init__.py
+└── auth_ext.py
+```
+
+```python title="plugins/auth_ext.py"
+from __future__ import annotations
+
+from schema.auth import AuthExtensionContext, SecurityContext
+
+ROLE_ID_TAG_PREFIX = "roles:id:"
+GROUP_DELIMITER = ","
+POLICY_GROUP_PRIORITY = ("operator", "developer")
+
+
+async def resolve_user_groups(ctx: AuthExtensionContext) -> SecurityContext:
+    """Derive policy groups from Heimdall role tags."""
+
+    groups = [
+        tag.replace(ROLE_ID_TAG_PREFIX, "", 1)
+        for tag in ctx.user_tags
+        if tag.startswith(ROLE_ID_TAG_PREFIX)
+    ]
+
+    group = next(
+        (policy_group for policy_group in POLICY_GROUP_PRIORITY if policy_group in groups),
+        groups[0] if groups else "",
+    )
+    return SecurityContext(group=group, groups=GROUP_DELIMITER.join(groups))
+```
+
+The returned `SecurityContext.group` is the primary group used for policy matching. `SecurityContext.groups` contains all resolved groups as a comma-separated string.
+
+```yaml
+policies:
+  - group: developer
+
+  - group: operator
+    mask:
+      - email
+      - customer_name
+    filter:
+      - member: customer_segment
+        operator: notEquals
+        values:
+          - Churned
+```
+
+In this example, `developer` has full access. `operator` can query the model, but cannot see raw `email` or `customer_name`, and cannot see rows where `customer_segment = Churned`.
+
+Masked dimensions should define a `mask_expression` so Vulcan knows what restricted users see instead of the original value:
+
+```yaml
+dimensions:
+  - name: customer_name
+    mask_expression: "CAST(NULL AS TEXT)"
+
+  - name: email
+    mask_expression: "'***'"
+```
+
+### Policy example
+
+```yaml
+kind: semantic
+name: customer_profile
+depends_on: silver.dim_customer_profile
+description: Customer profile and lifetime purchase behavior.
+
+dimensions:
+  - name: customer_id
+    semantic_config:
+      type: identifier
+
+  - name: customer_name
+    mask_expression: "CAST(NULL AS TEXT)"
+
+  - name: email
+    mask_expression: "CAST(NULL AS TEXT)"
+
+  - name: customer_segment
+    semantic_config:
+      type: categorical
+
+  - total_orders
+  - total_revenue
+
+measures:
+  - name: total_customers
+    type: count_distinct
+    expression: "{customer_profile.customer_id}"
+    semantic_config:
+      type: simple
+
+  - name: total_customer_revenue
+    type: sum
+    expression: "{customer_profile.total_revenue}"
+    semantic_config:
+      type: simple
+
+policies:
+  - group: developer
+
+  - group: operator
+    mask:
+      - email
+      - customer_name
+    filter:
+      - member: customer_segment
+        operator: notEquals
+        values:
+          - Churned
+```
+
+---
+
 ## Complete example
 
 A B2B SaaS subscriptions semantic model with dimensions, measures, segments, and joins:
@@ -409,8 +615,12 @@ depends_on: hello.subscriptions
 description: Subscription lifecycle and revenue (semantic layer)
 
 dimensions:
-  - subscription_id
-  - user_id
+  - name: subscription_id
+    semantic_config:
+      type: identifier
+  - name: user_id
+    semantic_config:
+      type: identifier
   - plan_id
   - start_date
   - end_date
@@ -423,6 +633,8 @@ dimensions:
     terms:
       - subscription.plan_type
       - product.plan_tier
+    semantic_config:
+      type: categorical
   - status
   - billing_cycle
   - revenue_category
@@ -444,6 +656,16 @@ measures:
     terms:
       - revenue.total_arr
       - finance.annual_recurring_revenue
+    semantic_config:
+      type: stock
+      time_dimension: start_date
+      period_treatment: last
+      period_grain: day
+    ai_context:
+      instructions: Primary ARR KPI; active-status filter is baked into the measure.
+      caveats:
+        - Pin start_date to period end.
+        - Do not sum ARR across daily rows in a range.
 
   - name: subscription_count
     type: count
@@ -454,6 +676,8 @@ measures:
       - subscription
       - count
       - metric
+    semantic_config:
+      type: simple
 
   - name: churn_count
     type: count
@@ -464,6 +688,8 @@ measures:
     tags:
       - churn
       - retention
+    semantic_config:
+      type: flow
 
 segments:
   - name: active_subscriptions
@@ -495,7 +721,7 @@ joins:
 
 ## AI context
 
-Most spec objects (the semantic model itself, dimensions, granularities, measures, segments, joins) accept an optional `ai_context:` block to help AI/LLM consumers understand the object. All three fields are optional, and unknown keys fail validation.
+Most spec objects (the semantic model itself, dimensions, granularities, measures, segments, joins) accept an optional `ai_context:` block to help AI/LLM consumers understand the object. Measures can also carry `ai_context` directly, which is useful for ARR, MRR, active users, churn rate, retention rate, conversion rate, and other business metrics with interpretation rules. All fields are optional, and unknown keys fail validation.
 
 ```yaml
 kind: semantic
@@ -503,10 +729,12 @@ name: subscriptions
 depends_on: hello.subscriptions
 
 ai_context:
-  instructions: >
-    Subscription lifecycle and revenue semantic model (MRR, ARR, churn).
-    Filter active rows with status or active_subscriptions segment.
-    Query via SQL API, REST API (JSON), or GraphQL API.
+  instructions:
+    - Subscription lifecycle and revenue semantic model (MRR, ARR, churn).
+    - Filter active rows with status or active_subscriptions segment.
+    - Query via SQL API, REST API (JSON), or GraphQL API.
+  caveats:
+    - ARR and MRR measures are point-in-time values; do not sum them across dates.
   synonyms:
     - subscriptions
     - billing accounts
@@ -549,15 +777,30 @@ ai_context:
 dimensions:
   - name: plan_type
     ai_context:
+      instructions:
+        - Use for pricing-tier segmentation.
       synonyms:
         - "plan"
         - "tier"
         - "subscription_level"
+
+measures:
+  - name: churn_rate
+    type: number
+    semantic_config:
+      type: ratio
+      numerator: churn_count
+      denominator: subscription_count
+    ai_context:
+      instructions: Query numerator and denominator separately when a time grain is present.
+      caveats:
+        - Do not average pre-computed ratio values across buckets.
 ```
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `instructions` | String | Free-form guidance for how to think about this object. |
+| `instructions` | String or list of strings | Free-form guidance for how to think about this object. Use a list when multiple instructions apply. |
+| `caveats` | List of strings | Warnings about aggregation, time-grain behavior, business assumptions, or ways the field or measure can be misused. |
 | `synonyms` | List of strings | Alternate names consumers/LLMs might use. |
 | `examples` | List of objects | Example SQL, REST, GraphQL, or natural-language prompts. Each example can include `description`, `format`, and `query`. |
 
@@ -576,9 +819,12 @@ Vulcan validates semantic model definitions automatically when you create a plan
 - Join `name`s reference existing semantic models and are not equal to the current model's `name`
 - Join `type` is one of `one_to_one`, `one_to_many`, `many_to_one`
 - Cross-model references have valid join paths
+- Dimension `semantic_config.type` is one of `identifier` or `categorical`
+- Measure `semantic_config.type` is one of `simple`, `flow`, `stock`, or `ratio`
+- Policy groups, masks, and filters reference valid semantic fields
 - No duplicate names exist among measures, among segments, among joins, or among granularities within a single dimension
 - `count` is not used as an explicit measure name
-- No unknown keys appear inside `ai_context`, `rolling_window`, or `granularities` (Pydantic `extra="forbid"`)
+- No unknown keys appear inside `ai_context`, `semantic_config`, `rolling_window`, or `granularities` (Pydantic `extra="forbid"`)
 
 Validation runs before anything is materialized, so errors are caught early.
 

@@ -49,6 +49,7 @@ nav:
         - components/semantics/overview.md
         - components/semantics/models.md
         - components/semantics/business_metrics.md
+        - components/semantics/plugins_auth_extension.md
       - Advance Features:
         - Macros:
           - components/advanced-features/macros/overview.md
@@ -60,9 +61,11 @@ nav:
   - Guides:
       - Overview: guides/overview.md
       - guides/get-started/docker.md
+      - guides/get-started/setup_spark_locally.md
       # - guides/plan.md
       - guides/data-product-lifecycle.md
       - guides/plan_guide.md
+      - guides/vulcan_plan_vde_true.md
       - guides/run_and_scheduling.md
       - guides/models.md
       - guides/incremental_by_time.md
