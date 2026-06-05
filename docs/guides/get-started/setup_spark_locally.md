@@ -16,7 +16,7 @@ Install Vulcan locally in a Python 3.10 virtual environment.
     python3.10 -m venv .venv
     source .venv/bin/activate
     python -m pip install --upgrade pip setuptools wheel
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[spark,postgres]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[spark,postgres]"
     ```
 
 === "Windows"
@@ -25,7 +25,7 @@ Install Vulcan locally in a Python 3.10 virtual environment.
     py -3.10 -m venv .venv
     .venv\Scripts\activate
     py -3.10 -m pip install --upgrade pip setuptools wheel
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[spark,postgres]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[spark,postgres]"
     ```
 
 ### Java 17 SDK

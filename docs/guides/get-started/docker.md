@@ -1,6 +1,6 @@
 # Get Started
 
-Install Vulcan from a pre-built Python wheel file, choose an engine, and connect it to a warehouse. This guide uses [vulcan-0.228.1.21-py3-none-any.whl](vulcan-0.228.1.21-py3-none-any.whl).
+Install Vulcan from a pre-built Python wheel file, choose an engine, and connect it to a warehouse. This guide uses [vulcan-0.228.1.24b1-py3-none-any.whl](vulcan-0.228.1.24b1-py3-none-any.whl).
 
 ---
 
@@ -66,7 +66,7 @@ Use a virtual environment for Postgres, Snowflake, Databricks, Spark, Trino, MyS
 
 After activation, your terminal prompt should include `(.venv)`.
 
-Download [vulcan-0.228.1.21-py3-none-any.whl](vulcan-0.228.1.21-py3-none-any.whl) and place it in your project folder.
+Download [vulcan-0.228.1.24b1-py3-none-any.whl](vulcan-0.228.1.24b1-py3-none-any.whl) and place it in your project folder.
 
 ---
 
@@ -79,37 +79,37 @@ Install the wheel with the extra for the engine you want to use.
 
 === "Postgres"
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[postgres]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[postgres]"
     ```
 
 === "Snowflake"
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[snowflake]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[snowflake]"
     ```
 
 === "Databricks"
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[databricks]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[databricks]"
     ```
 
 === "Spark"
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[spark,postgres]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[spark,postgres]"
     ```
 
 === "Trino"
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[trino]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[trino]"
     ```
 
 === "MySQL"
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[mysql]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[mysql]"
     ```
 
 === "MSSQL"
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[mssql]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[mssql]"
     ```
 
 Verify the install:
@@ -691,7 +691,7 @@ For a full walkthrough of what happens after `plan`, see the [Plan guide](../pla
     Quote the wheel path when installing extras:
 
     ```bash
-    pip install "./vulcan-0.228.1.21-py3-none-any.whl[postgres]"
+    pip install "./vulcan-0.228.1.24b1-py3-none-any.whl[postgres]"
     ```
 
     **`vulcan: command not found`**
@@ -718,12 +718,12 @@ For a full walkthrough of what happens after `plan`, see the [Plan guide](../pla
 
     **Spark commands fail on Windows**
 
-    Run Spark commands through the `vulcan-cli` container shown in the Spark tab. It runs the Spark driver in Linux and avoids Windows Hadoop or `winutils.exe` issues.
+    Confirm Java 17 is installed and accessible from the same terminal where you run Vulcan. If local Spark still fails on Windows, use WSL2 or a Linux/macOS environment for Spark development.
 
     **Reinstall Vulcan from the wheel**
 
     ```bash
-    pip install --force-reinstall "./vulcan-0.228.1.21-py3-none-any.whl"
+    pip install --force-reinstall "./vulcan-0.228.1.24b1-py3-none-any.whl"
     ```
 
 ---
